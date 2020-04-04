@@ -11,17 +11,17 @@ public class RandomElementsTest extends TestCase {
   public void testSimple() {
     Random random = new Random();
     List<Integer> list = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-//    for (int d = 1; d <= 3; ++d) {
-//      Set<Scalar> set = new HashSet<>();
-//      int pow = (int) Math.round(Math.pow(10, d));
-//      for (int count = 0; count < pow; ++count) {
-//        List<Integer> elements = RandomElements.of(list, d, random);
-//        ScalarUnaryOperator scalarUnaryOperator = Series.of(Tensors.vector(elements));
-//        Scalar scalar = scalarUnaryOperator.apply(RealScalar.of(10));
-//        set.add(scalar);
-//      }
-//      assertTrue(pow / 3 <= set.size());
-//    }
+    // for (int d = 1; d <= 3; ++d) {
+    // Set<Scalar> set = new HashSet<>();
+    // int pow = (int) Math.round(Math.pow(10, d));
+    // for (int count = 0; count < pow; ++count) {
+    // List<Integer> elements = RandomElements.of(list, d, random);
+    // ScalarUnaryOperator scalarUnaryOperator = Series.of(Tensors.vector(elements));
+    // Scalar scalar = scalarUnaryOperator.apply(RealScalar.of(10));
+    // set.add(scalar);
+    // }
+    // assertTrue(pow / 3 <= set.size());
+    // }
   }
 
   public void testEmpty() {

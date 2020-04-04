@@ -29,7 +29,19 @@ public class SpinnerLabel<T> {
   public static final Color BACKGROUND_0 = new Color(248, 248, 248, 64);
   private static final int BORDER_WIDTH_MIN = 9;
   private static final int BORDER_WIDTH_MAX = 16;
-  // ---
+
+  /***************************************************/
+  /** @param <T>
+   * @param values
+   * @return */
+  public static <T> SpinnerLabel<T> of(@SuppressWarnings("unchecked") T... values) {
+    SpinnerLabel<T> spinnerLabel = new SpinnerLabel<>();
+    spinnerLabel.setArray(values);
+    spinnerLabel.setIndex(0);
+    return spinnerLabel;
+  }
+
+  /***************************************************/
   private boolean mouseInside = false;
   private Point lastMouse = new Point();
   private int border_width = 0;

@@ -6,7 +6,6 @@ import java.awt.Point;
 
 public enum MouseLocation {
   ;
-
   public static Point getMouseLocation() {
     try {
       // can test with GraphicsEnvironment.isHeadless()

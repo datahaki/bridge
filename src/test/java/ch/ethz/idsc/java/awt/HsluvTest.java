@@ -3,7 +3,6 @@ package ch.ethz.idsc.java.awt;
 
 import java.awt.Color;
 
-import ch.ethz.idsc.java.awt.Hsluv;
 import junit.framework.TestCase;
 
 public class HsluvTest extends TestCase {

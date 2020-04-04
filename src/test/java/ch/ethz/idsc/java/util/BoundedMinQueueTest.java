@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import ch.ethz.idsc.java.util.BoundedMinQueue;
 import junit.framework.TestCase;
 
 public class BoundedMinQueueTest extends TestCase {

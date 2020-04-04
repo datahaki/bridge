@@ -4,7 +4,6 @@ package ch.ethz.idsc.java.util;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import ch.ethz.idsc.java.util.BoundedMaxQueue;
 import junit.framework.TestCase;
 
 public class BoundedMaxQueueTest extends TestCase {
