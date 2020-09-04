@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 /** HtmlUtf8 exports strings to html pages in utf-8 encoding. All logs of MissionControl are exported with HtmlUtf8. */
 public abstract class HtmlUtf8 implements AutoCloseable {
@@ -40,7 +41,7 @@ public abstract class HtmlUtf8 implements AutoCloseable {
     try {
       StringBuilder stringBuffer = new StringBuilder();
       stringBuffer.append("<html>\n");
-      if (title != null && !title.isEmpty())
+      if (Objects.nonNull(title) && !title.isEmpty())
         stringBuffer.append("<head><title>" + title + "</title></head>\n");
       stringBuffer.append("<frameset " + split + ">\n");
       stringBuffer.append("<frame src=\"" + fileStringL + "\" name=\"" + nameStringL + "\">\n");

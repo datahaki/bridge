@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -50,13 +51,13 @@ class SpinnerMenu<T> extends StandardMenu {
   public void showRight(JLabel jLabel) {
     JPopupMenu jPopupMenu = designShow();
     // ---
-    T myType = spinnerLabel.getValue();
-    if (myType != null) {
+    T type = spinnerLabel.getValue();
+    if (Objects.nonNull(type)) {
       int delta = 2;
-      map.get(myType).setBackground(Colors.ACTIVE_ITEM); // Colors.gold
+      map.get(type).setBackground(Colors.ACTIVE_ITEM); // Colors.gold
       for (Entry<T, JMenuItem> entry : map.entrySet()) {
         delta += entry.getValue().getPreferredSize().height;
-        if (entry.getKey().equals(myType)) {
+        if (entry.getKey().equals(type)) {
           delta -= entry.getValue().getPreferredSize().height / 2;
           break;
         }

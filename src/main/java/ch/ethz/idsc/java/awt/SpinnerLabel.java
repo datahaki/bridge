@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -248,6 +249,10 @@ public class SpinnerLabel<T> {
 
   private int numel() {
     return list == null ? 0 : list.size();
+  }
+
+  public List<T> getList() {
+    return Collections.unmodifiableList(list);
   }
 
   /** does not invoke call backs

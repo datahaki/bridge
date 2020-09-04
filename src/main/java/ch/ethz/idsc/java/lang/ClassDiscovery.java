@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
+import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -51,7 +52,7 @@ public class ClassDiscovery {
         String cn = visiting_classpath + "." + fname.substring(0, fname.length() - 6);
         try {
           Class<?> cls = cldr.loadClass(cn);
-          if (cls != null)
+          if (Objects.nonNull(cls))
             classVisitor.classFound(classpath_entry, cls);
         } catch (Throwable ex) {
           // ---
