@@ -12,6 +12,16 @@ import java.util.List;
  * The <a href="http://www.hsluv.org">website</a> features an interactive demo. */
 public enum Hsluv {
   ;
+  private static final double[][] M = new double[][] { //
+      { 3.240969941904521, -1.537383177570093, -0.498610760293 }, //
+      { -0.96924363628087, 1.87596750150772, 0.041555057407175 }, //
+      { 0.055630079696993, -0.20397695888897, 1.056971514242878 } };
+  private static final double REFY = 1;
+  private static final double REFU = 0.19783000664283;
+  private static final double REFV = 0.46831999493879;
+  private static final double KAPPA = 903.2962962;
+  private static final double EPSILON = 0.0088564516;
+
   /** @param hue in range [0, 1), value is taken modulo 1
    * @param saturation in range [0, 1]
    * @param lightness in range [0, 1], use 0.5 for greatest variability in hue
@@ -26,17 +36,6 @@ public enum Hsluv {
     double[] rgb = hsluvToRgb(hue * 360, saturation * 100, lightness * 100);
     return new Color((float) rgb[0], (float) rgb[1], (float) rgb[2], (float) alpha);
   }
-
-  // ---
-  private static final double[][] M = new double[][] { //
-      { 3.240969941904521, -1.537383177570093, -0.498610760293 }, //
-      { -0.96924363628087, 1.87596750150772, 0.041555057407175 }, //
-      { 0.055630079696993, -0.20397695888897, 1.056971514242878 } };
-  private static final double REFY = 1;
-  private static final double REFU = 0.19783000664283;
-  private static final double REFV = 0.46831999493879;
-  private static final double KAPPA = 903.2962962;
-  private static final double EPSILON = 0.0088564516;
 
   private static List<double[]> getBounds(double L) {
     List<double[]> result = new ArrayList<>();

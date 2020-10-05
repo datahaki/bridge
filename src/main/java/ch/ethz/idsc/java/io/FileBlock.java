@@ -32,7 +32,6 @@ public class FileBlock {
         release();
         return true;
       }
-      // ---
       // File::deleteOnExit is not used to ensure release() is called before deleting file
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
         release(); // remove all locks

@@ -20,7 +20,6 @@ import java.io.OutputStreamWriter;
   @Override
   public void close() {
     super.close();
-    // ---
     try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), CHARSET)) {
       outputStreamWriter.write(stringBuilder.toString());
     } catch (Exception exception) {

@@ -9,7 +9,6 @@ import java.awt.Rectangle;
 public enum ScreenRectangle {
   INSTANCE;
 
-  // ---
   private Rectangle screen = new Rectangle();
 
   private ScreenRectangle() {

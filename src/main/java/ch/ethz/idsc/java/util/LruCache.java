@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LruCache<K, V> extends LinkedHashMap<K, V> {
+  private static final long serialVersionUID = 1720452365894008977L;
+  // ---
   private final int maxSize;
 
   public LruCache(int maxSize) {

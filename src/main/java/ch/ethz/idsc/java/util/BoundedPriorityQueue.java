@@ -7,6 +7,8 @@ import java.util.PriorityQueue;
 
 /** Remark: implementation is not serializable */
 /* package */ abstract class BoundedPriorityQueue<T> extends PriorityQueue<T> {
+  private static final long serialVersionUID = -5986116227242058161L;
+  // ---
   private final int capacity;
 
   public BoundedPriorityQueue(int capacity, Comparator<? super T> comparator) {

@@ -1,6 +1,7 @@
 // code by jph
 package ch.ethz.idsc.java.lang;
 
+import ch.ethz.idsc.java.util.AssertFail;
 import junit.framework.TestCase;
 
 public class StringRepeatTest extends TestCase {
@@ -10,11 +11,6 @@ public class StringRepeatTest extends TestCase {
 
   public void testFailNegative() {
     assertEquals(StringRepeat.of("ab", 0), "");
-    try {
-      StringRepeat.of("ab", -1);
-      fail();
-    } catch (Exception exception) {
-      // ---
-    }
+    AssertFail.of(() -> StringRepeat.of("ab", -1));
   }
 }

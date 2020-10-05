@@ -50,7 +50,6 @@ class SpinnerMenu<T> extends StandardMenu {
 
   public void showRight(JLabel jLabel) {
     JPopupMenu jPopupMenu = designShow();
-    // ---
     T type = spinnerLabel.getValue();
     if (Objects.nonNull(type)) {
       int delta = 2;

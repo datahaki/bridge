@@ -3,6 +3,7 @@ package ch.ethz.idsc.java.awt;
 
 import java.awt.Color;
 
+import ch.ethz.idsc.java.util.AssertFail;
 import junit.framework.TestCase;
 
 public class HsluvTest extends TestCase {
@@ -13,11 +14,6 @@ public class HsluvTest extends TestCase {
   }
 
   public void testFail() {
-    try {
-      Hsluv.of(1 / 0.0, 1, 1, 1);
-      fail();
-    } catch (Exception exception) {
-      // ---
-    }
+    AssertFail.of(() -> Hsluv.of(1 / 0.0, 1, 1, 1));
   }
 }

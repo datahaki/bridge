@@ -58,8 +58,8 @@ public abstract class HtmlUtf8 implements AutoCloseable {
   public static String color(Color color) {
     return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
   }
-  // ---
 
+  /***************************************************/
   public final File file;
 
   protected HtmlUtf8(File file) {
