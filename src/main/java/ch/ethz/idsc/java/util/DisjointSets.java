@@ -12,6 +12,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class DisjointSets {
+  public static DisjointSets allocate(int initialSize) {
+    DisjointSets disjointSets = new DisjointSets();
+    IntStream.range(0, initialSize).forEach(i -> disjointSets.add());
+    return disjointSets;
+  }
+
+  /***************************************************/
   private final List<Node> list = new ArrayList<>();
 
   /** @return index of added set */
@@ -50,6 +57,12 @@ public class DisjointSets {
     return node.parent;
   }
 
+  /** Example:
+   * Map<Integer, Integer> map = disjointSets.createMap(new AtomicInteger()::getAndIncrement);
+   * 
+   * @param <T>
+   * @param supplier
+   * @return */
   public <T> Map<Integer, T> createMap(Supplier<T> supplier) {
     // list.stream().map(n -> n.parent).map(this::key).distinct();
     return IntStream.range(0, list.size()) //
