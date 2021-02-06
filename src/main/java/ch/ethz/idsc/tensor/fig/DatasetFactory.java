@@ -11,6 +11,7 @@ import org.jfree.data.xy.TableXYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import ch.ethz.idsc.tensor.NumberQ;
 import ch.ethz.idsc.tensor.Scalar;
 import ch.ethz.idsc.tensor.Tensor;
 
@@ -23,14 +24,19 @@ import ch.ethz.idsc.tensor.Tensor;
    * sorted into ascending order by x-value, and duplicate x-values are permitted."
    * 
    * @param visualSet
-   * @return */
+   * @return 
+   * @see ListPlot */
   public static XYSeriesCollection xySeriesCollection(VisualSet visualSet) {
     XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
     for (VisualRow visualRow : visualSet.visualRows()) {
       String labelString = visualRow.getLabelString();
       XYSeries xySeries = new XYSeries(labelString.isEmpty() ? xySeriesCollection.getSeriesCount() : labelString);
-      for (Tensor point : visualRow.points())
-        xySeries.add(point.Get(0).number(), point.Get(1).number());
+      for (Tensor point : visualRow.points()) {
+        Number numberX = point.Get(0).number();
+        Scalar valueY = point.Get(1);
+        Number numberY = NumberQ.of(valueY)?valueY.number():Double.NaN;
+        xySeries.add(numberX, numberY);
+      }
       xySeriesCollection.addSeries(xySeries);
     }
     return xySeriesCollection;
