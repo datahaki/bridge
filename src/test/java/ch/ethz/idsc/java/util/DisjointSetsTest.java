@@ -54,7 +54,7 @@ public class DisjointSetsTest extends TestCase {
     DisjointSets disjointSets = new DisjointSets();
     IntStream.range(0, n).forEach(i -> disjointSets.add());
     for (int index = 0; index < n; ++index)
-      disjointSets.union(index, 100 + (index % 2));
+      disjointSets.union(index, 100 + (index & 1));
     assertEquals(disjointSets.parents().size(), 2);
     // assertEquals(disjointSets.maxRank(), 1);
     assertEquals(disjointSets.parents(), disjointSets.representatives());

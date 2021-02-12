@@ -6,8 +6,6 @@ import java.util.Queue;
 
 /** bounded min queue keeps the n smallest elements */
 public class BoundedMinQueue<T> extends BoundedPriorityQueue<T> {
-  private static final long serialVersionUID = 2826054911131483741L;
-
   /** @param capacity
    * @return bounded priority queue with given maximum capacity */
   public static <T> Queue<T> of(int capacity) {

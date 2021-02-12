@@ -47,8 +47,6 @@ public class SpinnerLabel<T> {
   private int border_width = 0;
   private final List<SpinnerListener<T>> spinnerListeners = new LinkedList<>();
   private final JLabel jLabel = new JLabel("", SwingConstants.RIGHT) {
-    private static final long serialVersionUID = -4601215452811452146L;
-
     @Override
     protected void paintComponent(Graphics _graphics) {
       final boolean enabled = isEnabled();

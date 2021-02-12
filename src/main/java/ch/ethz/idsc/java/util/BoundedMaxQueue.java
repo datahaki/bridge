@@ -5,8 +5,6 @@ import java.util.Queue;
 
 /** bounded max queue only keeps the n largest elements */
 public class BoundedMaxQueue<T> extends BoundedPriorityQueue<T> {
-  private static final long serialVersionUID = 5631022380841489301L;
-
   /** @param capacity
    * @return bounded priority queue with given maximum capacity */
   public static <T> Queue<T> of(int capacity) {

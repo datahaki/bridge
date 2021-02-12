@@ -24,7 +24,7 @@ import ch.ethz.idsc.tensor.Tensor;
    * sorted into ascending order by x-value, and duplicate x-values are permitted."
    * 
    * @param visualSet
-   * @return 
+   * @return
    * @see ListPlot */
   public static XYSeriesCollection xySeriesCollection(VisualSet visualSet) {
     XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
@@ -34,7 +34,7 @@ import ch.ethz.idsc.tensor.Tensor;
       for (Tensor point : visualRow.points()) {
         Number numberX = point.Get(0).number();
         Scalar valueY = point.Get(1);
-        Number numberY = NumberQ.of(valueY)?valueY.number():Double.NaN;
+        Number numberY = NumberQ.of(valueY) ? valueY.number() : Double.NaN;
         xySeries.add(numberX, numberY);
       }
       xySeriesCollection.addSeries(xySeries);

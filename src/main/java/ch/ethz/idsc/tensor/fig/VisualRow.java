@@ -11,7 +11,6 @@ import ch.ethz.idsc.tensor.ScalarQ;
 import ch.ethz.idsc.tensor.Tensor;
 
 public class VisualRow implements Serializable {
-  private static final long serialVersionUID = -4898990663294713762L;
   private static final Stroke STROKE_DEFAULT = new BasicStroke(1f);
   // ---
   private final Tensor points;
