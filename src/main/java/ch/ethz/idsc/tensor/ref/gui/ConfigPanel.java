@@ -14,7 +14,7 @@ public class ConfigPanel {
   /** @param object
    * @return */
   public static ConfigPanel of(Object object) {
-    return new ConfigPanel(object, object);
+    return new ConfigPanel(object);
   }
 
   /***************************************************/
@@ -22,8 +22,8 @@ public class ConfigPanel {
   private final ToolbarsComponent toolbarsComponent;
   private final JPanel jPanel;
 
-  private ConfigPanel(Object object, Object reference) {
-    fieldPanels = FieldPanels.of(object, reference);
+  private ConfigPanel(Object object) {
+    fieldPanels = FieldPanels.of(object);
     toolbarsComponent = ParametersComponent.of(fieldPanels);
     jPanel = new JPanel(new BorderLayout());
     jPanel.add("North", toolbarsComponent.getScrollPane());
@@ -48,7 +48,8 @@ public class ConfigPanel {
     return fieldPanels;
   }
 
-  /** @return */
+  /** @return component that contains the labelled input fields only, but not
+   * the text summary below */
   public JComponent getFields() {
     return toolbarsComponent.getScrollPane();
   }
