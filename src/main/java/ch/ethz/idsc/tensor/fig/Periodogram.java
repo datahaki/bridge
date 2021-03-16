@@ -20,6 +20,6 @@ public enum Periodogram {
       // System.out.println(ArrayQ.of(values));
       visualSet.add(Subdivide.of(0, 1, values.length() - 1), values);
     }
-    return ListPlot.of(visualSet);
+    return ListPlot.of(visualSet, true);
   }
 }

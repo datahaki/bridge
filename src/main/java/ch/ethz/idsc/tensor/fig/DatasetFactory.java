@@ -1,6 +1,7 @@
 // code by gjoel, jph
 package ch.ethz.idsc.tensor.fig;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.jfree.data.category.CategoryDataset;
@@ -14,6 +15,11 @@ import org.jfree.data.xy.XYSeriesCollection;
 import ch.ethz.idsc.tensor.NumberQ;
 import ch.ethz.idsc.tensor.Scalar;
 import ch.ethz.idsc.tensor.Tensor;
+import ch.ethz.idsc.tensor.Tensors;
+import ch.ethz.idsc.tensor.api.ScalarUnaryOperator;
+import ch.ethz.idsc.tensor.qty.QuantityMagnitude;
+import ch.ethz.idsc.tensor.qty.QuantityUnit;
+import ch.ethz.idsc.tensor.qty.Unit;
 
 /** functionality to convert {@link VisualSet} to a dataset
  * for the instantiation of a JFreeChart object */
@@ -28,12 +34,27 @@ import ch.ethz.idsc.tensor.Tensor;
    * @see ListPlot */
   public static XYSeriesCollection xySeriesCollection(VisualSet visualSet) {
     XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
+    ScalarUnaryOperator suoX = null;
+    ScalarUnaryOperator suoY = null;
     for (VisualRow visualRow : visualSet.visualRows()) {
       String labelString = visualRow.getLabelString();
       XYSeries xySeries = new XYSeries(labelString.isEmpty() ? xySeriesCollection.getSeriesCount() : labelString);
-      for (Tensor point : visualRow.points()) {
-        Number numberX = point.Get(0).number();
-        Scalar valueY = point.Get(1);
+      Tensor points = visualRow.points();
+      if (Objects.isNull(suoX) && !Tensors.isEmpty(points)) {
+        {
+          Unit unit = QuantityUnit.of(points.Get(0, 0));
+          visualSet.setUnitX(unit);
+          suoX = QuantityMagnitude.SI().in(unit);
+        }
+        {
+          Unit unit = QuantityUnit.of(points.Get(0, 1));
+          visualSet.setUnitY(unit);
+          suoY = QuantityMagnitude.SI().in(unit);
+        }
+      }
+      for (Tensor point : points) {
+        Number numberX = suoX.apply(point.Get(0)).number();
+        Scalar valueY = suoY.apply(point.Get(1));
         Number numberY = NumberQ.of(valueY) ? valueY.number() : Double.NaN;
         xySeries.add(numberX, numberY);
       }

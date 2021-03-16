@@ -7,11 +7,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
-import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassDiscovery {
+  /** @param classpath
+   * @param classVisitor */
   public static void execute(String classpath, ClassVisitor classVisitor) {
     new ClassDiscovery(classpath, classVisitor).findClasses();
   }
@@ -49,10 +50,10 @@ public class ClassDiscovery {
         // Modified by Jan in order to enable nested packages
         // String cn = visiting_classpath + fname.substring(0,
         // fname.length()-6);
-        String cn = visiting_classpath + "." + fname.substring(0, fname.length() - 6);
+        String className = visiting_classpath + "." + fname.substring(0, fname.length() - 6);
         try {
-          Class<?> cls = cldr.loadClass(cn);
-          if (Objects.nonNull(cls))
+          Class<?> cls = cldr.loadClass(className);
+          if (cls != null)
             classVisitor.classFound(classpath_entry, cls);
         } catch (Throwable ex) {
           // ---
@@ -66,53 +67,55 @@ public class ClassDiscovery {
     final String ps = System.getProperty("path.separator");
     String[] items = classpath.split(ps);
     // Create a class loader that has access to the whole class path.
-    URLClassLoader urlClassLoader;
+    URL[] urls = new URL[items.length];
     try {
-      URL[] urls = new URL[items.length];
-      for (int i = 0; i < items.length; ++i)
-        urls[i] = new File(items[i]).toURI().toURL();
-      urlClassLoader = new URLClassLoader(urls);
-    } catch (IOException ex) {
-      System.out.println("ClassDiscoverer ERR: " + ex);
+      for (int index = 0; index < items.length; ++index)
+        urls[index] = new File(items[index]).toURI().toURL();
+    } catch (IOException ioException) {
+      System.out.println("ClassDiscoverer ERR: " + ioException);
       return;
     }
-    for (int i = 0; i < items.length; ++i) {
-      String item = items[i];
-      if (item.endsWith(".jar")) {
-        try (JarFile jf = new JarFile(item)) {
-          for (Enumeration<JarEntry> e = jf.entries(); e.hasMoreElements();) {
-            JarEntry je = e.nextElement();
-            String n = je.getName();
-            // skip private classes?
-            // if (n.contains("$"))
-            // continue;
-            if (n.endsWith(".class")) {
-              // convert the path into a class name
-              String cn = n.substring(0, n.length() - 6);
-              cn = cn.replace('/', '.');
-              cn = cn.replace('\\', '.');
-              // try loading that class
-              try {
-                Class<?> cls = urlClassLoader.loadClass(cn);
-                if (cls == null)
-                  continue;
-                classVisitor.classFound(item, cls);
-              } catch (Throwable ex) {
-                // System.out.println("ClassDiscoverer: "+ex);
-                // System.out.println(" jar: "+item);
-                // System.out.println(" class: "+n);
+    try (URLClassLoader urlClassLoader = new URLClassLoader(urls)) {
+      for (int index = 0; index < items.length; ++index) {
+        String item = items[index];
+        if (item.endsWith(".jar")) {
+          try (JarFile jarFile = new JarFile(item)) {
+            for (Enumeration<JarEntry> enumeration = jarFile.entries(); enumeration.hasMoreElements();) {
+              JarEntry jarEntry = enumeration.nextElement();
+              String name = jarEntry.getName();
+              // skip private classes?
+              // if (n.contains("$"))
+              // continue;
+              if (name.endsWith(".class")) {
+                // convert the path into a class name
+                String className = name.substring(0, name.length() - 6);
+                className = className.replace('/', '.');
+                className = className.replace('\\', '.');
+                // try loading that class
+                try {
+                  Class<?> cls = urlClassLoader.loadClass(className);
+                  if (cls == null)
+                    continue;
+                  classVisitor.classFound(item, cls);
+                } catch (Throwable throwable) {
+                  // System.out.println("ClassDiscoverer: "+ex);
+                  // System.out.println(" jar: "+item);
+                  // System.out.println(" class: "+n);
+                }
               }
             }
+          } catch (IOException ioException) {
+            System.out.println("Error extracting " + items[index]);
           }
-        } catch (IOException ioe) {
-          System.out.println("Error extracting " + items[i]);
+        } else {
+          File file = new File(item);
+          if (!file.isDirectory())
+            continue;
+          visitDirectory(urlClassLoader, item, file, "");
         }
-      } else {
-        File file = new File(item);
-        if (!file.isDirectory())
-          continue;
-        visitDirectory(urlClassLoader, item, file, "");
       }
+    } catch (Exception exception) {
+      exception.printStackTrace();
     }
   }
 }

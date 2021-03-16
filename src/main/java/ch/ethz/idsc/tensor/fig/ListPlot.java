@@ -13,27 +13,42 @@ import org.jfree.data.xy.XYSeriesCollection;
 public enum ListPlot {
   ;
   /** Hint: use
-   * jFreeChart.draw(graphics, ...) to render list plot
+   * jFreeChart.draw(graphics2d, rectangle2D) to render list plot
    * 
    * @param visualSet
+   * @param joined for lines between coordinates, otherwise scattered points
    * @return */
-  public static JFreeChart of(VisualSet visualSet) {
+  public static JFreeChart of(VisualSet visualSet, boolean joined) {
     XYSeriesCollection xySeriesCollection = DatasetFactory.xySeriesCollection(visualSet);
-    JFreeChart jFreeChart = ChartFactory.createXYLineChart( //
-        visualSet.getPlotLabel(), //
-        visualSet.getAxesLabelX(), //
-        visualSet.getAxesLabelY(), //
-        xySeriesCollection, PlotOrientation.VERTICAL, //
-        visualSet.hasLegend(), // legend
-        false, // tooltips
-        false); // urls
+    JFreeChart jFreeChart = joined //
+        ? ChartFactory.createXYLineChart( //
+            visualSet.getPlotLabel(), //
+            visualSet.getAxesLabelX(), //
+            visualSet.getAxesLabelY(), //
+            xySeriesCollection, PlotOrientation.VERTICAL, //
+            visualSet.hasLegend(), // legend
+            false, // tooltips
+            false) // urls
+        : ChartFactory.createScatterPlot( //
+            visualSet.getPlotLabel(), //
+            visualSet.getAxesLabelX(), //
+            visualSet.getAxesLabelY(), //
+            xySeriesCollection, PlotOrientation.VERTICAL, //
+            visualSet.hasLegend(), // legend
+            false, // tooltips
+            false); // urls
     XYPlot xyPlot = jFreeChart.getXYPlot();
     XYItemRenderer xyItemRenderer = xyPlot.getRenderer();
     int limit = xySeriesCollection.getSeriesCount();
     for (int index = 0; index < limit; ++index) {
-      xyItemRenderer.setSeriesPaint(index, visualSet.getVisualRow(index).getColor());
-      xyItemRenderer.setSeriesStroke(index, visualSet.getVisualRow(index).getStroke());
+      VisualRow visualRow = visualSet.getVisualRow(index);
+      xyItemRenderer.setSeriesPaint(index, visualRow.getColor());
+      xyItemRenderer.setSeriesStroke(index, visualRow.getStroke());
     }
     return jFreeChart;
+  }
+
+  public static JFreeChart of(VisualSet visualSet) {
+    return of(visualSet, false);
   }
 }

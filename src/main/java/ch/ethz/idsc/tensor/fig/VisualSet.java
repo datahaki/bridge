@@ -15,6 +15,7 @@ import ch.ethz.idsc.tensor.alg.Transpose;
 import ch.ethz.idsc.tensor.alg.VectorQ;
 import ch.ethz.idsc.tensor.img.ColorDataIndexed;
 import ch.ethz.idsc.tensor.img.ColorDataLists;
+import ch.ethz.idsc.tensor.qty.Unit;
 
 public class VisualSet implements Serializable {
   static {
@@ -83,7 +84,7 @@ public class VisualSet implements Serializable {
 
   /** @return label of x-axis */
   public String getAxesLabelX() {
-    return axesLabelX;
+    return (axesLabelX + " " + getUnitXString()).trim();
   }
 
   /** @param string label of y-axis */
@@ -93,12 +94,32 @@ public class VisualSet implements Serializable {
 
   /** @return label of y-axis */
   public String getAxesLabelY() {
-    return axesLabelY;
+    return (axesLabelY + " " + getUnitYString()).trim();
   }
 
   public boolean hasLegend() {
     return visualRows.stream() //
         .map(VisualRow::getLabelString) //
         .anyMatch(string -> !string.isEmpty());
+  }
+
+  /***************************************************/
+  private Unit unitX = Unit.ONE;
+  private Unit unitY = Unit.ONE;
+
+  /* package */ void setUnitX(Unit unit) {
+    this.unitX = unit;
+  }
+
+  /* package */ void setUnitY(Unit unit) {
+    this.unitY = unit;
+  }
+
+  /* package */ String getUnitXString() {
+    return unitX.equals(Unit.ONE) ? "" : "[" + unitX + "]";
+  }
+
+  /* package */ String getUnitYString() {
+    return unitY.equals(Unit.ONE) ? "" : "[" + unitY + "]";
   }
 }

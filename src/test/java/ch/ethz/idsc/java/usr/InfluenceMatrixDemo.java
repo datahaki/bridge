@@ -28,7 +28,7 @@ public enum InfluenceMatrixDemo {
     Tensor t2 = Tensors.empty();
     for (int n = 10; n < 80; ++n) {
       Tensor design = RandomVariate.of(distribution, n, n - 3);
-      Tensor vector = RandomVariate.of(distribution, n);
+      // Tensor vector = RandomVariate.of(distribution, n);
       Tensor c1;
       Tensor c2;
       {
@@ -53,7 +53,7 @@ public enum InfluenceMatrixDemo {
     VisualSet visualSet = new VisualSet();
     visualSet.add(t1).setLabel("mahs");
     visualSet.add(t2).setLabel("inf");
-    JFreeChart jFreeChart = ListPlot.of(visualSet);
+    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
     jFreeChart.setBackgroundPaint(Color.WHITE);
     ChartUtils.saveChartAsPNG(HomeDirectory.file("matrix_rect2.png"), jFreeChart, 500, 300);
   }

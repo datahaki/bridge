@@ -140,7 +140,7 @@ public class ObjectPropertiesExtTest extends TestCase {
 
   public void testManifest() throws IOException {
     File file = TestFile.withExtension("properties");
-    ObjectProperties tensorProperties = ObjectProperties.wrap(ParamContainerExt.INSTANCE);
+    ObjectProperties tensorProperties = ObjectProperties.wrap(ParamContainerExt.INSTANCE_EXT);
     tensorProperties.save(file);
     assertTrue(file.isFile());
     ParamContainerExt paramContainerExt = new ParamContainerExt();
@@ -153,7 +153,7 @@ public class ObjectPropertiesExtTest extends TestCase {
 
   public void testInstance() {
     assertEquals(new ParamContainerExt().string, "fromConstructor");
-    assertEquals(ParamContainerExt.INSTANCE.string, "fromFile");
+    assertEquals(ParamContainerExt.INSTANCE_EXT.string, "fromFile");
   }
 
   public void testTrySave() {

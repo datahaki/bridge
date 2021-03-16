@@ -16,7 +16,6 @@ import ch.ethz.idsc.tensor.ref.FieldClip;
 import ch.ethz.idsc.tensor.ref.FieldIntegerQ;
 import ch.ethz.idsc.tensor.ref.TensorReflection;
 import ch.ethz.idsc.tensor.sca.Abs;
-import ch.ethz.idsc.tensor.sca.Clip;
 
 /* package */ enum StaticHelper {
   ;
@@ -44,9 +43,9 @@ import ch.ethz.idsc.tensor.sca.Clip;
     {
       FieldClip fieldClip = field.getAnnotation(FieldClip.class);
       if (Objects.nonNull(fieldClip)) {
-        Clip clip = TensorReflection.clip(fieldClip);
-        list.add("min=" + clip.min());
-        list.add("max=" + clip.max());
+        TensorReflection.clip(fieldClip); // test
+        list.add("min=" + fieldClip.min());
+        list.add("max=" + fieldClip.max());
       }
     }
     return list.isEmpty() //

@@ -60,7 +60,7 @@ import ch.ethz.idsc.tensor.pdf.UniformDistribution;
     }
     {
       visualSet.setPlotLabel(ListPlot.class.getSimpleName());
-      export(folder, ListPlot.of(visualSet));
+      export(folder, ListPlot.of(visualSet, true));
     }
     {
       visualSet.setPlotLabel(StackedTablePlot.class.getSimpleName());
