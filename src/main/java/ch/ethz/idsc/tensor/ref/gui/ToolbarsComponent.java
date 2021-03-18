@@ -29,7 +29,7 @@ public class ToolbarsComponent {
     jPanel.add(rowActor.jPanel, BorderLayout.CENTER);
   }
 
-  protected void addSeparator() {
+  public void addSeparator() {
     JLabel jLabelW = new JLabel();
     jLabelW.setBackground(Color.GRAY);
     jLabelW.setOpaque(true);
@@ -39,11 +39,11 @@ public class ToolbarsComponent {
     addPair(jLabelW, jLabelC, 5);
   }
 
-  protected JToolBar createRow(String title) {
+  public JToolBar createRow(String title) {
     return createRow(title, HEIGHT);
   }
 
-  protected JToolBar createRow(String title, int height) {
+  public JToolBar createRow(String title, int height) {
     JToolBar jToolBar1 = new JToolBar();
     JToolBar jToolBar2 = new JToolBar();
     {
@@ -82,7 +82,7 @@ public class ToolbarsComponent {
   /***************************************************/
   /** @param title
    * @return editable text field that allows user modification */
-  protected JTextField createEditing(String title) {
+  public JTextField createEditing(String title) {
     JTextField jTextField = new JTextField(20);
     jTextField.setText(UNKNOWN);
     JToolBar jToolBar1 = new JToolBar();
@@ -98,7 +98,7 @@ public class ToolbarsComponent {
   /***************************************************/
   /** @param title
    * @return non-editable text field to display values */
-  protected JTextField createReading(String title) {
+  public JTextField createReading(String title) {
     JTextField jTextField = createEditing(title);
     jTextField.setEditable(false);
     jTextField.setEnabled(false);
@@ -106,7 +106,7 @@ public class ToolbarsComponent {
     return jTextField;
   }
 
-  protected JCheckBox createReadingCheckbox(String title) {
+  public JCheckBox createReadingCheckbox(String title) {
     JCheckBox jTextField = new JCheckBox(title);
     jTextField.setEnabled(false);
     JLabel jLabel = new JLabel(" ");

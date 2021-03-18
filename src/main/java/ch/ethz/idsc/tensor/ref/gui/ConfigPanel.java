@@ -1,3 +1,4 @@
+// code by jph
 package ch.ethz.idsc.tensor.ref.gui;
 
 import java.awt.BorderLayout;
