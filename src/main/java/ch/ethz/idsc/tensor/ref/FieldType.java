@@ -120,19 +120,30 @@ public enum FieldType {
     return predicate.test(cls);
   }
 
+  /** @param cls
+   * @param string
+   * @return null if string cannot be parsed (to a valid object?) */
   /* package */ abstract Object toObject(Class<?> cls, String string);
 
-  public boolean isValidString(Field field, String string) {
-    return isValidValue(field, toObject(field.getClass(), string));
+  public final boolean isValidString(Field field, String string) {
+    return isValidValue(field, toObject(field.getType(), string));
   }
 
+  /** implementations may override method
+   * 
+   * @param field parameter in order to access annotations
+   * @param object
+   * @return whether object is non-null and object is of correct type and
+   * satisfies requirements specified by annotations */
   public boolean isValidValue(Field field, Object object) {
     return Objects.nonNull(object) //
         && predicate.test(object.getClass()); // default implementation
   }
 
-  /* package */ static String toString(Class<?> cls, Object object) {
-    return Enum.class.isAssignableFrom(cls) //
+  /** @param object
+   * @return */
+  /* package */ static String toString(Object object) {
+    return Enum.class.isAssignableFrom(object.getClass()) //
         ? ((Enum<?>) object).name()
         : object.toString();
   }

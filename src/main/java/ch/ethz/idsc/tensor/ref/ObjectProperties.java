@@ -35,35 +35,11 @@ public class ObjectProperties {
       | Modifier.PRIVATE | Modifier.PROTECTED //
       | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
 
-  /** @param field
-   * @return whether field is public, non final, non static, non transient */
-  public static final boolean isModified(Field field) {
-    return (field.getModifiers() & MASK_TESTED) == MASK_FILTER;
-  }
-
   /** @param object non-null
    * @return
    * @throws Exception if given object is null */
   public static ObjectProperties wrap(Object object) {
     return new ObjectProperties(object);
-  }
-
-  /** @param field
-   * @param string
-   * @return object with content parsed from given string */
-  public static Object parse(Field field, String string) {
-    return parse(field.getType(), string);
-  }
-
-  /** @param cls class
-   * @param string to parse to an instance of given class
-   * @return new instance of class that was constructed from given string
-   * @throws Exception if given class is not supported */
-  /* package */ static Object parse(Class<?> cls, String string) {
-    for (FieldType fieldType : FieldType.values())
-      if (fieldType.isTracking(cls))
-        return fieldType.toObject(cls, string);
-    throw new UnsupportedOperationException(cls + " " + string);
   }
 
   /***************************************************/
@@ -74,7 +50,7 @@ public class ObjectProperties {
   }
 
   /** @return map of tracked fields of given object
-   * in the order in which they appear top to bottom in the class */
+   * in the order in which they appear top to bottom in the class, superclass first */
   public Map<Field, FieldType> fields() {
     Deque<Class<?>> deque = new ArrayDeque<>();
     for (Class<? extends Object> cls = object.getClass(); //
@@ -93,6 +69,12 @@ public class ObjectProperties {
             map.put(field, optional.get());
         }
     return map;
+  }
+
+  /** @param field
+   * @return whether field is public, non final, non static, non transient */
+  /* package */ static final boolean isModified(Field field) {
+    return (field.getModifiers() & MASK_TESTED) == MASK_FILTER;
   }
 
   /** @param properties
@@ -117,7 +99,7 @@ public class ObjectProperties {
 
   /** @param object
    * @return properties with fields of given object as keys mapping to values as string expression */
-  /* package */ Properties get() {
+  public Properties get() {
     Properties properties = new Properties();
     consume(properties::setProperty);
     return properties;
@@ -176,12 +158,11 @@ public class ObjectProperties {
 
   // helper function
   private void consume(BiConsumer<String, String> biConsumer) {
-    fields().entrySet().forEach(entry -> {
-      Field field = entry.getKey();
+    fields().keySet().forEach(field -> {
       try {
         Object value = field.get(object); // may throw Exception
         if (Objects.nonNull(value))
-          biConsumer.accept(field.getName(), FieldType.toString(field.getType(), value));
+          biConsumer.accept(field.getName(), FieldType.toString(value));
       } catch (Exception exception) {
         exception.printStackTrace();
       }

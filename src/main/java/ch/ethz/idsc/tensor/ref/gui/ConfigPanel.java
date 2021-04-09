@@ -13,8 +13,9 @@ import javax.swing.JTextArea;
 import ch.ethz.idsc.tensor.ref.ObjectProperties;
 
 public class ConfigPanel {
-  /** @param object
-   * @return */
+  /** @param object non-null
+   * @return
+   * @throws Exception if given object is null */
   public static ConfigPanel of(Object object) {
     return new ConfigPanel(object);
   }

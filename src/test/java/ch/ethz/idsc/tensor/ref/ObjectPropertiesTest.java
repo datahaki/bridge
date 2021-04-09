@@ -25,23 +25,23 @@ import junit.framework.TestCase;
 
 public class ObjectPropertiesTest extends TestCase {
   public void testParseString() {
-    Object object = ObjectProperties.parse(String.class, "ethz idsc ");
+    Object object = ObjectPropertiesTest.parse(String.class, "ethz idsc ");
     assertEquals(object, "ethz idsc ");
   }
 
   public void testParseScalar() {
-    Object object = ObjectProperties.parse(Scalar.class, " 3/4+8*I[m*s^-2]");
+    Object object = ObjectPropertiesTest.parse(Scalar.class, " 3/4+8*I[m*s^-2]");
     Scalar scalar = Quantity.of(ComplexScalar.of(RationalScalar.of(3, 4), RealScalar.of(8)), "m*s^-2");
     assertEquals(object, scalar);
   }
 
   public void testParseFile() {
-    Object object = ObjectProperties.parse(File.class, "/home/datahaki/file.txt");
+    Object object = ObjectPropertiesTest.parse(File.class, "/home/datahaki/file.txt");
     assertEquals(object, new File("/home/datahaki/file.txt"));
   }
 
   public void testParseBoolean() {
-    Object object = ObjectProperties.parse(Boolean.class, "true");
+    Object object = ObjectPropertiesTest.parse(Boolean.class, "true");
     assertEquals(object, Boolean.TRUE);
   }
 
@@ -69,7 +69,7 @@ public class ObjectPropertiesTest extends TestCase {
   }
 
   public void testParseScalarFail() {
-    AssertFail.of(() -> ObjectProperties.parse(Integer.class, "123"));
+    AssertFail.of(() -> ObjectPropertiesTest.parse(Integer.class, "123"));
   }
 
   public void testListSize1() throws Exception {
@@ -245,5 +245,16 @@ public class ObjectPropertiesTest extends TestCase {
     } catch (Exception exception) {
       // ---
     }
+  }
+
+  /** @param cls class
+   * @param string to parse to an instance of given class
+   * @return new instance of class that was constructed from given string
+   * @throws Exception if given class is not supported */
+  /* package */ public static Object parse(Class<?> cls, String string) {
+    for (FieldType fieldType : FieldType.values())
+      if (fieldType.isTracking(cls))
+        return fieldType.toObject(cls, string);
+    throw new UnsupportedOperationException(cls + " " + string);
   }
 }
