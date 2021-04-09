@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import ch.ethz.idsc.tensor.ref.ObjectProperties;
@@ -49,9 +50,9 @@ public class ConfigPanel {
     return fieldPanels;
   }
 
-  /** @return component that contains the labelled input fields only, but not
+  /** @return component that contains the labeled input fields only, but not
    * the text summary below */
-  public JComponent getFields() {
+  public JScrollPane getFields() {
     return toolbarsComponent.getScrollPane();
   }
 

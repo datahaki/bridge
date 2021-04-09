@@ -49,7 +49,7 @@ public class ObjectPropertiesTest extends TestCase {
     Field[] fields = ParamContainer.class.getFields();
     int count = 0;
     for (Field field : fields)
-      count += ObjectProperties.isTracked(field) ? 1 : 0;
+      count += TestHelper.isTracked(field) ? 1 : 0;
     ParamContainer paramContainer = new ParamContainer();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainer);
     int count2 = objectProperties.fields().size();

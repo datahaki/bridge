@@ -17,6 +17,7 @@ import ch.ethz.idsc.tensor.io.StringScalarQ;
 import ch.ethz.idsc.tensor.qty.UnitSystem;
 import ch.ethz.idsc.tensor.sca.Clip;
 
+// TODO notify if input is bad, since field will be omitted from gui
 public enum FieldType {
   STRING(String.class::equals) {
     @Override

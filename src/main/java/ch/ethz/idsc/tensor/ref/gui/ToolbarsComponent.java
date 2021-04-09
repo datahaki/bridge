@@ -116,7 +116,7 @@ public class ToolbarsComponent {
   }
 
   /***************************************************/
-  public JComponent getScrollPane() {
+  public JScrollPane getScrollPane() {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(this.jPanel, BorderLayout.NORTH);
     return new JScrollPane(jPanel);

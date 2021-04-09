@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,8 +31,15 @@ import ch.ethz.idsc.tensor.io.Import;
  * are stored in, and retrieved from files in the {@link Properties} format */
 public class ObjectProperties {
   private static final int MASK_FILTER = Modifier.PUBLIC;
-  private static final int MASK_TESTED = //
-      Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT | MASK_FILTER;
+  private static final int MASK_TESTED = MASK_FILTER //
+      | Modifier.PRIVATE | Modifier.PROTECTED //
+      | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
+
+  /** @param field
+   * @return whether field is public, non final, non static, non transient */
+  public static final boolean isModified(Field field) {
+    return (field.getModifiers() & MASK_TESTED) == MASK_FILTER;
+  }
 
   /** @param object non-null
    * @return
@@ -51,20 +60,10 @@ public class ObjectProperties {
    * @return new instance of class that was constructed from given string
    * @throws Exception if given class is not supported */
   /* package */ static Object parse(Class<?> cls, String string) {
-    for (FieldType type : FieldType.values())
-      if (type.isTracking(cls))
-        return type.toObject(cls, string);
+    for (FieldType fieldType : FieldType.values())
+      if (fieldType.isTracking(cls))
+        return fieldType.toObject(cls, string);
     throw new UnsupportedOperationException(cls + " " + string);
-  }
-
-  /** @param field
-   * @return if field is managed by {@link ObjectProperties} */
-  /* package */ static boolean isTracked(Field field) {
-    if ((field.getModifiers() & MASK_TESTED) == MASK_FILTER) {
-      Class<?> cls = field.getType();
-      return Stream.of(FieldType.values()).anyMatch(type -> type.isTracking(cls));
-    }
-    return false;
   }
 
   /***************************************************/
@@ -77,15 +76,22 @@ public class ObjectProperties {
   /** @return map of tracked fields of given object
    * in the order in which they appear top to bottom in the class */
   public Map<Field, FieldType> fields() {
+    Deque<Class<?>> deque = new ArrayDeque<>();
+    for (Class<? extends Object> cls = object.getClass(); //
+        !cls.equals(Object.class); //
+        cls = cls.getSuperclass())
+      deque.push(cls);
     Map<Field, FieldType> map = new LinkedHashMap<>();
-    for (Field field : object.getClass().getFields()) {
-      if ((field.getModifiers() & MASK_TESTED) == MASK_FILTER) {
-        Class<?> cls = field.getType();
-        Optional<FieldType> optional = Stream.of(FieldType.values()).filter(type -> type.isTracking(cls)).findFirst();
-        if (optional.isPresent())
-          map.put(field, optional.get());
-      }
-    }
+    while (!deque.isEmpty())
+      for (Field field : deque.pop().getDeclaredFields())
+        if (isModified(field)) {
+          Class<?> cls = field.getType();
+          Optional<FieldType> optional = Stream.of(FieldType.values()) //
+              .filter(type -> type.isTracking(cls)) //
+              .findFirst();
+          if (optional.isPresent())
+            map.put(field, optional.get());
+        }
     return map;
   }
 
