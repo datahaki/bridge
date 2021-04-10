@@ -45,18 +45,6 @@ public class ObjectPropertiesTest extends TestCase {
     assertEquals(object, Boolean.TRUE);
   }
 
-  public void testIsTracked() {
-    Field[] fields = ParamContainer.class.getFields();
-    int count = 0;
-    for (Field field : fields)
-      count += TestHelper.isTracked(field) ? 1 : 0;
-    ParamContainer paramContainer = new ParamContainer();
-    ObjectProperties objectProperties = ObjectProperties.wrap(paramContainer);
-    int count2 = objectProperties.fields().size();
-    assertEquals(count, count2);
-    assertEquals(count, 6);
-  }
-
   public void testScalarClass() {
     Class<?> cls = RealScalar.ONE.getClass();
     assertFalse(cls.equals(Scalar.class));

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -40,6 +41,11 @@ public enum FieldType {
           .findFirst() //
           .orElse(null);
     }
+
+    @Override
+    public String toString(Object object) {
+      return ((Enum<?>) object).name();
+    }
   },
   FILE(File.class::equals) {
     @Override
@@ -55,22 +61,8 @@ public enum FieldType {
 
     @Override
     public boolean isValidValue(Field field, Object object) {
-      if (object instanceof Tensor && //
-      !StringScalarQ.any((Tensor) object)) {
-        // Tensor tensor = (Tensor) object;
-        // {
-        // FieldColor fieldColor = field.getAnnotation(FieldColor.class);
-        // if (Objects.nonNull(fieldColor)) {
-        // try {
-        // ColorFormat.toColor(tensor);
-        // } catch (Exception exception) {
-        // return false;
-        // }
-        // }
-        // }
-        return true;
-      }
-      return false;
+      return object instanceof Tensor //
+          && !StringScalarQ.any((Tensor) object);
     }
   },
   SCALAR(Scalar.class::equals) {
@@ -119,6 +111,11 @@ public enum FieldType {
       }
       return null;
     }
+
+    @Override
+    public String toString(Object object) {
+      return ColorFormat.toVector((Color) object).toString();
+    }
   }, //
   ;
 
@@ -137,6 +134,10 @@ public enum FieldType {
    * @return null if string cannot be parsed (to a valid object?) */
   /* package */ abstract Object toObject(Class<?> cls, String string);
 
+  public String toString(Object object) {
+    return object.toString();
+  }
+
   public final boolean isValidString(Field field, String string) {
     return isValidValue(field, toObject(field.getType(), string));
   }
@@ -151,15 +152,10 @@ public enum FieldType {
     return Objects.nonNull(object) //
         && predicate.test(object.getClass()); // default implementation
   }
-
-  /** @param object
-   * @return */
-  // TODO not elegant
-  public static String toString(Object object) {
-    if (Enum.class.isAssignableFrom(object.getClass()))
-      return ((Enum<?>) object).name();
-    if (Color.class.equals(object.getClass()))
-      return ColorFormat.toVector((Color) object).toString();
-    return object.toString();
+  /***************************************************/
+  public static Optional<FieldType> getTracking(Class<?> cls) {
+    return Stream.of(FieldType.values()) //
+        .filter(type -> type.isTracking(cls)) //
+        .findFirst();
   }
 }

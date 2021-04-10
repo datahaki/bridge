@@ -43,7 +43,7 @@ public enum ParametersComponent {
         jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, height));
         jToolBar.add(jLabel);
       }
-      JComponent jComponent = fieldPanel.getComponent();
+      JComponent jComponent = fieldPanel.getJComponent();
       Dimension dimension = jComponent.getPreferredSize();
       dimension.width = Math.max(dimension.width, 100);
       jComponent.setPreferredSize(dimension);

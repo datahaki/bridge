@@ -21,13 +21,13 @@ public class FieldTypeTest extends TestCase {
   }
 
   public void testEnumToString() {
-    String string = FieldType.toString(Pivots.ARGMAX_ABS);
+    String string = FieldType.ENUM.toString(Pivots.ARGMAX_ABS);
     assertEquals(string, "ARGMAX_ABS");
   }
 
   public void testScalarToString() {
     Scalar scalar = Quantity.of(3, "m");
-    String string = FieldType.toString(scalar);
+    String string = FieldType.SCALAR.toString(scalar);
     assertEquals(string, "3[m]");
   }
 
@@ -59,7 +59,7 @@ public class FieldTypeTest extends TestCase {
   }
 
   public void testFieldColor() {
-    String string = FieldType.toString(Color.CYAN);
+    String string = FieldType.COLOR.toString(Color.CYAN);
     assertEquals(string, "{0, 255, 255, 255}");
   }
 }

@@ -40,14 +40,14 @@ public class FieldPanels {
     Map<Field, FieldType> fieldMap = objectProperties.fields();
     for (Entry<Field, FieldType> entry : fieldMap.entrySet()) {
       Field field = entry.getKey();
-      FieldType type = entry.getValue();
+      FieldType fieldType = entry.getValue();
       try {
         Object value = field.get(object); // check for failure, value only at begin!
-        FieldPanel fieldPanel = factor(field, type, value);
-        fieldPanel.addListener(string -> objectProperties.setIfValid(field, type, string));
+        FieldPanel fieldPanel = factor(field, fieldType, value);
+        fieldPanel.addListener(string -> objectProperties.setIfValid(field, fieldType, string));
         map.put(field, fieldPanel);
       } catch (Exception exception) {
-        // ---
+        exception.printStackTrace();
       }
     }
   }

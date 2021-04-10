@@ -17,7 +17,7 @@ import javax.swing.JComponent;
   }
 
   @Override
-  public JComponent getComponent() {
+  public JComponent getJComponent() {
     return jCheckBox;
   }
 

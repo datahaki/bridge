@@ -5,19 +5,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.nio.file.Files;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 
 import ch.ethz.idsc.tensor.Scalar;
 import ch.ethz.idsc.tensor.Tensor;
@@ -30,11 +24,6 @@ import ch.ethz.idsc.tensor.io.Import;
  * {@link Enum}
  * are stored in, and retrieved from files in the {@link Properties} format */
 public class ObjectProperties {
-  private static final int MASK_FILTER = Modifier.PUBLIC;
-  private static final int MASK_TESTED = MASK_FILTER //
-      | Modifier.PRIVATE | Modifier.PROTECTED //
-      | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
-
   /** @param object non-null
    * @return
    * @throws Exception if given object is null */
@@ -52,29 +41,7 @@ public class ObjectProperties {
   /** @return map of tracked fields of given object
    * in the order in which they appear top to bottom in the class, superclass first */
   public Map<Field, FieldType> fields() {
-    Deque<Class<?>> deque = new ArrayDeque<>();
-    for (Class<? extends Object> cls = object.getClass(); //
-        !cls.equals(Object.class); //
-        cls = cls.getSuperclass())
-      deque.push(cls);
-    Map<Field, FieldType> map = new LinkedHashMap<>();
-    while (!deque.isEmpty())
-      for (Field field : deque.pop().getDeclaredFields())
-        if (isModified(field)) {
-          Class<?> cls = field.getType();
-          Optional<FieldType> optional = Stream.of(FieldType.values()) //
-              .filter(type -> type.isTracking(cls)) //
-              .findFirst();
-          if (optional.isPresent())
-            map.put(field, optional.get());
-        }
-    return map;
-  }
-
-  /** @param field
-   * @return whether field is public, non final, non static, non transient */
-  /* package */ static final boolean isModified(Field field) {
-    return (field.getModifiers() & MASK_TESTED) == MASK_FILTER;
+    return StaticHelper.CACHE.apply(object.getClass());
   }
 
   /** @param properties
@@ -158,11 +125,14 @@ public class ObjectProperties {
 
   // helper function
   private void consume(BiConsumer<String, String> biConsumer) {
-    fields().keySet().forEach(field -> {
+    fields().entrySet().forEach(entry -> {
+      Field field = entry.getKey();
       try {
         Object value = field.get(object); // may throw Exception
-        if (Objects.nonNull(value))
-          biConsumer.accept(field.getName(), FieldType.toString(value));
+        if (Objects.nonNull(value)) {
+          FieldType fieldType = entry.getValue();
+          biConsumer.accept(field.getName(), fieldType.toString(value));
+        }
       } catch (Exception exception) {
         exception.printStackTrace();
       }

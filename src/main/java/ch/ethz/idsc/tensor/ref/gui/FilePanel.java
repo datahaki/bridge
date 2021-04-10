@@ -33,7 +33,7 @@ import ch.ethz.idsc.tensor.ref.FieldType;
   }
 
   @Override
-  public JComponent getComponent() {
+  public JComponent getJComponent() {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add("Center", jTextField);
     jPanel.add("East", jButton);
