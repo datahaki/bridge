@@ -35,7 +35,7 @@ import ch.ethz.idsc.tensor.ext.Cache;
     while (!deque.isEmpty())
       for (Field field : deque.pop().getDeclaredFields())
         if (isModified(field)) {
-          Optional<FieldType> optional = FieldType.getTracking(field.getType());
+          Optional<FieldType> optional = FieldType.getFieldType(field.getType());
           if (optional.isPresent())
             map.put(field, optional.get());
         }

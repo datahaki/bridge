@@ -240,9 +240,6 @@ public class ObjectPropertiesTest extends TestCase {
    * @return new instance of class that was constructed from given string
    * @throws Exception if given class is not supported */
   /* package */ static Object parse(Class<?> cls, String string) {
-    for (FieldType fieldType : FieldType.values())
-      if (fieldType.isTracking(cls))
-        return fieldType.toObject(cls, string);
-    throw new UnsupportedOperationException(cls + " " + string);
+    return FieldType.getFieldType(cls).get().toObject(cls, string);
   }
 }

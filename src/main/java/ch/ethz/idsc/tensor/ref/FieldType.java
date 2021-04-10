@@ -37,7 +37,8 @@ public enum FieldType {
     @Override
     public Object toObject(Class<?> cls, String string) {
       return Stream.of(cls.getEnumConstants()) //
-          .filter(object -> ((Enum<?>) object).name().equals(string)) //
+          .map(Enum.class::cast) //
+          .filter(object -> object.name().equals(string)) //
           .findFirst() //
           .orElse(null);
     }
@@ -85,16 +86,15 @@ public enum FieldType {
         }
         {
           FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-          if (Objects.nonNull(fieldClip)) {
-            Clip clip = TensorReflection.clip(fieldClip);
+          if (Objects.nonNull(fieldClip))
             try {
+              Clip clip = TensorReflection.clip(fieldClip);
               if (clip.isOutside(UnitSystem.SI().apply(scalar)))
                 return false;
             } catch (Exception exception) {
               // System.err.println("unit incompatible " + clip + " " + scalar);
               return false;
             }
-          }
         }
         return true;
       }
@@ -152,10 +152,11 @@ public enum FieldType {
     return Objects.nonNull(object) //
         && predicate.test(object.getClass()); // default implementation
   }
+
   /***************************************************/
-  public static Optional<FieldType> getTracking(Class<?> cls) {
+  public static Optional<FieldType> getFieldType(Class<?> cls) {
     return Stream.of(FieldType.values()) //
-        .filter(type -> type.isTracking(cls)) //
+        .filter(fieldType -> fieldType.isTracking(cls)) //
         .findFirst();
   }
 }
