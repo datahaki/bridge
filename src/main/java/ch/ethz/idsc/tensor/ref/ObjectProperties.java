@@ -99,7 +99,7 @@ public class ObjectProperties {
 
   /** @param object
    * @return properties with fields of given object as keys mapping to values as string expression */
-  public Properties get() {
+  public Properties createProperties() {
     Properties properties = new Properties();
     consume(properties::setProperty);
     return properties;

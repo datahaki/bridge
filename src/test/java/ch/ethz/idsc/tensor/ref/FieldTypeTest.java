@@ -1,6 +1,7 @@
 // code by jph
 package ch.ethz.idsc.tensor.ref;
 
+import java.awt.Color;
 import java.lang.reflect.Field;
 
 import ch.ethz.idsc.tensor.RealScalar;
@@ -55,5 +56,10 @@ public class FieldTypeTest extends TestCase {
     assertFalse(FieldType.SCALAR.isValidValue(field, RealScalar.of(123)));
     assertTrue(FieldType.SCALAR.isValidValue(field, Quantity.of(3000, "W")));
     assertFalse(FieldType.SCALAR.isValidValue(field, Quantity.of(1, "W")));
+  }
+
+  public void testFieldColor() {
+    String string = FieldType.toString(Color.CYAN);
+    assertEquals(string, "{0, 255, 255, 255}");
   }
 }

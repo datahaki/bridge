@@ -1,6 +1,7 @@
 // code by jph
 package ch.ethz.idsc.tensor.ref;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -25,7 +26,7 @@ public class ObjectPropertiesExtTest extends TestCase {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
     Map<Field, FieldType> map = objectProperties.fields();
-    assertEquals(map.size(), 6);
+    assertEquals(map.size(), 7);
   }
 
   public void testListSize1() throws Exception {
@@ -53,7 +54,7 @@ public class ObjectPropertiesExtTest extends TestCase {
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
     paramContainerExt.status = true;
     assertEquals(objectProperties.strings().size(), 3);
-    Properties properties = objectProperties.get();
+    Properties properties = objectProperties.createProperties();
     assertEquals(properties.getProperty("status"), "true");
     properties.setProperty("status", "corrupt");
     objectProperties.set(properties);
@@ -71,6 +72,14 @@ public class ObjectPropertiesExtTest extends TestCase {
     assertEquals(objectProperties.strings().size(), 3);
   }
 
+  public void testColor() {
+    ParamContainerExt paramContainerExt = new ParamContainerExt();
+    ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
+    assertNull(objectProperties.createProperties().getProperty("foreground"));
+    paramContainerExt.foreground = Color.CYAN;
+    assertEquals(objectProperties.createProperties().getProperty("foreground"), "{0, 255, 255, 255}");
+  }
+
   public void testStore() throws Exception {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
@@ -81,7 +90,7 @@ public class ObjectPropertiesExtTest extends TestCase {
     assertEquals(objectProperties.strings().size(), 4);
     paramContainerExt.abc = RealScalar.ONE;
     assertEquals(objectProperties.strings().size(), 5);
-    Properties properties = objectProperties.get();
+    Properties properties = objectProperties.createProperties();
     {
       ParamContainerExt pc = new ParamContainerExt();
       ObjectProperties tensorProperties2 = ObjectProperties.wrap(pc);
@@ -143,7 +152,8 @@ public class ObjectPropertiesExtTest extends TestCase {
     assertEquals(list.get(2), "shape");
     assertEquals(list.get(3), "abc");
     assertEquals(list.get(4), "status");
-    assertEquals(list.get(5), "onlyInExt");
+    assertEquals(list.get(5), "foreground");
+    assertEquals(list.get(6), "onlyInExt");
   }
 
   public void testManifest() throws IOException {

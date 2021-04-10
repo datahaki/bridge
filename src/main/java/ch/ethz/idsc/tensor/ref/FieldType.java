@@ -1,6 +1,7 @@
 // code by jph
 package ch.ethz.idsc.tensor.ref;
 
+import java.awt.Color;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -56,17 +57,17 @@ public enum FieldType {
     public boolean isValidValue(Field field, Object object) {
       if (object instanceof Tensor && //
       !StringScalarQ.any((Tensor) object)) {
-        Tensor tensor = (Tensor) object;
-        {
-          FieldColor fieldColor = field.getAnnotation(FieldColor.class);
-          if (Objects.nonNull(fieldColor)) {
-            try {
-              ColorFormat.toColor(tensor);
-            } catch (Exception exception) {
-              return false;
-            }
-          }
-        }
+        // Tensor tensor = (Tensor) object;
+        // {
+        // FieldColor fieldColor = field.getAnnotation(FieldColor.class);
+        // if (Objects.nonNull(fieldColor)) {
+        // try {
+        // ColorFormat.toColor(tensor);
+        // } catch (Exception exception) {
+        // return false;
+        // }
+        // }
+        // }
         return true;
       }
       return false;
@@ -107,6 +108,17 @@ public enum FieldType {
       }
       return false;
     }
+  },
+  COLOR(Color.class::equals) {
+    @Override
+    Object toObject(Class<?> cls, String string) {
+      try {
+        return ColorFormat.toColor(Tensors.fromString(string));
+      } catch (Exception exception) {
+        // ---
+      }
+      return null;
+    }
   }, //
   ;
 
@@ -142,9 +154,12 @@ public enum FieldType {
 
   /** @param object
    * @return */
-  /* package */ static String toString(Object object) {
-    return Enum.class.isAssignableFrom(object.getClass()) //
-        ? ((Enum<?>) object).name()
-        : object.toString();
+  // TODO not elegant
+  public static String toString(Object object) {
+    if (Enum.class.isAssignableFrom(object.getClass()))
+      return ((Enum<?>) object).name();
+    if (Color.class.equals(object.getClass()))
+      return ColorFormat.toVector((Color) object).toString();
+    return object.toString();
   }
 }

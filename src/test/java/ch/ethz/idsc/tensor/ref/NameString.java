@@ -1,11 +1,11 @@
 // code by jph
 package ch.ethz.idsc.tensor.ref;
 
-/* package */ enum NameString {
+public enum NameString {
   FIRST, SECOND, THIRD;
 
   @Override
   public String toString() {
-    return "unrelated to name()";
+    return "unrelated to name() " + ordinal();
   }
 }

@@ -54,7 +54,7 @@ public class ObjectPropertiesTest extends TestCase {
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainer);
     int count2 = objectProperties.fields().size();
     assertEquals(count, count2);
-    assertEquals(count, 5);
+    assertEquals(count, 6);
   }
 
   public void testScalarClass() {
@@ -96,7 +96,7 @@ public class ObjectPropertiesTest extends TestCase {
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainer);
     paramContainer.status = true;
     assertEquals(objectProperties.strings().size(), 1);
-    Properties properties = objectProperties.get();
+    Properties properties = objectProperties.createProperties();
     assertEquals(properties.getProperty("status"), "true");
     properties.setProperty("status", "corrupt");
     objectProperties.set(properties);
@@ -124,7 +124,7 @@ public class ObjectPropertiesTest extends TestCase {
     assertEquals(objectProperties.strings().size(), 3);
     paramContainer.abc = RealScalar.ONE;
     assertEquals(objectProperties.strings().size(), 4);
-    Properties properties = objectProperties.get();
+    Properties properties = objectProperties.createProperties();
     {
       ParamContainer pc = new ParamContainer();
       ObjectProperties tensorProperties2 = ObjectProperties.wrap(pc);

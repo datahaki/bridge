@@ -72,6 +72,8 @@ public class FieldPanels {
       return new EnumPanel(field.getType().getEnumConstants(), value);
     case FILE:
       return new FilePanel(field, fieldType, (File) value);
+    case COLOR:
+      return new ColorPanel(field, fieldType, value);
     }
     throw new RuntimeException();
   }

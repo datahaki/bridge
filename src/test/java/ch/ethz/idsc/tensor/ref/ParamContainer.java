@@ -1,6 +1,8 @@
 // code by jph
 package ch.ethz.idsc.tensor.ref;
 
+import java.awt.Color;
+
 import ch.ethz.idsc.tensor.RealScalar;
 import ch.ethz.idsc.tensor.Scalar;
 import ch.ethz.idsc.tensor.Tensor;
@@ -15,6 +17,7 @@ import ch.ethz.idsc.tensor.io.ResourceData;
   public Tensor shape;
   public Scalar abc;
   public Boolean status;
+  public Color foreground;
   // ---
   // ignore the following
   public transient Scalar _transient;

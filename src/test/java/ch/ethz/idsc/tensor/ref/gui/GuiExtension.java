@@ -17,6 +17,7 @@ import ch.ethz.idsc.tensor.mat.Pivots;
 import ch.ethz.idsc.tensor.qty.Quantity;
 import ch.ethz.idsc.tensor.ref.FieldClip;
 import ch.ethz.idsc.tensor.ref.FieldIntegerQ;
+import ch.ethz.idsc.tensor.ref.NameString;
 
 public class GuiExtension {
   public String string = "abc";
@@ -30,6 +31,7 @@ public class GuiExtension {
   @FieldClip(min = "10", max = "20")
   public Scalar integer = RealScalar.of(12);
   public Color color = Color.RED;
+  public NameString n = NameString.SECOND;
   // ---
   Scalar packsc = Quantity.of(3, "m*s^-1");
 

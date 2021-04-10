@@ -23,7 +23,7 @@ import ch.ethz.idsc.tensor.ref.FieldType;
   public StringPanel(Field field, FieldType fieldType, Object object) {
     this.field = field;
     this.fieldType = fieldType;
-    jTextField = new JTextField(object.toString());
+    jTextField = new JTextField(FieldType.toString(object));
     jTextField.setFont(FieldPanel.FONT);
     jTextField.setForeground(LABEL);
     jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));

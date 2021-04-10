@@ -17,7 +17,7 @@ import ch.ethz.idsc.tensor.Tensors;
 import ch.ethz.idsc.tensor.img.ColorFormat;
 import ch.ethz.idsc.tensor.ref.FieldType;
 
-class ColorPanel extends StringPanel {
+/* package */ class ColorPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
   public ColorPanel(Field field, FieldType fieldType, Object object) {
@@ -35,6 +35,7 @@ class ColorPanel extends StringPanel {
         }
       }
     });
+    jTextField.setEditable(false);
   }
 
   private Color getColor() {

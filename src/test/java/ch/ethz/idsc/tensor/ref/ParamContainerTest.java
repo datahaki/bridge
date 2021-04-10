@@ -22,7 +22,7 @@ public class ParamContainerTest extends TestCase {
     ParamContainerFile paramContainerFile = new ParamContainerFile();
     paramContainerFile.file = HomeDirectory.file("file.txt");
     ObjectProperties tensorProperties = ObjectProperties.wrap(paramContainerFile);
-    Properties properties = tensorProperties.get();
+    Properties properties = tensorProperties.createProperties();
     ParamContainerFile copy = new ParamContainerFile();
     ObjectProperties wrap = ObjectProperties.wrap(copy);
     wrap.set(properties);
@@ -51,7 +51,7 @@ public class ParamContainerTest extends TestCase {
       paramContainerEnum.pivots = Pivots.FIRST_NON_ZERO;
       paramContainerEnum.nameString = NameString.SECOND;
       ObjectProperties tensorProperties = ObjectProperties.wrap(paramContainerEnum);
-      properties = tensorProperties.get();
+      properties = tensorProperties.createProperties();
     }
     {
       ParamContainerEnum paramContainerEnum = new ParamContainerEnum();
@@ -67,7 +67,7 @@ public class ParamContainerTest extends TestCase {
     {
       ParamContainerEnum paramContainerEnum = new ParamContainerEnum();
       ObjectProperties tensorProperties = ObjectProperties.wrap(paramContainerEnum);
-      properties = tensorProperties.get();
+      properties = tensorProperties.createProperties();
     }
     properties.setProperty("nameString", NameString.THIRD.name());
     {
