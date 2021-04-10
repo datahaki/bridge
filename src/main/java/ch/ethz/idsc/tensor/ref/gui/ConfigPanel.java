@@ -12,6 +12,8 @@ import javax.swing.JTextArea;
 
 import ch.ethz.idsc.tensor.ref.ObjectProperties;
 
+// TODO class name
+// TODO method names
 public class ConfigPanel {
   /** @param object non-null
    * @return

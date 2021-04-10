@@ -251,7 +251,7 @@ public class ObjectPropertiesTest extends TestCase {
    * @param string to parse to an instance of given class
    * @return new instance of class that was constructed from given string
    * @throws Exception if given class is not supported */
-  /* package */ public static Object parse(Class<?> cls, String string) {
+  /* package */ static Object parse(Class<?> cls, String string) {
     for (FieldType fieldType : FieldType.values())
       if (fieldType.isTracking(cls))
         return fieldType.toObject(cls, string);
