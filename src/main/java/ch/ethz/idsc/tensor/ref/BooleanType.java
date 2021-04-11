@@ -3,14 +3,21 @@ package ch.ethz.idsc.tensor.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-public class BooleanType implements FieldIf {
+import ch.ethz.idsc.tensor.ref.gui.BooleanPanel;
+import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
+
+public class BooleanType extends FieldBase {
+  public BooleanType(Field field) {
+    super(field);
+  }
+
   @Override
   public boolean isTracking(Class<?> cls) {
     return Boolean.class.equals(cls);
   }
 
   @Override
-  public Object toObject(Class<?> cls, String string) {
+  public Object toObject(String string) {
     return BooleanParser.orNull(string);
   }
 
@@ -20,8 +27,13 @@ public class BooleanType implements FieldIf {
   }
 
   @Override
-  public boolean isValidValue(Field field, Object object) {
+  public boolean isValidValue(Object object) {
     return Objects.nonNull(object) //
         && isTracking(object.getClass()); // default implementation
+  }
+
+  @Override
+  public FieldPanel createFieldPanel(Object value) {
+    return new BooleanPanel((Boolean) value);
   }
 }

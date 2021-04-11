@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Field;
 import java.util.Objects;
 
 import javax.swing.JButton;
@@ -17,11 +16,11 @@ import ch.ethz.idsc.tensor.Tensors;
 import ch.ethz.idsc.tensor.img.ColorFormat;
 import ch.ethz.idsc.tensor.ref.FieldType;
 
-/* package */ class ColorPanel extends StringPanel {
+public class ColorPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
-  public ColorPanel(Field field, FieldType fieldType, Object object) {
-    super(field, fieldType, object);
+  public ColorPanel(FieldType fieldType, Object object) {
+    super(fieldType, object);
     jButton.setBackground(getColor());
     jButton.addActionListener(new ActionListener() {
       @Override

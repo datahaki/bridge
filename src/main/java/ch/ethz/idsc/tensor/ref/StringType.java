@@ -4,14 +4,21 @@ package ch.ethz.idsc.tensor.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-public class StringType implements FieldIf {
+import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
+import ch.ethz.idsc.tensor.ref.gui.StringPanel;
+
+public class StringType extends FieldBase {
+  public StringType(Field field) {
+    super(field);
+  }
+
   @Override
   public boolean isTracking(Class<?> cls) {
     return String.class.equals(cls);
   }
 
   @Override
-  public Object toObject(Class<?> cls, String string) {
+  public Object toObject(String string) {
     return string;
   }
 
@@ -20,8 +27,14 @@ public class StringType implements FieldIf {
     return object.toString();
   }
 
-  public boolean isValidValue(Field field, Object object) {
+  @Override
+  public boolean isValidValue(Object object) {
     return Objects.nonNull(object) //
         && isTracking(object.getClass()); // default implementation
+  }
+
+  @Override
+  public FieldPanel createFieldPanel(Object value) {
+    return new StringPanel(this, value);
   }
 }

@@ -8,16 +8,22 @@ import ch.ethz.idsc.tensor.Scalar;
 import ch.ethz.idsc.tensor.Scalars;
 import ch.ethz.idsc.tensor.io.StringScalarQ;
 import ch.ethz.idsc.tensor.qty.UnitSystem;
+import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
+import ch.ethz.idsc.tensor.ref.gui.StringPanel;
 import ch.ethz.idsc.tensor.sca.Clip;
 
-public class ScalarType implements FieldIf {
+public class ScalarType extends FieldBase {
+  public ScalarType(Field field) {
+    super(field);
+  }
+
   @Override
   public boolean isTracking(Class<?> cls) {
     return Scalar.class.equals(cls);
   }
 
   @Override
-  public Object toObject(Class<?> cls, String string) {
+  public Object toObject(String string) {
     return Scalars.fromString(string);
   }
 
@@ -27,7 +33,7 @@ public class ScalarType implements FieldIf {
   }
 
   @Override
-  public boolean isValidValue(Field field, Object object) {
+  public boolean isValidValue(Object object) {
     if (object instanceof Scalar) {
       Scalar scalar = (Scalar) object;
       if (StringScalarQ.of(scalar))
@@ -53,5 +59,10 @@ public class ScalarType implements FieldIf {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public FieldPanel createFieldPanel(Object value) {
+    return new StringPanel(this, value);
   }
 }

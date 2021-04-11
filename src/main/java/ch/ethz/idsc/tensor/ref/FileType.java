@@ -4,14 +4,21 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-public class FileType implements FieldIf {
+import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
+import ch.ethz.idsc.tensor.ref.gui.FilePanel;
+
+public class FileType extends FieldBase {
+  public FileType(Field field) {
+    super(field);
+  }
+
   @Override
   public boolean isTracking(Class<?> cls) {
     return File.class.equals(cls);
   }
 
   @Override
-  public Object toObject(Class<?> cls, String string) {
+  public Object toObject(String string) {
     return new File(string);
   }
 
@@ -21,7 +28,7 @@ public class FileType implements FieldIf {
   }
 
   @Override
-  public boolean isValidValue(Field field, Object object) {
+  public boolean isValidValue(Object object) {
     if (object instanceof File) {
       File file = (File) object;
       {
@@ -33,5 +40,10 @@ public class FileType implements FieldIf {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public FieldPanel createFieldPanel(Object value) {
+    return new FilePanel(this, (File) value);
   }
 }

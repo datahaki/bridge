@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public class ObjectPropertiesExtTest extends TestCase {
   public void testFieldOrder() {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
-    Map<Field, FieldType> map = objectProperties.fields();
+    List<FieldType> map = objectProperties.fields();
     assertEquals(map.size(), 7);
   }
 
@@ -145,7 +144,8 @@ public class ObjectPropertiesExtTest extends TestCase {
   public void testFields() {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
-    List<String> list = objectProperties.fields().keySet().stream() //
+    List<String> list = objectProperties.fields().stream() //
+        .map(FieldType::getField) //
         .map(Field::getName).collect(Collectors.toList());
     assertEquals(list.get(0), "string");
     assertEquals(list.get(1), "maxTor");

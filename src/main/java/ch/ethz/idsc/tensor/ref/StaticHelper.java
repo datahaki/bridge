@@ -6,15 +6,15 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 import ch.ethz.idsc.tensor.ext.Cache;
 
 /* package */ enum StaticHelper {
   ;
-  public static final Cache<Class<?>, Map<Field, FieldType>> CACHE = Cache.of(StaticHelper::build, 256);
+  public static final Cache<Class<?>, List<FieldType>> CACHE = Cache.of(StaticHelper::build, 256);
   // ---
   private static final int MASK_FILTER = Modifier.PUBLIC;
   private static final int MASK_TESTED = MASK_FILTER //
@@ -27,18 +27,18 @@ import ch.ethz.idsc.tensor.ext.Cache;
     return (field.getModifiers() & MASK_TESTED) == MASK_FILTER;
   }
 
-  private static Map<Field, FieldType> build(Class<?> init) {
+  private static List<FieldType> build(Class<?> init) {
     Deque<Class<?>> deque = new ArrayDeque<>();
     for (Class<?> cls = init; !cls.equals(Object.class); cls = cls.getSuperclass())
       deque.push(cls);
-    Map<Field, FieldType> map = new LinkedHashMap<>();
+    List<FieldType> list = new LinkedList<>();
     while (!deque.isEmpty())
       for (Field field : deque.pop().getDeclaredFields())
         if (isModified(field)) {
-          Optional<FieldType> optional = FieldType.getFieldType(field.getType());
-          if (optional.isPresent())
-            map.put(field, optional.get());
+          FieldType optional = FieldType2.getFieldType(field);
+          if (Objects.nonNull(optional))
+            list.add(optional);
         }
-    return Collections.unmodifiableMap(map);
+    return Collections.unmodifiableList(list);
   }
 }

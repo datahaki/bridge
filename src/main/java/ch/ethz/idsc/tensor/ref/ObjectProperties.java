@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.function.BiConsumer;
@@ -40,7 +39,7 @@ public class ObjectProperties {
 
   /** @return map of tracked fields of given object
    * in the order in which they appear top to bottom in the class, superclass first */
-  public Map<Field, FieldType> fields() {
+  public List<FieldType> fields() {
     return StaticHelper.CACHE.apply(object.getClass());
   }
 
@@ -50,13 +49,12 @@ public class ObjectProperties {
    * @throws Exception if properties is null */
   @SuppressWarnings("unchecked")
   public <T> T set(Properties properties) {
-    fields().entrySet().forEach(entry -> {
-      Field field = entry.getKey();
-      FieldType fieldType = entry.getValue();
+    fields().forEach(fieldType -> {
+      Field field = fieldType.getField();
       String string = properties.getProperty(field.getName());
       if (Objects.nonNull(string))
         try {
-          field.set(object, fieldType.toObject(field.getType(), string));
+          field.set(object, fieldType.toObject(string));
         } catch (Exception exception) {
           exception.printStackTrace();
         }
@@ -125,12 +123,11 @@ public class ObjectProperties {
 
   // helper function
   private void consume(BiConsumer<String, String> biConsumer) {
-    fields().entrySet().forEach(entry -> {
-      Field field = entry.getKey();
+    fields().forEach(fieldType -> {
+      Field field = fieldType.getField();
       try {
         Object value = field.get(object); // may throw Exception
         if (Objects.nonNull(value)) {
-          FieldType fieldType = entry.getValue();
           biConsumer.accept(field.getName(), fieldType.toString(value));
         }
       } catch (Exception exception) {
@@ -139,11 +136,11 @@ public class ObjectProperties {
     });
   }
 
-  public boolean setIfValid(Field field, FieldType fieldType, String string) {
+  public boolean setIfValid(FieldType fieldType, String string) {
     try {
-      Object value = fieldType.toObject(field.getType(), string);
-      if (fieldType.isValidValue(field, value)) {
-        field.set(object, value);
+      Object value = fieldType.toObject(string);
+      if (fieldType.isValidValue(value)) {
+        fieldType.getField().set(object, value);
         return true;
       }
     } catch (Exception exception) {

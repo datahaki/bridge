@@ -6,22 +6,19 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Field;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import ch.ethz.idsc.tensor.ref.FieldType;
 
-/* package */ class StringPanel extends FieldPanel {
+public class StringPanel extends FieldPanel {
   private static final Color LABEL = new Color(51, 51, 51);
   // ---
-  private final Field field;
   private final FieldType fieldType;
   protected final JTextField jTextField;
 
-  public StringPanel(Field field, FieldType fieldType, Object object) {
-    this.field = field;
+  public StringPanel(FieldType fieldType, Object object) {
     this.fieldType = fieldType;
     jTextField = new JTextField(fieldType.toString(object));
     jTextField.setFont(FieldPanel.FONT);
@@ -62,7 +59,7 @@ import ch.ethz.idsc.tensor.ref.FieldType;
   }
 
   private boolean isValid(String string) {
-    return fieldType.isValidString(field, string);
+    return fieldType.isValidString(string);
   }
 
   private void indicateGui() {

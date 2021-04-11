@@ -26,6 +26,7 @@ public class ParamContainerTest extends TestCase {
     ParamContainerFile copy = new ParamContainerFile();
     ObjectProperties wrap = ObjectProperties.wrap(copy);
     wrap.set(properties);
+    // System.out.println(properties);
     assertEquals(copy.file, paramContainerFile.file);
   }
 

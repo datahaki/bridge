@@ -6,7 +6,7 @@ import java.util.Objects;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 
-/* package */ class BooleanPanel extends FieldPanel {
+public class BooleanPanel extends FieldPanel {
   private final JCheckBox jCheckBox;
 
   public BooleanPanel(Boolean value) {

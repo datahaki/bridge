@@ -7,15 +7,21 @@ import java.util.Objects;
 
 import ch.ethz.idsc.tensor.Tensors;
 import ch.ethz.idsc.tensor.img.ColorFormat;
+import ch.ethz.idsc.tensor.ref.gui.ColorPanel;
+import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
-public class ColorType implements FieldIf {
+public class ColorType extends FieldBase {
+  public ColorType(Field field) {
+    super(field);
+  }
+
   @Override
   public boolean isTracking(Class<?> cls) {
     return Color.class.equals(cls);
   }
 
   @Override
-  public Object toObject(Class<?> cls, String string) {
+  public Object toObject(String string) {
     try {
       return ColorFormat.toColor(Tensors.fromString(string));
     } catch (Exception exception) {
@@ -30,8 +36,13 @@ public class ColorType implements FieldIf {
   }
 
   @Override
-  public boolean isValidValue(Field field, Object object) {
+  public boolean isValidValue(Object object) {
     return Objects.nonNull(object) //
         && isTracking(object.getClass()); // default implementation
+  }
+
+  @Override
+  public FieldPanel createFieldPanel(Object value) {
+    return new ColorPanel(this, value);
   }
 }
