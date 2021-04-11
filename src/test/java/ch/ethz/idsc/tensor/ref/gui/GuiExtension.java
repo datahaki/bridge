@@ -16,6 +16,7 @@ import ch.ethz.idsc.tensor.ext.HomeDirectory;
 import ch.ethz.idsc.tensor.mat.Pivots;
 import ch.ethz.idsc.tensor.qty.Quantity;
 import ch.ethz.idsc.tensor.ref.FieldClip;
+import ch.ethz.idsc.tensor.ref.FieldExistingDirectory;
 import ch.ethz.idsc.tensor.ref.FieldIntegerQ;
 import ch.ethz.idsc.tensor.ref.NameString;
 
@@ -23,6 +24,7 @@ public class GuiExtension {
   public String string = "abc";
   public Boolean status = true;
   public Pivots pivots = Pivots.ARGMAX_ABS;
+  @FieldExistingDirectory
   public File file = HomeDirectory.file();
   public Tensor tensor = Tensors.fromString("{1, 2}");
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")

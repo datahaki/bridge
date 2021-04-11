@@ -52,6 +52,21 @@ public enum FieldType {
     public Object toObject(Class<?> cls, String string) {
       return new File(string);
     }
+
+    @Override
+    public boolean isValidValue(Field field, Object object) {
+      if (object instanceof File) {
+        File file = (File) object;
+        {
+          FieldExistingDirectory fieldExistingDirectory = field.getAnnotation(FieldExistingDirectory.class);
+          if (Objects.nonNull(fieldExistingDirectory)) {
+            return file.isDirectory();
+          }
+        }
+        return true;
+      }
+      return false;
+    }
   },
   TENSOR(Tensor.class::equals) {
     @Override
@@ -128,7 +143,7 @@ public enum FieldType {
     return predicate.test(cls);
   }
 
-  /** @param cls
+  /** @param cls typically {@link Field#getType()}
    * @param string
    * @return null if string cannot be parsed (to a valid object?) */
   /* package */ abstract Object toObject(Class<?> cls, String string);

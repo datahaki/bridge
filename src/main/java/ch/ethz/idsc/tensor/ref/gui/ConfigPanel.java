@@ -10,8 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import ch.ethz.idsc.tensor.ref.ObjectProperties;
-
 // TODO class name
 // TODO method names
 public class ConfigPanel {
@@ -25,26 +23,12 @@ public class ConfigPanel {
   /***************************************************/
   private final FieldPanels fieldPanels;
   private final ToolbarsComponent toolbarsComponent;
-  private final JPanel jPanel;
   private final JScrollPane jScrollPane;
 
   private ConfigPanel(Object object) {
     fieldPanels = FieldPanels.of(object);
     toolbarsComponent = ParametersComponent.of(fieldPanels);
-    jPanel = new JPanel(new BorderLayout());
     jScrollPane = toolbarsComponent.createJScrollPane();
-    jPanel.add("North", jScrollPane);
-    // ---
-    JTextArea jTextArea = new JTextArea();
-    jTextArea.setBackground(null);
-    jTextArea.setEditable(false);
-    Consumer<String> consumer = s -> {
-      String text = ObjectProperties.wrap(object).strings().stream().collect(Collectors.joining("\n"));
-      jTextArea.setText(text);
-    };
-    consumer.accept(null);
-    fieldPanels.addUniversalListener(consumer);
-    jPanel.add("Center", jTextArea);
   }
 
   public ToolbarsComponent getToolbarsComponent() {
@@ -61,6 +45,20 @@ public class ConfigPanel {
 
   /** @return */
   public JComponent getFieldsAndTextarea() {
+    JPanel jPanel;
+    jPanel = new JPanel(new BorderLayout());
+    jPanel.add("North", getJScrollPane());
+    // ---
+    JTextArea jTextArea = new JTextArea();
+    jTextArea.setBackground(null);
+    jTextArea.setEditable(false);
+    Consumer<String> consumer = s -> {
+      String text = fieldPanels.objectProperties().strings().stream().collect(Collectors.joining("\n"));
+      jTextArea.setText(text);
+    };
+    consumer.accept(null);
+    fieldPanels.addUniversalListener(consumer);
+    jPanel.add("Center", jTextArea);
     return jPanel;
   }
 }

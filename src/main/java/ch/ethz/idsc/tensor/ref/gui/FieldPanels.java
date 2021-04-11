@@ -33,10 +33,11 @@ public class FieldPanels {
   }
 
   /***************************************************/
+  private final ObjectProperties objectProperties;
   private final Map<Field, FieldPanel> map = new LinkedHashMap<>();
 
   private FieldPanels(Object object) {
-    ObjectProperties objectProperties = ObjectProperties.wrap(object);
+    objectProperties = ObjectProperties.wrap(object);
     Map<Field, FieldType> fieldMap = objectProperties.fields();
     for (Entry<Field, FieldType> entry : fieldMap.entrySet()) {
       Field field = entry.getKey();
@@ -50,6 +51,10 @@ public class FieldPanels {
         exception.printStackTrace();
       }
     }
+  }
+
+  public ObjectProperties objectProperties() {
+    return objectProperties;
   }
 
   public Map<Field, FieldPanel> map() {
