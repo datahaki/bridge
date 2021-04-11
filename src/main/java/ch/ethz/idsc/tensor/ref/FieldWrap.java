@@ -6,25 +6,28 @@ import java.lang.reflect.Field;
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
 public interface FieldWrap {
-  /** @return field */
+  /** @return field non-null wrapped by this instance */
   Field getField();
 
-  /** @param string
+  /** @param string non-null
    * @return value parsed from string. note that the parsed value might
    * violate constraints defined by field annotations. If the given string
-   * cannot be parsed null is returned. */
+   * cannot be parsed null is returned.
+   * @throws Exception if given string is null */
   Object toValue(String string);
 
-  /** @param value
-   * @return string expression of value */
+  /** @param value non-null
+   * @return string expression of value
+   * @throws Exception if given value is null */
   String toString(Object value);
 
-  /** @param value
-   * @return whether additional constraints defined by field annotations are
-   * satisfied */
+  /** @param value non-null that may be cast to class associated to field
+   * @return whether additional constraints defined by field annotations are satisfied
+   * @throws Exception if given value is null, or given value cannot be cast to class
+   * associated to field wrapped by this instance */
   boolean isValidValue(Object value);
 
-  /** @param value
+  /** @param value may be null
    * @return */
   FieldPanel createFieldPanel(Object value);
 }

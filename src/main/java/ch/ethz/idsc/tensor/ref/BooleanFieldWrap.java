@@ -10,12 +10,12 @@ public class BooleanFieldWrap extends BaseFieldWrap {
     super(field);
   }
 
-  @Override
+  @Override // from FieldWrap
   public Object toValue(String string) {
     return BooleanParser.orNull(string);
   }
 
-  @Override
+  @Override // from FieldWrap
   public String toString(Object object) {
     return object.toString();
   }

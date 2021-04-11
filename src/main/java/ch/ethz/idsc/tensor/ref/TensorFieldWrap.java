@@ -13,12 +13,12 @@ public class TensorFieldWrap extends BaseFieldWrap {
     super(field);
   }
 
-  @Override
+  @Override // from FieldWrap
   public Object toValue(String string) {
     return Tensors.fromString(string);
   }
 
-  @Override
+  @Override // from FieldWrap
   public String toString(Object object) {
     return object.toString();
   }

@@ -2,6 +2,7 @@
 package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
+import java.util.Objects;
 
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
@@ -10,14 +11,14 @@ public class StringFieldWrap extends BaseFieldWrap {
     super(field);
   }
 
-  @Override
+  @Override // from FieldWrap
   public Object toValue(String string) {
-    return string;
+    return Objects.requireNonNull(string);
   }
 
-  @Override
+  @Override // from FieldWrap
   public String toString(Object value) {
-    return value.toString();
+    return (String) Objects.requireNonNull(value);
   }
 
   @Override

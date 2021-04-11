@@ -2,6 +2,7 @@
 package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
@@ -11,10 +12,10 @@ public class EnumFieldWrap extends BaseFieldWrap {
 
   public EnumFieldWrap(Field field) {
     super(field);
-    enumConstants = field.getType().getEnumConstants();
+    enumConstants = Objects.requireNonNull(field.getType().getEnumConstants());
   }
 
-  @Override
+  @Override // from FieldWrap
   public Object toValue(String string) {
     return Stream.of(enumConstants) //
         .map(Enum.class::cast) //
@@ -23,13 +24,13 @@ public class EnumFieldWrap extends BaseFieldWrap {
         .orElse(null);
   }
 
-  @Override
+  @Override // from FieldWrap
   public String toString(Object object) {
     return ((Enum<?>) object).name();
   }
 
   @Override
   public FieldPanel createFieldPanel(Object value) {
-    return new EnumPanel(this, field.getType().getEnumConstants(), value);
+    return new EnumPanel(this, enumConstants, value);
   }
 }

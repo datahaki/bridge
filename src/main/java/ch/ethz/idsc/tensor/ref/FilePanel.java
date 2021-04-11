@@ -24,7 +24,8 @@ import javax.swing.JPanel;
         jFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         int openDialog = jFileChooser.showOpenDialog(null);
         if (openDialog == JFileChooser.APPROVE_OPTION) {
-          jTextField.setText(fieldType.toString(jFileChooser.getSelectedFile()));
+          File selectedFile = jFileChooser.getSelectedFile();
+          jTextField.setText(fieldType.toString(selectedFile));
           indicateGui();
         }
       }

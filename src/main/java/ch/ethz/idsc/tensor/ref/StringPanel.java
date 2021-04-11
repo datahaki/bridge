@@ -6,6 +6,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
@@ -19,7 +20,9 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
   public StringPanel(FieldWrap fieldType, Object value) {
     super(fieldType);
-    jTextField = new JTextField(fieldType.toString(value));
+    jTextField = Objects.isNull(value) //
+        ? new JTextField()
+        : new JTextField(fieldType.toString(value));
     jTextField.setFont(FieldPanel.FONT);
     jTextField.setForeground(LABEL);
     jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));
@@ -58,7 +61,9 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
   }
 
   private boolean isValid(String string) {
-    return fieldType().isValidValue(fieldType().toValue(string));
+    Object object = fieldType().toValue(string);
+    return Objects.nonNull(object) //
+        && fieldType().isValidValue(object);
   }
 
   protected void indicateGui() {

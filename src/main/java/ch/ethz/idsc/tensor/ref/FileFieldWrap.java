@@ -8,29 +8,35 @@ import java.util.Objects;
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
 public class FileFieldWrap extends BaseFieldWrap {
+  private final FieldExistingDirectory fieldExistingDirectory;
+  private final FieldExistingFile fieldExistingFile;
+
   public FileFieldWrap(Field field) {
     super(field);
+    fieldExistingDirectory = field.getAnnotation(FieldExistingDirectory.class);
+    fieldExistingFile = field.getAnnotation(FieldExistingFile.class);
   }
 
-  @Override
+  @Override // from FieldWrap
   public Object toValue(String string) {
     return new File(string);
   }
 
-  @Override
+  @Override // from FieldWrap
   public String toString(Object object) {
     return object.toString();
   }
 
-  @Override
+  @Override // from FieldWrap
   public boolean isValidValue(Object value) {
     File file = (File) value;
-    {
-      FieldExistingDirectory fieldExistingDirectory = field.getAnnotation(FieldExistingDirectory.class);
-      if (Objects.nonNull(fieldExistingDirectory)) {
-        return file.isDirectory();
-      }
-    }
+    // ---
+    if (Objects.nonNull(fieldExistingDirectory) && !file.isDirectory())
+      return false;
+    // ---
+    if (Objects.nonNull(fieldExistingFile) && !file.isFile())
+      return false;
+    // ---
     return true;
   }
 

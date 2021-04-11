@@ -13,7 +13,7 @@ public class ColorFieldWrap extends BaseFieldWrap {
     super(field);
   }
 
-  @Override
+  @Override // from FieldWrap
   public Object toValue(String string) {
     try {
       return ColorFormat.toColor(Tensors.fromString(string));
@@ -23,7 +23,7 @@ public class ColorFieldWrap extends BaseFieldWrap {
     return null;
   }
 
-  @Override
+  @Override // from FieldWrap
   public String toString(Object object) {
     return ColorFormat.toVector((Color) object).toString();
   }

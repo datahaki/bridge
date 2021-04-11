@@ -23,11 +23,11 @@ public enum ParametersComponent {
    * @return */
   public static ToolbarsComponent of(FieldPanels fieldPanels) {
     ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
-    for (FieldPanel fieldPanel : fieldPanels.map()) {
-      Field field = fieldPanel.fieldType().getField();
+    for (FieldPanel fieldPanel : fieldPanels.list()) {
       int height = 28;
       JToolBar jToolBar = new JToolBar();
       {
+        Field field = fieldPanel.fieldType().getField();
         jToolBar.setFloatable(false);
         jToolBar.setLayout(new FlowLayout(FlowLayout.RIGHT, 3, 0));
         String string = field.getName();

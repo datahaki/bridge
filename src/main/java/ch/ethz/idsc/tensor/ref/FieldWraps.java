@@ -26,6 +26,16 @@ public enum FieldWraps {
     map.put(File.class, FileFieldWrap::new);
   }
 
+  /** @param cls
+   * @param function */
+  public void insert(Class<?> cls, Function<Field, FieldWrap> function) {
+    if (map.containsKey(cls))
+      throw new RuntimeException();
+    map.put(cls, function);
+  }
+
+  /** @param field
+   * @return */
   public FieldWrap wrap(Field field) {
     Class<?> cls = field.getType();
     // ---

@@ -32,18 +32,17 @@ public class FieldPanels {
 
   /***************************************************/
   private final ObjectProperties objectProperties;
-  private final List<FieldPanel> map = new LinkedList<>();
+  private final List<FieldPanel> list = new LinkedList<>();
 
   private FieldPanels(Object object) {
     objectProperties = ObjectProperties.wrap(object);
-    List<FieldWrap> fieldMap = objectProperties.fields();
-    for (FieldWrap fieldType : fieldMap) {
+    for (FieldWrap fieldType : objectProperties.fields()) {
       Field field = fieldType.getField();
       try {
         Object value = field.get(object); // check for failure, value only at begin!
         FieldPanel fieldPanel = fieldType.createFieldPanel(value);
         fieldPanel.addListener(string -> objectProperties.setIfValid(fieldType, string));
-        map.add(fieldPanel);
+        list.add(fieldPanel);
       } catch (Exception exception) {
         exception.printStackTrace();
       }
@@ -54,11 +53,11 @@ public class FieldPanels {
     return objectProperties;
   }
 
-  public List<FieldPanel> map() {
-    return Collections.unmodifiableList(map);
+  public List<FieldPanel> list() {
+    return Collections.unmodifiableList(list);
   }
 
   public void addUniversalListener(Consumer<String> consumer) {
-    map.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
+    list.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
   }
 }
