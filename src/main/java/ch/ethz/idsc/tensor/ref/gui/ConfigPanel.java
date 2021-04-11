@@ -26,12 +26,14 @@ public class ConfigPanel {
   private final FieldPanels fieldPanels;
   private final ToolbarsComponent toolbarsComponent;
   private final JPanel jPanel;
+  private final JScrollPane jScrollPane;
 
   private ConfigPanel(Object object) {
     fieldPanels = FieldPanels.of(object);
     toolbarsComponent = ParametersComponent.of(fieldPanels);
     jPanel = new JPanel(new BorderLayout());
-    jPanel.add("North", toolbarsComponent.getScrollPane());
+    jScrollPane = toolbarsComponent.createJScrollPane();
+    jPanel.add("North", jScrollPane);
     // ---
     JTextArea jTextArea = new JTextArea();
     jTextArea.setBackground(null);
@@ -45,18 +47,16 @@ public class ConfigPanel {
     jPanel.add("Center", jTextArea);
   }
 
-  public ToolbarsComponent toolbarsComponent() {
+  public ToolbarsComponent getToolbarsComponent() {
     return toolbarsComponent;
   }
 
-  public FieldPanels fieldPanels() {
+  public FieldPanels getFieldPanels() {
     return fieldPanels;
   }
 
-  /** @return component that contains the labeled input fields only, but not
-   * the text summary below */
-  public JScrollPane getFields() {
-    return toolbarsComponent.getScrollPane();
+  public JScrollPane getJScrollPane() {
+    return jScrollPane;
   }
 
   /** @return */

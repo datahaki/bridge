@@ -62,4 +62,10 @@ public class FieldTypeTest extends TestCase {
     String string = FieldType.COLOR.toString(Color.CYAN);
     assertEquals(string, "{0, 255, 255, 255}");
   }
+
+  public void testEnum() {
+    Object object = Pivots.ARGMAX_ABS;
+    String string = ((Enum<?>) object).name();
+    assertEquals(string, "ARGMAX_ABS");
+  }
 }

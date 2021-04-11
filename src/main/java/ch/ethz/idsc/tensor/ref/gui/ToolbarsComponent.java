@@ -107,16 +107,18 @@ public class ToolbarsComponent {
   }
 
   public JCheckBox createReadingCheckbox(String title) {
-    JCheckBox jTextField = new JCheckBox(title);
-    jTextField.setEnabled(false);
+    JCheckBox jCheckBox = new JCheckBox(title);
+    jCheckBox.setEnabled(false);
     JLabel jLabel = new JLabel(" ");
     jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, HEIGHT_CBOX));
-    addPair(jLabel, jTextField, HEIGHT_CBOX);
-    return jTextField;
+    addPair(jLabel, jCheckBox, HEIGHT_CBOX);
+    return jCheckBox;
   }
 
   /***************************************************/
-  public JScrollPane getScrollPane() {
+  /** @return component that contains the labeled input fields only, but not
+   * the text summary below */
+  public JScrollPane createJScrollPane() {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(this.jPanel, BorderLayout.NORTH);
     return new JScrollPane(jPanel);

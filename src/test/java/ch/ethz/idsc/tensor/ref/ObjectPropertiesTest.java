@@ -20,6 +20,7 @@ import ch.ethz.idsc.tensor.Tensor;
 import ch.ethz.idsc.tensor.Tensors;
 import ch.ethz.idsc.tensor.ext.Serialization;
 import ch.ethz.idsc.tensor.io.StringScalar;
+import ch.ethz.idsc.tensor.mat.Pivots;
 import ch.ethz.idsc.tensor.qty.Quantity;
 import junit.framework.TestCase;
 
@@ -58,6 +59,13 @@ public class ObjectPropertiesTest extends TestCase {
 
   public void testParseScalarFail() {
     AssertFail.of(() -> ObjectPropertiesTest.parse(Integer.class, "123"));
+  }
+
+  public void testParseEnum() {
+    Object object0 = ObjectPropertiesTest.parse(Pivots.class, "ARGMAX_ABS");
+    assertEquals(object0, Pivots.ARGMAX_ABS);
+    Object object1 = ObjectPropertiesTest.parse(Pivots.class, "FIRST_NON_ZERO");
+    assertEquals(object1, Pivots.FIRST_NON_ZERO);
   }
 
   public void testListSize1() throws Exception {

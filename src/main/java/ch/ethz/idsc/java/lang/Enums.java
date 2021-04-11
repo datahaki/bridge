@@ -19,12 +19,17 @@ public enum Enums {
     return set;
   }
 
-  /** @param element
+  /** Hint: the enum class <b>cannot</b> always be determined via element.getClass.
+   * One could determine the enum class from given element via enclosing class etc.
+   * The API was chosen for simplicity.
+   * 
+   * @param elementType
+   * @param element
    * @return
    * @throws Exception if element is already last entry of enum */
   @SuppressWarnings("unchecked")
-  public static <E extends Enum<E>> E increment(E element) {
-    Enum<?>[] enumConstants = element.getClass().getEnumConstants();
+  public static <E extends Enum<E>> E increment(Class<E> elementType, E element) {
+    Enum<?>[] enumConstants = elementType.getEnumConstants();
     return (E) enumConstants[element.ordinal() + 1];
   }
 }
