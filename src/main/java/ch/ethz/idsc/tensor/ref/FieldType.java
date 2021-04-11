@@ -164,7 +164,7 @@ public enum FieldType {
    * satisfies requirements specified by annotations */
   public boolean isValidValue(Field field, Object object) {
     return Objects.nonNull(object) //
-        && predicate.test(object.getClass()); // default implementation
+        && isTracking(object.getClass()); // default implementation
   }
 
   /***************************************************/

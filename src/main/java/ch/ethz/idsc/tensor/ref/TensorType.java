@@ -1,18 +1,20 @@
-// code by jph
 package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 
-public class StringType implements FieldIf {
+import ch.ethz.idsc.tensor.Tensor;
+import ch.ethz.idsc.tensor.Tensors;
+import ch.ethz.idsc.tensor.io.StringScalarQ;
+
+public class TensorType implements FieldIf {
   @Override
   public boolean isTracking(Class<?> cls) {
-    return String.class.equals(cls);
+    return Tensor.class.equals(cls);
   }
 
   @Override
   public Object toObject(Class<?> cls, String string) {
-    return string;
+    return Tensors.fromString(string);
   }
 
   @Override
@@ -20,8 +22,9 @@ public class StringType implements FieldIf {
     return object.toString();
   }
 
+  @Override
   public boolean isValidValue(Field field, Object object) {
-    return Objects.nonNull(object) //
-        && isTracking(object.getClass()); // default implementation
+    return object instanceof Tensor //
+        && !StringScalarQ.any((Tensor) object);
   }
 }

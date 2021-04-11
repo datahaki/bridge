@@ -3,21 +3,26 @@ package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
+import java.util.stream.Stream;
 
-public class StringType implements FieldIf {
+public class EnumType implements FieldIf {
   @Override
   public boolean isTracking(Class<?> cls) {
-    return String.class.equals(cls);
+    return Enum.class.isAssignableFrom(cls);
   }
 
   @Override
   public Object toObject(Class<?> cls, String string) {
-    return string;
+    return Stream.of(cls.getEnumConstants()) //
+        .map(Enum.class::cast) //
+        .filter(object -> object.name().equals(string)) //
+        .findFirst() //
+        .orElse(null);
   }
 
   @Override
   public String toString(Object object) {
-    return object.toString();
+    return ((Enum<?>) object).name();
   }
 
   public boolean isValidValue(Field field, Object object) {
