@@ -8,8 +8,6 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 public interface FieldType {
   Field getField();
 
-  boolean isTracking(Class<?> cls);
-
   Object toObject(String string);
 
   String toString(Object value);

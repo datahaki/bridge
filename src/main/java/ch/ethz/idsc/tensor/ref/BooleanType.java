@@ -12,11 +12,6 @@ public class BooleanType extends FieldBase {
   }
 
   @Override
-  public boolean isTracking(Class<?> cls) {
-    return Boolean.class.equals(cls);
-  }
-
-  @Override
   public Object toObject(String string) {
     return BooleanParser.orNull(string);
   }

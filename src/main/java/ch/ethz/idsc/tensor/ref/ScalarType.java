@@ -19,11 +19,6 @@ public class ScalarType extends FieldBase {
   }
 
   @Override
-  public boolean isTracking(Class<?> cls) {
-    return Scalar.class.equals(cls);
-  }
-
-  @Override
   public Object toObject(String string) {
     return Scalars.fromString(string);
   }

@@ -15,11 +15,6 @@ public class TensorType extends FieldBase {
   }
 
   @Override
-  public boolean isTracking(Class<?> cls) {
-    return Tensor.class.equals(cls);
-  }
-
-  @Override
   public Object toObject(String string) {
     return Tensors.fromString(string);
   }
@@ -32,7 +27,7 @@ public class TensorType extends FieldBase {
   @Override
   public boolean isValidValue(Object value) {
     Tensor tensor = (Tensor) value;
-    return !StringScalarQ.any((Tensor) value);
+    return !StringScalarQ.any(tensor);
   }
 
   @Override

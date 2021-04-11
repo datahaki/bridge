@@ -14,11 +14,6 @@ public class FileType extends FieldBase {
   }
 
   @Override
-  public boolean isTracking(Class<?> cls) {
-    return File.class.equals(cls);
-  }
-
-  @Override
   public Object toObject(String string) {
     return new File(string);
   }

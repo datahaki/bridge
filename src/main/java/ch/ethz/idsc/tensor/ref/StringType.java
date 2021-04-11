@@ -12,11 +12,6 @@ public class StringType extends FieldBase {
   }
 
   @Override
-  public boolean isTracking(Class<?> cls) {
-    return String.class.equals(cls);
-  }
-
-  @Override
   public Object toObject(String string) {
     return string;
   }

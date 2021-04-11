@@ -15,11 +15,6 @@ public class ColorType extends FieldBase {
   }
 
   @Override
-  public boolean isTracking(Class<?> cls) {
-    return Color.class.equals(cls);
-  }
-
-  @Override
   public Object toObject(String string) {
     try {
       return ColorFormat.toColor(Tensors.fromString(string));

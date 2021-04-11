@@ -16,11 +16,6 @@ public class EnumType extends FieldBase {
   }
 
   @Override
-  public boolean isTracking(Class<?> cls) {
-    return Enum.class.isAssignableFrom(cls);
-  }
-
-  @Override
   public Object toObject(String string) {
     return Stream.of(enumConstants) //
         .map(Enum.class::cast) //
