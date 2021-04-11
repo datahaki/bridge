@@ -33,7 +33,6 @@ public class GuiExtension {
   public Tensor tensor = Tensors.fromString("{1, 2}");
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");
-  // TODO handle error in specs
   @FieldClip(min = "1000[W]", max = "10000[Wa]")
   // TODO handle error in default value
   public Scalar quantity = Quantity.of(3, "kW");
@@ -60,7 +59,7 @@ public class GuiExtension {
     // WindowConfiguration.attach(jFrame, new File(root, "WindowConfiguration.properties"));
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setContentPane(jComponent);
-    jFrame.setBounds(500, 200, 500, 500);
+    jFrame.setBounds(500, 200, 500, 700);
     jFrame.setVisible(true);
   }
 }

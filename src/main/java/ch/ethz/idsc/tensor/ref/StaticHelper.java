@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import ch.ethz.idsc.tensor.ext.Cache;
 
@@ -23,7 +23,7 @@ import ch.ethz.idsc.tensor.ext.Cache;
 
   /** @param field
    * @return whether field is public, non final, non static, non transient */
-  private static final boolean isModified(Field field) {
+  private static final boolean isWrapped(Field field) {
     return (field.getModifiers() & MASK_TESTED) == MASK_FILTER;
   }
 
@@ -34,11 +34,8 @@ import ch.ethz.idsc.tensor.ext.Cache;
     List<FieldWrap> list = new LinkedList<>();
     while (!deque.isEmpty())
       for (Field field : deque.pop().getDeclaredFields())
-        if (isModified(field)) {
-          FieldWrap optional = FieldWraps.INSTANCE.wrap(field);
-          if (Objects.nonNull(optional))
-            list.add(optional);
-        }
+        if (isWrapped(field))
+          Optional.ofNullable(FieldWraps.INSTANCE.wrap(field)).ifPresent(list::add);
     return Collections.unmodifiableList(list);
   }
 }

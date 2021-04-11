@@ -127,26 +127,11 @@ public class ObjectProperties {
       Field field = fieldType.getField();
       try {
         Object value = field.get(object); // may throw Exception
-        if (Objects.nonNull(value)) {
+        if (Objects.nonNull(value))
           biConsumer.accept(field.getName(), fieldType.toString(value));
-        }
       } catch (Exception exception) {
         exception.printStackTrace();
       }
     });
-  }
-
-  public boolean setIfValid(FieldWrap fieldType, String string) {
-    try {
-      Object value = fieldType.toValue(string);
-      if (Objects.nonNull(value) && //
-          fieldType.isValidValue(value)) {
-        fieldType.getField().set(object, value);
-        return true;
-      }
-    } catch (Exception exception) {
-      exception.printStackTrace();
-    }
-    return false;
   }
 }

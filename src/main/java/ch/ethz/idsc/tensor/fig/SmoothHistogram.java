@@ -1,6 +1,7 @@
+// code by jph
 package ch.ethz.idsc.tensor.fig;
 
 enum SmoothHistogram {
   ;
-  // TODO
+  // LONGTERM implement SmoothHistogram
 }

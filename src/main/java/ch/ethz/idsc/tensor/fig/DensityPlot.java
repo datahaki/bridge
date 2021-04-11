@@ -1,6 +1,7 @@
+// code by jph
 package ch.ethz.idsc.tensor.fig;
 
 public enum DensityPlot {
   ;
-  // TODO
+  // LONGTERM implement DensityPlot
 }

@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import ch.ethz.idsc.tensor.ref.FieldWrap;
@@ -39,9 +40,17 @@ public class FieldPanels {
     for (FieldWrap fieldType : objectProperties.fields()) {
       Field field = fieldType.getField();
       try {
-        Object value = field.get(object); // check for failure, value only at begin!
-        FieldPanel fieldPanel = fieldType.createFieldPanel(value);
-        fieldPanel.addListener(string -> objectProperties.setIfValid(fieldType, string));
+        // fail fast
+        FieldPanel fieldPanel = fieldType.createFieldPanel(field.get(object));
+        fieldPanel.addListener(string -> {
+          try {
+            Object value = fieldType.toValue(string);
+            if (Objects.nonNull(value) && fieldType.isValidValue(value))
+              field.set(object, value);
+          } catch (Exception exception) {
+            exception.printStackTrace();
+          }
+        });
         list.add(fieldPanel);
       } catch (Exception exception) {
         exception.printStackTrace();
