@@ -61,7 +61,7 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
     return fieldType().isValidValue(fieldType().toValue(string));
   }
 
-  private void indicateGui() {
+  protected void indicateGui() {
     boolean isOk = isValid(jTextField.getText());
     jTextField.setBackground(isOk //
         ? Color.WHITE

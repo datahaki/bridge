@@ -35,7 +35,7 @@ import ch.ethz.idsc.tensor.ext.Cache;
     while (!deque.isEmpty())
       for (Field field : deque.pop().getDeclaredFields())
         if (isModified(field)) {
-          FieldWrap optional = FieldWraps.wrap(field);
+          FieldWrap optional = FieldWraps.INSTANCE.wrap(field);
           if (Objects.nonNull(optional))
             list.add(optional);
         }
