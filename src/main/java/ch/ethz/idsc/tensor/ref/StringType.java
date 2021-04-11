@@ -12,13 +12,13 @@ public class StringType extends FieldBase {
   }
 
   @Override
-  public Object toObject(String string) {
+  public Object toValue(String string) {
     return string;
   }
 
   @Override
-  public String toString(Object object) {
-    return object.toString();
+  public String toString(Object value) {
+    return value.toString();
   }
 
   @Override

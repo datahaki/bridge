@@ -12,7 +12,7 @@ public class BooleanType extends FieldBase {
   }
 
   @Override
-  public Object toObject(String string) {
+  public Object toValue(String string) {
     return BooleanParser.orNull(string);
   }
 
@@ -23,6 +23,6 @@ public class BooleanType extends FieldBase {
 
   @Override
   public FieldPanel createFieldPanel(Object value) {
-    return new BooleanPanel((Boolean) value);
+    return new BooleanPanel(this, (Boolean) value);
   }
 }

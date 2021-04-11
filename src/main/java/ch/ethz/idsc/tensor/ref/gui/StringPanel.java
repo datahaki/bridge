@@ -15,12 +15,11 @@ import ch.ethz.idsc.tensor.ref.FieldType;
 public class StringPanel extends FieldPanel {
   private static final Color LABEL = new Color(51, 51, 51);
   // ---
-  private final FieldType fieldType;
   protected final JTextField jTextField;
 
-  public StringPanel(FieldType fieldType, Object object) {
-    this.fieldType = fieldType;
-    jTextField = new JTextField(fieldType.toString(object));
+  public StringPanel(FieldType fieldType, Object value) {
+    super(fieldType);
+    jTextField = new JTextField(fieldType.toString(value));
     jTextField.setFont(FieldPanel.FONT);
     jTextField.setForeground(LABEL);
     jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));
@@ -59,7 +58,7 @@ public class StringPanel extends FieldPanel {
   }
 
   private boolean isValid(String string) {
-    return fieldType.isValidValue(fieldType.toObject(string));
+    return getFieldType().isValidValue(getFieldType().toValue(string));
   }
 
   private void indicateGui() {

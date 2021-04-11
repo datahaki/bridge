@@ -54,7 +54,7 @@ public class ObjectProperties {
       String string = properties.getProperty(field.getName());
       if (Objects.nonNull(string))
         try {
-          field.set(object, fieldType.toObject(string));
+          field.set(object, fieldType.toValue(string));
         } catch (Exception exception) {
           exception.printStackTrace();
         }
@@ -138,7 +138,7 @@ public class ObjectProperties {
 
   public boolean setIfValid(FieldType fieldType, String string) {
     try {
-      Object value = fieldType.toObject(string);
+      Object value = fieldType.toValue(string);
       if (Objects.nonNull(value) && //
           fieldType.isValidValue(value)) {
         fieldType.getField().set(object, value);

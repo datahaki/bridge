@@ -4,7 +4,6 @@ package ch.ethz.idsc.tensor.ref.gui;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.lang.reflect.Field;
-import java.util.Map.Entry;
 import java.util.Objects;
 
 import javax.swing.JComponent;
@@ -24,9 +23,8 @@ public enum ParametersComponent {
    * @return */
   public static ToolbarsComponent of(FieldPanels fieldPanels) {
     ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
-    for (Entry<Field, FieldPanel> entry : fieldPanels.map().entrySet()) {
-      Field field = entry.getKey();
-      FieldPanel fieldPanel = entry.getValue();
+    for (FieldPanel fieldPanel : fieldPanels.map()) {
+      Field field = fieldPanel.getFieldType().getField();
       int height = 28;
       JToolBar jToolBar = new JToolBar();
       {

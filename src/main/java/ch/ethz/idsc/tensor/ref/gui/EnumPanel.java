@@ -12,6 +12,7 @@ public class EnumPanel extends FieldPanel {
   private final SpinnerLabel<Object> spinnerLabel = new SpinnerLabel<>();
 
   public EnumPanel(FieldType fieldType, Object[] objects, Object object) {
+    super(fieldType);
     JLabel jLabel = spinnerLabel.getLabelComponent();
     jLabel.setFont(FieldPanel.FONT);
     jLabel.setHorizontalAlignment(SwingConstants.LEFT);

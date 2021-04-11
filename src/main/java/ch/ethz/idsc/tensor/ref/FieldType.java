@@ -6,13 +6,24 @@ import java.lang.reflect.Field;
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
 public interface FieldType {
+  /** @return field */
   Field getField();
 
-  Object toObject(String string);
+  /** @param string
+   * @return value parsed from string. note that the parsed value might
+   * violate constraints defined by field annotations. */
+  Object toValue(String string);
 
+  /** @param value
+   * @return string expression of value */
   String toString(Object value);
 
+  /** @param value
+   * @return whether additional constraints defined by field annotations are
+   * satisfied */
   boolean isValidValue(Object value);
 
+  /** @param value
+   * @return */
   FieldPanel createFieldPanel(Object value);
 }

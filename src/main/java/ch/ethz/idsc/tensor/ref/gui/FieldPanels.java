@@ -3,9 +3,8 @@ package ch.ethz.idsc.tensor.ref.gui;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import ch.ethz.idsc.tensor.ref.FieldType;
@@ -33,7 +32,7 @@ public class FieldPanels {
 
   /***************************************************/
   private final ObjectProperties objectProperties;
-  private final Map<Field, FieldPanel> map = new LinkedHashMap<>();
+  private final List<FieldPanel> map = new LinkedList<>();
 
   private FieldPanels(Object object) {
     objectProperties = ObjectProperties.wrap(object);
@@ -44,7 +43,7 @@ public class FieldPanels {
         Object value = field.get(object); // check for failure, value only at begin!
         FieldPanel fieldPanel = fieldType.createFieldPanel(value);
         fieldPanel.addListener(string -> objectProperties.setIfValid(fieldType, string));
-        map.put(field, fieldPanel);
+        map.add(fieldPanel);
       } catch (Exception exception) {
         exception.printStackTrace();
       }
@@ -55,11 +54,11 @@ public class FieldPanels {
     return objectProperties;
   }
 
-  public Map<Field, FieldPanel> map() {
-    return Collections.unmodifiableMap(map);
+  public List<FieldPanel> map() {
+    return Collections.unmodifiableList(map);
   }
 
   public void addUniversalListener(Consumer<String> consumer) {
-    map.values().stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
+    map.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
   }
 }

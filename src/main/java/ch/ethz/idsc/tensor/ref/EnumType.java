@@ -16,7 +16,7 @@ public class EnumType extends FieldBase {
   }
 
   @Override
-  public Object toObject(String string) {
+  public Object toValue(String string) {
     return Stream.of(enumConstants) //
         .map(Enum.class::cast) //
         .filter(object -> object.name().equals(string)) //

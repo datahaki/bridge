@@ -15,7 +15,7 @@ public class TensorType extends FieldBase {
   }
 
   @Override
-  public Object toObject(String string) {
+  public Object toValue(String string) {
     return Tensors.fromString(string);
   }
 

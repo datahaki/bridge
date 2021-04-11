@@ -19,7 +19,7 @@ public class ScalarType extends FieldBase {
   }
 
   @Override
-  public Object toObject(String string) {
+  public Object toValue(String string) {
     return Scalars.fromString(string);
   }
 
