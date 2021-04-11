@@ -30,7 +30,7 @@ public class FieldPanels {
 
   private FieldPanels(Object object) {
     objectProperties = ObjectProperties.wrap(object);
-    for (FieldWrap fieldWrap : objectProperties.fields()) {
+    for (FieldWrap fieldWrap : objectProperties.list()) {
       Field field = fieldWrap.getField();
       try {
         // fail fast

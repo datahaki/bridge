@@ -11,7 +11,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 // TODO class name
-// TODO method names
 public class ConfigPanel {
   /** @param object non-null
    * @return

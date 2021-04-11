@@ -24,8 +24,8 @@ public class ObjectPropertiesExtTest extends TestCase {
   public void testFieldOrder() {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
-    List<FieldWrap> map = objectProperties.fields();
-    assertEquals(map.size(), 7);
+    List<FieldWrap> list = objectProperties.list();
+    assertEquals(list.size(), 7);
   }
 
   public void testListSize1() throws Exception {
@@ -144,7 +144,7 @@ public class ObjectPropertiesExtTest extends TestCase {
   public void testFields() {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
-    List<String> list = objectProperties.fields().stream() //
+    List<String> list = objectProperties.list().stream() //
         .map(FieldWrap::getField) //
         .map(Field::getName).collect(Collectors.toList());
     assertEquals(list.get(0), "string");

@@ -169,7 +169,7 @@ public class ObjectPropertiesTest extends TestCase {
   public void testFields() {
     ParamContainer paramContainer = new ParamContainer();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainer);
-    List<String> list = objectProperties.fields().stream() //
+    List<String> list = objectProperties.list().stream() //
         .map(FieldWrap::getField) //
         .map(Field::getName).collect(Collectors.toList());
     assertEquals(list.get(0), "string");

@@ -39,17 +39,17 @@ public class ObjectProperties {
 
   /***************************************************/
   private final Object object;
-  private List<FieldWrap> fields;
+  private List<FieldWrap> list;
 
   private ObjectProperties(Object object) {
     this.object = object;
-    fields = StaticHelper.CACHE.apply(object.getClass());
+    list = StaticHelper.CACHE.apply(object.getClass());
   }
 
-  /** @return map of tracked fields of given object
+  /** @return list of tracked fields of given object
    * in the order in which they appear top to bottom in the class, superclass first */
-  public List<FieldWrap> fields() {
-    return fields;
+  public List<FieldWrap> list() {
+    return list;
   }
 
   /** @param properties
@@ -58,7 +58,7 @@ public class ObjectProperties {
    * @throws Exception if properties is null */
   @SuppressWarnings("unchecked")
   public <T> T set(Properties properties) {
-    for (FieldWrap fieldWrap : fields) {
+    for (FieldWrap fieldWrap : list) {
       String string = properties.getProperty(fieldWrap.getField().getName());
       if (Objects.nonNull(string))
         setIfValid(fieldWrap, string);
@@ -137,7 +137,7 @@ public class ObjectProperties {
 
   // helper function
   private void consume(BiConsumer<String, String> biConsumer) {
-    for (FieldWrap fieldWrap : fields) {
+    for (FieldWrap fieldWrap : list) {
       Field field = fieldWrap.getField();
       try {
         Object value = field.get(object); // may throw Exception
