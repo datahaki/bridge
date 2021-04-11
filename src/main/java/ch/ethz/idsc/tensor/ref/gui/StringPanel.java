@@ -59,7 +59,7 @@ public class StringPanel extends FieldPanel {
   }
 
   private boolean isValid(String string) {
-    return fieldType.isValidString(string);
+    return fieldType.isValidValue(fieldType.toObject(string));
   }
 
   private void indicateGui() {

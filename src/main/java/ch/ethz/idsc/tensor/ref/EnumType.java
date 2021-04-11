@@ -2,7 +2,6 @@
 package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import ch.ethz.idsc.tensor.ref.gui.EnumPanel;
@@ -33,12 +32,6 @@ public class EnumType extends FieldBase {
   @Override
   public String toString(Object object) {
     return ((Enum<?>) object).name();
-  }
-
-  @Override
-  public boolean isValidValue(Object object) {
-    return Objects.nonNull(object) //
-        && isTracking(object.getClass()); // default implementation
   }
 
   @Override

@@ -1,3 +1,4 @@
+// code by jph
 package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
@@ -11,13 +12,9 @@ public interface FieldType {
 
   Object toObject(String string);
 
-  String toString(Object object);
+  String toString(Object value);
 
-  boolean isValidValue(Object object);
+  boolean isValidValue(Object value);
 
   FieldPanel createFieldPanel(Object value);
-
-  default boolean isValidString(String string) {
-    return isValidValue(toObject(string));
-  }
 }

@@ -1,7 +1,7 @@
+// code by jph
 package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 
 import ch.ethz.idsc.tensor.ref.gui.BooleanPanel;
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
@@ -24,12 +24,6 @@ public class BooleanType extends FieldBase {
   @Override
   public String toString(Object object) {
     return object.toString();
-  }
-
-  @Override
-  public boolean isValidValue(Object object) {
-    return Objects.nonNull(object) //
-        && isTracking(object.getClass()); // default implementation
   }
 
   @Override

@@ -1,3 +1,4 @@
+// code by jph
 package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
@@ -33,32 +34,29 @@ public class ScalarType extends FieldBase {
   }
 
   @Override
-  public boolean isValidValue(Object object) {
-    if (object instanceof Scalar) {
-      Scalar scalar = (Scalar) object;
-      if (StringScalarQ.of(scalar))
-        return false;
-      {
-        FieldIntegerQ fieldIntegerQ = field.getAnnotation(FieldIntegerQ.class);
-        if (Objects.nonNull(fieldIntegerQ))
-          if (!IntegerQ.of(scalar))
-            return false;
-      }
-      {
-        FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-        if (Objects.nonNull(fieldClip))
-          try {
-            Clip clip = TensorReflection.clip(fieldClip);
-            if (clip.isOutside(UnitSystem.SI().apply(scalar)))
-              return false;
-          } catch (Exception exception) {
-            // System.err.println("unit incompatible " + clip + " " + scalar);
-            return false;
-          }
-      }
-      return true;
+  public boolean isValidValue(Object value) {
+    Scalar scalar = (Scalar) value;
+    if (StringScalarQ.of(scalar))
+      return false;
+    {
+      FieldIntegerQ fieldIntegerQ = field.getAnnotation(FieldIntegerQ.class);
+      if (Objects.nonNull(fieldIntegerQ))
+        if (!IntegerQ.of(scalar))
+          return false;
     }
-    return false;
+    {
+      FieldClip fieldClip = field.getAnnotation(FieldClip.class);
+      if (Objects.nonNull(fieldClip))
+        try {
+          Clip clip = TensorReflection.clip(fieldClip);
+          if (clip.isOutside(UnitSystem.SI().apply(scalar)))
+            return false;
+        } catch (Exception exception) {
+          // System.err.println("unit incompatible " + clip + " " + scalar);
+          return false;
+        }
+    }
+    return true;
   }
 
   @Override

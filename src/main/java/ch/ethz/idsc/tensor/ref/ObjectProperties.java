@@ -139,7 +139,8 @@ public class ObjectProperties {
   public boolean setIfValid(FieldType fieldType, String string) {
     try {
       Object value = fieldType.toObject(string);
-      if (fieldType.isValidValue(value)) {
+      if (Objects.nonNull(value) && //
+          fieldType.isValidValue(value)) {
         fieldType.getField().set(object, value);
         return true;
       }

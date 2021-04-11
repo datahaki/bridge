@@ -35,7 +35,7 @@ import ch.ethz.idsc.tensor.ext.Cache;
     while (!deque.isEmpty())
       for (Field field : deque.pop().getDeclaredFields())
         if (isModified(field)) {
-          FieldType optional = FieldType2.getFieldType(field);
+          FieldType optional = FieldTypes.getFieldType(field);
           if (Objects.nonNull(optional))
             list.add(optional);
         }

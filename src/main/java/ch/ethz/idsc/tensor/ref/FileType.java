@@ -1,3 +1,4 @@
+// code by jph
 package ch.ethz.idsc.tensor.ref;
 
 import java.io.File;
@@ -28,18 +29,15 @@ public class FileType extends FieldBase {
   }
 
   @Override
-  public boolean isValidValue(Object object) {
-    if (object instanceof File) {
-      File file = (File) object;
-      {
-        FieldExistingDirectory fieldExistingDirectory = field.getAnnotation(FieldExistingDirectory.class);
-        if (Objects.nonNull(fieldExistingDirectory)) {
-          return file.isDirectory();
-        }
+  public boolean isValidValue(Object value) {
+    File file = (File) value;
+    {
+      FieldExistingDirectory fieldExistingDirectory = field.getAnnotation(FieldExistingDirectory.class);
+      if (Objects.nonNull(fieldExistingDirectory)) {
+        return file.isDirectory();
       }
-      return true;
     }
-    return false;
+    return true;
   }
 
   @Override

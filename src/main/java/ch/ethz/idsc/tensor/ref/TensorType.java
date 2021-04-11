@@ -1,3 +1,4 @@
+// code by jph
 package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
@@ -29,9 +30,9 @@ public class TensorType extends FieldBase {
   }
 
   @Override
-  public boolean isValidValue(Object object) {
-    return object instanceof Tensor //
-        && !StringScalarQ.any((Tensor) object);
+  public boolean isValidValue(Object value) {
+    Tensor tensor = (Tensor) value;
+    return !StringScalarQ.any((Tensor) value);
   }
 
   @Override
