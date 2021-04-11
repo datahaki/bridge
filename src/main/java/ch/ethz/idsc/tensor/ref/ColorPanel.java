@@ -1,5 +1,5 @@
 // code by jph
-package ch.ethz.idsc.tensor.ref.gui;
+package ch.ethz.idsc.tensor.ref;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,12 +14,11 @@ import javax.swing.JPanel;
 
 import ch.ethz.idsc.tensor.Tensors;
 import ch.ethz.idsc.tensor.img.ColorFormat;
-import ch.ethz.idsc.tensor.ref.FieldType;
 
-public class ColorPanel extends StringPanel {
+/* package */ class ColorPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
-  public ColorPanel(FieldType fieldType, Object object) {
+  public ColorPanel(FieldWrap fieldType, Object object) {
     super(fieldType, object);
     jButton.setBackground(getColor());
     jButton.addActionListener(new ActionListener() {
@@ -28,7 +27,7 @@ public class ColorPanel extends StringPanel {
         Color color = JColorChooser.showDialog(jButton, "pick color", getColor());
         if (Objects.nonNull(color)) {
           jButton.setBackground(color);
-          String string = ColorFormat.toVector(color).toString();
+          String string = fieldType.toString(color);
           jTextField.setText(string);
           notifyListeners(string);
         }

@@ -24,7 +24,7 @@ public class ObjectPropertiesExtTest extends TestCase {
   public void testFieldOrder() {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
-    List<FieldType> map = objectProperties.fields();
+    List<FieldWrap> map = objectProperties.fields();
     assertEquals(map.size(), 7);
   }
 
@@ -145,7 +145,7 @@ public class ObjectPropertiesExtTest extends TestCase {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
     List<String> list = objectProperties.fields().stream() //
-        .map(FieldType::getField) //
+        .map(FieldWrap::getField) //
         .map(Field::getName).collect(Collectors.toList());
     assertEquals(list.get(0), "string");
     assertEquals(list.get(1), "maxTor");

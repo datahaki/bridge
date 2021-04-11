@@ -39,7 +39,7 @@ public class ObjectProperties {
 
   /** @return map of tracked fields of given object
    * in the order in which they appear top to bottom in the class, superclass first */
-  public List<FieldType> fields() {
+  public List<FieldWrap> fields() {
     return StaticHelper.CACHE.apply(object.getClass());
   }
 
@@ -136,7 +136,7 @@ public class ObjectProperties {
     });
   }
 
-  public boolean setIfValid(FieldType fieldType, String string) {
+  public boolean setIfValid(FieldWrap fieldType, String string) {
     try {
       Object value = fieldType.toValue(string);
       if (Objects.nonNull(value) && //

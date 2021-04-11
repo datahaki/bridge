@@ -1,17 +1,17 @@
 // code by jph
-package ch.ethz.idsc.tensor.ref.gui;
+package ch.ethz.idsc.tensor.ref;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import ch.ethz.idsc.java.awt.SpinnerLabel;
-import ch.ethz.idsc.tensor.ref.FieldType;
+import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
-public class EnumPanel extends FieldPanel {
+/* package */ class EnumPanel extends FieldPanel {
   private final SpinnerLabel<Object> spinnerLabel = new SpinnerLabel<>();
 
-  public EnumPanel(FieldType fieldType, Object[] objects, Object object) {
+  public EnumPanel(FieldWrap fieldType, Object[] objects, Object object) {
     super(fieldType);
     JLabel jLabel = spinnerLabel.getLabelComponent();
     jLabel.setFont(FieldPanel.FONT);

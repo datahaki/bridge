@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import ch.ethz.idsc.tensor.ref.FieldType;
+import ch.ethz.idsc.tensor.ref.FieldWrap;
 import ch.ethz.idsc.tensor.ref.ObjectProperties;
 
 /** FieldPanels performs introspection of an instance of a public class
@@ -36,8 +36,8 @@ public class FieldPanels {
 
   private FieldPanels(Object object) {
     objectProperties = ObjectProperties.wrap(object);
-    List<FieldType> fieldMap = objectProperties.fields();
-    for (FieldType fieldType : fieldMap) {
+    List<FieldWrap> fieldMap = objectProperties.fields();
+    for (FieldWrap fieldType : fieldMap) {
       Field field = fieldType.getField();
       try {
         Object value = field.get(object); // check for failure, value only at begin!

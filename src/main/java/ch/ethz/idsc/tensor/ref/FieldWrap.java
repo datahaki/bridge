@@ -5,13 +5,14 @@ import java.lang.reflect.Field;
 
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
-public interface FieldType {
+public interface FieldWrap {
   /** @return field */
   Field getField();
 
   /** @param string
    * @return value parsed from string. note that the parsed value might
-   * violate constraints defined by field annotations. */
+   * violate constraints defined by field annotations. If the given string
+   * cannot be parsed null is returned. */
   Object toValue(String string);
 
   /** @param value

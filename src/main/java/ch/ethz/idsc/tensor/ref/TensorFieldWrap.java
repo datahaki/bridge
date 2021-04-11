@@ -7,10 +7,9 @@ import ch.ethz.idsc.tensor.Tensor;
 import ch.ethz.idsc.tensor.Tensors;
 import ch.ethz.idsc.tensor.io.StringScalarQ;
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
-import ch.ethz.idsc.tensor.ref.gui.StringPanel;
 
-public class TensorType extends FieldBase {
-  public TensorType(Field field) {
+public class TensorFieldWrap extends BaseFieldWrap {
+  public TensorFieldWrap(Field field) {
     super(field);
   }
 

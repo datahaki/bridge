@@ -6,10 +6,9 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
-import ch.ethz.idsc.tensor.ref.gui.FilePanel;
 
-public class FileType extends FieldBase {
-  public FileType(Field field) {
+public class FileFieldWrap extends BaseFieldWrap {
+  public FileFieldWrap(Field field) {
     super(field);
   }
 

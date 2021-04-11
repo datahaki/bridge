@@ -14,7 +14,7 @@ import ch.ethz.idsc.tensor.ext.Cache;
 
 /* package */ enum StaticHelper {
   ;
-  public static final Cache<Class<?>, List<FieldType>> CACHE = Cache.of(StaticHelper::build, 256);
+  public static final Cache<Class<?>, List<FieldWrap>> CACHE = Cache.of(StaticHelper::build, 256);
   // ---
   private static final int MASK_FILTER = Modifier.PUBLIC;
   private static final int MASK_TESTED = MASK_FILTER //
@@ -27,15 +27,15 @@ import ch.ethz.idsc.tensor.ext.Cache;
     return (field.getModifiers() & MASK_TESTED) == MASK_FILTER;
   }
 
-  private static List<FieldType> build(Class<?> init) {
+  private static List<FieldWrap> build(Class<?> init) {
     Deque<Class<?>> deque = new ArrayDeque<>();
     for (Class<?> cls = init; !cls.equals(Object.class); cls = cls.getSuperclass())
       deque.push(cls);
-    List<FieldType> list = new LinkedList<>();
+    List<FieldWrap> list = new LinkedList<>();
     while (!deque.isEmpty())
       for (Field field : deque.pop().getDeclaredFields())
         if (isModified(field)) {
-          FieldType optional = FieldTypes.getFieldType(field);
+          FieldWrap optional = FieldWraps.wrap(field);
           if (Objects.nonNull(optional))
             list.add(optional);
         }

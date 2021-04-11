@@ -1,5 +1,5 @@
 // code by jph
-package ch.ethz.idsc.tensor.ref.gui;
+package ch.ethz.idsc.tensor.ref;
 
 import java.awt.Color;
 import java.awt.event.FocusEvent;
@@ -10,14 +10,14 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
-import ch.ethz.idsc.tensor.ref.FieldType;
+import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
-public class StringPanel extends FieldPanel {
+/* package */ class StringPanel extends FieldPanel {
   private static final Color LABEL = new Color(51, 51, 51);
   // ---
   protected final JTextField jTextField;
 
-  public StringPanel(FieldType fieldType, Object value) {
+  public StringPanel(FieldWrap fieldType, Object value) {
     super(fieldType);
     jTextField = new JTextField(fieldType.toString(value));
     jTextField.setFont(FieldPanel.FONT);
@@ -58,7 +58,7 @@ public class StringPanel extends FieldPanel {
   }
 
   private boolean isValid(String string) {
-    return getFieldType().isValidValue(getFieldType().toValue(string));
+    return fieldType().isValidValue(fieldType().toValue(string));
   }
 
   private void indicateGui() {

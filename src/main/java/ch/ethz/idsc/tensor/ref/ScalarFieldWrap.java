@@ -10,11 +10,10 @@ import ch.ethz.idsc.tensor.Scalars;
 import ch.ethz.idsc.tensor.io.StringScalarQ;
 import ch.ethz.idsc.tensor.qty.UnitSystem;
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
-import ch.ethz.idsc.tensor.ref.gui.StringPanel;
 import ch.ethz.idsc.tensor.sca.Clip;
 
-public class ScalarType extends FieldBase {
-  public ScalarType(Field field) {
+public class ScalarFieldWrap extends BaseFieldWrap {
+  public ScalarFieldWrap(Field field) {
     super(field);
   }
 

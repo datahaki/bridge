@@ -170,7 +170,7 @@ public class ObjectPropertiesTest extends TestCase {
     ParamContainer paramContainer = new ParamContainer();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainer);
     List<String> list = objectProperties.fields().stream() //
-        .map(FieldType::getField) //
+        .map(FieldWrap::getField) //
         .map(Field::getName).collect(Collectors.toList());
     assertEquals(list.get(0), "string");
     assertEquals(list.get(1), "maxTor");

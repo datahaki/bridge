@@ -3,10 +3,10 @@ package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
 
-public abstract class FieldBase implements FieldType {
+public abstract class BaseFieldWrap implements FieldWrap {
   protected final Field field;
 
-  public FieldBase(Field field) {
+  public BaseFieldWrap(Field field) {
     this.field = field;
   }
 

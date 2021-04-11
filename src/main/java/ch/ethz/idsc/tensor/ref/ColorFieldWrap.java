@@ -6,11 +6,10 @@ import java.lang.reflect.Field;
 
 import ch.ethz.idsc.tensor.Tensors;
 import ch.ethz.idsc.tensor.img.ColorFormat;
-import ch.ethz.idsc.tensor.ref.gui.ColorPanel;
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
-public class ColorType extends FieldBase {
-  public ColorType(Field field) {
+public class ColorFieldWrap extends BaseFieldWrap {
+  public ColorFieldWrap(Field field) {
     super(field);
   }
 

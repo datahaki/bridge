@@ -1,5 +1,5 @@
 // code by jph
-package ch.ethz.idsc.tensor.ref.gui;
+package ch.ethz.idsc.tensor.ref;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -11,12 +11,10 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
-import ch.ethz.idsc.tensor.ref.FieldType;
-
-public class FilePanel extends StringPanel {
+/* package */ class FilePanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
-  public FilePanel(FieldType fieldType, File file) {
+  public FilePanel(FieldWrap fieldType, File file) {
     super(fieldType, file);
     jButton.addActionListener(new ActionListener() {
       @Override
@@ -26,7 +24,7 @@ public class FilePanel extends StringPanel {
         jFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         int openDialog = jFileChooser.showOpenDialog(null);
         if (openDialog == JFileChooser.APPROVE_OPTION)
-          jTextField.setText(jFileChooser.getSelectedFile().toString());
+          jTextField.setText(fieldType.toString(jFileChooser.getSelectedFile()));
       }
     });
   }

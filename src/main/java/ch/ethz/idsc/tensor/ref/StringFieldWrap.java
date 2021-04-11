@@ -3,26 +3,25 @@ package ch.ethz.idsc.tensor.ref;
 
 import java.lang.reflect.Field;
 
-import ch.ethz.idsc.tensor.ref.gui.BooleanPanel;
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
-public class BooleanType extends FieldBase {
-  public BooleanType(Field field) {
+public class StringFieldWrap extends BaseFieldWrap {
+  public StringFieldWrap(Field field) {
     super(field);
   }
 
   @Override
   public Object toValue(String string) {
-    return BooleanParser.orNull(string);
+    return string;
   }
 
   @Override
-  public String toString(Object object) {
-    return object.toString();
+  public String toString(Object value) {
+    return value.toString();
   }
 
   @Override
   public FieldPanel createFieldPanel(Object value) {
-    return new BooleanPanel(this, (Boolean) value);
+    return new StringPanel(this, value);
   }
 }

@@ -9,17 +9,21 @@ import java.util.function.Consumer;
 
 import javax.swing.JComponent;
 
-import ch.ethz.idsc.tensor.ref.FieldType;
+import ch.ethz.idsc.tensor.ref.FieldWrap;
 
 public abstract class FieldPanel {
-  static final Color FAIL = new Color(255, 192, 192);
-  static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 18);
+  protected static final Color FAIL = new Color(255, 192, 192);
+  protected static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 18);
   // ---
   private final List<Consumer<String>> list = new LinkedList<>();
-  private final FieldType fieldType;
+  private final FieldWrap fieldType;
 
-  public FieldPanel(FieldType fieldType) {
+  public FieldPanel(FieldWrap fieldType) {
     this.fieldType = fieldType;
+  }
+
+  public final FieldWrap fieldType() {
+    return fieldType;
   }
 
   public final void addListener(Consumer<String> consumer) {
@@ -31,8 +35,4 @@ public abstract class FieldPanel {
   }
 
   public abstract JComponent getJComponent();
-
-  public final FieldType getFieldType() {
-    return fieldType;
-  }
 }

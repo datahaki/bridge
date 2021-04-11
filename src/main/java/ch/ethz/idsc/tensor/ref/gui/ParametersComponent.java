@@ -24,7 +24,7 @@ public enum ParametersComponent {
   public static ToolbarsComponent of(FieldPanels fieldPanels) {
     ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
     for (FieldPanel fieldPanel : fieldPanels.map()) {
-      Field field = fieldPanel.getFieldType().getField();
+      Field field = fieldPanel.fieldType().getField();
       int height = 28;
       JToolBar jToolBar = new JToolBar();
       {

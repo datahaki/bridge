@@ -4,13 +4,12 @@ package ch.ethz.idsc.tensor.ref;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-import ch.ethz.idsc.tensor.ref.gui.EnumPanel;
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
-public class EnumType extends FieldBase {
+public class EnumFieldWrap extends BaseFieldWrap {
   private final Object[] enumConstants;
 
-  public EnumType(Field field) {
+  public EnumFieldWrap(Field field) {
     super(field);
     enumConstants = field.getType().getEnumConstants();
   }

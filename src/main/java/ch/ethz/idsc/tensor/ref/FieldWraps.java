@@ -8,24 +8,25 @@ import java.lang.reflect.Field;
 import ch.ethz.idsc.tensor.Scalar;
 import ch.ethz.idsc.tensor.Tensor;
 
-public enum FieldTypes {
+public enum FieldWraps {
   ;
-  public static FieldType getFieldType(Field field) {
+  public static FieldWrap wrap(Field field) {
     Class<?> cls = field.getType();
+    // ---
     if (String.class.equals(cls))
-      return new StringType(field);
+      return new StringFieldWrap(field);
     if (Boolean.class.equals(cls))
-      return new BooleanType(field);
+      return new BooleanFieldWrap(field);
     if (Enum.class.isAssignableFrom(cls))
-      return new EnumType(field);
+      return new EnumFieldWrap(field);
     if (Tensor.class.equals(cls))
-      return new TensorType(field);
+      return new TensorFieldWrap(field);
     if (Scalar.class.equals(cls))
-      return new ScalarType(field);
+      return new ScalarFieldWrap(field);
     if (Color.class.equals(cls))
-      return new ColorType(field);
+      return new ColorFieldWrap(field);
     if (File.class.equals(cls))
-      return new FileType(field);
+      return new FileFieldWrap(field);
     System.err.println("NO MATCH");
     return null;
   }

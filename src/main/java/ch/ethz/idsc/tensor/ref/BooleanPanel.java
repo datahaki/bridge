@@ -1,19 +1,18 @@
 // code by jph
-package ch.ethz.idsc.tensor.ref.gui;
+package ch.ethz.idsc.tensor.ref;
 
 import java.util.Objects;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 
-import ch.ethz.idsc.tensor.ref.FieldType;
+import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
-public class BooleanPanel extends FieldPanel {
-  private final JCheckBox jCheckBox;
+/* package */ class BooleanPanel extends FieldPanel {
+  private final JCheckBox jCheckBox = new JCheckBox();
 
-  public BooleanPanel(FieldType fieldType, Boolean value) {
+  public BooleanPanel(FieldWrap fieldType, Boolean value) {
     super(fieldType);
-    jCheckBox = new JCheckBox();
     if (Objects.nonNull(value))
       jCheckBox.setSelected(value);
     jCheckBox.addActionListener(event -> notifyListeners(getText()));
@@ -25,6 +24,6 @@ public class BooleanPanel extends FieldPanel {
   }
 
   private String getText() {
-    return "" + jCheckBox.isSelected();
+    return fieldType().toString(jCheckBox.isSelected());
   }
 }
