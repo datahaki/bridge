@@ -1,6 +1,7 @@
 // code by jph
 package ch.ethz.idsc.tensor.ref;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,8 +21,14 @@ import ch.ethz.idsc.tensor.io.Import;
  * 
  * values of non-final, non-static, non-transient but public members of type
  * {@link Tensor}, {@link Scalar}, {@link String}, {@link File}, {@link Boolean},
- * {@link Enum}
- * are stored in, and retrieved from files in the {@link Properties} format */
+ * {@link Enum}, {@link Color}
+ * are stored in, and retrieved from files in the {@link Properties} format
+ * 
+ * the listed of supported types can be extended, see {@link FieldWraps}
+ * 
+ * Hint: the implementation does not assign null values to members. in case
+ * of a parse failure, or invalid assignment, the preset/default/current
+ * value is retained. */
 public class ObjectProperties {
   /** @param object non-null
    * @return
@@ -32,15 +39,17 @@ public class ObjectProperties {
 
   /***************************************************/
   private final Object object;
+  private List<FieldWrap> fields;
 
   private ObjectProperties(Object object) {
-    this.object = Objects.requireNonNull(object);
+    this.object = object;
+    fields = StaticHelper.CACHE.apply(object.getClass());
   }
 
   /** @return map of tracked fields of given object
    * in the order in which they appear top to bottom in the class, superclass first */
   public List<FieldWrap> fields() {
-    return StaticHelper.CACHE.apply(object.getClass());
+    return fields;
   }
 
   /** @param properties
@@ -49,17 +58,22 @@ public class ObjectProperties {
    * @throws Exception if properties is null */
   @SuppressWarnings("unchecked")
   public <T> T set(Properties properties) {
-    fields().forEach(fieldType -> {
-      Field field = fieldType.getField();
-      String string = properties.getProperty(field.getName());
+    for (FieldWrap fieldWrap : fields) {
+      String string = properties.getProperty(fieldWrap.getField().getName());
       if (Objects.nonNull(string))
-        try {
-          field.set(object, fieldType.toValue(string));
-        } catch (Exception exception) {
-          exception.printStackTrace();
-        }
-    });
+        setIfValid(fieldWrap, string);
+    }
     return (T) object;
+  }
+
+  public void setIfValid(FieldWrap fieldWrap, String string) {
+    try {
+      Object value = fieldWrap.toValue(string);
+      if (Objects.nonNull(value) && fieldWrap.isValidValue(value)) // otherwise retain current assignment
+        fieldWrap.getField().set(object, value);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
   }
 
   /** @param object
@@ -123,15 +137,15 @@ public class ObjectProperties {
 
   // helper function
   private void consume(BiConsumer<String, String> biConsumer) {
-    fields().forEach(fieldType -> {
-      Field field = fieldType.getField();
+    for (FieldWrap fieldWrap : fields) {
+      Field field = fieldWrap.getField();
       try {
         Object value = field.get(object); // may throw Exception
         if (Objects.nonNull(value))
-          biConsumer.accept(field.getName(), fieldType.toString(value));
+          biConsumer.accept(field.getName(), fieldWrap.toString(value));
       } catch (Exception exception) {
         exception.printStackTrace();
       }
-    });
+    }
   }
 }

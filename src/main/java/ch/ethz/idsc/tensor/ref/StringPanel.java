@@ -18,11 +18,11 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
   // ---
   protected final JTextField jTextField;
 
-  public StringPanel(FieldWrap fieldType, Object value) {
-    super(fieldType);
+  public StringPanel(FieldWrap fieldWrap, Object value) {
+    super(fieldWrap);
     jTextField = Objects.isNull(value) //
         ? new JTextField()
-        : new JTextField(fieldType.toString(value));
+        : new JTextField(fieldWrap.toString(value));
     jTextField.setFont(FieldPanel.FONT);
     jTextField.setForeground(LABEL);
     jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));
@@ -61,9 +61,9 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
   }
 
   private boolean isValid(String string) {
-    Object object = fieldType().toValue(string);
+    Object object = fieldWrap().toValue(string);
     return Objects.nonNull(object) //
-        && fieldType().isValidValue(object);
+        && fieldWrap().isValidValue(object);
   }
 
   protected void indicateGui() {

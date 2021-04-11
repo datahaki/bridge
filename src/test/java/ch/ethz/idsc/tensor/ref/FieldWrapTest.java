@@ -28,9 +28,9 @@ public class FieldWrapTest extends TestCase {
 
   public void testFieldTensor() throws NoSuchFieldException, SecurityException {
     Field field = ParamContainer.class.getField("shape");
-    FieldWrap fieldType = FieldWraps.INSTANCE.wrap(field);
-    assertTrue(fieldType.isValidValue(Tensors.vector(1, 2, 3)));
-    assertFalse(fieldType.isValidValue(Tensors.fromString("{1, 2a, 3}")));
+    FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
+    assertTrue(fieldWrap.isValidValue(Tensors.vector(1, 2, 3)));
+    assertFalse(fieldWrap.isValidValue(Tensors.fromString("{1, 2a, 3}")));
   }
 
   //

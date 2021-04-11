@@ -16,14 +16,14 @@ public abstract class FieldPanel {
   protected static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 18);
   // ---
   private final List<Consumer<String>> list = new LinkedList<>();
-  private final FieldWrap fieldType;
+  private final FieldWrap fieldWrap;
 
-  public FieldPanel(FieldWrap fieldType) {
-    this.fieldType = fieldType;
+  public FieldPanel(FieldWrap fieldWrap) {
+    this.fieldWrap = fieldWrap;
   }
 
-  public final FieldWrap fieldType() {
-    return fieldType;
+  public final FieldWrap fieldWrap() {
+    return fieldWrap;
   }
 
   public final void addListener(Consumer<String> consumer) {

@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 /* package */ class FilePanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
-  public FilePanel(FieldWrap fieldType, File file) {
-    super(fieldType, file);
+  public FilePanel(FieldWrap fieldWrap, File file) {
+    super(fieldWrap, file);
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -25,7 +25,7 @@ import javax.swing.JPanel;
         int openDialog = jFileChooser.showOpenDialog(null);
         if (openDialog == JFileChooser.APPROVE_OPTION) {
           File selectedFile = jFileChooser.getSelectedFile();
-          jTextField.setText(fieldType.toString(selectedFile));
+          jTextField.setText(fieldWrap.toString(selectedFile));
           indicateGui();
         }
       }

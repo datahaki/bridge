@@ -18,8 +18,8 @@ import ch.ethz.idsc.tensor.img.ColorFormat;
 /* package */ class ColorPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
-  public ColorPanel(FieldWrap fieldType, Object object) {
-    super(fieldType, object);
+  public ColorPanel(FieldWrap fieldWrap, Object object) {
+    super(fieldWrap, object);
     jButton.setBackground(getColor());
     jButton.addActionListener(new ActionListener() {
       @Override
@@ -27,7 +27,7 @@ import ch.ethz.idsc.tensor.img.ColorFormat;
         Color color = JColorChooser.showDialog(jButton, "pick color", getColor());
         if (Objects.nonNull(color)) {
           jButton.setBackground(color);
-          String string = fieldType.toString(color);
+          String string = fieldWrap.toString(color);
           jTextField.setText(string);
           notifyListeners(string);
         }

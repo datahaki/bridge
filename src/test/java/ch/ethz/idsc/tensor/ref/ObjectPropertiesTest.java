@@ -92,8 +92,8 @@ public class ObjectPropertiesTest extends TestCase {
     assertEquals(properties.getProperty("status"), "true");
     properties.setProperty("status", "corrupt");
     objectProperties.set(properties);
-    assertNull(paramContainer.status);
-    assertEquals(objectProperties.strings().size(), 0);
+    // assertNonNull(paramContainer.status);
+    assertEquals(objectProperties.strings().size(), 1);
     // ---
     properties.setProperty("status", "true");
     objectProperties.set(properties);
@@ -239,12 +239,4 @@ public class ObjectPropertiesTest extends TestCase {
       // ---
     }
   }
-  //
-  // /** @param cls class
-  // * @param string to parse to an instance of given class
-  // * @return new instance of class that was constructed from given string
-  // * @throws Exception if given class is not supported */
-  // /* package */ static Object parse(Class<?> cls, String string) {
-  // return FieldType.getFieldType(cls).get().toObject(cls, string);
-  // }
 }

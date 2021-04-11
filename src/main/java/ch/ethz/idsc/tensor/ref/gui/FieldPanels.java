@@ -2,13 +2,13 @@
 package ch.ethz.idsc.tensor.ref.gui;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import ch.ethz.idsc.tensor.ref.FieldWrap;
+import ch.ethz.idsc.tensor.ref.FieldWraps;
 import ch.ethz.idsc.tensor.ref.ObjectProperties;
 
 /** FieldPanels performs introspection of an instance of a public class
@@ -16,14 +16,7 @@ import ch.ethz.idsc.tensor.ref.ObjectProperties;
  * will be created through which the user can modify the value of the
  * field of the given instance.
  * 
- * Not all fields are possible to edits. The list of fields that produce
- * a gui element are:
- * Boolean (with B caps, and not boolean!)
- * String
- * Scalar
- * Tensor
- * Enum
- * File */
+ * @see FieldWraps */
 public class FieldPanels {
   /** @param object
    * @return */
@@ -33,24 +26,16 @@ public class FieldPanels {
 
   /***************************************************/
   private final ObjectProperties objectProperties;
-  private final List<FieldPanel> list = new LinkedList<>();
+  private final List<FieldPanel> list = new ArrayList<>();
 
   private FieldPanels(Object object) {
     objectProperties = ObjectProperties.wrap(object);
-    for (FieldWrap fieldType : objectProperties.fields()) {
-      Field field = fieldType.getField();
+    for (FieldWrap fieldWrap : objectProperties.fields()) {
+      Field field = fieldWrap.getField();
       try {
         // fail fast
-        FieldPanel fieldPanel = fieldType.createFieldPanel(field.get(object));
-        fieldPanel.addListener(string -> {
-          try {
-            Object value = fieldType.toValue(string);
-            if (Objects.nonNull(value) && fieldType.isValidValue(value))
-              field.set(object, value);
-          } catch (Exception exception) {
-            exception.printStackTrace();
-          }
-        });
+        FieldPanel fieldPanel = fieldWrap.createFieldPanel(field.get(object));
+        fieldPanel.addListener(string -> objectProperties.setIfValid(fieldWrap, string));
         list.add(fieldPanel);
       } catch (Exception exception) {
         exception.printStackTrace();
