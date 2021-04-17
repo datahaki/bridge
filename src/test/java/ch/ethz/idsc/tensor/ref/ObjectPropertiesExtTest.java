@@ -57,7 +57,7 @@ public class ObjectPropertiesExtTest extends TestCase {
     assertEquals(properties.getProperty("status"), "true");
     properties.setProperty("status", "corrupt");
     objectProperties.set(properties);
-//    assertNull(paramContainerExt.status);
+    // assertNull(paramContainerExt.status);
     assertEquals(objectProperties.strings().size(), 3);
     // ---
     properties.setProperty("status", "true");

@@ -5,8 +5,8 @@ import java.util.Set;
 
 import ch.ethz.idsc.java.util.AssertFail;
 import ch.ethz.idsc.tensor.img.ColorDataGradients;
-import ch.ethz.idsc.tensor.mat.Pivot;
-import ch.ethz.idsc.tensor.mat.Pivots;
+import ch.ethz.idsc.tensor.mat.re.Pivot;
+import ch.ethz.idsc.tensor.mat.re.Pivots;
 import junit.framework.TestCase;
 
 public class EnumsTest extends TestCase {
