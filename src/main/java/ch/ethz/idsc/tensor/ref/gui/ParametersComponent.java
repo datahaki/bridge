@@ -25,11 +25,9 @@ public enum ParametersComponent {
     ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
     for (FieldPanel fieldPanel : fieldPanels.list()) {
       int height = 28;
-      JToolBar jToolBar = new JToolBar();
+      JToolBar jToolBar = ToolbarsComponent.createJToolBar(FlowLayout.RIGHT);
       {
         Field field = fieldPanel.fieldWrap().getField();
-        jToolBar.setFloatable(false);
-        jToolBar.setLayout(new FlowLayout(FlowLayout.RIGHT, 3, 0));
         String string = field.getName();
         {
           FieldLabel fieldLabel = field.getAnnotation(FieldLabel.class);

@@ -19,6 +19,17 @@ public class ToolbarsComponent {
   public static final int HEIGHT = 30;
   public static final int HEIGHT_CBOX = 15;
   public static final String UNKNOWN = "<unknown>";
+
+  /** @param align
+   * @return */
+  public static JToolBar createJToolBar(int align) {
+    JToolBar jToolBar = new JToolBar();
+    jToolBar.setFloatable(false);
+    jToolBar.setLayout(new FlowLayout(align, 3, 0));
+    return jToolBar;
+  }
+
+  /***************************************************/
   // ---
   private final JPanel jPanel = new JPanel(new BorderLayout());
   private final RowPanel rowTitle = new RowPanel();
@@ -44,18 +55,9 @@ public class ToolbarsComponent {
   }
 
   public JToolBar createRow(String title, int height) {
-    JToolBar jToolBar1 = new JToolBar();
-    JToolBar jToolBar2 = new JToolBar();
-    {
-      jToolBar1.setFloatable(false);
-      jToolBar1.setLayout(new FlowLayout(FlowLayout.RIGHT, 3, 0));
-      JLabel jLabel = new JLabel(title);
-      jToolBar1.add(jLabel);
-    }
-    {
-      jToolBar2.setFloatable(false);
-      jToolBar2.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
-    }
+    JToolBar jToolBar1 = createJToolBar(FlowLayout.RIGHT);
+    jToolBar1.add(new JLabel(title));
+    JToolBar jToolBar2 = createJToolBar(FlowLayout.LEFT);
     addPair(jToolBar1, jToolBar2, height);
     return jToolBar2;
   }
@@ -85,9 +87,7 @@ public class ToolbarsComponent {
   public JTextField createEditing(String title) {
     JTextField jTextField = new JTextField(20);
     jTextField.setText(UNKNOWN);
-    JToolBar jToolBar1 = new JToolBar();
-    jToolBar1.setFloatable(false);
-    jToolBar1.setLayout(new FlowLayout(FlowLayout.RIGHT, 3, 0));
+    JToolBar jToolBar1 = createJToolBar(FlowLayout.RIGHT);
     JLabel jLabel = new JLabel(title);
     jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, HEIGHT));
     jToolBar1.add(jLabel);

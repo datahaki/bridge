@@ -13,20 +13,35 @@ import javax.swing.JTextField;
 
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
+// TODO enable Ctrl+z etc. for undo and redo
 /* package */ class StringPanel extends FieldPanel {
   private static final Color LABEL = new Color(51, 51, 51);
   // ---
   protected final JTextField jTextField;
+  private String fallbackValue = null;
 
   public StringPanel(FieldWrap fieldWrap, Object value) {
     super(fieldWrap);
     jTextField = Objects.isNull(value) //
         ? new JTextField()
-        : new JTextField(fieldWrap.toString(value));
+        : new JTextField(fallbackValue = fieldWrap.toString(value));
     jTextField.setFont(FieldPanel.FONT);
     jTextField.setForeground(LABEL);
     jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));
     jTextField.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent keyEvent) {
+        switch (keyEvent.getKeyCode()) {
+        case KeyEvent.VK_ESCAPE: {
+          if (Objects.nonNull(fallbackValue))
+            jTextField.setText(fallbackValue);
+          break;
+        }
+        default:
+          break;
+        }
+      }
+
       @Override
       public void keyReleased(KeyEvent keyEvent) {
         indicateGui();
@@ -48,6 +63,7 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
       }
     });
     indicateGui();
+    addListener(string -> fallbackValue = string);
   }
 
   @Override
