@@ -15,7 +15,7 @@ public final class HardWatchdog implements Watchdog {
     return new HardWatchdog(timeout_seconds);
   }
 
-  // ---
+  /***************************************************/
   private final long tolerance_ns;
   private long lastNotify_ns;
   private boolean isBlown = false;

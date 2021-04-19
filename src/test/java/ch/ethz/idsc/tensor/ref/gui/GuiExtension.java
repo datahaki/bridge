@@ -1,11 +1,14 @@
 // code by jph
 package ch.ethz.idsc.tensor.ref.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.File;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ch.ethz.idsc.tensor.RealScalar;
@@ -18,12 +21,17 @@ import ch.ethz.idsc.tensor.qty.Quantity;
 import ch.ethz.idsc.tensor.ref.FieldClip;
 import ch.ethz.idsc.tensor.ref.FieldExistingDirectory;
 import ch.ethz.idsc.tensor.ref.FieldExistingFile;
+import ch.ethz.idsc.tensor.ref.FieldFuse;
 import ch.ethz.idsc.tensor.ref.FieldIntegerQ;
+import ch.ethz.idsc.tensor.ref.FieldLabel;
 import ch.ethz.idsc.tensor.ref.NameString;
 
 public class GuiExtension {
   public String string = "abc";
   public Boolean status = true;
+  @FieldLabel(text = "Big Fuse")
+  @FieldFuse(text = "press to restart")
+  public Boolean fuse = false;
   public Pivots pivots = Pivots.ARGMAX_ABS;
   @FieldExistingDirectory
   public File folder = HomeDirectory.file();
@@ -58,7 +66,16 @@ public class GuiExtension {
     // root.mkdirs();
     // WindowConfiguration.attach(jFrame, new File(root, "WindowConfiguration.properties"));
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setContentPane(jComponent);
+    JPanel jPanel = new JPanel(new BorderLayout());
+    jPanel.add("Center", jComponent);
+    {
+      JButton jButton = new JButton("reset fuse");
+      jButton.addActionListener(l -> {
+        guiExtension.fuse = false;
+      });
+      jPanel.add("South", jButton);
+    }
+    jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 200, 500, 700);
     jFrame.setVisible(true);
   }
