@@ -24,6 +24,7 @@ import ch.ethz.idsc.tensor.ref.FieldExistingFile;
 import ch.ethz.idsc.tensor.ref.FieldFuse;
 import ch.ethz.idsc.tensor.ref.FieldIntegerQ;
 import ch.ethz.idsc.tensor.ref.FieldLabel;
+import ch.ethz.idsc.tensor.ref.FieldSubdivide;
 import ch.ethz.idsc.tensor.ref.NameString;
 
 public class GuiExtension {
@@ -44,6 +45,8 @@ public class GuiExtension {
   @FieldClip(min = "1000[W]", max = "10000[Wa]")
   // TODO handle error in default value
   public Scalar quantity = Quantity.of(3, "kW");
+  @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
+  public Scalar subdiv = Quantity.of(3, "kW");
   @FieldIntegerQ
   @FieldClip(min = "10", max = "20")
   public Scalar integer = RealScalar.of(12);

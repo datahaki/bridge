@@ -68,7 +68,7 @@ public class ConfigPanel {
 
   private ConfigPanel(Object object) {
     fieldPanels = FieldPanels.of(object);
-    toolbarsComponent = ConfigPanel.build(fieldPanels);
+    toolbarsComponent = build(fieldPanels);
     jScrollPane = toolbarsComponent.createJScrollPane();
   }
 

@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.undo.UndoManager;
 
 import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
 
@@ -25,6 +26,8 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
     jTextField = Objects.isNull(value) //
         ? new JTextField()
         : new JTextField(fallbackValue = fieldWrap.toString(value));
+    UndoManager undoManager = new UndoManager();
+    jTextField.getDocument().addUndoableEditListener(undoManager);
     jTextField.setFont(FieldPanel.FONT);
     jTextField.setForeground(LABEL);
     jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));
@@ -35,6 +38,17 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
         case KeyEvent.VK_ESCAPE: {
           if (Objects.nonNull(fallbackValue))
             jTextField.setText(fallbackValue);
+          break;
+        }
+        case KeyEvent.VK_Z: {
+          if ((keyEvent.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
+            if (undoManager.canUndo())
+              try {
+                undoManager.undo();
+              } catch (Exception exception) {
+                exception.printStackTrace();
+              }
+          }
           break;
         }
         default:
@@ -48,18 +62,18 @@ import ch.ethz.idsc.tensor.ref.gui.FieldPanel;
       }
     });
     jTextField.addFocusListener(new FocusListener() {
-      private String value;
+      private String _value;
 
       @Override
       public void focusGained(FocusEvent focusEvent) {
-        value = jTextField.getText();
+        _value = jTextField.getText();
       }
 
       @Override
       public void focusLost(FocusEvent focusEvent) {
         String string = jTextField.getText();
-        if (!string.equals(value))
-          nofifyIfValid(value = string);
+        if (!string.equals(_value))
+          nofifyIfValid(_value = string);
       }
     });
     indicateGui();
