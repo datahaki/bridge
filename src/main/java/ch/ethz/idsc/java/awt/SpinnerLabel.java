@@ -120,8 +120,10 @@ public class SpinnerLabel<T> {
       if (isOverArrows(point))
         increment(point.y < dimension.height / 2 ? -1 : 1); // sign of difference
       else //
-      if (isMenuEnabled)
-        new SpinnerMenu<>(this, isMenuHover).showRight(jLabel);
+      if (isMenuEnabled) {
+        SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(this, isMenuHover);
+        spinnerMenu.showRight(jLabel);
+      }
     }
   };
 

@@ -48,22 +48,9 @@ public enum TensorReflection {
 
   /***************************************************/
   /** @param fieldClip
-   * @return Optional.empty() if given fieldClip is null,
-   * or fields specified by given fieldClip are invalid */
-  public static Optional<Clip> of(FieldClip fieldClip) {
-    if (Objects.nonNull(fieldClip))
-      try {
-        return Optional.of(clip(fieldClip));
-      } catch (Exception exception) {
-        // ---
-      }
-    return Optional.empty();
-  }
-
-  /** @param fieldClip
    * @return
    * @throws Exception if parsing of strings to scalars fails */
-  public static Clip clip(FieldClip fieldClip) {
+  public static Clip clip(FieldClip fieldClip) throws Exception {
     return Clips.interval( //
         UnitSystem.SI().apply(Scalars.fromString(fieldClip.min())), //
         UnitSystem.SI().apply(Scalars.fromString(fieldClip.max())));

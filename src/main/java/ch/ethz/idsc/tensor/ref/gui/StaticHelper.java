@@ -14,7 +14,6 @@ import ch.ethz.idsc.tensor.alg.Subdivide;
 import ch.ethz.idsc.tensor.red.ArgMin;
 import ch.ethz.idsc.tensor.ref.FieldClip;
 import ch.ethz.idsc.tensor.ref.FieldIntegerQ;
-import ch.ethz.idsc.tensor.ref.TensorReflection;
 import ch.ethz.idsc.tensor.sca.Abs;
 
 /* package */ enum StaticHelper {
@@ -43,7 +42,6 @@ import ch.ethz.idsc.tensor.sca.Abs;
     {
       FieldClip fieldClip = field.getAnnotation(FieldClip.class);
       if (Objects.nonNull(fieldClip)) {
-        TensorReflection.clip(fieldClip); // test
         list.add("min=" + fieldClip.min());
         list.add("max=" + fieldClip.max());
       }

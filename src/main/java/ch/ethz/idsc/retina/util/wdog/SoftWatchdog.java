@@ -6,17 +6,21 @@ package ch.ethz.idsc.retina.util.wdog;
  * 
  * @see Watchdog */
 public final class SoftWatchdog implements Watchdog {
+  /** @param timeout_seconds
+   * @return */
   public static Watchdog notified(double timeout_seconds) {
     Watchdog watchdog = new SoftWatchdog(timeout_seconds);
     watchdog.notifyWatchdog();
     return watchdog;
   }
 
+  /** @param timeout_seconds
+   * @return */
   public static Watchdog barking(double timeout_seconds) {
     return new SoftWatchdog(timeout_seconds);
   }
 
-  // ---
+  /***************************************************/
   private final long tolerance_ns;
   private long lastNotify_ns;
 

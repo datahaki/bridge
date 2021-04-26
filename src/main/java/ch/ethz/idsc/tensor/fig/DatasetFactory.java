@@ -25,9 +25,8 @@ import ch.ethz.idsc.tensor.qty.Unit;
  * for the instantiation of a JFreeChart object */
 /* package */ enum DatasetFactory {
   ;
-  /** Quote from the JFreeChart javadoc: "[XYSeries] represents a sequence of zero
-   * or more data items in the form (x, y). By default, items in the series will be
-   * sorted into ascending order by x-value, and duplicate x-values are permitted."
+  /** Quote from the JFreeChart javadoc: "[XYSeries] represents a sequence
+   * of zero or more data items in the form (x, y)."
    * 
    * @param visualSet
    * @return
@@ -38,7 +37,10 @@ import ch.ethz.idsc.tensor.qty.Unit;
     ScalarUnaryOperator suoY = null;
     for (VisualRow visualRow : visualSet.visualRows()) {
       String labelString = visualRow.getLabelString();
-      XYSeries xySeries = new XYSeries(labelString.isEmpty() ? xySeriesCollection.getSeriesCount() : labelString);
+      XYSeries xySeries = new XYSeries(labelString.isEmpty() //
+          ? xySeriesCollection.getSeriesCount()
+          : labelString, //
+          visualRow.getAutoSort());
       Tensor points = visualRow.points();
       if (Objects.isNull(suoX) && !Tensors.isEmpty(points)) {
         {
@@ -81,8 +83,8 @@ import ch.ethz.idsc.tensor.qty.Unit;
   /** Quote from the JFreeChart javadoc: "[...] The {@link TableXYDataset}
    * interface requires all series to share the same set of x-values. When
    * adding a new item <code>(x, y)</code> to one series, all other series
-   * automatically get a new item <code>(x, null)</code> unless a non-null item
-   * has already been specified."
+   * automatically get a new item <code>(x, null)</code> unless a non-null
+   * item has already been specified."
    * 
    * @param visualSet
    * @return */

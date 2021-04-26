@@ -7,9 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/** intended for user to set Boolean value to true
+ * whereas the software only sets Boolean value to false */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldColor {
-  // ---
+public @interface FieldFuse {
+  /** @return */
+  String text();
 }

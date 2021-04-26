@@ -13,6 +13,8 @@ import ch.ethz.idsc.tensor.io.ResourceData;
   public Tensor onlyInExt = Tensors.vector(1, 2, 3);
   @SuppressWarnings("unused")
   private Scalar _private;
+  Scalar _package;
+  protected Scalar _protected;
 
   public ParamContainerExt() {
     string = "fromConstructor";

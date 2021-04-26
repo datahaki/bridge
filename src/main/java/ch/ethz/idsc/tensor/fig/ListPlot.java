@@ -2,20 +2,27 @@
 package ch.ethz.idsc.tensor.fig;
 
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeriesCollection;
 
-/** inspired by
+/** Hint:
+ * to render list plot in a custom graphics use
+ * jFreeChart.draw(graphics2d, rectangle2D)
+ * 
+ * to export to a graphics file use
+ * ChartUtils.saveChartAsPNG(file, jFreeChart, width, height);
+ * 
+ * to embed figure as separate panel in gui use {@link ChartPanel}.
+ * 
+ * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ListPlot.html">ListPlot</a> */
 public enum ListPlot {
   ;
-  /** Hint: use
-   * jFreeChart.draw(graphics2d, rectangle2D) to render list plot
-   * 
-   * @param visualSet
+  /** @param visualSet
    * @param joined for lines between coordinates, otherwise scattered points
    * @return */
   public static JFreeChart of(VisualSet visualSet, boolean joined) {
@@ -48,6 +55,11 @@ public enum ListPlot {
     return jFreeChart;
   }
 
+  /** Mathematica's default is to draw data points as separate dots,
+   * i.e. "Joined->False".
+   * 
+   * @param visualSet
+   * @return */
   public static JFreeChart of(VisualSet visualSet) {
     return of(visualSet, false);
   }

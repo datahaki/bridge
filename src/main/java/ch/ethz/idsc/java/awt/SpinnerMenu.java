@@ -2,6 +2,7 @@
 package ch.ethz.idsc.java.awt;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedHashMap;
@@ -25,8 +26,10 @@ class SpinnerMenu<T> extends StandardMenu {
 
   @Override
   protected void design(JPopupMenu jPopupMenu) {
+    Font font = spinnerLabel.getLabelComponent().getFont();
     for (T type : spinnerLabel.list) {
       JMenuItem jMenuItem = new JMenuItem(type.toString());
+      jMenuItem.setFont(font);
       if (hover)
         jMenuItem.addMouseListener(new MouseAdapter() {
           @Override

@@ -11,7 +11,6 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import ch.ethz.idsc.java.util.AssertFail;
-import ch.ethz.idsc.tensor.ComplexScalar;
 import ch.ethz.idsc.tensor.RationalScalar;
 import ch.ethz.idsc.tensor.RealScalar;
 import ch.ethz.idsc.tensor.Scalar;
@@ -24,39 +23,26 @@ import ch.ethz.idsc.tensor.qty.Quantity;
 import junit.framework.TestCase;
 
 public class ObjectPropertiesTest extends TestCase {
-  public void testParseString() {
-    Object object = ObjectProperties.parse(String.class, "ethz idsc ");
-    assertEquals(object, "ethz idsc ");
-  }
-
-  public void testParseScalar() {
-    Object object = ObjectProperties.parse(Scalar.class, " 3/4+8*I[m*s^-2]");
-    Scalar scalar = Quantity.of(ComplexScalar.of(RationalScalar.of(3, 4), RealScalar.of(8)), "m*s^-2");
-    assertEquals(object, scalar);
-  }
-
-  public void testParseFile() {
-    Object object = ObjectProperties.parse(File.class, "/home/datahaki/file.txt");
-    assertEquals(object, new File("/home/datahaki/file.txt"));
-  }
-
-  public void testParseBoolean() {
-    Object object = ObjectProperties.parse(Boolean.class, "true");
-    assertEquals(object, Boolean.TRUE);
-  }
-
-  public void testIsTracked() {
-    Field[] fields = ParamContainer.class.getFields();
-    int count = 0;
-    for (Field field : fields)
-      count += ObjectProperties.isTracked(field) ? 1 : 0;
-    ParamContainer paramContainer = new ParamContainer();
-    ObjectProperties objectProperties = ObjectProperties.wrap(paramContainer);
-    int count2 = objectProperties.fields().size();
-    assertEquals(count, count2);
-    assertEquals(count, 5);
-  }
-
+  // public void testParseString() {
+  // Object object = ObjectPropertiesTest.parse(String.class, "ethz idsc ");
+  // assertEquals(object, "ethz idsc ");
+  // }
+  //
+  // public void testParseScalar() {
+  // Object object = ObjectPropertiesTest.parse(Scalar.class, " 3/4+8*I[m*s^-2]");
+  // Scalar scalar = Quantity.of(ComplexScalar.of(RationalScalar.of(3, 4), RealScalar.of(8)), "m*s^-2");
+  // assertEquals(object, scalar);
+  // }
+  //
+  // public void testParseFile() {
+  // Object object = ObjectPropertiesTest.parse(File.class, "/home/datahaki/file.txt");
+  // assertEquals(object, new File("/home/datahaki/file.txt"));
+  // }
+  //
+  // public void testParseBoolean() {
+  // Object object = ObjectPropertiesTest.parse(Boolean.class, "true");
+  // assertEquals(object, Boolean.TRUE);
+  // }
   public void testScalarClass() {
     Class<?> cls = RealScalar.ONE.getClass();
     assertFalse(cls.equals(Scalar.class));
@@ -67,10 +53,16 @@ public class ObjectPropertiesTest extends TestCase {
     Tensor tensor = Tensors.fromString("{1, 2}+a");
     assertTrue(tensor instanceof StringScalar);
   }
-
-  public void testParseScalarFail() {
-    AssertFail.of(() -> ObjectProperties.parse(Integer.class, "123"));
-  }
+  // public void testParseScalarFail() {
+  // AssertFail.of(() -> ObjectPropertiesTest.parse(Integer.class, "123"));
+  // }
+  //
+  // public void testParseEnum() {
+  // Object object0 = ObjectPropertiesTest.parse(Pivots.class, "ARGMAX_ABS");
+  // assertEquals(object0, Pivots.ARGMAX_ABS);
+  // Object object1 = ObjectPropertiesTest.parse(Pivots.class, "FIRST_NON_ZERO");
+  // assertEquals(object1, Pivots.FIRST_NON_ZERO);
+  // }
 
   public void testListSize1() throws Exception {
     ParamContainer paramContainer = new ParamContainer();
@@ -96,12 +88,12 @@ public class ObjectPropertiesTest extends TestCase {
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainer);
     paramContainer.status = true;
     assertEquals(objectProperties.strings().size(), 1);
-    Properties properties = objectProperties.get();
+    Properties properties = objectProperties.createProperties();
     assertEquals(properties.getProperty("status"), "true");
     properties.setProperty("status", "corrupt");
     objectProperties.set(properties);
-    assertNull(paramContainer.status);
-    assertEquals(objectProperties.strings().size(), 0);
+    // assertNonNull(paramContainer.status);
+    assertEquals(objectProperties.strings().size(), 1);
     // ---
     properties.setProperty("status", "true");
     objectProperties.set(properties);
@@ -124,7 +116,7 @@ public class ObjectPropertiesTest extends TestCase {
     assertEquals(objectProperties.strings().size(), 3);
     paramContainer.abc = RealScalar.ONE;
     assertEquals(objectProperties.strings().size(), 4);
-    Properties properties = objectProperties.get();
+    Properties properties = objectProperties.createProperties();
     {
       ParamContainer pc = new ParamContainer();
       ObjectProperties tensorProperties2 = ObjectProperties.wrap(pc);
@@ -177,7 +169,8 @@ public class ObjectPropertiesTest extends TestCase {
   public void testFields() {
     ParamContainer paramContainer = new ParamContainer();
     ObjectProperties objectProperties = ObjectProperties.wrap(paramContainer);
-    List<String> list = objectProperties.fields().keySet().stream() //
+    List<String> list = objectProperties.list().stream() //
+        .map(FieldWrap::getField) //
         .map(Field::getName).collect(Collectors.toList());
     assertEquals(list.get(0), "string");
     assertEquals(list.get(1), "maxTor");

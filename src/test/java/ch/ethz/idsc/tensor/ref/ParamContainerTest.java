@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import ch.ethz.idsc.tensor.Tensors;
 import ch.ethz.idsc.tensor.ext.HomeDirectory;
-import ch.ethz.idsc.tensor.mat.Pivots;
+import ch.ethz.idsc.tensor.mat.re.Pivots;
 import ch.ethz.idsc.tensor.qty.Quantity;
 import junit.framework.TestCase;
 
@@ -22,10 +22,11 @@ public class ParamContainerTest extends TestCase {
     ParamContainerFile paramContainerFile = new ParamContainerFile();
     paramContainerFile.file = HomeDirectory.file("file.txt");
     ObjectProperties tensorProperties = ObjectProperties.wrap(paramContainerFile);
-    Properties properties = tensorProperties.get();
+    Properties properties = tensorProperties.createProperties();
     ParamContainerFile copy = new ParamContainerFile();
     ObjectProperties wrap = ObjectProperties.wrap(copy);
     wrap.set(properties);
+    // System.out.println(properties);
     assertEquals(copy.file, paramContainerFile.file);
   }
 
@@ -51,7 +52,7 @@ public class ParamContainerTest extends TestCase {
       paramContainerEnum.pivots = Pivots.FIRST_NON_ZERO;
       paramContainerEnum.nameString = NameString.SECOND;
       ObjectProperties tensorProperties = ObjectProperties.wrap(paramContainerEnum);
-      properties = tensorProperties.get();
+      properties = tensorProperties.createProperties();
     }
     {
       ParamContainerEnum paramContainerEnum = new ParamContainerEnum();
@@ -67,7 +68,7 @@ public class ParamContainerTest extends TestCase {
     {
       ParamContainerEnum paramContainerEnum = new ParamContainerEnum();
       ObjectProperties tensorProperties = ObjectProperties.wrap(paramContainerEnum);
-      properties = tensorProperties.get();
+      properties = tensorProperties.createProperties();
     }
     properties.setProperty("nameString", NameString.THIRD.name());
     {

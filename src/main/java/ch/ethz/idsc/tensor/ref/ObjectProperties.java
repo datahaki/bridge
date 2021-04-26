@@ -1,21 +1,17 @@
 // code by jph
 package ch.ethz.idsc.tensor.ref;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.nio.file.Files;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 
 import ch.ethz.idsc.tensor.Scalar;
 import ch.ethz.idsc.tensor.Tensor;
@@ -25,13 +21,15 @@ import ch.ethz.idsc.tensor.io.Import;
  * 
  * values of non-final, non-static, non-transient but public members of type
  * {@link Tensor}, {@link Scalar}, {@link String}, {@link File}, {@link Boolean},
- * {@link Enum}
- * are stored in, and retrieved from files in the {@link Properties} format */
+ * {@link Enum}, {@link Color}
+ * are stored in, and retrieved from files in the {@link Properties} format
+ * 
+ * the listed of supported types can be extended, see {@link FieldWraps}
+ * 
+ * Hint: the implementation does not assign null values to members. in case
+ * of a parse failure, or invalid assignment, the preset/default/current
+ * value is retained. */
 public class ObjectProperties {
-  private static final int MASK_FILTER = Modifier.PUBLIC;
-  private static final int MASK_TESTED = //
-      Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT | MASK_FILTER;
-
   /** @param object non-null
    * @return
    * @throws Exception if given object is null */
@@ -39,54 +37,19 @@ public class ObjectProperties {
     return new ObjectProperties(object);
   }
 
-  /** @param field
-   * @param string
-   * @return object with content parsed from given string */
-  public static Object parse(Field field, String string) {
-    return parse(field.getType(), string);
-  }
-
-  /** @param cls class
-   * @param string to parse to an instance of given class
-   * @return new instance of class that was constructed from given string
-   * @throws Exception if given class is not supported */
-  /* package */ static Object parse(Class<?> cls, String string) {
-    for (FieldType type : FieldType.values())
-      if (type.isTracking(cls))
-        return type.toObject(cls, string);
-    throw new UnsupportedOperationException(cls + " " + string);
-  }
-
-  /** @param field
-   * @return if field is managed by {@link ObjectProperties} */
-  /* package */ static boolean isTracked(Field field) {
-    if ((field.getModifiers() & MASK_TESTED) == MASK_FILTER) {
-      Class<?> cls = field.getType();
-      return Stream.of(FieldType.values()).anyMatch(type -> type.isTracking(cls));
-    }
-    return false;
-  }
-
   /***************************************************/
   private final Object object;
+  private List<FieldWrap> list;
 
   private ObjectProperties(Object object) {
-    this.object = Objects.requireNonNull(object);
+    this.object = object;
+    list = StaticHelper.CACHE.apply(object.getClass());
   }
 
-  /** @return map of tracked fields of given object
-   * in the order in which they appear top to bottom in the class */
-  public Map<Field, FieldType> fields() {
-    Map<Field, FieldType> map = new LinkedHashMap<>();
-    for (Field field : object.getClass().getFields()) {
-      if ((field.getModifiers() & MASK_TESTED) == MASK_FILTER) {
-        Class<?> cls = field.getType();
-        Optional<FieldType> optional = Stream.of(FieldType.values()).filter(type -> type.isTracking(cls)).findFirst();
-        if (optional.isPresent())
-          map.put(field, optional.get());
-      }
-    }
-    return map;
+  /** @return list of tracked fields of given object
+   * in the order in which they appear top to bottom in the class, superclass first */
+  public List<FieldWrap> list() {
+    return list;
   }
 
   /** @param properties
@@ -95,23 +58,27 @@ public class ObjectProperties {
    * @throws Exception if properties is null */
   @SuppressWarnings("unchecked")
   public <T> T set(Properties properties) {
-    fields().entrySet().forEach(entry -> {
-      Field field = entry.getKey();
-      FieldType fieldType = entry.getValue();
-      String string = properties.getProperty(field.getName());
+    for (FieldWrap fieldWrap : list) {
+      String string = properties.getProperty(fieldWrap.getField().getName());
       if (Objects.nonNull(string))
-        try {
-          field.set(object, fieldType.toObject(field.getType(), string));
-        } catch (Exception exception) {
-          exception.printStackTrace();
-        }
-    });
+        setIfValid(fieldWrap, string);
+    }
     return (T) object;
+  }
+
+  public void setIfValid(FieldWrap fieldWrap, String string) {
+    try {
+      Object value = fieldWrap.toValue(string);
+      if (Objects.nonNull(value) && fieldWrap.isValidValue(value)) // otherwise retain current assignment
+        fieldWrap.getField().set(object, value);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
   }
 
   /** @param object
    * @return properties with fields of given object as keys mapping to values as string expression */
-  /* package */ Properties get() {
+  public Properties createProperties() {
     Properties properties = new Properties();
     consume(properties::setProperty);
     return properties;
@@ -170,28 +137,15 @@ public class ObjectProperties {
 
   // helper function
   private void consume(BiConsumer<String, String> biConsumer) {
-    fields().entrySet().forEach(entry -> {
-      Field field = entry.getKey();
+    for (FieldWrap fieldWrap : list) {
+      Field field = fieldWrap.getField();
       try {
         Object value = field.get(object); // may throw Exception
         if (Objects.nonNull(value))
-          biConsumer.accept(field.getName(), FieldType.toString(field.getType(), value));
+          biConsumer.accept(field.getName(), fieldWrap.toString(value));
       } catch (Exception exception) {
         exception.printStackTrace();
       }
-    });
-  }
-
-  public boolean setIfValid(Field field, FieldType fieldType, String string) {
-    try {
-      Object value = fieldType.toObject(field.getType(), string);
-      if (fieldType.isValidValue(field, value)) {
-        field.set(object, value);
-        return true;
-      }
-    } catch (Exception exception) {
-      exception.printStackTrace();
     }
-    return false;
   }
 }

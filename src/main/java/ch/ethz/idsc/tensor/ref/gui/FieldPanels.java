@@ -1,15 +1,14 @@
 // code by jph
 package ch.ethz.idsc.tensor.ref.gui;
 
-import java.io.File;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 import java.util.function.Consumer;
 
-import ch.ethz.idsc.tensor.ref.FieldType;
+import ch.ethz.idsc.tensor.ref.FieldWrap;
+import ch.ethz.idsc.tensor.ref.FieldWraps;
 import ch.ethz.idsc.tensor.ref.ObjectProperties;
 
 /** FieldPanels performs introspection of an instance of a public class
@@ -17,14 +16,7 @@ import ch.ethz.idsc.tensor.ref.ObjectProperties;
  * will be created through which the user can modify the value of the
  * field of the given instance.
  * 
- * Not all fields are possible to edits. The list of fields that produce
- * a gui element are:
- * Boolean (with B caps, and not boolean!)
- * String
- * Scalar
- * Tensor
- * Enum
- * File */
+ * @see FieldWraps */
 public class FieldPanels {
   /** @param object
    * @return */
@@ -33,46 +25,33 @@ public class FieldPanels {
   }
 
   /***************************************************/
-  private final Map<Field, FieldPanel> map = new LinkedHashMap<>();
+  private final ObjectProperties objectProperties;
+  private final List<FieldPanel> list = new ArrayList<>();
 
   private FieldPanels(Object object) {
-    ObjectProperties objectProperties = ObjectProperties.wrap(object);
-    Map<Field, FieldType> fieldMap = objectProperties.fields();
-    for (Entry<Field, FieldType> entry : fieldMap.entrySet()) {
-      Field field = entry.getKey();
-      FieldType type = entry.getValue();
+    objectProperties = ObjectProperties.wrap(object);
+    for (FieldWrap fieldWrap : objectProperties.list()) {
+      Field field = fieldWrap.getField();
       try {
-        Object value = field.get(object); // check for failure, value only at begin!
-        FieldPanel fieldPanel = factor(field, type, value);
-        fieldPanel.addListener(string -> objectProperties.setIfValid(field, type, string));
-        map.put(field, fieldPanel);
+        // fail fast
+        FieldPanel fieldPanel = fieldWrap.createFieldPanel(field.get(object));
+        fieldPanel.addListener(string -> objectProperties.setIfValid(fieldWrap, string));
+        list.add(fieldPanel);
       } catch (Exception exception) {
-        // ---
+        exception.printStackTrace();
       }
     }
   }
 
-  public Map<Field, FieldPanel> map() {
-    return Collections.unmodifiableMap(map);
+  public ObjectProperties objectProperties() {
+    return objectProperties;
+  }
+
+  public List<FieldPanel> list() {
+    return Collections.unmodifiableList(list);
   }
 
   public void addUniversalListener(Consumer<String> consumer) {
-    map.values().stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
-  }
-
-  private static FieldPanel factor(Field field, FieldType fieldType, Object value) {
-    switch (fieldType) {
-    case STRING:
-    case TENSOR:
-    case SCALAR:
-      return new StringPanel(field, fieldType, value);
-    case BOOLEAN:
-      return new BooleanPanel((Boolean) value);
-    case ENUM:
-      return new EnumPanel(field.getType().getEnumConstants(), value);
-    case FILE:
-      return new FilePanel(field, fieldType, (File) value);
-    }
-    throw new RuntimeException();
+    list.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
   }
 }

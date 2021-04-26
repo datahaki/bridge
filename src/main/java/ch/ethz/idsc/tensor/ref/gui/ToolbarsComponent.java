@@ -19,6 +19,17 @@ public class ToolbarsComponent {
   public static final int HEIGHT = 30;
   public static final int HEIGHT_CBOX = 15;
   public static final String UNKNOWN = "<unknown>";
+
+  /** @param align
+   * @return */
+  public static JToolBar createJToolBar(int align) {
+    JToolBar jToolBar = new JToolBar();
+    jToolBar.setFloatable(false);
+    jToolBar.setLayout(new FlowLayout(align, 3, 0));
+    return jToolBar;
+  }
+
+  /***************************************************/
   // ---
   private final JPanel jPanel = new JPanel(new BorderLayout());
   private final RowPanel rowTitle = new RowPanel();
@@ -29,7 +40,7 @@ public class ToolbarsComponent {
     jPanel.add(rowActor.jPanel, BorderLayout.CENTER);
   }
 
-  protected void addSeparator() {
+  public void addSeparator() {
     JLabel jLabelW = new JLabel();
     jLabelW.setBackground(Color.GRAY);
     jLabelW.setOpaque(true);
@@ -39,23 +50,14 @@ public class ToolbarsComponent {
     addPair(jLabelW, jLabelC, 5);
   }
 
-  protected JToolBar createRow(String title) {
+  public JToolBar createRow(String title) {
     return createRow(title, HEIGHT);
   }
 
-  protected JToolBar createRow(String title, int height) {
-    JToolBar jToolBar1 = new JToolBar();
-    JToolBar jToolBar2 = new JToolBar();
-    {
-      jToolBar1.setFloatable(false);
-      jToolBar1.setLayout(new FlowLayout(FlowLayout.RIGHT, 3, 0));
-      JLabel jLabel = new JLabel(title);
-      jToolBar1.add(jLabel);
-    }
-    {
-      jToolBar2.setFloatable(false);
-      jToolBar2.setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
-    }
+  public JToolBar createRow(String title, int height) {
+    JToolBar jToolBar1 = createJToolBar(FlowLayout.RIGHT);
+    jToolBar1.add(new JLabel(title));
+    JToolBar jToolBar2 = createJToolBar(FlowLayout.LEFT);
     addPair(jToolBar1, jToolBar2, height);
     return jToolBar2;
   }
@@ -82,12 +84,10 @@ public class ToolbarsComponent {
   /***************************************************/
   /** @param title
    * @return editable text field that allows user modification */
-  protected JTextField createEditing(String title) {
+  public JTextField createEditing(String title) {
     JTextField jTextField = new JTextField(20);
     jTextField.setText(UNKNOWN);
-    JToolBar jToolBar1 = new JToolBar();
-    jToolBar1.setFloatable(false);
-    jToolBar1.setLayout(new FlowLayout(FlowLayout.RIGHT, 3, 0));
+    JToolBar jToolBar1 = createJToolBar(FlowLayout.RIGHT);
     JLabel jLabel = new JLabel(title);
     jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, HEIGHT));
     jToolBar1.add(jLabel);
@@ -98,7 +98,7 @@ public class ToolbarsComponent {
   /***************************************************/
   /** @param title
    * @return non-editable text field to display values */
-  protected JTextField createReading(String title) {
+  public JTextField createReading(String title) {
     JTextField jTextField = createEditing(title);
     jTextField.setEditable(false);
     jTextField.setEnabled(false);
@@ -106,17 +106,19 @@ public class ToolbarsComponent {
     return jTextField;
   }
 
-  protected JCheckBox createReadingCheckbox(String title) {
-    JCheckBox jTextField = new JCheckBox(title);
-    jTextField.setEnabled(false);
+  public JCheckBox createReadingCheckbox(String title) {
+    JCheckBox jCheckBox = new JCheckBox(title);
+    jCheckBox.setEnabled(false);
     JLabel jLabel = new JLabel(" ");
     jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, HEIGHT_CBOX));
-    addPair(jLabel, jTextField, HEIGHT_CBOX);
-    return jTextField;
+    addPair(jLabel, jCheckBox, HEIGHT_CBOX);
+    return jCheckBox;
   }
 
   /***************************************************/
-  public JComponent getScrollPane() {
+  /** @return component that contains the labeled input fields only, but not
+   * the text summary below */
+  public JScrollPane createJScrollPane() {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(this.jPanel, BorderLayout.NORTH);
     return new JScrollPane(jPanel);

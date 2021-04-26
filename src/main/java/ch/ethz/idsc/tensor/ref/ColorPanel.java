@@ -1,10 +1,10 @@
-package ch.ethz.idsc.tensor.ref.gui;
+// code by jph
+package ch.ethz.idsc.tensor.ref;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Field;
 import java.util.Objects;
 
 import javax.swing.JButton;
@@ -14,13 +14,12 @@ import javax.swing.JPanel;
 
 import ch.ethz.idsc.tensor.Tensors;
 import ch.ethz.idsc.tensor.img.ColorFormat;
-import ch.ethz.idsc.tensor.ref.FieldType;
 
-class ColorPanel extends StringPanel {
+/* package */ class ColorPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
-  public ColorPanel(Field field, FieldType fieldType, Object object) {
-    super(field, fieldType, object);
+  public ColorPanel(FieldWrap fieldWrap, Object object) {
+    super(fieldWrap, object);
     jButton.setBackground(getColor());
     jButton.addActionListener(new ActionListener() {
       @Override
@@ -28,12 +27,13 @@ class ColorPanel extends StringPanel {
         Color color = JColorChooser.showDialog(jButton, "pick color", getColor());
         if (Objects.nonNull(color)) {
           jButton.setBackground(color);
-          String string = ColorFormat.toVector(color).toString();
+          String string = fieldWrap.toString(color);
           jTextField.setText(string);
           notifyListeners(string);
         }
       }
     });
+    jTextField.setEditable(false);
   }
 
   private Color getColor() {
@@ -46,7 +46,7 @@ class ColorPanel extends StringPanel {
   }
 
   @Override
-  public JComponent getComponent() {
+  public JComponent getJComponent() {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add("Center", jTextField);
     jPanel.add("East", jButton);
