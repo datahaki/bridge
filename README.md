@@ -1,3 +1,5 @@
-# ch.ethz.idsc.java <a href="https://travis-ci.org/datahaki/java"><img src="https://travis-ci.org/datahaki/java.svg?branch=master" alt="Build Status"></a>
+![alpine_877](https://user-images.githubusercontent.com/4012178/116814864-1b1a1580-ab5b-11eb-97e6-1441af4ececa.png)
 
-Library for Java, version `0.0.5`
+# ch.ethz.idsc.java <a href="https://travis-ci.com/datahaki/java"><img src="https://travis-ci.com/datahaki/java.svg?branch=master" alt="Build Status"></a>
+
+Library for Java, version `0.0.6`
