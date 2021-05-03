@@ -17,7 +17,7 @@ import ch.alpine.java.ref.FieldExistingFile;
 import ch.alpine.java.ref.FieldFuse;
 import ch.alpine.java.ref.FieldIntegerQ;
 import ch.alpine.java.ref.FieldLabel;
-import ch.alpine.java.ref.FieldSubdivide;
+import ch.alpine.java.ref.FieldSelection;
 import ch.alpine.java.ref.NameString;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -45,7 +45,8 @@ public class GuiExtension {
   @FieldClip(min = "1000[W]", max = "10000[Wa]")
   // TODO handle error in default value
   public Scalar quantity = Quantity.of(3, "kW");
-  @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
+  // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
+  @FieldSelection(list = "{1[%], 2[%], 3[%]}")
   public Scalar subdiv = Quantity.of(3, "kW");
   @FieldIntegerQ
   @FieldClip(min = "10", max = "20")
