@@ -8,7 +8,6 @@ import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
-import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
@@ -44,15 +43,5 @@ public enum TensorReflection {
     return Clips.interval( //
         Scalars.fromString(fieldSubdivide.start()), //
         Scalars.fromString(fieldSubdivide.end()));
-  }
-
-  /***************************************************/
-  /** @param fieldClip
-   * @return
-   * @throws Exception if parsing of strings to scalars fails */
-  public static Clip clip(FieldClip fieldClip) throws Exception {
-    return Clips.interval( //
-        UnitSystem.SI().apply(Scalars.fromString(fieldClip.min())), //
-        UnitSystem.SI().apply(Scalars.fromString(fieldClip.max())));
   }
 }

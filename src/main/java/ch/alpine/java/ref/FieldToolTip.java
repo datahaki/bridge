@@ -10,10 +10,8 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldLabel {
+public @interface FieldToolTip {
+  // TODO still has to be implemented
   /** @return text of label instead of field name */
   String text();
-
-  // TODO not implemented yet
-  Alignment alignment() default Alignment.RIGHT;
 }

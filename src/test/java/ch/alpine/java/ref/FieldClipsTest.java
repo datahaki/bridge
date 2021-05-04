@@ -8,11 +8,11 @@ import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.Clip;
 import junit.framework.TestCase;
 
-public class FieldClipTest extends TestCase {
+public class FieldClipsTest extends TestCase {
   public void testSimple() throws Exception {
     Field field = AnnotatedContainer.class.getField("clipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    Clip clip = TensorReflection.clip(fieldClip);
+    Clip clip = FieldClips.of(fieldClip);
     assertEquals(clip.min(), RealScalar.of(2));
     assertEquals(clip.max(), RealScalar.of(6));
   }
@@ -20,7 +20,7 @@ public class FieldClipTest extends TestCase {
   public void testQuantity() throws Exception {
     Field field = AnnotatedContainer.class.getField("quantityClipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    Clip clip = TensorReflection.clip(fieldClip);
+    Clip clip = FieldClips.of(fieldClip);
     assertEquals(clip.min(), Quantity.of(2000, "kg*m^2*s^-3"));
     assertEquals(clip.max(), Quantity.of(6000, "kg*m^2*s^-3"));
   }

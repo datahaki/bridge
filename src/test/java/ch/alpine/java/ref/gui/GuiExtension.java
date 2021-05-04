@@ -18,6 +18,7 @@ import ch.alpine.java.ref.FieldFuse;
 import ch.alpine.java.ref.FieldIntegerQ;
 import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.FieldSelection;
+import ch.alpine.java.ref.FieldToolTip;
 import ch.alpine.java.ref.NameString;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -42,10 +43,13 @@ public class GuiExtension {
   public Tensor tensor = Tensors.fromString("{1, 2}");
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");
+  public Scalar scalar1 = Quantity.of(3, "m*s^-1");
+  public Scalar scalar2 = Quantity.of(3, "m*s^-1");
   @FieldClip(min = "1000[W]", max = "10000[Wa]")
   // TODO handle error in default value
   public Scalar quantity = Quantity.of(3, "kW");
   // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
+  @FieldToolTip(text = "asd")
   @FieldSelection(list = "{1[%], 2[%], 3[%]}")
   public Scalar subdiv = Quantity.of(3, "kW");
   @FieldIntegerQ
@@ -53,6 +57,8 @@ public class GuiExtension {
   public Scalar integer = RealScalar.of(12);
   public Color color = Color.RED;
   public NameString nameString = NameString.SECOND;
+  @FieldClip(min = "-10[L*min^-1]", max = "20[L*min^-1]")
+  public Scalar volumeFlow = Quantity.of(20, "L*min^-1");
   // ---
   Scalar packsc = Quantity.of(3, "m*s^-1");
 
