@@ -15,7 +15,7 @@ import ch.alpine.java.awt.StandardMenu;
 import ch.alpine.tensor.Tensor;
 
 /* package */ class MenuPanel extends StringPanel {
-  private final JButton jButton = new JButton(">");
+  private final JButton jButton = new JButton("?");
 
   public MenuPanel(FieldWrap fieldWrap, Object object, Tensor tensor) {
     super(fieldWrap, object);

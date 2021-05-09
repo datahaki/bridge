@@ -23,6 +23,7 @@ public class ScalarFieldWrap extends TensorFieldWrap {
       try {
         clip = FieldClips.of(fieldClip);
       } catch (Exception exception) {
+        System.err.println(field);
         exception.printStackTrace();
       }
   }
