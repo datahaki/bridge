@@ -10,10 +10,7 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldLabel {
-  /** @return text of label instead of field name */
-  String text();
-
-  // TODO not implemented yet
-  Alignment alignment() default Alignment.RIGHT;
+public @interface FieldSelection {
+  /** @return */
+  String list();
 }

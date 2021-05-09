@@ -2,4 +2,4 @@
 
 # ch.ethz.idsc.java <a href="https://travis-ci.com/datahaki/java"><img src="https://travis-ci.com/datahaki/java.svg?branch=master" alt="Build Status"></a>
 
-Library for Java, version `0.0.6`
+Library for Java, version `0.0.7`

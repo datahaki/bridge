@@ -92,7 +92,7 @@ import ch.alpine.java.ref.gui.FieldPanel;
     return jTextField;
   }
 
-  private void nofifyIfValid(String string) {
+  protected void nofifyIfValid(String string) {
     if (isValid(string))
       notifyListeners(string);
   }

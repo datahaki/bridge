@@ -4,7 +4,6 @@ package ch.alpine.java.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-import ch.alpine.java.ref.gui.FieldPanel;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -12,14 +11,21 @@ import ch.alpine.tensor.io.StringScalarQ;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 
-public class ScalarFieldWrap extends BaseFieldWrap {
+public class ScalarFieldWrap extends TensorFieldWrap {
   private final FieldIntegerQ fieldIntegerQ;
-  private final FieldClip fieldClip;
+  private Clip clip = null;
 
   public ScalarFieldWrap(Field field) {
     super(field);
     fieldIntegerQ = field.getAnnotation(FieldIntegerQ.class);
-    fieldClip = field.getAnnotation(FieldClip.class);
+    FieldClip fieldClip = field.getAnnotation(FieldClip.class);
+    if (Objects.nonNull(fieldClip))
+      try {
+        clip = FieldClips.of(fieldClip);
+      } catch (Exception exception) {
+        System.err.println(field);
+        exception.printStackTrace();
+      }
   }
 
   @Override // from FieldWrap
@@ -42,9 +48,8 @@ public class ScalarFieldWrap extends BaseFieldWrap {
       if (!IntegerQ.of(scalar))
         return false;
     // ---
-    if (Objects.nonNull(fieldClip))
-      try {
-        Clip clip = TensorReflection.clip(fieldClip);
+    if (Objects.nonNull(clip))
+      try { // throws exception if units are incompatible
         if (clip.isOutside(UnitSystem.SI().apply(scalar)))
           return false;
       } catch (Exception exception) {
@@ -52,10 +57,5 @@ public class ScalarFieldWrap extends BaseFieldWrap {
         return false;
       }
     return true;
-  }
-
-  @Override
-  public FieldPanel createFieldPanel(Object value) {
-    return new StringPanel(this, value);
   }
 }
