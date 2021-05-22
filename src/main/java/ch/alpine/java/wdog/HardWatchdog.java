@@ -1,6 +1,8 @@
 // code by jph
 package ch.alpine.java.wdog;
 
+import ch.alpine.tensor.Scalar;
+
 /** implementation of an un-recoverable watchdog
  * 
  * functionality like on a micro controller
@@ -11,8 +13,8 @@ package ch.alpine.java.wdog;
  * @see Watchdog */
 public final class HardWatchdog implements Watchdog {
   /** @param timeout_seconds */
-  public static Watchdog notified(double timeout_seconds) {
-    return new HardWatchdog(timeout_seconds);
+  public static Watchdog notified(Scalar timeout) {
+    return new HardWatchdog(StaticHelper.toNanos(timeout));
   }
 
   /***************************************************/
@@ -20,8 +22,8 @@ public final class HardWatchdog implements Watchdog {
   private long lastNotify_ns;
   private boolean isBlown = false;
 
-  private HardWatchdog(double timeout_seconds) {
-    tolerance_ns = Math.round(timeout_seconds * 1E9);
+  private HardWatchdog(long tolerance_ns) {
+    this.tolerance_ns = tolerance_ns;
     lastNotify_ns = System.nanoTime();
   }
 

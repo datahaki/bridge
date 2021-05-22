@@ -13,4 +13,6 @@ import java.lang.annotation.Target;
 public @interface FieldSelection {
   /** @return */
   String list();
+  // TODO also allow @FieldSelection(list="{/dev/ttyS0, /dev/ttyS1, /dev/ttyS2, /dev/ttyS3}")
+  // for string field
 }

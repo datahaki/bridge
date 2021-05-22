@@ -17,6 +17,7 @@ import ch.alpine.tensor.Tensor;
 /* package */ class MenuPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
+  // TODO tensor is treated as list of strings -> generalize!!
   public MenuPanel(FieldWrap fieldWrap, Object object, Tensor tensor) {
     super(fieldWrap, object);
     jButton.addActionListener(new ActionListener() {

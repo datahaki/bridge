@@ -1,23 +1,25 @@
 // code by jph
 package ch.alpine.java.wdog;
 
+import ch.alpine.tensor.Scalar;
+
 /** a soft watchdog recovers from the barking state
  * by a notification from the application layer.
  * 
  * @see Watchdog */
 public final class SoftWatchdog implements Watchdog {
-  /** @param timeout_seconds
+  /** @param timeout
    * @return */
-  public static Watchdog notified(double timeout_seconds) {
-    Watchdog watchdog = new SoftWatchdog(timeout_seconds);
+  public static Watchdog notified(Scalar timeout) {
+    Watchdog watchdog = new SoftWatchdog(StaticHelper.toNanos(timeout));
     watchdog.notifyWatchdog();
     return watchdog;
   }
 
   /** @param timeout_seconds
    * @return */
-  public static Watchdog barking(double timeout_seconds) {
-    return new SoftWatchdog(timeout_seconds);
+  public static Watchdog barking(Scalar timeout) {
+    return new SoftWatchdog(StaticHelper.toNanos(timeout));
   }
 
   /***************************************************/
@@ -25,8 +27,8 @@ public final class SoftWatchdog implements Watchdog {
   private long lastNotify_ns;
 
   /** @param timeout_seconds */
-  private SoftWatchdog(double timeout_seconds) {
-    tolerance_ns = Math.round(timeout_seconds * 1E9);
+  private SoftWatchdog(long tolerance_ns) {
+    this.tolerance_ns = tolerance_ns;
     lastNotify_ns = System.nanoTime() - tolerance_ns;
   }
 
