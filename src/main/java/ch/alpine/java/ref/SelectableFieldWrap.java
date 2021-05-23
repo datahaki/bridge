@@ -13,13 +13,13 @@ public abstract class SelectableFieldWrap extends BaseFieldWrap {
     super(field);
     fieldSelection = field.getAnnotation(FieldSelection.class);
   }
+
   @Override // from FieldWrap
   public final String toString(Object object) {
     return object.toString();
   }
 
-
-  @Override
+  @Override // from FieldWrap
   public final FieldPanel createFieldPanel(Object value) {
     if (Objects.nonNull(fieldSelection))
       try {

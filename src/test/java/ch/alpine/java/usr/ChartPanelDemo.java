@@ -39,8 +39,6 @@ public class ChartPanelDemo implements Runnable {
     jFrame.setContentPane(chartPanel);
     jFrame.setBounds(100, 100, 600, 600);
     jFrame.setVisible(true);
-    System.out.println("start thread");
-    new Thread(this).start();
   }
 
   @Override
@@ -60,6 +58,6 @@ public class ChartPanelDemo implements Runnable {
   }
 
   public static void main(String[] args) {
-    new ChartPanelDemo();
+    new Thread(new ChartPanelDemo()).start();
   }
 }

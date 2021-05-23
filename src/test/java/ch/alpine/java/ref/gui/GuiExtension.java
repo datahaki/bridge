@@ -30,8 +30,8 @@ import ch.alpine.tensor.qty.Quantity;
 
 public class GuiExtension {
   public String string = "abc";
-  @FieldSelection(list = "/dev/tty0|/dev/tty1|/dev/ttyUSB0")
-  public String selectable = "/dev/tty0";
+  @FieldSelection(list = "/dev/ttyS0|/dev/ttyS1|/dev/ttyS2|/dev/ttyS3|/dev/ttyUSB0|/dev/ttyUSB1")
+  public String selectable = "/dev/ttyS0";
   public Boolean status = true;
   @FieldLabel(text = "Big Fuse")
   @FieldFuse(text = "press to restart")
