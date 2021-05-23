@@ -42,6 +42,7 @@ public class GuiExtension {
   @FieldExistingFile
   public File file = HomeDirectory.file();
   public File anyFile = HomeDirectory.file();
+  @FieldSelection(list = "1[%]|2[%]|3[%]")
   public Tensor tensor = Tensors.fromString("{1, 2}");
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");
@@ -52,8 +53,9 @@ public class GuiExtension {
   public Scalar quantity = Quantity.of(3, "kW");
   // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
   @FieldToolTip(text = "asd")
-  @FieldSelection(list = "1[%]|2[%]|3[%]")
-  public Scalar subdiv = Quantity.of(3, "kW");
+  @FieldClip(min = "0", max = "20")
+  @FieldSelection(list = "1[W]|2[%]|3[]")
+  public Scalar subdiv = Quantity.of(3, "");
   @FieldInteger
   @FieldClip(min = "10", max = "20")
   public Scalar integer = RealScalar.of(12);

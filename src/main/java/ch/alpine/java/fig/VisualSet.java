@@ -85,7 +85,7 @@ public class VisualSet implements Serializable {
 
   /** @return label of x-axis */
   public String getAxesLabelX() {
-    return (axesLabelX + " " + getUnitXString()).trim();
+    return (axesLabelX + " " + getUnitXString()).strip();
   }
 
   /** @param string label of y-axis */
@@ -95,7 +95,7 @@ public class VisualSet implements Serializable {
 
   /** @return label of y-axis */
   public String getAxesLabelY() {
-    return (axesLabelY + " " + getUnitYString()).trim();
+    return (axesLabelY + " " + getUnitYString()).strip();
   }
 
   public boolean hasLegend() {

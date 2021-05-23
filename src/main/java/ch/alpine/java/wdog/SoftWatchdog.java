@@ -8,37 +8,37 @@ import ch.alpine.tensor.Scalar;
  * 
  * @see Watchdog */
 public final class SoftWatchdog implements Watchdog {
-  /** @param timeout
+  /** @param timeout with unit compatible with "s", "ms", "us", "ns", ...
    * @return */
   public static Watchdog notified(Scalar timeout) {
-    Watchdog watchdog = new SoftWatchdog(StaticHelper.toNanos(timeout));
+    Watchdog watchdog = new SoftWatchdog(StaticHelper.nanos(timeout));
     watchdog.notifyWatchdog();
     return watchdog;
   }
 
-  /** @param timeout_seconds
+  /** @param timeout with unit compatible with "s", "ms", "us", "ns", ...
    * @return */
   public static Watchdog barking(Scalar timeout) {
-    return new SoftWatchdog(StaticHelper.toNanos(timeout));
+    return new SoftWatchdog(StaticHelper.nanos(timeout));
   }
 
   /***************************************************/
-  private final long tolerance_ns;
-  private long lastNotify_ns;
+  private final long tolerance;
+  private long lastNotify;
 
-  /** @param timeout_seconds */
-  private SoftWatchdog(long tolerance_ns) {
-    this.tolerance_ns = tolerance_ns;
-    lastNotify_ns = System.nanoTime() - tolerance_ns;
+  /** @param tolerance */
+  private SoftWatchdog(long tolerance) {
+    this.tolerance = tolerance;
+    lastNotify = System.nanoTime() - tolerance;
   }
 
   @Override // from Watchdog
   public void notifyWatchdog() {
-    lastNotify_ns = System.nanoTime();
+    lastNotify = System.nanoTime();
   }
 
   @Override // from Watchdog
   public boolean isBarking() {
-    return tolerance_ns < System.nanoTime() - lastNotify_ns;
+    return tolerance < System.nanoTime() - lastNotify;
   }
 }
