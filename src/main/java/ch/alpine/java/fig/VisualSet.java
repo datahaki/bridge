@@ -19,6 +19,7 @@ import ch.alpine.tensor.qty.Unit;
 
 public class VisualSet implements Serializable {
   static {
+    // TODO this design is very bad
     ChartFactory.setChartTheme(DefaultChartTheme.STANDARD);
     // BarRenderer.setDefaultBarPainter(new StandardBarPainter());
     // BarRenderer.setDefaultShadowsVisible(false);
@@ -84,7 +85,7 @@ public class VisualSet implements Serializable {
 
   /** @return label of x-axis */
   public String getAxesLabelX() {
-    return (axesLabelX + " " + getUnitXString()).trim();
+    return (axesLabelX + " " + getUnitXString()).strip();
   }
 
   /** @param string label of y-axis */
@@ -94,7 +95,7 @@ public class VisualSet implements Serializable {
 
   /** @return label of y-axis */
   public String getAxesLabelY() {
-    return (axesLabelY + " " + getUnitYString()).trim();
+    return (axesLabelY + " " + getUnitYString()).strip();
   }
 
   public boolean hasLegend() {

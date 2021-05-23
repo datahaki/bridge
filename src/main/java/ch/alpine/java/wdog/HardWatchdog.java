@@ -1,6 +1,8 @@
 // code by jph
 package ch.alpine.java.wdog;
 
+import ch.alpine.tensor.Scalar;
+
 /** implementation of an un-recoverable watchdog
  * 
  * functionality like on a micro controller
@@ -10,32 +12,34 @@ package ch.alpine.java.wdog;
  * 
  * @see Watchdog */
 public final class HardWatchdog implements Watchdog {
-  /** @param timeout_seconds */
-  public static Watchdog notified(double timeout_seconds) {
-    return new HardWatchdog(timeout_seconds);
+  /** @param timeout with unit compatible with "s", "ms", "us", "ns", ... */
+  public static Watchdog notified(Scalar timeout) {
+    return new HardWatchdog(StaticHelper.nanos(timeout));
   }
 
   /***************************************************/
-  private final long tolerance_ns;
-  private long lastNotify_ns;
+  private final long tolerance;
+  private long lastNotify;
+  /** Once set to true, the flag "isBlown" is never cleared. */
   private boolean isBlown = false;
 
-  private HardWatchdog(double timeout_seconds) {
-    tolerance_ns = Math.round(timeout_seconds * 1E9);
-    lastNotify_ns = System.nanoTime();
+  /** @param tolerance in nano seconds */
+  private HardWatchdog(long tolerance) {
+    this.tolerance = tolerance;
+    lastNotify = System.nanoTime();
   }
 
   /** resets timeout counter to zero */
   @Override // from Watchdog
   public void notifyWatchdog() {
     isBarking();
-    lastNotify_ns = System.nanoTime();
+    lastNotify = System.nanoTime();
   }
 
   /** @return true if timeout counter has ever elapsed the allowed period */
   @Override // from Watchdog
   public boolean isBarking() {
-    isBlown |= tolerance_ns < System.nanoTime() - lastNotify_ns;
+    isBlown |= tolerance < System.nanoTime() - lastNotify;
     return isBlown;
   }
 }

@@ -25,7 +25,7 @@ import ch.alpine.tensor.qty.Quantity;
   public String text;
   @FieldClip(min = "2", max = "6")
   public Scalar clipped;
-  @FieldIntegerQ
+  @FieldInteger
   public Scalar integer = RealScalar.of(3);
   @FieldClip(min = "2[kW]", max = "6[kW]")
   public Scalar quantityClipped;
