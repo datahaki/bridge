@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import ch.alpine.java.ref.FieldClip;
-import ch.alpine.java.ref.FieldIntegerQ;
+import ch.alpine.java.ref.FieldInteger;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -34,7 +34,7 @@ import ch.alpine.tensor.sca.Abs;
   public static String getToolTip(Field field) {
     List<String> list = new LinkedList<>();
     {
-      FieldIntegerQ fieldIntegerQ = field.getAnnotation(FieldIntegerQ.class);
+      FieldInteger fieldIntegerQ = field.getAnnotation(FieldInteger.class);
       if (Objects.nonNull(fieldIntegerQ)) {
         list.add("integer");
       }

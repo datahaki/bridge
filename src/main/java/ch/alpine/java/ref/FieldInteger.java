@@ -14,6 +14,6 @@ import ch.alpine.tensor.Scalar;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldIntegerQ {
+public @interface FieldInteger {
   // ---
 }

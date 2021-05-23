@@ -12,12 +12,12 @@ import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 
 public class ScalarFieldWrap extends TensorFieldWrap {
-  private final FieldIntegerQ fieldIntegerQ;
+  private final FieldInteger fieldIntegerQ;
   private Clip clip = null;
 
   public ScalarFieldWrap(Field field) {
     super(field);
-    fieldIntegerQ = field.getAnnotation(FieldIntegerQ.class);
+    fieldIntegerQ = field.getAnnotation(FieldInteger.class);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     if (Objects.nonNull(fieldClip))
       try {
@@ -31,11 +31,6 @@ public class ScalarFieldWrap extends TensorFieldWrap {
   @Override // from FieldWrap
   public Object toValue(String string) {
     return Scalars.fromString(string);
-  }
-
-  @Override // from FieldWrap
-  public String toString(Object object) {
-    return object.toString();
   }
 
   @Override

@@ -15,7 +15,7 @@ import ch.alpine.java.ref.FieldClip;
 import ch.alpine.java.ref.FieldExistingDirectory;
 import ch.alpine.java.ref.FieldExistingFile;
 import ch.alpine.java.ref.FieldFuse;
-import ch.alpine.java.ref.FieldIntegerQ;
+import ch.alpine.java.ref.FieldInteger;
 import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.FieldSelection;
 import ch.alpine.java.ref.FieldToolTip;
@@ -30,6 +30,8 @@ import ch.alpine.tensor.qty.Quantity;
 
 public class GuiExtension {
   public String string = "abc";
+  @FieldSelection(list = "/dev/tty0|/dev/tty1|/dev/ttyUSB0")
+  public String selectable = "/dev/tty0";
   public Boolean status = true;
   @FieldLabel(text = "Big Fuse")
   @FieldFuse(text = "press to restart")
@@ -50,9 +52,9 @@ public class GuiExtension {
   public Scalar quantity = Quantity.of(3, "kW");
   // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
   @FieldToolTip(text = "asd")
-  @FieldSelection(list = "{1[%], 2[%], 3[%]}")
+  @FieldSelection(list = "1[%]|2[%]|3[%]")
   public Scalar subdiv = Quantity.of(3, "kW");
-  @FieldIntegerQ
+  @FieldInteger
   @FieldClip(min = "10", max = "20")
   public Scalar integer = RealScalar.of(12);
   public Color color = Color.RED;

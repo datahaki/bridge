@@ -12,13 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import ch.alpine.java.awt.StandardMenu;
-import ch.alpine.tensor.Tensor;
 
 /* package */ class MenuPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
-  // TODO tensor is treated as list of strings -> generalize!!
-  public MenuPanel(FieldWrap fieldWrap, Object object, Tensor tensor) {
+  public MenuPanel(FieldWrap fieldWrap, Object object, String[] strings) {
     super(fieldWrap, object);
     jButton.addActionListener(new ActionListener() {
       @Override
@@ -26,14 +24,14 @@ import ch.alpine.tensor.Tensor;
         StandardMenu standardMenu = new StandardMenu() {
           @Override
           protected void design(JPopupMenu jPopupMenu) {
-            for (Tensor x : tensor) {
-              JMenuItem jMenuItem = new JMenuItem(x.toString());
+            for (String string : strings) {
+              JMenuItem jMenuItem = new JMenuItem(string);
               jMenuItem.setFont(jTextField.getFont());
               jMenuItem.addActionListener(l -> {
                 // TODO this shows that API is not yet streamlined
-                jTextField.setText(x.toString());
+                jTextField.setText(string);
                 indicateGui();
-                nofifyIfValid(x.toString());
+                nofifyIfValid(string);
               });
               jPopupMenu.add(jMenuItem);
             }

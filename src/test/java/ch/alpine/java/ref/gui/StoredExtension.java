@@ -13,7 +13,7 @@ import javax.swing.WindowConstants;
 import ch.alpine.java.ref.FieldClip;
 import ch.alpine.java.ref.FieldExistingDirectory;
 import ch.alpine.java.ref.FieldExistingFile;
-import ch.alpine.java.ref.FieldIntegerQ;
+import ch.alpine.java.ref.FieldInteger;
 import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.NameString;
 import ch.alpine.java.ref.ObjectProperties;
@@ -45,7 +45,7 @@ public class StoredExtension {
   @FieldClip(min = "1000[W]", max = "10000[Wa]")
   // TODO handle error in default value
   public Scalar quantity = Quantity.of(3, "kW");
-  @FieldIntegerQ
+  @FieldInteger
   @FieldClip(min = "10", max = "20")
   public Scalar integer = RealScalar.of(12);
   public Color color = Color.RED;
