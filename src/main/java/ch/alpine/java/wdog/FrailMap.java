@@ -22,7 +22,11 @@ public class FrailMap<K, T> {
   }
 
   /***************************************************/
-  /** @param key
+  /** Careful: if the key is unknown to the map, i.e. the key
+   * was not registered via {@link #registerKey(Object, Scalar)}
+   * the key-value pair will not be stored.
+   * 
+   * @param key
    * @param value */
   public void put(K key, T value) {
     FrailValue<T> frailValue = map.get(key);
