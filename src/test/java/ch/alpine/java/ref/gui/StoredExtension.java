@@ -70,7 +70,7 @@ public class StoredExtension {
     jFrame.setBounds(500, 200, 500, 700);
     jFrame.addWindowListener(new WindowAdapter() {
       @Override
-      public void windowClosed(WindowEvent e) {
+      public void windowClosed(WindowEvent windowEvent) {
         ObjectProperties.wrap(INSTANCE).trySave(FILE);
       }
     });

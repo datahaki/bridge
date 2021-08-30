@@ -13,7 +13,8 @@ public class FrailValue<T> {
   /* non-final */
   private T value;
 
-  /** @param timeout max age of value from the time
+  /** @param timeout with unit compatible with "s", "ms", "us", "ns", ...
+   * max age of value from the time
    * of invoking the set function */
   public FrailValue(Scalar timeout) {
     watchdog = SoftWatchdog.barking(timeout);

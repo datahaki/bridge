@@ -16,7 +16,7 @@ public class FrailMap<K, T> {
   private final Map<K, FrailValue<T>> map = new HashMap<>();
 
   /** @param key
-   * @param timeout */
+   * @param timeout with unit compatible with "s", "ms", "us", "ns", ... */
   public void registerKey(K key, Scalar timeout) {
     map.put(key, new FrailValue<>(timeout));
   }
