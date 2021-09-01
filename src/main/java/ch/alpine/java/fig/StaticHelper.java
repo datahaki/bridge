@@ -11,7 +11,7 @@ import ch.alpine.tensor.Scalar;
 
 /* package */ enum StaticHelper {
   ;
-  // TODO the implementation can be improved by implementing TimePeriod
+  // TODO 20210831 the implementation can be improved by implementing TimePeriod
   private static final Calendar CALENDAR = Calendar.getInstance();
 
   /** @param time

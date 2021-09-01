@@ -4,5 +4,7 @@ package ch.alpine.java.fig;
 import junit.framework.TestCase;
 
 public class StaticHelperTest extends TestCase {
-  // TODO
+  public void test() {
+    // TODO
+  }
 }
