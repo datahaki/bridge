@@ -22,7 +22,7 @@ import ch.alpine.tensor.sca.Abs;
     return p.subtract(q).flatten(-1) //
         .map(Scalar.class::cast) //
         .map(Abs.FUNCTION) //
-        .reduce(Scalar::add).get();
+        .reduce(Scalar::add).orElseThrow();
   }
 
   public static Tensor closest(Tensor tensor, Tensor value, int increment) {

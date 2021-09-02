@@ -27,8 +27,7 @@ import ch.alpine.java.awt.StandardMenu;
             for (String string : strings) {
               JMenuItem jMenuItem = new JMenuItem(string);
               jMenuItem.setFont(jTextField.getFont());
-              jMenuItem.addActionListener(l -> {
-                // TODO this shows that API is not yet streamlined
+              jMenuItem.addActionListener(event -> {
                 jTextField.setText(string);
                 indicateGui();
                 nofifyIfValid(string);

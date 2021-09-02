@@ -11,6 +11,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/** "In computer science, a disjoint-set data structure, also called a union-find
+ * data structure or merge-find set, is a data structure that stores a collection
+ * of disjoint (non-overlapping) sets."
+ * Reference: https://en.wikipedia.org/wiki/Disjoint-set_data_structure */
 public class DisjointSets {
   public static DisjointSets allocate(int initialSize) {
     DisjointSets disjointSets = new DisjointSets();

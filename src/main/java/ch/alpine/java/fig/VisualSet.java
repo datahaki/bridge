@@ -19,7 +19,7 @@ import ch.alpine.tensor.qty.Unit;
 
 public class VisualSet implements Serializable {
   static {
-    // TODO this design is very bad
+    // design is bad but instigated by the jfree library
     ChartFactory.setChartTheme(DefaultChartTheme.STANDARD);
     // BarRenderer.setDefaultBarPainter(new StandardBarPainter());
     // BarRenderer.setDefaultShadowsVisible(false);
