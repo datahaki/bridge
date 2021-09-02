@@ -18,15 +18,17 @@ import javax.swing.JPanel;
     super(fieldWrap, file);
     jButton.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent actionEvent) {
         JFileChooser jFileChooser = new JFileChooser(file);
-        jFileChooser.setBounds(100, 100, 600, 600);
+        // jFileChooser.setBounds(100, 100, 800, 800); // does not work
         jFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        int openDialog = jFileChooser.showOpenDialog(null);
+        int openDialog = jFileChooser.showOpenDialog(jButton);
         if (openDialog == JFileChooser.APPROVE_OPTION) {
           File selectedFile = jFileChooser.getSelectedFile();
-          jTextField.setText(fieldWrap.toString(selectedFile));
+          String string = fieldWrap.toString(selectedFile);
+          jTextField.setText(string);
           indicateGui();
+          nofifyIfValid(string);
         }
       }
     });

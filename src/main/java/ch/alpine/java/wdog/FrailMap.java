@@ -1,10 +1,12 @@
 // code by jph
 package ch.alpine.java.wdog;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import ch.alpine.tensor.Scalar;
 
@@ -45,29 +47,16 @@ public class FrailMap<K, T> {
   }
 
   /***************************************************/
-  /** Careful: determining of the size is not thread-safe
-   * 
-   * @return number of keys that presently have not elapsed */
-  public int size() {
-    return (int) map.values().stream() //
-        .map(FrailValue::getValue) //
-        .filter(Optional::isPresent) //
-        .count();
+  /** @return unmodifiable set of registered keys */
+  public Set<K> keySet() {
+    return Collections.unmodifiableSet(map.keySet());
   }
 
-  /** Careful: determining of the size is not thread-safe
-   * 
-   * @return whether map contains entries */
-  public boolean isEmpty() {
+  /** @return whether at time of function invocation all keys have recent
+   * associated values */
+  public boolean allPresent() {
     return map.values().stream() //
         .map(FrailValue::getValue) //
-        .allMatch(Optional::isEmpty);
-  }
-
-  /** Careful: clearing the map is not thread-safe
-   * 
-   * removes all entries from map */
-  public void clear() {
-    map.clear();
+        .allMatch(Optional::isPresent);
   }
 }

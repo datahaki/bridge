@@ -43,7 +43,6 @@ public class StoredExtension {
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");
   @FieldClip(min = "1000[W]", max = "10000[Wa]")
-  // TODO handle error in default value
   public Scalar quantity = Quantity.of(3, "kW");
   @FieldInteger
   @FieldClip(min = "10", max = "20")
