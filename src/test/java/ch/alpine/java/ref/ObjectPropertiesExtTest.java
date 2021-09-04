@@ -1,17 +1,15 @@
 // code by jph
 package ch.alpine.java.ref;
 
-import ch.alpine.java.ref.obj.ObjectFieldList;
-import ch.alpine.java.ref.obj.ObjectFieldVisitor;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 public class ObjectPropertiesExtTest extends TestCase {
   public void testFieldOrder() {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
-    ObjectFieldList objectFieldCallback = ObjectFieldVisitor.of(new ObjectFieldList(), paramContainerExt);
-    // ObjectProperties objectProperties = ObjectProperties.wrap(paramContainerExt);
-    // List<FieldWrap> list = ;
-    assertEquals(objectFieldCallback.getList().size(), 7);
+    List<String> list = ObjectFieldList.of(paramContainerExt);
+    assertEquals(list.size(), 7);
   }
   // public void testListSize1() throws Exception {
   // ParamContainerExt paramContainerExt = new ParamContainerExt();

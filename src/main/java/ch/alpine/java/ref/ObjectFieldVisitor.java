@@ -1,11 +1,10 @@
 // code by jph
-package ch.alpine.java.ref.obj;
-
-import ch.alpine.java.ref.FieldWrap;
+package ch.alpine.java.ref;
 
 @FunctionalInterface
-public interface ObjectFieldCallback {
-  default void push(String string) {
+public interface ObjectFieldVisitor {
+  /** @param key */
+  default void push(String key) {
     // ---
   }
 
@@ -13,7 +12,7 @@ public interface ObjectFieldCallback {
    * @param fieldWrap
    * @param object that hosts field with value
    * @param value current value may be null */
-  void elemental(String key, FieldWrap fieldWrap, Object object, Object value);
+  void accept(String key, FieldWrap fieldWrap, Object object, Object value);
 
   default void pop() {
     // ---

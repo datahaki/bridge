@@ -1,11 +1,10 @@
 // code by jph
-package ch.alpine.java.ref.obj;
+package ch.alpine.java.ref;
 
 import java.awt.Color;
 import java.io.File;
 import java.util.Properties;
 
-import ch.alpine.java.ref.FieldSelection;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.re.Pivots;
 
@@ -41,12 +40,12 @@ public class SimpleParam extends BaseParam {
       System.out.println(ObjectFieldString.of(simpleParam));
     }
     ObjectFieldExport objectFieldExport = new ObjectFieldExport();
-    ObjectFieldVisitor.of(objectFieldExport, simpleParam);
+    ObjectFields.of(simpleParam, objectFieldExport);
     Properties properties = objectFieldExport.getProperties();
     {
       ObjectFieldImport objectFieldImport = new ObjectFieldImport(properties);
       SimpleParam simpleCopy = new SimpleParam();
-      ObjectFieldVisitor.of(objectFieldImport, simpleCopy);
+      ObjectFields.of(simpleCopy, objectFieldImport);
       {
         System.out.println(ObjectFieldString.of(simpleCopy));
       }

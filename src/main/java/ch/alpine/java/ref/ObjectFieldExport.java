@@ -1,16 +1,14 @@
 // code by jph
-package ch.alpine.java.ref.obj;
+package ch.alpine.java.ref;
 
 import java.util.Objects;
 import java.util.Properties;
 
-import ch.alpine.java.ref.FieldWrap;
-
-public class ObjectFieldExport implements ObjectFieldCallback {
+public class ObjectFieldExport implements ObjectFieldVisitor {
   private final Properties properties = new Properties();
 
   @Override
-  public void elemental(String prefix, FieldWrap fieldWrap, Object object, Object value) {
+  public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
     if (Objects.nonNull(value))
       properties.setProperty(prefix, fieldWrap.toString(value));
   }

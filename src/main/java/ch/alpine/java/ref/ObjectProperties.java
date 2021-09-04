@@ -8,9 +8,6 @@ import java.nio.file.Files;
 import java.util.Objects;
 import java.util.Properties;
 
-import ch.alpine.java.ref.obj.ObjectFieldImport;
-import ch.alpine.java.ref.obj.ObjectFieldList;
-import ch.alpine.java.ref.obj.ObjectFieldVisitor;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.Import;
@@ -34,9 +31,7 @@ public class ObjectProperties {
    * @param file properties
    * @throws IOException */
   public static void wrap_save(Object object, File file) throws IOException {
-    ObjectFieldList objectFieldList = new ObjectFieldList();
-    ObjectFieldVisitor.of(objectFieldList, object);
-    Files.write(file.toPath(), (Iterable<String>) objectFieldList.getList()::iterator);
+    Files.write(file.toPath(), (Iterable<String>) ObjectFieldList.of(object)::iterator);
   }
 
   /** @param object
@@ -63,7 +58,7 @@ public class ObjectProperties {
   }
 
   public static <T> T wrap_set(T object, Properties properties) {
-    ObjectFieldVisitor.of(new ObjectFieldImport(properties), object);
+    ObjectFields.of(object, new ObjectFieldImport(properties));
     return object;
   }
 

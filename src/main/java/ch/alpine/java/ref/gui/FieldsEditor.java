@@ -19,12 +19,12 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
 import ch.alpine.java.ref.FieldWrap;
+import ch.alpine.java.ref.ObjectFieldString;
+import ch.alpine.java.ref.ObjectFieldVisitor;
+import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ObjectProperties;
-import ch.alpine.java.ref.obj.ObjectFieldCallback;
-import ch.alpine.java.ref.obj.ObjectFieldString;
-import ch.alpine.java.ref.obj.ObjectFieldVisitor;
 
-public class FieldsEditor implements ObjectFieldCallback {
+public class FieldsEditor implements ObjectFieldVisitor {
   private final ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
   private final List<FieldPanel> list = new LinkedList<>();
   private final Object object;
@@ -33,12 +33,12 @@ public class FieldsEditor implements ObjectFieldCallback {
 
   public FieldsEditor(Object object) {
     this.object = object;
-    ObjectFieldVisitor.of(this, object);
+    ObjectFields.of(object, this);
     jScrollPane = toolbarsComponent.createJScrollPane();
   }
 
   @Override
-  public void elemental(String prefix, FieldWrap fieldWrap, Object object, Object value) {
+  public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
     FieldPanel fieldPanel = fieldWrap.createFieldPanel(value);
     list.add(fieldPanel);
     fieldPanel.addListener(string -> ObjectProperties.setIfValid(fieldWrap, object, string));

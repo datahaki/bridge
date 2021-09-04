@@ -1,4 +1,4 @@
-package ch.alpine.java.ref.obj;
+package ch.alpine.java.ref;
 
 public class BaseParam {
   public Boolean basic = true;

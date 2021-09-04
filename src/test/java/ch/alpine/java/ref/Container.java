@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref.obj;
+package ch.alpine.java.ref;
 
 public class Container {
   public static enum NestedEnum {

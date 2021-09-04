@@ -1,26 +1,24 @@
 // code by jph
-package ch.alpine.java.ref.obj;
+package ch.alpine.java.ref;
 
 import java.lang.reflect.Field;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Objects;
 
-import ch.alpine.java.ref.FieldTrack;
-import ch.alpine.java.ref.FieldWrap;
-import ch.alpine.java.ref.FieldWraps;
-
-public class ObjectFieldVisitor {
-  public static <T extends ObjectFieldCallback> T of(T objectFieldCallback, Object object) {
-    new ObjectFieldVisitor(objectFieldCallback).visit("", object);
-    return objectFieldCallback;
+public class ObjectFields {
+  /** @param object
+   * @param objectFieldVisitor
+   * @return */
+  public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
+    new ObjectFields(objectFieldVisitor).visit("", object);
   }
 
-  // ---
-  private final ObjectFieldCallback objectFieldCallback;
+  // ==================================================
+  private final ObjectFieldVisitor objectFieldVisitor;
 
-  private ObjectFieldVisitor(ObjectFieldCallback objectFieldCallback) {
-    this.objectFieldCallback = objectFieldCallback;
+  private ObjectFields(ObjectFieldVisitor objectFieldVisitor) {
+    this.objectFieldVisitor = objectFieldVisitor;
   }
 
   private void visit(String _prefix, Object object) {
@@ -36,14 +34,14 @@ public class ObjectFieldVisitor {
             if (FieldTrack.isWrapped(field)) {
               FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
               if (Objects.nonNull(fieldWrap))
-                objectFieldCallback.elemental(prefix, fieldWrap, object, field.get(object));
+                objectFieldVisitor.accept(prefix, fieldWrap, object, field.get(object));
             }
           } else {
             if (FieldTrack.isNested(field))
               if (!class_field.isArray()) {
-                objectFieldCallback.push(prefix);
+                objectFieldVisitor.push(prefix);
                 visit(prefix + ".", field.get(object));
-                objectFieldCallback.pop();
+                objectFieldVisitor.pop();
               } else {
                 Object[] array = (Object[]) field.get(object);
                 final int length = array.length;
@@ -51,9 +49,9 @@ public class ObjectFieldVisitor {
                 if (!FieldWraps.INSTANCE.elemental(class_element))
                   for (int index = 0; index < length; ++index) {
                     String string = String.format("%s[%d]", prefix, index);
-                    objectFieldCallback.push(string);
+                    objectFieldVisitor.push(string);
                     visit(string + ".", array[index]);
-                    objectFieldCallback.pop();
+                    objectFieldVisitor.pop();
                   }
               }
           }

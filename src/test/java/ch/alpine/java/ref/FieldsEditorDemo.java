@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref.obj;
+package ch.alpine.java.ref;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
