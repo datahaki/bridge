@@ -17,7 +17,7 @@ public class TensorFieldWrap extends SelectableFieldWrap {
     return Tensors.fromString(string);
   }
 
-  @Override
+  @Override // from FieldWrap
   public boolean isValidValue(Object value) {
     Tensor tensor = (Tensor) value;
     return !StringScalarQ.any(tensor);

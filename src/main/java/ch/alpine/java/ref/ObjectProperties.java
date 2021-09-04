@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -31,7 +34,7 @@ public class ObjectProperties {
    * @param file properties
    * @throws IOException */
   public static void save(Object object, File file) throws IOException {
-    Files.write(file.toPath(), (Iterable<String>) ObjectFieldList.of(object)::iterator);
+    Files.write(file.toPath(), (Iterable<String>) list(object)::iterator);
   }
 
   /** @param object
@@ -45,7 +48,30 @@ public class ObjectProperties {
     }
   }
 
-  /** @param
+  /** @param object
+   * @return */
+  public static Properties properties(Object object) {
+    ObjectFieldExport objectFieldList = new ObjectFieldExport();
+    ObjectFields.of(object, objectFieldList);
+    return objectFieldList.properties;
+  }
+
+  /** @param object
+   * @return */
+  public static List<String> list(Object object) {
+    ObjectFieldList objectFieldList = new ObjectFieldList();
+    ObjectFields.of(object, objectFieldList);
+    return objectFieldList.list;
+  }
+
+  /** @param object
+   * @return */
+  public static String string(Object object) {
+    return list(object).stream().collect(Collectors.joining("\n"));
+  }
+
+  // ==================================================
+  /** @param object
    * @param file properties
    * @return object with fields updated from properties file if loading was successful */
   public static <T> T tryLoad(T object, File file) {
@@ -62,13 +88,39 @@ public class ObjectProperties {
     return object;
   }
 
-  public static void setIfValid(FieldWrap fieldWrap, Object object, String string) {
-    try {
-      Object value = fieldWrap.toValue(string);
-      if (Objects.nonNull(value) && fieldWrap.isValidValue(value)) // otherwise retain current assignment
-        fieldWrap.getField().set(object, value);
-    } catch (Exception exception) {
-      exception.printStackTrace();
+  // ==================================================
+  private static class ObjectFieldImport implements ObjectFieldVisitor {
+    private final Properties properties;
+
+    public ObjectFieldImport(Properties properties) {
+      this.properties = properties;
+    }
+
+    @Override
+    public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
+      String string = properties.getProperty(prefix);
+      if (Objects.nonNull(string))
+        fieldWrap.setIfValid(object, string);
+    }
+  }
+
+  private static class ObjectFieldList implements ObjectFieldVisitor {
+    private final List<String> list = new LinkedList<>();
+
+    @Override
+    public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
+      if (Objects.nonNull(value))
+        list.add(key + "=" + fieldWrap.toString(value));
+    }
+  }
+
+  private static class ObjectFieldExport implements ObjectFieldVisitor {
+    private final Properties properties = new Properties();
+
+    @Override // from ObjectFieldVisitor
+    public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
+      if (Objects.nonNull(value))
+        properties.setProperty(prefix, fieldWrap.toString(value));
     }
   }
 }

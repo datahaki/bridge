@@ -30,4 +30,6 @@ public interface FieldWrap {
   /** @param value may be null
    * @return */
   FieldPanel createFieldPanel(Object value);
+
+  void setIfValid(Object object, String string);
 }

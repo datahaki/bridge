@@ -37,18 +37,12 @@ public class SimpleParam extends BaseParam {
     simpleParam.nestedParams[1].text = "here!";
     simpleParam.nestedParams[1].anotherParam.color = Color.BLUE;
     {
-      System.out.println(ObjectFieldString.of(simpleParam));
+      System.out.println(ObjectProperties.string(simpleParam));
     }
-    ObjectFieldExport objectFieldExport = new ObjectFieldExport();
-    ObjectFields.of(simpleParam, objectFieldExport);
-    Properties properties = objectFieldExport.getProperties();
+    Properties properties = ObjectProperties.properties(simpleParam);
     {
-      ObjectFieldImport objectFieldImport = new ObjectFieldImport(properties);
-      SimpleParam simpleCopy = new SimpleParam();
-      ObjectFields.of(simpleCopy, objectFieldImport);
-      {
-        System.out.println(ObjectFieldString.of(simpleCopy));
-      }
+      SimpleParam simpleCopy = ObjectProperties.set(new SimpleParam(), properties);
+      System.out.println(ObjectProperties.string(simpleCopy));
     }
   }
 }

@@ -19,7 +19,6 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
 import ch.alpine.java.ref.FieldWrap;
-import ch.alpine.java.ref.ObjectFieldString;
 import ch.alpine.java.ref.ObjectFieldVisitor;
 import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ObjectProperties;
@@ -41,7 +40,7 @@ public class FieldsEditor implements ObjectFieldVisitor {
   public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
     FieldPanel fieldPanel = fieldWrap.createFieldPanel(value);
     list.add(fieldPanel);
-    fieldPanel.addListener(string -> ObjectProperties.setIfValid(fieldWrap, object, string));
+    fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
     JToolBar jToolBar = ToolbarsComponent.createJToolBar(FlowLayout.LEFT);
     {
       JLabel jLabel = createJLabel(prefix);
@@ -102,7 +101,7 @@ public class FieldsEditor implements ObjectFieldVisitor {
     JTextArea jTextArea = new JTextArea();
     jTextArea.setBackground(null);
     jTextArea.setEditable(false);
-    Consumer<String> consumer = s -> jTextArea.setText(ObjectFieldString.of(object));
+    Consumer<String> consumer = s -> jTextArea.setText(ObjectProperties.string(object));
     consumer.accept(null);
     list.forEach(d -> d.addListener(consumer));
     jPanel.add("Center", jTextArea);

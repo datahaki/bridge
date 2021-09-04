@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 public class ObjectPropertiesExtTest extends TestCase {
   public void testFieldOrder() {
     ParamContainerExt paramContainerExt = new ParamContainerExt();
-    List<String> list = ObjectFieldList.of(paramContainerExt);
+    List<String> list = ObjectProperties.list(paramContainerExt);
     assertEquals(list.size(), 7);
   }
   // public void testListSize1() throws Exception {

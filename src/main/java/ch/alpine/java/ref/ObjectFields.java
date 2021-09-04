@@ -32,13 +32,13 @@ public class ObjectFields {
         String prefix = _prefix + field.getName();
         try {
           if (FieldWraps.INSTANCE.elemental(class_field)) {
-            if (isWrapped(field)) {
+            if (isLeaf(field)) {
               FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
               if (Objects.nonNull(fieldWrap))
                 objectFieldVisitor.accept(prefix, fieldWrap, object, field.get(object));
             }
           } else {
-            if (isNested(field))
+            if (isNode(field))
               if (!class_field.isArray()) {
                 objectFieldVisitor.push(prefix);
                 visit(prefix + ".", field.get(object));
@@ -63,23 +63,23 @@ public class ObjectFields {
   }
 
   // ==================================================
-  private static final int MASK_FILTER = Modifier.PUBLIC;
-  private static final int MASK_TESTED = MASK_FILTER //
+  private static final int LEAF_FILTER = Modifier.PUBLIC;
+  private static final int LEAF_TESTED = LEAF_FILTER //
       | Modifier.PRIVATE | Modifier.PROTECTED //
       | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
 
   /** @param field
    * @return whether field is public, non final, non static, non transient */
-  private static final boolean isWrapped(Field field) {
-    return (field.getModifiers() & MASK_TESTED) == MASK_FILTER;
+  private static final boolean isLeaf(Field field) {
+    return (field.getModifiers() & LEAF_TESTED) == LEAF_FILTER;
   }
 
-  private static final int MASK1_FILTER = Modifier.PUBLIC | Modifier.FINAL;
-  private static final int MASK1_TESTED = MASK1_FILTER //
+  private static final int NODE_FILTER = Modifier.PUBLIC | Modifier.FINAL;
+  private static final int NODE_TESTED = NODE_FILTER //
       | Modifier.PRIVATE | Modifier.PROTECTED //
       | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
 
-  private static final boolean isNested(Field field) {
-    return (field.getModifiers() & MASK1_TESTED) == MASK1_FILTER;
+  private static final boolean isNode(Field field) {
+    return (field.getModifiers() & NODE_TESTED) == NODE_FILTER;
   }
 }
