@@ -40,7 +40,7 @@ public class ObjectFields {
           } else {
             if (isNode(field))
               if (!class_field.isArray()) {
-                objectFieldVisitor.push(prefix);
+                objectFieldVisitor.push(prefix, field, null);
                 visit(prefix + ".", field.get(object));
                 objectFieldVisitor.pop();
               } else {
@@ -50,7 +50,7 @@ public class ObjectFields {
                 if (!FieldWraps.INSTANCE.elemental(class_element))
                   for (int index = 0; index < length; ++index) {
                     String string = String.format("%s[%d]", prefix, index);
-                    objectFieldVisitor.push(string);
+                    objectFieldVisitor.push(string, field, index);
                     visit(string + ".", array[index]);
                     objectFieldVisitor.pop();
                   }
