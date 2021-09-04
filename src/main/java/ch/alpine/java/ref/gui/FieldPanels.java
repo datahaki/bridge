@@ -25,29 +25,12 @@ public class FieldPanels implements ObjectFieldCallback {
     return new FieldPanels(object);
   }
 
-  /***************************************************/
-  // TODO technically objectProperties should not be needed!
-  // private final ObjectProperties objectProperties;
+  // ==================================================
   private final List<FieldPanel> list = new ArrayList<>();
 
   private FieldPanels(Object object) {
     ObjectFieldVisitor.of(this, object);
-    // for (FieldWrap fieldWrap : objectProperties.list()) {
-    // Field field = fieldWrap.getField();
-    // try {
-    // // fail fast
-    // FieldPanel fieldPanel = fieldWrap.createFieldPanel(field.get(object));
-    // fieldPanel.addListener(string -> objectProperties.setIfValid(fieldWrap, string));
-    // list.add(fieldPanel);
-    // } catch (Exception exception) {
-    // exception.printStackTrace();
-    // }
-    // }
   }
-  //
-  // public ObjectProperties objectProperties() {
-  // return objectProperties;
-  // }
 
   public List<FieldPanel> list() {
     return Collections.unmodifiableList(list);

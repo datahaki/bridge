@@ -2,9 +2,11 @@
 package ch.alpine.java.ref.obj;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.Properties;
 
 import ch.alpine.java.ref.FieldSelection;
+import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class SimpleParam extends BaseParam {
@@ -19,6 +21,17 @@ public class SimpleParam extends BaseParam {
   public final AnotherParam anotherParam = new AnotherParam();
   public final EmptyParam emptyParam = new EmptyParam();
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
+
+  public static class AnotherParam {
+    public File file = HomeDirectory.file();
+    public Color color = Color.RED;
+  }
+
+  public static class NestedParam extends BaseParam {
+    public Boolean some = true;
+    public String text = "grolley";
+    public final AnotherParam anotherParam = new AnotherParam();
+  }
 
   public static void main(String[] args) {
     SimpleParam simpleParam = new SimpleParam();

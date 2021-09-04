@@ -28,12 +28,20 @@ import ch.alpine.tensor.io.Import;
  * of a parse failure, or invalid assignment, the preset/default/current
  * value is retained. */
 public class ObjectProperties {
+  /** store tracked fields of given object in given file
+   * 
+   * @param object
+   * @param file properties
+   * @throws IOException */
   public static void wrap_save(Object object, File file) throws IOException {
     ObjectFieldList objectFieldList = new ObjectFieldList();
     ObjectFieldVisitor.of(objectFieldList, object);
     Files.write(file.toPath(), (Iterable<String>) objectFieldList.getList()::iterator);
   }
 
+  /** @param object
+   * @param file
+   * @return true if saving to given file was successful, false otherwise */
   public static void wrap_trySave(Object object, File file) {
     try {
       wrap_save(object, file);
@@ -42,11 +50,14 @@ public class ObjectProperties {
     }
   }
 
+  /** @param
+   * @param file properties
+   * @return object with fields updated from properties file if loading was successful */
   public static <T> T wrap_tryLoad(T object, File file) {
     try {
       wrap_set(object, Import.properties(file));
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception exception) {
+      // ---
     }
     return object;
   }

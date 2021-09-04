@@ -4,6 +4,7 @@ package ch.alpine.java.ref.obj;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -11,6 +12,7 @@ import java.util.function.Consumer;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
@@ -43,8 +45,16 @@ public class FieldsEditor implements ObjectFieldCallback {
     toolbarsComponent.addPair(jToolBar, fieldPanel.getJComponent(), 28);
   }
 
-  public JComponent getJScrollPane() {
+  public ToolbarsComponent getToolbarsComponent() {
+    return toolbarsComponent;
+  }
+
+  public JScrollPane getJScrollPane() {
     return toolbarsComponent.createJScrollPane();
+  }
+
+  public List<FieldPanel> list() {
+    return Collections.unmodifiableList(list);
   }
 
   /** @return */
@@ -61,5 +71,9 @@ public class FieldsEditor implements ObjectFieldCallback {
     list.forEach(d -> d.addListener(consumer));
     jPanel.add("Center", jTextArea);
     return jPanel;
+  }
+
+  public void addUniversalListener(Consumer<String> consumer) {
+    list.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
   }
 }
