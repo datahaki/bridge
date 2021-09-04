@@ -23,7 +23,7 @@ import ch.alpine.tensor.Tensor;
 /** component that generically inspects a given object for fields of type
  * {@link Tensor} and {@link Scalar}. For each such field, a text field
  * is provided that allows the modification of the value. */
-// TODO class name
+// TODO class name, for instance FieldEditor
 public class ConfigPanel {
   /** @param object non-null
    * @return
@@ -48,7 +48,8 @@ public class ConfigPanel {
             string = fieldLabel.text();
         }
         JLabel jLabel = new JLabel(string);
-        jLabel.setToolTipText(StaticHelper.getToolTip(field));
+        
+        jLabel.setToolTipText(FieldToolTip.of(field));
         jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, height));
         jToolBar.add(jLabel);
       }

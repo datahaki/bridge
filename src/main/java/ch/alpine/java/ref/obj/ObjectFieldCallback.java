@@ -1,8 +1,12 @@
 // code by jph
 package ch.alpine.java.ref.obj;
 
-public interface ObjectFieldCallback {
-  void elemental(String prefix, Class<?> class_field, Object field_object);
+import ch.alpine.java.ref.FieldWrap;
 
-  void array(String format, Class<?> class_element, Object[] array, int index);
+@FunctionalInterface
+public interface ObjectFieldCallback {
+  /** @param prefix
+   * @param class_field
+   * @param field_object */
+  void elemental(String prefix, FieldWrap fieldWrap, Object object, Object field_object);
 }

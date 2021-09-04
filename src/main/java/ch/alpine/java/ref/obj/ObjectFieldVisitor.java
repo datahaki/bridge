@@ -2,7 +2,9 @@
 package ch.alpine.java.ref.obj;
 
 import java.lang.reflect.Field;
+import java.util.Objects;
 
+import ch.alpine.java.ref.FieldWrap;
 import ch.alpine.java.ref.FieldWraps;
 
 public class ObjectFieldVisitor {
@@ -10,9 +12,10 @@ public class ObjectFieldVisitor {
     new ObjectFieldVisitor(objectFieldCallback).visit("", object);
   }
 
+  // ---
   private final ObjectFieldCallback objectFieldCallback;
 
-  public ObjectFieldVisitor(ObjectFieldCallback objectFieldCallback) {
+  private ObjectFieldVisitor(ObjectFieldCallback objectFieldCallback) {
     this.objectFieldCallback = objectFieldCallback;
   }
 
@@ -24,7 +27,9 @@ public class ObjectFieldVisitor {
       try {
         Object field_object = field.get(object);
         if (FieldWraps.INSTANCE.elemental(class_field)) {
-          objectFieldCallback.elemental(prefix, class_field, field_object);
+          FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
+          if (Objects.nonNull(fieldWrap))
+            objectFieldCallback.elemental(prefix, fieldWrap, object, field_object);
         } else {
           if (!class_field.isArray()) {
             visit(String.format("%s.", prefix), field_object);
@@ -33,9 +38,9 @@ public class ObjectFieldVisitor {
             final int length = array.length;
             Class<?> class_element = class_field.getComponentType();
             if (FieldWraps.INSTANCE.elemental(class_element)) {
-              for (int index = 0; index < length; ++index) {
-                objectFieldCallback.array(String.format("%s[%d]", prefix, index), class_element, array, index);
-              }
+              // for (int index = 0; index < length; ++index) {
+              // objectFieldCallback.array(String.format("%s[%d]", prefix, index), class_element, array, index);
+              // }
             } else {
               for (int index = 0; index < length; ++index)
                 visit(String.format("%s[%d].", prefix, index), array[index]);

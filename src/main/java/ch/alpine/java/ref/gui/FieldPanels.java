@@ -24,6 +24,7 @@ public class FieldPanels {
   }
 
   /***************************************************/
+  // TODO technically objectProperties should not be needed!
   private final ObjectProperties objectProperties;
   private final List<FieldPanel> list = new ArrayList<>();
 

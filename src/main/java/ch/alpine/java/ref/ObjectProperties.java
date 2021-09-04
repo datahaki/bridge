@@ -67,6 +67,10 @@ public class ObjectProperties {
   }
 
   public void setIfValid(FieldWrap fieldWrap, String string) {
+    setIfValid(fieldWrap, object, string);
+  }
+
+  public static void setIfValid(FieldWrap fieldWrap, Object object, String string) {
     try {
       Object value = fieldWrap.toValue(string);
       if (Objects.nonNull(value) && fieldWrap.isValidValue(value)) // otherwise retain current assignment

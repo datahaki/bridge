@@ -18,7 +18,6 @@ import ch.alpine.java.ref.FieldFuse;
 import ch.alpine.java.ref.FieldInteger;
 import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.FieldSelection;
-import ch.alpine.java.ref.FieldToolTip;
 import ch.alpine.java.ref.NameString;
 import ch.alpine.java.ref.obj.Container.NestedEnum;
 import ch.alpine.tensor.RealScalar;
@@ -55,7 +54,7 @@ public class GuiExtension {
   // TODO handle error in default value
   public Scalar quantity = Quantity.of(3, "kW");
   // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
-  @FieldToolTip(text = "asd")
+  // @FieldToolTip(text = "asd")
   @FieldClip(min = "0", max = "20")
   @FieldSelection(list = "1[W]|2[%]|3[]")
   public Scalar subdiv = Quantity.of(3, "");
