@@ -5,8 +5,9 @@ import ch.alpine.java.ref.FieldWrap;
 
 @FunctionalInterface
 public interface ObjectFieldCallback {
-  /** @param prefix
-   * @param class_field
-   * @param field_object */
-  void elemental(String prefix, FieldWrap fieldWrap, Object object, Object field_object);
+  /** @param key typically prefix followed by field name
+   * @param fieldWrap
+   * @param object that hosts field with value
+   * @param value current value */
+  void elemental(String key, FieldWrap fieldWrap, Object object, Object value);
 }

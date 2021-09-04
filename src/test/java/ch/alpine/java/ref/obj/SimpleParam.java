@@ -1,25 +1,44 @@
 // code by jph
 package ch.alpine.java.ref.obj;
 
-import ch.alpine.tensor.ComplexScalar;
+import java.awt.Color;
+import java.util.Properties;
+
+import ch.alpine.java.ref.FieldSelection;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class SimpleParam {
+  @FieldSelection(list = "a|b|c")
   public String string = "abc";
   public Boolean flag = false;
   public Pivots pivot = Pivots.ARGMAX_ABS;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
-  public AnotherParam anotherParam = new AnotherParam();
+  public final AnotherParam anotherParam = new AnotherParam();
   public EmptyParam emptyParam = new EmptyParam();
-  public NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
+  public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
 
   public static void main(String[] args) {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[1].some = false;
     simpleParam.nestedParams[1].text = "here!";
-    simpleParam.nestedParams[1].tensors[1] = ComplexScalar.of(1, 2);
-    ObjectFieldPrint objectFieldPrint = new ObjectFieldPrint();
-    ObjectFieldVisitor.of(objectFieldPrint, simpleParam);
-    System.out.println(objectFieldPrint);
+    simpleParam.nestedParams[1].anotherParam.color = Color.BLUE;
+    {
+      ObjectFieldString objectFieldPrint = new ObjectFieldString();
+      ObjectFieldVisitor.of(objectFieldPrint, simpleParam);
+      System.out.println(objectFieldPrint);
+    }
+    ObjectFieldExport objectFieldExport = new ObjectFieldExport();
+    ObjectFieldVisitor.of(objectFieldExport, simpleParam);
+    Properties properties = objectFieldExport.getProperties();
+    {
+      ObjectFieldImport objectFieldImport = new ObjectFieldImport(properties);
+      SimpleParam simpleCopy = new SimpleParam();
+      ObjectFieldVisitor.of(objectFieldImport, simpleCopy);
+      {
+        ObjectFieldString objectFieldPrint = new ObjectFieldString();
+        ObjectFieldVisitor.of(objectFieldPrint, simpleCopy);
+        System.out.println(objectFieldPrint);
+      }
+    }
   }
 }

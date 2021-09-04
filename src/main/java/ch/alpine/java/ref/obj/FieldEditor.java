@@ -57,7 +57,7 @@ public class FieldEditor implements ObjectFieldCallback {
     jTextArea.setBackground(null);
     jTextArea.setEditable(false);
     Consumer<String> consumer = s -> {
-      ObjectFieldPrint objectFieldPrint = new ObjectFieldPrint();
+      ObjectFieldString objectFieldPrint = new ObjectFieldString();
       ObjectFieldVisitor.of(objectFieldPrint, object);
       jTextArea.setText(objectFieldPrint.toString());
     };

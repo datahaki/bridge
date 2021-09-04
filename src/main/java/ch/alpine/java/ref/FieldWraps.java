@@ -42,14 +42,14 @@ public enum FieldWraps {
    * @return instance of {@link FieldWrap} or null if field type is not supported */
   public FieldWrap wrap(Field field) {
     Class<?> cls = field.getType();
-    // ---
-    if (cls.isEnum())
-      return new EnumFieldWrap(field);
-    // ---
     Function<Field, FieldWrap> function = map.get(cls);
     if (Objects.nonNull(function))
       return function.apply(field);
-    // ---
+    if (cls.isEnum()) {
+      function = EnumFieldWrap::new;
+      map.put(cls, function);
+      return function.apply(field);
+    }
     return null;
   }
 }

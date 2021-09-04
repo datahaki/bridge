@@ -1,10 +1,12 @@
+// code by jph
 package ch.alpine.java.ref.obj;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-public class FieldEditorDemo {
+public enum FieldEditorDemo {
+  ;
   public static void main(String[] args) {
     SimpleParam simpleParam = new SimpleParam();
     JFrame jFrame = new JFrame();

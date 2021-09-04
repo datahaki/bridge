@@ -10,10 +10,10 @@ public class ObjectFieldExport implements ObjectFieldCallback {
 
   @Override
   public void elemental(String prefix, FieldWrap fieldWrap, Object object, Object value) {
-    properties.setProperty(prefix, value.toString());
+    properties.setProperty(prefix, fieldWrap.toString(value));
   }
 
-  public Properties properties() {
+  public Properties getProperties() {
     return properties;
   }
 }

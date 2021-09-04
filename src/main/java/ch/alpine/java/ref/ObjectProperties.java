@@ -13,6 +13,8 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.function.BiConsumer;
 
+import ch.alpine.java.ref.obj.ObjectFieldList;
+import ch.alpine.java.ref.obj.ObjectFieldVisitor;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.Import;
@@ -35,6 +37,24 @@ public class ObjectProperties {
    * @throws Exception if given object is null */
   public static ObjectProperties wrap(Object object) {
     return new ObjectProperties(object);
+  }
+
+  public static void wrap_save(Object object, File file) throws IOException {
+    ObjectFieldList objectFieldList = new ObjectFieldList();
+    ObjectFieldVisitor.of(objectFieldList, object);
+    Files.write(file.toPath(), (Iterable<String>) objectFieldList.getList()::iterator);
+  }
+
+  public static void wrap_trySave(Object object, File file) {
+    try {
+      wrap_save(object, file);
+    } catch (Exception exception) {
+      // ---
+    }
+  }
+
+  public static <T> T wrap_tryLoad(T object, File file) {
+    return wrap(object).tryLoad(file);
   }
 
   /***************************************************/

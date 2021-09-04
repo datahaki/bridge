@@ -3,12 +3,12 @@ package ch.alpine.java.ref.obj;
 
 import ch.alpine.java.ref.FieldWrap;
 
-public class ObjectFieldPrint implements ObjectFieldCallback {
+public class ObjectFieldString implements ObjectFieldCallback {
   private final StringBuilder stringBuilder = new StringBuilder();
 
   @Override
-  public void elemental(String key, FieldWrap fieldWrap, Object object, Object field_object) {
-    stringBuilder.append(key + "=" + field_object + "\n");
+  public void elemental(String key, FieldWrap fieldWrap, Object object, Object value) {
+    stringBuilder.append(key + "=" + fieldWrap.toString(value) + "\n");
   }
 
   @Override

@@ -4,6 +4,7 @@ package ch.alpine.java.ref.obj;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+import ch.alpine.java.ref.FieldTrack;
 import ch.alpine.java.ref.FieldWrap;
 import ch.alpine.java.ref.FieldWraps;
 
@@ -25,25 +26,29 @@ public class ObjectFieldVisitor {
       Class<?> class_field = field.getType();
       String prefix = _prefix + field.getName();
       try {
-        Object field_object = field.get(object);
         if (FieldWraps.INSTANCE.elemental(class_field)) {
-          FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
-          if (Objects.nonNull(fieldWrap))
-            objectFieldCallback.elemental(prefix, fieldWrap, object, field_object);
+          if (FieldTrack.isWrapped(field)) {
+            FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
+            if (Objects.nonNull(fieldWrap))
+              objectFieldCallback.elemental(prefix, fieldWrap, object, field.get(object));
+          }
         } else {
           if (!class_field.isArray()) {
-            visit(String.format("%s.", prefix), field_object);
+            if (FieldTrack.isArray(field))
+              visit(String.format("%s.", prefix), field.get(object));
           } else {
-            Object[] array = (Object[]) field_object;
-            final int length = array.length;
-            Class<?> class_element = class_field.getComponentType();
-            if (FieldWraps.INSTANCE.elemental(class_element)) {
-              // for (int index = 0; index < length; ++index) {
-              // objectFieldCallback.array(String.format("%s[%d]", prefix, index), class_element, array, index);
-              // }
-            } else {
-              for (int index = 0; index < length; ++index)
-                visit(String.format("%s[%d].", prefix, index), array[index]);
+            if (FieldTrack.isArray(field)) {
+              Object[] array = (Object[]) field.get(object);
+              final int length = array.length;
+              Class<?> class_element = class_field.getComponentType();
+              if (FieldWraps.INSTANCE.elemental(class_element)) {
+                // for (int index = 0; index < length; ++index) {
+                // objectFieldCallback.array(String.format("%s[%d]", prefix, index), class_element, array, index);
+                // }
+              } else {
+                for (int index = 0; index < length; ++index)
+                  visit(String.format("%s[%d].", prefix, index), array[index]);
+              }
             }
           }
         }
