@@ -18,6 +18,8 @@ public class SimpleParam {
     simpleParam.nestedParams[1].some = false;
     simpleParam.nestedParams[1].text = "here!";
     simpleParam.nestedParams[1].tensors[1] = ComplexScalar.of(1, 2);
-    ObjectFieldVisitor.of(ObjectFieldPrint.INSTANCE, simpleParam);
+    ObjectFieldPrint objectFieldPrint = new ObjectFieldPrint();
+    ObjectFieldVisitor.of(objectFieldPrint, simpleParam);
+    System.out.println(objectFieldPrint);
   }
 }
