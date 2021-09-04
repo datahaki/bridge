@@ -20,6 +20,7 @@ import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.FieldSelection;
 import ch.alpine.java.ref.NameString;
 import ch.alpine.java.ref.obj.Container.NestedEnum;
+import ch.alpine.java.ref.obj.FieldsEditor;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -76,7 +77,7 @@ public class GuiExtension {
 
   public static void main(String[] args) {
     GuiExtension guiExtension = new GuiExtension();
-    JComponent jComponent = ConfigPanel.of(guiExtension).getFieldsAndTextarea();
+    JComponent jComponent = new FieldsEditor(guiExtension).getFieldsAndTextarea();
     // ---
     JFrame jFrame = new JFrame();
     // File root = GrzSettings.file("GuiExtension");

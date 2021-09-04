@@ -26,10 +26,12 @@ public class FieldsEditor implements ObjectFieldCallback {
   private final ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
   private final List<FieldPanel> list = new LinkedList<>();
   private final Object object;
+  private final JScrollPane jScrollPane;
 
   public FieldsEditor(Object object) {
     this.object = object;
     ObjectFieldVisitor.of(this, object);
+    jScrollPane = toolbarsComponent.createJScrollPane();
   }
 
   @Override
@@ -50,7 +52,7 @@ public class FieldsEditor implements ObjectFieldCallback {
   }
 
   public JScrollPane getJScrollPane() {
-    return toolbarsComponent.createJScrollPane();
+    return jScrollPane;
   }
 
   public List<FieldPanel> list() {
