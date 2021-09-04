@@ -40,7 +40,7 @@ public class FileFieldWrap extends BaseFieldWrap {
     return true;
   }
 
-  @Override
+  @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object value) {
     return new FilePanel(this, (File) value);
   }
