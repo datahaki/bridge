@@ -29,7 +29,7 @@ public class EnumFieldWrap extends BaseFieldWrap {
     return ((Enum<?>) object).name();
   }
 
-  @Override
+  @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object value) {
     return new EnumPanel(this, enumConstants, value);
   }

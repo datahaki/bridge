@@ -36,5 +36,6 @@ public abstract class FieldPanel {
     list.forEach(consumer -> consumer.accept(text));
   }
 
+  /** @return */
   public abstract JComponent getJComponent();
 }

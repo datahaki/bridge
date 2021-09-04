@@ -21,7 +21,7 @@ import ch.alpine.java.ref.gui.FieldPanel;
     spinnerLabel.addSpinnerListener(value -> notifyListeners(fieldWrap.toString(value)));
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     return spinnerLabel.getLabelComponent();
   }

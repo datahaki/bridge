@@ -30,16 +30,16 @@ public class ObjectProperties {
    * @param object
    * @param file properties
    * @throws IOException */
-  public static void wrap_save(Object object, File file) throws IOException {
+  public static void save(Object object, File file) throws IOException {
     Files.write(file.toPath(), (Iterable<String>) ObjectFieldList.of(object)::iterator);
   }
 
   /** @param object
    * @param file
    * @return true if saving to given file was successful, false otherwise */
-  public static void wrap_trySave(Object object, File file) {
+  public static void trySave(Object object, File file) {
     try {
-      wrap_save(object, file);
+      save(object, file);
     } catch (Exception exception) {
       // ---
     }
@@ -48,16 +48,16 @@ public class ObjectProperties {
   /** @param
    * @param file properties
    * @return object with fields updated from properties file if loading was successful */
-  public static <T> T wrap_tryLoad(T object, File file) {
+  public static <T> T tryLoad(T object, File file) {
     try {
-      wrap_set(object, Import.properties(file));
+      set(object, Import.properties(file));
     } catch (Exception exception) {
       // ---
     }
     return object;
   }
 
-  public static <T> T wrap_set(T object, Properties properties) {
+  public static <T> T set(T object, Properties properties) {
     ObjectFields.of(object, new ObjectFieldImport(properties));
     return object;
   }

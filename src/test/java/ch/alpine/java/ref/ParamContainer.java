@@ -9,7 +9,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.ResourceData;
 
 public class ParamContainer {
-  public static final ParamContainer INSTANCE = ObjectProperties.wrap_set(new ParamContainer(), ResourceData.properties("/io/ParamContainer.properties"));
+  public static final ParamContainer INSTANCE = ObjectProperties.set(new ParamContainer(), ResourceData.properties("/io/ParamContainer.properties"));
   // ---
   public String string;
   public Scalar maxTor;

@@ -40,7 +40,7 @@ import javax.swing.JPanel;
     });
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add("Center", jTextField);

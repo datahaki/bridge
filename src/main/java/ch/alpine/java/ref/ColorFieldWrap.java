@@ -28,7 +28,7 @@ public class ColorFieldWrap extends BaseFieldWrap {
     return ColorFormat.toVector((Color) object).toString();
   }
 
-  @Override
+  @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object value) {
     return new ColorPanel(this, value);
   }

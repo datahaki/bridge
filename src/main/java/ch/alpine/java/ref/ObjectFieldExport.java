@@ -7,7 +7,7 @@ import java.util.Properties;
 public class ObjectFieldExport implements ObjectFieldVisitor {
   private final Properties properties = new Properties();
 
-  @Override
+  @Override // from ObjectFieldVisitor
   public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
     if (Objects.nonNull(value))
       properties.setProperty(prefix, fieldWrap.toString(value));
