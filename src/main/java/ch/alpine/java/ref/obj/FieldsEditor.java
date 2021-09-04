@@ -20,12 +20,12 @@ import ch.alpine.java.ref.gui.FieldPanel;
 import ch.alpine.java.ref.gui.FieldToolTip;
 import ch.alpine.java.ref.gui.ToolbarsComponent;
 
-public class FieldEditor implements ObjectFieldCallback {
+public class FieldsEditor implements ObjectFieldCallback {
   private final ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
   private final List<FieldPanel> list = new LinkedList<>();
   private final Object object;
 
-  public FieldEditor(Object object) {
+  public FieldsEditor(Object object) {
     this.object = object;
     ObjectFieldVisitor.of(this, object);
   }
@@ -56,11 +56,7 @@ public class FieldEditor implements ObjectFieldCallback {
     JTextArea jTextArea = new JTextArea();
     jTextArea.setBackground(null);
     jTextArea.setEditable(false);
-    Consumer<String> consumer = s -> {
-      ObjectFieldString objectFieldPrint = new ObjectFieldString();
-      ObjectFieldVisitor.of(objectFieldPrint, object);
-      jTextArea.setText(objectFieldPrint.toString());
-    };
+    Consumer<String> consumer = s -> jTextArea.setText(ObjectFieldString.of(object));
     consumer.accept(null);
     list.forEach(d -> d.addListener(consumer));
     jPanel.add("Center", jTextArea);

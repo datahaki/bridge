@@ -1,18 +1,12 @@
 // code by jph
 package ch.alpine.java.ref.obj;
 
-import ch.alpine.java.ref.FieldWrap;
+import java.util.stream.Collectors;
 
-public class ObjectFieldString implements ObjectFieldCallback {
-  private final StringBuilder stringBuilder = new StringBuilder();
-
-  @Override
-  public void elemental(String key, FieldWrap fieldWrap, Object object, Object value) {
-    stringBuilder.append(key + "=" + fieldWrap.toString(value) + "\n");
-  }
-
-  @Override
-  public String toString() {
-    return stringBuilder.toString();
+public enum ObjectFieldString {
+  ;
+  public static String of(Object object) {
+    ObjectFieldList objectFieldList = ObjectFieldVisitor.of(new ObjectFieldList(), object);
+    return objectFieldList.getList().stream().collect(Collectors.joining("\n"));
   }
 }

@@ -1,5 +1,5 @@
 package ch.alpine.java.ref.obj;
 
-public class BaseSimple {
+public class BaseParam {
   public Boolean basic = true;
 }

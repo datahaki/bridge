@@ -17,7 +17,6 @@ import javax.swing.JToolBar;
 
 import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.obj.ObjectFieldString;
-import ch.alpine.java.ref.obj.ObjectFieldVisitor;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 
@@ -96,12 +95,7 @@ public class ConfigPanel {
     JTextArea jTextArea = new JTextArea();
     jTextArea.setBackground(null);
     jTextArea.setEditable(false);
-    Consumer<String> consumer = s -> {
-      ObjectFieldString objectFieldPrint = new ObjectFieldString();
-      ObjectFieldVisitor.of(objectFieldPrint, object);
-      // String text = fieldPanels.objectProperties().strings().stream().collect(Collectors.joining("\n"));
-      jTextArea.setText(objectFieldPrint.toString());
-    };
+    Consumer<String> consumer = s -> jTextArea.setText(ObjectFieldString.of(object));
     consumer.accept(null);
     fieldPanels.addUniversalListener(consumer);
     jPanel.add("Center", jTextArea);

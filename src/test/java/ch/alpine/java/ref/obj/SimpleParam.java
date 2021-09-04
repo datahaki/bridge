@@ -7,7 +7,7 @@ import java.util.Properties;
 import ch.alpine.java.ref.FieldSelection;
 import ch.alpine.tensor.mat.re.Pivots;
 
-public class SimpleParam extends BaseSimple {
+public class SimpleParam extends BaseParam {
   private final int ignore_int = 2;
   private final Integer ignore_Integer = 2;
   private final String ignore_final_String = "asd";
@@ -26,9 +26,7 @@ public class SimpleParam extends BaseSimple {
     simpleParam.nestedParams[1].text = "here!";
     simpleParam.nestedParams[1].anotherParam.color = Color.BLUE;
     {
-      ObjectFieldString objectFieldPrint = new ObjectFieldString();
-      ObjectFieldVisitor.of(objectFieldPrint, simpleParam);
-      System.out.println(objectFieldPrint);
+      System.out.println(ObjectFieldString.of(simpleParam));
     }
     ObjectFieldExport objectFieldExport = new ObjectFieldExport();
     ObjectFieldVisitor.of(objectFieldExport, simpleParam);
@@ -38,9 +36,7 @@ public class SimpleParam extends BaseSimple {
       SimpleParam simpleCopy = new SimpleParam();
       ObjectFieldVisitor.of(objectFieldImport, simpleCopy);
       {
-        ObjectFieldString objectFieldPrint = new ObjectFieldString();
-        ObjectFieldVisitor.of(objectFieldPrint, simpleCopy);
-        System.out.println(objectFieldPrint);
+        System.out.println(ObjectFieldString.of(simpleCopy));
       }
     }
   }
