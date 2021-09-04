@@ -28,8 +28,7 @@ import ch.alpine.tensor.qty.Quantity;
 public class StoredExtension {
   private static final File FILE = HomeDirectory.Downloads(StoredExtension.class.getSimpleName() + ".properties");
   public static final StoredExtension INSTANCE = //
-      ObjectProperties.wrap(new StoredExtension()) //
-          .tryLoad(FILE);
+      ObjectProperties.wrap_tryLoad(new StoredExtension(), FILE);
   @FieldLabel(text = "some")
   public String string = "abc";
   public Boolean status = true;
@@ -70,7 +69,7 @@ public class StoredExtension {
     jFrame.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosed(WindowEvent windowEvent) {
-        ObjectProperties.wrap(INSTANCE).trySave(FILE);
+        ObjectProperties.wrap_trySave(INSTANCE, FILE);
       }
     });
     jFrame.setVisible(true);

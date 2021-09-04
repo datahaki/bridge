@@ -6,9 +6,9 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.io.ResourceData;
 
-/* package */ class ParamContainerExt extends ParamContainer {
-  public static final ParamContainerExt INSTANCE_EXT = ObjectProperties.wrap(new ParamContainerExt()) //
-      .set(ResourceData.properties("/io/ParamContainerExt.properties"));
+public class ParamContainerExt extends ParamContainer {
+  public static final ParamContainerExt INSTANCE_EXT = //
+      ObjectProperties.wrap_set(new ParamContainerExt(), ResourceData.properties("/io/ParamContainerExt.properties"));
   // ---
   public Tensor onlyInExt = Tensors.vector(1, 2, 3);
   @SuppressWarnings("unused")

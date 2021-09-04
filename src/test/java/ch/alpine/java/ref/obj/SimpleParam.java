@@ -7,14 +7,17 @@ import java.util.Properties;
 import ch.alpine.java.ref.FieldSelection;
 import ch.alpine.tensor.mat.re.Pivots;
 
-public class SimpleParam {
+public class SimpleParam extends BaseSimple {
+  private final int ignore_int = 2;
+  private final Integer ignore_Integer = 2;
+  private final String ignore_final_String = "asd";
   @FieldSelection(list = "a|b|c")
   public String string = "abc";
   public Boolean flag = false;
   public Pivots pivot = Pivots.ARGMAX_ABS;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
   public final AnotherParam anotherParam = new AnotherParam();
-  public EmptyParam emptyParam = new EmptyParam();
+  public final EmptyParam emptyParam = new EmptyParam();
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
 
   public static void main(String[] args) {

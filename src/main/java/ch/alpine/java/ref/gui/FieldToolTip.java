@@ -31,5 +31,4 @@ public enum FieldToolTip {
         ? null
         : list.stream().collect(Collectors.joining(", ", "", ""));
   }
-
 }

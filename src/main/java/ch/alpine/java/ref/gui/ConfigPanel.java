@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -17,6 +16,8 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
 import ch.alpine.java.ref.FieldLabel;
+import ch.alpine.java.ref.obj.ObjectFieldString;
+import ch.alpine.java.ref.obj.ObjectFieldVisitor;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 
@@ -48,7 +49,6 @@ public class ConfigPanel {
             string = fieldLabel.text();
         }
         JLabel jLabel = new JLabel(string);
-        
         jLabel.setToolTipText(FieldToolTip.of(field));
         jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, height));
         jToolBar.add(jLabel);
@@ -63,11 +63,13 @@ public class ConfigPanel {
   }
 
   /***************************************************/
+  private final Object object;
   private final FieldPanels fieldPanels;
   private final ToolbarsComponent toolbarsComponent;
   private final JScrollPane jScrollPane;
 
   private ConfigPanel(Object object) {
+    this.object = object;
     fieldPanels = FieldPanels.of(object);
     toolbarsComponent = build(fieldPanels);
     jScrollPane = toolbarsComponent.createJScrollPane();
@@ -95,8 +97,10 @@ public class ConfigPanel {
     jTextArea.setBackground(null);
     jTextArea.setEditable(false);
     Consumer<String> consumer = s -> {
-      String text = fieldPanels.objectProperties().strings().stream().collect(Collectors.joining("\n"));
-      jTextArea.setText(text);
+      ObjectFieldString objectFieldPrint = new ObjectFieldString();
+      ObjectFieldVisitor.of(objectFieldPrint, object);
+      // String text = fieldPanels.objectProperties().strings().stream().collect(Collectors.joining("\n"));
+      jTextArea.setText(objectFieldPrint.toString());
     };
     consumer.accept(null);
     fieldPanels.addUniversalListener(consumer);

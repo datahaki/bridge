@@ -23,8 +23,8 @@ public enum FieldTrack {
   private static final int MASK1_TESTED = MASK1_FILTER //
       | Modifier.PRIVATE | Modifier.PROTECTED //
       | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
-  
-  public static final boolean isArray(Field field) {
+
+  public static final boolean isNested(Field field) {
     return (field.getModifiers() & MASK1_TESTED) == MASK1_FILTER;
   }
   //

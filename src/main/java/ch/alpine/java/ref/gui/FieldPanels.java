@@ -9,6 +9,8 @@ import java.util.function.Consumer;
 
 import ch.alpine.java.ref.FieldWrap;
 import ch.alpine.java.ref.ObjectProperties;
+import ch.alpine.java.ref.obj.ObjectFieldCallback;
+import ch.alpine.java.ref.obj.ObjectFieldVisitor;
 
 /** FieldPanels performs introspection of an instance of a public class
  * with public, non-final fields. Depending on the field types a gui element
@@ -16,7 +18,7 @@ import ch.alpine.java.ref.ObjectProperties;
  * field of the given instance.
  * 
  * see FieldWraps */
-public class FieldPanels {
+public class FieldPanels implements ObjectFieldCallback {
   /** @param object
    * @return */
   public static FieldPanels of(Object object) {
@@ -25,27 +27,27 @@ public class FieldPanels {
 
   /***************************************************/
   // TODO technically objectProperties should not be needed!
-  private final ObjectProperties objectProperties;
+  // private final ObjectProperties objectProperties;
   private final List<FieldPanel> list = new ArrayList<>();
 
   private FieldPanels(Object object) {
-    objectProperties = ObjectProperties.wrap(object);
-    for (FieldWrap fieldWrap : objectProperties.list()) {
-      Field field = fieldWrap.getField();
-      try {
-        // fail fast
-        FieldPanel fieldPanel = fieldWrap.createFieldPanel(field.get(object));
-        fieldPanel.addListener(string -> objectProperties.setIfValid(fieldWrap, string));
-        list.add(fieldPanel);
-      } catch (Exception exception) {
-        exception.printStackTrace();
-      }
-    }
+    ObjectFieldVisitor.of(this, object);
+    // for (FieldWrap fieldWrap : objectProperties.list()) {
+    // Field field = fieldWrap.getField();
+    // try {
+    // // fail fast
+    // FieldPanel fieldPanel = fieldWrap.createFieldPanel(field.get(object));
+    // fieldPanel.addListener(string -> objectProperties.setIfValid(fieldWrap, string));
+    // list.add(fieldPanel);
+    // } catch (Exception exception) {
+    // exception.printStackTrace();
+    // }
+    // }
   }
-
-  public ObjectProperties objectProperties() {
-    return objectProperties;
-  }
+  //
+  // public ObjectProperties objectProperties() {
+  // return objectProperties;
+  // }
 
   public List<FieldPanel> list() {
     return Collections.unmodifiableList(list);
@@ -53,5 +55,17 @@ public class FieldPanels {
 
   public void addUniversalListener(Consumer<String> consumer) {
     list.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
+  }
+
+  @Override
+  public void elemental(String key, FieldWrap fieldWrap, Object object, Object value) {
+    Field field = fieldWrap.getField();
+    try {
+      FieldPanel fieldPanel = fieldWrap.createFieldPanel(field.get(object));
+      fieldPanel.addListener(string -> ObjectProperties.setIfValid(fieldWrap, object, string));
+      list.add(fieldPanel);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
   }
 }
