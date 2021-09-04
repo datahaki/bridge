@@ -5,8 +5,6 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import ch.alpine.java.ref.gui.FieldPanel;
-
 public class EnumFieldWrap extends BaseFieldWrap {
   private final Object[] enumConstants;
 

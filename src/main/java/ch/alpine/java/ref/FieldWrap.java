@@ -3,8 +3,6 @@ package ch.alpine.java.ref;
 
 import java.lang.reflect.Field;
 
-import ch.alpine.java.ref.gui.FieldPanel;
-
 public interface FieldWrap {
   /** @return field non-null wrapped by this instance */
   Field getField();

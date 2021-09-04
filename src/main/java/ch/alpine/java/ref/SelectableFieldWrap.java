@@ -4,8 +4,6 @@ package ch.alpine.java.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-import ch.alpine.java.ref.gui.FieldPanel;
-
 public abstract class SelectableFieldWrap extends BaseFieldWrap {
   private final FieldSelection fieldSelection;
 

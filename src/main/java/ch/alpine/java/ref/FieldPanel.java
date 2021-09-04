@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import javax.swing.JComponent;
-
-import ch.alpine.java.ref.FieldWrap;
 
 public abstract class FieldPanel {
   protected static final Color FAIL = new Color(255, 192, 192);

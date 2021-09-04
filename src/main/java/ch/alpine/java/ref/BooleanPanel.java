@@ -6,8 +6,6 @@ import java.util.Objects;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 
-import ch.alpine.java.ref.gui.FieldPanel;
-
 /* package */ class BooleanPanel extends FieldPanel {
   private final JCheckBox jCheckBox = new JCheckBox();
 
