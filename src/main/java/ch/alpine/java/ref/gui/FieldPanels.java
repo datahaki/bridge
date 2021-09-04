@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import ch.alpine.java.ref.FieldWrap;
-import ch.alpine.java.ref.FieldWraps;
 import ch.alpine.java.ref.ObjectProperties;
 
 /** FieldPanels performs introspection of an instance of a public class
@@ -16,7 +15,7 @@ import ch.alpine.java.ref.ObjectProperties;
  * will be created through which the user can modify the value of the
  * field of the given instance.
  * 
- * @see FieldWraps */
+ * see FieldWraps */
 public class FieldPanels {
   /** @param object
    * @return */

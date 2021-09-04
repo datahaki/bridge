@@ -34,6 +34,10 @@ public enum FieldWraps {
     map.put(cls, function);
   }
 
+  public boolean elemental(Class<?> cls) {
+    return map.containsKey(cls) || cls.isEnum();
+  }
+
   /** @param field
    * @return instance of {@link FieldWrap} or null if field type is not supported */
   public FieldWrap wrap(Field field) {

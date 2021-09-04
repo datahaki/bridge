@@ -20,7 +20,7 @@ import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.FieldSelection;
 import ch.alpine.java.ref.FieldToolTip;
 import ch.alpine.java.ref.NameString;
-import ch.alpine.java.ref.exp.Container.NestedEnum;
+import ch.alpine.java.ref.obj.Container.NestedEnum;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
