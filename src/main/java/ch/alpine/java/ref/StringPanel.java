@@ -12,8 +12,6 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.undo.UndoManager;
 
-import ch.alpine.java.ref.gui.FieldPanel;
-
 /* package */ class StringPanel extends FieldPanel {
   private static final Color LABEL = new Color(51, 51, 51);
   private static final int MASK = KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK;

@@ -7,8 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
-import ch.alpine.java.ref.gui.FieldPanel;
-
 /* package */ class BooleanButton extends FieldPanel {
   private final JToolBar jToolBar = new JToolBar();
   private final JButton jButton;

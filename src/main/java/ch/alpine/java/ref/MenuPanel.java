@@ -41,7 +41,7 @@ import ch.alpine.java.awt.StandardMenu;
     });
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add("Center", jTextField);

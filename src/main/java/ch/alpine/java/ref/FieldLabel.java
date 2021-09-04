@@ -13,7 +13,4 @@ import java.lang.annotation.Target;
 public @interface FieldLabel {
   /** @return text of label instead of field name */
   String text();
-
-  // TODO not implemented yet
-  Alignment alignment() default Alignment.RIGHT;
 }

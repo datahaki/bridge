@@ -4,7 +4,6 @@ package ch.alpine.java.ref;
 import java.awt.Color;
 import java.lang.reflect.Field;
 
-import ch.alpine.java.ref.gui.FieldPanel;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
 
@@ -28,7 +27,7 @@ public class ColorFieldWrap extends BaseFieldWrap {
     return ColorFormat.toVector((Color) object).toString();
   }
 
-  @Override
+  @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object value) {
     return new ColorPanel(this, value);
   }

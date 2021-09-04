@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 public abstract class BaseFieldWrap implements FieldWrap {
-  protected final Field field;
+  private final Field field;
 
   public BaseFieldWrap(Field field) {
     this.field = Objects.requireNonNull(field);
@@ -19,5 +19,16 @@ public abstract class BaseFieldWrap implements FieldWrap {
   @Override // from FieldWrap
   public boolean isValidValue(Object value) {
     return true;
+  }
+
+  @Override
+  public final void setIfValid(Object object, String string) {
+    try {
+      Object value = toValue(string);
+      if (Objects.nonNull(value) && isValidValue(value)) // otherwise retain current assignment
+        field.set(object, value);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
   }
 }

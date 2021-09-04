@@ -5,8 +5,6 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import ch.alpine.java.ref.gui.FieldPanel;
-
 public class EnumFieldWrap extends BaseFieldWrap {
   private final Object[] enumConstants;
 
@@ -29,7 +27,7 @@ public class EnumFieldWrap extends BaseFieldWrap {
     return ((Enum<?>) object).name();
   }
 
-  @Override
+  @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object value) {
     return new EnumPanel(this, enumConstants, value);
   }

@@ -6,7 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import ch.alpine.java.awt.SpinnerLabel;
-import ch.alpine.java.ref.gui.FieldPanel;
 
 /* package */ class EnumPanel extends FieldPanel {
   private final SpinnerLabel<Object> spinnerLabel = new SpinnerLabel<>();
@@ -21,7 +20,7 @@ import ch.alpine.java.ref.gui.FieldPanel;
     spinnerLabel.addSpinnerListener(value -> notifyListeners(fieldWrap.toString(value)));
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     return spinnerLabel.getLabelComponent();
   }

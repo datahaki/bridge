@@ -3,8 +3,6 @@ package ch.alpine.java.ref;
 
 import java.lang.reflect.Field;
 
-import ch.alpine.java.ref.gui.FieldPanel;
-
 public interface FieldWrap {
   /** @return field non-null wrapped by this instance */
   Field getField();
@@ -26,6 +24,10 @@ public interface FieldWrap {
    * @throws Exception if given value is null, or given value cannot be cast to class
    * associated to field wrapped by this instance */
   boolean isValidValue(Object value);
+
+  /** @param object
+   * @param string */
+  void setIfValid(Object object, String string);
 
   /** @param value may be null
    * @return */

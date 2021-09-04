@@ -26,26 +26,31 @@ public enum FieldWraps {
     map.put(File.class, FileFieldWrap::new);
   }
 
-  /** @param cls
-   * @param function */
-  public void insert(Class<?> cls, Function<Field, FieldWrap> function) {
-    if (map.containsKey(cls))
-      throw new RuntimeException();
-    map.put(cls, function);
+  public boolean elemental(Class<?> cls) {
+    return map.containsKey(cls) //
+        || cls.isEnum();
   }
 
   /** @param field
    * @return instance of {@link FieldWrap} or null if field type is not supported */
   public FieldWrap wrap(Field field) {
     Class<?> cls = field.getType();
-    // ---
-    if (Enum.class.isAssignableFrom(cls))
-      return new EnumFieldWrap(field);
-    // ---
     Function<Field, FieldWrap> function = map.get(cls);
     if (Objects.nonNull(function))
       return function.apply(field);
-    // ---
+    if (cls.isEnum()) {
+      function = EnumFieldWrap::new;
+      map.put(cls, function);
+      return function.apply(field);
+    }
     return null;
+  }
+
+  /** @param cls
+   * @param function */
+  public void insert(Class<?> cls, Function<Field, FieldWrap> function) {
+    if (map.containsKey(cls))
+      throw new RuntimeException();
+    map.put(cls, function);
   }
 }

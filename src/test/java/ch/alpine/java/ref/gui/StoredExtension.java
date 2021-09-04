@@ -28,8 +28,7 @@ import ch.alpine.tensor.qty.Quantity;
 public class StoredExtension {
   private static final File FILE = HomeDirectory.Downloads(StoredExtension.class.getSimpleName() + ".properties");
   public static final StoredExtension INSTANCE = //
-      ObjectProperties.wrap(new StoredExtension()) //
-          .tryLoad(FILE);
+      ObjectProperties.tryLoad(new StoredExtension(), FILE);
   @FieldLabel(text = "some")
   public String string = "abc";
   public Boolean status = true;
@@ -58,7 +57,7 @@ public class StoredExtension {
   }
 
   public static void main(String[] args) {
-    JComponent jComponent = ConfigPanel.of(INSTANCE).getFieldsAndTextarea();
+    JComponent jComponent = new FieldsEditor(INSTANCE).getFieldsAndTextarea();
     // ---
     JFrame jFrame = new JFrame();
     // File root = GrzSettings.file("GuiExtension");
@@ -70,7 +69,7 @@ public class StoredExtension {
     jFrame.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosed(WindowEvent windowEvent) {
-        ObjectProperties.wrap(INSTANCE).trySave(FILE);
+        ObjectProperties.trySave(INSTANCE, FILE);
       }
     });
     jFrame.setVisible(true);

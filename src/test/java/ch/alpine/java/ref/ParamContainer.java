@@ -8,9 +8,8 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.ResourceData;
 
-/* package */ class ParamContainer {
-  public static final ParamContainer INSTANCE = ObjectProperties.wrap(new ParamContainer()) //
-      .set(ResourceData.properties("/io/ParamContainer.properties"));
+public class ParamContainer {
+  public static final ParamContainer INSTANCE = ObjectProperties.set(new ParamContainer(), ResourceData.properties("/io/ParamContainer.properties"));
   // ---
   public String string;
   public Scalar maxTor;

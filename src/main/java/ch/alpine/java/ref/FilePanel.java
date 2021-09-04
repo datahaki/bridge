@@ -14,14 +14,20 @@ import javax.swing.JPanel;
 /* package */ class FilePanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
-  public FilePanel(FieldWrap fieldWrap, File file) {
-    super(fieldWrap, file);
+  /** @param fieldWrap
+   * @param _file initially */
+  public FilePanel(FieldWrap fieldWrap, File _file) {
+    super(fieldWrap, _file);
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
-        JFileChooser jFileChooser = new JFileChooser(file);
-        // jFileChooser.setBounds(100, 100, 800, 800); // does not work
+        JFileChooser jFileChooser = new JFileChooser();
+        File file = new File(jTextField.getText());
+        jFileChooser.setApproveButtonText("Done");
+        jFileChooser.setApproveButtonToolTipText("Select file");
+        jFileChooser.setDialogTitle("File selection");
         jFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        jFileChooser.setSelectedFile(file);
         int openDialog = jFileChooser.showOpenDialog(jButton);
         if (openDialog == JFileChooser.APPROVE_OPTION) {
           File selectedFile = jFileChooser.getSelectedFile();
@@ -34,7 +40,7 @@ import javax.swing.JPanel;
     });
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add("Center", jTextField);
