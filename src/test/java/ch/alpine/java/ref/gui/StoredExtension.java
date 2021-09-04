@@ -17,7 +17,6 @@ import ch.alpine.java.ref.FieldInteger;
 import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.NameString;
 import ch.alpine.java.ref.ObjectProperties;
-import ch.alpine.java.ref.obj.FieldsEditor;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;

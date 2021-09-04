@@ -1,9 +1,11 @@
 // code by jph
-package ch.alpine.java.ref.obj;
+package ch.alpine.java.ref.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,15 +20,16 @@ import javax.swing.JToolBar;
 
 import ch.alpine.java.ref.FieldWrap;
 import ch.alpine.java.ref.ObjectProperties;
-import ch.alpine.java.ref.gui.FieldPanel;
-import ch.alpine.java.ref.gui.FieldToolTip;
-import ch.alpine.java.ref.gui.ToolbarsComponent;
+import ch.alpine.java.ref.obj.ObjectFieldCallback;
+import ch.alpine.java.ref.obj.ObjectFieldString;
+import ch.alpine.java.ref.obj.ObjectFieldVisitor;
 
 public class FieldsEditor implements ObjectFieldCallback {
   private final ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
   private final List<FieldPanel> list = new LinkedList<>();
   private final Object object;
   private final JScrollPane jScrollPane;
+  private int level = 0;
 
   public FieldsEditor(Object object) {
     this.object = object;
@@ -40,11 +43,38 @@ public class FieldsEditor implements ObjectFieldCallback {
     list.add(fieldPanel);
     fieldPanel.addListener(string -> ObjectProperties.setIfValid(fieldWrap, object, string));
     JToolBar jToolBar = ToolbarsComponent.createJToolBar(FlowLayout.LEFT);
-    JLabel jLabel = new JLabel(prefix);
-    jLabel.setToolTipText(FieldToolTip.of(fieldWrap.getField()));
-    jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, 28));
-    jToolBar.add(jLabel);
+    {
+      JLabel jLabel = createJLabel(prefix);
+      jLabel.setToolTipText(FieldToolTip.of(fieldWrap.getField()));
+      jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, 28));
+      jToolBar.add(jLabel);
+    }
     toolbarsComponent.addPair(jToolBar, fieldPanel.getJComponent(), 28);
+  }
+
+  @Override
+  public void push(String prefix) {
+    JLabel jLabel = createJLabel(prefix);
+    ++level;
+    jLabel.setForeground(Color.GRAY);
+    toolbarsComponent.addPair(jLabel, new JComponent() {
+      @Override
+      protected void paintComponent(Graphics g) {
+        Dimension dimension = getSize();
+        g.setColor(Color.LIGHT_GRAY);
+        int piy = dimension.height / 2;
+        g.drawLine(0, piy, dimension.width, piy);
+      }
+    }, 20);
+  }
+
+  @Override
+  public void pop() {
+    --level;
+  }
+
+  private JLabel createJLabel(String prefix) {
+    return new JLabel("\u3000".repeat(level) + prefix.substring(prefix.lastIndexOf('.') + 1));
   }
 
   public ToolbarsComponent getToolbarsComponent() {
@@ -57,6 +87,10 @@ public class FieldsEditor implements ObjectFieldCallback {
 
   public List<FieldPanel> list() {
     return Collections.unmodifiableList(list);
+  }
+
+  public void addUniversalListener(Consumer<String> consumer) {
+    list.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
   }
 
   /** @return */
@@ -73,9 +107,5 @@ public class FieldsEditor implements ObjectFieldCallback {
     list.forEach(d -> d.addListener(consumer));
     jPanel.add("Center", jTextArea);
     return jPanel;
-  }
-
-  public void addUniversalListener(Consumer<String> consumer) {
-    list.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
   }
 }

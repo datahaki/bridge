@@ -41,14 +41,20 @@ public class ObjectFieldVisitor {
           } else {
             if (FieldTrack.isNested(field))
               if (!class_field.isArray()) {
-                visit(String.format("%s.", prefix), field.get(object));
+                objectFieldCallback.push(prefix);
+                visit(prefix + ".", field.get(object));
+                objectFieldCallback.pop();
               } else {
                 Object[] array = (Object[]) field.get(object);
                 final int length = array.length;
                 Class<?> class_element = class_field.getComponentType();
                 if (!FieldWraps.INSTANCE.elemental(class_element))
-                  for (int index = 0; index < length; ++index)
-                    visit(String.format("%s[%d].", prefix, index), array[index]);
+                  for (int index = 0; index < length; ++index) {
+                    String string = String.format("%s[%d]", prefix, index);
+                    objectFieldCallback.push(string);
+                    visit(string + ".", array[index]);
+                    objectFieldCallback.pop();
+                  }
               }
           }
         } catch (Exception exception) {

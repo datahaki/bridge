@@ -5,6 +5,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import ch.alpine.java.ref.gui.FieldsEditor;
+
 public enum FieldsEditorDemo {
   ;
   public static void main(String[] args) {

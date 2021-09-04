@@ -19,7 +19,6 @@ public class SimpleParam extends BaseParam {
   public Pivots pivot = Pivots.ARGMAX_ABS;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
   public final AnotherParam anotherParam = new AnotherParam();
-  public final EmptyParam emptyParam = new EmptyParam();
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
 
   public static class AnotherParam {
