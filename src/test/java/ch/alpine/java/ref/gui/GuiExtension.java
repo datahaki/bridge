@@ -20,15 +20,18 @@ import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.FieldSelection;
 import ch.alpine.java.ref.FieldToolTip;
 import ch.alpine.java.ref.NameString;
+import ch.alpine.java.ref.exp.Container.NestedEnum;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.re.Pivots;
+import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
 
 public class GuiExtension {
+  public Scalar[] scalars = { Pi.VALUE, RealScalar.ONE };
   public String string = "abc";
   @FieldSelection(list = "/dev/ttyS0|/dev/ttyS1|/dev/ttyS2|/dev/ttyS3|/dev/ttyUSB0|/dev/ttyUSB1")
   public String selectable = "/dev/ttyS0";
@@ -61,6 +64,7 @@ public class GuiExtension {
   public Scalar integer = RealScalar.of(12);
   public Color color = Color.RED;
   public NameString nameString = NameString.SECOND;
+  public NestedEnum nestedEnum = NestedEnum.SECOND;
   @FieldClip(min = "-10[L*min^-1]", max = "20[L*min^-1]")
   public Scalar volumeFlow = Quantity.of(20, "L*min^-1");
   // ---

@@ -39,13 +39,16 @@ public enum FieldWraps {
   public FieldWrap wrap(Field field) {
     Class<?> cls = field.getType();
     // ---
-    if (Enum.class.isAssignableFrom(cls))
+    if (cls.isEnum())
       return new EnumFieldWrap(field);
     // ---
     Function<Field, FieldWrap> function = map.get(cls);
     if (Objects.nonNull(function))
       return function.apply(field);
     // ---
+    // if (cls.isArray()) {
+    // System.out.println(cls.getComponentType());
+    // }
     return null;
   }
 }
