@@ -4,7 +4,9 @@ package ch.alpine.java.ref;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
+import java.util.List;
 import java.util.Objects;
 
 public class ObjectFields {
@@ -39,27 +41,31 @@ public class ObjectFields {
             }
           } else {
             if (isNode(field))
-              if (!class_field.isArray()) {
-                objectFieldVisitor.push(prefix, field, null);
-                visit(prefix + ".", field.get(object));
-                objectFieldVisitor.pop();
-              } else {
-                Object[] array = (Object[]) field.get(object);
-                final int length = array.length;
-                Class<?> class_element = class_field.getComponentType();
-                if (!FieldWraps.INSTANCE.elemental(class_element))
-                  for (int index = 0; index < length; ++index) {
-                    String string = String.format("%s[%d]", prefix, index);
-                    objectFieldVisitor.push(string, field, index);
-                    visit(string + ".", array[index]);
-                    objectFieldVisitor.pop();
-                  }
+              if (class_field.isArray())
+                iterate(prefix, field, Arrays.asList((Object[]) field.get(object)));
+              else {
+                if (field.getType().equals(List.class))
+                  iterate(prefix, field, (List<?>) field.get(object));
+                else {
+                  objectFieldVisitor.push(prefix, field, null);
+                  visit(prefix + ".", field.get(object));
+                  objectFieldVisitor.pop();
+                }
               }
           }
         } catch (Exception exception) {
           exception.printStackTrace();
         }
       }
+  }
+
+  private void iterate(String prefix, Field field, List<?> list) throws IllegalArgumentException {
+    for (int index = 0; index < list.size(); ++index) {
+      String string = String.format("%s[%d]", prefix, index);
+      objectFieldVisitor.push(string, field, index);
+      visit(string + ".", list.get(index));
+      objectFieldVisitor.pop();
+    }
   }
 
   // ==================================================
