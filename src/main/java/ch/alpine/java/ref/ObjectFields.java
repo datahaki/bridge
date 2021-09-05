@@ -11,10 +11,10 @@ import java.util.Objects;
 
 public class ObjectFields {
   /** @param object
-   * @param objectFieldVisitor
+   * @param objectFieldVisitor non-null
    * @return */
   public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
-    new ObjectFields(objectFieldVisitor).visit("", object);
+    new ObjectFields(Objects.requireNonNull(objectFieldVisitor)).visit("", object);
   }
 
   // ==================================================
@@ -25,38 +25,40 @@ public class ObjectFields {
   }
 
   private void visit(String _prefix, Object object) {
-    Deque<Class<?>> deque = new ArrayDeque<>();
-    for (Class<?> cls = object.getClass(); !cls.equals(Object.class); cls = cls.getSuperclass())
-      deque.push(cls);
-    while (!deque.isEmpty())
-      for (Field field : deque.pop().getDeclaredFields()) {
-        Class<?> class_field = field.getType();
-        String prefix = _prefix + field.getName();
-        try {
-          if (FieldWraps.INSTANCE.elemental(class_field)) {
-            if (isLeaf(field)) {
-              FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
-              if (Objects.nonNull(fieldWrap))
-                objectFieldVisitor.accept(prefix, fieldWrap, object, field.get(object));
-            }
-          } else {
-            if (isNode(field))
-              if (class_field.isArray())
-                iterate(prefix, field, Arrays.asList((Object[]) field.get(object)));
-              else {
-                if (field.getType().equals(List.class))
-                  iterate(prefix, field, (List<?>) field.get(object));
-                else {
-                  objectFieldVisitor.push(prefix, field, null);
-                  visit(prefix + ".", field.get(object));
-                  objectFieldVisitor.pop();
-                }
+    if (Objects.nonNull(object)) {
+      Deque<Class<?>> deque = new ArrayDeque<>();
+      for (Class<?> cls = object.getClass(); !cls.equals(Object.class); cls = cls.getSuperclass())
+        deque.push(cls);
+      while (!deque.isEmpty())
+        for (Field field : deque.pop().getDeclaredFields()) {
+          Class<?> class_field = field.getType();
+          String prefix = _prefix + field.getName();
+          try {
+            if (FieldWraps.INSTANCE.elemental(class_field)) {
+              if (isLeaf(field)) {
+                FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
+                if (Objects.nonNull(fieldWrap))
+                  objectFieldVisitor.accept(prefix, fieldWrap, object, field.get(object));
               }
+            } else {
+              if (isNode(field))
+                if (class_field.isArray())
+                  iterate(prefix, field, Arrays.asList((Object[]) field.get(object)));
+                else {
+                  if (field.getType().equals(List.class))
+                    iterate(prefix, field, (List<?>) field.get(object));
+                  else {
+                    objectFieldVisitor.push(prefix, field, null);
+                    visit(prefix + ".", field.get(object));
+                    objectFieldVisitor.pop();
+                  }
+                }
+            }
+          } catch (Exception exception) {
+            exception.printStackTrace();
           }
-        } catch (Exception exception) {
-          exception.printStackTrace();
         }
-      }
+    }
   }
 
   private void iterate(String prefix, Field field, List<?> list) throws IllegalArgumentException {

@@ -18,6 +18,7 @@ public class ListPlotTest extends TestCase {
     visualRow.setLabel("empty");
     visualSet.add(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6));
     TestHelper.draw(ListPlot.of(visualSet, true));
+    TestHelper.draw(ListPlot.of(visualSet, false));
   }
 
   private static final ScalarUnaryOperator suoX = s -> Quantity.of(s, "s");
