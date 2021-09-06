@@ -29,6 +29,7 @@ public class SimpleParam extends BaseParam {
   }
 
   public static class NestedParam extends BaseParam {
+    @FieldFuse(text = "fuse")
     public Boolean some = true;
     public String text = "grolley";
     @FieldLabel(text = "Again Another")

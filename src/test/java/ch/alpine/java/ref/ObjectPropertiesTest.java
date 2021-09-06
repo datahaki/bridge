@@ -2,6 +2,7 @@
 package ch.alpine.java.ref;
 
 import java.awt.Color;
+import java.util.Collections;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -18,5 +19,10 @@ public class ObjectPropertiesTest extends TestCase {
     SimpleParam simpleCopy = ObjectProperties.set(new SimpleParam(), properties);
     assertEquals(simpleCopy.nestedParams[1].anotherParam.color, Color.BLUE);
     assertFalse(simpleCopy.nestedParams[1].basic);
+  }
+
+  public void testNull() {
+    assertEquals(ObjectProperties.list(null), Collections.emptyList());
+    assertEquals(ObjectProperties.string(null), "");
   }
 }
