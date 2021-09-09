@@ -13,7 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.undo.UndoManager;
 
 /* package */ class StringPanel extends FieldPanel {
-  private static final Color LABEL = new Color(51, 51, 51);
+  private static final Color COLOR_FAIL_BGND = new Color(255, 192, 192);
+  private static final Color COLOR_FAIL_TEXT = new Color(51, 51, 51);
   private static final int MASK = KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK;
   private static final int UNDO = KeyEvent.CTRL_DOWN_MASK;
   private static final int REDO = MASK;
@@ -28,8 +29,7 @@ import javax.swing.undo.UndoManager;
         : new JTextField(fallbackValue = fieldWrap.toString(value));
     UndoManager undoManager = new UndoManager();
     jTextField.getDocument().addUndoableEditListener(undoManager);
-    jTextField.setFont(FieldPanel.FONT);
-    jTextField.setForeground(LABEL);
+    jTextField.setFont(FONT);
     jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));
     jTextField.addKeyListener(new KeyAdapter() {
       @Override
@@ -101,10 +101,15 @@ import javax.swing.undo.UndoManager;
         && fieldWrap().isValidValue(object);
   }
 
-  protected void indicateGui() {
-    boolean isOk = isValid(jTextField.getText());
-    jTextField.setBackground(isOk //
-        ? Color.WHITE
-        : FAIL);
+  protected final void indicateGui() {
+    if (isValid(jTextField.getText())) {
+      /** template to restore default colors */
+      JTextField J_TEXT_FIELD = new JTextField();
+      jTextField.setForeground(J_TEXT_FIELD.getForeground());
+      jTextField.setBackground(J_TEXT_FIELD.getBackground());
+    } else {
+      jTextField.setForeground(COLOR_FAIL_TEXT);
+      jTextField.setBackground(COLOR_FAIL_BGND);
+    }
   }
 }

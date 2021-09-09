@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
-import javax.swing.JLabel;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -26,7 +26,7 @@ class SpinnerMenu<T> extends StandardMenu {
 
   @Override
   protected void design(JPopupMenu jPopupMenu) {
-    Font font = spinnerLabel.getLabelComponent().getFont();
+    Font font = spinnerLabel.getFont();
     for (T type : spinnerLabel.list) {
       JMenuItem jMenuItem = new JMenuItem(type.toString());
       jMenuItem.setFont(font);
@@ -51,7 +51,7 @@ class SpinnerMenu<T> extends StandardMenu {
     spinnerLabel.reportToAll();
   }
 
-  public void showRight(JLabel jLabel) {
+  public void showRight(JComponent jLabel) {
     JPopupMenu jPopupMenu = designShow();
     T type = spinnerLabel.getValue();
     if (Objects.nonNull(type)) {

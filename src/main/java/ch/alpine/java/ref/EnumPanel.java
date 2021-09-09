@@ -2,8 +2,6 @@
 package ch.alpine.java.ref;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import ch.alpine.java.awt.SpinnerLabel;
 
@@ -12,9 +10,7 @@ import ch.alpine.java.awt.SpinnerLabel;
 
   public EnumPanel(FieldWrap fieldWrap, Object[] objects, Object object) {
     super(fieldWrap);
-    JLabel jLabel = spinnerLabel.getLabelComponent();
-    jLabel.setFont(FieldPanel.FONT);
-    jLabel.setHorizontalAlignment(SwingConstants.LEFT);
+    spinnerLabel.setFont(FONT);
     spinnerLabel.setArray(objects);
     spinnerLabel.setValueSafe(object);
     spinnerLabel.addSpinnerListener(value -> notifyListeners(fieldWrap.toString(value)));
@@ -22,6 +18,6 @@ import ch.alpine.java.awt.SpinnerLabel;
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
-    return spinnerLabel.getLabelComponent();
+    return spinnerLabel;
   }
 }
