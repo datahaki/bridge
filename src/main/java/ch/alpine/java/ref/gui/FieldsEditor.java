@@ -29,6 +29,8 @@ import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ObjectProperties;
 
 public class FieldsEditor implements ObjectFieldVisitor {
+  // TODO 20210909 temporary solution to experiment with different platforms
+  public static int PADDING = 12;
   private static final int HEIGHT = 28;
   // ---
   private final ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
@@ -53,7 +55,8 @@ public class FieldsEditor implements ObjectFieldVisitor {
     {
       JLabel jLabel = createJLabel(text(key, fieldWrap.getField(), null));
       jLabel.setToolTipText(FieldToolTip.of(fieldWrap.getField()));
-      jLabel.setPreferredSize(new Dimension(jLabel.getPreferredSize().width, HEIGHT));
+      int width = jLabel.getPreferredSize().width + PADDING;
+      jLabel.setPreferredSize(new Dimension(width, HEIGHT));
       jToolBar.add(jLabel);
     }
     toolbarsComponent.addPair(jToolBar, fieldPanel.getJComponent(), HEIGHT);
