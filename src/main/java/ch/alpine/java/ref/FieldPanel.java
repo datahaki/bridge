@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import javax.swing.JComponent;
 
 public abstract class FieldPanel {
-  protected static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 18);
+  /* package */ static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 18);
   // ---
   private final List<Consumer<String>> list = new LinkedList<>();
   private final FieldWrap fieldWrap;

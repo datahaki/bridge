@@ -2,10 +2,8 @@
 package ch.alpine.java.ref.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -65,17 +63,9 @@ public class FieldsEditor implements ObjectFieldVisitor {
   @Override // from ObjectFieldVisitor
   public void push(String key, Field field, Integer index) {
     JLabel jLabel = createJLabel(text(key, field, index));
+    jLabel.setEnabled(false);
+    toolbarsComponent.addPair(jLabel, new JLabel(), 20);
     ++level;
-    jLabel.setForeground(Color.GRAY);
-    toolbarsComponent.addPair(jLabel, new JComponent() {
-      @Override
-      protected void paintComponent(Graphics g) {
-        Dimension dimension = getSize();
-        g.setColor(Color.LIGHT_GRAY);
-        int piy = dimension.height / 2;
-        g.drawLine(0, piy, dimension.width, piy);
-      }
-    }, 20);
   }
 
   @Override // from ObjectFieldVisitor
@@ -110,7 +100,7 @@ public class FieldsEditor implements ObjectFieldVisitor {
     jTextArea.setEditable(false);
     Consumer<String> consumer = s -> jTextArea.setText(ObjectProperties.string(object));
     consumer.accept(null);
-    list.forEach(d -> d.addListener(consumer));
+    list.forEach(fieldPanel -> fieldPanel.addListener(consumer));
     jPanel.add("Center", jTextArea);
     return jPanel;
   }
