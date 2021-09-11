@@ -4,6 +4,8 @@ package ch.alpine.java.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+import ch.alpine.java.ref.ann.FieldSelection;
+
 public abstract class SelectableFieldWrap extends BaseFieldWrap {
   private final FieldSelection fieldSelection;
 
@@ -21,7 +23,7 @@ public abstract class SelectableFieldWrap extends BaseFieldWrap {
   public final FieldPanel createFieldPanel(Object value) {
     if (Objects.nonNull(fieldSelection))
       try {
-        return new MenuPanel(this, value, fieldSelection.list().split("\\|"));
+        return new MenuPanel(this, value, fieldSelection.array());
       } catch (Exception exception) {
         exception.printStackTrace();
       }

@@ -1,5 +1,5 @@
-// code by gjoel, jph
-package ch.alpine.java.ref;
+// code by jph
+package ch.alpine.java.ref.ann;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -10,9 +10,13 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-/** Hint: if the array specified by the text function has insufficient length,
- * then the default field label is used in the GUI. */
-public @interface FieldLabels {
-  /** @return text of labels */
-  String[] text();
+public @interface FieldSelection {
+  /** Works on string, tensor, scalar, ...
+   * 
+   * Example return values:
+   * {"/dev/tty0", "/dev/tty1", "/dev/ttyUSB0"}
+   * {"1[%]", "2[%], "3[%]"}
+   * 
+   * @return */
+  String[] array();
 }

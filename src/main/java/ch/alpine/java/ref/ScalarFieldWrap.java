@@ -4,6 +4,9 @@ package ch.alpine.java.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+import ch.alpine.java.ref.ann.FieldClip;
+import ch.alpine.java.ref.ann.FieldClips;
+import ch.alpine.java.ref.ann.FieldInteger;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;

@@ -1,8 +1,9 @@
 // code by jph
-package ch.alpine.java.ref;
+package ch.alpine.java.ref.ann;
 
 import java.lang.reflect.Field;
 
+import ch.alpine.java.ref.AnnotatedContainer;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitSystem;

@@ -4,6 +4,8 @@ package ch.alpine.java.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+import ch.alpine.java.ref.ann.FieldFuse;
+
 public class BooleanFieldWrap extends BaseFieldWrap {
   private final FieldFuse fieldFuse;
 

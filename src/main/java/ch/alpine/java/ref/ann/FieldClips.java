@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref;
+package ch.alpine.java.ref.ann;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -10,7 +10,7 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.N;
 
-/* package */ enum FieldClips {
+public enum FieldClips {
   ;
   /** @param fieldClip
    * @return
