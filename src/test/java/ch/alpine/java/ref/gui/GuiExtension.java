@@ -76,7 +76,7 @@ public class GuiExtension {
   public static void main(String[] args) {
     GuiExtension guiExtension = new GuiExtension();
     FieldsEditor fieldsEditor = new FieldsEditor(guiExtension);
-    fieldsEditor.addUniversalListener(s -> System.out.println(s));
+    fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     JComponent jComponent = fieldsEditor.getFieldsAndTextarea();
     // ---
     JFrame jFrame = new JFrame();

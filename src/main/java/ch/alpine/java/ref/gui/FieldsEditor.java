@@ -83,7 +83,9 @@ public class FieldsEditor implements ObjectFieldVisitor {
     return Collections.unmodifiableList(list);
   }
 
-  public void addUniversalListener(Consumer<String> consumer) {
+  /** @param runnable that will be run if any value in editor was subject to change */
+  public void addUniversalListener(Runnable runnable) {
+    Consumer<String> consumer = string -> runnable.run();
     list.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
   }
 
