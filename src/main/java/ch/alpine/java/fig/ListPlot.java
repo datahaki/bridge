@@ -4,6 +4,8 @@ package ch.alpine.java.fig;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -51,6 +53,15 @@ public enum ListPlot {
       VisualRow visualRow = visualSet.getVisualRow(index);
       xyItemRenderer.setSeriesPaint(index, visualRow.getColor());
       xyItemRenderer.setSeriesStroke(index, visualRow.getStroke());
+    }
+    { // Mathematica does not include zero in the y-axes by default
+      // whereas jfree chart does so.
+      // the code below emulates the behavior of Mathematica
+      ValueAxis valueAxis = jFreeChart.getXYPlot().getRangeAxis();
+      if (valueAxis instanceof NumberAxis) {
+        NumberAxis numberAxis = (NumberAxis) valueAxis;
+        numberAxis.setAutoRangeIncludesZero(false);
+      }
     }
     return jFreeChart;
   }
