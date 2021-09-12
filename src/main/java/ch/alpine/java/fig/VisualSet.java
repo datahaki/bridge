@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import org.jfree.chart.ChartFactory;
 
+import ch.alpine.java.lang.PrettyUnit;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
@@ -117,10 +118,10 @@ public class VisualSet implements Serializable {
   }
 
   /* package */ String getUnitXString() {
-    return unitX.equals(Unit.ONE) ? "" : "[" + unitX + "]";
+    return unitX.equals(Unit.ONE) ? "" : "[" + PrettyUnit.of(unitX) + "]";
   }
 
   /* package */ String getUnitYString() {
-    return unitY.equals(Unit.ONE) ? "" : "[" + unitY + "]";
+    return unitY.equals(Unit.ONE) ? "" : "[" + PrettyUnit.of(unitY) + "]";
   }
 }
