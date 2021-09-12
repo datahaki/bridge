@@ -8,8 +8,25 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class ObjectFields {
+  private static final int LEAF_FILTER = Modifier.PUBLIC;
+  private static final int LEAF_TESTED = LEAF_FILTER //
+      | Modifier.PRIVATE | Modifier.PROTECTED //
+      | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
+  private static final Predicate<Field> IS_LEAF = VisibilityPredicate.field( //
+      LEAF_FILTER, //
+      LEAF_TESTED);
+  // ---
+  private static final int NODE_FILTER = Modifier.PUBLIC | Modifier.FINAL;
+  private static final int NODE_TESTED = NODE_FILTER //
+      | Modifier.PRIVATE | Modifier.PROTECTED //
+      | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
+  private static final Predicate<Field> IS_NODE = VisibilityPredicate.field( //
+      NODE_FILTER, //
+      NODE_TESTED);
+
   /** @param object
    * @param objectFieldVisitor non-null
    * @return */
@@ -35,13 +52,13 @@ public class ObjectFields {
           String prefix = _prefix + field.getName();
           try {
             if (FieldWraps.INSTANCE.elemental(class_field)) {
-              if (isLeaf(field)) {
+              if (IS_LEAF.test(field)) {
                 FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
                 if (Objects.nonNull(fieldWrap))
                   objectFieldVisitor.accept(prefix, fieldWrap, object, field.get(object));
               }
             } else {
-              if (isNode(field))
+              if (IS_NODE.test(field))
                 if (class_field.isArray())
                   iterate(prefix, field, Arrays.asList((Object[]) field.get(object)));
                 else {
@@ -68,26 +85,5 @@ public class ObjectFields {
       visit(string + ".", list.get(index));
       objectFieldVisitor.pop();
     }
-  }
-
-  // ==================================================
-  private static final int LEAF_FILTER = Modifier.PUBLIC;
-  private static final int LEAF_TESTED = LEAF_FILTER //
-      | Modifier.PRIVATE | Modifier.PROTECTED //
-      | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
-
-  /** @param field
-   * @return whether field is public, non final, non static, non transient */
-  private static final boolean isLeaf(Field field) {
-    return (field.getModifiers() & LEAF_TESTED) == LEAF_FILTER;
-  }
-
-  private static final int NODE_FILTER = Modifier.PUBLIC | Modifier.FINAL;
-  private static final int NODE_TESTED = NODE_FILTER //
-      | Modifier.PRIVATE | Modifier.PROTECTED //
-      | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
-
-  private static final boolean isNode(Field field) {
-    return (field.getModifiers() & NODE_TESTED) == NODE_FILTER;
   }
 }
