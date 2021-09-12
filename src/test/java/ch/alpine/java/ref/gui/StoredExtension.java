@@ -10,13 +10,13 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import ch.alpine.java.ref.FieldClip;
-import ch.alpine.java.ref.FieldExistingDirectory;
-import ch.alpine.java.ref.FieldExistingFile;
-import ch.alpine.java.ref.FieldInteger;
-import ch.alpine.java.ref.FieldLabel;
 import ch.alpine.java.ref.NameString;
 import ch.alpine.java.ref.ObjectProperties;
+import ch.alpine.java.ref.ann.FieldClip;
+import ch.alpine.java.ref.ann.FieldExistingDirectory;
+import ch.alpine.java.ref.ann.FieldExistingFile;
+import ch.alpine.java.ref.ann.FieldInteger;
+import ch.alpine.java.ref.ann.FieldLabel;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;

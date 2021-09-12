@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import javax.swing.JComponent;
@@ -18,13 +17,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
-import ch.alpine.java.ref.FieldLabel;
-import ch.alpine.java.ref.FieldLabels;
 import ch.alpine.java.ref.FieldPanel;
 import ch.alpine.java.ref.FieldWrap;
 import ch.alpine.java.ref.ObjectFieldVisitor;
 import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ObjectProperties;
+import ch.alpine.java.ref.ann.FieldLabels;
 
 public class FieldsEditor implements ObjectFieldVisitor {
   // TODO 20210909 temporary solution to experiment with different platforms
@@ -51,7 +49,7 @@ public class FieldsEditor implements ObjectFieldVisitor {
     fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
     JToolBar jToolBar = ToolbarsComponent.createJToolBar(FlowLayout.LEFT);
     {
-      JLabel jLabel = createJLabel(text(key, fieldWrap.getField(), null));
+      JLabel jLabel = createJLabel(FieldLabels.of(key, fieldWrap.getField(), null));
       jLabel.setToolTipText(FieldToolTip.of(fieldWrap.getField()));
       int width = jLabel.getPreferredSize().width + PADDING;
       jLabel.setPreferredSize(new Dimension(width, HEIGHT));
@@ -62,7 +60,7 @@ public class FieldsEditor implements ObjectFieldVisitor {
 
   @Override // from ObjectFieldVisitor
   public void push(String key, Field field, Integer index) {
-    JLabel jLabel = createJLabel(text(key, field, index));
+    JLabel jLabel = createJLabel(FieldLabels.of(key, field, index));
     jLabel.setEnabled(false);
     toolbarsComponent.addPair(jLabel, new JLabel(), 20);
     ++level;
@@ -85,8 +83,10 @@ public class FieldsEditor implements ObjectFieldVisitor {
     return Collections.unmodifiableList(list);
   }
 
-  public void addUniversalListener(Consumer<String> consumer) {
-    list.stream().forEach(fieldPanel -> fieldPanel.addListener(consumer));
+  /** @param runnable that will be run if any value in editor was subject to change */
+  public void addUniversalListener(Runnable runnable) {
+    Consumer<String> consumer = string -> runnable.run();
+    list.forEach(fieldPanel -> fieldPanel.addListener(consumer));
   }
 
   /** @return */
@@ -103,40 +103,6 @@ public class FieldsEditor implements ObjectFieldVisitor {
     list.forEach(fieldPanel -> fieldPanel.addListener(consumer));
     jPanel.add("Center", jTextArea);
     return jPanel;
-  }
-
-  // ==================================================
-  /** @param key
-   * @param field
-   * @param index non-null iff field represents array, or list
-   * @return */
-  private static String text(String key, Field field, Integer index) {
-    {
-      FieldLabel fieldLabel = field.getAnnotation(FieldLabel.class);
-      if (Objects.isNull(index)) // base case
-        return Objects.isNull(fieldLabel) //
-            ? key.substring(key.lastIndexOf('.') + 1) // default choice: label text as in java code
-            : fieldLabel.text();
-      // ---
-      // below here, index is guaranteed to be non-null
-      if (Objects.nonNull(fieldLabel))
-        try {
-          // we make the assumption that the user wants to see the counter starting from 1
-          return String.format(fieldLabel.text(), index + 1);
-        } catch (Exception exception) {
-          // in case field label is not suitable for use with String#format
-        }
-    }
-    // ---
-    {
-      FieldLabels fieldLabels = field.getAnnotation(FieldLabels.class);
-      if (Objects.nonNull(fieldLabels)) {
-        String[] text = fieldLabels.text();
-        if (index < text.length)
-          return text[index];
-      }
-    }
-    return key.substring(key.lastIndexOf('.') + 1);
   }
 
   private JLabel createJLabel(String text) {

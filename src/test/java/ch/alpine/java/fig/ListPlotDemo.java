@@ -19,8 +19,8 @@ import ch.alpine.tensor.qty.Quantity;
 
 /* package */ enum ListPlotDemo {
   ;
-  private static final ScalarUnaryOperator suoX = s -> Quantity.of(s, "s");
-  private static final ScalarUnaryOperator suoY = s -> Quantity.of(s, "m");
+  private static final ScalarUnaryOperator suoX = s -> Quantity.of(s.add(RealScalar.of(100)), "s");
+  private static final ScalarUnaryOperator suoY = s -> Quantity.of(s.add(RealScalar.of(300)), "m");
 
   public static void main(String[] args) throws IOException {
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);

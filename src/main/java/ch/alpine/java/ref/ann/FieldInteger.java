@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref;
+package ch.alpine.java.ref.ann;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

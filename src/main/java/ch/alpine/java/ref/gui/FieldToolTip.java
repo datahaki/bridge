@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import ch.alpine.java.ref.FieldClip;
-import ch.alpine.java.ref.FieldInteger;
+import ch.alpine.java.ref.ann.FieldClip;
+import ch.alpine.java.ref.ann.FieldInteger;
 
 public enum FieldToolTip {
   ;
