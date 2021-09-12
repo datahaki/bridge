@@ -4,6 +4,7 @@ package ch.alpine.java.lang;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import ch.alpine.tensor.Scalar;
@@ -48,15 +49,15 @@ public enum PrettyUnit {
         .collect(Collectors.joining(Unit.JOIN_DELIMITER)); // delimited by '*'
   }
 
+  private static final Set<String> SET_MICRO = Set.of("ug", "um", "us", "uF", "uH", "uS", "uSv", "uW");
+
   private static String atomString(String atom) {
+    if (SET_MICRO.contains(atom))
+      return "\u03BC" + atom.substring(1);
     if (atom.equals("degC"))
       return "\u2103"; // unicode oC
-    if (atom.equals("um"))
-      return "\u03BCm";
-    if (atom.equals("us"))
-      return "\u03BCs";
     if (atom.equals("EUR"))
-      return "\u20ac";
+      return "\u20ac"; // unicode EUR
     if (atom.equals("K"))
       return "\u212a"; // unicode K
     if (atom.equals("Ohm"))

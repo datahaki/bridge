@@ -1,12 +1,12 @@
 // code by jph
 package ch.alpine.java.awt;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
@@ -14,8 +14,11 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-class SpinnerMenu<T> extends StandardMenu {
-  private final Map<T, JMenuItem> map = new LinkedHashMap<>();
+/* package */ class SpinnerMenu<T> extends StandardMenu {
+  /** background for items in menus that are selected; not Java official */
+  private static final Color ACTIVE_ITEM = new Color(243, 239, 124);
+  // ---
+  private final LinkedHashMap<T, JMenuItem> map = new LinkedHashMap<>();
   private final SpinnerLabel<T> spinnerLabel;
   private final boolean hover;
 
@@ -56,7 +59,7 @@ class SpinnerMenu<T> extends StandardMenu {
     T type = spinnerLabel.getValue();
     if (Objects.nonNull(type)) {
       int delta = 2;
-      map.get(type).setBackground(Colors.ACTIVE_ITEM); // Colors.gold
+      map.get(type).setBackground(ACTIVE_ITEM); // Colors.gold
       for (Entry<T, JMenuItem> entry : map.entrySet()) {
         delta += entry.getValue().getPreferredSize().height;
         if (entry.getKey().equals(type)) {

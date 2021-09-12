@@ -29,4 +29,9 @@ public class PrettyUnitTest extends TestCase {
   public void testIndeterminate() {
     PrettyUnit.of(Quantity.of(DoubleScalar.INDETERMINATE, "degC"));
   }
+
+  public void testMicro() {
+    assertEquals(PrettyUnit.of(Unit.of("us")), "\u03BCs");
+    assertEquals(PrettyUnit.of(Unit.of("uF")), "\u03BCF");
+  }
 }

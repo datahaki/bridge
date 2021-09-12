@@ -21,6 +21,9 @@ import javax.swing.JTextField;
 
 /** selector in gui for easy scrolling through a list with mouse-wheel but no pull-down menu */
 public class SpinnerLabel<T> extends JTextField {
+  /** JToggleButton background when selected is 184 207 229 selection color
+   * subtracts 24 from each RGB value */
+  private static final Color SELECTION = new Color(160, 183, 205);
   private static final int BORDER_WIDTH_MIN = 9;
   private static final int BORDER_WIDTH_MAX = 16;
 
@@ -56,7 +59,7 @@ public class SpinnerLabel<T> extends JTextField {
       graphics.fillRect(dimension.width - border_width, 0, border_width, dimension.height);
     }
     // ---
-    graphics.setColor(insideActive ? Colors.SELECTION : Colors.alpha064(Color.LIGHT_GRAY));
+    graphics.setColor(insideActive ? SELECTION : StaticHelper.alpha064(Color.LIGHT_GRAY));
     final int w = 3;
     final int r = dimension.width - 2 * w - 1;
     final int h = dimension.height - w - 1;
