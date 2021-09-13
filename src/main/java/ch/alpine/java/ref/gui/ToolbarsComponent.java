@@ -29,8 +29,7 @@ public class ToolbarsComponent {
     return jToolBar;
   }
 
-  /***************************************************/
-  // ---
+  // ==================================================
   private final JPanel jPanel = new JPanel(new BorderLayout());
   private final RowPanel rowTitle = new RowPanel();
   private final RowPanel rowActor = new RowPanel();
@@ -81,7 +80,7 @@ public class ToolbarsComponent {
     rowActor.add(center);
   }
 
-  /***************************************************/
+  // ==================================================
   /** @param title
    * @return editable text field that allows user modification */
   public JTextField createEditing(String title) {
@@ -95,7 +94,7 @@ public class ToolbarsComponent {
     return jTextField;
   }
 
-  /***************************************************/
+  // ==================================================
   /** @param title
    * @return non-editable text field to display values */
   public JTextField createReading(String title) {
@@ -115,7 +114,7 @@ public class ToolbarsComponent {
     return jCheckBox;
   }
 
-  /***************************************************/
+  // ==================================================
   /** @return component that contains the labeled input fields only, but not
    * the text summary below */
   public JScrollPane createJScrollPane() {

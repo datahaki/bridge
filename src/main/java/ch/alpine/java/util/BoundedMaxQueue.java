@@ -11,7 +11,7 @@ public class BoundedMaxQueue<T> extends BoundedPriorityQueue<T> {
     return new BoundedMaxQueue<>(capacity);
   }
 
-  /***************************************************/
+  // ---
   private BoundedMaxQueue(int capacity) {
     // "If comparator==null, the natural ordering of the elements will be used."
     super(capacity, null);

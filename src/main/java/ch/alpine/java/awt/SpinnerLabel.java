@@ -36,7 +36,7 @@ public class SpinnerLabel<T> extends JTextField {
     return spinnerLabel;
   }
 
-  /***************************************************/
+  // ==================================================
   private boolean mouseInside = false;
   private Point lastMouse = new Point();
   private int border_width = 0;

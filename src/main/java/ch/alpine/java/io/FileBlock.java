@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 
 /** also works if file already exists before any launch */
 public class FileBlock {
+  // ==================================================
   private final File folder;
   private final Class<?> cls;
   private RandomAccessFile randomAccessFile;
@@ -23,7 +24,7 @@ public class FileBlock {
     this.cls = cls;
   }
 
-  private boolean isActive() {
+  /* package */ boolean isActive() {
     try {
       File file = new File(folder, '.' + cls.getCanonicalName() + ".lock");
       randomAccessFile = new RandomAccessFile(file, "rw");

@@ -16,13 +16,15 @@ import java.util.stream.IntStream;
  * of disjoint (non-overlapping) sets."
  * Reference: https://en.wikipedia.org/wiki/Disjoint-set_data_structure */
 public class DisjointSets {
+  /** @param initialSize
+   * @return */
   public static DisjointSets allocate(int initialSize) {
     DisjointSets disjointSets = new DisjointSets();
     IntStream.range(0, initialSize).forEach(i -> disjointSets.add());
     return disjointSets;
   }
 
-  /***************************************************/
+  // ---
   private final List<Node> list = new ArrayList<>();
 
   /** @return index of added set */
@@ -76,7 +78,7 @@ public class DisjointSets {
         .collect(Collectors.toMap(Function.identity(), key -> supplier.get()));
   }
 
-  /***************************************************/
+  // ==================================================
   private static class Node {
     private int parent;
     private Integer rank = 0;
@@ -91,7 +93,6 @@ public class DisjointSets {
     }
   }
 
-  /***************************************************/
   // functions for testing
   /* package */ int depth(int index) {
     int depth = 0;
