@@ -54,7 +54,7 @@ import javax.swing.JPopupMenu;
     spinnerLabel.reportToAll();
   }
 
-  public void showRight(JComponent jLabel) {
+  public void showRight(JComponent jComponent) {
     JPopupMenu jPopupMenu = designShow();
     T type = spinnerLabel.getValue();
     if (Objects.nonNull(type)) {
@@ -67,8 +67,8 @@ import javax.swing.JPopupMenu;
           break;
         }
       }
-      Dimension dimension = jLabel.getSize();
-      jPopupMenu.show(jLabel, dimension.width, dimension.height / 2 - delta);
+      Dimension dimension = jComponent.getSize();
+      jPopupMenu.show(jComponent, dimension.width, dimension.height / 2 - delta);
     }
   }
 }
