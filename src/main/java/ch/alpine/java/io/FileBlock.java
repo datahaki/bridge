@@ -12,6 +12,14 @@ import javax.swing.JOptionPane;
 
 /** also works if file already exists before any launch */
 public class FileBlock {
+  public static boolean of(File folder, Class<?> cls, boolean showMessage) {
+    FileBlock fileBlock = new FileBlock(folder, cls);
+    boolean isActive = fileBlock.isActive();
+    if (isActive && showMessage)
+      fileBlock.showMessage();
+    return isActive;
+  }
+
   // ==================================================
   private final File folder;
   private final Class<?> cls;
@@ -19,7 +27,7 @@ public class FileBlock {
   private FileChannel fileChannel;
   private FileLock fileLock;
 
-  public FileBlock(File folder, Class<?> cls) {
+  private FileBlock(File folder, Class<?> cls) {
     this.folder = folder;
     this.cls = cls;
   }
@@ -64,13 +72,6 @@ public class FileBlock {
     } catch (Exception exception) {
       System.out.println("RandomAccessFile (ignore!): " + exception);
     }
-  }
-
-  public boolean defaultMessage() {
-    boolean isActive = isActive();
-    if (isActive)
-      showMessage();
-    return isActive;
   }
 
   private void showMessage() {

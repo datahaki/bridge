@@ -6,8 +6,8 @@ import junit.framework.TestCase;
 
 public class FileBlockTest extends TestCase {
   public void testSimple() {
-    assertFalse(new FileBlock(HomeDirectory.file(), getClass()).defaultMessage());
-    assertTrue(new FileBlock(HomeDirectory.file(), getClass()).isActive());
-    assertTrue(new FileBlock(HomeDirectory.file(), getClass()).isActive());
+    assertFalse(FileBlock.of(HomeDirectory.file(), getClass(), false));
+    assertTrue(FileBlock.of(HomeDirectory.file(), getClass(), false));
+    assertTrue(FileBlock.of(HomeDirectory.file(), getClass(), false));
   }
 }
