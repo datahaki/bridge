@@ -13,7 +13,6 @@ import junit.framework.TestCase;
 public class GeometricLayerTest extends TestCase {
   public void testSimple() {
     GeometricLayer geometricLayer = new GeometricLayer(GfxMatrix.translation(Tensors.vector(0, 0)));
-    geometricLayer.popMatrix();
     AssertFail.of(() -> geometricLayer.popMatrix());
   }
 
@@ -32,6 +31,7 @@ public class GeometricLayerTest extends TestCase {
     geometricLayer.toPath2D(CirclePoints.of(10));
     geometricLayer.toPath2D(CirclePoints.of(10), false);
     geometricLayer.toPath2D(CirclePoints.of(10), true);
+    geometricLayer.toPath2D(Tensors.empty());
     float model2pixelWidth = geometricLayer.model2pixelWidth(3);
     double pixel2modelWidth = geometricLayer.pixel2modelWidth(model2pixelWidth);
     Chop._10.requireClose(RealScalar.of(pixel2modelWidth), RealScalar.of(3));

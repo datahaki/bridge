@@ -28,8 +28,9 @@ public class ObjectFields {
       NODE_TESTED);
 
   /** @param object
-   * @param objectFieldVisitor non-null
-   * @return */
+   * @param objectFieldVisitor
+   * @return
+   * @throws Exception if any input parameter is null */
   public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
     new ObjectFields(Objects.requireNonNull(objectFieldVisitor)).visit("", object);
   }

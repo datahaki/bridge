@@ -25,6 +25,8 @@ public enum PrettyUnit {
         : Unprotect.withoutUnit(scalar) + " " + of(unit);
   }
 
+  /** @param unit
+   * @return */
   public static String of(Unit unit) {
     Map<String, Scalar> map = unit.map();
     long count = map.values().stream().filter(Sign::isNegative).count();

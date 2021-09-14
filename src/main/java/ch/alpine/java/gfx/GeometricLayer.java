@@ -63,9 +63,11 @@ public class GeometricLayer {
 
   /** inspired by opengl
    * 
-   * @throws Exception if deque of matrices is empty */
+   * @throws Exception without a corresponding call to {@link #pushMatrix(Tensor)} */
   public void popMatrix() {
     deque.pop();
+    if (deque.isEmpty())
+      throw new IllegalStateException();
   }
 
   /** @return current model2pixel matrix */

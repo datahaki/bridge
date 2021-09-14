@@ -8,8 +8,10 @@ import java.util.List;
 import ch.alpine.java.ref.SimpleParam.AnotherParam;
 import ch.alpine.java.ref.SimpleParam.NestedParam;
 import ch.alpine.java.ref.ann.FieldLabelArray;
+import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.java.ref.gui.FieldsEditor;
 
+@ReflectionMarker
 public class FieLabParam {
   public Boolean fuse = true;
   @FieldLabelArray(text = { "abc" })
