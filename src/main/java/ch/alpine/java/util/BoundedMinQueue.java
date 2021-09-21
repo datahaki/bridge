@@ -12,7 +12,7 @@ public class BoundedMinQueue<T> extends BoundedPriorityQueue<T> {
     return new BoundedMinQueue<>(capacity);
   }
 
-  /***************************************************/
+  // ---
   private BoundedMinQueue(int capacity) {
     super(capacity, Collections.reverseOrder());
   }

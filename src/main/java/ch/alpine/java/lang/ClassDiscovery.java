@@ -17,7 +17,7 @@ public class ClassDiscovery {
     new ClassDiscovery(classpath, classVisitor).findClasses();
   }
 
-  /***************************************************/
+  // ==================================================
   private final String classpath;
   private final ClassVisitor classVisitor;
 

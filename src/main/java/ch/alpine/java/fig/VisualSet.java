@@ -105,7 +105,7 @@ public class VisualSet implements Serializable {
         .anyMatch(string -> !string.isEmpty());
   }
 
-  /***************************************************/
+  // ==================================================
   private Unit unitX = Unit.ONE;
   private Unit unitY = Unit.ONE;
 
