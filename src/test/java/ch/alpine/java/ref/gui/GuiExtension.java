@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import ch.alpine.java.awt.LookAndFeels;
 import ch.alpine.java.ref.Container.NestedEnum;
 import ch.alpine.java.ref.NameString;
 import ch.alpine.java.ref.ann.FieldClip;
@@ -74,6 +75,7 @@ public class GuiExtension {
   }
 
   public static void main(String[] args) {
+    LookAndFeels.NIMBUS.updateUI();
     GuiExtension guiExtension = new GuiExtension();
     FieldsEditor fieldsEditor = new FieldsEditor(guiExtension);
     fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
