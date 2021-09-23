@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.java.fig;
 
-enum SmoothHistogram {
-  ;
-  // LONGTERM implement SmoothHistogram
-}
+// LONGTERM implement SmoothHistogram
+// enum SmoothHistogram {
+// ;
+// }

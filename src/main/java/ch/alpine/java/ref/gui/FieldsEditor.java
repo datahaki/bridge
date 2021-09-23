@@ -86,9 +86,11 @@ public class FieldsEditor implements ObjectFieldVisitor {
     JTextArea jTextArea = new JTextArea();
     jTextArea.setBackground(null);
     jTextArea.setEditable(false);
-    Consumer<String> consumer = s -> jTextArea.setText(ObjectProperties.string(object));
-    consumer.accept(null);
-    list.forEach(fieldPanel -> fieldPanel.addListener(consumer));
+    {
+      Runnable runnable = () -> jTextArea.setText(ObjectProperties.string(object));
+      runnable.run();
+      addUniversalListener(runnable);
+    }
     jPanel.add("Center", jTextArea);
     return jPanel;
   }

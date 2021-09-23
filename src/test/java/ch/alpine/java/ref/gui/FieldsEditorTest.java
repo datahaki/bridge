@@ -9,6 +9,7 @@ public class FieldsEditorTest extends TestCase {
   public void testSimple() {
     FieldsEditor fieldsEditor = new FieldsEditor(new SimpleParam());
     fieldsEditor.getFieldsAndTextarea();
+    fieldsEditor.list().forEach(fieldPanel -> fieldPanel.notifyListeners(""));
   }
 
   public void testV011() {

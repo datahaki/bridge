@@ -65,6 +65,9 @@ import ch.alpine.tensor.qty.Unit;
     return xySeriesCollection;
   }
 
+  /** @param visualSet
+   * @return */
+  // TODO what is this function good for?
   public static CategoryDataset defaultCategoryDataset(VisualSet visualSet) {
     return defaultCategoryDataset(visualSet, Scalar::toString);
   }

@@ -11,7 +11,8 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.ui.RectangleInsets;
 
-/* package */ class DefaultChartTheme {
+/* package */ enum DefaultChartTheme {
+  ;
   private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
   private static StandardChartTheme getChartTheme(StandardChartTheme standardChartTheme) {
@@ -56,5 +57,5 @@ import org.jfree.chart.ui.RectangleInsets;
     return standardChartTheme;
   }
 
-  public static final StandardChartTheme STANDARD = getChartTheme(new StandardChartTheme("subare"));
+  public static final StandardChartTheme STANDARD = getChartTheme(new StandardChartTheme("ch_alpine"));
 }
