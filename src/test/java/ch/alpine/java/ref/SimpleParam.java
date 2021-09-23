@@ -21,7 +21,7 @@ public class SimpleParam extends BaseParam {
   @FieldLabel(text = "Choose Pivot")
   public Pivots pivot = Pivots.ARGMAX_ABS;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
-  @FieldLabel(text = "Another Parameter")
+  @FieldLabel(text = "Another Parameter ASDGHJ")
   public final AnotherParam anotherParam = new AnotherParam();
   @FieldLabel(text = "Nested %d")
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };

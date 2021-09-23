@@ -13,7 +13,12 @@ import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.Sign;
 
-/** "m*s^-1" -> "m/s" and more */
+/** IMPLEMENTATION IS EXPERIMENTAL
+ * 
+ * "m*s^-1" -> "m/s"
+ * use of unicode characters for degC, Ohm and micro-x
+ * use of unicode characters for exponents such as ^-2
+ * etc. */
 public enum PrettyUnit {
   ;
   /** @param scalar

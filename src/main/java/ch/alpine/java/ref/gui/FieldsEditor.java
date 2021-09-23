@@ -3,7 +3,6 @@ package ch.alpine.java.ref.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -15,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JToolBar;
 
 import ch.alpine.java.ref.FieldPanel;
 import ch.alpine.java.ref.FieldWrap;
@@ -25,11 +23,9 @@ import ch.alpine.java.ref.ObjectProperties;
 import ch.alpine.java.ref.ann.FieldLabels;
 
 public class FieldsEditor implements ObjectFieldVisitor {
-  // TODO 20210909 temporary solution to experiment with different platforms
-  public static int PADDING = 12;
   private static final int HEIGHT = 28;
   // ---
-  private final ToolbarsComponent toolbarsComponent = new ToolbarsComponent();
+  private final RowPanel rowPanel = new RowPanel();
   private final List<FieldPanel> list = new LinkedList<>();
   private final Object object;
   private final JScrollPane jScrollPane;
@@ -39,7 +35,7 @@ public class FieldsEditor implements ObjectFieldVisitor {
   public FieldsEditor(Object object) {
     this.object = object;
     ObjectFields.of(object, this);
-    jScrollPane = toolbarsComponent.createJScrollPane();
+    jScrollPane = rowPanel.createJScrollPane();
   }
 
   @Override // from ObjectFieldVisitor
@@ -47,32 +43,24 @@ public class FieldsEditor implements ObjectFieldVisitor {
     FieldPanel fieldPanel = fieldWrap.createFieldPanel(value);
     list.add(fieldPanel);
     fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
-    JToolBar jToolBar = ToolbarsComponent.createJToolBar(FlowLayout.LEFT);
-    {
-      JLabel jLabel = createJLabel(FieldLabels.of(key, fieldWrap.getField(), null));
-      jLabel.setToolTipText(FieldToolTip.of(fieldWrap.getField()));
-      int width = jLabel.getPreferredSize().width + PADDING;
-      jLabel.setPreferredSize(new Dimension(width, HEIGHT));
-      jToolBar.add(jLabel);
-    }
-    toolbarsComponent.addPair(jToolBar, fieldPanel.getJComponent(), HEIGHT);
+    JLabel jLabel = createJLabel(FieldLabels.of(key, fieldWrap.getField(), null));
+    jLabel.setToolTipText(FieldToolTip.of(fieldWrap.getField()));
+    int width = jLabel.getPreferredSize().width;
+    jLabel.setPreferredSize(new Dimension(width, HEIGHT));
+    rowPanel.appendRow(jLabel, fieldPanel.getJComponent(), HEIGHT);
   }
 
   @Override // from ObjectFieldVisitor
   public void push(String key, Field field, Integer index) {
     JLabel jLabel = createJLabel(FieldLabels.of(key, field, index));
     jLabel.setEnabled(false);
-    toolbarsComponent.addPair(jLabel, new JLabel(), 20);
+    rowPanel.appendRow(jLabel, 20);
     ++level;
   }
 
   @Override // from ObjectFieldVisitor
   public void pop() {
     --level;
-  }
-
-  public ToolbarsComponent getToolbarsComponent() {
-    return toolbarsComponent;
   }
 
   public JScrollPane getJScrollPane() {

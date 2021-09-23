@@ -9,7 +9,6 @@ import ch.alpine.java.ref.SimpleParam.AnotherParam;
 import ch.alpine.java.ref.SimpleParam.NestedParam;
 import ch.alpine.java.ref.ann.FieldLabelArray;
 import ch.alpine.java.ref.ann.ReflectionMarker;
-import ch.alpine.java.ref.gui.FieldsEditor;
 
 @ReflectionMarker
 public class FieLabParam {
@@ -23,11 +22,5 @@ public class FieLabParam {
     another = new LinkedList<>();
     for (int index = 0; index < l; ++index)
       another.add(new AnotherParam());
-  }
-
-  public static void main(String[] args) {
-    System.out.println(ObjectProperties.string(new FieLabParam(4)));
-    FieldsEditor fieldsEditor = new FieldsEditor(new FieLabParam(4));
-    fieldsEditor.getToolbarsComponent();
   }
 }
