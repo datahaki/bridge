@@ -39,7 +39,8 @@ public final class HardWatchdog implements Watchdog {
   /** @return true if timeout counter has ever elapsed the allowed period */
   @Override // from Watchdog
   public boolean isBarking() {
-    isBlown |= tolerance < System.nanoTime() - lastNotify;
+    if (!isBlown) // only evaluate if necessary
+      isBlown = tolerance < System.nanoTime() - lastNotify;
     return isBlown;
   }
 }
