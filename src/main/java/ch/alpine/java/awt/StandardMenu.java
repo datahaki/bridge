@@ -47,7 +47,7 @@ public abstract class StandardMenu {
     });
   }
 
-  // ==================================================
+  // ---
   protected abstract void design(JPopupMenu jPopupMenu);
 
   private final JPopupMenu jPopupMenu = new JPopupMenu();

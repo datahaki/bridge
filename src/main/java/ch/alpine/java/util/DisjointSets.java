@@ -78,7 +78,7 @@ public class DisjointSets {
         .collect(Collectors.toMap(Function.identity(), key -> supplier.get()));
   }
 
-  // ==================================================
+  // ---
   private static class Node {
     private int parent;
     private Integer rank = 0;

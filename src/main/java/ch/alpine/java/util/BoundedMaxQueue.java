@@ -6,7 +6,7 @@ import java.util.Queue;
 /** bounded max queue only keeps the n largest elements */
 public class BoundedMaxQueue<T> extends BoundedPriorityQueue<T> {
   /** @param capacity non-negative
-   * @return bounded priority queue with given maximum capacity 
+   * @return bounded priority queue with given maximum capacity
    * @throws Exception if given capacity is negative */
   public static <T> Queue<T> of(int capacity) {
     return new BoundedMaxQueue<>(capacity);

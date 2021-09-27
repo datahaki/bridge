@@ -20,7 +20,7 @@ public class FileBlock {
     return isActive;
   }
 
-  // ==================================================
+  // ---
   private final File folder;
   private final Class<?> cls;
   private RandomAccessFile randomAccessFile;

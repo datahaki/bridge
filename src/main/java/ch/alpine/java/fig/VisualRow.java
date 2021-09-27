@@ -36,7 +36,7 @@ public class VisualRow implements Serializable {
     return points.unmodifiable();
   }
 
-  // ==================================================
+  // ---
   /** @param color */
   public void setColor(Color color) {
     this.color = Objects.requireNonNull(color);
@@ -47,7 +47,7 @@ public class VisualRow implements Serializable {
     return color;
   }
 
-  // ==================================================
+  // ---
   /** @param stroke */
   public void setStroke(Stroke stroke) {
     this.stroke = Objects.requireNonNull(stroke);
@@ -60,7 +60,7 @@ public class VisualRow implements Serializable {
         : stroke;
   }
 
-  // ==================================================
+  // ---
   /** @param string */
   public void setLabel(String string) {
     comparableLabel.setString(string);
@@ -71,7 +71,7 @@ public class VisualRow implements Serializable {
     return getLabel().toString();
   }
 
-  // ==================================================
+  // ---
   /** @param autoSort */
   public void setAutoSort(boolean autoSort) {
     this.autoSort = autoSort;
@@ -82,7 +82,7 @@ public class VisualRow implements Serializable {
     return autoSort;
   }
 
-  // ==================================================
+  // ---
   /* package */ ComparableLabel getLabel() {
     return comparableLabel;
   }

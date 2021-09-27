@@ -19,7 +19,7 @@ public class ZipDirectory implements AutoCloseable {
     }
   }
 
-  // ==================================================
+  // ---
   private final ZipOutputStream zipOutputStream;
 
   private ZipDirectory(File dst) throws FileNotFoundException {

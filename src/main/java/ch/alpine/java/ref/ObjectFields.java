@@ -35,7 +35,7 @@ public class ObjectFields {
     new ObjectFields(Objects.requireNonNull(objectFieldVisitor)).visit("", object);
   }
 
-  // ==================================================
+  // ---
   private final ObjectFieldVisitor objectFieldVisitor;
 
   private ObjectFields(ObjectFieldVisitor objectFieldVisitor) {

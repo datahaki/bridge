@@ -17,7 +17,7 @@ public final class HardWatchdog implements Watchdog {
     return new HardWatchdog(StaticHelper.nanos(timeout));
   }
 
-  // ==================================================
+  // ---
   private final long tolerance;
   private long lastNotify;
   /** Once set to true, the flag "isBlown" is never cleared. */
