@@ -110,6 +110,7 @@ public class DisjointSets {
   /* package */ Collection<Integer> representatives() {
     return IntStream.range(0, list.size()) //
         .map(this::key) //
-        .boxed().collect(Collectors.toSet());
+        .boxed() //
+        .collect(Collectors.toSet());
   }
 }

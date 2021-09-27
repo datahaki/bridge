@@ -1,10 +1,12 @@
 // code by jph
 package ch.alpine.java.util;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import ch.alpine.tensor.ext.Serialization;
 import junit.framework.TestCase;
 
 public class BoundedMinQueueTest extends TestCase {
@@ -18,8 +20,8 @@ public class BoundedMinQueueTest extends TestCase {
     assertEquals(priorityQueue.poll().intValue(), 1);
   }
 
-  public void testSimple() {
-    Queue<Integer> queue = BoundedMinQueue.of(3);
+  public void testSimple() throws ClassNotFoundException, IOException {
+    Queue<Integer> queue = Serialization.copy(BoundedMinQueue.of(3));
     assertTrue(queue.offer(3));
     assertEquals(queue.size(), 1);
     assertTrue(queue.offer(1));
@@ -35,5 +37,9 @@ public class BoundedMinQueueTest extends TestCase {
     assertEquals(queue.poll().intValue(), 3);
     assertEquals(queue.poll().intValue(), 2);
     assertEquals(queue.poll().intValue(), 1);
+  }
+
+  public void testNegativeFail() {
+    AssertFail.of(() -> BoundedMinQueue.of(-1));
   }
 }

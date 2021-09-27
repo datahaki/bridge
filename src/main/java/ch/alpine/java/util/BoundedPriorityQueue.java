@@ -5,13 +5,15 @@ package ch.alpine.java.util;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import ch.alpine.tensor.ext.Integers;
+
 /** Remark: implementation is not serializable */
 /* package */ abstract class BoundedPriorityQueue<T> extends PriorityQueue<T> {
   private final int capacity;
 
   public BoundedPriorityQueue(int capacity, Comparator<? super T> comparator) {
     super(capacity, comparator);
-    this.capacity = capacity;
+    this.capacity = Integers.requirePositiveOrZero(capacity);
   }
 
   /** when the queue is full, adds the element if it is larger than the

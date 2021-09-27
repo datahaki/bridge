@@ -6,8 +6,9 @@ import java.util.Queue;
 
 /** bounded min queue keeps the n smallest elements */
 public class BoundedMinQueue<T> extends BoundedPriorityQueue<T> {
-  /** @param capacity
-   * @return bounded priority queue with given maximum capacity */
+  /** @param capacity non-negative
+   * @return bounded priority queue with given maximum capacity
+   * @throws Exception if given capacity is negative */
   public static <T> Queue<T> of(int capacity) {
     return new BoundedMinQueue<>(capacity);
   }

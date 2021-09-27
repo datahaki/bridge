@@ -1,9 +1,11 @@
 // code by jph
 package ch.alpine.java.util;
 
+import java.io.IOException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import ch.alpine.tensor.ext.Serialization;
 import junit.framework.TestCase;
 
 public class BoundedMaxQueueTest extends TestCase {
@@ -17,8 +19,8 @@ public class BoundedMaxQueueTest extends TestCase {
     assertEquals(priorityQueue.poll().intValue(), 5);
   }
 
-  public void testSimple() {
-    Queue<Integer> queue = BoundedMaxQueue.of(3);
+  public void testSimple() throws ClassNotFoundException, IOException {
+    Queue<Integer> queue = Serialization.copy(BoundedMaxQueue.of(3));
     assertTrue(queue.offer(3));
     assertEquals(queue.size(), 1);
     assertTrue(queue.offer(1));
@@ -34,5 +36,9 @@ public class BoundedMaxQueueTest extends TestCase {
     assertEquals(queue.poll().intValue(), 3);
     assertEquals(queue.poll().intValue(), 4);
     assertEquals(queue.poll().intValue(), 5);
+  }
+
+  public void testNegativeFail() {
+    AssertFail.of(() -> BoundedMaxQueue.of(-1));
   }
 }

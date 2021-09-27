@@ -65,9 +65,9 @@ public class GeometricLayer {
    * 
    * @throws Exception without a corresponding call to {@link #pushMatrix(Tensor)} */
   public void popMatrix() {
-    deque.pop();
-    if (deque.isEmpty())
+    if (deque.size() == 1)
       throw new IllegalStateException();
+    deque.pop();
   }
 
   /** @return current model2pixel matrix */
