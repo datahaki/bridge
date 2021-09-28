@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import ch.alpine.tensor.ext.PackageTestAccess;
+
 /** "In computer science, a disjoint-set data structure, also called a union-find
  * data structure or merge-find set, is a data structure that stores a collection
  * of disjoint (non-overlapping) sets."
@@ -93,8 +95,8 @@ public class DisjointSets {
     }
   }
 
-  // functions for testing
-  /* package */ int depth(int index) {
+  @PackageTestAccess
+  int depth(int index) {
     int depth = 0;
     while (list.get(index).parent != index) {
       index = list.get(index).parent;
@@ -103,11 +105,13 @@ public class DisjointSets {
     return depth;
   }
 
-  /* package */ Collection<Integer> parents() {
+  @PackageTestAccess
+  Collection<Integer> parents() {
     return list.stream().map(n -> n.parent).collect(Collectors.toSet());
   }
 
-  /* package */ Collection<Integer> representatives() {
+  @PackageTestAccess
+  Collection<Integer> representatives() {
     return IntStream.range(0, list.size()) //
         .map(this::key) //
         .boxed() //

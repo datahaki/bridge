@@ -26,7 +26,7 @@ public enum FieldClips {
    * 20[L*min^-1] < 20.0[L*min^-1] when values are converted to SI unit "m^3*s^-1"
    * although equality is expected. As a remedy therefore the smaller/larger of
    * the exact and numeric value of min/max is taken. */
-  /* package */ static Clip of(Scalar min, Scalar max) {
+  public static Clip of(Scalar min, Scalar max) {
     return Clips.interval( //
         Min.of(UnitSystem.SI().apply(min), UnitSystem.SI().apply(N.DOUBLE.apply(min))), //
         Max.of(UnitSystem.SI().apply(max), UnitSystem.SI().apply(N.DOUBLE.apply(max))));
