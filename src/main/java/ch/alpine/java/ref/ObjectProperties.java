@@ -83,6 +83,10 @@ public class ObjectProperties {
     return object;
   }
 
+  /** @param object
+   * @param properties
+   * @return object with fields modified based on properties. In particular,
+   * if properties is empty then the object will not be modified at all. */
   public static <T> T set(T object, Properties properties) {
     ObjectFields.of(object, new ObjectFieldImport(properties));
     return object;

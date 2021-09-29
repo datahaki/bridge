@@ -8,16 +8,18 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class BoundedPriorityQueue<T> extends PriorityQueue<T> {
-  /** @param capacity
+  /** @param capacity strictly positive
    * @param increasing for instance Integer::compare
-   * @return */
+   * @return a priority queue that maintains only the greatest elements bounded in size
+   * by given capacity. when polling elements, the queue removes smallest elements first. */
   public static <T> Queue<T> max(int capacity, Comparator<? super T> increasing) {
     return new BoundedPriorityQueue<>(capacity, increasing);
   }
 
-  /** @param capacity
+  /** @param capacity strictly positive
    * @param increasing for instance Integer::compare
-   * @return */
+   * @return a priority queue that maintains only the smallest elements bounded in size
+   * by given capacity. when polling elements, the queue removes greatest elements first. */
   public static <T> Queue<T> min(int capacity, Comparator<? super T> increasing) {
     @SuppressWarnings("unchecked")
     Comparator<? super T> decreasing = //

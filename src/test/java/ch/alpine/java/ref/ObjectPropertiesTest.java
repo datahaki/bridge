@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.Properties;
 
+import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.ext.HomeDirectory;
 import junit.framework.TestCase;
 
@@ -41,5 +42,22 @@ public class ObjectPropertiesTest extends TestCase {
     SimpleParam simplePar = ObjectProperties.tryLoad(new SimpleParam(), file);
     file.delete();
     assertEquals(ObjectProperties.list(simplePar), ObjectProperties.list(simpleParam));
+  }
+
+  public void testLaram() {
+    SimpleLaram simpleLaram = new SimpleLaram();
+    String string0 = ObjectProperties.string(simpleLaram);
+    simpleLaram.nestedParams.get(0).some = false;
+    simpleLaram.nestedParams.get(1).text = "new text";
+    simpleLaram.nestedParams.get(1).scalar = RationalScalar.HALF;
+    String string1 = ObjectProperties.string(simpleLaram);
+    Properties properties = ObjectProperties.properties(simpleLaram);
+    simpleLaram = null;
+    SimpleLaram simpleCopy = ObjectProperties.set(new SimpleLaram(), properties);
+    String string2 = ObjectProperties.string(simpleCopy);
+    assertEquals(simpleCopy.nestedParams.get(1).text, "new text");
+    assertEquals(simpleCopy.nestedParams.get(1).scalar, RationalScalar.HALF);
+    assertFalse(string0.equals(string1));
+    assertEquals(string1, string2);
   }
 }

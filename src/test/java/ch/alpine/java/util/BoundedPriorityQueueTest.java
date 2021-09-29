@@ -7,8 +7,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.stream.IntStream;
 
 import ch.alpine.tensor.ext.Serialization;
+import ch.alpine.tensor.num.RandomPermutation;
 import junit.framework.TestCase;
 
 public class BoundedPriorityQueueTest extends TestCase {
@@ -30,7 +32,7 @@ public class BoundedPriorityQueueTest extends TestCase {
 
   public void testMax() throws ClassNotFoundException, IOException {
     @SuppressWarnings("unchecked")
-    Queue<Integer> queue = Serialization.copy(BoundedPriorityQueue.max(2, // 
+    Queue<Integer> queue = Serialization.copy(BoundedPriorityQueue.max(2, //
         (Comparator<Integer> & Serializable) Integer::compare));
     queue.add(9);
     queue.add(3);
@@ -127,5 +129,33 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(queue.poll().intValue(), 3);
     assertEquals(queue.poll().intValue(), 2);
     assertEquals(queue.poll().intValue(), 1);
+  }
+
+  public void testRandomMin() {
+    int[] array = RandomPermutation.ofLength(13);
+    Queue<Integer> queue = BoundedPriorityQueue.min(2, Integer::compare);
+    IntStream.of(array).boxed().forEach(queue::add);
+    assertEquals(queue.poll().intValue(), 1);
+    assertEquals(queue.poll().intValue(), 0);
+    assertTrue(queue.isEmpty());
+  }
+
+  public void testRandomMax() {
+    int[] array = RandomPermutation.ofLength(13);
+    {
+      Queue<Integer> queue = BoundedPriorityQueue.max(2, Integer::compare);
+      IntStream.of(array).boxed().forEach(queue::add);
+      assertEquals(queue.poll().intValue(), 11);
+      assertEquals(queue.poll().intValue(), 12);
+      assertTrue(queue.isEmpty());
+    }
+    // ---
+    PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
+    IntStream.of(array).boxed().forEach(priorityQueue::add);
+    assertEquals(priorityQueue.poll().intValue(), 0);
+    assertEquals(priorityQueue.poll().intValue(), 1);
+    assertEquals(priorityQueue.poll().intValue(), 2);
+    assertEquals(priorityQueue.poll().intValue(), 3);
+    
   }
 }
