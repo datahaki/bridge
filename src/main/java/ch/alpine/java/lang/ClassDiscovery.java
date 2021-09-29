@@ -54,7 +54,6 @@ public class ClassDiscovery {
         String className = visiting_classpath + "." + fname.substring(0, fname.length() - 6);
         try {
           Class<?> cls = cldr.loadClass(className);
-          
           if (Objects.nonNull(cls))
             classVisitor.classFound(classpath_entry, cls);
         } catch (Throwable ex) {

@@ -17,7 +17,7 @@ public enum FieldsEditorDemo {
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     FieldsEditor fieldsEditor = new FieldsEditor(simpleParam);
-    fieldsEditor.addUniversalListener(()->simpleParam.lookAndFeels.updateUI());
+    fieldsEditor.addUniversalListener(() -> simpleParam.lookAndFeels.updateUI());
     JComponent jScrollPane = fieldsEditor.getFieldsAndTextarea();
     jFrame.setContentPane(jScrollPane);
     jFrame.setBounds(100, 100, 500, 900);

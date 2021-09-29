@@ -156,6 +156,5 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(priorityQueue.poll().intValue(), 1);
     assertEquals(priorityQueue.poll().intValue(), 2);
     assertEquals(priorityQueue.poll().intValue(), 3);
-    
   }
 }
