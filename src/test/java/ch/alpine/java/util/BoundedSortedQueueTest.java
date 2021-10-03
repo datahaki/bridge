@@ -3,6 +3,7 @@ package ch.alpine.java.util;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import ch.alpine.tensor.RealScalar;
@@ -18,11 +19,15 @@ public class BoundedSortedQueueTest extends TestCase {
     boundedSortedQueue.offer(0.3, "3");
     boundedSortedQueue.offer(0.1, "1");
     boundedSortedQueue.offer(0.5, "5");
-    Collection<String> collection = boundedSortedQueue.stream().collect(Collectors.toSet());
+    Collection<String> collection = boundedSortedQueue.values().collect(Collectors.toSet());
     assertTrue(collection.contains("0"));
     assertTrue(collection.contains("1"));
     assertTrue(collection.contains("3"));
     assertEquals(collection.size(), 3);
+    {
+      List<String> list = boundedSortedQueue.values().collect(Collectors.toList());
+      assertEquals(list.size(), 3);
+    }
   }
 
   public void testScalar() {
@@ -32,7 +37,7 @@ public class BoundedSortedQueueTest extends TestCase {
     boundedSortedQueue.offer(RealScalar.of(0.3), "3");
     boundedSortedQueue.offer(RealScalar.of(0.1), "1");
     boundedSortedQueue.offer(RealScalar.of(0.5), "5");
-    Collection<String> collection = boundedSortedQueue.stream().collect(Collectors.toSet());
+    Collection<String> collection = boundedSortedQueue.values().collect(Collectors.toSet());
     assertTrue(collection.contains("0"));
     assertTrue(collection.contains("1"));
     assertTrue(collection.contains("3"));
@@ -45,10 +50,17 @@ public class BoundedSortedQueueTest extends TestCase {
     boundedSortedQueue.offer(0.3, "3");
     boundedSortedQueue.offer(0.1, "1");
     boundedSortedQueue.offer(0.5, "5");
-    Collection<String> collection = boundedSortedQueue.stream().collect(Collectors.toSet());
+    Collection<String> collection = boundedSortedQueue.values().collect(Collectors.toSet());
     assertTrue(collection.contains("7"));
     assertTrue(collection.contains("5"));
     assertTrue(collection.contains("3"));
     assertEquals(collection.size(), 3);
+  }
+
+  public void testFail() {
+    AssertFail.of(() -> BoundedSortedQueue.min(0));
+    AssertFail.of(() -> BoundedSortedQueue.max(0));
+    AssertFail.of(() -> BoundedSortedQueue.min(-1));
+    AssertFail.of(() -> BoundedSortedQueue.max(-1));
   }
 }

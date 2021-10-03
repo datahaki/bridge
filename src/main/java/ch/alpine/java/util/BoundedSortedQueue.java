@@ -10,55 +10,58 @@ import java.util.stream.Stream;
  * i.e. unlike {@link BoundedPriorityQueue} the value type is
  * not require to be comparable.
  * 
- * implementation is not thread safe */
-public class BoundedSortedQueue<C, V> implements Serializable {
-  /** @param capacity
+ * implementation is not thread safe
+ * 
+ * @param <K> instance of Comparable<K> */
+public class BoundedSortedQueue<K, V> implements Serializable {
+  /** @param capacity positive
    * @return */
-  public static <C, V> BoundedSortedQueue<C, V> min(int capacity) {
+  public static <K, V> BoundedSortedQueue<K, V> min(int capacity) {
     @SuppressWarnings("unchecked")
-    Comparator<Entry<C, V>> comparator = (Comparator<Entry<C, V>> & Serializable) //
-    (pair1, pair2) -> ((Comparable<C>) pair1.cost()).compareTo(pair2.cost());
+    Comparator<Entry<K, V>> comparator = (Comparator<Entry<K, V>> & Serializable) //
+    (pair1, pair2) -> ((Comparable<K>) pair2.key()).compareTo(pair1.key());
     return new BoundedSortedQueue<>(capacity, comparator);
   }
 
-  /** @param capacity
+  /** @param capacity positive
    * @return */
-  public static <C, V> BoundedSortedQueue<C, V> max(int capacity) {
+  public static <K, V> BoundedSortedQueue<K, V> max(int capacity) {
     @SuppressWarnings("unchecked")
-    Comparator<Entry<C, V>> comparator = (Comparator<Entry<C, V>> & Serializable) //
-    (pair1, pair2) -> ((Comparable<C>) pair2.cost()).compareTo(pair1.cost());
+    Comparator<Entry<K, V>> comparator = (Comparator<Entry<K, V>> & Serializable) //
+    (pair1, pair2) -> ((Comparable<K>) pair1.key()).compareTo(pair2.key());
     return new BoundedSortedQueue<>(capacity, comparator);
   }
 
   // ---
-  private final Queue<Entry<C, V>> queue;
+  private final Queue<Entry<K, V>> queue;
 
-  private BoundedSortedQueue(int capacity, Comparator<Entry<C, V>> comparator) {
-    queue = BoundedPriorityQueue.min(capacity, comparator);
+  private BoundedSortedQueue(int capacity, Comparator<Entry<K, V>> comparator) {
+    // BoundedPriorityQueue::max is used due to its natural ordering
+    queue = BoundedPriorityQueue.max(capacity, comparator);
   }
 
-  /** @param cost
+  /** @param key
    * @param value */
-  public void offer(C cost, V value) {
-    queue.offer(new Entry<>(cost, value));
+  public void offer(K key, V value) {
+    queue.offer(new Entry<>(key, value));
   }
 
-  /** @return stream of up to capacity elements */
-  public Stream<V> stream() {
+  /** @return stream of up to capacity values */
+  public Stream<V> values() {
     return queue.stream().map(Entry::value);
   }
 
-  private static class Entry<C, V> implements Serializable {
-    private final C cost;
+  private static class Entry<K, V> implements Serializable {
+    private final K key;
     private final V value;
 
-    private Entry(C cost, V value) {
-      this.cost = cost;
+    private Entry(K key, V value) {
+      this.key = key;
       this.value = value;
     }
 
-    private C cost() {
-      return cost;
+    private K key() {
+      return key;
     }
 
     private V value() {
