@@ -57,7 +57,8 @@ public class StoredExtension {
   }
 
   public static void main(String[] args) {
-    JComponent jComponent = new FieldsEditor(INSTANCE).getFieldsAndTextarea();
+    FieldsEditor fieldsEditor = new FieldsEditor(INSTANCE);
+    JComponent jComponent = TestHelper.fieldsAndTextArea(fieldsEditor, INSTANCE);
     // ---
     JFrame jFrame = new JFrame();
     // File root = GrzSettings.file("GuiExtension");

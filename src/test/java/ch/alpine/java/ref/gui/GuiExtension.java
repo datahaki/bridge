@@ -79,7 +79,7 @@ public class GuiExtension {
     GuiExtension guiExtension = new GuiExtension();
     FieldsEditor fieldsEditor = new FieldsEditor(guiExtension);
     fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
-    JComponent jComponent = fieldsEditor.getFieldsAndTextarea();
+    JComponent jComponent = TestHelper.fieldsAndTextArea(fieldsEditor, guiExtension);
     // ---
     JFrame jFrame = new JFrame();
     // File root = GrzSettings.file("GuiExtension");
