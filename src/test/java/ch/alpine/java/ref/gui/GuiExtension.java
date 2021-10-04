@@ -77,7 +77,7 @@ public class GuiExtension {
   public static void main(String[] args) {
     LookAndFeels.NIMBUS.updateUI();
     GuiExtension guiExtension = new GuiExtension();
-    FieldsEditor fieldsEditor = new FieldsEditor(guiExtension);
+    FieldsPanel fieldsEditor = new FieldsPanel(guiExtension);
     fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     JComponent jComponent = TestHelper.fieldsAndTextArea(fieldsEditor, guiExtension);
     // ---

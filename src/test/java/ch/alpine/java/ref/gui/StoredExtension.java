@@ -57,7 +57,7 @@ public class StoredExtension {
   }
 
   public static void main(String[] args) {
-    FieldsEditor fieldsEditor = new FieldsEditor(INSTANCE);
+    FieldsPanel fieldsEditor = new FieldsPanel(INSTANCE);
     JComponent jComponent = TestHelper.fieldsAndTextArea(fieldsEditor, INSTANCE);
     // ---
     JFrame jFrame = new JFrame();

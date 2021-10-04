@@ -11,7 +11,7 @@ import ch.alpine.java.ref.ObjectProperties;
 
 enum TestHelper {
   ;
-  public static JComponent fieldsAndTextArea(FieldsEditor fieldsEditor, Object object) {
+  public static JComponent fieldsAndTextArea(FieldsPanel fieldsEditor, Object object) {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add("North", fieldsEditor.getJScrollPane());
     // ---
