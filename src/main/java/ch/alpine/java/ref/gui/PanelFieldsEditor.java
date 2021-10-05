@@ -21,14 +21,15 @@ public class PanelFieldsEditor extends FieldsEditor {
 
     @Override // from ObjectFieldVisitor
     public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
+      Field field = fieldWrap.getField();
       FieldPanel fieldPanel = fieldWrap.createFieldPanel(value);
       list.add(fieldPanel);
       fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
-      JLabel jLabel = createJLabel(FieldLabels.of(key, fieldWrap.getField(), null));
-      jLabel.setToolTipText(FieldToolTip.of(fieldWrap.getField()));
+      JLabel jLabel = createJLabel(FieldLabels.of(key, field, null));
+      jLabel.setToolTipText(FieldToolTip.of(field));
       int width = jLabel.getPreferredSize().width;
       jLabel.setPreferredSize(new Dimension(width, HEIGHT));
-      rowPanel.appendRow(jLabel, fieldPanel.getJComponent(), HEIGHT);
+      rowPanel.appendRow(jLabel, StaticHelper.layout(field, fieldPanel.getJComponent()), HEIGHT);
     }
 
     @Override // from ObjectFieldVisitor

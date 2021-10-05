@@ -1,11 +1,9 @@
 // code by jph
 package ch.alpine.java.ref.gui;
 
-import java.awt.Dimension;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
@@ -14,8 +12,8 @@ import ch.alpine.java.ref.FieldPanel;
 import ch.alpine.java.ref.FieldWrap;
 import ch.alpine.java.ref.ObjectFieldVisitor;
 import ch.alpine.java.ref.ObjectFields;
+import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabels;
-import ch.alpine.java.ref.ann.FieldPreferredWidth;
 
 public class ToolbarFieldsEditor extends FieldsEditor {
   /** @param object
@@ -35,38 +33,24 @@ public class ToolbarFieldsEditor extends FieldsEditor {
     public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
       Field field = fieldWrap.getField();
       String text = FieldLabels.of(key, field, null);
-      boolean toggleButton = fieldWrap instanceof BooleanFieldWrap;
-      FieldPanel fieldPanel = toggleButton //
+      boolean isBoolean = fieldWrap instanceof BooleanFieldWrap;
+      boolean isFuse = Objects.nonNull(field.getAnnotation(FieldFuse.class));
+      FieldPanel fieldPanel = isBoolean && !isFuse //
           ? new TogglePanel(fieldWrap, text, (Boolean) value)
           : fieldWrap.createFieldPanel(value);
       list.add(fieldPanel);
       fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
-      if (!toggleButton) {
-        JLabel jLabel = createJLabel(text);
+      if (!isBoolean) {
+        JLabel jLabel = new JLabel(text + " ");
         jLabel.setToolTipText(FieldToolTip.of(field));
         jToolBar.add(jLabel);
       }
-      {
-        JComponent jComponent = fieldPanel.getJComponent();
-        {
-          FieldPreferredWidth fieldPreferredWidth = field.getAnnotation(FieldPreferredWidth.class);
-          if (Objects.nonNull(fieldPreferredWidth)) {
-            Dimension dimension = jComponent.getPreferredSize();
-            dimension.width = Math.max(dimension.width, fieldPreferredWidth.width());
-            jComponent.setPreferredSize(dimension);
-          }
-        }
-        jToolBar.add(jComponent);
-      }
+      jToolBar.add(StaticHelper.layout(field, fieldPanel.getJComponent()));
       jToolBar.addSeparator();
     }
   }
 
   private ToolbarFieldsEditor(Object object, JToolBar jToolBar) {
     ObjectFields.of(object, new Visitor(jToolBar));
-  }
-
-  private static JLabel createJLabel(String text) {
-    return new JLabel(text);
   }
 }
