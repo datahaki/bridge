@@ -3,6 +3,7 @@ package ch.alpine.java.awt;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -247,5 +248,21 @@ public class SpinnerLabel<T> extends JTextField {
     setToolTipText(toolTip == null || toolTip.isEmpty() ? null : toolTip);
     setPreferredSize(dimension);
     jComponent.add(this);
+  }
+
+  public static void updatePreferredSize(JTextField jTextField, List<?> list) {
+    Dimension dimension = jTextField.getPreferredSize();
+    Font font = jTextField.getFont();
+    for (Object object : list) {
+      JTextField jTextField2 = new JTextField(object.toString());
+      jTextField2.setFont(font);
+      Dimension size = jTextField2.getPreferredSize();
+      dimension.width = Math.max(dimension.width, size.width);
+    }
+    jTextField.setPreferredSize(dimension);
+  }
+
+  public void updatePreferredSize() {
+    updatePreferredSize(this, list);
   }
 }

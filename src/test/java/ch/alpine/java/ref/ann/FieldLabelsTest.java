@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.java.ref.ann;
 
-import ch.alpine.java.ref.gui.FieldsPanel;
+import ch.alpine.java.ref.gui.PanelFieldsEditor;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import junit.framework.TestCase;
@@ -17,8 +17,8 @@ public class FieldLabelsTest extends TestCase {
   }
 
   public void testFormatFail() {
-    FieldsPanel fieldsEditor = new FieldsPanel(this);
-    assertEquals(fieldsEditor.list().size(), 4);
-    fieldsEditor.getJScrollPane();
+    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(this);
+    assertEquals(fieldsPanel.list().size(), 4);
+    fieldsPanel.getJScrollPane();
   }
 }

@@ -9,11 +9,11 @@ import javax.swing.JTextArea;
 
 import ch.alpine.java.ref.ObjectProperties;
 
-enum TestHelper {
+/* package */ enum TestHelper {
   ;
-  public static JComponent fieldsAndTextArea(FieldsPanel fieldsEditor, Object object) {
+  public static JComponent fieldsAndTextArea(PanelFieldsEditor panelFieldsEditor, Object object) {
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add("North", fieldsEditor.getJScrollPane());
+    jPanel.add("North", panelFieldsEditor.getJScrollPane());
     // ---
     JTextArea jTextArea = new JTextArea();
     jTextArea.setBackground(null);
@@ -21,7 +21,7 @@ enum TestHelper {
     {
       Runnable runnable = () -> jTextArea.setText(ObjectProperties.string(object));
       runnable.run();
-      fieldsEditor.addUniversalListener(runnable);
+      panelFieldsEditor.addUniversalListener(runnable);
     }
     jPanel.add("Center", jTextArea);
     return jPanel;

@@ -6,8 +6,8 @@ import junit.framework.TestCase;
 public class GuiExtensionTest extends TestCase {
   public void testSimple() {
     GuiExtension guiExtension = new GuiExtension();
-    FieldsPanel fieldsEditor = new FieldsPanel(guiExtension);
-    fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
-    fieldsEditor.getJScrollPane();
+    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
+    fieldsPanel.addUniversalListener(() -> System.out.println("changed"));
+    fieldsPanel.getJScrollPane();
   }
 }

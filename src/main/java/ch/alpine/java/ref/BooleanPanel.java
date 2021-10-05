@@ -11,6 +11,7 @@ import javax.swing.JComponent;
 
   public BooleanPanel(FieldWrap fieldWrap, Boolean value) {
     super(fieldWrap);
+    jCheckBox.setOpaque(false);
     if (Objects.nonNull(value))
       jCheckBox.setSelected(value);
     jCheckBox.addActionListener(event -> notifyListeners(getText()));

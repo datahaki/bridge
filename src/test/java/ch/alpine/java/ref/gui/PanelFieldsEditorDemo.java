@@ -8,7 +8,7 @@ import javax.swing.WindowConstants;
 import ch.alpine.java.awt.LookAndFeels;
 import ch.alpine.java.ref.SimpleParam;
 
-public enum FieldsEditorDemo {
+public enum PanelFieldsEditorDemo {
   ;
   public static void main(String[] args) {
     LookAndFeels.DARK.updateUI();
@@ -16,9 +16,9 @@ public enum FieldsEditorDemo {
     // ---
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    FieldsPanel fieldsEditor = new FieldsPanel(simpleParam);
-    fieldsEditor.addUniversalListener(() -> simpleParam.lookAndFeels.updateUI());
-    JComponent jScrollPane = TestHelper.fieldsAndTextArea(fieldsEditor, simpleParam);
+    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(simpleParam);
+    panelFieldsEditor.addUniversalListener(() -> simpleParam.lookAndFeels.updateUI());
+    JComponent jScrollPane = TestHelper.fieldsAndTextArea(panelFieldsEditor, simpleParam);
     jFrame.setContentPane(jScrollPane);
     jFrame.setBounds(100, 100, 500, 900);
     jFrame.setVisible(true);

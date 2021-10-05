@@ -3,10 +3,6 @@ package ch.alpine.java.ref.gui;
 
 import java.awt.Dimension;
 import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Consumer;
 
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -17,7 +13,7 @@ import ch.alpine.java.ref.ObjectFieldVisitor;
 import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ann.FieldLabels;
 
-public class FieldsPanel implements FieldsEditor {
+public class PanelFieldsEditor extends FieldsEditor {
   private static final int HEIGHT = 28;
 
   private class Visitor implements ObjectFieldVisitor {
@@ -54,24 +50,12 @@ public class FieldsPanel implements FieldsEditor {
   }
 
   private final RowPanel rowPanel = new RowPanel();
-  private final List<FieldPanel> list = new LinkedList<>();
   private final JScrollPane jScrollPane;
 
   /** @param object */
-  public FieldsPanel(Object object) {
+  public PanelFieldsEditor(Object object) {
     ObjectFields.of(object, new Visitor());
     jScrollPane = rowPanel.createJScrollPane();
-  }
-
-  @Override
-  public List<FieldPanel> list() {
-    return Collections.unmodifiableList(list);
-  }
-
-  @Override
-  public void addUniversalListener(Runnable runnable) {
-    Consumer<String> consumer = string -> runnable.run();
-    list.forEach(fieldPanel -> fieldPanel.addListener(consumer));
   }
 
   public JScrollPane getJScrollPane() {

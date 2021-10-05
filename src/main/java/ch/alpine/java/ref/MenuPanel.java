@@ -4,6 +4,7 @@ package ch.alpine.java.ref;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -11,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import ch.alpine.java.awt.SpinnerLabel;
 import ch.alpine.java.awt.StandardMenu;
 
 /* package */ class MenuPanel extends StringPanel {
@@ -18,6 +20,7 @@ import ch.alpine.java.awt.StandardMenu;
 
   public MenuPanel(FieldWrap fieldWrap, Object object, String[] strings) {
     super(fieldWrap, object);
+    SpinnerLabel.updatePreferredSize(jTextField, Arrays.asList(strings));
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {

@@ -29,7 +29,7 @@ public enum LookAndFeels {
 
   private final LookAndFeel lookAndFeel;
 
-  LookAndFeels(LookAndFeel lookAndFeel) {
+  private LookAndFeels(LookAndFeel lookAndFeel) {
     this.lookAndFeel = lookAndFeel;
   }
 

@@ -77,9 +77,9 @@ public class GuiExtension {
   public static void main(String[] args) {
     LookAndFeels.NIMBUS.updateUI();
     GuiExtension guiExtension = new GuiExtension();
-    FieldsPanel fieldsEditor = new FieldsPanel(guiExtension);
-    fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
-    JComponent jComponent = TestHelper.fieldsAndTextArea(fieldsEditor, guiExtension);
+    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
+    fieldsPanel.addUniversalListener(() -> System.out.println("changed"));
+    JComponent jComponent = TestHelper.fieldsAndTextArea(fieldsPanel, guiExtension);
     // ---
     JFrame jFrame = new JFrame();
     // File root = GrzSettings.file("GuiExtension");
