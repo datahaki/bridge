@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
+import ch.alpine.java.ref.BooleanFieldWrap;
 import ch.alpine.java.ref.FieldPanel;
 import ch.alpine.java.ref.FieldWrap;
 import ch.alpine.java.ref.ObjectFieldVisitor;
@@ -32,12 +33,16 @@ public class ToolbarFieldsEditor extends FieldsEditor {
 
     @Override // from ObjectFieldVisitor
     public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
-      FieldPanel fieldPanel = fieldWrap.createFieldPanel(value);
+      Field field = fieldWrap.getField();
+      String text = FieldLabels.of(key, field, null);
+      boolean toggleButton = fieldWrap instanceof BooleanFieldWrap;
+      FieldPanel fieldPanel = toggleButton //
+          ? new TogglePanel(fieldWrap, text, (Boolean) value)
+          : fieldWrap.createFieldPanel(value);
       list.add(fieldPanel);
       fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
-      Field field = fieldWrap.getField();
-      {
-        JLabel jLabel = createJLabel(FieldLabels.of(key, field, null));
+      if (!toggleButton) {
+        JLabel jLabel = createJLabel(text);
         jLabel.setToolTipText(FieldToolTip.of(field));
         jToolBar.add(jLabel);
       }
