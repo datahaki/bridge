@@ -49,7 +49,7 @@ public class FileBlock {
       }));
       return false;
     } catch (Exception exception) {
-      exception.printStackTrace();
+      System.err.println(getClass().getSimpleName() + ": " + exception.getMessage());
     }
     release();
     return true;

@@ -22,9 +22,10 @@ public enum Histogram {
   }
 
   /** @param visualSet
+   * @param stacked
    * @param naming for coordinates on x-axis
    * @return */
-  public static JFreeChart of(VisualSet visualSet, Function<Scalar, String> naming) {
-    return JFreeChartFactory.barChart(visualSet, false, naming);
+  public static JFreeChart of(VisualSet visualSet, boolean stacked, Function<Scalar, String> naming) {
+    return JFreeChartFactory.barChart(visualSet, stacked, naming);
   }
 }

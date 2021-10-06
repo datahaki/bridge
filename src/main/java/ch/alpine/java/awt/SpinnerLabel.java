@@ -14,8 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
@@ -187,10 +185,6 @@ public class SpinnerLabel<T> extends JTextField {
     this.list = list;
   }
 
-  public void setStream(Stream<T> stream) {
-    setList(stream.collect(Collectors.toList()));
-  }
-
   public void setArray(@SuppressWarnings("unchecked") T... values) {
     setList(Arrays.asList(values));
   }
@@ -254,10 +248,9 @@ public class SpinnerLabel<T> extends JTextField {
     Dimension dimension = jTextField.getPreferredSize();
     Font font = jTextField.getFont();
     for (Object object : list) {
-      JTextField jTextField2 = new JTextField(object.toString());
-      jTextField2.setFont(font);
-      Dimension size = jTextField2.getPreferredSize();
-      dimension.width = Math.max(dimension.width, size.width);
+      JTextField probe = new JTextField(object.toString() + "\u3000");
+      probe.setFont(font);
+      dimension.width = Math.max(dimension.width, probe.getPreferredSize().width);
     }
     jTextField.setPreferredSize(dimension);
   }

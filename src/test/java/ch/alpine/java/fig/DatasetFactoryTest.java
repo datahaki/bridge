@@ -10,6 +10,6 @@ public class DatasetFactoryTest extends TestCase {
     visualSet.add(Tensors.fromString("{{0, 0}, {1, NaN}}"));
     DatasetFactory.xySeriesCollection(visualSet);
     DatasetFactory.categoryTableXYDataset(visualSet);
-    DatasetFactory.defaultCategoryDataset(visualSet);
+    DatasetFactory.defaultCategoryDataset(visualSet, s -> "val=" + s);
   }
 }

@@ -4,10 +4,12 @@ package ch.alpine.java.ref.gui;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
 import ch.alpine.java.ref.BooleanFieldWrap;
+import ch.alpine.java.ref.EnumFieldWrap;
 import ch.alpine.java.ref.FieldPanel;
 import ch.alpine.java.ref.FieldWrap;
 import ch.alpine.java.ref.ObjectFieldVisitor;
@@ -40,12 +42,16 @@ public class ToolbarFieldsEditor extends FieldsEditor {
           : fieldWrap.createFieldPanel(value);
       list.add(fieldPanel);
       fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
+      JComponent jComponent = StaticHelper.layout(field, fieldPanel.getJComponent());
+      if (fieldWrap instanceof EnumFieldWrap) {
+        jComponent.setToolTipText(text);
+      } else //
       if (!isBoolean) {
         JLabel jLabel = new JLabel(text + " ");
         jLabel.setToolTipText(FieldToolTip.of(field));
         jToolBar.add(jLabel);
       }
-      jToolBar.add(StaticHelper.layout(field, fieldPanel.getJComponent()));
+      jToolBar.add(jComponent);
       jToolBar.addSeparator();
     }
   }

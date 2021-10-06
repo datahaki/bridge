@@ -36,7 +36,9 @@ import ch.alpine.tensor.sca.Clip;
         : clip.rescale((Scalar) value).multiply(RealScalar.of(resolution)).number().intValue();
     jSlider = new JSlider(0, resolution, index);
     jSlider.setOpaque(false);
-    jSlider.addChangeListener(e -> notifyListeners(interp(jSlider.getValue()).toString()));
+    jSlider.setPaintTicks(resolution <= 20);
+    jSlider.setMinorTickSpacing(1);
+    jSlider.addChangeListener(changeEvent -> notifyListeners(interp(jSlider.getValue()).toString()));
   }
 
   private Scalar interp(int count) {
