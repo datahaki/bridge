@@ -7,6 +7,7 @@ import java.util.Objects;
 import ch.alpine.java.ref.ann.FieldClip;
 import ch.alpine.java.ref.ann.FieldClips;
 import ch.alpine.java.ref.ann.FieldInteger;
+import ch.alpine.java.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -55,5 +56,18 @@ public class ScalarFieldWrap extends TensorFieldWrap {
         return false;
       }
     return true;
+  }
+
+  @Override
+  public FieldPanel createFieldPanel(Object value) {
+    Field field = getField();
+    FieldClip fieldClip = field.getAnnotation(FieldClip.class);
+    if (Objects.nonNull(fieldClip) && Objects.nonNull(field.getAnnotation(FieldSlider.class)))
+      try {
+        return new SliderPanel(this, fieldClip, value);
+      } catch (Exception exception) {
+        // ---
+      }
+    return super.createFieldPanel(value);
   }
 }
