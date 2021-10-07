@@ -9,7 +9,7 @@ import java.awt.Toolkit;
 
 public enum ScreenInsets {
   ;
-  /** Remark: 
+  /** Remark:
    * on Ubuntu: java.awt.Insets[top=24,left=49,bottom=0,right=0]
    * on Fedora: java.awt.Insets[top=32,left=0,bottom=0,right=0]
    * 

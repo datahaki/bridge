@@ -177,7 +177,7 @@ public class BoundedPriorityQueueTest extends TestCase {
   }
 
   public void testRandomMin() {
-    int[] array = RandomPermutation.ofLength(13);
+    int[] array = RandomPermutation.of(13);
     Queue<Integer> queue = BoundedPriorityQueue.min(2, Integer::compare);
     IntStream.of(array).boxed().forEach(queue::add);
     assertEquals(queue.poll().intValue(), 1);
@@ -186,7 +186,7 @@ public class BoundedPriorityQueueTest extends TestCase {
   }
 
   public void testRandomMax() {
-    int[] array = RandomPermutation.ofLength(13);
+    int[] array = RandomPermutation.of(13);
     {
       Queue<Integer> queue = BoundedPriorityQueue.max(2, Integer::compare);
       IntStream.of(array).boxed().forEach(queue::add);
