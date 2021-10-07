@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.io.File;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -83,9 +82,9 @@ public class GuiExtension {
   public static void main(String[] args) {
     LookAndFeels.NIMBUS.updateUI();
     GuiExtension guiExtension = new GuiExtension();
-    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
-    fieldsPanel.addUniversalListener(() -> System.out.println("changed"));
-    JComponent jComponent = TestHelper.fieldsAndTextArea(fieldsPanel, guiExtension);
+    PanelFieldsEditor fieldsEditor = new PanelFieldsEditor(guiExtension);
+    fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
+    TestHelper testHelper = new TestHelper(fieldsEditor, guiExtension);
     // ---
     JFrame jFrame = new JFrame();
     // File root = GrzSettings.file("GuiExtension");
@@ -93,11 +92,13 @@ public class GuiExtension {
     // WindowConfiguration.attach(jFrame, new File(root, "WindowConfiguration.properties"));
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add("Center", jComponent);
+    jPanel.add("Center", testHelper.jPanel);
     {
       JButton jButton = new JButton("reset fuse");
       jButton.addActionListener(l -> {
         guiExtension.fuse = false;
+        testHelper.runnable.run();
+        // fieldsEditor.list().forEach(fp->fp.notifyListeners(""));
       });
       jPanel.add("South", jButton);
     }

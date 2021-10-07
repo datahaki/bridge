@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import ch.alpine.java.ref.ann.FieldClip;
 import ch.alpine.java.ref.ann.FieldClips;
@@ -17,10 +19,25 @@ import ch.alpine.tensor.sca.Clip;
 
 /* package */ class SliderPanel extends FieldPanel {
   private static final int RESOLUTION = 1000;
+  private static final int TICKS_MAX = 20;
   // ---
   private final Clip clip;
   private final int resolution;
   private final JSlider jSlider;
+  private final ChangeListener changeListener = new ChangeListener() {
+    @Override
+    public void stateChanged(ChangeEvent changeEvent) {
+      int value = jSlider.getValue();
+      if (index != value) // prevent notifications if slider value hasn't changed
+        notifyListeners(interp(index = value).toString());
+    }
+
+    private Scalar interp(int count) {
+      return clip.min().multiply(RationalScalar.of(resolution - count, resolution)) //
+          .add(clip.max().multiply(RationalScalar.of(count, resolution)));
+    }
+  };
+  private int index;
 
   public SliderPanel(FieldWrap fieldWrap, FieldClip fieldClip, Object value) {
     super(fieldWrap);
@@ -31,19 +48,14 @@ import ch.alpine.tensor.sca.Clip;
       resolution = max - min;
     } else
       resolution = RESOLUTION;
-    int index = Objects.isNull(value) //
+    index = Objects.isNull(value) //
         ? 0
         : clip.rescale((Scalar) value).multiply(RealScalar.of(resolution)).number().intValue();
     jSlider = new JSlider(0, resolution, index);
     jSlider.setOpaque(false);
-    jSlider.setPaintTicks(resolution <= 20);
+    jSlider.setPaintTicks(resolution <= TICKS_MAX);
     jSlider.setMinorTickSpacing(1);
-    jSlider.addChangeListener(changeEvent -> notifyListeners(interp(jSlider.getValue()).toString()));
-  }
-
-  private Scalar interp(int count) {
-    return clip.min().multiply(RationalScalar.of(resolution - count, resolution)) //
-        .add(clip.max().multiply(RationalScalar.of(count, resolution)));
+    jSlider.addChangeListener(changeListener);
   }
 
   @Override // from FieldPanel

@@ -7,9 +7,20 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import ch.alpine.java.ref.FieldPanel;
+import ch.alpine.java.ref.FieldWrap;
 
 public abstract class FieldsEditor {
-  protected final List<FieldPanel> list = new LinkedList<>();
+  private final List<FieldPanel> list = new LinkedList<>();
+
+  /** @param fieldPanel
+   * @param fieldWrap
+   * @param object
+   * @return given fieldPanel */
+  protected FieldPanel register(FieldPanel fieldPanel, FieldWrap fieldWrap, Object object) {
+    fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
+    list.add(fieldPanel);
+    return fieldPanel;
+  }
 
   /** @return field panel for each field in the object that appears in the editor */
   public final List<FieldPanel> list() {

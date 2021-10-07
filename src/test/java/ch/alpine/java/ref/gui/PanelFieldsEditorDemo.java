@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.java.ref.gui;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -18,8 +17,8 @@ public enum PanelFieldsEditorDemo {
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(simpleParam);
     panelFieldsEditor.addUniversalListener(() -> simpleParam.lookAndFeels.updateUI());
-    JComponent jScrollPane = TestHelper.fieldsAndTextArea(panelFieldsEditor, simpleParam);
-    jFrame.setContentPane(jScrollPane);
+    TestHelper testHelper = new TestHelper(panelFieldsEditor, simpleParam);
+    jFrame.setContentPane(testHelper.jPanel);
     jFrame.setBounds(100, 100, 500, 900);
     jFrame.setVisible(true);
   }
