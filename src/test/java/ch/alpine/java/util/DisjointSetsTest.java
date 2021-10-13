@@ -9,6 +9,10 @@ import java.util.stream.IntStream;
 import junit.framework.TestCase;
 
 public class DisjointSetsTest extends TestCase {
+  public void testAllocate() {
+    DisjointSets.allocate(123);
+  }
+
   public void testSimple() {
     int n = 100;
     DisjointSets disjointSets = new DisjointSets();

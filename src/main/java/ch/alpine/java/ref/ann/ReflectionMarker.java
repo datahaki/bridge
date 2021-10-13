@@ -1,4 +1,4 @@
-// code by GRZ Technologies SA, jph
+// code by jph
 package ch.alpine.java.ref.ann;
 
 import static java.lang.annotation.ElementType.TYPE;

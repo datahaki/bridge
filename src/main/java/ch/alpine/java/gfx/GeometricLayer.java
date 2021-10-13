@@ -63,8 +63,10 @@ public class GeometricLayer {
 
   /** inspired by opengl
    * 
-   * @throws Exception if deque of matrices is empty */
+   * @throws Exception without a corresponding call to {@link #pushMatrix(Tensor)} */
   public void popMatrix() {
+    if (deque.size() == 1)
+      throw new IllegalStateException();
     deque.pop();
   }
 

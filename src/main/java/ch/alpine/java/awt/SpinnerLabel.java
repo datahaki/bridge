@@ -3,6 +3,7 @@ package ch.alpine.java.awt;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -13,8 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
@@ -36,7 +35,7 @@ public class SpinnerLabel<T> extends JTextField {
     return spinnerLabel;
   }
 
-  /***************************************************/
+  // ---
   private boolean mouseInside = false;
   private Point lastMouse = new Point();
   private int border_width = 0;
@@ -186,10 +185,6 @@ public class SpinnerLabel<T> extends JTextField {
     this.list = list;
   }
 
-  public void setStream(Stream<T> stream) {
-    setList(stream.collect(Collectors.toList()));
-  }
-
   public void setArray(@SuppressWarnings("unchecked") T... values) {
     setList(Arrays.asList(values));
   }
@@ -247,5 +242,20 @@ public class SpinnerLabel<T> extends JTextField {
     setToolTipText(toolTip == null || toolTip.isEmpty() ? null : toolTip);
     setPreferredSize(dimension);
     jComponent.add(this);
+  }
+
+  public static void updatePreferredSize(JTextField jTextField, List<?> list) {
+    Dimension dimension = jTextField.getPreferredSize();
+    Font font = jTextField.getFont();
+    for (Object object : list) {
+      JTextField probe = new JTextField(object.toString() + "\u3000");
+      probe.setFont(font);
+      dimension.width = Math.max(dimension.width, probe.getPreferredSize().width);
+    }
+    jTextField.setPreferredSize(dimension);
+  }
+
+  public void updatePreferredSize() {
+    updatePreferredSize(this, list);
   }
 }

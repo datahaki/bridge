@@ -1,6 +1,8 @@
 // code by gjoel, jph
 package ch.alpine.java.fig;
 
+import java.awt.BasicStroke;
+
 import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
@@ -17,9 +19,13 @@ public class VisualRowTest extends TestCase {
     Tensor points = Transpose.of(Tensors.of(domain, values));
     VisualSet visualSet = new VisualSet();
     VisualRow row1 = visualSet.add(points);
+    row1.getStroke();
     VisualRow row2 = visualSet.add(domain, values);
     assertEquals(row1.points(), row2.points());
     assertEquals(visualSet.visualRows().size(), 2);
+    row1.setStroke(new BasicStroke(2f));
+    row1.getStroke();
+    row1.setAutoSort(false);
   }
 
   public void testFailNull() {

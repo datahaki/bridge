@@ -1,3 +1,4 @@
+// code by rad
 package ch.alpine.java.util;
 
 public class Akten {

@@ -22,7 +22,7 @@ public final class SoftWatchdog implements Watchdog {
     return new SoftWatchdog(StaticHelper.nanos(timeout));
   }
 
-  /***************************************************/
+  // ---
   private final long tolerance;
   private long lastNotify;
 

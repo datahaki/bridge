@@ -12,6 +12,7 @@ import ch.alpine.java.awt.SpinnerLabel;
     super(fieldWrap);
     spinnerLabel.setFont(FONT);
     spinnerLabel.setArray(objects);
+    spinnerLabel.updatePreferredSize();
     spinnerLabel.setValueSafe(object);
     spinnerLabel.addSpinnerListener(value -> notifyListeners(fieldWrap.toString(value)));
   }

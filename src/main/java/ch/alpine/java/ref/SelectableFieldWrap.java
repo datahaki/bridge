@@ -20,7 +20,7 @@ public abstract class SelectableFieldWrap extends BaseFieldWrap {
   }
 
   @Override // from FieldWrap
-  public final FieldPanel createFieldPanel(Object value) {
+  public /* final */ FieldPanel createFieldPanel(Object value) {
     if (Objects.nonNull(fieldSelection))
       try {
         return new MenuPanel(this, value, fieldSelection.array());

@@ -70,7 +70,7 @@ public class ObjectProperties {
     return list(object).stream().collect(Collectors.joining("\n"));
   }
 
-  // ==================================================
+  // ---
   /** @param object
    * @param file properties
    * @return object with fields updated from properties file if loading was successful */
@@ -83,12 +83,16 @@ public class ObjectProperties {
     return object;
   }
 
+  /** @param object
+   * @param properties
+   * @return object with fields modified based on properties. In particular,
+   * if properties is empty then the object will not be modified at all. */
   public static <T> T set(T object, Properties properties) {
     ObjectFields.of(object, new ObjectFieldImport(properties));
     return object;
   }
 
-  // ==================================================
+  // ---
   private static class ObjectFieldImport implements ObjectFieldVisitor {
     private final Properties properties;
 

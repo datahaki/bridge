@@ -12,19 +12,29 @@ import javax.swing.JOptionPane;
 
 /** also works if file already exists before any launch */
 public class FileBlock {
-  private final String string;
+  public static boolean of(File folder, Class<?> cls, boolean showMessage) {
+    FileBlock fileBlock = new FileBlock(folder, cls);
+    boolean isActive = fileBlock.isActive();
+    if (isActive && showMessage)
+      fileBlock.showMessage();
+    return isActive;
+  }
+
+  // ---
+  private final File folder;
+  private final Class<?> cls;
   private RandomAccessFile randomAccessFile;
   private FileChannel fileChannel;
   private FileLock fileLock;
 
-  public FileBlock(Class<?> cls) {
-    // leading dot hides file on linux
-    string = cls.getCanonicalName();
+  private FileBlock(File folder, Class<?> cls) {
+    this.folder = folder;
+    this.cls = cls;
   }
 
-  private boolean isActive() {
+  /* package */ boolean isActive() {
     try {
-      File file = new File(System.getProperty("user.home"), '.' + string + ".lock");
+      File file = new File(folder, '.' + cls.getCanonicalName() + ".lock");
       randomAccessFile = new RandomAccessFile(file, "rw");
       fileChannel = randomAccessFile.getChannel();
       fileLock = fileChannel.tryLock(); // documentation not clear on "return vs. exception"
@@ -39,7 +49,7 @@ public class FileBlock {
       }));
       return false;
     } catch (Exception exception) {
-      exception.printStackTrace();
+      System.err.println(getClass().getSimpleName() + ": " + exception.getMessage());
     }
     release();
     return true;
@@ -64,14 +74,7 @@ public class FileBlock {
     }
   }
 
-  public boolean defaultMessage() {
-    boolean isActive = isActive();
-    if (isActive)
-      showMessage();
-    return isActive;
-  }
-
   private void showMessage() {
-    JOptionPane.showMessageDialog(null, string + " is already running.", "Execution blocked", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(null, cls.getSimpleName() + " is already running.", "Execution blocked", JOptionPane.ERROR_MESSAGE);
   }
 }

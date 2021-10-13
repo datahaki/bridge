@@ -4,6 +4,7 @@ package ch.alpine.java.ref;
 import java.awt.Color;
 import java.io.File;
 
+import ch.alpine.java.awt.LookAndFeels;
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
 import ch.alpine.java.ref.ann.FieldSelection;
@@ -11,8 +12,12 @@ import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class SimpleParam extends BaseParam {
+  public LookAndFeels lookAndFeels = LookAndFeels.DARK;
+  @SuppressWarnings("unused")
   private final int ignore_int = 2;
+  @SuppressWarnings("unused")
   private final Integer ignore_Integer = 2;
+  @SuppressWarnings("unused")
   private final String ignore_final_String = "asd";
   @FieldSelection(array = { "a", "b", "c" })
   public String string = "abc";
@@ -21,9 +26,9 @@ public class SimpleParam extends BaseParam {
   @FieldLabel(text = "Choose Pivot")
   public Pivots pivot = Pivots.ARGMAX_ABS;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
-  @FieldLabel(text = "Another Parameter")
+  @FieldLabel(text = "Another Parameter ASDGHJ")
   public final AnotherParam anotherParam = new AnotherParam();
-  @FieldLabel(text = "Nested %d")
+  @FieldLabel(text = "Nested %a")
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
 
   public static class AnotherParam {

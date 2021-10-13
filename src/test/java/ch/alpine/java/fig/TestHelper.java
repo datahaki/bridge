@@ -48,7 +48,7 @@ import ch.alpine.tensor.pdf.UniformDistribution;
     }
     {
       visualSet.setPlotLabel(Histogram.class.getSimpleName() + "Function");
-      export(folder, Histogram.of(visualSet, scalar -> "[" + scalar.toString() + "]"));
+      export(folder, Histogram.of(visualSet, false, scalar -> "[" + scalar.toString() + "]"));
     }
     {
       visualSet.setPlotLabel(TimeChart.class.getSimpleName());

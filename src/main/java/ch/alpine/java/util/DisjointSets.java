@@ -11,18 +11,22 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import ch.alpine.tensor.ext.PackageTestAccess;
+
 /** "In computer science, a disjoint-set data structure, also called a union-find
  * data structure or merge-find set, is a data structure that stores a collection
  * of disjoint (non-overlapping) sets."
  * Reference: https://en.wikipedia.org/wiki/Disjoint-set_data_structure */
 public class DisjointSets {
+  /** @param initialSize
+   * @return */
   public static DisjointSets allocate(int initialSize) {
     DisjointSets disjointSets = new DisjointSets();
     IntStream.range(0, initialSize).forEach(i -> disjointSets.add());
     return disjointSets;
   }
 
-  /***************************************************/
+  // ---
   private final List<Node> list = new ArrayList<>();
 
   /** @return index of added set */
@@ -76,7 +80,7 @@ public class DisjointSets {
         .collect(Collectors.toMap(Function.identity(), key -> supplier.get()));
   }
 
-  /***************************************************/
+  // ---
   private static class Node {
     private int parent;
     private Integer rank = 0;
@@ -91,9 +95,8 @@ public class DisjointSets {
     }
   }
 
-  /***************************************************/
-  // functions for testing
-  /* package */ int depth(int index) {
+  @PackageTestAccess
+  int depth(int index) {
     int depth = 0;
     while (list.get(index).parent != index) {
       index = list.get(index).parent;
@@ -102,13 +105,16 @@ public class DisjointSets {
     return depth;
   }
 
-  /* package */ Collection<Integer> parents() {
+  @PackageTestAccess
+  Collection<Integer> parents() {
     return list.stream().map(n -> n.parent).collect(Collectors.toSet());
   }
 
-  /* package */ Collection<Integer> representatives() {
+  @PackageTestAccess
+  Collection<Integer> representatives() {
     return IntStream.range(0, list.size()) //
         .map(this::key) //
-        .boxed().collect(Collectors.toSet());
+        .boxed() //
+        .collect(Collectors.toSet());
   }
 }

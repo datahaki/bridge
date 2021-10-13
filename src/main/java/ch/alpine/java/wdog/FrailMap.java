@@ -26,7 +26,6 @@ public class FrailMap<K, T> {
     map.put(key, new FrailValue<>(timeout));
   }
 
-  /***************************************************/
   /** Careful: if the key is unknown to the map, i.e. the key
    * was not registered via {@link #registerKey(Object, Scalar)}
    * the key-value pair will not be stored.
@@ -46,7 +45,6 @@ public class FrailMap<K, T> {
     return map.get(key).getValue();
   }
 
-  /***************************************************/
   /** @return unmodifiable set of registered keys */
   public Set<K> keySet() {
     return Collections.unmodifiableSet(map.keySet());

@@ -65,10 +65,9 @@ import ch.alpine.tensor.qty.Unit;
     return xySeriesCollection;
   }
 
-  public static CategoryDataset defaultCategoryDataset(VisualSet visualSet) {
-    return defaultCategoryDataset(visualSet, Scalar::toString);
-  }
-
+  /** @param visualSet
+   * @param naming for instance Scalar::toString
+   * @return */
   public static CategoryDataset defaultCategoryDataset(VisualSet visualSet, Function<Scalar, String> naming) {
     DefaultCategoryDataset defaultCategoryDataset = new DefaultCategoryDataset();
     for (VisualRow visualRow : visualSet.visualRows())

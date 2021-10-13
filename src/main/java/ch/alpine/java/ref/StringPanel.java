@@ -90,17 +90,6 @@ import javax.swing.undo.UndoManager;
     return jTextField;
   }
 
-  protected void nofifyIfValid(String string) {
-    if (isValid(string))
-      notifyListeners(string);
-  }
-
-  private boolean isValid(String string) {
-    Object object = fieldWrap().toValue(string);
-    return Objects.nonNull(object) //
-        && fieldWrap().isValidValue(object);
-  }
-
   protected final void indicateGui() {
     if (isValid(jTextField.getText())) {
       /** template to restore default colors */
@@ -111,5 +100,19 @@ import javax.swing.undo.UndoManager;
       jTextField.setForeground(COLOR_FAIL_TEXT);
       jTextField.setBackground(COLOR_FAIL_BGND);
     }
+  }
+
+  // ---
+  // general function
+  protected final void nofifyIfValid(String string) {
+    if (isValid(string))
+      notifyListeners(string);
+  }
+
+  // general function
+  private boolean isValid(String string) {
+    Object object = fieldWrap().toValue(string);
+    return Objects.nonNull(object) //
+        && fieldWrap().isValidValue(object);
   }
 }

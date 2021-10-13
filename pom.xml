@@ -5,7 +5,7 @@
 
 	<groupId>ch.alpine</groupId>
 	<artifactId>java</artifactId>
-	<version>0.1.3</version>
+	<version>0.1.4</version>
 	<packaging>jar</packaging>
 
 	<name>java</name>
@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>ch.alpine</groupId>
 			<artifactId>tensor</artifactId>
-			<version>0.9.5</version>
+			<version>0.9.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jfree</groupId>
@@ -28,6 +28,12 @@
 			<version>1.5.3</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.formdev</groupId>
+			<artifactId>flatlaf</artifactId>
+			<version>1.5</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

@@ -6,7 +6,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -57,14 +56,15 @@ public class StoredExtension {
   }
 
   public static void main(String[] args) {
-    JComponent jComponent = new FieldsEditor(INSTANCE).getFieldsAndTextarea();
+    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(INSTANCE);
+    TestHelper testHelper = new TestHelper(fieldsPanel, INSTANCE);
     // ---
     JFrame jFrame = new JFrame();
     // File root = GrzSettings.file("GuiExtension");
     // root.mkdirs();
     // WindowConfiguration.attach(jFrame, new File(root, "WindowConfiguration.properties"));
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setContentPane(jComponent);
+    jFrame.setContentPane(testHelper.jPanel);
     jFrame.setBounds(500, 200, 500, 700);
     jFrame.addWindowListener(new WindowAdapter() {
       @Override

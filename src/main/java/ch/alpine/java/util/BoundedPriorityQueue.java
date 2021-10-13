@@ -1,40 +1,48 @@
 // code by jph
-// adapted from https://github.com/tdebatty/java-graphs/blob/master/src/main/java/info/debatty/java/util/BoundedPriorityQueue.java
 package ch.alpine.java.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
-/** Remark: implementation is not serializable */
-/* package */ abstract class BoundedPriorityQueue<T> extends PriorityQueue<T> {
-  private final int capacity;
+public class BoundedPriorityQueue<T> extends PriorityQueue<T> {
+  /** @param capacity strictly positive
+   * @param increasing for instance Integer::compare
+   * @return a priority queue that maintains only the smallest elements bounded in size
+   * by given capacity. when polling elements, the queue removes greatest elements first. */
+  public static <T> Queue<T> min(int capacity, Comparator<? super T> increasing) {
+    @SuppressWarnings("unchecked")
+    Comparator<? super T> decreasing = //
+        (Comparator<? super T> & Serializable) ((i1, i2) -> increasing.compare(i2, i1));
+    return new BoundedPriorityQueue<>(capacity, decreasing);
+  }
 
-  public BoundedPriorityQueue(int capacity, Comparator<? super T> comparator) {
-    super(capacity, comparator);
+  /** @param capacity strictly positive
+   * @param increasing for instance Integer::compare
+   * @return a priority queue that maintains only the greatest elements bounded in size
+   * by given capacity. when polling elements, the queue removes smallest elements first. */
+  public static <T> Queue<T> max(int capacity, Comparator<? super T> increasing) {
+    return new BoundedPriorityQueue<>(capacity, increasing);
+  }
+
+  // ---
+  private int capacity;
+
+  private BoundedPriorityQueue(int capacity, Comparator<? super T> comparator) {
+    super(capacity, Objects.requireNonNull(comparator));
     this.capacity = capacity;
   }
 
-  /** when the queue is full, adds the element if it is larger than the
-   * smallest element already in the queue.
-   *
-   * @param element
-   * @return true if element was added
-   * @throws Exception */
   @Override // from PriorityQueue
   public final boolean offer(final T element) {
     if (size() < capacity)
       return super.offer(element);
-    @SuppressWarnings("unchecked")
-    Comparable<T> comparable = (Comparable<T>) element;
-    if (isFavored(comparable, peek())) {
+    if (0 < comparator().compare(element, peek())) {
       poll();
       return super.offer(element);
     }
     return false;
   }
-
-  /** @param comparable candidate
-   * @param peek from queue
-   * @return true if comparable candidate strictly precedes than peek */
-  protected abstract boolean isFavored(Comparable<T> comparable, T peek);
 }
