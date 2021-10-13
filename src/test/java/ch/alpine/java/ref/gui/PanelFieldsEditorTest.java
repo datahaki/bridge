@@ -9,6 +9,6 @@ public class PanelFieldsEditorTest extends TestCase {
     panelFieldsEditor.addUniversalListener(() -> {
       // ---
     });
-    panelFieldsEditor.getJScrollPane();
+    panelFieldsEditor.createJScrollPane();
   }
 }

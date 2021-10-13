@@ -8,12 +8,12 @@ import junit.framework.TestCase;
 public class FieldsEditorTest extends TestCase {
   public void testSimple() {
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(new SimpleParam());
-    fieldsPanel.getJScrollPane();
+    fieldsPanel.createJScrollPane();
     fieldsPanel.list().forEach(fieldPanel -> fieldPanel.notifyListeners(""));
   }
 
   public void testV011() {
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(new V011Param(3));
-    fieldsPanel.getJScrollPane();
+    fieldsPanel.createJScrollPane();
   }
 }

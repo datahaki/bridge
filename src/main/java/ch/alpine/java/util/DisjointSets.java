@@ -68,7 +68,6 @@ public class DisjointSets {
   /** Example:
    * Map<Integer, Integer> map = disjointSets.createMap(new AtomicInteger()::getAndIncrement);
    * 
-   * @param <T>
    * @param supplier
    * @return */
   public <T> Map<Integer, T> createMap(Supplier<T> supplier) {
