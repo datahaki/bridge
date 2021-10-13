@@ -9,6 +9,7 @@ import javax.swing.JToggleButton;
 import ch.alpine.java.ref.FieldPanel;
 import ch.alpine.java.ref.FieldWrap;
 
+/** toggle button substitution as substitution for checkbox for boolean fields */
 /* package */ class TogglePanel extends FieldPanel {
   private final JToggleButton jToggleButton;
 

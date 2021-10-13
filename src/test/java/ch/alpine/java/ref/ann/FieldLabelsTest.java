@@ -19,6 +19,6 @@ public class FieldLabelsTest extends TestCase {
   public void testFormatFail() {
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(this);
     assertEquals(fieldsPanel.list().size(), 4);
-    fieldsPanel.getJScrollPane();
+    fieldsPanel.createJScrollPane();
   }
 }

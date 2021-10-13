@@ -23,7 +23,6 @@ public enum RandomElements {
   ;
   /** Hint: function is not thread safe
    * 
-   * @param <T>
    * @param list
    * @param n non-negative
    * @param random
@@ -41,7 +40,6 @@ public enum RandomElements {
 
   /** Hint: function is not thread safe
    * 
-   * @param <T>
    * @param list
    * @param n non-negative
    * @return unmodifiable list

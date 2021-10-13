@@ -8,6 +8,6 @@ public class GuiExtensionTest extends TestCase {
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
     fieldsPanel.addUniversalListener(() -> System.out.println("changed"));
-    fieldsPanel.getJScrollPane();
+    fieldsPanel.createJScrollPane();
   }
 }

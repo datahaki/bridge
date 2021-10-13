@@ -1,18 +1,17 @@
 // code by jph
 package ch.alpine.java.ref.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
-/* package */ final class RowPanel {
+/** THE USE OF THIS CLASS IN THE APPLICATION LAYER IS NOT RECOMMENDED ! */
+public final class RowPanel {
   private final GridBagLayout gridBagLayout = new GridBagLayout();
-  public final JPanel jPanel = new JPanel(gridBagLayout);
+  private final JPanel jPanel = new JPanel(gridBagLayout);
   private final GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
   public RowPanel() {
@@ -47,10 +46,8 @@ import javax.swing.JScrollPane;
     jPanel.add(jComponent2);
   }
 
-  public JScrollPane createJScrollPane() {
-    JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(this.jPanel, BorderLayout.NORTH);
-    return new JScrollPane(jPanel);
+  public JPanel getJPanel() {
+    return jPanel;
   }
 
   private static void setHeight(JComponent jComponent, int height) {
