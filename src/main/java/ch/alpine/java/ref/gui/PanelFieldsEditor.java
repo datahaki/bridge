@@ -2,7 +2,6 @@
 package ch.alpine.java.ref.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.lang.reflect.Field;
 
 import javax.swing.JLabel;
@@ -16,7 +15,8 @@ import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ann.FieldLabels;
 
 public class PanelFieldsEditor extends FieldsEditor {
-  private static final int HEIGHT = 28;
+  private static final int HEIGHT_ITEM = 28;
+  private static final int HEIGHT_PUSH = 20;
 
   private class Visitor implements ObjectFieldVisitor {
     private int level = 0;
@@ -26,17 +26,15 @@ public class PanelFieldsEditor extends FieldsEditor {
       Field field = fieldWrap.getField();
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, null));
       jLabel.setToolTipText(FieldToolTip.of(field));
-      int width = jLabel.getPreferredSize().width;
-      jLabel.setPreferredSize(new Dimension(width, HEIGHT));
       FieldPanel fieldPanel = register(fieldWrap.createFieldPanel(value), fieldWrap, object);
-      rowPanel.appendRow(jLabel, StaticHelper.layout(field, fieldPanel.getJComponent()), HEIGHT);
+      rowPanel.appendRow(jLabel, StaticHelper.layout(field, fieldPanel.getJComponent()), HEIGHT_ITEM);
     }
 
     @Override // from ObjectFieldVisitor
     public void push(String key, Field field, Integer index) {
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, index));
       jLabel.setEnabled(false);
-      rowPanel.appendRow(jLabel, 20);
+      rowPanel.appendRow(jLabel, HEIGHT_PUSH);
       ++level;
     }
 
