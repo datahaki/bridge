@@ -18,6 +18,8 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: Set up env
+        run: sudo apt-get install xvfb
       - name: mvn test
         working-directory: .
-        run: mvn test -B
+        run: xvfb-run --auto-servernum mvn test -B
