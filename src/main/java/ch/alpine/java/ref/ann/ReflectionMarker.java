@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /** this marker annotation is a hint for the test framework, and developers
  * that a class is subject to introspection and reflection. */
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 @Target(TYPE)
 public @interface ReflectionMarker {
   // ---

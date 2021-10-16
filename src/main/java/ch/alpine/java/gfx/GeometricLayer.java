@@ -19,7 +19,7 @@ public class GeometricLayer {
   /** @param model2pixel matrix of dimension 3x3 that becomes first element on matrix stack
    * @param mouseSe2CState typically a vector of length 3 */
   public GeometricLayer(Tensor model2pixel) {
-    deque.push(new AffineFrame2D(model2pixel));
+    deque.push(new AffineFrame2D(model2pixel.copy()));
   }
 
   /** only the first 2 entries of x are taken into account

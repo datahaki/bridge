@@ -16,6 +16,7 @@ import ch.alpine.java.ref.ann.FieldExistingDirectory;
 import ch.alpine.java.ref.ann.FieldExistingFile;
 import ch.alpine.java.ref.ann.FieldInteger;
 import ch.alpine.java.ref.ann.FieldLabel;
+import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -24,6 +25,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.qty.Quantity;
 
+@ReflectionMarker
 public class StoredExtension {
   private static final File FILE = HomeDirectory.Downloads(StoredExtension.class.getSimpleName() + ".properties");
   public static final StoredExtension INSTANCE = //

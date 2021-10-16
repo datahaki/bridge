@@ -18,6 +18,10 @@ public class FieLabParam {
   public final List<AnotherParam> another;
   public final Boolean[] fuses = new Boolean[] { true, false, true };
 
+  public FieLabParam() {
+    this(3);
+  }
+
   public FieLabParam(int l) {
     another = new LinkedList<>();
     for (int index = 0; index < l; ++index)
