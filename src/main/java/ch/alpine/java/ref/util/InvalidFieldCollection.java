@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.java.ref.util;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,10 +11,16 @@ import ch.alpine.java.ref.ObjectFields;
 public class InvalidFieldCollection implements ObjectFieldVisitor {
   /** @param object
    * @return */
-  public static boolean isEmpty(Object object) {
+  public static List<FieldValueContainer> of(Object object) {
     InvalidFieldCollection invalidFieldCollection = new InvalidFieldCollection();
     ObjectFields.of(object, invalidFieldCollection);
-    return invalidFieldCollection.list().isEmpty();
+    return invalidFieldCollection.list();
+  }
+
+  /** @param object
+   * @return */
+  public static boolean isEmpty(Object object) {
+    return of(object).isEmpty();
   }
 
   // ---
@@ -28,6 +33,6 @@ public class InvalidFieldCollection implements ObjectFieldVisitor {
   }
 
   public List<FieldValueContainer> list() {
-    return Collections.unmodifiableList(list);
+    return list;
   }
 }

@@ -3,11 +3,13 @@ package ch.alpine.java.ref;
 
 import java.awt.Color;
 
+import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.ResourceData;
 
+@ReflectionMarker
 public class ParamContainer {
   public static final ParamContainer INSTANCE = ObjectProperties.set(new ParamContainer(), ResourceData.properties("/io/ParamContainer.properties"));
   // ---

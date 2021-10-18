@@ -82,7 +82,7 @@ public class GuiExtension {
   }
 
   public static void main(String[] args) {
-    LookAndFeels.NIMBUS.updateUI();
+    LookAndFeels.INTELLI_J.updateUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor fieldsEditor = new PanelFieldsEditor(guiExtension);
     fieldsEditor.addUniversalListener(() -> System.out.println("changed"));

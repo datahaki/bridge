@@ -7,7 +7,9 @@ import java.util.List;
 
 import ch.alpine.java.ref.SimpleParam.AnotherParam;
 import ch.alpine.java.ref.SimpleParam.NestedParam;
+import ch.alpine.java.ref.ann.ReflectionMarker;
 
+@ReflectionMarker
 public class V011Param {
   public Boolean fuse = true;
   public final List<NestedParam> list = Arrays.asList(new NestedParam(), new NestedParam());

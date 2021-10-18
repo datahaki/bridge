@@ -6,9 +6,13 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
+
+import ch.alpine.java.ref.ann.ReflectionMarker;
 
 public class ObjectFields {
   private static final int LEAF_FILTER = Modifier.PUBLIC;
@@ -26,12 +30,18 @@ public class ObjectFields {
   private static final Predicate<Field> IS_NODE = VisibilityPredicate.field( //
       NODE_FILTER, //
       NODE_TESTED);
+  private static final Set<Class<?>> SET = new HashSet<>();
 
-  /** @param object
+  /** @param object may be null
    * @param objectFieldVisitor
-   * @return
    * @throws Exception if any input parameter is null */
   public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
+    if (Objects.nonNull(object)) {
+      Class<?> cls = object.getClass();
+      ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
+      if (Objects.isNull(reflectionMarker) && SET.add(cls))
+        System.err.println("hint: use @ReflectionMarker on " + cls);
+    }
     new ObjectFields(Objects.requireNonNull(objectFieldVisitor)).visit("", object);
   }
 

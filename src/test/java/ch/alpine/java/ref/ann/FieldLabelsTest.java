@@ -6,6 +6,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import junit.framework.TestCase;
 
+@ReflectionMarker
 public class FieldLabelsTest extends TestCase {
   @FieldLabel(text = "nested %a")
   public final Nested[] nested1 = { new Nested(), new Nested() };
