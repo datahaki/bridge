@@ -1,19 +1,20 @@
 // code by jph
 package ch.alpine.java.lang;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import junit.framework.TestCase;
 
 public class ClassDiscoveryTest extends TestCase {
-  int count = 0;
-
   public void testSimple() {
+    AtomicInteger count = new AtomicInteger();
     ClassVisitor classVisitor = new ClassVisitor() {
       @Override
-      public void classFound(String jarfile, Class<?> cls) {
-        ++count;
+      public void accept(String jarfile, Class<?> cls) {
+        count.getAndIncrement();
       }
     };
     ClassDiscovery.execute(ClassPaths.getDefault(), classVisitor);
-    assertTrue(1000 < count);
+    assertTrue(1000 < count.intValue());
   }
 }

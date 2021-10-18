@@ -21,6 +21,7 @@ import ch.alpine.java.ref.ann.FieldInteger;
 import ch.alpine.java.ref.ann.FieldLabel;
 import ch.alpine.java.ref.ann.FieldSelection;
 import ch.alpine.java.ref.ann.FieldSlider;
+import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -30,6 +31,7 @@ import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
 
+@ReflectionMarker
 public class GuiExtension {
   public Scalar[] scalars = { Pi.VALUE, RealScalar.ONE };
   public String string = "abc";
@@ -80,7 +82,7 @@ public class GuiExtension {
   }
 
   public static void main(String[] args) {
-    LookAndFeels.NIMBUS.updateUI();
+    LookAndFeels.INTELLI_J.updateUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor fieldsEditor = new PanelFieldsEditor(guiExtension);
     fieldsEditor.addUniversalListener(() -> System.out.println("changed"));

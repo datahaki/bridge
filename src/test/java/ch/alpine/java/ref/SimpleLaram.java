@@ -6,9 +6,11 @@ import java.util.List;
 
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
+import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.num.Pi;
 
+@ReflectionMarker
 public class SimpleLaram {
   @FieldLabel(text = "Nested %a")
   public final List<NestedParam> nestedParams = Arrays.asList( //

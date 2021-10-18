@@ -6,9 +6,13 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
+
+import ch.alpine.java.ref.ann.ReflectionMarker;
 
 public class ObjectFields {
   private static final int LEAF_FILTER = Modifier.PUBLIC;
@@ -26,12 +30,18 @@ public class ObjectFields {
   private static final Predicate<Field> IS_NODE = VisibilityPredicate.field( //
       NODE_FILTER, //
       NODE_TESTED);
+  private static final Set<Class<?>> SET = new HashSet<>();
 
-  /** @param object
+  /** @param object may be null
    * @param objectFieldVisitor
-   * @return
    * @throws Exception if any input parameter is null */
   public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
+    if (Objects.nonNull(object)) {
+      Class<?> cls = object.getClass();
+      ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
+      if (Objects.isNull(reflectionMarker) && SET.add(cls))
+        System.err.println("hint: use @ReflectionMarker on " + cls);
+    }
     new ObjectFields(Objects.requireNonNull(objectFieldVisitor)).visit("", object);
   }
 
@@ -51,29 +61,25 @@ public class ObjectFields {
         for (Field field : deque.pop().getDeclaredFields()) {
           Class<?> class_field = field.getType();
           String prefix = _prefix + field.getName();
-          try {
-            if (FieldWraps.INSTANCE.elemental(class_field)) {
-              if (IS_LEAF.test(field)) {
-                FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
-                if (Objects.nonNull(fieldWrap))
-                  objectFieldVisitor.accept(prefix, fieldWrap, object, field.get(object));
-              }
-            } else {
-              if (IS_NODE.test(field))
-                if (class_field.isArray())
-                  iterate(prefix, field, Arrays.asList((Object[]) field.get(object)));
-                else {
-                  if (field.getType().equals(List.class))
-                    iterate(prefix, field, (List<?>) field.get(object));
-                  else {
-                    objectFieldVisitor.push(prefix, field, null);
-                    visit(prefix + ".", field.get(object));
-                    objectFieldVisitor.pop();
-                  }
-                }
+          if (FieldWraps.INSTANCE.elemental(class_field)) {
+            if (IS_LEAF.test(field)) {
+              FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
+              if (Objects.nonNull(fieldWrap))
+                objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
             }
-          } catch (Exception exception) {
-            exception.printStackTrace();
+          } else {
+            if (IS_NODE.test(field))
+              if (class_field.isArray())
+                iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
+              else {
+                if (field.getType().equals(List.class))
+                  iterate(prefix, field, (List<?>) get(field, object));
+                else {
+                  objectFieldVisitor.push(prefix, field, null);
+                  visit(prefix + ".", get(field, object));
+                  objectFieldVisitor.pop();
+                }
+              }
           }
         }
     }
@@ -86,5 +92,17 @@ public class ObjectFields {
       visit(string + ".", list.get(index));
       objectFieldVisitor.pop();
     }
+  }
+
+  /** @param field
+   * @param object
+   * @return {@link Field#get(Object)} */
+  private static Object get(Field field, Object object) {
+    try {
+      return field.get(object);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+    throw new IllegalArgumentException();
   }
 }

@@ -12,7 +12,7 @@ public class ClassVisitorTest extends TestCase {
     Set<Class<?>> set = new HashSet<>();
     ClassVisitor classVisitor = new ClassVisitor() {
       @Override
-      public void classFound(String jarfile, Class<?> cls) {
+      public void accept(String jarfile, Class<?> cls) {
         if (Watchdog.class.isAssignableFrom(cls))
           set.add(cls);
       }

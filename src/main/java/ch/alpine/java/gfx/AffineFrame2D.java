@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.ext.Integers;
 
 /** @see AffineTransform */
 /* package */ class AffineFrame2D {
@@ -19,15 +20,14 @@ import ch.alpine.tensor.Tensors;
 
   /** @param matrix of dimensions 3 x 3 */
   public AffineFrame2D(Tensor matrix) {
-    this.matrix = matrix.copy();
-    Tensor row0 = matrix.get(0);
-    m00 = row0.Get(0).number().doubleValue();
-    m01 = row0.Get(1).number().doubleValue();
-    m02 = row0.Get(2).number().doubleValue();
-    Tensor row1 = matrix.get(1);
-    m10 = row1.Get(0).number().doubleValue();
-    m11 = row1.Get(1).number().doubleValue();
-    m12 = row1.Get(2).number().doubleValue();
+    Integers.requireEquals(matrix.length(), 3);
+    this.matrix = matrix;
+    m00 = matrix.Get(0, 0).number().doubleValue();
+    m01 = matrix.Get(0, 1).number().doubleValue();
+    m02 = matrix.Get(0, 2).number().doubleValue();
+    m10 = matrix.Get(1, 0).number().doubleValue();
+    m11 = matrix.Get(1, 1).number().doubleValue();
+    m12 = matrix.Get(1, 2).number().doubleValue();
   }
 
   /** @param px

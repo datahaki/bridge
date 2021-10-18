@@ -19,17 +19,14 @@ public class ScalarFieldWrap extends TensorFieldWrap {
   private final FieldInteger fieldIntegerQ;
   private Clip clip = null;
 
+  /** @param field
+   * @throws Exception if annotations are corrupt */
   public ScalarFieldWrap(Field field) {
     super(field);
     fieldIntegerQ = field.getAnnotation(FieldInteger.class);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     if (Objects.nonNull(fieldClip))
-      try {
-        clip = FieldClips.of(fieldClip);
-      } catch (Exception exception) {
-        System.err.println(field);
-        exception.printStackTrace();
-      }
+      clip = FieldClips.of(fieldClip);
   }
 
   @Override // from FieldWrap
