@@ -63,6 +63,7 @@ public class ScalarFieldWrap extends TensorFieldWrap {
       try {
         return new SliderPanel(this, fieldClip, value);
       } catch (Exception exception) {
+        exception.printStackTrace();
         // ---
       }
     return super.createFieldPanel(value);

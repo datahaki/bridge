@@ -3,6 +3,7 @@ package ch.alpine.java.ref.ann;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.red.Max;
 import ch.alpine.tensor.red.Min;
@@ -10,10 +11,11 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.N;
 
+/** interprets specification in {@link FieldClip} to {@link Clip} */
 public enum FieldClips {
   ;
   /** @param fieldClip
-   * @return
+   * @return clip with min and max {@link Quantity} in SI-unit
    * @throws Exception if parsing of strings to scalars fails
    * @throws Exception if units of min and max are incompatible */
   public static Clip of(FieldClip fieldClip) {

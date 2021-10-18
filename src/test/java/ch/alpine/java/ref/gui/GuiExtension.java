@@ -53,6 +53,9 @@ public class GuiExtension {
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");
   @FieldSlider
+  @FieldClip(min = "0[%]", max = "100[%]")
+  public Scalar percent = Quantity.of(10, "%");
+  @FieldSlider
   @FieldInteger
   @FieldClip(min = "1", max = "10")
   public Scalar scalarInt = Quantity.of(10, "");
