@@ -51,29 +51,25 @@ public class ObjectFields {
         for (Field field : deque.pop().getDeclaredFields()) {
           Class<?> class_field = field.getType();
           String prefix = _prefix + field.getName();
-          try {
-            if (FieldWraps.INSTANCE.elemental(class_field)) {
-              if (IS_LEAF.test(field)) {
-                FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
-                if (Objects.nonNull(fieldWrap))
-                  objectFieldVisitor.accept(prefix, fieldWrap, object, field.get(object));
-              }
-            } else {
-              if (IS_NODE.test(field))
-                if (class_field.isArray())
-                  iterate(prefix, field, Arrays.asList((Object[]) field.get(object)));
-                else {
-                  if (field.getType().equals(List.class))
-                    iterate(prefix, field, (List<?>) field.get(object));
-                  else {
-                    objectFieldVisitor.push(prefix, field, null);
-                    visit(prefix + ".", field.get(object));
-                    objectFieldVisitor.pop();
-                  }
-                }
+          if (FieldWraps.INSTANCE.elemental(class_field)) {
+            if (IS_LEAF.test(field)) {
+              FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
+              if (Objects.nonNull(fieldWrap))
+                objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
             }
-          } catch (Exception exception) {
-            exception.printStackTrace();
+          } else {
+            if (IS_NODE.test(field))
+              if (class_field.isArray())
+                iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
+              else {
+                if (field.getType().equals(List.class))
+                  iterate(prefix, field, (List<?>) get(field, object));
+                else {
+                  objectFieldVisitor.push(prefix, field, null);
+                  visit(prefix + ".", get(field, object));
+                  objectFieldVisitor.pop();
+                }
+              }
           }
         }
     }
@@ -86,5 +82,17 @@ public class ObjectFields {
       visit(string + ".", list.get(index));
       objectFieldVisitor.pop();
     }
+  }
+
+  /** @param field
+   * @param object
+   * @return {@link Field#get(Object)} */
+  private static Object get(Field field, Object object) {
+    try {
+      return field.get(object);
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+    throw new IllegalArgumentException();
   }
 }

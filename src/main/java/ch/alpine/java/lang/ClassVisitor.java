@@ -5,5 +5,5 @@ package ch.alpine.java.lang;
 public interface ClassVisitor {
   /** @param jarfile
    * @param cls */
-  void classFound(String jarfile, Class<?> cls);
+  void accept(String jarfile, Class<?> cls);
 }

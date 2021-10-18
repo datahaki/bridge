@@ -42,7 +42,7 @@ public class StoredExtension {
   public Tensor tensor = Tensors.fromString("{1, 2}");
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");
-  @FieldClip(min = "1000[W]", max = "10000[Wa]")
+  @FieldClip(min = "1000[W]", max = "10000[W]")
   public Scalar quantity = Quantity.of(3, "kW");
   @FieldInteger
   @FieldClip(min = "10", max = "20")
@@ -58,8 +58,8 @@ public class StoredExtension {
   }
 
   public static void main(String[] args) {
-    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(INSTANCE);
-    TestHelper testHelper = new TestHelper(fieldsPanel, INSTANCE);
+    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(INSTANCE);
+    TestHelper testHelper = new TestHelper(panelFieldsEditor, INSTANCE);
     // ---
     JFrame jFrame = new JFrame();
     // File root = GrzSettings.file("GuiExtension");

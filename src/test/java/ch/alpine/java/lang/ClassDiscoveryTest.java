@@ -16,7 +16,7 @@ public class ClassDiscoveryTest extends TestCase {
     AtomicInteger count = new AtomicInteger();
     ClassVisitor classVisitor = new ClassVisitor() {
       @Override
-      public void classFound(String jarfile, Class<?> cls) {
+      public void accept(String jarfile, Class<?> cls) {
         count.getAndIncrement();
       }
     };
@@ -37,7 +37,7 @@ public class ClassDiscoveryTest extends TestCase {
     AtomicInteger count = new AtomicInteger();
     ClassVisitor classVisitor = new ClassVisitor() {
       @Override
-      public void classFound(String jarfile, Class<?> cls) {
+      public void accept(String jarfile, Class<?> cls) {
         ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
         if (Objects.nonNull(reflectionMarker)) {
           // System.out.println(cls.getSimpleName());

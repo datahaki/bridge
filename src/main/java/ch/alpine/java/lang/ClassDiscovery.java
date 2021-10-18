@@ -55,7 +55,7 @@ public class ClassDiscovery {
         try {
           Class<?> cls = cldr.loadClass(className);
           if (Objects.nonNull(cls))
-            classVisitor.classFound(classpath_entry, cls);
+            classVisitor.accept(classpath_entry, cls);
         } catch (Throwable ex) {
           // ---
         }
@@ -97,7 +97,7 @@ public class ClassDiscovery {
                   Class<?> cls = urlClassLoader.loadClass(className);
                   if (cls == null)
                     continue;
-                  classVisitor.classFound(item, cls);
+                  classVisitor.accept(item, cls);
                 } catch (Throwable throwable) {
                   // System.out.println("ClassDiscoverer: "+ex);
                   // System.out.println(" jar: "+item);
