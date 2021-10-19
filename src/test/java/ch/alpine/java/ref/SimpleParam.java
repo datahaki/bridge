@@ -4,11 +4,11 @@ package ch.alpine.java.ref;
 import java.awt.Color;
 import java.io.File;
 
-import ch.alpine.java.awt.LookAndFeels;
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
 import ch.alpine.java.ref.ann.FieldSelection;
 import ch.alpine.java.ref.ann.ReflectionMarker;
+import ch.alpine.javax.swing.LookAndFeels;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.re.Pivots;
 

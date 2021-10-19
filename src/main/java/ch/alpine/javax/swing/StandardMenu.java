@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.awt;
+package ch.alpine.javax.swing;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -12,6 +12,8 @@ import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+
+import ch.alpine.java.awt.MouseLocation;
 
 public abstract class StandardMenu {
   public static <T extends StandardMenu> void bind(JButton jButton, Supplier<T> supplier) {

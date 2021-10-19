@@ -1,5 +1,5 @@
 // code by gjoel
-package ch.alpine.java.awt;
+package ch.alpine.javax.swing;
 
 import java.awt.Window;
 

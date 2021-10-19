@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.awt;
+package ch.alpine.javax.swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,6 +17,9 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
+
+import ch.alpine.java.awt.LazyMouse;
+import ch.alpine.java.awt.LazyMouseListener;
 
 /** selector in gui for easy scrolling through a list with mouse-wheel but no pull-down menu */
 public class SpinnerLabel<T> extends JTextField {

@@ -3,7 +3,7 @@ package ch.alpine.java.ref;
 
 import javax.swing.JComponent;
 
-import ch.alpine.java.awt.SpinnerLabel;
+import ch.alpine.javax.swing.SpinnerLabel;
 
 /* package */ class EnumPanel extends FieldPanel {
   private final SpinnerLabel<Object> spinnerLabel = new SpinnerLabel<>();

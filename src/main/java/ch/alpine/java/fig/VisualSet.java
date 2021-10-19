@@ -9,14 +9,13 @@ import java.util.Objects;
 
 import org.jfree.chart.ChartFactory;
 
-import ch.alpine.java.lang.PrettyUnit;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
-import ch.alpine.tensor.qty.Unit;
+import ch.alpine.tensor.qty.QuantityUnit;
 
 public class VisualSet implements Serializable {
   static {
@@ -28,9 +27,9 @@ public class VisualSet implements Serializable {
   // ---
   private final List<VisualRow> visualRows = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
+  private final Axis axisX = new Axis();
+  private final Axis axisY = new Axis();
   private String plotLabel = "";
-  private String axesLabelX = "";
-  private String axesLabelY = "";
 
   public VisualSet(ColorDataIndexed colorDataIndexed) {
     this.colorDataIndexed = Objects.requireNonNull(colorDataIndexed);
@@ -46,6 +45,12 @@ public class VisualSet implements Serializable {
    * @return instance of the visual row, that was added to this visual set
    * @throws Exception if not all entries in points are vectors of length 2 */
   public VisualRow add(Tensor points) {
+    if (Tensors.nonEmpty(points)) {
+      if (!axisX.hasUnit())
+        axisX.setUnit(QuantityUnit.of(points.Get(0, 0)));
+      if (!axisY.hasUnit())
+        axisY.setUnit(QuantityUnit.of(points.Get(0, 1)));
+    }
     final int index = visualRows.size();
     points.stream().forEach(row -> VectorQ.requireLength(row, 2));
     VisualRow visualRow = new VisualRow(points, index);
@@ -79,49 +84,17 @@ public class VisualSet implements Serializable {
     return plotLabel;
   }
 
-  /** @param string label of x-axis */
-  public void setAxesLabelX(String string) {
-    axesLabelX = string;
-  }
-
-  /** @return label of x-axis */
-  public String getAxesLabelX() {
-    return (axesLabelX + " " + getUnitXString()).strip();
-  }
-
-  /** @param string label of y-axis */
-  public void setAxesLabelY(String string) {
-    axesLabelY = string;
-  }
-
-  /** @return label of y-axis */
-  public String getAxesLabelY() {
-    return (axesLabelY + " " + getUnitYString()).strip();
-  }
-
   public boolean hasLegend() {
     return visualRows.stream() //
         .map(VisualRow::getLabelString) //
         .anyMatch(string -> !string.isEmpty());
   }
 
-  // ---
-  private Unit unitX = Unit.ONE;
-  private Unit unitY = Unit.ONE;
-
-  /* package */ void setUnitX(Unit unit) {
-    this.unitX = unit;
+  public Axis getAxisX() {
+    return axisX;
   }
 
-  /* package */ void setUnitY(Unit unit) {
-    this.unitY = unit;
-  }
-
-  /* package */ String getUnitXString() {
-    return unitX.equals(Unit.ONE) ? "" : "[" + PrettyUnit.of(unitX) + "]";
-  }
-
-  /* package */ String getUnitYString() {
-    return unitY.equals(Unit.ONE) ? "" : "[" + PrettyUnit.of(unitY) + "]";
+  public Axis getAxisY() {
+    return axisY;
   }
 }

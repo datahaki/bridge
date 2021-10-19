@@ -32,16 +32,16 @@ public enum ListPlot {
     JFreeChart jFreeChart = joined //
         ? ChartFactory.createXYLineChart( //
             visualSet.getPlotLabel(), //
-            visualSet.getAxesLabelX(), //
-            visualSet.getAxesLabelY(), //
+            visualSet.getAxisX().getAxisLabel(), //
+            visualSet.getAxisY().getAxisLabel(), //
             xySeriesCollection, PlotOrientation.VERTICAL, //
             visualSet.hasLegend(), // legend
             false, // tooltips
             false) // urls
         : ChartFactory.createScatterPlot( //
             visualSet.getPlotLabel(), //
-            visualSet.getAxesLabelX(), //
-            visualSet.getAxesLabelY(), //
+            visualSet.getAxisX().getAxisLabel(), //
+            visualSet.getAxisY().getAxisLabel(), //
             xySeriesCollection, PlotOrientation.VERTICAL, //
             visualSet.hasLegend(), // legend
             false, // tooltips
