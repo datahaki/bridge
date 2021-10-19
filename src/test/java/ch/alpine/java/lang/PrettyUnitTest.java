@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.java.lang;
 
+import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.qty.Quantity;
@@ -8,6 +9,11 @@ import ch.alpine.tensor.qty.Unit;
 import junit.framework.TestCase;
 
 public class PrettyUnitTest extends TestCase {
+  public void testOne() {
+    String string = PrettyUnit.of(Unit.ONE);
+    assertEquals(string, "");
+  }
+
   public void test() {
     assertEquals(PrettyUnit.of(Unit.of("kg*m*s^-2")), "kg*m/s\u00b2");
     assertEquals(PrettyUnit.of(Unit.of("kg*m*s^-2*z^-1")), "kg*m*s\u207b\u00b2*z\u207b\u00b9");
@@ -35,5 +41,9 @@ public class PrettyUnitTest extends TestCase {
   public void testMicro() {
     assertEquals(PrettyUnit.of(Unit.of("us")), "\u03BCs");
     assertEquals(PrettyUnit.of(Unit.of("uF")), "\u03BCF");
+  }
+
+  public void testNullFail() {
+    AssertFail.of(() -> PrettyUnit.of((Unit) null));
   }
 }

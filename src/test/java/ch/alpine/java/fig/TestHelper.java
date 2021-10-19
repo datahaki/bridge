@@ -35,8 +35,8 @@ import ch.alpine.tensor.pdf.UniformDistribution;
     if (labels) {
       row0.setLabel("row 0");
       row2.setLabel("row 2");
-      visualSet.setAxesLabelX("x axis");
-      visualSet.setAxesLabelY("y axis");
+      visualSet.getAxisX().setLabel("x axis");
+      visualSet.getAxisY().setLabel("y axis");
     }
     {
       visualSet.setPlotLabel(StackedHistogram.class.getSimpleName());

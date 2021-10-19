@@ -20,8 +20,8 @@ import ch.alpine.tensor.Scalar;
   public static JFreeChart barChart(VisualSet visualSet, boolean stacked, Function<Scalar, String> naming) {
     JFreeChart jFreeChart = ChartFactory.createBarChart( //
         visualSet.getPlotLabel(), //
-        visualSet.getAxesLabelX(), //
-        visualSet.getAxesLabelY(), //
+        visualSet.getAxisX().getAxisLabel(), //
+        visualSet.getAxisY().getAxisLabel(), //
         DatasetFactory.defaultCategoryDataset(visualSet, naming), //
         PlotOrientation.VERTICAL, visualSet.hasLegend(), true, false);
     BarRenderer barRenderer = stacked //
@@ -37,14 +37,14 @@ import ch.alpine.tensor.Scalar;
     JFreeChart jFreeChart = stacked //
         ? ChartFactory.createStackedXYAreaChart( //
             visualSet.getPlotLabel(), //
-            visualSet.getAxesLabelX(), //
-            visualSet.getAxesLabelY(), //
+            visualSet.getAxisX().getAxisLabel(), //
+            visualSet.getAxisY().getAxisLabel(), //
             tableXYDataset, //
             PlotOrientation.VERTICAL, visualSet.hasLegend(), true, false)
         : ChartFactory.createXYLineChart( //
             visualSet.getPlotLabel(), //
-            visualSet.getAxesLabelX(), //
-            visualSet.getAxesLabelY(), //
+            visualSet.getAxisX().getAxisLabel(), //
+            visualSet.getAxisY().getAxisLabel(), //
             tableXYDataset, //
             PlotOrientation.VERTICAL, visualSet.hasLegend(), true, false);
     formatLines(visualSet, (AbstractXYItemRenderer) jFreeChart.getXYPlot().getRenderer());

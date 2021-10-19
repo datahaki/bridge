@@ -1,7 +1,6 @@
 // code by gjoel, jph
 package ch.alpine.java.fig;
 
-import java.util.Objects;
 import java.util.function.Function;
 
 import org.jfree.data.category.CategoryDataset;
@@ -15,11 +14,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import ch.alpine.tensor.NumberQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.qty.QuantityMagnitude;
-import ch.alpine.tensor.qty.QuantityUnit;
-import ch.alpine.tensor.qty.Unit;
 
 /** functionality to convert {@link VisualSet} to a dataset
  * for the instantiation of a JFreeChart object */
@@ -33,32 +28,19 @@ import ch.alpine.tensor.qty.Unit;
    * @see ListPlot */
   public static XYSeriesCollection xySeriesCollection(VisualSet visualSet) {
     XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
-    ScalarUnaryOperator suoX = null;
-    ScalarUnaryOperator suoY = null;
+    ScalarUnaryOperator toRealsX = visualSet.getAxisX().toReals();
+    ScalarUnaryOperator toRealsY = visualSet.getAxisY().toReals();
     for (VisualRow visualRow : visualSet.visualRows()) {
       String labelString = visualRow.getLabelString();
       XYSeries xySeries = new XYSeries(labelString.isEmpty() //
           ? xySeriesCollection.getSeriesCount()
           : labelString, //
           visualRow.getAutoSort());
-      Tensor points = visualRow.points();
-      if (Objects.isNull(suoX) && !Tensors.isEmpty(points)) {
-        {
-          Unit unit = QuantityUnit.of(points.Get(0, 0));
-          visualSet.setUnitX(unit);
-          suoX = QuantityMagnitude.SI().in(unit);
-        }
-        {
-          Unit unit = QuantityUnit.of(points.Get(0, 1));
-          visualSet.setUnitY(unit);
-          suoY = QuantityMagnitude.SI().in(unit);
-        }
-      }
-      for (Tensor point : points) {
-        Number numberX = suoX.apply(point.Get(0)).number();
-        Scalar valueY = suoY.apply(point.Get(1));
+      for (Tensor point : visualRow.points()) {
+        Scalar valueX = toRealsX.apply(point.Get(0));
+        Scalar valueY = toRealsY.apply(point.Get(1));
         Number numberY = NumberQ.of(valueY) ? valueY.number() : Double.NaN;
-        xySeries.add(numberX, numberY);
+        xySeries.add(valueX.number(), numberY);
       }
       xySeriesCollection.addSeries(xySeries);
     }
