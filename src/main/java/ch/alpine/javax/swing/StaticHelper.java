@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.awt;
+package ch.alpine.javax.swing;
 
 import java.awt.Color;
 

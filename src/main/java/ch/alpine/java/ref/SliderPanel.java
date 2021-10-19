@@ -15,6 +15,9 @@ import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.qty.QuantityUnit;
+import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 
@@ -24,6 +27,7 @@ import ch.alpine.tensor.sca.Clip;
   // ---
   private final Clip clip;
   private final int resolution;
+  private final ScalarUnaryOperator scalarUnaryOperator;
   private final JSlider jSlider;
   private final ChangeListener changeListener = new ChangeListener() {
     @Override
@@ -34,8 +38,9 @@ import ch.alpine.tensor.sca.Clip;
     }
 
     private Scalar interp(int count) {
-      return clip.min().multiply(RationalScalar.of(resolution - count, resolution)) //
-          .add(clip.max().multiply(RationalScalar.of(count, resolution)));
+      return scalarUnaryOperator.apply( //
+          clip.min().multiply(RationalScalar.of(resolution - count, resolution)) //
+              .add(clip.max().multiply(RationalScalar.of(count, resolution))));
     }
   };
   private int index;
@@ -44,7 +49,6 @@ import ch.alpine.tensor.sca.Clip;
    * @param fieldClip non-null
    * @param value */
   public SliderPanel(FieldWrap fieldWrap, FieldClip fieldClip, Object value) {
-    // TODO possibly preserve unit
     super(fieldWrap);
     clip = FieldClips.of(fieldClip); // si-units
     if (Objects.nonNull(fieldWrap.getField().getAnnotation(FieldInteger.class))) {
@@ -53,9 +57,14 @@ import ch.alpine.tensor.sca.Clip;
       resolution = max - min;
     } else
       resolution = RESOLUTION;
-    index = Objects.isNull(value) //
-        ? 0
-        : clip.rescale(UnitSystem.SI().apply((Scalar) value)).multiply(RealScalar.of(resolution)).number().intValue();
+    if (Objects.isNull(value)) {
+      scalarUnaryOperator = i -> i;
+      index = 0; //
+    } else {
+      Scalar scalar = (Scalar) value;
+      scalarUnaryOperator = UnitConvert.SI().to(QuantityUnit.of(scalar));
+      index = clip.rescale(UnitSystem.SI().apply(scalar)).multiply(RealScalar.of(resolution)).number().intValue();
+    }
     jSlider = new JSlider(0, resolution, index);
     jSlider.setOpaque(false);
     jSlider.setPaintTicks(resolution <= TICKS_MAX);

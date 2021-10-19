@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import ch.alpine.java.awt.LookAndFeels;
 import ch.alpine.java.ref.Container.NestedEnum;
 import ch.alpine.java.ref.NameString;
 import ch.alpine.java.ref.ann.FieldClip;
@@ -22,6 +21,7 @@ import ch.alpine.java.ref.ann.FieldLabel;
 import ch.alpine.java.ref.ann.FieldSelection;
 import ch.alpine.java.ref.ann.FieldSlider;
 import ch.alpine.java.ref.ann.ReflectionMarker;
+import ch.alpine.javax.swing.LookAndFeels;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;

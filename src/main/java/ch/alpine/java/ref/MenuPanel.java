@@ -12,8 +12,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import ch.alpine.java.awt.SpinnerLabel;
-import ch.alpine.java.awt.StandardMenu;
+import ch.alpine.javax.swing.SpinnerLabel;
+import ch.alpine.javax.swing.StandardMenu;
 
 /* package */ class MenuPanel extends StringPanel {
   private final JButton jButton = new JButton("?");

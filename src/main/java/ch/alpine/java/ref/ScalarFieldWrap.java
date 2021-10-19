@@ -40,16 +40,14 @@ public class ScalarFieldWrap extends TensorFieldWrap {
     if (StringScalarQ.of(scalar))
       return false;
     // ---
-    if (Objects.nonNull(fieldIntegerQ))
-      if (!IntegerQ.of(scalar))
-        return false;
+    if (Objects.nonNull(fieldIntegerQ) && !IntegerQ.of(scalar))
+      return false;
     // ---
     if (Objects.nonNull(clip))
       try { // throws exception if units are incompatible
         if (clip.isOutside(UnitSystem.SI().apply(scalar)))
           return false;
       } catch (Exception exception) {
-        // System.err.println("unit incompatible " + clip + " " + scalar);
         return false;
       }
     return true;
@@ -60,12 +58,7 @@ public class ScalarFieldWrap extends TensorFieldWrap {
     Field field = getField();
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     if (Objects.nonNull(fieldClip) && Objects.nonNull(field.getAnnotation(FieldSlider.class)))
-      try {
-        return new SliderPanel(this, fieldClip, value);
-      } catch (Exception exception) {
-        exception.printStackTrace();
-        // ---
-      }
+      return new SliderPanel(this, fieldClip, value);
     return super.createFieldPanel(value);
   }
 }
