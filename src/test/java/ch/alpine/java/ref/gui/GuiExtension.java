@@ -41,6 +41,8 @@ public class GuiExtension {
   @FieldLabel(text = "Big Fuse")
   @FieldFuse(text = "press to restart")
   public Boolean fuse = false;
+  @FieldFuse
+  public Boolean defaultFuse = false;
   public Pivots pivots = Pivots.ARGMAX_ABS;
   @FieldExistingDirectory
   public File folder = HomeDirectory.file();
