@@ -80,6 +80,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
@@ -92,6 +93,7 @@ import org.jfree.chart.axis.AxisCollection;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.AxisState;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.TickType;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.axis.ValueTick;
@@ -115,6 +117,7 @@ import org.jfree.chart.renderer.RendererUtils;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRendererState;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.ui.Layer;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.chart.ui.RectangleInsets;
@@ -130,6 +133,17 @@ import org.jfree.data.Range;
 import org.jfree.data.general.DatasetChangeEvent;
 import org.jfree.data.general.DatasetUtils;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeriesCollection;
+
+import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.fft.Spectrogram;
+import ch.alpine.tensor.io.ImageFormat;
+import ch.alpine.tensor.sca.win.DirichletWindow;
 
 /** A general class for plotting data in the form of (x, y) pairs. This plot can
  * use data from any class that implements the {@link XYDataset} interface.
@@ -140,7 +154,7 @@ import org.jfree.data.xy.XYDataset;
  * <p>
  * The {@link org.jfree.chart.ChartFactory} class contains static methods for
  * creating pre-configured charts. */
-public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable, RendererChangeListener, Cloneable, PublicCloneable, Serializable {
+public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable, RendererChangeListener, Cloneable, PublicCloneable, Serializable {
   /** For serialization. */
   // private static final long serialVersionUID = 7044148245716569264L;
   /** The default grid line stroke. */
@@ -290,13 +304,6 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
   private boolean rangePannable;
   /** The shadow generator ({@code null} permitted). */
   private ShadowGenerator shadowGenerator;
-
-  /** Creates a new {@code XYPlot} instance with no dataset, no axes and
-   * no renderer. You should specify these items before using the plot. */
-  public CustomPlot() {
-    this(null, null, null, null);
-  }
-
   /** Creates a new plot with the specified dataset, axes and renderer. Any
    * of the arguments can be {@code null}, but in that case you should
    * take care to specify the value before using the plot (otherwise a
@@ -306,8 +313,27 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
    * @param domainAxis the domain axis ({@code null} permitted).
    * @param rangeAxis the range axis ({@code null} permitted).
    * @param renderer the renderer ({@code null} permitted). */
-  public CustomPlot(XYDataset dataset, ValueAxis domainAxis, ValueAxis rangeAxis, XYItemRenderer renderer) {
-    super();
+  final BufferedImage bufferedImage;
+  final Scalar xhi;
+  final Scalar yhi;
+
+  public SpectrogramPlot(Tensor signal, Scalar sampleRate, Function<Scalar, ? extends Tensor> function) {
+    Tensor tensor = Spectrogram.of(signal, DirichletWindow.FUNCTION, function);
+    bufferedImage = ImageFormat.of(tensor);
+    VisualSet visualSet = new VisualSet();
+    xhi = sampleRate.multiply(RealScalar.of(signal.length()));
+    yhi = sampleRate.reciprocal().multiply(RationalScalar.HALF);
+    Tensor box = Tensors.of( //
+        Tensors.of(xhi.zero(), yhi.zero()), //
+        Tensors.of(xhi, yhi));
+    VisualRow visualRow = visualSet.add(box);
+    visualRow.setLabel("here");
+    XYSeriesCollection dataset = DatasetFactory.xySeriesCollection(visualSet);
+    // JFreeChart jFreeChart = new JFreeChart(new CustomPlot());
+    NumberAxis domainAxis = new NumberAxis(visualSet.getAxisX().getAxisLabel());
+    domainAxis.setAutoRangeIncludesZero(false);
+    NumberAxis rangeAxis = new NumberAxis(visualSet.getAxisY().getAxisLabel());
+    XYItemRenderer renderer = new XYLineAndShapeRenderer(false, false);
     this.orientation = PlotOrientation.VERTICAL;
     this.weight = 1; // only relevant when this is a subplot
     this.axisOffset = RectangleInsets.ZERO_INSETS;
@@ -457,8 +483,8 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
     ValueAxis result = this.domainAxes.get(index);
     if (result == null) {
       Plot parent = getParent();
-      if (parent instanceof CustomPlot) {
-        CustomPlot xy = (CustomPlot) parent;
+      if (parent instanceof SpectrogramPlot) {
+        SpectrogramPlot xy = (SpectrogramPlot) parent;
         result = xy.getDomainAxis(index);
       }
     }
@@ -754,8 +780,8 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
     ValueAxis result = this.rangeAxes.get(index);
     if (result == null) {
       Plot parent = getParent();
-      if (parent instanceof CustomPlot) {
-        CustomPlot xy = (CustomPlot) parent;
+      if (parent instanceof SpectrogramPlot) {
+        SpectrogramPlot xy = (SpectrogramPlot) parent;
         result = xy.getRangeAxis(index);
       }
     }
@@ -2376,6 +2402,7 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
     Rectangle2D dataArea = space.shrink(area, null);
     this.axisOffset.trim(dataArea);
     dataArea = integerise(dataArea);
+    Rectangle rectangle = integerise(dataArea);
     if (dataArea.isEmpty()) {
       return;
     }
@@ -2424,17 +2451,23 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
     Shape originalClip = g2.getClip();
     Composite originalComposite = g2.getComposite();
     g2.clip(dataArea);
+    // g2.clip(null);
     {// TODO JAN INSERTED THIS HERE
-      g2.setColor(new Color(255, 0, 0, 64));
-      g2.fill(dataArea);
-      g2.setColor(Color.BLUE);
-      // ValueAxis domainAxis = ;
+     // g2.setColor(new Color(255, 0, 0, 64));
+     // g2.fill(dataArea);
+     // g2.setColor(Color.BLUE);
+     // ValueAxis domainAxis = ;
       double x1 = getDomainAxis().valueToJava2D(0.0, dataArea, getDomainAxisEdge());
-      double x2 = getDomainAxis().valueToJava2D(1.0, dataArea, getDomainAxisEdge());
+      double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(xhi).number().doubleValue(), dataArea, getDomainAxisEdge());
       double y1 = getRangeAxis().valueToJava2D(0.0, dataArea, getRangeAxisEdge());
-      double y2 = getRangeAxis().valueToJava2D(1.0, dataArea, getRangeAxisEdge());
-      g2.setStroke(new BasicStroke(2f));
-      g2.draw(new Line2D.Double(new Point2D.Double(x1, y1), new Point2D.Double(x2, y2)));
+      double y2 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(yhi).number().doubleValue(), dataArea, getRangeAxisEdge());
+      // g2.setStroke(new BasicStroke(2f));
+      // g2.draw(new Line2D.Double(new Point2D.Double(x1, y1), new Point2D.Double(x2, y2)));
+      g2.drawImage(bufferedImage, //
+          (int) x1, //
+          (int) y2, //
+          (int) (x2 - x1 + 1), //
+          (int) (y1 - y2 + 1), null);
     }
     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getForegroundAlpha()));
     AxisState domainAxisState = (AxisState) axisStateMap.get(getDomainAxis());
@@ -3391,8 +3424,8 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
     if (result < 0) {
       // try the parent plot
       Plot parent = getParent();
-      if (parent instanceof CustomPlot) {
-        CustomPlot p = (CustomPlot) parent;
+      if (parent instanceof SpectrogramPlot) {
+        SpectrogramPlot p = (SpectrogramPlot) parent;
         result = p.getDomainAxisIndex(axis);
       }
     }
@@ -3420,8 +3453,8 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
     if (result < 0) {
       // try the parent plot
       Plot parent = getParent();
-      if (parent instanceof CustomPlot) {
-        CustomPlot p = (CustomPlot) parent;
+      if (parent instanceof SpectrogramPlot) {
+        SpectrogramPlot p = (SpectrogramPlot) parent;
         result = p.getRangeAxisIndex(axis);
       }
     }
@@ -4195,10 +4228,10 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
     if (obj == this) {
       return true;
     }
-    if (!(obj instanceof CustomPlot)) {
+    if (!(obj instanceof SpectrogramPlot)) {
       return false;
     }
-    CustomPlot that = (CustomPlot) obj;
+    SpectrogramPlot that = (SpectrogramPlot) obj;
     if (this.weight != that.weight) {
       return false;
     }
@@ -4371,7 +4404,7 @@ public class CustomPlot extends Plot implements ValueAxisPlot, Pannable, Zoomabl
    * the plot cannot be cloned. */
   @Override
   public Object clone() throws CloneNotSupportedException {
-    CustomPlot clone = (CustomPlot) super.clone();
+    SpectrogramPlot clone = (SpectrogramPlot) super.clone();
     clone.domainAxes = CloneUtils.cloneMapValues(this.domainAxes);
     for (ValueAxis axis : clone.domainAxes.values()) {
       if (axis != null) {
