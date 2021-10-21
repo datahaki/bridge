@@ -34,4 +34,8 @@ public abstract class FieldPanel {
 
   /** @return */
   public abstract JComponent getJComponent();
+
+  public void update(Object value) {
+    // TODO make abstract
+  }
 }
