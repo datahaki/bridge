@@ -22,20 +22,15 @@ public abstract class FieldPanel {
     return fieldWrap;
   }
 
-  /** @param consumer */
   public final void addListener(Consumer<String> consumer) {
     list.add(consumer);
   }
 
-  /** @param text */
   public final void notifyListeners(String text) {
     list.forEach(consumer -> consumer.accept(text));
   }
 
-  /** @return */
   public abstract JComponent getJComponent();
 
-  public void update(Object value) {
-    // TODO make abstract
-  }
+  public abstract void update(Object value);
 }

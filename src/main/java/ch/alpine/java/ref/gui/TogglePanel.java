@@ -29,4 +29,9 @@ import ch.alpine.java.ref.FieldWrap;
   private String getText() {
     return fieldWrap().toString(jToggleButton.isSelected());
   }
+
+  @Override
+  public void update(Object value) {
+    jToggleButton.setSelected((Boolean) value);
+  }
 }
