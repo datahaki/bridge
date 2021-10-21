@@ -92,7 +92,7 @@ import javax.swing.undo.UndoManager;
 
   protected final void indicateGui() {
     if (isValid(jTextField.getText())) {
-      /** template to restore default colors */
+      // template to restore default colors
       JTextField J_TEXT_FIELD = new JTextField();
       jTextField.setForeground(J_TEXT_FIELD.getForeground());
       jTextField.setBackground(J_TEXT_FIELD.getBackground());
@@ -114,5 +114,12 @@ import javax.swing.undo.UndoManager;
     Object object = fieldWrap().toValue(string);
     return Objects.nonNull(object) //
         && fieldWrap().isValidValue(object);
+  }
+
+  @Override
+  public void update(Object value) {
+    String string = fieldWrap().toString(value);
+    jTextField.setText(string);
+    indicateGui();
   }
 }
