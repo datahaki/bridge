@@ -63,10 +63,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -76,7 +72,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
@@ -113,21 +108,14 @@ import org.jfree.chart.plot.PlotState;
 import org.jfree.chart.plot.SeriesRenderingOrder;
 import org.jfree.chart.plot.ValueAxisPlot;
 import org.jfree.chart.plot.Zoomable;
-import org.jfree.chart.renderer.RendererUtils;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.renderer.xy.XYItemRendererState;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.ui.Layer;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.chart.ui.RectangleInsets;
 import org.jfree.chart.util.Args;
-import org.jfree.chart.util.CloneUtils;
-import org.jfree.chart.util.ObjectUtils;
-import org.jfree.chart.util.PaintUtils;
-import org.jfree.chart.util.PublicCloneable;
 import org.jfree.chart.util.ResourceBundleWrapper;
-import org.jfree.chart.util.SerialUtils;
 import org.jfree.chart.util.ShadowGenerator;
 import org.jfree.data.Range;
 import org.jfree.data.general.DatasetChangeEvent;
@@ -154,9 +142,7 @@ import ch.alpine.tensor.sca.win.DirichletWindow;
  * <p>
  * The {@link org.jfree.chart.ChartFactory} class contains static methods for
  * creating pre-configured charts. */
-public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable, RendererChangeListener, Cloneable, PublicCloneable, Serializable {
-  /** For serialization. */
-  // private static final long serialVersionUID = 7044148245716569264L;
+public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable, RendererChangeListener {
   /** The default grid line stroke. */
   public static final Stroke DEFAULT_GRIDLINE_STROKE = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f, new float[] { 2.0f, 2.0f },
       0.0f);
@@ -265,13 +251,13 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * data points. */
   private boolean rangeCrosshairLockedOnData = true;
   /** A map of lists of foreground markers (optional) for the domain axes. */
-  private Map foregroundDomainMarkers;
+  private Map<Integer, Collection<Marker>> foregroundDomainMarkers;
   /** A map of lists of background markers (optional) for the domain axes. */
-  private Map backgroundDomainMarkers;
+  private Map<Integer, Collection<Marker>> backgroundDomainMarkers;
   /** A map of lists of foreground markers (optional) for the range axes. */
-  private Map foregroundRangeMarkers;
+  private Map<Integer, Collection<Marker>> foregroundRangeMarkers;
   /** A map of lists of background markers (optional) for the range axes. */
-  private Map backgroundRangeMarkers;
+  private Map<Integer, Collection<Marker>> backgroundRangeMarkers;
   /** A (possibly empty) list of annotations for the plot. The list should
    * be initialised in the constructor and never allowed to be
    * {@code null}. */
@@ -338,42 +324,37 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     this.weight = 1; // only relevant when this is a subplot
     this.axisOffset = RectangleInsets.ZERO_INSETS;
     // allocate storage for datasets, axes and renderers (all optional)
-    this.domainAxes = new HashMap<Integer, ValueAxis>();
-    this.domainAxisLocations = new HashMap<Integer, AxisLocation>();
-    this.foregroundDomainMarkers = new HashMap();
-    this.backgroundDomainMarkers = new HashMap();
-    this.rangeAxes = new HashMap<Integer, ValueAxis>();
-    this.rangeAxisLocations = new HashMap<Integer, AxisLocation>();
-    this.foregroundRangeMarkers = new HashMap();
-    this.backgroundRangeMarkers = new HashMap();
-    this.datasets = new HashMap<Integer, XYDataset>();
-    this.renderers = new HashMap<Integer, XYItemRenderer>();
-    this.datasetToDomainAxesMap = new TreeMap();
-    this.datasetToRangeAxesMap = new TreeMap();
-    this.annotations = new java.util.ArrayList();
+    this.domainAxes = new HashMap<>();
+    this.domainAxisLocations = new HashMap<>();
+    this.foregroundDomainMarkers = new HashMap<>();
+    this.backgroundDomainMarkers = new HashMap<>();
+    this.rangeAxes = new HashMap<>();
+    this.rangeAxisLocations = new HashMap<>();
+    this.foregroundRangeMarkers = new HashMap<>();
+    this.backgroundRangeMarkers = new HashMap<>();
+    this.datasets = new HashMap<>();
+    this.renderers = new HashMap<>();
+    this.datasetToDomainAxesMap = new TreeMap<>();
+    this.datasetToRangeAxesMap = new TreeMap<>();
+    this.annotations = new ArrayList<>();
     this.datasets.put(0, dataset);
     if (dataset != null) {
       dataset.addChangeListener(this);
     }
     this.renderers.put(0, renderer);
-    if (renderer != null) {
-      // JAN COMMENTED THIS OUT
-      // renderer.setPlot(this);
-      renderer.addChangeListener(this);
-    }
+    // JAN COMMENTED THIS OUT
+    // renderer.setPlot(this);
+    renderer.addChangeListener(this);
     this.domainAxes.put(0, domainAxis);
     mapDatasetToDomainAxis(0, 0);
-    if (domainAxis != null) {
-      domainAxis.setPlot(this);
-      domainAxis.addChangeListener(this);
-    }
+    domainAxis.setPlot(this);
+    domainAxis.addChangeListener(this);
     this.domainAxisLocations.put(0, AxisLocation.BOTTOM_OR_LEFT);
     this.rangeAxes.put(0, rangeAxis);
     mapDatasetToRangeAxis(0, 0);
-    if (rangeAxis != null) {
-      rangeAxis.setPlot(this);
-      rangeAxis.addChangeListener(this);
-    }
+    rangeAxis.setPlot(this);
+    rangeAxis.addChangeListener(this);
+    // ---
     this.rangeAxisLocations.put(0, AxisLocation.BOTTOM_OR_LEFT);
     configureDomainAxes();
     configureRangeAxes();
@@ -559,7 +540,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    *
    * @see #setDomainAxisLocation(AxisLocation) */
   public AxisLocation getDomainAxisLocation() {
-    return (AxisLocation) this.domainAxisLocations.get(0);
+    return this.domainAxisLocations.get(0);
   }
 
   /** Sets the location of the primary domain axis and sends a
@@ -732,7 +713,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    *
    * @see #setRangeAxisLocation(AxisLocation) */
   public AxisLocation getRangeAxisLocation() {
-    return (AxisLocation) this.rangeAxisLocations.get(0);
+    return this.rangeAxisLocations.get(0);
   }
 
   /** Sets the location of the primary range axis and sends a
@@ -953,7 +934,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    *
    * @see #setDataset(int, XYDataset) */
   public XYDataset getDataset(int index) {
-    return (XYDataset) this.datasets.get(index);
+    return this.datasets.get(index);
   }
 
   /** Sets the primary dataset for the plot, replacing the existing dataset if
@@ -1018,7 +999,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    *
    * @see #mapDatasetToRangeAxis(int, int) */
   public void mapDatasetToDomainAxis(int index, int axisIndex) {
-    List axisIndices = new java.util.ArrayList(1);
+    List<Integer> axisIndices = new ArrayList<>(1);
     axisIndices.add(axisIndex);
     mapDatasetToDomainAxes(index, axisIndices);
   }
@@ -1029,11 +1010,11 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    *
    * @param index the dataset index (zero-based).
    * @param axisIndices the axis indices ({@code null} permitted). */
-  public void mapDatasetToDomainAxes(int index, List axisIndices) {
+  public void mapDatasetToDomainAxes(int index, List<Integer> axisIndices) {
     Args.requireNonNegative(index, "index");
     checkAxisIndices(axisIndices);
     Integer key = index;
-    this.datasetToDomainAxesMap.put(key, new ArrayList(axisIndices));
+    this.datasetToDomainAxesMap.put(key, new ArrayList<>(axisIndices));
     // fake a dataset change event to update axes...
     datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
   }
@@ -1046,7 +1027,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    *
    * @see #mapDatasetToDomainAxis(int, int) */
   public void mapDatasetToRangeAxis(int index, int axisIndex) {
-    List axisIndices = new java.util.ArrayList(1);
+    List<Integer> axisIndices = new ArrayList<>(1);
     axisIndices.add(axisIndex);
     mapDatasetToRangeAxes(index, axisIndices);
   }
@@ -1057,11 +1038,11 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    *
    * @param index the dataset index (zero-based).
    * @param axisIndices the axis indices ({@code null} permitted). */
-  public void mapDatasetToRangeAxes(int index, List axisIndices) {
+  public void mapDatasetToRangeAxes(int index, List<Integer> axisIndices) {
     Args.requireNonNegative(index, "index");
     checkAxisIndices(axisIndices);
     Integer key = index;
-    this.datasetToRangeAxesMap.put(key, new ArrayList(axisIndices));
+    this.datasetToRangeAxesMap.put(key, new ArrayList<>(axisIndices));
     // fake a dataset change event to update axes...
     datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
   }
@@ -1071,7 +1052,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * mapDatasetToRangeAxes().
    *
    * @param indices the list of indices ({@code null} permitted). */
-  private void checkAxisIndices(List<Integer> indices) {
+  private static void checkAxisIndices(List<Integer> indices) {
     // axisIndices can be:
     // 1. null;
     // 2. non-empty, containing only Integer objects that are unique.
@@ -1082,7 +1063,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     if (count == 0) {
       throw new IllegalArgumentException("Empty list not permitted.");
     }
-    Set<Integer> set = new HashSet<Integer>();
+    Set<Integer> set = new HashSet<>();
     for (Integer item : indices) {
       if (set.contains(item)) {
         throw new IllegalArgumentException("Indices must be unique.");
@@ -1856,22 +1837,22 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   public void clearDomainMarkers(int index) {
     Integer key = index;
     if (this.backgroundDomainMarkers != null) {
-      Collection markers = (Collection) this.backgroundDomainMarkers.get(key);
+      Collection<Marker> markers = this.backgroundDomainMarkers.get(key);
       if (markers != null) {
-        Iterator iterator = markers.iterator();
+        Iterator<Marker> iterator = markers.iterator();
         while (iterator.hasNext()) {
-          Marker m = (Marker) iterator.next();
+          Marker m = iterator.next();
           m.removeChangeListener(this);
         }
         markers.clear();
       }
     }
     if (this.foregroundRangeMarkers != null) {
-      Collection markers = (Collection) this.foregroundDomainMarkers.get(key);
+      Collection<Marker> markers = this.foregroundDomainMarkers.get(key);
       if (markers != null) {
-        Iterator iterator = markers.iterator();
+        Iterator<Marker> iterator = markers.iterator();
         while (iterator.hasNext()) {
-          Marker m = (Marker) iterator.next();
+          Marker m = iterator.next();
           m.removeChangeListener(this);
         }
         markers.clear();
@@ -1911,18 +1892,18 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   public void addDomainMarker(int index, Marker marker, Layer layer, boolean notify) {
     Args.nullNotPermitted(marker, "marker");
     Args.nullNotPermitted(layer, "layer");
-    Collection markers;
+    Collection<Marker> markers;
     if (layer == Layer.FOREGROUND) {
-      markers = (Collection) this.foregroundDomainMarkers.get(index);
+      markers = this.foregroundDomainMarkers.get(index);
       if (markers == null) {
-        markers = new java.util.ArrayList();
+        markers = new ArrayList<>();
         this.foregroundDomainMarkers.put(index, markers);
       }
       markers.add(marker);
     } else if (layer == Layer.BACKGROUND) {
-      markers = (Collection) this.backgroundDomainMarkers.get(index);
+      markers = this.backgroundDomainMarkers.get(index);
       if (markers == null) {
-        markers = new java.util.ArrayList();
+        markers = new ArrayList<>();
         this.backgroundDomainMarkers.put(index, markers);
       }
       markers.add(marker);
@@ -1980,7 +1961,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @return A boolean indicating whether or not the marker was actually
    * removed. */
   public boolean removeDomainMarker(int index, Marker marker, Layer layer, boolean notify) {
-    ArrayList markers;
+    ArrayList<Marker> markers;
     if (layer == Layer.FOREGROUND) {
       markers = (ArrayList) this.foregroundDomainMarkers.get(index);
     } else {
@@ -2072,18 +2053,18 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @param layer the layer (foreground or background).
    * @param notify notify listeners? */
   public void addRangeMarker(int index, Marker marker, Layer layer, boolean notify) {
-    Collection markers;
+    Collection<Marker> markers;
     if (layer == Layer.FOREGROUND) {
-      markers = (Collection) this.foregroundRangeMarkers.get(index);
+      markers = this.foregroundRangeMarkers.get(index);
       if (markers == null) {
-        markers = new java.util.ArrayList();
+        markers = new ArrayList<>();
         this.foregroundRangeMarkers.put(index, markers);
       }
       markers.add(marker);
     } else if (layer == Layer.BACKGROUND) {
-      markers = (Collection) this.backgroundRangeMarkers.get(index);
+      markers = this.backgroundRangeMarkers.get(index);
       if (markers == null) {
-        markers = new java.util.ArrayList();
+        markers = new ArrayList<>();
         this.backgroundRangeMarkers.put(index, markers);
       }
       markers.add(marker);
@@ -2101,9 +2082,9 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   public void clearRangeMarkers(int index) {
     Integer key = index;
     if (this.backgroundRangeMarkers != null) {
-      Collection markers = (Collection) this.backgroundRangeMarkers.get(key);
+      Collection<Marker> markers = this.backgroundRangeMarkers.get(key);
       if (markers != null) {
-        Iterator iterator = markers.iterator();
+        Iterator<Marker> iterator = markers.iterator();
         while (iterator.hasNext()) {
           Marker m = (Marker) iterator.next();
           m.removeChangeListener(this);
@@ -2112,9 +2093,9 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
       }
     }
     if (this.foregroundRangeMarkers != null) {
-      Collection markers = (Collection) this.foregroundRangeMarkers.get(key);
+      Collection<Marker> markers = this.foregroundRangeMarkers.get(key);
       if (markers != null) {
-        Iterator iterator = markers.iterator();
+        Iterator<Marker> iterator = markers.iterator();
         while (iterator.hasNext()) {
           Marker m = (Marker) iterator.next();
           m.removeChangeListener(this);
@@ -2174,7 +2155,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   public boolean removeRangeMarker(int index, Marker marker, Layer layer, boolean notify) {
     Args.nullNotPermitted(marker, "marker");
     Args.nullNotPermitted(layer, "layer");
-    List markers;
+    List<Marker> markers;
     if (layer == Layer.FOREGROUND) {
       markers = (List) this.foregroundRangeMarkers.get(index);
     } else {
@@ -2251,7 +2232,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    *
    * @see #addAnnotation(XYAnnotation) */
   public List getAnnotations() {
-    return new ArrayList(this.annotations);
+    return new ArrayList<>(this.annotations);
   }
 
   /** Clears all the annotations and sends a {@link PlotChangeEvent} to all
@@ -2365,7 +2346,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @param rect the incoming rectangle.
    *
    * @return A rectangle with integer coordinates. */
-  private Rectangle integerise(Rectangle2D rect) {
+  private static Rectangle integerise(Rectangle2D rect) {
     int x0 = (int) Math.ceil(rect.getMinX());
     int y0 = (int) Math.ceil(rect.getMinY());
     int x1 = (int) Math.floor(rect.getMaxX());
@@ -2609,7 +2590,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * 
    * @return The list of indices. */
   private List<Integer> getDatasetIndices(DatasetRenderingOrder order) {
-    List<Integer> result = new ArrayList<Integer>();
+    List<Integer> result = new ArrayList<>();
     for (Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
       if (entry.getValue() != null) {
         result.add(entry.getKey());
@@ -2623,7 +2604,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   }
 
   private List<Integer> getRendererIndices(DatasetRenderingOrder order) {
-    List<Integer> result = new ArrayList<Integer>();
+    List<Integer> result = new ArrayList<>();
     for (Entry<Integer, XYItemRenderer> entry : this.renderers.entrySet()) {
       if (entry.getValue() != null) {
         result.add(entry.getKey());
@@ -2893,57 +2874,6 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
           return foundData;
         }
       }
-      if (false) {
-        XYItemRendererState state = null;
-        // JAN COMMENTED THIS OUT
-        // renderer.initialise(g2, dataArea, this, dataset, info);
-        int passCount = renderer.getPassCount();
-        SeriesRenderingOrder seriesOrder = getSeriesRenderingOrder();
-        if (seriesOrder == SeriesRenderingOrder.REVERSE) {
-          // render series in reverse order
-          for (int pass = 0; pass < passCount; pass++) {
-            int seriesCount = dataset.getSeriesCount();
-            for (int series = seriesCount - 1; series >= 0; series--) {
-              int firstItem = 0;
-              int lastItem = dataset.getItemCount(series) - 1;
-              if (lastItem == -1) {
-                continue;
-              }
-              if (state.getProcessVisibleItemsOnly()) {
-                int[] itemBounds = RendererUtils.findLiveItems(dataset, series, xAxis.getLowerBound(), xAxis.getUpperBound());
-                firstItem = Math.max(itemBounds[0] - 1, 0);
-                lastItem = Math.min(itemBounds[1] + 1, lastItem);
-              }
-              state.startSeriesPass(dataset, series, firstItem, lastItem, pass, passCount);
-              for (int item = firstItem; item <= lastItem; item++) {
-                // JAN COMMENTED THIS OUT
-                // renderer.drawItem(g2, state, dataArea, info, this, xAxis, yAxis, dataset, series, item, crosshairState, pass);
-              }
-              state.endSeriesPass(dataset, series, firstItem, lastItem, pass, passCount);
-            }
-          }
-        } else {
-          // render series in forward order
-          for (int pass = 0; pass < passCount; pass++) {
-            int seriesCount = dataset.getSeriesCount();
-            for (int series = 0; series < seriesCount; series++) {
-              int firstItem = 0;
-              int lastItem = dataset.getItemCount(series) - 1;
-              if (state.getProcessVisibleItemsOnly()) {
-                int[] itemBounds = RendererUtils.findLiveItems(dataset, series, xAxis.getLowerBound(), xAxis.getUpperBound());
-                firstItem = Math.max(itemBounds[0] - 1, 0);
-                lastItem = Math.min(itemBounds[1] + 1, lastItem);
-              }
-              state.startSeriesPass(dataset, series, firstItem, lastItem, pass, passCount);
-              for (int item = firstItem; item <= lastItem; item++) {
-                // JAN COMMENTED THIS OUT
-                // renderer.drawItem(g2, // JAN COMMENTED THIS OUTstate, dataArea, info, this, xAxis, yAxis, dataset, series, item, crosshairState, pass);
-              }
-              state.endSeriesPass(dataset, series, firstItem, lastItem, pass, passCount);
-            }
-          }
-        }
-      }
     }
     return foundData;
   }
@@ -3099,7 +3029,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @param dataArea the data area.
    * @param info the chart rendering info. */
   public void drawAnnotations(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info) {
-    Iterator iterator = this.annotations.iterator();
+    Iterator<XYAnnotation> iterator = this.annotations.iterator();
     while (iterator.hasNext()) {
       XYAnnotation annotation = (XYAnnotation) iterator.next();
       ValueAxis xAxis = getDomainAxis();
@@ -3126,10 +3056,10 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     if (index >= getDatasetCount()) {
       return;
     }
-    Collection markers = getDomainMarkers(index, layer);
+    Collection<Marker> markers = getDomainMarkers(index, layer);
     ValueAxis axis = getDomainAxisForDataset(index);
     if (markers != null && axis != null) {
-      Iterator iterator = markers.iterator();
+      Iterator<Marker> iterator = markers.iterator();
       while (iterator.hasNext()) {
         Marker marker = (Marker) iterator.next();
         // JAN COMMENTED THIS OUT
@@ -3155,12 +3085,12 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     if (index >= getDatasetCount()) {
       return;
     }
-    Collection markers = getRangeMarkers(index, layer);
+    Collection<Marker> markers = getRangeMarkers(index, layer);
     ValueAxis axis = getRangeAxisForDataset(index);
     if (markers != null && axis != null) {
-      Iterator iterator = markers.iterator();
+      Iterator<Marker> iterator = markers.iterator();
       while (iterator.hasNext()) {
-        Marker marker = (Marker) iterator.next();
+        Marker marker = iterator.next();
         // JAN COMMENTED THIS OUT
         // r.drawRangeMarker(g2, this, axis, marker, dataArea);
       }
@@ -3174,7 +3104,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @return The list of domain markers.
    *
    * @see #getRangeMarkers(Layer) */
-  public Collection getDomainMarkers(Layer layer) {
+  public Collection<Marker> getDomainMarkers(Layer layer) {
     return getDomainMarkers(0, layer);
   }
 
@@ -3185,7 +3115,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @return The list of range markers.
    *
    * @see #getDomainMarkers(Layer) */
-  public Collection getRangeMarkers(Layer layer) {
+  public Collection<Marker> getRangeMarkers(Layer layer) {
     return getRangeMarkers(0, layer);
   }
 
@@ -3198,13 +3128,13 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @return A collection of markers (possibly {@code null}).
    *
    * @see #getRangeMarkers(int, Layer) */
-  public Collection getDomainMarkers(int index, Layer layer) {
-    Collection result = null;
+  public Collection<Marker> getDomainMarkers(int index, Layer layer) {
+    Collection<Marker> result = null;
     Integer key = index;
     if (layer == Layer.FOREGROUND) {
-      result = (Collection) this.foregroundDomainMarkers.get(key);
+      result = this.foregroundDomainMarkers.get(key);
     } else if (layer == Layer.BACKGROUND) {
-      result = (Collection) this.backgroundDomainMarkers.get(key);
+      result = this.backgroundDomainMarkers.get(key);
     }
     if (result != null) {
       result = Collections.unmodifiableCollection(result);
@@ -3221,13 +3151,13 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @return A collection of markers (possibly {@code null}).
    *
    * @see #getDomainMarkers(int, Layer) */
-  public Collection getRangeMarkers(int index, Layer layer) {
-    Collection result = null;
+  public Collection<Marker> getRangeMarkers(int index, Layer layer) {
+    Collection<Marker> result = null;
     Integer key = index;
     if (layer == Layer.FOREGROUND) {
-      result = (Collection) this.foregroundRangeMarkers.get(key);
+      result = this.foregroundRangeMarkers.get(key);
     } else if (layer == Layer.BACKGROUND) {
-      result = (Collection) this.backgroundRangeMarkers.get(key);
+      result = this.backgroundRangeMarkers.get(key);
     }
     if (result != null) {
       result = Collections.unmodifiableCollection(result);
@@ -3370,7 +3300,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @return A list of datasets. */
   private List<XYDataset> getDatasetsMappedToDomainAxis(Integer axisIndex) {
     Args.nullNotPermitted(axisIndex, "axisIndex");
-    List<XYDataset> result = new ArrayList<XYDataset>();
+    List<XYDataset> result = new ArrayList<>();
     for (Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
       int index = entry.getKey();
       List<Integer> mappedAxes = this.datasetToDomainAxesMap.get(index);
@@ -3395,7 +3325,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @return A list of datasets. */
   private List<XYDataset> getDatasetsMappedToRangeAxis(Integer axisIndex) {
     Args.nullNotPermitted(axisIndex, "axisIndex");
-    List<XYDataset> result = new ArrayList<XYDataset>();
+    List<XYDataset> result = new ArrayList<>();
     for (Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
       int index = entry.getKey();
       List<Integer> mappedAxes = this.datasetToRangeAxesMap.get(index);
@@ -3478,8 +3408,8 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   @Override
   public Range getDataRange(ValueAxis axis) {
     Range result = null;
-    List<XYDataset> mappedDatasets = new ArrayList<XYDataset>();
-    List<XYAnnotation> includedAnnotations = new ArrayList<XYAnnotation>();
+    List<XYDataset> mappedDatasets = new ArrayList<>();
+    List<XYAnnotation> includedAnnotations = new ArrayList<>();
     boolean isDomainAxis = true;
     // is it a domain axis?
     int domainIndex = getDomainAxisIndex(axis);
@@ -3488,9 +3418,9 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
       mappedDatasets.addAll(getDatasetsMappedToDomainAxis(domainIndex));
       if (domainIndex == 0) {
         // grab the plot's annotations
-        Iterator iterator = this.annotations.iterator();
+        Iterator<XYAnnotation> iterator = this.annotations.iterator();
         while (iterator.hasNext()) {
-          XYAnnotation annotation = (XYAnnotation) iterator.next();
+          XYAnnotation annotation = iterator.next();
           if (annotation instanceof XYAnnotationBoundsInfo) {
             includedAnnotations.add(annotation);
           }
@@ -3503,9 +3433,9 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
       isDomainAxis = false;
       mappedDatasets.addAll(getDatasetsMappedToRangeAxis(rangeIndex));
       if (rangeIndex == 0) {
-        Iterator iterator = this.annotations.iterator();
+        Iterator<XYAnnotation> iterator = this.annotations.iterator();
         while (iterator.hasNext()) {
-          XYAnnotation annotation = (XYAnnotation) iterator.next();
+          XYAnnotation annotation = iterator.next();
           if (annotation instanceof XYAnnotationBoundsInfo) {
             includedAnnotations.add(annotation);
           }
@@ -3534,10 +3464,10 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
         // getAnnotations() method but it should
         if (r instanceof AbstractXYItemRenderer) {
           AbstractXYItemRenderer rr = (AbstractXYItemRenderer) r;
-          Collection c = rr.getAnnotations();
-          Iterator i = c.iterator();
+          Collection<XYAnnotation> c = rr.getAnnotations();
+          Iterator<XYAnnotation> i = c.iterator();
           while (i.hasNext()) {
-            XYAnnotation a = (XYAnnotation) i.next();
+            XYAnnotation a = i.next();
             if (a instanceof XYAnnotationBoundsInfo) {
               includedAnnotations.add(a);
             }
@@ -3545,7 +3475,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
         }
       }
     }
-    Iterator it = includedAnnotations.iterator();
+    Iterator<XYAnnotation> it = includedAnnotations.iterator();
     while (it.hasNext()) {
       XYAnnotationBoundsInfo xyabi = (XYAnnotationBoundsInfo) it.next();
       if (xyabi.getIncludeInDataBounds()) {
@@ -4216,334 +4146,5 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
       }
     }
     return result;
-  }
-
-  /** Tests this plot for equality with another object.
-   *
-   * @param obj the object ({@code null} permitted).
-   *
-   * @return {@code true} or {@code false}. */
-  @Override
-  public boolean equals(Object obj) {
-    if (obj == this) {
-      return true;
-    }
-    if (!(obj instanceof SpectrogramPlot)) {
-      return false;
-    }
-    SpectrogramPlot that = (SpectrogramPlot) obj;
-    if (this.weight != that.weight) {
-      return false;
-    }
-    if (this.orientation != that.orientation) {
-      return false;
-    }
-    if (!this.domainAxes.equals(that.domainAxes)) {
-      return false;
-    }
-    if (!this.domainAxisLocations.equals(that.domainAxisLocations)) {
-      return false;
-    }
-    if (this.rangeCrosshairLockedOnData != that.rangeCrosshairLockedOnData) {
-      return false;
-    }
-    if (this.domainGridlinesVisible != that.domainGridlinesVisible) {
-      return false;
-    }
-    if (this.rangeGridlinesVisible != that.rangeGridlinesVisible) {
-      return false;
-    }
-    if (this.domainMinorGridlinesVisible != that.domainMinorGridlinesVisible) {
-      return false;
-    }
-    if (this.rangeMinorGridlinesVisible != that.rangeMinorGridlinesVisible) {
-      return false;
-    }
-    if (this.domainZeroBaselineVisible != that.domainZeroBaselineVisible) {
-      return false;
-    }
-    if (this.rangeZeroBaselineVisible != that.rangeZeroBaselineVisible) {
-      return false;
-    }
-    if (this.domainCrosshairVisible != that.domainCrosshairVisible) {
-      return false;
-    }
-    if (this.domainCrosshairValue != that.domainCrosshairValue) {
-      return false;
-    }
-    if (this.domainCrosshairLockedOnData != that.domainCrosshairLockedOnData) {
-      return false;
-    }
-    if (this.rangeCrosshairVisible != that.rangeCrosshairVisible) {
-      return false;
-    }
-    if (this.rangeCrosshairValue != that.rangeCrosshairValue) {
-      return false;
-    }
-    if (!Objects.equals(this.axisOffset, that.axisOffset)) {
-      return false;
-    }
-    if (!Objects.equals(this.renderers, that.renderers)) {
-      return false;
-    }
-    if (!Objects.equals(this.rangeAxes, that.rangeAxes)) {
-      return false;
-    }
-    if (!this.rangeAxisLocations.equals(that.rangeAxisLocations)) {
-      return false;
-    }
-    if (!Objects.equals(this.datasetToDomainAxesMap, that.datasetToDomainAxesMap)) {
-      return false;
-    }
-    if (!Objects.equals(this.datasetToRangeAxesMap, that.datasetToRangeAxesMap)) {
-      return false;
-    }
-    if (!Objects.equals(this.domainGridlineStroke, that.domainGridlineStroke)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.domainGridlinePaint, that.domainGridlinePaint)) {
-      return false;
-    }
-    if (!Objects.equals(this.rangeGridlineStroke, that.rangeGridlineStroke)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.rangeGridlinePaint, that.rangeGridlinePaint)) {
-      return false;
-    }
-    if (!Objects.equals(this.domainMinorGridlineStroke, that.domainMinorGridlineStroke)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.domainMinorGridlinePaint, that.domainMinorGridlinePaint)) {
-      return false;
-    }
-    if (!Objects.equals(this.rangeMinorGridlineStroke, that.rangeMinorGridlineStroke)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.rangeMinorGridlinePaint, that.rangeMinorGridlinePaint)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.domainZeroBaselinePaint, that.domainZeroBaselinePaint)) {
-      return false;
-    }
-    if (!Objects.equals(this.domainZeroBaselineStroke, that.domainZeroBaselineStroke)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.rangeZeroBaselinePaint, that.rangeZeroBaselinePaint)) {
-      return false;
-    }
-    if (!Objects.equals(this.rangeZeroBaselineStroke, that.rangeZeroBaselineStroke)) {
-      return false;
-    }
-    if (!Objects.equals(this.domainCrosshairStroke, that.domainCrosshairStroke)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.domainCrosshairPaint, that.domainCrosshairPaint)) {
-      return false;
-    }
-    if (!Objects.equals(this.rangeCrosshairStroke, that.rangeCrosshairStroke)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.rangeCrosshairPaint, that.rangeCrosshairPaint)) {
-      return false;
-    }
-    if (!Objects.equals(this.foregroundDomainMarkers, that.foregroundDomainMarkers)) {
-      return false;
-    }
-    if (!Objects.equals(this.backgroundDomainMarkers, that.backgroundDomainMarkers)) {
-      return false;
-    }
-    if (!Objects.equals(this.foregroundRangeMarkers, that.foregroundRangeMarkers)) {
-      return false;
-    }
-    if (!Objects.equals(this.backgroundRangeMarkers, that.backgroundRangeMarkers)) {
-      return false;
-    }
-    if (!Objects.equals(this.foregroundDomainMarkers, that.foregroundDomainMarkers)) {
-      return false;
-    }
-    if (!Objects.equals(this.backgroundDomainMarkers, that.backgroundDomainMarkers)) {
-      return false;
-    }
-    if (!Objects.equals(this.foregroundRangeMarkers, that.foregroundRangeMarkers)) {
-      return false;
-    }
-    if (!Objects.equals(this.backgroundRangeMarkers, that.backgroundRangeMarkers)) {
-      return false;
-    }
-    if (!Objects.equals(this.annotations, that.annotations)) {
-      return false;
-    }
-    if (!Objects.equals(this.fixedLegendItems, that.fixedLegendItems)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.domainTickBandPaint, that.domainTickBandPaint)) {
-      return false;
-    }
-    if (!PaintUtils.equal(this.rangeTickBandPaint, that.rangeTickBandPaint)) {
-      return false;
-    }
-    if (!this.quadrantOrigin.equals(that.quadrantOrigin)) {
-      return false;
-    }
-    for (int i = 0; i < 4; i++) {
-      if (!PaintUtils.equal(this.quadrantPaint[i], that.quadrantPaint[i])) {
-        return false;
-      }
-    }
-    if (!Objects.equals(this.shadowGenerator, that.shadowGenerator)) {
-      return false;
-    }
-    return super.equals(obj);
-  }
-
-  /** Returns a clone of the plot.
-   *
-   * @return A clone.
-   *
-   * @throws CloneNotSupportedException this can occur if some component of
-   * the plot cannot be cloned. */
-  @Override
-  public Object clone() throws CloneNotSupportedException {
-    SpectrogramPlot clone = (SpectrogramPlot) super.clone();
-    clone.domainAxes = CloneUtils.cloneMapValues(this.domainAxes);
-    for (ValueAxis axis : clone.domainAxes.values()) {
-      if (axis != null) {
-        axis.setPlot(clone);
-        axis.addChangeListener(clone);
-      }
-    }
-    clone.rangeAxes = CloneUtils.cloneMapValues(this.rangeAxes);
-    for (ValueAxis axis : clone.rangeAxes.values()) {
-      if (axis != null) {
-        axis.setPlot(clone);
-        axis.addChangeListener(clone);
-      }
-    }
-    clone.domainAxisLocations = new HashMap<Integer, AxisLocation>(this.domainAxisLocations);
-    clone.rangeAxisLocations = new HashMap<Integer, AxisLocation>(this.rangeAxisLocations);
-    // the datasets are not cloned, but listeners need to be added...
-    clone.datasets = new HashMap<Integer, XYDataset>(this.datasets);
-    for (XYDataset dataset : clone.datasets.values()) {
-      if (dataset != null) {
-        dataset.addChangeListener(clone);
-      }
-    }
-    clone.datasetToDomainAxesMap = new TreeMap();
-    clone.datasetToDomainAxesMap.putAll(this.datasetToDomainAxesMap);
-    clone.datasetToRangeAxesMap = new TreeMap();
-    clone.datasetToRangeAxesMap.putAll(this.datasetToRangeAxesMap);
-    clone.renderers = CloneUtils.cloneMapValues(this.renderers);
-    for (XYItemRenderer renderer : clone.renderers.values()) {
-      if (renderer != null) {
-        // JAN COMMENTED THIS OUT
-        // renderer.setPlot(clone);
-        renderer.addChangeListener(clone);
-      }
-    }
-    clone.foregroundDomainMarkers = (Map) ObjectUtils.clone(this.foregroundDomainMarkers);
-    clone.backgroundDomainMarkers = (Map) ObjectUtils.clone(this.backgroundDomainMarkers);
-    clone.foregroundRangeMarkers = (Map) ObjectUtils.clone(this.foregroundRangeMarkers);
-    clone.backgroundRangeMarkers = (Map) ObjectUtils.clone(this.backgroundRangeMarkers);
-    clone.annotations = (List) ObjectUtils.deepClone(this.annotations);
-    if (this.fixedDomainAxisSpace != null) {
-      clone.fixedDomainAxisSpace = (AxisSpace) ObjectUtils.clone(this.fixedDomainAxisSpace);
-    }
-    if (this.fixedRangeAxisSpace != null) {
-      clone.fixedRangeAxisSpace = (AxisSpace) ObjectUtils.clone(this.fixedRangeAxisSpace);
-    }
-    if (this.fixedLegendItems != null) {
-      clone.fixedLegendItems = (LegendItemCollection) this.fixedLegendItems.clone();
-    }
-    clone.quadrantOrigin = (Point2D) ObjectUtils.clone(this.quadrantOrigin);
-    clone.quadrantPaint = this.quadrantPaint.clone();
-    return clone;
-  }
-
-  /** Provides serialization support.
-   *
-   * @param stream the output stream.
-   *
-   * @throws IOException if there is an I/O error. */
-  private void writeObject(ObjectOutputStream stream) throws IOException {
-    stream.defaultWriteObject();
-    SerialUtils.writeStroke(this.domainGridlineStroke, stream);
-    SerialUtils.writePaint(this.domainGridlinePaint, stream);
-    SerialUtils.writeStroke(this.rangeGridlineStroke, stream);
-    SerialUtils.writePaint(this.rangeGridlinePaint, stream);
-    SerialUtils.writeStroke(this.domainMinorGridlineStroke, stream);
-    SerialUtils.writePaint(this.domainMinorGridlinePaint, stream);
-    SerialUtils.writeStroke(this.rangeMinorGridlineStroke, stream);
-    SerialUtils.writePaint(this.rangeMinorGridlinePaint, stream);
-    SerialUtils.writeStroke(this.rangeZeroBaselineStroke, stream);
-    SerialUtils.writePaint(this.rangeZeroBaselinePaint, stream);
-    SerialUtils.writeStroke(this.domainCrosshairStroke, stream);
-    SerialUtils.writePaint(this.domainCrosshairPaint, stream);
-    SerialUtils.writeStroke(this.rangeCrosshairStroke, stream);
-    SerialUtils.writePaint(this.rangeCrosshairPaint, stream);
-    SerialUtils.writePaint(this.domainTickBandPaint, stream);
-    SerialUtils.writePaint(this.rangeTickBandPaint, stream);
-    SerialUtils.writePoint2D(this.quadrantOrigin, stream);
-    for (int i = 0; i < 4; i++) {
-      SerialUtils.writePaint(this.quadrantPaint[i], stream);
-    }
-    SerialUtils.writeStroke(this.domainZeroBaselineStroke, stream);
-    SerialUtils.writePaint(this.domainZeroBaselinePaint, stream);
-  }
-
-  /** Provides serialization support.
-   *
-   * @param stream the input stream.
-   *
-   * @throws IOException if there is an I/O error.
-   * @throws ClassNotFoundException if there is a classpath problem. */
-  private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-    stream.defaultReadObject();
-    this.domainGridlineStroke = SerialUtils.readStroke(stream);
-    this.domainGridlinePaint = SerialUtils.readPaint(stream);
-    this.rangeGridlineStroke = SerialUtils.readStroke(stream);
-    this.rangeGridlinePaint = SerialUtils.readPaint(stream);
-    this.domainMinorGridlineStroke = SerialUtils.readStroke(stream);
-    this.domainMinorGridlinePaint = SerialUtils.readPaint(stream);
-    this.rangeMinorGridlineStroke = SerialUtils.readStroke(stream);
-    this.rangeMinorGridlinePaint = SerialUtils.readPaint(stream);
-    this.rangeZeroBaselineStroke = SerialUtils.readStroke(stream);
-    this.rangeZeroBaselinePaint = SerialUtils.readPaint(stream);
-    this.domainCrosshairStroke = SerialUtils.readStroke(stream);
-    this.domainCrosshairPaint = SerialUtils.readPaint(stream);
-    this.rangeCrosshairStroke = SerialUtils.readStroke(stream);
-    this.rangeCrosshairPaint = SerialUtils.readPaint(stream);
-    this.domainTickBandPaint = SerialUtils.readPaint(stream);
-    this.rangeTickBandPaint = SerialUtils.readPaint(stream);
-    this.quadrantOrigin = SerialUtils.readPoint2D(stream);
-    this.quadrantPaint = new Paint[4];
-    for (int i = 0; i < 4; i++) {
-      this.quadrantPaint[i] = SerialUtils.readPaint(stream);
-    }
-    this.domainZeroBaselineStroke = SerialUtils.readStroke(stream);
-    this.domainZeroBaselinePaint = SerialUtils.readPaint(stream);
-    // register the plot as a listener with its axes, datasets, and
-    // renderers...
-    for (ValueAxis axis : this.domainAxes.values()) {
-      if (axis != null) {
-        axis.setPlot(this);
-        axis.addChangeListener(this);
-      }
-    }
-    for (ValueAxis axis : this.rangeAxes.values()) {
-      if (axis != null) {
-        axis.setPlot(this);
-        axis.addChangeListener(this);
-      }
-    }
-    for (XYDataset dataset : this.datasets.values()) {
-      if (dataset != null) {
-        dataset.addChangeListener(this);
-      }
-    }
-    for (XYItemRenderer renderer : this.renderers.values()) {
-      if (renderer != null) {
-        renderer.addChangeListener(this);
-      }
-    }
   }
 }
