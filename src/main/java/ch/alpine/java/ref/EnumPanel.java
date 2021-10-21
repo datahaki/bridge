@@ -21,4 +21,9 @@ import ch.alpine.javax.swing.SpinnerLabel;
   public JComponent getJComponent() {
     return spinnerLabel;
   }
+
+  @Override
+  public void update(Object value) {
+    spinnerLabel.setValue(value);
+  }
 }

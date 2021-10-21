@@ -63,7 +63,7 @@ import ch.alpine.tensor.sca.Clip;
     } else {
       Scalar scalar = (Scalar) value;
       scalarUnaryOperator = UnitConvert.SI().to(QuantityUnit.of(scalar));
-      index = clip.rescale(UnitSystem.SI().apply(scalar)).multiply(RealScalar.of(resolution)).number().intValue();
+      index = indexOf(scalar);
     }
     jSlider = new JSlider(0, resolution, index);
     jSlider.setOpaque(false);
@@ -72,8 +72,18 @@ import ch.alpine.tensor.sca.Clip;
     jSlider.addChangeListener(changeListener);
   }
 
+  private int indexOf(Scalar scalar) {
+    return clip.rescale(UnitSystem.SI().apply(scalar)).multiply(RealScalar.of(resolution)).number().intValue();
+  }
+
   @Override // from FieldPanel
   public JComponent getJComponent() {
     return jSlider;
+  }
+
+  @Override
+  public void update(Object value) {
+    index = indexOf((Scalar) value);
+    jSlider.setValue(index);
   }
 }

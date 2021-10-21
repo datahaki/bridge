@@ -48,8 +48,16 @@ import ch.alpine.tensor.img.ColorFormat;
   @Override
   public JComponent getJComponent() {
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add("Center", jTextField);
-    jPanel.add("East", jButton);
+    jPanel.add(BorderLayout.CENTER, jTextField);
+    jPanel.add(BorderLayout.EAST, jButton);
     return jPanel;
+  }
+
+  @Override
+  public void update(Object value) {
+    Color color = (Color) value;
+    jButton.setBackground(color);
+    String string = fieldWrap().toString(color);
+    jTextField.setText(string);
   }
 }

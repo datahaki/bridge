@@ -25,4 +25,9 @@ import javax.swing.JComponent;
   private String getText() {
     return fieldWrap().toString(jCheckBox.isSelected());
   }
+
+  @Override
+  public void update(Object value) {
+    jCheckBox.setSelected((Boolean) value);
+  }
 }

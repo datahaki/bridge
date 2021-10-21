@@ -43,8 +43,8 @@ import javax.swing.JPanel;
   @Override // from FieldPanel
   public JComponent getJComponent() {
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add("Center", jTextField);
-    jPanel.add("East", jButton);
+    jPanel.add(BorderLayout.CENTER, jTextField);
+    jPanel.add(BorderLayout.EAST, jButton);
     return jPanel;
   }
 }
