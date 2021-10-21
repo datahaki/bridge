@@ -16,10 +16,8 @@ import ch.alpine.java.ref.ann.FieldClip;
 import ch.alpine.java.ref.ann.FieldExistingDirectory;
 import ch.alpine.java.ref.ann.FieldExistingFile;
 import ch.alpine.java.ref.ann.FieldFuse;
-import ch.alpine.java.ref.ann.FieldInteger;
 import ch.alpine.java.ref.ann.FieldLabel;
 import ch.alpine.java.ref.ann.FieldSelection;
-import ch.alpine.java.ref.ann.FieldSlider;
 import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.javax.swing.LookAndFeels;
 import ch.alpine.tensor.RealScalar;
@@ -51,28 +49,7 @@ public class GuiExtension {
   public File anyFile = HomeDirectory.file();
   @FieldSelection(array = { "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");
-  @FieldSlider
-  @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
-  public Scalar scalar = Quantity.of(3, "m*s^-1");
-  @FieldSlider
-  @FieldClip(min = "0[%]", max = "100[%]")
-  public Scalar percent = Quantity.of(10, "%");
-  @FieldSlider
-  @FieldInteger
-  @FieldClip(min = "1", max = "10")
-  public Scalar scalarInt = Quantity.of(10, "");
-  public Scalar scalar1 = Quantity.of(3, "m*s^-1");
-  public Scalar scalar2 = Quantity.of(3, "m*s^-1");
-  @FieldClip(min = "1000[W]", max = "10000[W]")
-  public Scalar quantity = Quantity.of(3, "kW");
-  // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
-  // @FieldToolTip(text = "asd")
-  @FieldClip(min = "0", max = "20")
-  @FieldSelection(array = { "1[W]", "2[%]", "3[]" })
-  public Scalar subdiv = Quantity.of(3, "");
-  @FieldInteger
-  @FieldClip(min = "10", max = "20")
-  public Scalar integer = RealScalar.of(12);
+  public final ScalarUnion[] scalarUnion = { new ScalarUnion() };
   public Color color = Color.RED;
   public NameString nameString = NameString.SECOND;
   public NestedEnum nestedEnum = NestedEnum.SECOND;
@@ -87,7 +64,7 @@ public class GuiExtension {
   }
 
   public static void main(String[] args) {
-    LookAndFeels.INTELLI_J.updateUI();
+    LookAndFeels.DARK.updateUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor fieldsEditor = new PanelFieldsEditor(guiExtension);
     fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
@@ -99,7 +76,7 @@ public class GuiExtension {
     // WindowConfiguration.attach(jFrame, new File(root, "WindowConfiguration.properties"));
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add("Center", testHelper.jPanel);
+    jPanel.add(BorderLayout.CENTER, testHelper.jPanel);
     {
       JButton jButton = new JButton("reset fuse");
       jButton.addActionListener(l -> {

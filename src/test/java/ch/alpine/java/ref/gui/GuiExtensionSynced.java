@@ -11,19 +11,20 @@ import javax.swing.WindowConstants;
 
 import ch.alpine.javax.swing.LookAndFeels;
 
-public class GuiExtensionSynced {
+public enum GuiExtensionSynced {
+  ;
   public static void main(String[] args) {
     LookAndFeels.INTELLI_J.updateUI();
     GuiExtension guiExtension = new GuiExtension();
-    PanelFieldsEditor leftFieldsEditor = new PanelFieldsEditor(guiExtension);
+    PanelFieldsEditor left_FieldsEditor = new PanelFieldsEditor(guiExtension);
     PanelFieldsEditor rightFieldsEditor = new PanelFieldsEditor(guiExtension);
-    leftFieldsEditor.addUniversalListener(() -> System.out.println("left changed"));
+    left_FieldsEditor.addUniversalListener(() -> System.out.println("left_ changed"));
     rightFieldsEditor.addUniversalListener(() -> System.out.println("right changed"));
     // ---
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel content = new JPanel(new GridLayout(1, 2, 20, 0));
-    for (PanelFieldsEditor fieldsEditor : new PanelFieldsEditor[] { leftFieldsEditor, rightFieldsEditor }) {
+    for (PanelFieldsEditor fieldsEditor : new PanelFieldsEditor[] { left_FieldsEditor, rightFieldsEditor }) {
       TestHelper testHelper = new TestHelper(fieldsEditor, guiExtension);
       JPanel jPanel = new JPanel(new BorderLayout());
       jPanel.add(BorderLayout.CENTER, testHelper.jPanel);
@@ -39,7 +40,7 @@ public class GuiExtensionSynced {
         }
         {
           JButton jButton = new JButton("sync");
-          jButton.addActionListener(event -> fieldsEditor.sync());
+          jButton.addActionListener(event -> fieldsEditor.updateJComponents());
           jButton.addActionListener(event -> testHelper.runnable.run());
           buttonPanel.add(jButton);
         }

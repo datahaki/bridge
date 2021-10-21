@@ -12,6 +12,8 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.undo.UndoManager;
 
+import ch.alpine.javax.swing.UIManagerColor;
+
 /* package */ class StringPanel extends FieldPanel {
   private static final Color COLOR_FAIL_BGND = new Color(255, 192, 192);
   private static final Color COLOR_FAIL_TEXT = new Color(51, 51, 51);
@@ -92,10 +94,8 @@ import javax.swing.undo.UndoManager;
 
   protected final void indicateGui() {
     if (isValid(jTextField.getText())) {
-      // template to restore default colors
-      JTextField J_TEXT_FIELD = new JTextField();
-      jTextField.setForeground(J_TEXT_FIELD.getForeground());
-      jTextField.setBackground(J_TEXT_FIELD.getBackground());
+      jTextField.setForeground(UIManagerColor.TextField_foreground.get());
+      jTextField.setBackground(UIManagerColor.TextField_background.get());
     } else {
       jTextField.setForeground(COLOR_FAIL_TEXT);
       jTextField.setBackground(COLOR_FAIL_BGND);
@@ -117,7 +117,7 @@ import javax.swing.undo.UndoManager;
   }
 
   @Override
-  public void update(Object value) {
+  public void updateJComponent(Object value) {
     String string = fieldWrap().toString(value);
     jTextField.setText(string);
     indicateGui();

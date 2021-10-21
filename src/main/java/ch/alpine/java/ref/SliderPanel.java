@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.java.ref;
 
 import java.util.Objects;
@@ -81,9 +81,13 @@ import ch.alpine.tensor.sca.Clip;
     return jSlider;
   }
 
-  @Override
-  public void update(Object value) {
+  @Override // from FieldPanel
+  public void updateJComponent(Object value) {
     index = indexOf((Scalar) value);
+    /** Quote from JSlider:
+     * "If the new value is different from the previous value, all change listeners are notified."
+     * In case the value is not different from the previous value the function returns immediately
+     * and no change listeners are notified. */
     jSlider.setValue(index);
   }
 }

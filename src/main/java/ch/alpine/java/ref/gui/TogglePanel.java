@@ -31,7 +31,7 @@ import ch.alpine.java.ref.FieldWrap;
   }
 
   @Override
-  public void update(Object value) {
+  public void updateJComponent(Object value) {
     jToggleButton.setSelected((Boolean) value);
   }
 }

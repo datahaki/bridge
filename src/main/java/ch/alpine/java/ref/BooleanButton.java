@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.java.ref;
 
 import java.awt.FlowLayout;
@@ -19,13 +19,13 @@ import javax.swing.JToolBar;
     jToolBar.add(jButton);
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     return jToolBar;
   }
 
-  @Override
-  public void update(Object value) {
+  @Override // from FieldPanel
+  public void updateJComponent(Object value) {
     // ---
   }
 }
