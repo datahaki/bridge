@@ -18,6 +18,7 @@ import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.Cos;
+import ch.alpine.tensor.sca.win.DirichletWindow;
 import junit.framework.TestCase;
 
 public class SpectrogramTest extends TestCase {
@@ -26,11 +27,11 @@ public class SpectrogramTest extends TestCase {
         0, //
         800, //
         2800).multiply(Pi.VALUE));
-    Tensor domain = Subdivide.of(RealScalar.of(0.0), RealScalar.of(1.6), (int) (8000 * 1.6));
-    // Tensor domain = Subdivide.of(RealScalar.of(0.0), RationalScalar.of(8192, 6000), 8191);
+    Tensor domain = Subdivide.of(RealScalar.of(0.3), RealScalar.of(1.6), (int) (8000 * (1.6 - 0.3)));
     Tensor chirp = domain.map(polynomial).map(Cos.FUNCTION);
-    // plot.setOrientation(PlotOrientation.VERTICAL);
-    JFreeChart jFreeChart = Spectrogram.of(chirp, Quantity.of(1.0 / 8000, "s"), ColorDataGradients.VISIBLESPECTRUM);
+    VisualSet visualSet = new VisualSet();
+    visualSet.add(domain.map(s -> Quantity.of(s, "s")), chirp);
+    JFreeChart jFreeChart = Spectrogram.of(visualSet, DirichletWindow.FUNCTION, ColorDataGradients.VISIBLESPECTRUM);
     jFreeChart.setBackgroundPaint(Color.WHITE);
     // TODO this is more like a demo
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("spectrogram.png"), jFreeChart, 1024, 320);

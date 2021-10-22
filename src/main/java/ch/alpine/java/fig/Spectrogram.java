@@ -9,34 +9,40 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Plot;
 
 import ch.alpine.tensor.RationalScalar;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Last;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.io.ImageFormat;
-import ch.alpine.tensor.sca.win.DirichletWindow;
+import ch.alpine.tensor.qty.UnitConvert;
 
+/** inspired by
+ * <a href="https://reference.wolfram.com/language/ref/Spectrogram.html">Spectrogram</a> */
 public enum Spectrogram {
   ;
-  public static JFreeChart of(Tensor signal, Scalar dt, Function<Scalar, ? extends Tensor> function) {
-    return of(signal, dt, function, "");
-  }
-
-  /** @param signal vector
-   * @param dt spacing between two samples
+  /** @param visualSet with single {@link VisualRow} containing domain and signal
+   * @param window
    * @param function
    * @return */
-  public static JFreeChart of(Tensor signal, Scalar dt, Function<Scalar, ? extends Tensor> function, String plotLabel) {
-    BufferedImage bufferedImage = ImageFormat.of(ch.alpine.tensor.fft.Spectrogram.of(signal, DirichletWindow.FUNCTION, function));
-    VisualSet visualSet = new VisualSet();
-    Scalar xhi = dt.multiply(RealScalar.of(bufferedImage.getWidth()));
+  public static JFreeChart of(VisualSet visualSet, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
+    Integers.requireEquals(visualSet.visualRows().size(), 1);
+    VisualRow visualRow = visualSet.getVisualRow(0);
+    Tensor domain = visualRow.points().get(Tensor.ALL, 0);
+    Tensor signal = visualRow.points().get(Tensor.ALL, 1);
+    BufferedImage bufferedImage = ImageFormat.of(ch.alpine.tensor.fft.Spectrogram.of(signal, window, function));
+    Scalar dt = domain.Get(1).subtract(domain.Get(0));
     Scalar yhi = dt.reciprocal().multiply(RationalScalar.HALF);
-    Tensor box = Tensors.of( //
-        Tensors.of(xhi.zero(), yhi.zero()), //
-        Tensors.of(xhi, yhi));
-    visualSet.add(box);
-    Plot plot = new BufferedImagePlot(bufferedImage, visualSet);
-    JFreeChart jFreeChart = new JFreeChart(plotLabel, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+    // ---
+    VisualSet _visualSet = new VisualSet();
+    ScalarUnaryOperator suo = UnitConvert.SI().to(visualSet.getAxisX().getUnit());
+    Tensor points = visualRow.points();
+    _visualSet.add( //
+        Tensors.of(points.Get(0, 0), Last.of(points).Get(0)).map(suo), //
+        Tensors.of(yhi.zero(), yhi));
+    Plot plot = new BufferedImagePlot(bufferedImage, _visualSet);
+    JFreeChart jFreeChart = new JFreeChart(visualSet.getPlotLabel(), JFreeChart.DEFAULT_TITLE_FONT, plot, true);
     ChartFactory.getChartTheme().apply(jFreeChart);
     return jFreeChart;
   }

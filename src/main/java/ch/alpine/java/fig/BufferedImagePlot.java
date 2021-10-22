@@ -284,13 +284,15 @@ import ch.alpine.tensor.Unprotect;
   /** The shadow generator ({@code null} permitted). */
   private ShadowGenerator shadowGenerator;
   final BufferedImage bufferedImage;
-  final Scalar xhi;
+  final Scalar _xlo;
+  final Scalar _xhi;
   final Scalar yhi;
 
   public BufferedImagePlot(BufferedImage bufferedImage, VisualSet visualSet) {
     this.bufferedImage = bufferedImage;
     Tensor points = visualSet.getVisualRow(0).points();
-    xhi = points.Get(1, 0);
+    _xlo = points.Get(0, 0);
+    _xhi = points.Get(1, 0);
     yhi = points.Get(1, 1);
     XYSeriesCollection dataset = DatasetFactory.xySeriesCollection(visualSet);
     // JFreeChart jFreeChart = new JFreeChart(new CustomPlot());
@@ -2416,8 +2418,8 @@ import ch.alpine.tensor.Unprotect;
      // g2.fill(dataArea);
      // g2.setColor(Color.BLUE);
      // ValueAxis domainAxis = ;
-      double x1 = getDomainAxis().valueToJava2D(0.0, dataArea, getDomainAxisEdge());
-      double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(xhi).number().doubleValue(), dataArea, getDomainAxisEdge());
+      double x1 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(_xlo).number().doubleValue(), dataArea, getDomainAxisEdge());
+      double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(_xhi).number().doubleValue(), dataArea, getDomainAxisEdge());
       double y1 = getRangeAxis().valueToJava2D(0.0, dataArea, getRangeAxisEdge());
       double y2 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(yhi).number().doubleValue(), dataArea, getRangeAxisEdge());
       // g2.setStroke(new BasicStroke(2f));

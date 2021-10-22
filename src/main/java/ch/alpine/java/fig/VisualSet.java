@@ -73,6 +73,9 @@ public class VisualSet implements Serializable {
   public VisualRow getVisualRow(int index) {
     return visualRows.get(index);
   }
+  // public ColorDataIndexed getColorDataIndexed() {
+  // return colorDataIndexed;
+  // }
 
   /** @param string to appear above plot */
   public void setPlotLabel(String string) {
