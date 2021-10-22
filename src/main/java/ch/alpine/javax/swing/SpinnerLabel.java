@@ -46,8 +46,8 @@ public class SpinnerLabel<T> extends JTextField {
 
   @Override
   protected void paintComponent(Graphics _graphics) {
-    // override non-editable background
-    setBackground(new JTextField().getBackground());
+    // override background of non-editable textfield with background of editable textfield
+    setBackground(UIManagerColor.TextField_background.get());
     super.paintComponent(_graphics);
     // ---
     final boolean enabled = isEnabled();

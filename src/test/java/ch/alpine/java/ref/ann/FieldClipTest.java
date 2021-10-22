@@ -12,7 +12,7 @@ public class FieldClipTest extends TestCase {
   @FieldClip(min = "0[A]", max = "3[W]")
   public Scalar current = Quantity.of(4, "A");
 
-  public void testSimple() {
+  public void testFailEx() {
     FieldClipTest fieldClipCorrupt = new FieldClipTest();
     AssertFail.of(() -> new PanelFieldsEditor(fieldClipCorrupt));
   }

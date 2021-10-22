@@ -7,6 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/** The field slider is an annotation for a scalar field.
+ * In order to take effect, the field also has to be annotated with a
+ * {@link FieldClip} of finite width (otherwise an exception is thrown). */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

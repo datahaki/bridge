@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.java.ref;
 
 import java.awt.FlowLayout;
@@ -9,19 +9,23 @@ import javax.swing.JToolBar;
 
 /* package */ class BooleanButton extends FieldPanel {
   private final JToolBar jToolBar = new JToolBar();
-  private final JButton jButton;
 
   public BooleanButton(FieldWrap fieldWrap, String text) {
     super(fieldWrap);
-    jButton = new JButton(text);
+    JButton jButton = new JButton(text);
     jButton.addActionListener(event -> notifyListeners("true"));
-    jToolBar.setLayout(new FlowLayout(0, 0, 0));
+    jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
     jToolBar.setFloatable(false);
     jToolBar.add(jButton);
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     return jToolBar;
+  }
+
+  @Override // from FieldPanel
+  public void updateJComponent(Object value) {
+    // ---
   }
 }

@@ -45,11 +45,19 @@ import ch.alpine.tensor.img.ColorFormat;
     return Color.WHITE;
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add("Center", jTextField);
-    jPanel.add("East", jButton);
+    jPanel.add(BorderLayout.CENTER, jTextField);
+    jPanel.add(BorderLayout.EAST, jButton);
     return jPanel;
+  }
+
+  @Override // from FieldPanel
+  public void updateJComponent(Object value) {
+    Color color = (Color) value;
+    String string = fieldWrap().toString(color);
+    jTextField.setText(string);
+    jButton.setBackground(color);
   }
 }

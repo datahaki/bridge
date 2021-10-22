@@ -55,7 +55,7 @@ public enum ListPlot {
       xyItemRenderer.setSeriesStroke(index, visualRow.getStroke());
     }
     { // Mathematica does not include zero in the y-axes by default
-      // whereas jfree chart does so.
+      // whereas jfreechart does so.
       // the code below emulates the behavior of Mathematica
       ValueAxis valueAxis = jFreeChart.getXYPlot().getRangeAxis();
       if (valueAxis instanceof NumberAxis) {

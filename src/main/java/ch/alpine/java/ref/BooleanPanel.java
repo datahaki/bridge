@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.java.ref;
 
 import java.util.Objects;
@@ -17,12 +17,17 @@ import javax.swing.JComponent;
     jCheckBox.addActionListener(event -> notifyListeners(getText()));
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     return jCheckBox;
   }
 
   private String getText() {
     return fieldWrap().toString(jCheckBox.isSelected());
+  }
+
+  @Override // from FieldPanel
+  public void updateJComponent(Object value) {
+    jCheckBox.setSelected((Boolean) value);
   }
 }

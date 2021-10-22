@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.java.ref;
 
 import java.util.Objects;
@@ -63,7 +63,7 @@ import ch.alpine.tensor.sca.Clip;
     } else {
       Scalar scalar = (Scalar) value;
       scalarUnaryOperator = UnitConvert.SI().to(QuantityUnit.of(scalar));
-      index = clip.rescale(UnitSystem.SI().apply(scalar)).multiply(RealScalar.of(resolution)).number().intValue();
+      index = indexOf(scalar);
     }
     jSlider = new JSlider(0, resolution, index);
     jSlider.setOpaque(false);
@@ -72,8 +72,22 @@ import ch.alpine.tensor.sca.Clip;
     jSlider.addChangeListener(changeListener);
   }
 
+  private int indexOf(Scalar scalar) {
+    return clip.rescale(UnitSystem.SI().apply(scalar)).multiply(RealScalar.of(resolution)).number().intValue();
+  }
+
   @Override // from FieldPanel
   public JComponent getJComponent() {
     return jSlider;
+  }
+
+  @Override // from FieldPanel
+  public void updateJComponent(Object value) {
+    index = indexOf((Scalar) value);
+    /** Quote from JSlider:
+     * "If the new value is different from the previous value, all change listeners are notified."
+     * In case the value is not different from the previous value the function returns immediately
+     * and no change listeners are notified. */
+    jSlider.setValue(index);
   }
 }

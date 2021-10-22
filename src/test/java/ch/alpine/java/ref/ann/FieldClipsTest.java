@@ -4,7 +4,9 @@ package ch.alpine.java.ref.ann;
 import java.lang.reflect.Field;
 
 import ch.alpine.java.ref.AnnotatedContainer;
+import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
@@ -37,5 +39,16 @@ public class FieldClipsTest extends TestCase {
     Clip clip = FieldClips.of(Quantity.of(0, "L*min^-1"), Quantity.of(20.0, "L*min^-1"));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20, "L*min^-1"))));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20.0, "L*min^-1"))));
+  }
+
+  @FieldClip(min = "0[super]", max = "Infinity[super]")
+  public Scalar awesome = Quantity.of(4, "super");
+
+  public void testSimple2() throws NoSuchFieldException, SecurityException {
+    FieldClipsTest fieldClipsTest = new FieldClipsTest();
+    Field field = fieldClipsTest.getClass().getField("awesome");
+    FieldClip fieldClip = field.getAnnotation(FieldClip.class);
+    Clip clip = FieldClips.of(fieldClip);
+    assertEquals(clip.max(), Quantity.of(DoubleScalar.POSITIVE_INFINITY, "super"));
   }
 }

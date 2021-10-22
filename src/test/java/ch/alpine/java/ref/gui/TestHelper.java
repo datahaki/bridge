@@ -13,7 +13,7 @@ import ch.alpine.java.ref.ObjectProperties;
   final Runnable runnable;
 
   public TestHelper(PanelFieldsEditor panelFieldsEditor, Object object) {
-    jPanel.add("North", panelFieldsEditor.createJScrollPane());
+    jPanel.add(BorderLayout.NORTH, panelFieldsEditor.createJScrollPane());
     // ---
     JTextArea jTextArea = new JTextArea();
     jTextArea.setBackground(null);
@@ -23,6 +23,6 @@ import ch.alpine.java.ref.ObjectProperties;
       runnable.run();
       panelFieldsEditor.addUniversalListener(runnable);
     }
-    jPanel.add("Center", jTextArea);
+    jPanel.add(BorderLayout.CENTER, jTextArea);
   }
 }

@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.java.ref;
 
 import javax.swing.JComponent;
@@ -20,5 +20,10 @@ import ch.alpine.javax.swing.SpinnerLabel;
   @Override // from FieldPanel
   public JComponent getJComponent() {
     return spinnerLabel;
+  }
+
+  @Override // from FieldPanel
+  public void updateJComponent(Object value) {
+    spinnerLabel.setValue(value);
   }
 }

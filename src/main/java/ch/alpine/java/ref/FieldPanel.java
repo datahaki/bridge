@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.java.ref;
 
 import java.awt.Font;
@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import javax.swing.JComponent;
+
+import ch.alpine.java.ref.gui.FieldsEditor;
 
 public abstract class FieldPanel {
   public static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 18);
@@ -22,16 +24,21 @@ public abstract class FieldPanel {
     return fieldWrap;
   }
 
-  /** @param consumer */
   public final void addListener(Consumer<String> consumer) {
     list.add(consumer);
   }
 
-  /** @param text */
   public final void notifyListeners(String text) {
     list.forEach(consumer -> consumer.accept(text));
   }
 
-  /** @return */
+  /** Remark: the function should not be invoked by the application layer
+   * 
+   * @return component to be shown in the {@link FieldsEditor} */
   public abstract JComponent getJComponent();
+
+  /** Remark: the function should not be invoked by the application layer
+   * 
+   * @param value is non-null */
+  public abstract void updateJComponent(Object value);
 }
