@@ -75,7 +75,6 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.function.Function;
 
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
@@ -123,15 +122,9 @@ import org.jfree.data.general.DatasetUtils;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import ch.alpine.tensor.RationalScalar;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
-import ch.alpine.tensor.fft.Spectrogram;
-import ch.alpine.tensor.io.ImageFormat;
-import ch.alpine.tensor.sca.win.DirichletWindow;
 
 /** A general class for plotting data in the form of (x, y) pairs. This plot can
  * use data from any class that implements the {@link XYDataset} interface.
@@ -142,7 +135,7 @@ import ch.alpine.tensor.sca.win.DirichletWindow;
  * <p>
  * The {@link org.jfree.chart.ChartFactory} class contains static methods for
  * creating pre-configured charts. */
-public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable, RendererChangeListener {
+/**/ class BufferedImagePlot extends Plot implements ValueAxisPlot, Pannable, Zoomable, RendererChangeListener {
   /** The default grid line stroke. */
   public static final Stroke DEFAULT_GRIDLINE_STROKE = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f, new float[] { 2.0f, 2.0f },
       0.0f);
@@ -251,13 +244,13 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * data points. */
   private boolean rangeCrosshairLockedOnData = true;
   /** A map of lists of foreground markers (optional) for the domain axes. */
-  private Map<Integer, Collection<Marker>> foregroundDomainMarkers;
+  private Map<Integer, List<Marker>> foregroundDomainMarkers;
   /** A map of lists of background markers (optional) for the domain axes. */
-  private Map<Integer, Collection<Marker>> backgroundDomainMarkers;
+  private Map<Integer, List<Marker>> backgroundDomainMarkers;
   /** A map of lists of foreground markers (optional) for the range axes. */
-  private Map<Integer, Collection<Marker>> foregroundRangeMarkers;
+  private Map<Integer, List<Marker>> foregroundRangeMarkers;
   /** A map of lists of background markers (optional) for the range axes. */
-  private Map<Integer, Collection<Marker>> backgroundRangeMarkers;
+  private Map<Integer, List<Marker>> backgroundRangeMarkers;
   /** A (possibly empty) list of annotations for the plot. The list should
    * be initialised in the constructor and never allowed to be
    * {@code null}. */
@@ -290,30 +283,15 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   private boolean rangePannable;
   /** The shadow generator ({@code null} permitted). */
   private ShadowGenerator shadowGenerator;
-  /** Creates a new plot with the specified dataset, axes and renderer. Any
-   * of the arguments can be {@code null}, but in that case you should
-   * take care to specify the value before using the plot (otherwise a
-   * {@code NullPointerException} may be thrown).
-   *
-   * @param dataset the dataset ({@code null} permitted).
-   * @param domainAxis the domain axis ({@code null} permitted).
-   * @param rangeAxis the range axis ({@code null} permitted).
-   * @param renderer the renderer ({@code null} permitted). */
   final BufferedImage bufferedImage;
   final Scalar xhi;
   final Scalar yhi;
 
-  public SpectrogramPlot(Tensor signal, Scalar sampleRate, Function<Scalar, ? extends Tensor> function) {
-    Tensor tensor = Spectrogram.of(signal, DirichletWindow.FUNCTION, function);
-    bufferedImage = ImageFormat.of(tensor);
-    VisualSet visualSet = new VisualSet();
-    xhi = sampleRate.multiply(RealScalar.of(signal.length()));
-    yhi = sampleRate.reciprocal().multiply(RationalScalar.HALF);
-    Tensor box = Tensors.of( //
-        Tensors.of(xhi.zero(), yhi.zero()), //
-        Tensors.of(xhi, yhi));
-    VisualRow visualRow = visualSet.add(box);
-    visualRow.setLabel("here");
+  public BufferedImagePlot(BufferedImage bufferedImage, VisualSet visualSet) {
+    this.bufferedImage = bufferedImage;
+    Tensor points = visualSet.getVisualRow(0).points();
+    xhi = points.Get(1, 0);
+    yhi = points.Get(1, 1);
     XYSeriesCollection dataset = DatasetFactory.xySeriesCollection(visualSet);
     // JFreeChart jFreeChart = new JFreeChart(new CustomPlot());
     NumberAxis domainAxis = new NumberAxis(visualSet.getAxisX().getAxisLabel());
@@ -464,8 +442,8 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     ValueAxis result = this.domainAxes.get(index);
     if (result == null) {
       Plot parent = getParent();
-      if (parent instanceof SpectrogramPlot) {
-        SpectrogramPlot xy = (SpectrogramPlot) parent;
+      if (parent instanceof BufferedImagePlot) {
+        BufferedImagePlot xy = (BufferedImagePlot) parent;
         result = xy.getDomainAxis(index);
       }
     }
@@ -761,8 +739,8 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     ValueAxis result = this.rangeAxes.get(index);
     if (result == null) {
       Plot parent = getParent();
-      if (parent instanceof SpectrogramPlot) {
-        SpectrogramPlot xy = (SpectrogramPlot) parent;
+      if (parent instanceof BufferedImagePlot) {
+        BufferedImagePlot xy = (BufferedImagePlot) parent;
         result = xy.getRangeAxis(index);
       }
     }
@@ -1892,7 +1870,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   public void addDomainMarker(int index, Marker marker, Layer layer, boolean notify) {
     Args.nullNotPermitted(marker, "marker");
     Args.nullNotPermitted(layer, "layer");
-    Collection<Marker> markers;
+    List<Marker> markers;
     if (layer == Layer.FOREGROUND) {
       markers = this.foregroundDomainMarkers.get(index);
       if (markers == null) {
@@ -1961,11 +1939,11 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @return A boolean indicating whether or not the marker was actually
    * removed. */
   public boolean removeDomainMarker(int index, Marker marker, Layer layer, boolean notify) {
-    ArrayList<Marker> markers;
+    List<Marker> markers;
     if (layer == Layer.FOREGROUND) {
-      markers = (ArrayList) this.foregroundDomainMarkers.get(index);
+      markers = this.foregroundDomainMarkers.get(index);
     } else {
-      markers = (ArrayList) this.backgroundDomainMarkers.get(index);
+      markers = this.backgroundDomainMarkers.get(index);
     }
     if (markers == null) {
       return false;
@@ -2053,7 +2031,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @param layer the layer (foreground or background).
    * @param notify notify listeners? */
   public void addRangeMarker(int index, Marker marker, Layer layer, boolean notify) {
-    Collection<Marker> markers;
+    List<Marker> markers;
     if (layer == Layer.FOREGROUND) {
       markers = this.foregroundRangeMarkers.get(index);
       if (markers == null) {
@@ -2086,7 +2064,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
       if (markers != null) {
         Iterator<Marker> iterator = markers.iterator();
         while (iterator.hasNext()) {
-          Marker m = (Marker) iterator.next();
+          Marker m = iterator.next();
           m.removeChangeListener(this);
         }
         markers.clear();
@@ -2097,7 +2075,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
       if (markers != null) {
         Iterator<Marker> iterator = markers.iterator();
         while (iterator.hasNext()) {
-          Marker m = (Marker) iterator.next();
+          Marker m = iterator.next();
           m.removeChangeListener(this);
         }
         markers.clear();
@@ -2157,9 +2135,9 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     Args.nullNotPermitted(layer, "layer");
     List<Marker> markers;
     if (layer == Layer.FOREGROUND) {
-      markers = (List) this.foregroundRangeMarkers.get(index);
+      markers = this.foregroundRangeMarkers.get(index);
     } else {
-      markers = (List) this.backgroundRangeMarkers.get(index);
+      markers = this.backgroundRangeMarkers.get(index);
     }
     if (markers == null) {
       return false;
@@ -2231,7 +2209,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
    * @return The list of annotations.
    *
    * @see #addAnnotation(XYAnnotation) */
-  public List getAnnotations() {
+  public List<XYAnnotation> getAnnotations() {
     return new ArrayList<>(this.annotations);
   }
 
@@ -2393,7 +2371,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     }
     // draw the plot background and axes...
     drawBackground(g2, dataArea);
-    Map axisStateMap = drawAxes(g2, area, dataArea, info);
+    Map<Axis, AxisState> axisStateMap = drawAxes(g2, area, dataArea, info);
     PlotOrientation orient = getOrientation();
     // the anchor point is typically the point where the mouse last
     // clicked - the crosshairs will be driven off this point...
@@ -2451,13 +2429,13 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
           (int) (y1 - y2 + 1), null);
     }
     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getForegroundAlpha()));
-    AxisState domainAxisState = (AxisState) axisStateMap.get(getDomainAxis());
+    AxisState domainAxisState = axisStateMap.get(getDomainAxis());
     if (domainAxisState == null) {
       if (parentState != null) {
         domainAxisState = (AxisState) parentState.getSharedAxisStates().get(getDomainAxis());
       }
     }
-    AxisState rangeAxisState = (AxisState) axisStateMap.get(getRangeAxis());
+    AxisState rangeAxisState = axisStateMap.get(getRangeAxis());
     if (rangeAxisState == null) {
       if (parentState != null) {
         rangeAxisState = (AxisState) parentState.getSharedAxisStates().get(getRangeAxis());
@@ -2886,7 +2864,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   public ValueAxis getDomainAxisForDataset(int index) {
     Args.requireNonNegative(index, "index");
     ValueAxis valueAxis;
-    List axisIndices = (List) this.datasetToDomainAxesMap.get(index);
+    List axisIndices = this.datasetToDomainAxesMap.get(index);
     if (axisIndices != null) {
       // the first axis in the list is used for data <--> Java2D
       Integer axisIndex = (Integer) axisIndices.get(0);
@@ -2905,7 +2883,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   public ValueAxis getRangeAxisForDataset(int index) {
     Args.requireNonNegative(index, "index");
     ValueAxis valueAxis;
-    List axisIndices = (List) this.datasetToRangeAxesMap.get(index);
+    List axisIndices = this.datasetToRangeAxesMap.get(index);
     if (axisIndices != null) {
       // the first axis in the list is used for data <--> Java2D
       Integer axisIndex = (Integer) axisIndices.get(0);
@@ -3031,7 +3009,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
   public void drawAnnotations(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info) {
     Iterator<XYAnnotation> iterator = this.annotations.iterator();
     while (iterator.hasNext()) {
-      XYAnnotation annotation = (XYAnnotation) iterator.next();
+      XYAnnotation annotation = iterator.next();
       ValueAxis xAxis = getDomainAxis();
       ValueAxis yAxis = getRangeAxis();
       // JAN COMMENTED THIS OUT
@@ -3061,7 +3039,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     if (markers != null && axis != null) {
       Iterator<Marker> iterator = markers.iterator();
       while (iterator.hasNext()) {
-        Marker marker = (Marker) iterator.next();
+        Marker marker = iterator.next();
         // JAN COMMENTED THIS OUT
         // r.drawDomainMarker(g2, this, axis, marker, dataArea);
       }
@@ -3090,7 +3068,7 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     if (markers != null && axis != null) {
       Iterator<Marker> iterator = markers.iterator();
       while (iterator.hasNext()) {
-        Marker marker = iterator.next();
+        // Marker marker = iterator.next();
         // JAN COMMENTED THIS OUT
         // r.drawRangeMarker(g2, this, axis, marker, dataArea);
       }
@@ -3354,8 +3332,8 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     if (result < 0) {
       // try the parent plot
       Plot parent = getParent();
-      if (parent instanceof SpectrogramPlot) {
-        SpectrogramPlot p = (SpectrogramPlot) parent;
+      if (parent instanceof BufferedImagePlot) {
+        BufferedImagePlot p = (BufferedImagePlot) parent;
         result = p.getDomainAxisIndex(axis);
       }
     }
@@ -3383,8 +3361,8 @@ public class SpectrogramPlot extends Plot implements ValueAxisPlot, Pannable, Zo
     if (result < 0) {
       // try the parent plot
       Plot parent = getParent();
-      if (parent instanceof SpectrogramPlot) {
-        SpectrogramPlot p = (SpectrogramPlot) parent;
+      if (parent instanceof BufferedImagePlot) {
+        BufferedImagePlot p = (BufferedImagePlot) parent;
         result = p.getRangeAxisIndex(axis);
       }
     }
