@@ -4,6 +4,14 @@
 
 Library for Java, version `0.1.8`
 
+## Plots
+
+![Spectrogram](https://user-images.githubusercontent.com/4012178/138568940-d96657ee-9e42-4065-aa93-64cbee7b3087.png)
+
+## Reflection
+
+
+
 ## Integration
 
 Specify `repository` and `dependency` of the tensor library in the `pom.xml` file of your maven project:

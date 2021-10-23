@@ -11,7 +11,7 @@ public class BufferedImagePlotDemo {
 
   public BufferedImagePlotDemo() {
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setContentPane(new ChartPanel(SpectrogramDemo.create()));
+    jFrame.setContentPane(new ChartPanel(SpectrogramDemo.create(0.32, 1.6)));
     jFrame.setBounds(100, 100, 600, 600);
     jFrame.setVisible(true);
   }

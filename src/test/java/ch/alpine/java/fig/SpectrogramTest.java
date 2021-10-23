@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 
 public class SpectrogramTest extends TestCase {
   public void testSimple() {
-    TestHelper.draw(SpectrogramDemo.create());
+    TestHelper.draw(SpectrogramDemo.create(0.4, 1.7));
   }
 
   public void testMore() {
