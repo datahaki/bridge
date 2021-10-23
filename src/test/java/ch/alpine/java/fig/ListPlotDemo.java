@@ -27,6 +27,7 @@ import ch.alpine.tensor.qty.Quantity;
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
     Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
     VisualSet visualSet = new VisualSet();
+    visualSet.setPlotLabel("List Plot Demo");
     Tensor domain1 = RandomVariate.of(UniformDistribution.unit(), values1.length());
     VisualRow visualRow1 = visualSet.add(domain1.map(suoX), values1.map(suoY));
     visualRow1.setLabel("first");

@@ -32,7 +32,8 @@ public class SpectrogramTest extends TestCase {
     VisualSet visualSet = new VisualSet();
     visualSet.setPlotLabel(System.nanoTime() + " Spectrogram Test");
     visualSet.add(domain.map(s -> Quantity.of(s, "s")), chirp);
-    JFreeChart jFreeChart = Spectrogram.of(visualSet, DirichletWindow.FUNCTION, ColorDataGradients.VISIBLESPECTRUM);
+    visualSet.setColorDataGradient(ColorDataGradients.CLASSIC);
+    JFreeChart jFreeChart = Spectrogram.of(visualSet, DirichletWindow.FUNCTION);
     jFreeChart.setBackgroundPaint(Color.WHITE);
     // TODO this is more like a demo
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("spectrogram.png"), jFreeChart, 1024, 320);

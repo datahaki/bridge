@@ -132,11 +132,11 @@ import ch.alpine.tensor.Unprotect;
   /** The offset between the data area and the axes. */
   private RectangleInsets axisOffset;
   /** The domain axis / axes (used for the x-values). */
-  private Map<Integer, ValueAxis> domainAxes;
+  private final NumberAxis domainAxis;
   /** The domain axis locations. */
   private Map<Integer, AxisLocation> domainAxisLocations;
   /** The range axis (used for the y-values). */
-  private Map<Integer, ValueAxis> rangeAxes;
+  private final NumberAxis rangeAxis;
   /** The range axis location. */
   private Map<Integer, AxisLocation> rangeAxisLocations;
   /** Storage for the datasets. */
@@ -231,17 +231,17 @@ import ch.alpine.tensor.Unprotect;
     _xhi = points.Get(1, 0);
     yhi = points.Get(1, 1);
     XYSeriesCollection dataset = DatasetFactory.xySeriesCollection(visualSet);
-    NumberAxis domainAxis = new NumberAxis(visualSet.getAxisX().getAxisLabel());
+    domainAxis = new NumberAxis(visualSet.getAxisX().getAxisLabel());
     domainAxis.setAutoRangeIncludesZero(false);
-    NumberAxis rangeAxis = new NumberAxis(visualSet.getAxisY().getAxisLabel());
+    domainAxis.setTickLabelFont(domainAxis.getTickLabelFont().deriveFont(12f));
+    rangeAxis = new NumberAxis(visualSet.getAxisY().getAxisLabel());
+    rangeAxis.setTickLabelFont(rangeAxis.getTickLabelFont().deriveFont(12f));
     renderer = new XYLineAndShapeRenderer(false, false);
     this.orientation = PlotOrientation.VERTICAL;
     this.weight = 1; // only relevant when this is a subplot
     this.axisOffset = new RectangleInsets(4, 4, 4, 4); // seems to be the default of XYPlot
     // allocate storage for datasets, axes and renderers (all optional)
-    this.domainAxes = new HashMap<>();
     this.domainAxisLocations = new HashMap<>();
-    this.rangeAxes = new HashMap<>();
     this.rangeAxisLocations = new HashMap<>();
     this.datasets = new HashMap<>();
     this.datasetToDomainAxesMap = new TreeMap<>();
@@ -250,12 +250,10 @@ import ch.alpine.tensor.Unprotect;
     if (dataset != null) {
       dataset.addChangeListener(this);
     }
-    this.domainAxes.put(0, domainAxis);
     mapDatasetToDomainAxis(0, 0);
     domainAxis.setPlot(this);
     domainAxis.addChangeListener(this);
     this.domainAxisLocations.put(0, AxisLocation.BOTTOM_OR_LEFT);
-    this.rangeAxes.put(0, rangeAxis);
     mapDatasetToRangeAxis(0, 0);
     rangeAxis.setPlot(this);
     rangeAxis.addChangeListener(this);
@@ -346,89 +344,7 @@ import ch.alpine.tensor.Unprotect;
    * @see #getDomainAxis(int)
    * @see #setDomainAxis(ValueAxis) */
   public ValueAxis getDomainAxis() {
-    return getDomainAxis(0);
-  }
-
-  /** Returns the domain axis with the specified index, or {@code null} if
-   * there is no axis with that index.
-   *
-   * @param index the axis index.
-   *
-   * @return The axis ({@code null} possible).
-   *
-   * @see #setDomainAxis(int, ValueAxis) */
-  public ValueAxis getDomainAxis(int index) {
-    ValueAxis result = this.domainAxes.get(index);
-    if (result == null) {
-      Plot parent = getParent();
-      if (parent instanceof BufferedImagePlot) {
-        BufferedImagePlot xy = (BufferedImagePlot) parent;
-        result = xy.getDomainAxis(index);
-      }
-    }
-    return result;
-  }
-
-  /** Sets the domain axis for the plot and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @param axis the new axis ({@code null} permitted).
-   *
-   * @see #getDomainAxis()
-   * @see #setDomainAxis(int, ValueAxis) */
-  public void setDomainAxis(ValueAxis axis) {
-    setDomainAxis(0, axis);
-  }
-
-  /** Sets a domain axis and sends a {@link PlotChangeEvent} to all
-   * registered listeners.
-   *
-   * @param index the axis index.
-   * @param axis the axis ({@code null} permitted).
-   *
-   * @see #getDomainAxis(int)
-   * @see #setRangeAxis(int, ValueAxis) */
-  public void setDomainAxis(int index, ValueAxis axis) {
-    setDomainAxis(index, axis, true);
-  }
-
-  /** Sets a domain axis and, if requested, sends a {@link PlotChangeEvent} to
-   * all registered listeners.
-   *
-   * @param index the axis index.
-   * @param axis the axis.
-   * @param notify notify listeners?
-   *
-   * @see #getDomainAxis(int) */
-  public void setDomainAxis(int index, ValueAxis axis, boolean notify) {
-    ValueAxis existing = getDomainAxis(index);
-    if (existing != null) {
-      existing.removeChangeListener(this);
-    }
-    if (axis != null) {
-      axis.setPlot(this);
-    }
-    this.domainAxes.put(index, axis);
-    if (axis != null) {
-      axis.configure();
-      axis.addChangeListener(this);
-    }
-    if (notify) {
-      fireChangeEvent();
-    }
-  }
-
-  /** Sets the domain axes for this plot and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @param axes the axes ({@code null} not permitted).
-   *
-   * @see #setRangeAxes(ValueAxis[]) */
-  public void setDomainAxes(ValueAxis[] axes) {
-    for (int i = 0; i < axes.length; i++) {
-      setDomainAxis(i, axes[i], false);
-    }
-    fireChangeEvent();
+    return domainAxis;
   }
 
   /** Returns the location of the primary domain axis.
@@ -474,36 +390,9 @@ import ch.alpine.tensor.Unprotect;
     return Plot.resolveDomainAxisLocation(getDomainAxisLocation(), this.orientation);
   }
 
-  /** Returns the number of domain axes.
-   *
-   * @return The axis count.
-   *
-   * @see #getRangeAxisCount() */
-  public int getDomainAxisCount() {
-    return this.domainAxes.size();
-  }
-
-  /** Clears the domain axes from the plot and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @see #clearRangeAxes() */
-  public void clearDomainAxes() {
-    for (ValueAxis axis : this.domainAxes.values()) {
-      if (axis != null) {
-        axis.removeChangeListener(this);
-      }
-    }
-    this.domainAxes.clear();
-    fireChangeEvent();
-  }
-
   /** Configures the domain axes. */
   public void configureDomainAxes() {
-    for (ValueAxis axis : this.domainAxes.values()) {
-      if (axis != null) {
-        axis.configure();
-      }
-    }
+    domainAxis.configure();
   }
 
   /** Returns the location for a domain axis. If this hasn't been set
@@ -577,31 +466,7 @@ import ch.alpine.tensor.Unprotect;
    * @see #getRangeAxis(int)
    * @see #setRangeAxis(ValueAxis) */
   public ValueAxis getRangeAxis() {
-    return getRangeAxis(0);
-  }
-
-  /** Sets the range axis for the plot and sends a {@link PlotChangeEvent} to
-   * all registered listeners.
-   *
-   * @param axis the axis ({@code null} permitted).
-   *
-   * @see #getRangeAxis()
-   * @see #setRangeAxis(int, ValueAxis) */
-  public void setRangeAxis(ValueAxis axis) {
-    if (axis != null) {
-      axis.setPlot(this);
-    }
-    // plot is likely registered as a listener with the existing axis...
-    ValueAxis existing = getRangeAxis();
-    if (existing != null) {
-      existing.removeChangeListener(this);
-    }
-    this.rangeAxes.put(0, axis);
-    if (axis != null) {
-      axis.configure();
-      axis.addChangeListener(this);
-    }
-    fireChangeEvent();
+    return rangeAxis;
   }
 
   /** Returns the location of the primary range axis.
@@ -646,108 +511,8 @@ import ch.alpine.tensor.Unprotect;
     return Plot.resolveRangeAxisLocation(getRangeAxisLocation(), this.orientation);
   }
 
-  /** Returns the range axis with the specified index, or {@code null} if
-   * there is no axis with that index.
-   *
-   * @param index the axis index (must be &gt;= 0).
-   *
-   * @return The axis ({@code null} possible).
-   *
-   * @see #setRangeAxis(int, ValueAxis) */
-  public ValueAxis getRangeAxis(int index) {
-    ValueAxis result = this.rangeAxes.get(index);
-    if (result == null) {
-      Plot parent = getParent();
-      if (parent instanceof BufferedImagePlot) {
-        BufferedImagePlot xy = (BufferedImagePlot) parent;
-        result = xy.getRangeAxis(index);
-      }
-    }
-    return result;
-  }
-
-  /** Sets a range axis and sends a {@link PlotChangeEvent} to all registered
-   * listeners.
-   *
-   * @param index the axis index.
-   * @param axis the axis ({@code null} permitted).
-   *
-   * @see #getRangeAxis(int) */
-  public void setRangeAxis(int index, ValueAxis axis) {
-    setRangeAxis(index, axis, true);
-  }
-
-  /** Sets a range axis and, if requested, sends a {@link PlotChangeEvent} to
-   * all registered listeners.
-   *
-   * @param index the axis index.
-   * @param axis the axis ({@code null} permitted).
-   * @param notify notify listeners?
-   *
-   * @see #getRangeAxis(int) */
-  public void setRangeAxis(int index, ValueAxis axis, boolean notify) {
-    ValueAxis existing = getRangeAxis(index);
-    if (existing != null) {
-      existing.removeChangeListener(this);
-    }
-    if (axis != null) {
-      axis.setPlot(this);
-    }
-    this.rangeAxes.put(index, axis);
-    if (axis != null) {
-      axis.configure();
-      axis.addChangeListener(this);
-    }
-    if (notify) {
-      fireChangeEvent();
-    }
-  }
-
-  /** Sets the range axes for this plot and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @param axes the axes ({@code null} not permitted).
-   *
-   * @see #setDomainAxes(ValueAxis[]) */
-  public void setRangeAxes(ValueAxis[] axes) {
-    for (int i = 0; i < axes.length; i++) {
-      setRangeAxis(i, axes[i], false);
-    }
-    fireChangeEvent();
-  }
-
-  /** Returns the number of range axes.
-   *
-   * @return The axis count.
-   *
-   * @see #getDomainAxisCount() */
-  public int getRangeAxisCount() {
-    return this.rangeAxes.size();
-  }
-
-  /** Clears the range axes from the plot and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @see #clearDomainAxes() */
-  public void clearRangeAxes() {
-    for (ValueAxis axis : this.rangeAxes.values()) {
-      if (axis != null) {
-        axis.removeChangeListener(this);
-      }
-    }
-    this.rangeAxes.clear();
-    fireChangeEvent();
-  }
-
-  /** Configures the range axes.
-   *
-   * @see #configureDomainAxes() */
   public void configureRangeAxes() {
-    for (ValueAxis axis : this.rangeAxes.values()) {
-      if (axis != null) {
-        axis.configure();
-      }
-    }
+    rangeAxis.configure();
   }
 
   /** Returns the location for a range axis. If this hasn't been set
@@ -1519,12 +1284,8 @@ import ch.alpine.tensor.Unprotect;
       }
     } else {
       // reserve space for the domain axes...
-      for (ValueAxis axis : this.domainAxes.values()) {
-        if (axis != null) {
-          RectangleEdge edge = getDomainAxisEdge(findDomainAxisIndex(axis));
-          space = axis.reserveSpace(g2, this, plotArea, edge, space);
-        }
-      }
+      RectangleEdge edge = getDomainAxisEdge(0);
+      space = domainAxis.reserveSpace(g2, this, plotArea, edge, space);
     }
     return space;
   }
@@ -1551,12 +1312,8 @@ import ch.alpine.tensor.Unprotect;
       }
     } else {
       // reserve space for the range axes...
-      for (ValueAxis axis : this.rangeAxes.values()) {
-        if (axis != null) {
-          RectangleEdge edge = getRangeAxisEdge(findRangeAxisIndex(axis));
-          space = axis.reserveSpace(g2, this, plotArea, edge, space);
-        }
-      }
+      RectangleEdge edge = getRangeAxisEdge(0);
+      space = rangeAxis.reserveSpace(g2, this, plotArea, edge, space);
     }
     return space;
   }
@@ -1690,19 +1447,11 @@ import ch.alpine.tensor.Unprotect;
   protected Map<Axis, AxisState> drawAxes(Graphics2D g2, Rectangle2D plotArea, Rectangle2D dataArea, PlotRenderingInfo plotState) {
     AxisCollection axisCollection = new AxisCollection();
     // add domain axes to lists...
-    for (ValueAxis axis : this.domainAxes.values()) {
-      if (axis != null) {
-        int axisIndex = findDomainAxisIndex(axis);
-        axisCollection.add(axis, getDomainAxisEdge(axisIndex));
-      }
-    }
+    // ValueAxis axis = ;
+    // int axisIndex = findDomainAxisIndex(domainAxis);
+    axisCollection.add(domainAxis, getDomainAxisEdge(0));
     // add range axes to lists...
-    for (ValueAxis axis : this.rangeAxes.values()) {
-      if (axis != null) {
-        int axisIndex = findRangeAxisIndex(axis);
-        axisCollection.add(axis, getRangeAxisEdge(axisIndex));
-      }
-    }
+    axisCollection.add(rangeAxis, getRangeAxisEdge(0));
     Map<Axis, AxisState> axisStateMap = new HashMap<>();
     // draw the top axes
     double cursor = dataArea.getMinY() - this.axisOffset.calculateTopOutset(dataArea.getHeight());
@@ -1777,16 +1526,7 @@ import ch.alpine.tensor.Unprotect;
    *
    * @return The axis. */
   public ValueAxis getDomainAxisForDataset(int index) {
-    Args.requireNonNegative(index, "index");
-    ValueAxis valueAxis;
-    List<Integer> axisIndices = this.datasetToDomainAxesMap.get(index);
-    if (axisIndices != null) {
-      // the first axis in the list is used for data <--> Java2D
-      valueAxis = getDomainAxis(axisIndices.get(0));
-    } else {
-      valueAxis = getDomainAxis(0);
-    }
-    return valueAxis;
+    return domainAxis;
   }
 
   /** Returns the range axis for a dataset.
@@ -1795,16 +1535,7 @@ import ch.alpine.tensor.Unprotect;
    *
    * @return The axis. */
   public ValueAxis getRangeAxisForDataset(int index) {
-    Args.requireNonNegative(index, "index");
-    ValueAxis valueAxis;
-    List<Integer> axisIndices = this.datasetToRangeAxesMap.get(index);
-    if (axisIndices != null) {
-      // the first axis in the list is used for data <--> Java2D
-      valueAxis = getRangeAxis(axisIndices.get(0));
-    } else {
-      valueAxis = getRangeAxis(0);
-    }
-    return valueAxis;
+    return rangeAxis;
   }
 
   /** A utility method that returns a list of datasets that are mapped to a
@@ -1857,64 +1588,6 @@ import ch.alpine.tensor.Unprotect;
     return result;
   }
 
-  /** Returns the index of the given domain axis.
-   *
-   * @param axis the axis.
-   *
-   * @return The axis index.
-   *
-   * @see #getRangeAxisIndex(ValueAxis) */
-  public int getDomainAxisIndex(ValueAxis axis) {
-    int result = findDomainAxisIndex(axis);
-    if (result < 0) {
-      // try the parent plot
-      Plot parent = getParent();
-      if (parent instanceof BufferedImagePlot) {
-        BufferedImagePlot p = (BufferedImagePlot) parent;
-        result = p.getDomainAxisIndex(axis);
-      }
-    }
-    return result;
-  }
-
-  private int findDomainAxisIndex(ValueAxis axis) {
-    for (Map.Entry<Integer, ValueAxis> entry : this.domainAxes.entrySet()) {
-      if (entry.getValue() == axis) {
-        return entry.getKey();
-      }
-    }
-    return -1;
-  }
-
-  /** Returns the index of the given range axis.
-   *
-   * @param axis the axis.
-   *
-   * @return The axis index.
-   *
-   * @see #getDomainAxisIndex(ValueAxis) */
-  public int getRangeAxisIndex(ValueAxis axis) {
-    int result = findRangeAxisIndex(axis);
-    if (result < 0) {
-      // try the parent plot
-      Plot parent = getParent();
-      if (parent instanceof BufferedImagePlot) {
-        BufferedImagePlot p = (BufferedImagePlot) parent;
-        result = p.getRangeAxisIndex(axis);
-      }
-    }
-    return result;
-  }
-
-  private int findRangeAxisIndex(ValueAxis axis) {
-    for (Map.Entry<Integer, ValueAxis> entry : this.rangeAxes.entrySet()) {
-      if (entry.getValue() == axis) {
-        return entry.getKey();
-      }
-    }
-    return -1;
-  }
-
   /** Returns the range for the specified axis.
    *
    * @param axis the axis.
@@ -1926,16 +1599,16 @@ import ch.alpine.tensor.Unprotect;
     List<XYDataset> mappedDatasets = new ArrayList<>();
     boolean isDomainAxis = true;
     // is it a domain axis?
-    int domainIndex = getDomainAxisIndex(axis);
-    if (domainIndex >= 0) {
+    // int domainIndex = getDomainAxisIndex(axis);
+    if (axis == domainAxis) {
       isDomainAxis = true;
-      mappedDatasets.addAll(getDatasetsMappedToDomainAxis(domainIndex));
+      mappedDatasets.addAll(getDatasetsMappedToDomainAxis(0));
     }
     // or is it a range axis?
-    int rangeIndex = getRangeAxisIndex(axis);
-    if (rangeIndex >= 0) {
+    // int rangeIndex = getRangeAxisIndex(axis);
+    if (axis == rangeAxis) {
       isDomainAxis = false;
-      mappedDatasets.addAll(getDatasetsMappedToRangeAxis(rangeIndex));
+      mappedDatasets.addAll(getDatasetsMappedToRangeAxis(0));
     }
     // iterate through the datasets that map to the axis and get the union
     // of the ranges.
@@ -2070,14 +1743,7 @@ import ch.alpine.tensor.Unprotect;
     if (!isDomainPannable()) {
       return;
     }
-    int domainAxisCount = getDomainAxisCount();
-    for (int i = 0; i < domainAxisCount; i++) {
-      ValueAxis axis = getDomainAxis(i);
-      if (axis == null) {
-        continue;
-      }
-      axis.pan(axis.isInverted() ? -percent : percent);
-    }
+    domainAxis.pan(domainAxis.isInverted() ? -percent : percent);
   }
 
   /** Pans the range axes by the specified percentage.
@@ -2090,14 +1756,7 @@ import ch.alpine.tensor.Unprotect;
     if (!isRangePannable()) {
       return;
     }
-    int rangeAxisCount = getRangeAxisCount();
-    for (int i = 0; i < rangeAxisCount; i++) {
-      ValueAxis axis = getRangeAxis(i);
-      if (axis == null) {
-        continue;
-      }
-      axis.pan(axis.isInverted() ? -percent : percent);
-    }
+    rangeAxis.pan(rangeAxis.isInverted() ? -percent : percent);
   }
 
   /** Multiplies the range on the domain axis/axes by the specified factor.
@@ -2124,21 +1783,16 @@ import ch.alpine.tensor.Unprotect;
   @Override
   public void zoomDomainAxes(double factor, PlotRenderingInfo info, Point2D source, boolean useAnchor) {
     // perform the zoom on each domain axis
-    for (ValueAxis xAxis : this.domainAxes.values()) {
-      if (xAxis == null) {
-        continue;
+    if (useAnchor) {
+      // get the relevant source coordinate given the plot orientation
+      double sourceX = source.getX();
+      if (this.orientation == PlotOrientation.HORIZONTAL) {
+        sourceX = source.getY();
       }
-      if (useAnchor) {
-        // get the relevant source coordinate given the plot orientation
-        double sourceX = source.getX();
-        if (this.orientation == PlotOrientation.HORIZONTAL) {
-          sourceX = source.getY();
-        }
-        double anchorX = xAxis.java2DToValue(sourceX, info.getDataArea(), getDomainAxisEdge());
-        xAxis.resizeRange2(factor, anchorX);
-      } else {
-        xAxis.resizeRange(factor);
-      }
+      double anchorX = domainAxis.java2DToValue(sourceX, info.getDataArea(), getDomainAxisEdge());
+      domainAxis.resizeRange2(factor, anchorX);
+    } else {
+      domainAxis.resizeRange(factor);
     }
   }
 
@@ -2156,11 +1810,7 @@ import ch.alpine.tensor.Unprotect;
    * @see #zoomRangeAxes(double, double, PlotRenderingInfo, Point2D) */
   @Override
   public void zoomDomainAxes(double lowerPercent, double upperPercent, PlotRenderingInfo info, Point2D source) {
-    for (ValueAxis xAxis : this.domainAxes.values()) {
-      if (xAxis != null) {
-        xAxis.zoomRange(lowerPercent, upperPercent);
-      }
-    }
+    domainAxis.zoomRange(lowerPercent, upperPercent);
   }
 
   /** Multiplies the range on the range axis/axes by the specified factor.
@@ -2188,21 +1838,16 @@ import ch.alpine.tensor.Unprotect;
   @Override
   public void zoomRangeAxes(double factor, PlotRenderingInfo info, Point2D source, boolean useAnchor) {
     // perform the zoom on each range axis
-    for (ValueAxis yAxis : this.rangeAxes.values()) {
-      if (yAxis == null) {
-        continue;
+    if (useAnchor) {
+      // get the relevant source coordinate given the plot orientation
+      double sourceY = source.getY();
+      if (this.orientation == PlotOrientation.HORIZONTAL) {
+        sourceY = source.getX();
       }
-      if (useAnchor) {
-        // get the relevant source coordinate given the plot orientation
-        double sourceY = source.getY();
-        if (this.orientation == PlotOrientation.HORIZONTAL) {
-          sourceY = source.getX();
-        }
-        double anchorY = yAxis.java2DToValue(sourceY, info.getDataArea(), getRangeAxisEdge());
-        yAxis.resizeRange2(factor, anchorY);
-      } else {
-        yAxis.resizeRange(factor);
-      }
+      double anchorY = rangeAxis.java2DToValue(sourceY, info.getDataArea(), getRangeAxisEdge());
+      rangeAxis.resizeRange2(factor, anchorY);
+    } else {
+      rangeAxis.resizeRange(factor);
     }
   }
 
@@ -2216,11 +1861,7 @@ import ch.alpine.tensor.Unprotect;
    * @see #zoomDomainAxes(double, double, PlotRenderingInfo, Point2D) */
   @Override
   public void zoomRangeAxes(double lowerPercent, double upperPercent, PlotRenderingInfo info, Point2D source) {
-    for (ValueAxis yAxis : this.rangeAxes.values()) {
-      if (yAxis != null) {
-        yAxis.zoomRange(lowerPercent, upperPercent);
-      }
-    }
+    rangeAxis.zoomRange(lowerPercent, upperPercent);
   }
 
   /** Returns {@code true}, indicating that the domain axis/axes for this

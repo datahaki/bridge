@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.jfree.chart.ChartFactory;
 
@@ -13,6 +14,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.alg.VectorQ;
+import ch.alpine.tensor.img.ColorDataGradient;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.qty.QuantityUnit;
@@ -30,6 +32,7 @@ public class VisualSet implements Serializable {
   private final Axis axisX = new Axis();
   private final Axis axisY = new Axis();
   private String plotLabel = "";
+  private ColorDataGradient colorDataGradient = null;
 
   public VisualSet(ColorDataIndexed colorDataIndexed) {
     this.colorDataIndexed = Objects.requireNonNull(colorDataIndexed);
@@ -73,10 +76,8 @@ public class VisualSet implements Serializable {
   public VisualRow getVisualRow(int index) {
     return visualRows.get(index);
   }
-  // public ColorDataIndexed getColorDataIndexed() {
-  // return colorDataIndexed;
-  // }
 
+  // ---
   /** @param string to appear above plot */
   public void setPlotLabel(String string) {
     plotLabel = string;
@@ -85,6 +86,23 @@ public class VisualSet implements Serializable {
   /** @return */
   public String getPlotLabel() {
     return plotLabel;
+  }
+
+  // ---
+  /** @return value may be null */
+  public ColorDataGradient getColorDataGradient() {
+    return this.colorDataGradient;
+  }
+
+  /** @param colorDataGradient */
+  public void setColorDataGradient(ColorDataGradient colorDataGradient) {
+    this.colorDataGradient = colorDataGradient;
+  }
+
+  /** @param fallback
+   * @return color data gradient set by user, otherwise given fallback */
+  public ColorDataGradient getColorDataGradientOrElse(ColorDataGradient fallback) {
+    return Optional.ofNullable(this.colorDataGradient).orElse(fallback);
   }
 
   public boolean hasLegend() {
