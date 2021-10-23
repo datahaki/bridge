@@ -47,7 +47,6 @@ public enum ListPlot {
             false, // tooltips
             false); // urls
     XYPlot xyPlot = jFreeChart.getXYPlot();
-    System.out.println(xyPlot.getDomainAxis().getTickLabelFont());
     XYItemRenderer xyItemRenderer = xyPlot.getRenderer();
     int limit = xySeriesCollection.getSeriesCount();
     for (int index = 0; index < limit; ++index) {

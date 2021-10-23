@@ -51,6 +51,7 @@ public enum Spectrogram {
    * @return spectrogram chart of signal specified in given visual set generated using
    * given window function and {@link ColorDataGradients#VISIBLESPECTRUM} */
   public static JFreeChart of(VisualSet visualSet, ScalarUnaryOperator window) {
+    // TODO use sunset_reversed
     return of(visualSet, window, ColorDataGradients.VISIBLESPECTRUM);
   }
 
