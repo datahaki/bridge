@@ -67,7 +67,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
@@ -104,7 +103,6 @@ import org.jfree.data.Range;
 import org.jfree.data.general.DatasetChangeEvent;
 import org.jfree.data.general.DatasetUtils;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeriesCollection;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
@@ -141,9 +139,9 @@ import ch.alpine.tensor.sca.Clip;
   /** The range axis location. */
   private Map<Integer, AxisLocation> rangeAxisLocations;
   /** Storage for the datasets. */
-  private Map<Integer, XYDataset> datasets;
+  private final XYDataset xyDataset;
   /** Storage for the renderers. */
-  private final XYItemRenderer renderer;
+  private final XYItemRenderer xyItemRenderer;
   /** Storage for the mapping between datasets/renderers and domain axes. The
    * keys in the map are Integer objects, corresponding to the dataset
    * index. The values in the map are List objects containing Integer
@@ -233,7 +231,7 @@ import ch.alpine.tensor.sca.Clip;
     visualSet.add( //
         Tensors.of(clipX.min(), clipX.max()), //
         Tensors.of(clipY.min(), clipY.max()));
-    XYSeriesCollection dataset = DatasetFactory.xySeriesCollection(visualSet);
+    xyDataset = DatasetFactory.xySeriesCollection(visualSet);
     domainAxis = new NumberAxis(visualArray.getAxisX().getAxisLabel());
     domainAxis.setRange( //
         Unprotect.withoutUnit(clipX.min()).number().doubleValue(), //
@@ -246,20 +244,16 @@ import ch.alpine.tensor.sca.Clip;
         Unprotect.withoutUnit(clipY.min()).number().doubleValue(), //
         Unprotect.withoutUnit(clipY.max()).number().doubleValue());
     rangeAxis.setTickLabelFont(rangeAxis.getTickLabelFont().deriveFont(12f));
-    renderer = new XYLineAndShapeRenderer(false, false);
+    xyItemRenderer = new XYLineAndShapeRenderer(false, false);
     this.orientation = PlotOrientation.VERTICAL;
     this.weight = 1; // only relevant when this is a subplot
     this.axisOffset = new RectangleInsets(4, 4, 4, 4); // seems to be the default of XYPlot
     // allocate storage for datasets, axes and renderers (all optional)
     this.domainAxisLocations = new HashMap<>();
     this.rangeAxisLocations = new HashMap<>();
-    this.datasets = new HashMap<>();
     this.datasetToDomainAxesMap = new TreeMap<>();
     this.datasetToRangeAxesMap = new TreeMap<>();
-    this.datasets.put(0, dataset);
-    if (dataset != null) {
-      dataset.addChangeListener(this);
-    }
+    // dataset.addChangeListener(this);
     mapDatasetToDomainAxis(0, 0);
     domainAxis.setPlot(this);
     domainAxis.addChangeListener(this);
@@ -594,73 +588,7 @@ import ch.alpine.tensor.sca.Clip;
    * @see #getDataset(int)
    * @see #setDataset(XYDataset) */
   public XYDataset getDataset() {
-    return getDataset(0);
-  }
-
-  /** Returns the dataset with the specified index, or {@code null} if there
-   * is no dataset with that index.
-   *
-   * @param index the dataset index (must be &gt;= 0).
-   *
-   * @return The dataset (possibly {@code null}).
-   *
-   * @see #setDataset(int, XYDataset) */
-  public XYDataset getDataset(int index) {
-    return this.datasets.get(index);
-  }
-
-  /** Sets the primary dataset for the plot, replacing the existing dataset if
-   * there is one.
-   *
-   * @param dataset the dataset ({@code null} permitted).
-   *
-   * @see #getDataset()
-   * @see #setDataset(int, XYDataset) */
-  public void setDataset(XYDataset dataset) {
-    setDataset(0, dataset);
-  }
-
-  /** Sets a dataset for the plot and sends a change event to all registered
-   * listeners.
-   *
-   * @param index the dataset index (must be &gt;= 0).
-   * @param dataset the dataset ({@code null} permitted).
-   *
-   * @see #getDataset(int) */
-  public void setDataset(int index, XYDataset dataset) {
-    XYDataset existing = getDataset(index);
-    if (existing != null) {
-      existing.removeChangeListener(this);
-    }
-    this.datasets.put(index, dataset);
-    if (dataset != null) {
-      dataset.addChangeListener(this);
-    }
-    // send a dataset change event to self...
-    DatasetChangeEvent event = new DatasetChangeEvent(this, dataset);
-    datasetChanged(event);
-  }
-
-  /** Returns the number of datasets.
-   *
-   * @return The number of datasets. */
-  public int getDatasetCount() {
-    return this.datasets.size();
-  }
-
-  /** Returns the index of the specified dataset, or {@code -1} if the
-   * dataset does not belong to the plot.
-   *
-   * @param dataset the dataset ({@code null} not permitted).
-   *
-   * @return The index or -1. */
-  public int indexOf(XYDataset dataset) {
-    for (Map.Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
-      if (dataset == entry.getValue()) {
-        return entry.getKey();
-      }
-    }
-    return -1;
+    return xyDataset;
   }
 
   /** Maps a dataset to a particular domain axis. All data will be plotted
@@ -688,7 +616,7 @@ import ch.alpine.tensor.sca.Clip;
     Integer key = index;
     this.datasetToDomainAxesMap.put(key, new ArrayList<>(axisIndices));
     // fake a dataset change event to update axes...
-    datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
+    datasetChanged(new DatasetChangeEvent(this, getDataset()));
   }
 
   /** Maps a dataset to a particular range axis. All data will be plotted
@@ -716,7 +644,7 @@ import ch.alpine.tensor.sca.Clip;
     Integer key = index;
     this.datasetToRangeAxesMap.put(key, new ArrayList<>(axisIndices));
     // fake a dataset change event to update axes...
-    datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
+    datasetChanged(new DatasetChangeEvent(this, getDataset()));
   }
 
   /** This method is used to perform argument checking on the list of
@@ -750,7 +678,7 @@ import ch.alpine.tensor.sca.Clip;
    *
    * @see #setRenderer(XYItemRenderer) */
   public XYItemRenderer getRenderer() {
-    return renderer;
+    return xyItemRenderer;
   }
 
   /** Returns the dataset rendering order.
@@ -1518,7 +1446,7 @@ import ch.alpine.tensor.sca.Clip;
    * @return A flag that indicates whether any data was actually rendered. */
   public boolean render(Graphics2D g2, Rectangle2D dataArea, int index, PlotRenderingInfo info, CrosshairState crosshairState) {
     boolean foundData = false;
-    XYDataset dataset = getDataset(index);
+    XYDataset dataset = getDataset();
     if (!DatasetUtils.isEmptyOrNull(dataset)) {
       foundData = true;
       ValueAxis xAxis = getDomainAxisForDataset(index);
@@ -1557,17 +1485,16 @@ import ch.alpine.tensor.sca.Clip;
   private List<XYDataset> getDatasetsMappedToDomainAxis(Integer axisIndex) {
     Args.nullNotPermitted(axisIndex, "axisIndex");
     List<XYDataset> result = new ArrayList<>();
-    for (Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
-      int index = entry.getKey();
-      List<Integer> mappedAxes = this.datasetToDomainAxesMap.get(index);
-      if (mappedAxes == null) {
-        if (axisIndex.equals(ZERO)) {
-          result.add(entry.getValue());
-        }
-      } else {
-        if (mappedAxes.contains(axisIndex)) {
-          result.add(entry.getValue());
-        }
+    // XYDataset> entry : this.datasets.entrySet()) {
+    int index = 0;
+    List<Integer> mappedAxes = this.datasetToDomainAxesMap.get(index);
+    if (mappedAxes == null) {
+      if (axisIndex.equals(ZERO)) {
+        result.add(xyDataset);
+      }
+    } else {
+      if (mappedAxes.contains(axisIndex)) {
+        result.add(xyDataset);
       }
     }
     return result;
@@ -1582,17 +1509,15 @@ import ch.alpine.tensor.sca.Clip;
   private List<XYDataset> getDatasetsMappedToRangeAxis(Integer axisIndex) {
     Args.nullNotPermitted(axisIndex, "axisIndex");
     List<XYDataset> result = new ArrayList<>();
-    for (Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
-      int index = entry.getKey();
-      List<Integer> mappedAxes = this.datasetToRangeAxesMap.get(index);
-      if (mappedAxes == null) {
-        if (axisIndex.equals(ZERO)) {
-          result.add(entry.getValue());
-        }
-      } else {
-        if (mappedAxes.contains(axisIndex)) {
-          result.add(entry.getValue());
-        }
+    int index = 0;
+    List<Integer> mappedAxes = this.datasetToRangeAxesMap.get(index);
+    if (mappedAxes == null) {
+      if (axisIndex.equals(ZERO)) {
+        result.add(xyDataset);
+      }
+    } else {
+      if (mappedAxes.contains(axisIndex)) {
+        result.add(xyDataset);
       }
     }
     return result;
@@ -1624,7 +1549,7 @@ import ch.alpine.tensor.sca.Clip;
     // of the ranges.
     for (XYDataset d : mappedDatasets) {
       if (d != null) {
-        XYItemRenderer r = renderer;
+        XYItemRenderer r = xyItemRenderer;
         if (isDomainAxis) {
           if (r != null) {
             result = Range.combine(result, r.findDomainBounds(d));
@@ -1941,19 +1866,13 @@ import ch.alpine.tensor.sca.Clip;
       return this.fixedLegendItems;
     }
     LegendItemCollection result = new LegendItemCollection();
-    for (XYDataset dataset : this.datasets.values()) {
-      if (dataset == null) {
-        continue;
-      }
-      int datasetIndex = indexOf(dataset);
-      if (renderer != null) {
-        int seriesCount = dataset.getSeriesCount();
-        for (int i = 0; i < seriesCount; i++) {
-          if (renderer.isSeriesVisible(i) && renderer.isSeriesVisibleInLegend(i)) {
-            LegendItem item = renderer.getLegendItem(datasetIndex, i);
-            if (item != null) {
-              result.add(item);
-            }
+    if (xyItemRenderer != null) {
+      int seriesCount = xyDataset.getSeriesCount();
+      for (int i = 0; i < seriesCount; i++) {
+        if (xyItemRenderer.isSeriesVisible(i) && xyItemRenderer.isSeriesVisibleInLegend(i)) {
+          LegendItem item = xyItemRenderer.getLegendItem(0, i);
+          if (item != null) {
+            result.add(item);
           }
         }
       }
