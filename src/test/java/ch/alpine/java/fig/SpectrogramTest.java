@@ -13,10 +13,10 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.HomeDirectory;
-import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.Cos;
 import ch.alpine.tensor.sca.win.DirichletWindow;
 import junit.framework.TestCase;
@@ -27,12 +27,16 @@ public class SpectrogramTest extends TestCase {
         0, //
         800, //
         2800).multiply(Pi.VALUE));
-    Tensor domain = Subdivide.of(RealScalar.of(0.3), RealScalar.of(1.6), (int) (8000 * (1.6 - 0.3)));
+    Tensor domain = Subdivide.of(RealScalar.of(0.32), RealScalar.of(1.6), (int) (8000 * (1.6 - 0.32)));
     Tensor chirp = domain.map(polynomial).map(Cos.FUNCTION);
     VisualSet visualSet = new VisualSet();
     visualSet.setPlotLabel(System.nanoTime() + " Spectrogram Test");
     visualSet.add(domain.map(s -> Quantity.of(s, "s")), chirp);
-    visualSet.setColorDataGradient(ColorDataGradients.CLASSIC);
+    visualSet.getAxisX().setUnit(Unit.of("ms"));
+    visualSet.getAxisX().setLabel("time");
+    visualSet.getAxisY().setLabel("user defined");
+    visualSet.getAxisY().setUnit(Unit.of("ms^-1"));
+    // visualSet.setColorDataGradient(ColorDataGradients.CLASSIC);
     JFreeChart jFreeChart = Spectrogram.of(visualSet, DirichletWindow.FUNCTION);
     jFreeChart.setBackgroundPaint(Color.WHITE);
     // TODO this is more like a demo

@@ -106,9 +106,10 @@ import org.jfree.data.general.DatasetUtils;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.opt.nd.Box;
+import ch.alpine.tensor.sca.Clip;
 
 /** A general class for plotting data in the form of (x, y) pairs. This plot can
  * use data from any class that implements the {@link XYDataset} interface.
@@ -219,22 +220,31 @@ import ch.alpine.tensor.Unprotect;
   private boolean rangePannable;
   /** The shadow generator ({@code null} permitted). */
   private ShadowGenerator shadowGenerator;
-  final BufferedImage bufferedImage;
-  final Scalar _xlo;
-  final Scalar _xhi;
-  final Scalar yhi;
+  private final BufferedImage bufferedImage;
+  private final Clip clipX;
+  private final Clip clipY;
 
-  public BufferedImagePlot(BufferedImage bufferedImage, VisualSet visualSet) {
+  public BufferedImagePlot(BufferedImage bufferedImage, VisualArray visualArray) {
     this.bufferedImage = bufferedImage;
-    Tensor points = visualSet.getVisualRow(0).points();
-    _xlo = points.Get(0, 0);
-    _xhi = points.Get(1, 0);
-    yhi = points.Get(1, 1);
+    Box box = visualArray.getBox();
+    VisualSet visualSet = new VisualSet();
+    clipX = box.getClip(0);
+    clipY = box.getClip(1);
+    visualSet.add( //
+        Tensors.of(clipX.min(), clipX.max()), //
+        Tensors.of(clipY.min(), clipY.max()));
     XYSeriesCollection dataset = DatasetFactory.xySeriesCollection(visualSet);
-    domainAxis = new NumberAxis(visualSet.getAxisX().getAxisLabel());
+    domainAxis = new NumberAxis(visualArray.getAxisX().getAxisLabel());
+    domainAxis.setRange( //
+        Unprotect.withoutUnit(clipX.min()).number().doubleValue(), //
+        Unprotect.withoutUnit(clipX.max()).number().doubleValue());
     domainAxis.setAutoRangeIncludesZero(false);
     domainAxis.setTickLabelFont(domainAxis.getTickLabelFont().deriveFont(12f));
-    rangeAxis = new NumberAxis(visualSet.getAxisY().getAxisLabel());
+    // ---
+    rangeAxis = new NumberAxis(visualArray.getAxisY().getAxisLabel());
+    rangeAxis.setRange( //
+        Unprotect.withoutUnit(clipY.min()).number().doubleValue(), //
+        Unprotect.withoutUnit(clipY.max()).number().doubleValue());
     rangeAxis.setTickLabelFont(rangeAxis.getTickLabelFont().deriveFont(12f));
     renderer = new XYLineAndShapeRenderer(false, false);
     this.orientation = PlotOrientation.VERTICAL;
@@ -1375,10 +1385,10 @@ import ch.alpine.tensor.Unprotect;
     g2.clip(dataArea);
     // g2.clip(null);
     {
-      double x1 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(_xlo).number().doubleValue(), dataArea, getDomainAxisEdge());
-      double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(_xhi).number().doubleValue(), dataArea, getDomainAxisEdge());
-      double y1 = getRangeAxis().valueToJava2D(0.0, dataArea, getRangeAxisEdge());
-      double y2 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(yhi).number().doubleValue(), dataArea, getRangeAxisEdge());
+      double x1 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.min()).number().doubleValue(), dataArea, getDomainAxisEdge());
+      double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.max()).number().doubleValue(), dataArea, getDomainAxisEdge());
+      double y1 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.min()).number().doubleValue(), dataArea, getRangeAxisEdge());
+      double y2 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.max()).number().doubleValue(), dataArea, getRangeAxisEdge());
       g2.drawImage(bufferedImage, //
           (int) x1, //
           (int) y2, //

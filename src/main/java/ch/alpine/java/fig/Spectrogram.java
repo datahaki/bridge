@@ -2,12 +2,10 @@
 package ch.alpine.java.fig;
 
 import java.awt.image.BufferedImage;
-import java.util.function.Function;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 
-import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -16,6 +14,8 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
+import ch.alpine.tensor.opt.nd.Box;
+import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
 
 /** inspired by
@@ -30,18 +30,20 @@ public enum Spectrogram {
     VisualRow visualRow = visualSet.getVisualRow(0);
     Tensor domain = visualRow.points().get(Tensor.ALL, 0);
     Tensor signal = visualRow.points().get(Tensor.ALL, 1);
-    Function<Scalar, ? extends Tensor> function = visualSet.getColorDataGradientOrElse(ColorDataGradients.VISIBLESPECTRUM);
-    BufferedImage bufferedImage = ImageFormat.of(ch.alpine.tensor.fft.Spectrogram.of(signal, window, function));
-    Scalar dt = domain.Get(1).subtract(domain.Get(0));
-    Scalar yhi = dt.reciprocal().multiply(RationalScalar.HALF);
+    BufferedImage bufferedImage = ImageFormat.of(ch.alpine.tensor.fft.Spectrogram.of(signal, window, ColorDataGradients.VISIBLESPECTRUM));
+    Scalar yhi = domain.Get(2).subtract(domain.Get(0)).reciprocal();
     // ---
-    VisualSet _visualSet = new VisualSet();
-    ScalarUnaryOperator suo = UnitConvert.SI().to(visualSet.getAxisX().getUnit());
-    Tensor points = visualRow.points();
-    _visualSet.add( //
-        Tensors.of(points.Get(0, 0), Last.of(points).Get(0)).map(suo), //
-        Tensors.of(yhi.zero(), yhi));
-    BufferedImagePlot bufferedImagePlot = new BufferedImagePlot(bufferedImage, _visualSet);
+    Unit unitX = visualSet.getAxisX().getUnit();
+    Unit unitY = visualSet.getAxisY().getUnit();
+    ScalarUnaryOperator suoX = UnitConvert.SI().to(unitX);
+    ScalarUnaryOperator suoY = UnitConvert.SI().to(unitY);
+    Box box = Box.of( //
+        Tensors.of(suoX.apply(domain.Get(0)), suoY.apply(yhi.zero())), //
+        Tensors.of(suoX.apply(Last.of(domain)), suoY.apply(yhi)));
+    VisualArray visualArray = new VisualArray(box, null);
+    visualArray.getAxisX().setLabel(visualSet.getAxisX().getLabel());
+    visualArray.getAxisY().setLabel(visualSet.getAxisY().getLabel());
+    BufferedImagePlot bufferedImagePlot = new BufferedImagePlot(bufferedImage, visualArray);
     JFreeChart jFreeChart = new JFreeChart(visualSet.getPlotLabel(), JFreeChart.DEFAULT_TITLE_FONT, bufferedImagePlot, true);
     ChartFactory.getChartTheme().apply(jFreeChart);
     return jFreeChart;

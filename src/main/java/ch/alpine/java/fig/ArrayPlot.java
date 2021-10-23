@@ -28,7 +28,7 @@ public enum ArrayPlot {
     _visualSet.add( //
         Tensors.of(points.Get(0, 0), Last.of(points).Get(0)).map(suo), //
         Tensors.vectorInt(0, bufferedImage.getHeight()));
-    Plot plot = new BufferedImagePlot(bufferedImage, _visualSet);
+    Plot plot = new BufferedImagePlot(bufferedImage, null); // FIXME
     JFreeChart jFreeChart = new JFreeChart(visualSet.getPlotLabel(), JFreeChart.DEFAULT_TITLE_FONT, plot, true);
     ChartFactory.getChartTheme().apply(jFreeChart);
     return jFreeChart;
