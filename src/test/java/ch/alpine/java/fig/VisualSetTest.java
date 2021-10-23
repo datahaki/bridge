@@ -14,7 +14,6 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Dimensions;
 import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.ext.HomeDirectory;
-import ch.alpine.tensor.ext.Serialization;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.UniformDistribution;
 import junit.framework.TestCase;
@@ -34,7 +33,7 @@ public class VisualSetTest extends TestCase {
     assertEquals(set1.visualRows().size(), 0);
   }
 
-  public void testAdd() throws ClassNotFoundException, IOException {
+  public void testAdd() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 5);
@@ -42,7 +41,6 @@ public class VisualSetTest extends TestCase {
     VisualRow row1 = visualSet.add(domain, values1);
     VisualRow row2 = visualSet.add(domain, values2);
     assertEquals(Dimensions.of(row1.points()), Dimensions.of(row2.points()));
-    Serialization.copy(visualSet);
   }
 
   public void testSetRowLabel() {

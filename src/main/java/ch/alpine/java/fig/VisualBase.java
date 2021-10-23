@@ -1,11 +1,9 @@
 // code by gjoel, jph
 package ch.alpine.java.fig;
 
-import java.io.Serializable;
-
 import org.jfree.chart.ChartFactory;
 
-public class VisualBase implements Serializable {
+public class VisualBase {
   static {
     // design is bad but instigated by the jfree library
     ChartFactory.setChartTheme(DefaultChartTheme.STANDARD);

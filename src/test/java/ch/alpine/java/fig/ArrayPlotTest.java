@@ -5,6 +5,6 @@ import junit.framework.TestCase;
 
 public class ArrayPlotTest extends TestCase {
   public void testSimple() {
-    ArrayPlotDemo.create();
+    TestHelper.draw(ArrayPlotDemo.create());
   }
 }

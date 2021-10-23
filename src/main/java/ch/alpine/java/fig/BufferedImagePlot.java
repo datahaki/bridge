@@ -58,7 +58,6 @@ import org.jfree.data.xy.XYDataset;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
-import ch.alpine.tensor.opt.nd.Box;
 import ch.alpine.tensor.sca.Clip;
 
 /** A general class for plotting data in the form of (x, y) pairs. This plot can
@@ -167,16 +166,13 @@ import ch.alpine.tensor.sca.Clip;
   private boolean rangePannable;
   /** The shadow generator ({@code null} permitted). */
   private ShadowGenerator shadowGenerator;
-  private final BufferedImage bufferedImage;
-  private final Clip clipX;
-  private final Clip clipY;
+  private final VisualArray visualArray;
 
   public BufferedImagePlot(VisualArray visualArray) {
-    this.bufferedImage = visualArray.getBufferedImage();
-    Box box = visualArray.getBox();
+    this.visualArray = visualArray;
     VisualSet visualSet = new VisualSet();
-    clipX = box.getClip(0);
-    clipY = box.getClip(1);
+    Clip clipX = visualArray.getClipX();
+    Clip clipY = visualArray.getClipY();
     visualSet.add( //
         Tensors.of(clipX.min(), clipX.max()), //
         Tensors.of(clipY.min(), clipY.max()));
@@ -1262,11 +1258,13 @@ import ch.alpine.tensor.sca.Clip;
     g2.clip(dataArea);
     // g2.clip(null);
     {
+      Clip clipX = visualArray.getClipX();
+      Clip clipY = visualArray.getClipY();
       double x1 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.min()).number().doubleValue(), dataArea, getDomainAxisEdge());
       double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.max()).number().doubleValue(), dataArea, getDomainAxisEdge());
       double y1 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.min()).number().doubleValue(), dataArea, getRangeAxisEdge());
       double y2 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.max()).number().doubleValue(), dataArea, getRangeAxisEdge());
-      g2.drawImage(bufferedImage, //
+      g2.drawImage(visualArray.getBufferedImage(), //
           (int) x1, //
           (int) y2, //
           (int) (x2 - x1 + 1), //

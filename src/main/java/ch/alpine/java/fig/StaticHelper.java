@@ -10,12 +10,12 @@ import org.jfree.data.time.TimePeriod;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Last;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.opt.nd.Box;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
+import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Clips;
 
 /* package */ enum StaticHelper {
   ;
@@ -35,15 +35,21 @@ import ch.alpine.tensor.qty.UnitConvert;
     return new Second(seconds, minutes, hours, day, month, year); // month and year can not be zero
   }
 
-  /* package */ static VisualArray create(BufferedImage bufferedImage, VisualSet visualSet, Tensor domain, Scalar yhi) {
+  /** @param bufferedImage
+   * @param visualSet
+   * @param domain
+   * @param yhi with unit of domain negated
+   * @return */
+  public static VisualArray create(BufferedImage bufferedImage, VisualSet visualSet, Tensor domain, Scalar yhi) {
     Unit unitX = visualSet.getAxisX().getUnit();
-    Unit unitY = visualSet.getAxisY().getUnit();
     ScalarUnaryOperator suoX = UnitConvert.SI().to(unitX);
+    Clip clipX = Clips.interval(suoX.apply(domain.Get(0)), suoX.apply(Last.of(domain)));
+    // ---
+    Unit unitY = visualSet.getAxisY().getUnit();
     ScalarUnaryOperator suoY = UnitConvert.SI().to(unitY);
-    Box box = Box.of( //
-        Tensors.of(suoX.apply(domain.Get(0)), suoY.apply(yhi.zero())), //
-        Tensors.of(suoX.apply(Last.of(domain)), suoY.apply(yhi)));
-    VisualArray visualArray = new VisualArray(box, bufferedImage);
+    Clip clipY = Clips.interval(suoY.apply(yhi.zero()), suoY.apply(yhi));
+    // ---
+    VisualArray visualArray = new VisualArray(clipX, clipY, bufferedImage);
     visualArray.getAxisX().setLabel(visualSet.getAxisX().getLabel());
     visualArray.getAxisY().setLabel(visualSet.getAxisY().getLabel());
     return visualArray;

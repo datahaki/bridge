@@ -1,26 +1,35 @@
-// code by gjoel, jph
+// code by jph
 package ch.alpine.java.fig;
 
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-import ch.alpine.tensor.opt.nd.Box;
 import ch.alpine.tensor.qty.QuantityUnit;
+import ch.alpine.tensor.sca.Clip;
 
 public class VisualArray extends VisualBase {
-  private final Box box;
+  private final Clip clipX;
+  private final Clip clipY;
   private final BufferedImage bufferedImage;
 
-  public VisualArray(Box box, BufferedImage bufferedImage) {
-    this.box = box;
-    getAxisX().setUnit(QuantityUnit.of(box.getClip(0).min()));
-    getAxisY().setUnit(QuantityUnit.of(box.getClip(1).min()));
+  /** @param clipX non-null
+   * @param clipY non-null
+   * @param bufferedImage non-null */
+  public VisualArray(Clip clipX, Clip clipY, BufferedImage bufferedImage) {
+    this.clipX = clipX;
+    this.clipY = clipY;
+    getAxisX().setUnit(QuantityUnit.of(clipX.min()));
+    getAxisY().setUnit(QuantityUnit.of(clipY.min()));
     this.bufferedImage = Objects.requireNonNull(bufferedImage);
   }
 
   /** @return */
-  public Box getBox() {
-    return box;
+  public Clip getClipX() {
+    return clipX;
+  }
+
+  public Clip getClipY() {
+    return clipY;
   }
 
   /** @return */

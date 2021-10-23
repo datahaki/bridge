@@ -31,14 +31,14 @@ public enum SpectrogramDemo {
     double lo = 0.32;
     double hi = 1.6;
     Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
-    Tensor chirp = domain.map(polynomial).map(Cos.FUNCTION);
+    Tensor signal = domain.map(polynomial).map(Cos.FUNCTION).map(s -> Quantity.of(s, "m"));
     VisualSet visualSet = new VisualSet();
     visualSet.setPlotLabel("Spectrogram");
-    visualSet.add(domain.map(s -> Quantity.of(s, "s")), chirp);
+    visualSet.add(domain.map(s -> Quantity.of(s, "s")), signal);
     visualSet.getAxisX().setUnit(Unit.of("ms"));
     visualSet.getAxisX().setLabel("time");
+    visualSet.getAxisY().setUnit(Unit.of("s^-1"));
     visualSet.getAxisY().setLabel("user defined");
-    visualSet.getAxisY().setUnit(Unit.of("ms^-1"));
     return Spectrogram.of(visualSet, DirichletWindow.FUNCTION, ColorDataGradients.VISIBLESPECTRUM);
   }
 
