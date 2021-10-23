@@ -18,7 +18,7 @@ import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.Cos;
-import ch.alpine.tensor.sca.win.DirichletWindow;
+import ch.alpine.tensor.sca.win.HannWindow;
 import junit.framework.TestCase;
 
 public class SpectrogramTest extends TestCase {
@@ -27,17 +27,19 @@ public class SpectrogramTest extends TestCase {
         0, //
         800, //
         2800).multiply(Pi.VALUE));
-    Tensor domain = Subdivide.of(RealScalar.of(0.32), RealScalar.of(1.6), (int) (8000 * (1.6 - 0.32)));
+    double lo = 0.32;
+    double hi = 1.6;
+    Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
     Tensor chirp = domain.map(polynomial).map(Cos.FUNCTION);
     VisualSet visualSet = new VisualSet();
-    visualSet.setPlotLabel(System.nanoTime() + " Spectrogram Test");
+    visualSet.setPlotLabel("Spectrogram");
     visualSet.add(domain.map(s -> Quantity.of(s, "s")), chirp);
     visualSet.getAxisX().setUnit(Unit.of("ms"));
     visualSet.getAxisX().setLabel("time");
     visualSet.getAxisY().setLabel("user defined");
     visualSet.getAxisY().setUnit(Unit.of("ms^-1"));
     // visualSet.setColorDataGradient(ColorDataGradients.CLASSIC);
-    JFreeChart jFreeChart = Spectrogram.of(visualSet, DirichletWindow.FUNCTION);
+    JFreeChart jFreeChart = Spectrogram.of(visualSet, HannWindow.FUNCTION);
     jFreeChart.setBackgroundPaint(Color.WHITE);
     // TODO this is more like a demo
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("spectrogram.png"), jFreeChart, 1024, 320);

@@ -1,43 +1,30 @@
 // code by gjoel, jph
 package ch.alpine.java.fig;
 
-import java.util.Optional;
+import java.awt.image.BufferedImage;
+import java.util.Objects;
 
-import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.img.ColorDataGradient;
 import ch.alpine.tensor.opt.nd.Box;
 import ch.alpine.tensor.qty.QuantityUnit;
 
 public class VisualArray extends VisualBase {
-  private ColorDataGradient colorDataGradient = null;
   private final Box box;
-  @SuppressWarnings("unused")
-  private final Tensor matrix;
+  private final BufferedImage bufferedImage;
 
-  public VisualArray(Box box, Tensor matrix) {
+  public VisualArray(Box box, BufferedImage bufferedImage) {
     this.box = box;
     getAxisX().setUnit(QuantityUnit.of(box.getClip(0).min()));
     getAxisY().setUnit(QuantityUnit.of(box.getClip(1).min()));
-    this.matrix = matrix;
+    this.bufferedImage = Objects.requireNonNull(bufferedImage);
   }
 
-  /** @return value may be null */
-  public ColorDataGradient getColorDataGradient() {
-    return this.colorDataGradient;
-  }
-
-  /** @param colorDataGradient */
-  public void setColorDataGradient(ColorDataGradient colorDataGradient) {
-    this.colorDataGradient = colorDataGradient;
-  }
-
-  /** @param fallback
-   * @return color data gradient set by user, otherwise given fallback */
-  public ColorDataGradient getColorDataGradientOrElse(ColorDataGradient fallback) {
-    return Optional.ofNullable(this.colorDataGradient).orElse(fallback);
-  }
-
+  /** @return */
   public Box getBox() {
     return box;
+  }
+
+  /** @return */
+  public BufferedImage getBufferedImage() {
+    return bufferedImage;
   }
 }

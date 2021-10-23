@@ -1,6 +1,7 @@
 // code by gjoel
 package ch.alpine.java.fig;
 
+import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +35,7 @@ import ch.alpine.tensor.qty.UnitConvert;
     return new Second(seconds, minutes, hours, day, month, year); // month and year can not be zero
   }
 
-  /* package */ static VisualArray create(VisualSet visualSet, Tensor domain, Scalar yhi) {
+  /* package */ static VisualArray create(BufferedImage bufferedImage, VisualSet visualSet, Tensor domain, Scalar yhi) {
     Unit unitX = visualSet.getAxisX().getUnit();
     Unit unitY = visualSet.getAxisY().getUnit();
     ScalarUnaryOperator suoX = UnitConvert.SI().to(unitX);
@@ -42,7 +43,7 @@ import ch.alpine.tensor.qty.UnitConvert;
     Box box = Box.of( //
         Tensors.of(suoX.apply(domain.Get(0)), suoY.apply(yhi.zero())), //
         Tensors.of(suoX.apply(Last.of(domain)), suoY.apply(yhi)));
-    VisualArray visualArray = new VisualArray(box, null);
+    VisualArray visualArray = new VisualArray(box, bufferedImage);
     visualArray.getAxisX().setLabel(visualSet.getAxisX().getLabel());
     visualArray.getAxisY().setLabel(visualSet.getAxisY().getLabel());
     return visualArray;
