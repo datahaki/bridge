@@ -56,16 +56,12 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -79,26 +75,16 @@ import java.util.TreeMap;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
-import org.jfree.chart.annotations.Annotation;
-import org.jfree.chart.annotations.XYAnnotation;
-import org.jfree.chart.annotations.XYAnnotationBoundsInfo;
 import org.jfree.chart.axis.Axis;
 import org.jfree.chart.axis.AxisCollection;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.AxisState;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.TickType;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.axis.ValueTick;
-import org.jfree.chart.event.AnnotationChangeEvent;
-import org.jfree.chart.event.ChartChangeEventType;
 import org.jfree.chart.event.PlotChangeEvent;
-import org.jfree.chart.event.RendererChangeEvent;
-import org.jfree.chart.event.RendererChangeListener;
 import org.jfree.chart.plot.CrosshairState;
 import org.jfree.chart.plot.DatasetRenderingOrder;
-import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.Pannable;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
@@ -107,10 +93,8 @@ import org.jfree.chart.plot.PlotState;
 import org.jfree.chart.plot.SeriesRenderingOrder;
 import org.jfree.chart.plot.ValueAxisPlot;
 import org.jfree.chart.plot.Zoomable;
-import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.ui.Layer;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.chart.ui.RectangleInsets;
 import org.jfree.chart.util.Args;
@@ -135,18 +119,12 @@ import ch.alpine.tensor.Unprotect;
  * <p>
  * The {@link org.jfree.chart.ChartFactory} class contains static methods for
  * creating pre-configured charts. */
-/**/ class BufferedImagePlot extends Plot implements ValueAxisPlot, Pannable, Zoomable, RendererChangeListener {
+/* package */ class BufferedImagePlot extends Plot implements ValueAxisPlot, Pannable, Zoomable {
   /** The default grid line stroke. */
-  public static final Stroke DEFAULT_GRIDLINE_STROKE = new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f, new float[] { 2.0f, 2.0f },
-      0.0f);
+  public static final Stroke DEFAULT_GRIDLINE_STROKE = //
+      new BasicStroke(0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f, new float[] { 2.0f, 2.0f }, 0.0f);
   /** The default grid line paint. */
   public static final Paint DEFAULT_GRIDLINE_PAINT = Color.LIGHT_GRAY;
-  /** The default crosshair visibility. */
-  public static final boolean DEFAULT_CROSSHAIR_VISIBLE = false;
-  /** The default crosshair stroke. */
-  public static final Stroke DEFAULT_CROSSHAIR_STROKE = DEFAULT_GRIDLINE_STROKE;
-  /** The default crosshair paint. */
-  public static final Paint DEFAULT_CROSSHAIR_PAINT = Color.BLUE;
   /** The resourceBundle for the localization. */
   protected static ResourceBundle localizationResources = ResourceBundleWrapper.getBundle("org.jfree.chart.plot.LocalizationBundle");
   /** The plot orientation. */
@@ -164,7 +142,7 @@ import ch.alpine.tensor.Unprotect;
   /** Storage for the datasets. */
   private Map<Integer, XYDataset> datasets;
   /** Storage for the renderers. */
-  private Map<Integer, XYItemRenderer> renderers;
+  private final XYItemRenderer renderer;
   /** Storage for the mapping between datasets/renderers and domain axes. The
    * keys in the map are Integer objects, corresponding to the dataset
    * index. The values in the map are List objects containing Integer
@@ -179,10 +157,6 @@ import ch.alpine.tensor.Unprotect;
    * entry for a dataset, it is assumed to map to the primary domain axis
    * (index = 0). */
   private Map<Integer, List<Integer>> datasetToRangeAxesMap;
-  /** The origin point for the quadrants (if drawn). */
-  private transient Point2D quadrantOrigin = new Point2D.Double(0.0, 0.0);
-  /** The paint used for each quadrant. */
-  private transient Paint[] quadrantPaint = new Paint[] { null, null, null, null };
   /** A flag that controls whether the domain grid-lines are visible. */
   private boolean domainGridlinesVisible;
   /** The stroke used to draw the domain grid-lines. */
@@ -221,44 +195,6 @@ import ch.alpine.tensor.Unprotect;
   private transient Stroke rangeZeroBaselineStroke;
   /** The paint used for the zero baseline against the range axis. */
   private transient Paint rangeZeroBaselinePaint;
-  /** A flag that controls whether or not a domain crosshair is drawn.. */
-  private boolean domainCrosshairVisible;
-  /** The domain crosshair value. */
-  private double domainCrosshairValue;
-  /** The pen/brush used to draw the crosshair (if any). */
-  private transient Stroke domainCrosshairStroke;
-  /** The color used to draw the crosshair (if any). */
-  private transient Paint domainCrosshairPaint;
-  /** A flag that controls whether or not the crosshair locks onto actual
-   * data points. */
-  private boolean domainCrosshairLockedOnData = true;
-  /** A flag that controls whether or not a range crosshair is drawn.. */
-  private boolean rangeCrosshairVisible;
-  /** The range crosshair value. */
-  private double rangeCrosshairValue;
-  /** The pen/brush used to draw the crosshair (if any). */
-  private transient Stroke rangeCrosshairStroke;
-  /** The color used to draw the crosshair (if any). */
-  private transient Paint rangeCrosshairPaint;
-  /** A flag that controls whether or not the crosshair locks onto actual
-   * data points. */
-  private boolean rangeCrosshairLockedOnData = true;
-  /** A map of lists of foreground markers (optional) for the domain axes. */
-  private Map<Integer, List<Marker>> foregroundDomainMarkers;
-  /** A map of lists of background markers (optional) for the domain axes. */
-  private Map<Integer, List<Marker>> backgroundDomainMarkers;
-  /** A map of lists of foreground markers (optional) for the range axes. */
-  private Map<Integer, List<Marker>> foregroundRangeMarkers;
-  /** A map of lists of background markers (optional) for the range axes. */
-  private Map<Integer, List<Marker>> backgroundRangeMarkers;
-  /** A (possibly empty) list of annotations for the plot. The list should
-   * be initialised in the constructor and never allowed to be
-   * {@code null}. */
-  private List<XYAnnotation> annotations;
-  /** The paint used for the domain tick bands (if any). */
-  private transient Paint domainTickBandPaint;
-  /** The paint used for the range tick bands (if any). */
-  private transient Paint rangeTickBandPaint;
   /** The fixed domain axis space. */
   private AxisSpace fixedDomainAxisSpace;
   /** The fixed range axis space. */
@@ -295,36 +231,25 @@ import ch.alpine.tensor.Unprotect;
     _xhi = points.Get(1, 0);
     yhi = points.Get(1, 1);
     XYSeriesCollection dataset = DatasetFactory.xySeriesCollection(visualSet);
-    // JFreeChart jFreeChart = new JFreeChart(new CustomPlot());
     NumberAxis domainAxis = new NumberAxis(visualSet.getAxisX().getAxisLabel());
     domainAxis.setAutoRangeIncludesZero(false);
     NumberAxis rangeAxis = new NumberAxis(visualSet.getAxisY().getAxisLabel());
-    XYItemRenderer renderer = new XYLineAndShapeRenderer(false, false);
+    renderer = new XYLineAndShapeRenderer(false, false);
     this.orientation = PlotOrientation.VERTICAL;
     this.weight = 1; // only relevant when this is a subplot
-    this.axisOffset = RectangleInsets.ZERO_INSETS;
+    this.axisOffset = new RectangleInsets(4, 4, 4, 4); // seems to be the default of XYPlot
     // allocate storage for datasets, axes and renderers (all optional)
     this.domainAxes = new HashMap<>();
     this.domainAxisLocations = new HashMap<>();
-    this.foregroundDomainMarkers = new HashMap<>();
-    this.backgroundDomainMarkers = new HashMap<>();
     this.rangeAxes = new HashMap<>();
     this.rangeAxisLocations = new HashMap<>();
-    this.foregroundRangeMarkers = new HashMap<>();
-    this.backgroundRangeMarkers = new HashMap<>();
     this.datasets = new HashMap<>();
-    this.renderers = new HashMap<>();
     this.datasetToDomainAxesMap = new TreeMap<>();
     this.datasetToRangeAxesMap = new TreeMap<>();
-    this.annotations = new ArrayList<>();
     this.datasets.put(0, dataset);
     if (dataset != null) {
       dataset.addChangeListener(this);
     }
-    this.renderers.put(0, renderer);
-    // JAN COMMENTED THIS OUT
-    // renderer.setPlot(this);
-    renderer.addChangeListener(this);
     this.domainAxes.put(0, domainAxis);
     mapDatasetToDomainAxis(0, 0);
     domainAxis.setPlot(this);
@@ -356,14 +281,6 @@ import ch.alpine.tensor.Unprotect;
     this.rangeZeroBaselineVisible = false;
     this.rangeZeroBaselinePaint = Color.BLACK;
     this.rangeZeroBaselineStroke = new BasicStroke(0.5f);
-    this.domainCrosshairVisible = false;
-    this.domainCrosshairValue = 0.0;
-    this.domainCrosshairStroke = DEFAULT_CROSSHAIR_STROKE;
-    this.domainCrosshairPaint = DEFAULT_CROSSHAIR_PAINT;
-    this.rangeCrosshairVisible = false;
-    this.rangeCrosshairValue = 0.0;
-    this.rangeCrosshairStroke = DEFAULT_CROSSHAIR_STROKE;
-    this.rangeCrosshairPaint = DEFAULT_CROSSHAIR_PAINT;
     this.shadowGenerator = null;
   }
 
@@ -1052,94 +969,13 @@ import ch.alpine.tensor.Unprotect;
     }
   }
 
-  /** Returns the number of renderer slots for this plot.
-   *
-   * @return The number of renderer slots. */
-  public int getRendererCount() {
-    return this.renderers.size();
-  }
-
   /** Returns the renderer for the primary dataset.
    *
    * @return The item renderer (possibly {@code null}).
    *
    * @see #setRenderer(XYItemRenderer) */
   public XYItemRenderer getRenderer() {
-    return getRenderer(0);
-  }
-
-  /** Returns the renderer with the specified index, or {@code null}.
-   *
-   * @param index the renderer index (must be &gt;= 0).
-   *
-   * @return The renderer (possibly {@code null}).
-   *
-   * @see #setRenderer(int, XYItemRenderer) */
-  public XYItemRenderer getRenderer(int index) {
-    return this.renderers.get(index);
-  }
-
-  /** Sets the renderer for the primary dataset and sends a change event to
-   * all registered listeners. If the renderer is set to {@code null},
-   * no data will be displayed.
-   *
-   * @param renderer the renderer ({@code null} permitted).
-   *
-   * @see #getRenderer() */
-  public void setRenderer(XYItemRenderer renderer) {
-    setRenderer(0, renderer);
-  }
-
-  /** Sets the renderer for the dataset with the specified index and sends a
-   * change event to all registered listeners. Note that each dataset should
-   * have its own renderer, you should not use one renderer for multiple
-   * datasets.
-   *
-   * @param index the index (must be &gt;= 0).
-   * @param renderer the renderer.
-   *
-   * @see #getRenderer(int) */
-  public void setRenderer(int index, XYItemRenderer renderer) {
-    setRenderer(index, renderer, true);
-  }
-
-  /** Sets the renderer for the dataset with the specified index and, if
-   * requested, sends a change event to all registered listeners. Note that
-   * each dataset should have its own renderer, you should not use one
-   * renderer for multiple datasets.
-   *
-   * @param index the index (must be &gt;= 0).
-   * @param renderer the renderer.
-   * @param notify notify listeners?
-   *
-   * @see #getRenderer(int) */
-  public void setRenderer(int index, XYItemRenderer renderer, boolean notify) {
-    XYItemRenderer existing = getRenderer(index);
-    if (existing != null) {
-      existing.removeChangeListener(this);
-    }
-    this.renderers.put(index, renderer);
-    if (renderer != null) {
-      // JAN COMMENTED THIS OUT
-      // renderer.setPlot(this);
-      renderer.addChangeListener(this);
-    }
-    configureDomainAxes();
-    configureRangeAxes();
-    if (notify) {
-      fireChangeEvent();
-    }
-  }
-
-  /** Sets the renderers for this plot and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @param renderers the renderers ({@code null} not permitted). */
-  public void setRenderers(XYItemRenderer[] renderers) {
-    for (int i = 0; i < renderers.length; i++) {
-      setRenderer(i, renderers[i], false);
-    }
-    fireChangeEvent();
+    return renderer;
   }
 
   /** Returns the dataset rendering order.
@@ -1186,41 +1022,6 @@ import ch.alpine.tensor.Unprotect;
     Args.nullNotPermitted(order, "order");
     this.seriesRenderingOrder = order;
     fireChangeEvent();
-  }
-
-  /** Returns the index of the specified renderer, or {@code -1} if the
-   * renderer is not assigned to this plot.
-   *
-   * @param renderer the renderer ({@code null} permitted).
-   *
-   * @return The renderer index. */
-  public int getIndexOf(XYItemRenderer renderer) {
-    for (Map.Entry<Integer, XYItemRenderer> entry : this.renderers.entrySet()) {
-      if (entry.getValue() == renderer) {
-        return entry.getKey();
-      }
-    }
-    return -1;
-  }
-
-  /** Returns the renderer for the specified dataset (this is either the
-   * renderer with the same index as the dataset or, if there isn't a
-   * renderer with the same index, the default renderer). If the dataset
-   * does not belong to the plot, this method will return {@code null}.
-   *
-   * @param dataset the dataset ({@code null} permitted).
-   *
-   * @return The renderer (possibly {@code null}). */
-  public XYItemRenderer getRendererForDataset(XYDataset dataset) {
-    int datasetIndex = indexOf(dataset);
-    if (datasetIndex < 0) {
-      return null;
-    }
-    XYItemRenderer result = this.renderers.get(datasetIndex);
-    if (result == null) {
-      result = getRenderer();
-    }
-    return result;
   }
 
   /** Returns the weight for this plot when it is used as a subplot within a
@@ -1666,567 +1467,6 @@ import ch.alpine.tensor.Unprotect;
     fireChangeEvent();
   }
 
-  /** Returns the paint used for the domain tick bands. If this is
-   * {@code null}, no tick bands will be drawn.
-   *
-   * @return The paint (possibly {@code null}).
-   *
-   * @see #setDomainTickBandPaint(Paint) */
-  public Paint getDomainTickBandPaint() {
-    return this.domainTickBandPaint;
-  }
-
-  /** Sets the paint for the domain tick bands.
-   *
-   * @param paint the paint ({@code null} permitted).
-   *
-   * @see #getDomainTickBandPaint() */
-  public void setDomainTickBandPaint(Paint paint) {
-    this.domainTickBandPaint = paint;
-    fireChangeEvent();
-  }
-
-  /** Returns the paint used for the range tick bands. If this is
-   * {@code null}, no tick bands will be drawn.
-   *
-   * @return The paint (possibly {@code null}).
-   *
-   * @see #setRangeTickBandPaint(Paint) */
-  public Paint getRangeTickBandPaint() {
-    return this.rangeTickBandPaint;
-  }
-
-  /** Sets the paint for the range tick bands.
-   *
-   * @param paint the paint ({@code null} permitted).
-   *
-   * @see #getRangeTickBandPaint() */
-  public void setRangeTickBandPaint(Paint paint) {
-    this.rangeTickBandPaint = paint;
-    fireChangeEvent();
-  }
-
-  /** Returns the origin for the quadrants that can be displayed on the plot.
-   * This defaults to (0, 0).
-   *
-   * @return The origin point (never {@code null}).
-   *
-   * @see #setQuadrantOrigin(Point2D) */
-  public Point2D getQuadrantOrigin() {
-    return this.quadrantOrigin;
-  }
-
-  /** Sets the quadrant origin and sends a {@link PlotChangeEvent} to all
-   * registered listeners.
-   *
-   * @param origin the origin ({@code null} not permitted).
-   *
-   * @see #getQuadrantOrigin() */
-  public void setQuadrantOrigin(Point2D origin) {
-    Args.nullNotPermitted(origin, "origin");
-    this.quadrantOrigin = origin;
-    fireChangeEvent();
-  }
-
-  /** Returns the paint used for the specified quadrant.
-   *
-   * @param index the quadrant index (0-3).
-   *
-   * @return The paint (possibly {@code null}).
-   *
-   * @see #setQuadrantPaint(int, Paint) */
-  public Paint getQuadrantPaint(int index) {
-    if (index < 0 || index > 3) {
-      throw new IllegalArgumentException("The index value (" + index + ") should be in the range 0 to 3.");
-    }
-    return this.quadrantPaint[index];
-  }
-
-  /** Sets the paint used for the specified quadrant and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param index the quadrant index (0-3).
-   * @param paint the paint ({@code null} permitted).
-   *
-   * @see #getQuadrantPaint(int) */
-  public void setQuadrantPaint(int index, Paint paint) {
-    if (index < 0 || index > 3) {
-      throw new IllegalArgumentException("The index value (" + index + ") should be in the range 0 to 3.");
-    }
-    this.quadrantPaint[index] = paint;
-    fireChangeEvent();
-  }
-
-  /** Adds a marker for the domain axis and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   * <P>
-   * Typically a marker will be drawn by the renderer as a line perpendicular
-   * to the domain axis, however this is entirely up to the renderer.
-   *
-   * @param marker the marker ({@code null} not permitted).
-   *
-   * @see #addDomainMarker(Marker, Layer)
-   * @see #clearDomainMarkers() */
-  public void addDomainMarker(Marker marker) {
-    // defer argument checking...
-    addDomainMarker(marker, Layer.FOREGROUND);
-  }
-
-  /** Adds a marker for the domain axis in the specified layer and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   * <P>
-   * Typically a marker will be drawn by the renderer as a line perpendicular
-   * to the domain axis, however this is entirely up to the renderer.
-   *
-   * @param marker the marker ({@code null} not permitted).
-   * @param layer the layer (foreground or background).
-   *
-   * @see #addDomainMarker(int, Marker, Layer) */
-  public void addDomainMarker(Marker marker, Layer layer) {
-    addDomainMarker(0, marker, layer);
-  }
-
-  /** Clears all the (foreground and background) domain markers and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @see #addDomainMarker(int, Marker, Layer) */
-  public void clearDomainMarkers() {
-    if (this.backgroundDomainMarkers != null) {
-      Set<Integer> keys = this.backgroundDomainMarkers.keySet();
-      for (Integer key : keys) {
-        clearDomainMarkers(key);
-      }
-      this.backgroundDomainMarkers.clear();
-    }
-    if (this.foregroundDomainMarkers != null) {
-      Set<Integer> keys = this.foregroundDomainMarkers.keySet();
-      for (Integer key : keys) {
-        clearDomainMarkers(key);
-      }
-      this.foregroundDomainMarkers.clear();
-    }
-    fireChangeEvent();
-  }
-
-  /** Clears the (foreground and background) domain markers for a particular
-   * renderer and sends a {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param index the renderer index.
-   *
-   * @see #clearRangeMarkers(int) */
-  public void clearDomainMarkers(int index) {
-    Integer key = index;
-    if (this.backgroundDomainMarkers != null) {
-      Collection<Marker> markers = this.backgroundDomainMarkers.get(key);
-      if (markers != null) {
-        Iterator<Marker> iterator = markers.iterator();
-        while (iterator.hasNext()) {
-          Marker m = iterator.next();
-          m.removeChangeListener(this);
-        }
-        markers.clear();
-      }
-    }
-    if (this.foregroundRangeMarkers != null) {
-      Collection<Marker> markers = this.foregroundDomainMarkers.get(key);
-      if (markers != null) {
-        Iterator<Marker> iterator = markers.iterator();
-        while (iterator.hasNext()) {
-          Marker m = iterator.next();
-          m.removeChangeListener(this);
-        }
-        markers.clear();
-      }
-    }
-    fireChangeEvent();
-  }
-
-  /** Adds a marker for a specific dataset/renderer and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   * <P>
-   * Typically a marker will be drawn by the renderer as a line perpendicular
-   * to the domain axis (that the renderer is mapped to), however this is
-   * entirely up to the renderer.
-   *
-   * @param index the dataset/renderer index.
-   * @param marker the marker.
-   * @param layer the layer (foreground or background).
-   *
-   * @see #clearDomainMarkers(int)
-   * @see #addRangeMarker(int, Marker, Layer) */
-  public void addDomainMarker(int index, Marker marker, Layer layer) {
-    addDomainMarker(index, marker, layer, true);
-  }
-
-  /** Adds a marker for a specific dataset/renderer and, if requested, sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   * <P>
-   * Typically a marker will be drawn by the renderer as a line perpendicular
-   * to the domain axis (that the renderer is mapped to), however this is
-   * entirely up to the renderer.
-   *
-   * @param index the dataset/renderer index.
-   * @param marker the marker.
-   * @param layer the layer (foreground or background).
-   * @param notify notify listeners? */
-  public void addDomainMarker(int index, Marker marker, Layer layer, boolean notify) {
-    Args.nullNotPermitted(marker, "marker");
-    Args.nullNotPermitted(layer, "layer");
-    List<Marker> markers;
-    if (layer == Layer.FOREGROUND) {
-      markers = this.foregroundDomainMarkers.get(index);
-      if (markers == null) {
-        markers = new ArrayList<>();
-        this.foregroundDomainMarkers.put(index, markers);
-      }
-      markers.add(marker);
-    } else if (layer == Layer.BACKGROUND) {
-      markers = this.backgroundDomainMarkers.get(index);
-      if (markers == null) {
-        markers = new ArrayList<>();
-        this.backgroundDomainMarkers.put(index, markers);
-      }
-      markers.add(marker);
-    }
-    marker.addChangeListener(this);
-    if (notify) {
-      fireChangeEvent();
-    }
-  }
-
-  /** Removes a marker for the domain axis and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @param marker the marker.
-   *
-   * @return A boolean indicating whether or not the marker was actually
-   * removed. */
-  public boolean removeDomainMarker(Marker marker) {
-    return removeDomainMarker(marker, Layer.FOREGROUND);
-  }
-
-  /** Removes a marker for the domain axis in the specified layer and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param marker the marker ({@code null} not permitted).
-   * @param layer the layer (foreground or background).
-   *
-   * @return A boolean indicating whether or not the marker was actually
-   * removed. */
-  public boolean removeDomainMarker(Marker marker, Layer layer) {
-    return removeDomainMarker(0, marker, layer);
-  }
-
-  /** Removes a marker for a specific dataset/renderer and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param index the dataset/renderer index.
-   * @param marker the marker.
-   * @param layer the layer (foreground or background).
-   *
-   * @return A boolean indicating whether or not the marker was actually
-   * removed. */
-  public boolean removeDomainMarker(int index, Marker marker, Layer layer) {
-    return removeDomainMarker(index, marker, layer, true);
-  }
-
-  /** Removes a marker for a specific dataset/renderer and, if requested,
-   * sends a {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param index the dataset/renderer index.
-   * @param marker the marker.
-   * @param layer the layer (foreground or background).
-   * @param notify notify listeners?
-   *
-   * @return A boolean indicating whether or not the marker was actually
-   * removed. */
-  public boolean removeDomainMarker(int index, Marker marker, Layer layer, boolean notify) {
-    List<Marker> markers;
-    if (layer == Layer.FOREGROUND) {
-      markers = this.foregroundDomainMarkers.get(index);
-    } else {
-      markers = this.backgroundDomainMarkers.get(index);
-    }
-    if (markers == null) {
-      return false;
-    }
-    boolean removed = markers.remove(marker);
-    if (removed && notify) {
-      fireChangeEvent();
-    }
-    return removed;
-  }
-
-  /** Adds a marker for the range axis and sends a {@link PlotChangeEvent} to
-   * all registered listeners.
-   * <P>
-   * Typically a marker will be drawn by the renderer as a line perpendicular
-   * to the range axis, however this is entirely up to the renderer.
-   *
-   * @param marker the marker ({@code null} not permitted).
-   *
-   * @see #addRangeMarker(Marker, Layer) */
-  public void addRangeMarker(Marker marker) {
-    addRangeMarker(marker, Layer.FOREGROUND);
-  }
-
-  /** Adds a marker for the range axis in the specified layer and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   * <P>
-   * Typically a marker will be drawn by the renderer as a line perpendicular
-   * to the range axis, however this is entirely up to the renderer.
-   *
-   * @param marker the marker ({@code null} not permitted).
-   * @param layer the layer (foreground or background).
-   *
-   * @see #addRangeMarker(int, Marker, Layer) */
-  public void addRangeMarker(Marker marker, Layer layer) {
-    addRangeMarker(0, marker, layer);
-  }
-
-  /** Clears all the range markers and sends a {@link PlotChangeEvent} to all
-   * registered listeners.
-   *
-   * @see #clearRangeMarkers() */
-  public void clearRangeMarkers() {
-    if (this.backgroundRangeMarkers != null) {
-      Set<Integer> keys = this.backgroundRangeMarkers.keySet();
-      for (Integer key : keys) {
-        clearRangeMarkers(key);
-      }
-      this.backgroundRangeMarkers.clear();
-    }
-    if (this.foregroundRangeMarkers != null) {
-      Set<Integer> keys = this.foregroundRangeMarkers.keySet();
-      for (Integer key : keys) {
-        clearRangeMarkers(key);
-      }
-      this.foregroundRangeMarkers.clear();
-    }
-    fireChangeEvent();
-  }
-
-  /** Adds a marker for a specific dataset/renderer and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   * <P>
-   * Typically a marker will be drawn by the renderer as a line perpendicular
-   * to the range axis, however this is entirely up to the renderer.
-   *
-   * @param index the dataset/renderer index.
-   * @param marker the marker.
-   * @param layer the layer (foreground or background).
-   *
-   * @see #clearRangeMarkers(int)
-   * @see #addDomainMarker(int, Marker, Layer) */
-  public void addRangeMarker(int index, Marker marker, Layer layer) {
-    addRangeMarker(index, marker, layer, true);
-  }
-
-  /** Adds a marker for a specific dataset/renderer and, if requested, sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   * <P>
-   * Typically a marker will be drawn by the renderer as a line perpendicular
-   * to the range axis, however this is entirely up to the renderer.
-   *
-   * @param index the dataset/renderer index.
-   * @param marker the marker.
-   * @param layer the layer (foreground or background).
-   * @param notify notify listeners? */
-  public void addRangeMarker(int index, Marker marker, Layer layer, boolean notify) {
-    List<Marker> markers;
-    if (layer == Layer.FOREGROUND) {
-      markers = this.foregroundRangeMarkers.get(index);
-      if (markers == null) {
-        markers = new ArrayList<>();
-        this.foregroundRangeMarkers.put(index, markers);
-      }
-      markers.add(marker);
-    } else if (layer == Layer.BACKGROUND) {
-      markers = this.backgroundRangeMarkers.get(index);
-      if (markers == null) {
-        markers = new ArrayList<>();
-        this.backgroundRangeMarkers.put(index, markers);
-      }
-      markers.add(marker);
-    }
-    marker.addChangeListener(this);
-    if (notify) {
-      fireChangeEvent();
-    }
-  }
-
-  /** Clears the (foreground and background) range markers for a particular
-   * renderer.
-   *
-   * @param index the renderer index. */
-  public void clearRangeMarkers(int index) {
-    Integer key = index;
-    if (this.backgroundRangeMarkers != null) {
-      Collection<Marker> markers = this.backgroundRangeMarkers.get(key);
-      if (markers != null) {
-        Iterator<Marker> iterator = markers.iterator();
-        while (iterator.hasNext()) {
-          Marker m = iterator.next();
-          m.removeChangeListener(this);
-        }
-        markers.clear();
-      }
-    }
-    if (this.foregroundRangeMarkers != null) {
-      Collection<Marker> markers = this.foregroundRangeMarkers.get(key);
-      if (markers != null) {
-        Iterator<Marker> iterator = markers.iterator();
-        while (iterator.hasNext()) {
-          Marker m = iterator.next();
-          m.removeChangeListener(this);
-        }
-        markers.clear();
-      }
-    }
-    fireChangeEvent();
-  }
-
-  /** Removes a marker for the range axis and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @param marker the marker.
-   *
-   * @return A boolean indicating whether or not the marker was actually
-   * removed. */
-  public boolean removeRangeMarker(Marker marker) {
-    return removeRangeMarker(marker, Layer.FOREGROUND);
-  }
-
-  /** Removes a marker for the range axis in the specified layer and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param marker the marker ({@code null} not permitted).
-   * @param layer the layer (foreground or background).
-   *
-   * @return A boolean indicating whether or not the marker was actually
-   * removed. */
-  public boolean removeRangeMarker(Marker marker, Layer layer) {
-    return removeRangeMarker(0, marker, layer);
-  }
-
-  /** Removes a marker for a specific dataset/renderer and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param index the dataset/renderer index.
-   * @param marker the marker ({@code null} not permitted).
-   * @param layer the layer (foreground or background).
-   *
-   * @return A boolean indicating whether or not the marker was actually
-   * removed. */
-  public boolean removeRangeMarker(int index, Marker marker, Layer layer) {
-    return removeRangeMarker(index, marker, layer, true);
-  }
-
-  /** Removes a marker for a specific dataset/renderer and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param index the dataset/renderer index.
-   * @param marker the marker ({@code null} not permitted).
-   * @param layer the layer (foreground or background) ({@code null} not permitted).
-   * @param notify notify listeners?
-   *
-   * @return A boolean indicating whether or not the marker was actually
-   * removed. */
-  public boolean removeRangeMarker(int index, Marker marker, Layer layer, boolean notify) {
-    Args.nullNotPermitted(marker, "marker");
-    Args.nullNotPermitted(layer, "layer");
-    List<Marker> markers;
-    if (layer == Layer.FOREGROUND) {
-      markers = this.foregroundRangeMarkers.get(index);
-    } else {
-      markers = this.backgroundRangeMarkers.get(index);
-    }
-    if (markers == null) {
-      return false;
-    }
-    boolean removed = markers.remove(marker);
-    if (removed && notify) {
-      fireChangeEvent();
-    }
-    return removed;
-  }
-
-  /** Adds an annotation to the plot and sends a {@link PlotChangeEvent} to
-   * all registered listeners.
-   *
-   * @param annotation the annotation ({@code null} not permitted).
-   *
-   * @see #getAnnotations()
-   * @see #removeAnnotation(XYAnnotation) */
-  public void addAnnotation(XYAnnotation annotation) {
-    addAnnotation(annotation, true);
-  }
-
-  /** Adds an annotation to the plot and, if requested, sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param annotation the annotation ({@code null} not permitted).
-   * @param notify notify listeners? */
-  public void addAnnotation(XYAnnotation annotation, boolean notify) {
-    Args.nullNotPermitted(annotation, "annotation");
-    this.annotations.add(annotation);
-    annotation.addChangeListener(this);
-    if (notify) {
-      fireChangeEvent();
-    }
-  }
-
-  /** Removes an annotation from the plot and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @param annotation the annotation ({@code null} not permitted).
-   *
-   * @return A boolean (indicates whether or not the annotation was removed).
-   *
-   * @see #addAnnotation(XYAnnotation)
-   * @see #getAnnotations() */
-  public boolean removeAnnotation(XYAnnotation annotation) {
-    return removeAnnotation(annotation, true);
-  }
-
-  /** Removes an annotation from the plot and sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @param annotation the annotation ({@code null} not permitted).
-   * @param notify notify listeners?
-   *
-   * @return A boolean (indicates whether or not the annotation was removed). */
-  public boolean removeAnnotation(XYAnnotation annotation, boolean notify) {
-    Args.nullNotPermitted(annotation, "annotation");
-    boolean removed = this.annotations.remove(annotation);
-    annotation.removeChangeListener(this);
-    if (removed && notify) {
-      fireChangeEvent();
-    }
-    return removed;
-  }
-
-  /** Returns the list of annotations.
-   *
-   * @return The list of annotations.
-   *
-   * @see #addAnnotation(XYAnnotation) */
-  public List<XYAnnotation> getAnnotations() {
-    return new ArrayList<>(this.annotations);
-  }
-
-  /** Clears all the annotations and sends a {@link PlotChangeEvent} to all
-   * registered listeners.
-   *
-   * @see #addAnnotation(XYAnnotation) */
-  public void clearAnnotations() {
-    for (XYAnnotation annotation : this.annotations) {
-      annotation.removeChangeListener(this);
-    }
-    this.annotations.clear();
-    fireChangeEvent();
-  }
-
   /** Returns the shadow generator for the plot, if any.
    *
    * @return The shadow generator (possibly {@code null}). */
@@ -2363,7 +1603,6 @@ import ch.alpine.tensor.Unprotect;
     Rectangle2D dataArea = space.shrink(area, null);
     this.axisOffset.trim(dataArea);
     dataArea = integerise(dataArea);
-    Rectangle rectangle = integerise(dataArea);
     if (dataArea.isEmpty()) {
       return;
     }
@@ -2374,56 +1613,15 @@ import ch.alpine.tensor.Unprotect;
     // draw the plot background and axes...
     drawBackground(g2, dataArea);
     Map<Axis, AxisState> axisStateMap = drawAxes(g2, area, dataArea, info);
-    PlotOrientation orient = getOrientation();
-    // the anchor point is typically the point where the mouse last
-    // clicked - the crosshairs will be driven off this point...
-    if (anchor != null && !dataArea.contains(anchor)) {
-      anchor = null;
-    }
-    CrosshairState crosshairState = new CrosshairState();
-    crosshairState.setCrosshairDistance(Double.POSITIVE_INFINITY);
-    crosshairState.setAnchor(anchor);
-    crosshairState.setAnchorX(Double.NaN);
-    crosshairState.setAnchorY(Double.NaN);
-    if (anchor != null) {
-      ValueAxis domainAxis = getDomainAxis();
-      if (domainAxis != null) {
-        double x;
-        if (orient == PlotOrientation.VERTICAL) {
-          x = domainAxis.java2DToValue(anchor.getX(), dataArea, getDomainAxisEdge());
-        } else {
-          x = domainAxis.java2DToValue(anchor.getY(), dataArea, getDomainAxisEdge());
-        }
-        crosshairState.setAnchorX(x);
-      }
-      ValueAxis rangeAxis = getRangeAxis();
-      if (rangeAxis != null) {
-        double y;
-        if (orient == PlotOrientation.VERTICAL) {
-          y = rangeAxis.java2DToValue(anchor.getY(), dataArea, getRangeAxisEdge());
-        } else {
-          y = rangeAxis.java2DToValue(anchor.getX(), dataArea, getRangeAxisEdge());
-        }
-        crosshairState.setAnchorY(y);
-      }
-    }
-    crosshairState.setCrosshairX(getDomainCrosshairValue());
-    crosshairState.setCrosshairY(getRangeCrosshairValue());
     Shape originalClip = g2.getClip();
     Composite originalComposite = g2.getComposite();
     g2.clip(dataArea);
     // g2.clip(null);
-    {// TODO JAN INSERTED THIS HERE
-     // g2.setColor(new Color(255, 0, 0, 64));
-     // g2.fill(dataArea);
-     // g2.setColor(Color.BLUE);
-     // ValueAxis domainAxis = ;
+    {
       double x1 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(_xlo).number().doubleValue(), dataArea, getDomainAxisEdge());
       double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(_xhi).number().doubleValue(), dataArea, getDomainAxisEdge());
       double y1 = getRangeAxis().valueToJava2D(0.0, dataArea, getRangeAxisEdge());
       double y2 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(yhi).number().doubleValue(), dataArea, getRangeAxisEdge());
-      // g2.setStroke(new BasicStroke(2f));
-      // g2.draw(new Line2D.Double(new Point2D.Double(x1, y1), new Point2D.Double(x2, y2)));
       g2.drawImage(bufferedImage, //
           (int) x1, //
           (int) y2, //
@@ -2443,20 +1641,6 @@ import ch.alpine.tensor.Unprotect;
         rangeAxisState = (AxisState) parentState.getSharedAxisStates().get(getRangeAxis());
       }
     }
-    if (domainAxisState != null) {
-      drawDomainTickBands(g2, dataArea, domainAxisState.getTicks());
-    }
-    if (rangeAxisState != null) {
-      drawRangeTickBands(g2, dataArea, rangeAxisState.getTicks());
-    }
-    if (domainAxisState != null) {
-      drawDomainGridlines(g2, dataArea, domainAxisState.getTicks());
-      drawZeroDomainBaseline(g2, dataArea);
-    }
-    if (rangeAxisState != null) {
-      drawRangeGridlines(g2, dataArea, rangeAxisState.getTicks());
-      drawZeroRangeBaseline(g2, dataArea);
-    }
     Graphics2D savedG2 = g2;
     BufferedImage dataImage = null;
     boolean suppressShadow = Boolean.TRUE.equals(g2.getRenderingHint(JFreeChart.KEY_SUPPRESS_SHADOW_GENERATION));
@@ -2466,92 +1650,11 @@ import ch.alpine.tensor.Unprotect;
       g2.translate(-dataArea.getX(), -dataArea.getY());
       g2.setRenderingHints(savedG2.getRenderingHints());
     }
-    // draw the markers that are associated with a specific dataset...
-    for (XYDataset dataset : this.datasets.values()) {
-      int datasetIndex = indexOf(dataset);
-      drawDomainMarkers(g2, dataArea, datasetIndex, Layer.BACKGROUND);
-    }
-    for (XYDataset dataset : this.datasets.values()) {
-      int datasetIndex = indexOf(dataset);
-      drawRangeMarkers(g2, dataArea, datasetIndex, Layer.BACKGROUND);
-    }
     // now draw annotations and render data items...
     boolean foundData = false;
-    DatasetRenderingOrder order = getDatasetRenderingOrder();
-    List<Integer> rendererIndices = getRendererIndices(order);
-    List<Integer> datasetIndices = getDatasetIndices(order);
-    // draw background annotations
-    for (int i : rendererIndices) {
-      XYItemRenderer renderer = getRenderer(i);
-      if (renderer != null) {
-        ValueAxis domainAxis = getDomainAxisForDataset(i);
-        ValueAxis rangeAxis = getRangeAxisForDataset(i);
-        renderer.drawAnnotations(g2, dataArea, domainAxis, rangeAxis, Layer.BACKGROUND, info);
-      }
-    }
-    // render data items...
-    for (int datasetIndex : datasetIndices) {
-      XYDataset dataset = this.getDataset(datasetIndex);
-      foundData = render(g2, dataArea, datasetIndex, info, crosshairState) || foundData;
-    }
-    // draw foreground annotations
-    for (int i : rendererIndices) {
-      XYItemRenderer renderer = getRenderer(i);
-      if (renderer != null) {
-        ValueAxis domainAxis = getDomainAxisForDataset(i);
-        ValueAxis rangeAxis = getRangeAxisForDataset(i);
-        renderer.drawAnnotations(g2, dataArea, domainAxis, rangeAxis, Layer.FOREGROUND, info);
-      }
-    }
-    // draw domain crosshair if required...
-    int datasetIndex = crosshairState.getDatasetIndex();
-    ValueAxis xAxis = getDomainAxisForDataset(datasetIndex);
-    RectangleEdge xAxisEdge = getDomainAxisEdge(getDomainAxisIndex(xAxis));
-    if (!this.domainCrosshairLockedOnData && anchor != null) {
-      double xx;
-      if (orient == PlotOrientation.VERTICAL) {
-        xx = xAxis.java2DToValue(anchor.getX(), dataArea, xAxisEdge);
-      } else {
-        xx = xAxis.java2DToValue(anchor.getY(), dataArea, xAxisEdge);
-      }
-      crosshairState.setCrosshairX(xx);
-    }
-    setDomainCrosshairValue(crosshairState.getCrosshairX(), false);
-    if (isDomainCrosshairVisible()) {
-      double x = getDomainCrosshairValue();
-      Paint paint = getDomainCrosshairPaint();
-      Stroke stroke = getDomainCrosshairStroke();
-      drawDomainCrosshair(g2, dataArea, orient, x, xAxis, stroke, paint);
-    }
-    // draw range crosshair if required...
-    ValueAxis yAxis = getRangeAxisForDataset(datasetIndex);
-    RectangleEdge yAxisEdge = getRangeAxisEdge(getRangeAxisIndex(yAxis));
-    if (!this.rangeCrosshairLockedOnData && anchor != null) {
-      double yy;
-      if (orient == PlotOrientation.VERTICAL) {
-        yy = yAxis.java2DToValue(anchor.getY(), dataArea, yAxisEdge);
-      } else {
-        yy = yAxis.java2DToValue(anchor.getX(), dataArea, yAxisEdge);
-      }
-      crosshairState.setCrosshairY(yy);
-    }
-    setRangeCrosshairValue(crosshairState.getCrosshairY(), false);
-    if (isRangeCrosshairVisible()) {
-      double y = getRangeCrosshairValue();
-      Paint paint = getRangeCrosshairPaint();
-      Stroke stroke = getRangeCrosshairStroke();
-      drawRangeCrosshair(g2, dataArea, orient, y, yAxis, stroke, paint);
-    }
     if (!foundData) {
       drawNoDataMessage(g2, dataArea);
     }
-    for (int i : rendererIndices) {
-      drawDomainMarkers(g2, dataArea, i, Layer.FOREGROUND);
-    }
-    for (int i : rendererIndices) {
-      drawRangeMarkers(g2, dataArea, i, Layer.FOREGROUND);
-    }
-    drawAnnotations(g2, dataArea, info);
     if (this.shadowGenerator != null && !suppressShadow) {
       BufferedImage shadowImage = this.shadowGenerator.createDropShadow(dataImage);
       g2 = savedG2;
@@ -2564,39 +1667,6 @@ import ch.alpine.tensor.Unprotect;
     drawOutline(g2, dataArea);
   }
 
-  /** Returns the indices of the non-null datasets in the specified order.
-   * 
-   * @param order the order ({@code null} not permitted).
-   * 
-   * @return The list of indices. */
-  private List<Integer> getDatasetIndices(DatasetRenderingOrder order) {
-    List<Integer> result = new ArrayList<>();
-    for (Entry<Integer, XYDataset> entry : this.datasets.entrySet()) {
-      if (entry.getValue() != null) {
-        result.add(entry.getKey());
-      }
-    }
-    Collections.sort(result);
-    if (order == DatasetRenderingOrder.REVERSE) {
-      Collections.reverse(result);
-    }
-    return result;
-  }
-
-  private List<Integer> getRendererIndices(DatasetRenderingOrder order) {
-    List<Integer> result = new ArrayList<>();
-    for (Entry<Integer, XYItemRenderer> entry : this.renderers.entrySet()) {
-      if (entry.getValue() != null) {
-        result.add(entry.getKey());
-      }
-    }
-    Collections.sort(result);
-    if (order == DatasetRenderingOrder.REVERSE) {
-      Collections.reverse(result);
-    }
-    return result;
-  }
-
   /** Draws the background for the plot.
    *
    * @param g2 the graphics device.
@@ -2604,158 +1674,7 @@ import ch.alpine.tensor.Unprotect;
   @Override
   public void drawBackground(Graphics2D g2, Rectangle2D area) {
     fillBackground(g2, area, this.orientation);
-    drawQuadrants(g2, area);
     drawBackgroundImage(g2, area);
-  }
-
-  /** Draws the quadrants.
-   *
-   * @param g2 the graphics device.
-   * @param area the area.
-   *
-   * @see #setQuadrantOrigin(Point2D)
-   * @see #setQuadrantPaint(int, Paint) */
-  protected void drawQuadrants(Graphics2D g2, Rectangle2D area) {
-    // 0 | 1
-    // --+--
-    // 2 | 3
-    boolean somethingToDraw = false;
-    ValueAxis xAxis = getDomainAxis();
-    if (xAxis == null) { // we can't draw quadrants without a valid x-axis
-      return;
-    }
-    double x = xAxis.getRange().constrain(this.quadrantOrigin.getX());
-    double xx = xAxis.valueToJava2D(x, area, getDomainAxisEdge());
-    ValueAxis yAxis = getRangeAxis();
-    if (yAxis == null) { // we can't draw quadrants without a valid y-axis
-      return;
-    }
-    double y = yAxis.getRange().constrain(this.quadrantOrigin.getY());
-    double yy = yAxis.valueToJava2D(y, area, getRangeAxisEdge());
-    double xmin = xAxis.getLowerBound();
-    double xxmin = xAxis.valueToJava2D(xmin, area, getDomainAxisEdge());
-    double xmax = xAxis.getUpperBound();
-    double xxmax = xAxis.valueToJava2D(xmax, area, getDomainAxisEdge());
-    double ymin = yAxis.getLowerBound();
-    double yymin = yAxis.valueToJava2D(ymin, area, getRangeAxisEdge());
-    double ymax = yAxis.getUpperBound();
-    double yymax = yAxis.valueToJava2D(ymax, area, getRangeAxisEdge());
-    Rectangle2D[] r = new Rectangle2D[] { null, null, null, null };
-    if (this.quadrantPaint[0] != null) {
-      if (x > xmin && y < ymax) {
-        if (this.orientation == PlotOrientation.HORIZONTAL) {
-          r[0] = new Rectangle2D.Double(Math.min(yymax, yy), Math.min(xxmin, xx), Math.abs(yy - yymax), Math.abs(xx - xxmin));
-        } else { // PlotOrientation.VERTICAL
-          r[0] = new Rectangle2D.Double(Math.min(xxmin, xx), Math.min(yymax, yy), Math.abs(xx - xxmin), Math.abs(yy - yymax));
-        }
-        somethingToDraw = true;
-      }
-    }
-    if (this.quadrantPaint[1] != null) {
-      if (x < xmax && y < ymax) {
-        if (this.orientation == PlotOrientation.HORIZONTAL) {
-          r[1] = new Rectangle2D.Double(Math.min(yymax, yy), Math.min(xxmax, xx), Math.abs(yy - yymax), Math.abs(xx - xxmax));
-        } else { // PlotOrientation.VERTICAL
-          r[1] = new Rectangle2D.Double(Math.min(xx, xxmax), Math.min(yymax, yy), Math.abs(xx - xxmax), Math.abs(yy - yymax));
-        }
-        somethingToDraw = true;
-      }
-    }
-    if (this.quadrantPaint[2] != null) {
-      if (x > xmin && y > ymin) {
-        if (this.orientation == PlotOrientation.HORIZONTAL) {
-          r[2] = new Rectangle2D.Double(Math.min(yymin, yy), Math.min(xxmin, xx), Math.abs(yy - yymin), Math.abs(xx - xxmin));
-        } else { // PlotOrientation.VERTICAL
-          r[2] = new Rectangle2D.Double(Math.min(xxmin, xx), Math.min(yymin, yy), Math.abs(xx - xxmin), Math.abs(yy - yymin));
-        }
-        somethingToDraw = true;
-      }
-    }
-    if (this.quadrantPaint[3] != null) {
-      if (x < xmax && y > ymin) {
-        if (this.orientation == PlotOrientation.HORIZONTAL) {
-          r[3] = new Rectangle2D.Double(Math.min(yymin, yy), Math.min(xxmax, xx), Math.abs(yy - yymin), Math.abs(xx - xxmax));
-        } else { // PlotOrientation.VERTICAL
-          r[3] = new Rectangle2D.Double(Math.min(xx, xxmax), Math.min(yymin, yy), Math.abs(xx - xxmax), Math.abs(yy - yymin));
-        }
-        somethingToDraw = true;
-      }
-    }
-    if (somethingToDraw) {
-      Composite originalComposite = g2.getComposite();
-      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getBackgroundAlpha()));
-      for (int i = 0; i < 4; i++) {
-        if (this.quadrantPaint[i] != null && r[i] != null) {
-          g2.setPaint(this.quadrantPaint[i]);
-          g2.fill(r[i]);
-        }
-      }
-      g2.setComposite(originalComposite);
-    }
-  }
-
-  /** Draws the domain tick bands, if any.
-   *
-   * @param g2 the graphics device.
-   * @param dataArea the data area.
-   * @param ticks the ticks.
-   *
-   * @see #setDomainTickBandPaint(Paint) */
-  public void drawDomainTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
-    Paint bandPaint = getDomainTickBandPaint();
-    if (bandPaint != null) {
-      boolean fillBand = false;
-      ValueAxis xAxis = getDomainAxis();
-      double previous = xAxis.getLowerBound();
-      Iterator iterator = ticks.iterator();
-      while (iterator.hasNext()) {
-        ValueTick tick = (ValueTick) iterator.next();
-        double current = tick.getValue();
-        if (fillBand) {
-          // JAN COMMENTED THIS OUT
-          // getRenderer().fillDomainGridBand(g2, this, xAxis, dataArea, previous, current);
-        }
-        previous = current;
-        fillBand = !fillBand;
-      }
-      double end = xAxis.getUpperBound();
-      if (fillBand) {
-        // JAN COMMENTED THIS OUT
-        // getRenderer().fillDomainGridBand(g2, this, xAxis, dataArea, previous, end);
-      }
-    }
-  }
-
-  /** Draws the range tick bands, if any.
-   *
-   * @param g2 the graphics device.
-   * @param dataArea the data area.
-   * @param ticks the ticks.
-   *
-   * @see #setRangeTickBandPaint(Paint) */
-  public void drawRangeTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
-    Paint bandPaint = getRangeTickBandPaint();
-    if (bandPaint != null) {
-      boolean fillBand = false;
-      ValueAxis axis = getRangeAxis();
-      double previous = axis.getLowerBound();
-      Iterator iterator = ticks.iterator();
-      while (iterator.hasNext()) {
-        ValueTick tick = (ValueTick) iterator.next();
-        double current = tick.getValue();
-        if (fillBand) {
-          // JAN COMMENTED THIS OUT
-          // getRenderer().fillRangeGridBand(g2, this, axis, dataArea, previous, current);
-        }
-        previous = current;
-        fillBand = !fillBand;
-      }
-      double end = axis.getUpperBound();
-      if (fillBand) {
-        // JAN COMMENTED THIS OUT
-        // getRenderer().fillRangeGridBand(g2, this, axis, dataArea, previous, end);
-      }
-    }
   }
 
   /** A utility method for drawing the axes.
@@ -2767,6 +1686,7 @@ import ch.alpine.tensor.Unprotect;
    * permitted).
    *
    * @return A map containing the state for each axis drawn. */
+  @SuppressWarnings("unchecked")
   protected Map<Axis, AxisState> drawAxes(Graphics2D g2, Rectangle2D plotArea, Rectangle2D dataArea, PlotRenderingInfo plotState) {
     AxisCollection axisCollection = new AxisCollection();
     // add domain axes to lists...
@@ -2783,10 +1703,10 @@ import ch.alpine.tensor.Unprotect;
         axisCollection.add(axis, getRangeAxisEdge(axisIndex));
       }
     }
-    Map axisStateMap = new HashMap();
+    Map<Axis, AxisState> axisStateMap = new HashMap<>();
     // draw the top axes
     double cursor = dataArea.getMinY() - this.axisOffset.calculateTopOutset(dataArea.getHeight());
-    Iterator iterator = axisCollection.getAxesAtTop().iterator();
+    Iterator<Axis> iterator = axisCollection.getAxesAtTop().iterator();
     while (iterator.hasNext()) {
       ValueAxis axis = (ValueAxis) iterator.next();
       AxisState info = axis.draw(g2, cursor, plotArea, dataArea, RectangleEdge.TOP, plotState);
@@ -2847,13 +1767,6 @@ import ch.alpine.tensor.Unprotect;
       if (xAxis == null || yAxis == null) {
         return foundData; // can't render anything without axes
       }
-      XYItemRenderer renderer = getRenderer(index);
-      if (renderer == null) {
-        renderer = getRenderer();
-        if (renderer == null) { // no default renderer available
-          return foundData;
-        }
-      }
     }
     return foundData;
   }
@@ -2866,11 +1779,10 @@ import ch.alpine.tensor.Unprotect;
   public ValueAxis getDomainAxisForDataset(int index) {
     Args.requireNonNegative(index, "index");
     ValueAxis valueAxis;
-    List axisIndices = this.datasetToDomainAxesMap.get(index);
+    List<Integer> axisIndices = this.datasetToDomainAxesMap.get(index);
     if (axisIndices != null) {
       // the first axis in the list is used for data <--> Java2D
-      Integer axisIndex = (Integer) axisIndices.get(0);
-      valueAxis = getDomainAxis(axisIndex);
+      valueAxis = getDomainAxis(axisIndices.get(0));
     } else {
       valueAxis = getDomainAxis(0);
     }
@@ -2885,391 +1797,14 @@ import ch.alpine.tensor.Unprotect;
   public ValueAxis getRangeAxisForDataset(int index) {
     Args.requireNonNegative(index, "index");
     ValueAxis valueAxis;
-    List axisIndices = this.datasetToRangeAxesMap.get(index);
+    List<Integer> axisIndices = this.datasetToRangeAxesMap.get(index);
     if (axisIndices != null) {
       // the first axis in the list is used for data <--> Java2D
-      Integer axisIndex = (Integer) axisIndices.get(0);
-      valueAxis = getRangeAxis(axisIndex);
+      valueAxis = getRangeAxis(axisIndices.get(0));
     } else {
       valueAxis = getRangeAxis(0);
     }
     return valueAxis;
-  }
-
-  /** Draws the gridlines for the plot, if they are visible.
-   *
-   * @param g2 the graphics device.
-   * @param dataArea the data area.
-   * @param ticks the ticks.
-   *
-   * @see #drawRangeGridlines(Graphics2D, Rectangle2D, List) */
-  protected void drawDomainGridlines(Graphics2D g2, Rectangle2D dataArea, List ticks) {
-    // no renderer, no gridlines...
-    if (getRenderer() == null) {
-      return;
-    }
-    // draw the domain grid lines, if any...
-    if (isDomainGridlinesVisible() || isDomainMinorGridlinesVisible()) {
-      Stroke gridStroke = null;
-      Paint gridPaint = null;
-      Iterator iterator = ticks.iterator();
-      boolean paintLine;
-      while (iterator.hasNext()) {
-        paintLine = false;
-        ValueTick tick = (ValueTick) iterator.next();
-        if ((tick.getTickType() == TickType.MINOR) && isDomainMinorGridlinesVisible()) {
-          gridStroke = getDomainMinorGridlineStroke();
-          gridPaint = getDomainMinorGridlinePaint();
-          paintLine = true;
-        } else if ((tick.getTickType() == TickType.MAJOR) && isDomainGridlinesVisible()) {
-          gridStroke = getDomainGridlineStroke();
-          gridPaint = getDomainGridlinePaint();
-          paintLine = true;
-        }
-        XYItemRenderer r = getRenderer();
-        if ((r instanceof AbstractXYItemRenderer) && paintLine) {
-          // JAN COMMENTED THIS OUT
-          // ((AbstractXYItemRenderer) r).drawDomainLine(g2, this, getDomainAxis(), dataArea, tick.getValue(), gridPaint, gridStroke);
-        }
-      }
-    }
-  }
-
-  /** Draws the gridlines for the plot's primary range axis, if they are
-   * visible.
-   *
-   * @param g2 the graphics device.
-   * @param area the data area.
-   * @param ticks the ticks.
-   *
-   * @see #drawDomainGridlines(Graphics2D, Rectangle2D, List) */
-  protected void drawRangeGridlines(Graphics2D g2, Rectangle2D area, List ticks) {
-    // no renderer, no gridlines...
-    if (getRenderer() == null) {
-      return;
-    }
-    // draw the range grid lines, if any...
-    if (isRangeGridlinesVisible() || isRangeMinorGridlinesVisible()) {
-      Stroke gridStroke = null;
-      Paint gridPaint = null;
-      ValueAxis axis = getRangeAxis();
-      if (axis != null) {
-        Iterator iterator = ticks.iterator();
-        boolean paintLine;
-        while (iterator.hasNext()) {
-          paintLine = false;
-          ValueTick tick = (ValueTick) iterator.next();
-          if ((tick.getTickType() == TickType.MINOR) && isRangeMinorGridlinesVisible()) {
-            gridStroke = getRangeMinorGridlineStroke();
-            gridPaint = getRangeMinorGridlinePaint();
-            paintLine = true;
-          } else if ((tick.getTickType() == TickType.MAJOR) && isRangeGridlinesVisible()) {
-            gridStroke = getRangeGridlineStroke();
-            gridPaint = getRangeGridlinePaint();
-            paintLine = true;
-          }
-          if ((tick.getValue() != 0.0 || !isRangeZeroBaselineVisible()) && paintLine) {
-            // JAN COMMENTED THIS OUT
-            // getRenderer().drawRangeLine(g2, this, getRangeAxis(), area, tick.getValue(), gridPaint, gridStroke);
-          }
-        }
-      }
-    }
-  }
-
-  /** Draws a base line across the chart at value zero on the domain axis.
-   *
-   * @param g2 the graphics device.
-   * @param area the data area.
-   *
-   * @see #setDomainZeroBaselineVisible(boolean) */
-  protected void drawZeroDomainBaseline(Graphics2D g2, Rectangle2D area) {
-    if (isDomainZeroBaselineVisible() && getRenderer() != null) {
-      // JAN COMMENTED THIS OUT
-      // getRenderer().drawDomainLine(g2, this, getDomainAxis(), area, 0.0, this.domainZeroBaselinePaint, this.domainZeroBaselineStroke);
-    }
-  }
-
-  /** Draws a base line across the chart at value zero on the range axis.
-   *
-   * @param g2 the graphics device.
-   * @param area the data area.
-   *
-   * @see #setRangeZeroBaselineVisible(boolean) */
-  protected void drawZeroRangeBaseline(Graphics2D g2, Rectangle2D area) {
-    if (isRangeZeroBaselineVisible()) {
-      // JAN COMMENTED THIS OUT
-      // getRenderer().drawRang// JAN COMMENTED THIS OUTeLine(g2, this, getRangeAxis(), area, 0.0, this.rangeZeroBaselinePaint, this.rangeZeroBaselineStroke);
-    }
-  }
-
-  /** Draws the annotations for the plot.
-   *
-   * @param g2 the graphics device.
-   * @param dataArea the data area.
-   * @param info the chart rendering info. */
-  public void drawAnnotations(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info) {
-    Iterator<XYAnnotation> iterator = this.annotations.iterator();
-    while (iterator.hasNext()) {
-      XYAnnotation annotation = iterator.next();
-      ValueAxis xAxis = getDomainAxis();
-      ValueAxis yAxis = getRangeAxis();
-      // JAN COMMENTED THIS OUT
-      // annotation.draw(g2, this, dataArea, xAxis, yAxis, 0, info);
-    }
-  }
-
-  /** Draws the domain markers (if any) for an axis and layer. This method is
-   * typically called from within the draw() method.
-   *
-   * @param g2 the graphics device.
-   * @param dataArea the data area.
-   * @param index the dataset/renderer index.
-   * @param layer the layer (foreground or background). */
-  protected void drawDomainMarkers(Graphics2D g2, Rectangle2D dataArea, int index, Layer layer) {
-    XYItemRenderer r = getRenderer(index);
-    if (r == null) {
-      return;
-    }
-    // check that the renderer has a corresponding dataset (it doesn't
-    // matter if the dataset is null)
-    if (index >= getDatasetCount()) {
-      return;
-    }
-    Collection<Marker> markers = getDomainMarkers(index, layer);
-    ValueAxis axis = getDomainAxisForDataset(index);
-    if (markers != null && axis != null) {
-      Iterator<Marker> iterator = markers.iterator();
-      while (iterator.hasNext()) {
-        Marker marker = iterator.next();
-        // JAN COMMENTED THIS OUT
-        // r.drawDomainMarker(g2, this, axis, marker, dataArea);
-      }
-    }
-  }
-
-  /** Draws the range markers (if any) for a renderer and layer. This method
-   * is typically called from within the draw() method.
-   *
-   * @param g2 the graphics device.
-   * @param dataArea the data area.
-   * @param index the renderer index.
-   * @param layer the layer (foreground or background). */
-  protected void drawRangeMarkers(Graphics2D g2, Rectangle2D dataArea, int index, Layer layer) {
-    XYItemRenderer r = getRenderer(index);
-    if (r == null) {
-      return;
-    }
-    // check that the renderer has a corresponding dataset (it doesn't
-    // matter if the dataset is null)
-    if (index >= getDatasetCount()) {
-      return;
-    }
-    Collection<Marker> markers = getRangeMarkers(index, layer);
-    ValueAxis axis = getRangeAxisForDataset(index);
-    if (markers != null && axis != null) {
-      Iterator<Marker> iterator = markers.iterator();
-      while (iterator.hasNext()) {
-        // Marker marker = iterator.next();
-        // JAN COMMENTED THIS OUT
-        // r.drawRangeMarker(g2, this, axis, marker, dataArea);
-      }
-    }
-  }
-
-  /** Returns the list of domain markers (read only) for the specified layer.
-   *
-   * @param layer the layer (foreground or background).
-   *
-   * @return The list of domain markers.
-   *
-   * @see #getRangeMarkers(Layer) */
-  public Collection<Marker> getDomainMarkers(Layer layer) {
-    return getDomainMarkers(0, layer);
-  }
-
-  /** Returns the list of range markers (read only) for the specified layer.
-   *
-   * @param layer the layer (foreground or background).
-   *
-   * @return The list of range markers.
-   *
-   * @see #getDomainMarkers(Layer) */
-  public Collection<Marker> getRangeMarkers(Layer layer) {
-    return getRangeMarkers(0, layer);
-  }
-
-  /** Returns a collection of domain markers for a particular renderer and
-   * layer.
-   *
-   * @param index the renderer index.
-   * @param layer the layer.
-   *
-   * @return A collection of markers (possibly {@code null}).
-   *
-   * @see #getRangeMarkers(int, Layer) */
-  public Collection<Marker> getDomainMarkers(int index, Layer layer) {
-    Collection<Marker> result = null;
-    Integer key = index;
-    if (layer == Layer.FOREGROUND) {
-      result = this.foregroundDomainMarkers.get(key);
-    } else if (layer == Layer.BACKGROUND) {
-      result = this.backgroundDomainMarkers.get(key);
-    }
-    if (result != null) {
-      result = Collections.unmodifiableCollection(result);
-    }
-    return result;
-  }
-
-  /** Returns a collection of range markers for a particular renderer and
-   * layer.
-   *
-   * @param index the renderer index.
-   * @param layer the layer.
-   *
-   * @return A collection of markers (possibly {@code null}).
-   *
-   * @see #getDomainMarkers(int, Layer) */
-  public Collection<Marker> getRangeMarkers(int index, Layer layer) {
-    Collection<Marker> result = null;
-    Integer key = index;
-    if (layer == Layer.FOREGROUND) {
-      result = this.foregroundRangeMarkers.get(key);
-    } else if (layer == Layer.BACKGROUND) {
-      result = this.backgroundRangeMarkers.get(key);
-    }
-    if (result != null) {
-      result = Collections.unmodifiableCollection(result);
-    }
-    return result;
-  }
-
-  /** Utility method for drawing a horizontal line across the data area of the
-   * plot.
-   *
-   * @param g2 the graphics device.
-   * @param dataArea the data area.
-   * @param value the coordinate, where to draw the line.
-   * @param stroke the stroke to use.
-   * @param paint the paint to use. */
-  protected void drawHorizontalLine(Graphics2D g2, Rectangle2D dataArea, double value, Stroke stroke, Paint paint) {
-    ValueAxis axis = getRangeAxis();
-    if (getOrientation() == PlotOrientation.HORIZONTAL) {
-      axis = getDomainAxis();
-    }
-    if (axis.getRange().contains(value)) {
-      double yy = axis.valueToJava2D(value, dataArea, RectangleEdge.LEFT);
-      Line2D line = new Line2D.Double(dataArea.getMinX(), yy, dataArea.getMaxX(), yy);
-      g2.setStroke(stroke);
-      g2.setPaint(paint);
-      g2.draw(line);
-    }
-  }
-
-  /** Draws a domain crosshair.
-   *
-   * @param g2 the graphics target.
-   * @param dataArea the data area.
-   * @param orientation the plot orientation.
-   * @param value the crosshair value.
-   * @param axis the axis against which the value is measured.
-   * @param stroke the stroke used to draw the crosshair line.
-   * @param paint the paint used to draw the crosshair line. */
-  protected void drawDomainCrosshair(Graphics2D g2, Rectangle2D dataArea, PlotOrientation orientation, double value, ValueAxis axis, Stroke stroke,
-      Paint paint) {
-    if (!axis.getRange().contains(value)) {
-      return;
-    }
-    Line2D line;
-    if (orientation == PlotOrientation.VERTICAL) {
-      double xx = axis.valueToJava2D(value, dataArea, RectangleEdge.BOTTOM);
-      line = new Line2D.Double(xx, dataArea.getMinY(), xx, dataArea.getMaxY());
-    } else {
-      double yy = axis.valueToJava2D(value, dataArea, RectangleEdge.LEFT);
-      line = new Line2D.Double(dataArea.getMinX(), yy, dataArea.getMaxX(), yy);
-    }
-    Object saved = g2.getRenderingHint(RenderingHints.KEY_STROKE_CONTROL);
-    g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
-    g2.setStroke(stroke);
-    g2.setPaint(paint);
-    g2.draw(line);
-    g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, saved);
-  }
-
-  /** Utility method for drawing a vertical line on the data area of the plot.
-   *
-   * @param g2 the graphics device.
-   * @param dataArea the data area.
-   * @param value the coordinate, where to draw the line.
-   * @param stroke the stroke to use.
-   * @param paint the paint to use. */
-  protected void drawVerticalLine(Graphics2D g2, Rectangle2D dataArea, double value, Stroke stroke, Paint paint) {
-    ValueAxis axis = getDomainAxis();
-    if (getOrientation() == PlotOrientation.HORIZONTAL) {
-      axis = getRangeAxis();
-    }
-    if (axis.getRange().contains(value)) {
-      double xx = axis.valueToJava2D(value, dataArea, RectangleEdge.BOTTOM);
-      Line2D line = new Line2D.Double(xx, dataArea.getMinY(), xx, dataArea.getMaxY());
-      g2.setStroke(stroke);
-      g2.setPaint(paint);
-      g2.draw(line);
-    }
-  }
-
-  /** Draws a range crosshair.
-   *
-   * @param g2 the graphics target.
-   * @param dataArea the data area.
-   * @param orientation the plot orientation.
-   * @param value the crosshair value.
-   * @param axis the axis against which the value is measured.
-   * @param stroke the stroke used to draw the crosshair line.
-   * @param paint the paint used to draw the crosshair line. */
-  protected void drawRangeCrosshair(Graphics2D g2, Rectangle2D dataArea, PlotOrientation orientation, double value, ValueAxis axis, Stroke stroke,
-      Paint paint) {
-    if (!axis.getRange().contains(value)) {
-      return;
-    }
-    Object saved = g2.getRenderingHint(RenderingHints.KEY_STROKE_CONTROL);
-    g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
-    Line2D line;
-    if (orientation == PlotOrientation.HORIZONTAL) {
-      double xx = axis.valueToJava2D(value, dataArea, RectangleEdge.BOTTOM);
-      line = new Line2D.Double(xx, dataArea.getMinY(), xx, dataArea.getMaxY());
-    } else {
-      double yy = axis.valueToJava2D(value, dataArea, RectangleEdge.LEFT);
-      line = new Line2D.Double(dataArea.getMinX(), yy, dataArea.getMaxX(), yy);
-    }
-    g2.setStroke(stroke);
-    g2.setPaint(paint);
-    g2.draw(line);
-    g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, saved);
-  }
-
-  /** Handles a 'click' on the plot by updating the anchor values.
-   *
-   * @param x the x-coordinate, where the click occurred, in Java2D space.
-   * @param y the y-coordinate, where the click occurred, in Java2D space.
-   * @param info object containing information about the plot dimensions. */
-  @Override
-  public void handleClick(int x, int y, PlotRenderingInfo info) {
-    Rectangle2D dataArea = info.getDataArea();
-    if (dataArea.contains(x, y)) {
-      // set the anchor value for the horizontal axis...
-      ValueAxis xaxis = getDomainAxis();
-      if (xaxis != null) {
-        double hvalue = xaxis.java2DToValue(x, info.getDataArea(), getDomainAxisEdge());
-        setDomainCrosshairValue(hvalue);
-      }
-      // set the anchor value for the vertical axis...
-      ValueAxis yaxis = getRangeAxis();
-      if (yaxis != null) {
-        double vvalue = yaxis.java2DToValue(y, info.getDataArea(), getRangeAxisEdge());
-        setRangeCrosshairValue(vvalue);
-      }
-    }
   }
 
   /** A utility method that returns a list of datasets that are mapped to a
@@ -3389,44 +1924,24 @@ import ch.alpine.tensor.Unprotect;
   public Range getDataRange(ValueAxis axis) {
     Range result = null;
     List<XYDataset> mappedDatasets = new ArrayList<>();
-    List<XYAnnotation> includedAnnotations = new ArrayList<>();
     boolean isDomainAxis = true;
     // is it a domain axis?
     int domainIndex = getDomainAxisIndex(axis);
     if (domainIndex >= 0) {
       isDomainAxis = true;
       mappedDatasets.addAll(getDatasetsMappedToDomainAxis(domainIndex));
-      if (domainIndex == 0) {
-        // grab the plot's annotations
-        Iterator<XYAnnotation> iterator = this.annotations.iterator();
-        while (iterator.hasNext()) {
-          XYAnnotation annotation = iterator.next();
-          if (annotation instanceof XYAnnotationBoundsInfo) {
-            includedAnnotations.add(annotation);
-          }
-        }
-      }
     }
     // or is it a range axis?
     int rangeIndex = getRangeAxisIndex(axis);
     if (rangeIndex >= 0) {
       isDomainAxis = false;
       mappedDatasets.addAll(getDatasetsMappedToRangeAxis(rangeIndex));
-      if (rangeIndex == 0) {
-        Iterator<XYAnnotation> iterator = this.annotations.iterator();
-        while (iterator.hasNext()) {
-          XYAnnotation annotation = iterator.next();
-          if (annotation instanceof XYAnnotationBoundsInfo) {
-            includedAnnotations.add(annotation);
-          }
-        }
-      }
     }
     // iterate through the datasets that map to the axis and get the union
     // of the ranges.
     for (XYDataset d : mappedDatasets) {
       if (d != null) {
-        XYItemRenderer r = getRendererForDataset(d);
+        XYItemRenderer r = renderer;
         if (isDomainAxis) {
           if (r != null) {
             result = Range.combine(result, r.findDomainBounds(d));
@@ -3440,338 +1955,9 @@ import ch.alpine.tensor.Unprotect;
             result = Range.combine(result, DatasetUtils.findRangeBounds(d));
           }
         }
-        // FIXME: the XYItemRenderer interface doesn't specify the
-        // getAnnotations() method but it should
-        if (r instanceof AbstractXYItemRenderer) {
-          AbstractXYItemRenderer rr = (AbstractXYItemRenderer) r;
-          Collection<XYAnnotation> c = rr.getAnnotations();
-          Iterator<XYAnnotation> i = c.iterator();
-          while (i.hasNext()) {
-            XYAnnotation a = i.next();
-            if (a instanceof XYAnnotationBoundsInfo) {
-              includedAnnotations.add(a);
-            }
-          }
-        }
-      }
-    }
-    Iterator<XYAnnotation> it = includedAnnotations.iterator();
-    while (it.hasNext()) {
-      XYAnnotationBoundsInfo xyabi = (XYAnnotationBoundsInfo) it.next();
-      if (xyabi.getIncludeInDataBounds()) {
-        if (isDomainAxis) {
-          result = Range.combine(result, xyabi.getXRange());
-        } else {
-          result = Range.combine(result, xyabi.getYRange());
-        }
       }
     }
     return result;
-  }
-
-  /** Receives notification of a change to an {@link Annotation} added to
-   * this plot.
-   *
-   * @param event information about the event (not used here). */
-  @Override
-  public void annotationChanged(AnnotationChangeEvent event) {
-    if (getParent() != null) {
-      getParent().annotationChanged(event);
-    } else {
-      PlotChangeEvent e = new PlotChangeEvent(this);
-      notifyListeners(e);
-    }
-  }
-
-  /** Receives notification of a change to the plot's dataset.
-   * <P>
-   * The axis ranges are updated if necessary.
-   *
-   * @param event information about the event (not used here). */
-  @Override
-  public void datasetChanged(DatasetChangeEvent event) {
-    configureDomainAxes();
-    configureRangeAxes();
-    if (getParent() != null) {
-      getParent().datasetChanged(event);
-    } else {
-      PlotChangeEvent e = new PlotChangeEvent(this);
-      e.setType(ChartChangeEventType.DATASET_UPDATED);
-      notifyListeners(e);
-    }
-  }
-
-  /** Receives notification of a renderer change event.
-   *
-   * @param event the event. */
-  @Override
-  public void rendererChanged(RendererChangeEvent event) {
-    // if the event was caused by a change to series visibility, then
-    // the axis ranges might need updating...
-    if (event.getSeriesVisibilityChanged()) {
-      configureDomainAxes();
-      configureRangeAxes();
-    }
-    fireChangeEvent();
-  }
-
-  /** Returns a flag indicating whether or not the domain crosshair is visible.
-   *
-   * @return The flag.
-   *
-   * @see #setDomainCrosshairVisible(boolean) */
-  public boolean isDomainCrosshairVisible() {
-    return this.domainCrosshairVisible;
-  }
-
-  /** Sets the flag indicating whether or not the domain crosshair is visible
-   * and, if the flag changes, sends a {@link PlotChangeEvent} to all
-   * registered listeners.
-   *
-   * @param flag the new value of the flag.
-   *
-   * @see #isDomainCrosshairVisible() */
-  public void setDomainCrosshairVisible(boolean flag) {
-    if (this.domainCrosshairVisible != flag) {
-      this.domainCrosshairVisible = flag;
-      fireChangeEvent();
-    }
-  }
-
-  /** Returns a flag indicating whether or not the crosshair should "lock-on"
-   * to actual data values.
-   *
-   * @return The flag.
-   *
-   * @see #setDomainCrosshairLockedOnData(boolean) */
-  public boolean isDomainCrosshairLockedOnData() {
-    return this.domainCrosshairLockedOnData;
-  }
-
-  /** Sets the flag indicating whether or not the domain crosshair should
-   * "lock-on" to actual data values. If the flag value changes, this
-   * method sends a {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param flag the flag.
-   *
-   * @see #isDomainCrosshairLockedOnData() */
-  public void setDomainCrosshairLockedOnData(boolean flag) {
-    if (this.domainCrosshairLockedOnData != flag) {
-      this.domainCrosshairLockedOnData = flag;
-      fireChangeEvent();
-    }
-  }
-
-  /** Returns the domain crosshair value.
-   *
-   * @return The value.
-   *
-   * @see #setDomainCrosshairValue(double) */
-  public double getDomainCrosshairValue() {
-    return this.domainCrosshairValue;
-  }
-
-  /** Sets the domain crosshair value and sends a {@link PlotChangeEvent} to
-   * all registered listeners (provided that the domain crosshair is visible).
-   *
-   * @param value the value.
-   *
-   * @see #getDomainCrosshairValue() */
-  public void setDomainCrosshairValue(double value) {
-    setDomainCrosshairValue(value, true);
-  }
-
-  /** Sets the domain crosshair value and, if requested, sends a
-   * {@link PlotChangeEvent} to all registered listeners (provided that the
-   * domain crosshair is visible).
-   *
-   * @param value the new value.
-   * @param notify notify listeners?
-   *
-   * @see #getDomainCrosshairValue() */
-  public void setDomainCrosshairValue(double value, boolean notify) {
-    this.domainCrosshairValue = value;
-    if (isDomainCrosshairVisible() && notify) {
-      fireChangeEvent();
-    }
-  }
-
-  /** Returns the {@link Stroke} used to draw the crosshair (if visible).
-   *
-   * @return The crosshair stroke (never {@code null}).
-   *
-   * @see #setDomainCrosshairStroke(Stroke)
-   * @see #isDomainCrosshairVisible()
-   * @see #getDomainCrosshairPaint() */
-  public Stroke getDomainCrosshairStroke() {
-    return this.domainCrosshairStroke;
-  }
-
-  /** Sets the Stroke used to draw the crosshairs (if visible) and notifies
-   * registered listeners that the axis has been modified.
-   *
-   * @param stroke the new crosshair stroke ({@code null} not
-   * permitted).
-   *
-   * @see #getDomainCrosshairStroke() */
-  public void setDomainCrosshairStroke(Stroke stroke) {
-    Args.nullNotPermitted(stroke, "stroke");
-    this.domainCrosshairStroke = stroke;
-    fireChangeEvent();
-  }
-
-  /** Returns the domain crosshair paint.
-   *
-   * @return The crosshair paint (never {@code null}).
-   *
-   * @see #setDomainCrosshairPaint(Paint)
-   * @see #isDomainCrosshairVisible()
-   * @see #getDomainCrosshairStroke() */
-  public Paint getDomainCrosshairPaint() {
-    return this.domainCrosshairPaint;
-  }
-
-  /** Sets the paint used to draw the crosshairs (if visible) and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param paint the new crosshair paint ({@code null} not permitted).
-   *
-   * @see #getDomainCrosshairPaint() */
-  public void setDomainCrosshairPaint(Paint paint) {
-    Args.nullNotPermitted(paint, "paint");
-    this.domainCrosshairPaint = paint;
-    fireChangeEvent();
-  }
-
-  /** Returns a flag indicating whether or not the range crosshair is visible.
-   *
-   * @return The flag.
-   *
-   * @see #setRangeCrosshairVisible(boolean)
-   * @see #isDomainCrosshairVisible() */
-  public boolean isRangeCrosshairVisible() {
-    return this.rangeCrosshairVisible;
-  }
-
-  /** Sets the flag indicating whether or not the range crosshair is visible.
-   * If the flag value changes, this method sends a {@link PlotChangeEvent}
-   * to all registered listeners.
-   *
-   * @param flag the new value of the flag.
-   *
-   * @see #isRangeCrosshairVisible() */
-  public void setRangeCrosshairVisible(boolean flag) {
-    if (this.rangeCrosshairVisible != flag) {
-      this.rangeCrosshairVisible = flag;
-      fireChangeEvent();
-    }
-  }
-
-  /** Returns a flag indicating whether or not the crosshair should "lock-on"
-   * to actual data values.
-   *
-   * @return The flag.
-   *
-   * @see #setRangeCrosshairLockedOnData(boolean) */
-  public boolean isRangeCrosshairLockedOnData() {
-    return this.rangeCrosshairLockedOnData;
-  }
-
-  /** Sets the flag indicating whether or not the range crosshair should
-   * "lock-on" to actual data values. If the flag value changes, this method
-   * sends a {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param flag the flag.
-   *
-   * @see #isRangeCrosshairLockedOnData() */
-  public void setRangeCrosshairLockedOnData(boolean flag) {
-    if (this.rangeCrosshairLockedOnData != flag) {
-      this.rangeCrosshairLockedOnData = flag;
-      fireChangeEvent();
-    }
-  }
-
-  /** Returns the range crosshair value.
-   *
-   * @return The value.
-   *
-   * @see #setRangeCrosshairValue(double) */
-  public double getRangeCrosshairValue() {
-    return this.rangeCrosshairValue;
-  }
-
-  /** Sets the range crosshair value.
-   * <P>
-   * Registered listeners are notified that the plot has been modified, but
-   * only if the crosshair is visible.
-   *
-   * @param value the new value.
-   *
-   * @see #getRangeCrosshairValue() */
-  public void setRangeCrosshairValue(double value) {
-    setRangeCrosshairValue(value, true);
-  }
-
-  /** Sets the range crosshair value and sends a {@link PlotChangeEvent} to
-   * all registered listeners, but only if the crosshair is visible.
-   *
-   * @param value the new value.
-   * @param notify a flag that controls whether or not listeners are
-   * notified.
-   *
-   * @see #getRangeCrosshairValue() */
-  public void setRangeCrosshairValue(double value, boolean notify) {
-    this.rangeCrosshairValue = value;
-    if (isRangeCrosshairVisible() && notify) {
-      fireChangeEvent();
-    }
-  }
-
-  /** Returns the stroke used to draw the crosshair (if visible).
-   *
-   * @return The crosshair stroke (never {@code null}).
-   *
-   * @see #setRangeCrosshairStroke(Stroke)
-   * @see #isRangeCrosshairVisible()
-   * @see #getRangeCrosshairPaint() */
-  public Stroke getRangeCrosshairStroke() {
-    return this.rangeCrosshairStroke;
-  }
-
-  /** Sets the stroke used to draw the crosshairs (if visible) and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param stroke the new crosshair stroke ({@code null} not
-   * permitted).
-   *
-   * @see #getRangeCrosshairStroke() */
-  public void setRangeCrosshairStroke(Stroke stroke) {
-    Args.nullNotPermitted(stroke, "stroke");
-    this.rangeCrosshairStroke = stroke;
-    fireChangeEvent();
-  }
-
-  /** Returns the range crosshair paint.
-   *
-   * @return The crosshair paint (never {@code null}).
-   *
-   * @see #setRangeCrosshairPaint(Paint)
-   * @see #isRangeCrosshairVisible()
-   * @see #getRangeCrosshairStroke() */
-  public Paint getRangeCrosshairPaint() {
-    return this.rangeCrosshairPaint;
-  }
-
-  /** Sets the paint used to color the crosshairs (if visible) and sends a
-   * {@link PlotChangeEvent} to all registered listeners.
-   *
-   * @param paint the new crosshair paint ({@code null} not permitted).
-   *
-   * @see #getRangeCrosshairPaint() */
-  public void setRangeCrosshairPaint(Paint paint) {
-    Args.nullNotPermitted(paint, "paint");
-    this.rangeCrosshairPaint = paint;
-    fireChangeEvent();
   }
 
   /** Returns the fixed domain axis space.
@@ -4109,10 +2295,6 @@ import ch.alpine.tensor.Unprotect;
         continue;
       }
       int datasetIndex = indexOf(dataset);
-      XYItemRenderer renderer = getRenderer(datasetIndex);
-      if (renderer == null) {
-        renderer = getRenderer(0);
-      }
       if (renderer != null) {
         int seriesCount = dataset.getSeriesCount();
         for (int i = 0; i < seriesCount; i++) {

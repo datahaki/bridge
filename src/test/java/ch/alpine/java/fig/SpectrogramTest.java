@@ -30,6 +30,7 @@ public class SpectrogramTest extends TestCase {
     Tensor domain = Subdivide.of(RealScalar.of(0.3), RealScalar.of(1.6), (int) (8000 * (1.6 - 0.3)));
     Tensor chirp = domain.map(polynomial).map(Cos.FUNCTION);
     VisualSet visualSet = new VisualSet();
+    visualSet.setPlotLabel(System.nanoTime() + " Spectrogram Test");
     visualSet.add(domain.map(s -> Quantity.of(s, "s")), chirp);
     JFreeChart jFreeChart = Spectrogram.of(visualSet, DirichletWindow.FUNCTION, ColorDataGradients.VISIBLESPECTRUM);
     jFreeChart.setBackgroundPaint(Color.WHITE);
