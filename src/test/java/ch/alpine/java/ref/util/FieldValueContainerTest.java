@@ -9,5 +9,6 @@ public class FieldValueContainerTest extends TestCase {
     assertEquals(fvc.getKey(), "key");
     assertEquals(fvc.getObject(), "object");
     assertEquals(fvc.getValue(), "value");
+    assertEquals(fvc.getFieldWrap(), null);
   }
 }

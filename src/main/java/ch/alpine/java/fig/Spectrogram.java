@@ -39,7 +39,6 @@ public enum Spectrogram {
     String string = visualRow.getLabelString();
     if (!string.isBlank())
       System.err.println("spectrogram drops row label");
-    // TODO if legend test is defined, indicate that it will not be shown
     Tensor domain = OrderedQ.require(visualRow.points().get(Tensor.ALL, 0));
     Tensor signal = visualRow.points().get(Tensor.ALL, 1);
     Unit unit = visualSet.getAxisY().getUnit();

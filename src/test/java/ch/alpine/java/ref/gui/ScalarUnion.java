@@ -3,6 +3,7 @@ package ch.alpine.java.ref.gui;
 
 import ch.alpine.java.ref.ann.FieldClip;
 import ch.alpine.java.ref.ann.FieldInteger;
+import ch.alpine.java.ref.ann.FieldPreferredWidth;
 import ch.alpine.java.ref.ann.FieldSelection;
 import ch.alpine.java.ref.ann.FieldSlider;
 import ch.alpine.java.ref.ann.ReflectionMarker;
@@ -13,6 +14,7 @@ import ch.alpine.tensor.qty.Quantity;
 @ReflectionMarker
 public class ScalarUnion {
   @FieldSlider
+  @FieldPreferredWidth(width = 123)
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");
   @FieldSlider

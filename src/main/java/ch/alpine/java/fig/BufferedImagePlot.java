@@ -60,15 +60,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.sca.Clip;
 
-/** A general class for plotting data in the form of (x, y) pairs. This plot can
- * use data from any class that implements the {@link XYDataset} interface.
- * <P>
- * {@code XYPlot} makes use of an {@link XYItemRenderer} to draw each point
- * on the plot. By using different renderers, various chart types can be
- * produced.
- * <p>
- * The {@link org.jfree.chart.ChartFactory} class contains static methods for
- * creating pre-configured charts. */
+/** plot of a {@link BufferedImage} */
 /* package */ class BufferedImagePlot extends Plot implements ValueAxisPlot, Pannable, Zoomable {
   /** The default grid line stroke. */
   public static final Stroke DEFAULT_GRIDLINE_STROKE = //

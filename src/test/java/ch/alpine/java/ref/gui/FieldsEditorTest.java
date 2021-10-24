@@ -7,9 +7,10 @@ import junit.framework.TestCase;
 
 public class FieldsEditorTest extends TestCase {
   public void testSimple() {
-    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(new SimpleParam());
-    fieldsPanel.createJScrollPane();
-    fieldsPanel.list().forEach(fieldPanel -> fieldPanel.notifyListeners(""));
+    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(new SimpleParam());
+    panelFieldsEditor.createJScrollPane();
+    panelFieldsEditor.list().forEach(fieldPanel -> fieldPanel.notifyListeners(""));
+    panelFieldsEditor.updateJComponents();
   }
 
   public void testV011() {

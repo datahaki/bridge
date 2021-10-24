@@ -10,7 +10,6 @@ public class ClassPathsTest extends TestCase {
   }
 
   public void testResource() {
-    String string = ClassPaths.getResource();
-    System.out.println(string);
+    assertNotNull(ClassPaths.getResource());
   }
 }
