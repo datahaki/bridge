@@ -49,9 +49,9 @@ import ch.alpine.tensor.sca.Clips;
     ScalarUnaryOperator suoY = UnitConvert.SI().to(unitY);
     Clip clipY = Clips.interval(suoY.apply(yhi.zero()), suoY.apply(yhi));
     // ---
-    VisualImage visualArray = new VisualImage(clipX, clipY, bufferedImage);
-    visualArray.getAxisX().setLabel(visualSet.getAxisX().getLabel());
-    visualArray.getAxisY().setLabel(visualSet.getAxisY().getLabel());
-    return visualArray;
+    VisualImage visualImage = new VisualImage(clipX, clipY, bufferedImage);
+    visualImage.getAxisX().setLabel(visualSet.getAxisX().getLabel());
+    visualImage.getAxisY().setLabel(visualSet.getAxisY().getLabel());
+    return visualImage;
   }
 }

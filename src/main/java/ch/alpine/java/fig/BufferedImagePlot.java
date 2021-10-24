@@ -158,25 +158,25 @@ import ch.alpine.tensor.sca.Clip;
   private boolean rangePannable;
   /** The shadow generator ({@code null} permitted). */
   private ShadowGenerator shadowGenerator;
-  private final VisualImage visualArray;
+  private final VisualImage visualImage;
 
-  public BufferedImagePlot(VisualImage visualArray) {
-    this.visualArray = visualArray;
+  public BufferedImagePlot(VisualImage visualImage) {
+    this.visualImage = visualImage;
     VisualSet visualSet = new VisualSet();
-    Clip clipX = visualArray.getClipX();
-    Clip clipY = visualArray.getClipY();
+    Clip clipX = visualImage.getClipX();
+    Clip clipY = visualImage.getClipY();
     visualSet.add( //
         Tensors.of(clipX.min(), clipX.max()), //
         Tensors.of(clipY.min(), clipY.max()));
     xyDataset = DatasetFactory.xySeriesCollection(visualSet);
-    domainAxis = new NumberAxis(visualArray.getAxisX().getAxisLabel());
+    domainAxis = new NumberAxis(visualImage.getAxisX().getAxisLabel());
     domainAxis.setRange( //
         Unprotect.withoutUnit(clipX.min()).number().doubleValue(), //
         Unprotect.withoutUnit(clipX.max()).number().doubleValue());
     domainAxis.setAutoRangeIncludesZero(false);
     domainAxis.setTickLabelFont(domainAxis.getTickLabelFont().deriveFont(12f));
     // ---
-    rangeAxis = new NumberAxis(visualArray.getAxisY().getAxisLabel());
+    rangeAxis = new NumberAxis(visualImage.getAxisY().getAxisLabel());
     rangeAxis.setRange( //
         Unprotect.withoutUnit(clipY.min()).number().doubleValue(), //
         Unprotect.withoutUnit(clipY.max()).number().doubleValue());
@@ -1250,13 +1250,13 @@ import ch.alpine.tensor.sca.Clip;
     g2.clip(dataArea);
     // g2.clip(null);
     {
-      Clip clipX = visualArray.getClipX();
-      Clip clipY = visualArray.getClipY();
+      Clip clipX = visualImage.getClipX();
+      Clip clipY = visualImage.getClipY();
       double x1 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.min()).number().doubleValue(), dataArea, getDomainAxisEdge());
       double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.max()).number().doubleValue(), dataArea, getDomainAxisEdge());
       double y1 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.min()).number().doubleValue(), dataArea, getRangeAxisEdge());
       double y2 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.max()).number().doubleValue(), dataArea, getRangeAxisEdge());
-      g2.drawImage(visualArray.getBufferedImage(), //
+      g2.drawImage(visualImage.getBufferedImage(), //
           (int) x1, //
           (int) y2, //
           (int) (x2 - x1 + 1), //

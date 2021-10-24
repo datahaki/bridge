@@ -8,12 +8,12 @@ import junit.framework.TestCase;
 
 public class VisualImageTest extends TestCase {
   public void testSimple() {
-    VisualImage visualArray = new VisualImage(Clips.unit(), Clips.unit(), ImageFormat.of(Array.zeros(10, 20, 4)));
-    visualArray.getAxisX();
+    VisualImage visualImage = new VisualImage(Clips.unit(), Clips.unit(), ImageFormat.of(Array.zeros(10, 20, 4)));
+    visualImage.getAxisX();
   }
 
   public void testSparse() {
-    VisualImage visualArray = new VisualImage(Clips.unit(), Clips.unit(), ImageFormat.of(Array.sparse(10, 20, 4)));
-    visualArray.getPlotLabel();
+    VisualImage visualImage = new VisualImage(Clips.unit(), Clips.unit(), ImageFormat.of(Array.sparse(10, 20, 4)));
+    visualImage.getPlotLabel();
   }
 }
