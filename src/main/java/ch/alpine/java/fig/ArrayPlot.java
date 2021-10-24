@@ -8,7 +8,7 @@ import org.jfree.chart.JFreeChart;
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 public enum ArrayPlot {
   ;
-  public static JFreeChart of(VisualArray visualArray) {
+  public static JFreeChart of(VisualImage visualArray) {
     JFreeChart jFreeChart = new JFreeChart( //
         visualArray.getPlotLabel(), //
         JFreeChart.DEFAULT_TITLE_FONT, //

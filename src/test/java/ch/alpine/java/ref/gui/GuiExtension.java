@@ -50,7 +50,8 @@ public class GuiExtension {
   @FieldSelection(array = { "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");
   public final ScalarUnion[] scalarUnion = { new ScalarUnion() };
-  public Color color = new Color(100, 200, 150, 128);
+  public Color foreground = new Color(100, 200, 150, 128);
+  public Color background = new Color(200, 100, 150, 128);
   public NameString nameString = NameString.SECOND;
   public NestedEnum nestedEnum = NestedEnum.SECOND;
   @FieldClip(min = "-10[L*min^-1]", max = "20[L*min^-1]")

@@ -30,7 +30,7 @@ public enum ArrayPlotDemo {
     Tensor values = domain.map(s -> Boole.of(Scalars.lessThan(Quantity.of(19, "m"), s)));
     BufferedImage bufferedImage = ImageFormat.of(Tensors.of(values).map(ColorDataGradients.CLASSIC));
     Clip clipY = Clips.interval(0, 1);
-    VisualArray visualArray = new VisualArray(clipX, clipY, bufferedImage);
+    VisualImage visualArray = new VisualImage(clipX, clipY, bufferedImage);
     visualArray.getAxisX().setUnit(Unit.of("dm"));
     visualArray.setPlotLabel("Array Plot");
     return ArrayPlot.of(visualArray);

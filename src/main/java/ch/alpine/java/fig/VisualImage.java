@@ -7,7 +7,7 @@ import java.util.Objects;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.sca.Clip;
 
-public class VisualArray extends VisualBase {
+public class VisualImage extends VisualBase {
   private final Clip clipX;
   private final Clip clipY;
   private final BufferedImage bufferedImage;
@@ -15,7 +15,7 @@ public class VisualArray extends VisualBase {
   /** @param clipX non-null
    * @param clipY non-null
    * @param bufferedImage non-null */
-  public VisualArray(Clip clipX, Clip clipY, BufferedImage bufferedImage) {
+  public VisualImage(Clip clipX, Clip clipY, BufferedImage bufferedImage) {
     this.clipX = clipX;
     this.clipY = clipY;
     getAxisX().setUnit(QuantityUnit.of(clipX.min()));

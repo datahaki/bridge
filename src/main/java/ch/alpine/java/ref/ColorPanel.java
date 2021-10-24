@@ -15,15 +15,14 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import javax.swing.colorchooser.ColorSelectionModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
 
 /* package */ class ColorPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
+  /** For each instance of {@link ColorPanel}, a single JColorChooser may be opened
+   * by the user. The jDialog field is non-null whenever the dialog is visible. */
   private JDialog jDialog = null;
 
   public ColorPanel(FieldWrap fieldWrap, Object object) {
@@ -35,17 +34,13 @@ import ch.alpine.tensor.img.ColorFormat;
         if (Objects.isNull(jDialog)) {
           Color fallback = getColor();
           JColorChooser jColorChooser = new JColorChooser(fallback);
-          ColorSelectionModel colorSelectionModel = jColorChooser.getSelectionModel();
-          ChangeListener changeListener = new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent changeEvent) {
-              updateJComponent(jColorChooser.getColor());
-              notifyListeners(jTextField.getText());
-            }
-          };
-          colorSelectionModel.addChangeListener(changeListener);
+          jColorChooser.getSelectionModel().addChangeListener(changeEvent -> {
+            updateJComponent(jColorChooser.getColor());
+            notifyListeners(jTextField.getText());
+          });
           jDialog = JColorChooser.createDialog( //
-              jColorChooser, "color selection", false, jColorChooser, i -> jDialog.dispose(), //
+              jColorChooser, "color selection: " + fieldWrap.getField().getName(), //
+              false, jColorChooser, i -> jDialog.dispose(), //
               i -> {
                 jDialog.dispose();
                 updateJComponent(fallback);

@@ -166,9 +166,9 @@ import ch.alpine.tensor.sca.Clip;
   private boolean rangePannable;
   /** The shadow generator ({@code null} permitted). */
   private ShadowGenerator shadowGenerator;
-  private final VisualArray visualArray;
+  private final VisualImage visualArray;
 
-  public BufferedImagePlot(VisualArray visualArray) {
+  public BufferedImagePlot(VisualImage visualArray) {
     this.visualArray = visualArray;
     VisualSet visualSet = new VisualSet();
     Clip clipX = visualArray.getClipX();
