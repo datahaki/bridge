@@ -28,6 +28,8 @@ public class PrettyUnitTest extends TestCase {
     assertEquals(PrettyUnit.of(Quantity.of(3, "m*s^-2")), "3 m/s\u00b2");
     assertEquals(PrettyUnit.of(Quantity.of(4, "s^3")), "4 s\u00b3");
     assertEquals(PrettyUnit.of(Quantity.of(4, "s^-3")), "4 s\u207b\u00b3");
+    assertEquals(PrettyUnit.of(Quantity.of(5, "s^4")), "5 s^4");
+    assertEquals(PrettyUnit.of(Quantity.of(5, "s^-4")), "5 s^-4");
   }
 
   public void testDegC() {

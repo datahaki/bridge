@@ -45,7 +45,7 @@ public abstract class FieldsEditor {
    * @param fieldWrap
    * @param object
    * @return given fieldPanel */
-  protected FieldPanel register(FieldPanel fieldPanel, FieldWrap fieldWrap, Object object) {
+  protected final FieldPanel register(FieldPanel fieldPanel, FieldWrap fieldWrap, Object object) {
     list.add(new Entry(fieldPanel, object));
     fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
     return fieldPanel;

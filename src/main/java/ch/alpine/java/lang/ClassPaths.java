@@ -6,16 +6,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ch.alpine.tensor.ext.PackageTestAccess;
+
 public enum ClassPaths {
   ;
-  /** @param paths
-   * @return concatenation of paths to a single class path */
-  static String join(String... paths) {
-    return Stream.of(paths) //
-        .filter(Objects::nonNull) //
-        .collect(Collectors.joining(System.getProperty("path.separator")));
-  }
-
   /** @return original classpath used in implementation by lcm */
   public static String getDefault() {
     return join(System.getenv("CLASSPATH"), System.getProperty("java.class.path"));
@@ -25,5 +19,14 @@ public enum ClassPaths {
   public static String getResource() {
     URL url = ClassDiscovery.class.getResource("/");
     return join(System.getenv("CLASSPATH"), url.getPath());
+  }
+
+  /** @param paths
+   * @return concatenation of paths to a single class path */
+  @PackageTestAccess
+  static String join(String... paths) {
+    return Stream.of(paths) //
+        .filter(Objects::nonNull) //
+        .collect(Collectors.joining(System.getProperty("path.separator")));
   }
 }
