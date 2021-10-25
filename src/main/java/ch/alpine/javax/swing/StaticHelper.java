@@ -12,8 +12,4 @@ import java.awt.Color;
   public static Color alpha128(Color color) {
     return new Color(color.getRed(), color.getGreen(), color.getBlue(), 128);
   }
-
-  public static Color withAlpha(Color color, int alpha) {
-    return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
-  }
 }

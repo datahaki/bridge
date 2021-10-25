@@ -5,18 +5,25 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Objects;
 
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
 
 /* package */ class ColorPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
+  /** For each instance of {@link ColorPanel}, a single JColorChooser may be opened
+   * by the user. The jDialog field is non-null whenever the dialog is visible. */
+  private JDialog jDialog = null;
 
   public ColorPanel(FieldWrap fieldWrap, Object object) {
     super(fieldWrap, object);
@@ -24,12 +31,29 @@ import ch.alpine.tensor.img.ColorFormat;
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
-        Color color = JColorChooser.showDialog(jButton, "pick color", getColor());
-        if (Objects.nonNull(color)) {
-          jButton.setBackground(color);
-          String string = fieldWrap.toString(color);
-          jTextField.setText(string);
-          notifyListeners(string);
+        if (Objects.isNull(jDialog)) {
+          Color fallback = getColor();
+          JColorChooser jColorChooser = new JColorChooser(fallback);
+          jColorChooser.getSelectionModel().addChangeListener(changeEvent -> {
+            updateJComponent(jColorChooser.getColor());
+            notifyListeners(jTextField.getText());
+          });
+          jDialog = JColorChooser.createDialog( //
+              jColorChooser, "color selection: " + fieldWrap.getField().getName(), //
+              false, jColorChooser, i -> jDialog.dispose(), //
+              i -> {
+                jDialog.dispose();
+                updateJComponent(fallback);
+                notifyListeners(jTextField.getText());
+              });
+          jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+          jDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent windowEvent) {
+              jDialog = null;
+            }
+          });
+          jDialog.setVisible(true);
         }
       }
     });

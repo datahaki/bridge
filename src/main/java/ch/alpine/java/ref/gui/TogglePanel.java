@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.java.ref.gui;
 
 import java.util.Objects;
@@ -21,7 +21,7 @@ import ch.alpine.java.ref.FieldWrap;
     jToggleButton.addActionListener(event -> notifyListeners(getText()));
   }
 
-  @Override
+  @Override // from FieldPanel
   public JComponent getJComponent() {
     return jToggleButton;
   }
@@ -30,7 +30,7 @@ import ch.alpine.java.ref.FieldWrap;
     return fieldWrap().toString(jToggleButton.isSelected());
   }
 
-  @Override
+  @Override // from FieldPanel
   public void updateJComponent(Object value) {
     jToggleButton.setSelected((Boolean) value);
   }

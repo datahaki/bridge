@@ -37,7 +37,9 @@ public abstract class FieldPanel {
    * @return component to be shown in the {@link FieldsEditor} */
   public abstract JComponent getJComponent();
 
-  /** Remark: the function should not be invoked by the application layer
+  /** The function does not invoke {@link #notifyListeners(String)}
+   * 
+   * Remark: the function should not be invoked by the application layer
    * 
    * @param value is non-null */
   public abstract void updateJComponent(Object value);

@@ -14,11 +14,19 @@ public class PrettyUnitTest extends TestCase {
     assertEquals(string, "");
   }
 
-  public void test() {
+  public void testOfUnit() {
     assertEquals(PrettyUnit.of(Unit.of("kg*m*s^-2")), "kg*m/s\u00b2");
     assertEquals(PrettyUnit.of(Unit.of("kg*m*s^-2*z^-1")), "kg*m*s\u207b\u00b2*z\u207b\u00b9");
     assertEquals(PrettyUnit.of(Unit.of("kg*m^2")), "kg*m\u00b2");
     assertEquals(PrettyUnit.of(Unit.of("m^-2")), "m\u207b\u00b2");
+  }
+
+  public void testOfUnitChar() {
+    assertEquals(PrettyUnit.of(Unit.of("EUR")), "\u20ac");
+    assertEquals(PrettyUnit.of(Unit.of("K")), "\u212a");
+    assertEquals(PrettyUnit.of(Unit.of("Ohm")), "\u2126");
+    assertEquals(PrettyUnit.of(Unit.of("kOhm")), "k\u2126");
+    assertEquals(PrettyUnit.of(Unit.of("MOhm")), "M\u2126");
   }
 
   public void testQuantity() {
@@ -28,6 +36,8 @@ public class PrettyUnitTest extends TestCase {
     assertEquals(PrettyUnit.of(Quantity.of(3, "m*s^-2")), "3 m/s\u00b2");
     assertEquals(PrettyUnit.of(Quantity.of(4, "s^3")), "4 s\u00b3");
     assertEquals(PrettyUnit.of(Quantity.of(4, "s^-3")), "4 s\u207b\u00b3");
+    assertEquals(PrettyUnit.of(Quantity.of(5, "s^4")), "5 s^4");
+    assertEquals(PrettyUnit.of(Quantity.of(5, "s^-4")), "5 s^-4");
   }
 
   public void testDegC() {

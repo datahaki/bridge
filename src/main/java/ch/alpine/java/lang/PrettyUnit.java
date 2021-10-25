@@ -68,7 +68,7 @@ public enum PrettyUnit {
     if (atom.equals("K"))
       return "\u212a"; // unicode K
     if (atom.equals("Ohm"))
-      return "\u2126";
+      return "\u2126"; // unicode Omega
     if (atom.equals("kOhm"))
       return "k\u2126";
     if (atom.equals("MOhm"))

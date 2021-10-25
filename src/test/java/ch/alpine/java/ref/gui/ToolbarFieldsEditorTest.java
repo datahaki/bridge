@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 
 public class ToolbarFieldsEditorTest extends TestCase {
   public void testSimple() {
-    ToolbarFieldsEditor.add(new GuiExtension(), new JToolBar());
+    ToolbarFieldsEditor tfe = ToolbarFieldsEditor.add(new GuiExtension(), new JToolBar());
+    tfe.updateJComponents();
   }
 }
