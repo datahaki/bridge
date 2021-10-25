@@ -5,7 +5,7 @@
 
 	<groupId>ch.alpine</groupId>
 	<artifactId>java</artifactId>
-	<version>0.1.7</version>
+	<version>0.1.8</version>
 	<packaging>jar</packaging>
 
 	<name>java</name>
