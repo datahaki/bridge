@@ -1,10 +1,13 @@
-// code by gjoel
+// code by gjoel, jph
 package ch.alpine.java.fig;
 
 import java.awt.image.BufferedImage;
 import java.util.Calendar;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimePeriod;
 
@@ -12,6 +15,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Last;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.qty.QuantityMagnitude;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.sca.Clip;
@@ -53,5 +57,23 @@ import ch.alpine.tensor.sca.Clips;
     visualImage.getAxisX().setLabel(visualSet.getAxisX().getLabel());
     visualImage.getAxisY().setLabel(visualSet.getAxisY().getLabel());
     return visualImage;
+  }
+
+  public static void setRange(Axis axis, ValueAxis valueAxis) {
+    if (valueAxis instanceof NumberAxis) {
+      // Mathematica does not include zero in the y-axes by default
+      // whereas jfreechart does so.
+      // the code below emulates the behavior of Mathematica
+      NumberAxis numberAxis = (NumberAxis) valueAxis;
+      numberAxis.setAutoRangeIncludesZero(false);
+    }
+    Optional<Clip> optional = axis.getClip();
+    if (optional.isPresent()) {
+      Clip clip = optional.orElseThrow();
+      ScalarUnaryOperator suo = QuantityMagnitude.SI().in(axis.getUnit());
+      valueAxis.setRange( //
+          suo.apply(clip.min()).number().doubleValue(), //
+          suo.apply(clip.max()).number().doubleValue());
+    }
   }
 }

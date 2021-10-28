@@ -25,7 +25,10 @@ public class VisualImageTest extends TestCase {
 
   public void testImage() {
     BufferedImage bufferedImage = ResourceData.bufferedImage("/io/image/album_au_gray.jpg");
-    JFreeChart jFreeChart = ArrayPlot.of(VisualImage.of(bufferedImage));
-    jFreeChart.draw(bufferedImage.createGraphics(), new Rectangle2D.Double(0, 0, 100, 100));
+    VisualImage visualImage = new VisualImage(bufferedImage);
+    assertEquals(visualImage.getAxisX().getClip().orElseThrow(), Clips.positive(bufferedImage.getWidth()));
+    assertEquals(visualImage.getAxisY().getClip().orElseThrow(), Clips.positive(bufferedImage.getHeight()));
+    JFreeChart jFreeChart = ArrayPlot.of(visualImage);
+    jFreeChart.draw(bufferedImage.createGraphics(), new Rectangle2D.Double(0, 0, 200, 200));
   }
 }

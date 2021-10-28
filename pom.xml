@@ -5,7 +5,7 @@
 
 	<groupId>ch.alpine</groupId>
 	<artifactId>java</artifactId>
-	<version>0.1.8</version>
+	<version>0.1.9</version>
 	<packaging>jar</packaging>
 
 	<name>java</name>
@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>ch.alpine</groupId>
 			<artifactId>tensor</artifactId>
-			<version>0.9.7</version>
+			<version>0.9.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jfree</groupId>

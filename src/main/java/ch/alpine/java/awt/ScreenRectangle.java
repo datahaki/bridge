@@ -6,12 +6,10 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
-public enum ScreenRectangle {
-  INSTANCE;
-
+public class ScreenRectangle {
   private Rectangle screen = new Rectangle();
 
-  private ScreenRectangle() {
+  public ScreenRectangle() {
     GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
     for (GraphicsDevice graphicsDevice : graphicsEnvironment.getScreenDevices())
       for (GraphicsConfiguration graphicsConfiguration : graphicsDevice.getConfigurations())

@@ -6,5 +6,6 @@ import junit.framework.TestCase;
 public class ScreenInsetsTest extends TestCase {
   public void testSimple() {
     ScreenInsets.of(0, 0);
+    ScreenInsets.of(0);
   }
 }
