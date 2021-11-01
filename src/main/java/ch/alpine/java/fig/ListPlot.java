@@ -4,8 +4,6 @@ package ch.alpine.java.fig;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -27,6 +25,7 @@ public enum ListPlot {
   /** @param visualSet
    * @param joined for lines between coordinates, otherwise scattered points
    * @return */
+  // TODO joined should be property of visualRow but jfreechart does not support this granularity(?)
   public static JFreeChart of(VisualSet visualSet, boolean joined) {
     XYSeriesCollection xySeriesCollection = DatasetFactory.xySeriesCollection(visualSet);
     JFreeChart jFreeChart = joined //
@@ -54,15 +53,8 @@ public enum ListPlot {
       xyItemRenderer.setSeriesPaint(index, visualRow.getColor());
       xyItemRenderer.setSeriesStroke(index, visualRow.getStroke());
     }
-    { // Mathematica does not include zero in the y-axes by default
-      // whereas jfreechart does so.
-      // the code below emulates the behavior of Mathematica
-      ValueAxis valueAxis = jFreeChart.getXYPlot().getRangeAxis();
-      if (valueAxis instanceof NumberAxis) {
-        NumberAxis numberAxis = (NumberAxis) valueAxis;
-        numberAxis.setAutoRangeIncludesZero(false);
-      }
-    }
+    StaticHelper.setRange(visualSet.getAxisX(), jFreeChart.getXYPlot().getDomainAxis());
+    StaticHelper.setRange(visualSet.getAxisY(), jFreeChart.getXYPlot().getRangeAxis());
     return jFreeChart;
   }
 

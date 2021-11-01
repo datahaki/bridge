@@ -8,18 +8,15 @@ import org.jfree.chart.JFreeChart;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.OrderedQ;
-import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.fft.SpectrogramArray;
 import ch.alpine.tensor.img.ColorDataGradients;
+import ch.alpine.tensor.img.Raster;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.qty.CompatibleUnitQ;
 import ch.alpine.tensor.qty.Unit;
-import ch.alpine.tensor.sca.Abs;
 import ch.alpine.tensor.sca.win.DirichletWindow;
 import ch.alpine.tensor.sca.win.HannWindow;
 
@@ -49,18 +46,25 @@ public enum Spectrogram {
         visualSet.getPlotLabel(), //
         JFreeChart.DEFAULT_TITLE_FONT, //
         new BufferedImagePlot(StaticHelper.create( //
-            ImageFormat.of(Rescale.of(half_abs(signal, window)).map(function)), //
+            ImageFormat.of(Raster.of(SpectrogramArray.half_abs(signal, window), function)), //
             visualSet, domain, yhi)),
         false);
     ChartFactory.getChartTheme().apply(jFreeChart);
     return jFreeChart;
   }
 
-  // TODO use function in tensor library
-  private static Tensor half_abs(Tensor vector, ScalarUnaryOperator window) {
-    Tensor tensor = SpectrogramArray.of(vector, window);
-    int half = Unprotect.dimension1Hint(tensor) / 2;
-    return Tensors.vector(i -> tensor.get(Tensor.ALL, half - i - 1).map(Abs.FUNCTION), half);
+  /** Example:
+   * <pre>
+   * Spectrogram.of(vector, HannWindow.FUNCTION, ColorDataGradients.VISIBLESPECTRUM);
+   * </pre>
+   * 
+   * @param vector
+   * @param window for instance {@link HannWindow#FUNCTION}
+   * @param function for instance {@link ColorDataGradients#VISIBLESPECTRUM}
+   * @return array plot of the spectrogram of given vector with colors specified by given function
+   * @throws Exception if input is not a vector */
+  public static Tensor of(Tensor vector, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
+    return Raster.of(SpectrogramArray.half_abs(vector, window), function);
   }
 
   /** Example:
@@ -73,8 +77,7 @@ public enum Spectrogram {
    * @return spectrogram chart of signal specified in given visual set generated using
    * given window function and {@link ColorDataGradients#VISIBLESPECTRUM} */
   public static JFreeChart of(VisualSet visualSet, ScalarUnaryOperator window) {
-    // TODO use sunset_reversed
-    return of(visualSet, window, ColorDataGradients.VISIBLESPECTRUM);
+    return of(visualSet, window, ColorDataGradients.SUNSET_REVERSED);
   }
 
   /** @param visualSet with single {@link VisualRow} containing domain and signal

@@ -5,6 +5,6 @@ import junit.framework.TestCase;
 
 public class ScreenRectangleTest extends TestCase {
   public void testSimple() {
-    ScreenRectangle.INSTANCE.getScreenRectangle();
+    new ScreenRectangle().getScreenRectangle();
   }
 }

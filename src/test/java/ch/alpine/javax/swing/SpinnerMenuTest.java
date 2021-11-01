@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 public class SpinnerMenuTest extends TestCase {
   public void testSimple() {
     SpinnerLabel<Pivots> spinnerLabel = SpinnerLabel.of(Pivots.values());
-    SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(spinnerLabel, false);
-    spinnerMenu.design(new JPopupMenu());
+    new SpinnerMenu<>(spinnerLabel, false).design(new JPopupMenu());
+    new SpinnerMenu<>(spinnerLabel, true).design(new JPopupMenu());
   }
 }

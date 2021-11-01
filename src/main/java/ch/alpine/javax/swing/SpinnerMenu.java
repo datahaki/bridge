@@ -22,7 +22,7 @@ import javax.swing.JPopupMenu;
   private final SpinnerLabel<T> spinnerLabel;
   private final boolean hover;
 
-  SpinnerMenu(SpinnerLabel<T> spinnerLabel, boolean hover) {
+  public SpinnerMenu(SpinnerLabel<T> spinnerLabel, boolean hover) {
     this.spinnerLabel = spinnerLabel;
     this.hover = hover;
   }

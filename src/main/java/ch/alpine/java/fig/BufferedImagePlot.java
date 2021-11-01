@@ -26,7 +26,6 @@ import java.util.TreeMap;
 
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItemCollection;
-import org.jfree.chart.axis.Axis;
 import org.jfree.chart.axis.AxisCollection;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.AxisSpace;
@@ -159,28 +158,32 @@ import ch.alpine.tensor.sca.Clip;
   /** The shadow generator ({@code null} permitted). */
   private ShadowGenerator shadowGenerator;
   private final VisualImage visualImage;
+  private final Clip clipX;
+  private final Clip clipY;
 
   public BufferedImagePlot(VisualImage visualImage) {
     this.visualImage = visualImage;
-    VisualSet visualSet = new VisualSet();
-    Clip clipX = visualImage.getClipX();
-    Clip clipY = visualImage.getClipY();
-    visualSet.add( //
-        Tensors.of(clipX.min(), clipX.max()), //
-        Tensors.of(clipY.min(), clipY.max()));
-    xyDataset = DatasetFactory.xySeriesCollection(visualSet);
-    domainAxis = new NumberAxis(visualImage.getAxisX().getAxisLabel());
-    domainAxis.setRange( //
-        Unprotect.withoutUnit(clipX.min()).number().doubleValue(), //
-        Unprotect.withoutUnit(clipX.max()).number().doubleValue());
-    domainAxis.setAutoRangeIncludesZero(false);
-    domainAxis.setTickLabelFont(domainAxis.getTickLabelFont().deriveFont(12f));
-    // ---
-    rangeAxis = new NumberAxis(visualImage.getAxisY().getAxisLabel());
-    rangeAxis.setRange( //
-        Unprotect.withoutUnit(clipY.min()).number().doubleValue(), //
-        Unprotect.withoutUnit(clipY.max()).number().doubleValue());
-    rangeAxis.setTickLabelFont(rangeAxis.getTickLabelFont().deriveFont(12f));
+    {
+      VisualSet visualSet = new VisualSet();
+      clipX = visualImage.getAxisX().getClip().orElseThrow();
+      clipY = visualImage.getAxisY().getClip().orElseThrow();
+      visualSet.add( //
+          Tensors.of(clipX.min(), clipX.max()), //
+          Tensors.of(clipY.min(), clipY.max()));
+      xyDataset = DatasetFactory.xySeriesCollection(visualSet);
+    }
+    {
+      Axis axis = visualImage.getAxisX();
+      domainAxis = new NumberAxis(axis.getAxisLabel());
+      StaticHelper.setRange(axis, domainAxis);
+      domainAxis.setTickLabelFont(domainAxis.getTickLabelFont().deriveFont(12f));
+    }
+    {
+      Axis axis = visualImage.getAxisY();
+      rangeAxis = new NumberAxis(axis.getAxisLabel());
+      StaticHelper.setRange(axis, rangeAxis);
+      rangeAxis.setTickLabelFont(rangeAxis.getTickLabelFont().deriveFont(12f));
+    }
     xyItemRenderer = new XYLineAndShapeRenderer(false, false);
     this.orientation = PlotOrientation.VERTICAL;
     this.weight = 1; // only relevant when this is a subplot
@@ -1244,14 +1247,12 @@ import ch.alpine.tensor.sca.Clip;
     }
     // draw the plot background and axes...
     drawBackground(g2, dataArea);
-    Map<Axis, AxisState> axisStateMap = drawAxes(g2, area, dataArea, info);
+    Map<org.jfree.chart.axis.Axis, AxisState> axisStateMap = drawAxes(g2, area, dataArea, info);
     Shape originalClip = g2.getClip();
     Composite originalComposite = g2.getComposite();
     g2.clip(dataArea);
     // g2.clip(null);
     {
-      Clip clipX = visualImage.getClipX();
-      Clip clipY = visualImage.getClipY();
       double x1 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.min()).number().doubleValue(), dataArea, getDomainAxisEdge());
       double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.max()).number().doubleValue(), dataArea, getDomainAxisEdge());
       double y1 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.min()).number().doubleValue(), dataArea, getRangeAxisEdge());
@@ -1321,7 +1322,7 @@ import ch.alpine.tensor.sca.Clip;
    *
    * @return A map containing the state for each axis drawn. */
   @SuppressWarnings("unchecked")
-  protected Map<Axis, AxisState> drawAxes(Graphics2D g2, Rectangle2D plotArea, Rectangle2D dataArea, PlotRenderingInfo plotState) {
+  protected Map<org.jfree.chart.axis.Axis, AxisState> drawAxes(Graphics2D g2, Rectangle2D plotArea, Rectangle2D dataArea, PlotRenderingInfo plotState) {
     AxisCollection axisCollection = new AxisCollection();
     // add domain axes to lists...
     // ValueAxis axis = ;
@@ -1329,10 +1330,10 @@ import ch.alpine.tensor.sca.Clip;
     axisCollection.add(domainAxis, getDomainAxisEdge(0));
     // add range axes to lists...
     axisCollection.add(rangeAxis, getRangeAxisEdge(0));
-    Map<Axis, AxisState> axisStateMap = new HashMap<>();
+    Map<org.jfree.chart.axis.Axis, AxisState> axisStateMap = new HashMap<>();
     // draw the top axes
     double cursor = dataArea.getMinY() - this.axisOffset.calculateTopOutset(dataArea.getHeight());
-    Iterator<Axis> iterator = axisCollection.getAxesAtTop().iterator();
+    Iterator<org.jfree.chart.axis.Axis> iterator = axisCollection.getAxesAtTop().iterator();
     while (iterator.hasNext()) {
       ValueAxis axis = (ValueAxis) iterator.next();
       AxisState info = axis.draw(g2, cursor, plotArea, dataArea, RectangleEdge.TOP, plotState);

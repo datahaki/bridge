@@ -17,6 +17,10 @@ public enum Histogram {
     return of(visualSet, false);
   }
 
+  /** @param visualSet
+   * @param stacked
+   * @return
+   * @see StackedHistogram */
   /* package */ static JFreeChart of(VisualSet visualSet, boolean stacked) {
     return JFreeChartFactory.barChart(visualSet, stacked, Scalar::toString);
   }
