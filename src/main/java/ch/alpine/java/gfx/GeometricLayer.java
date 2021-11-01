@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 
@@ -124,8 +125,8 @@ public class GeometricLayer {
    * 
    * @param modelWidth
    * @return non-negative value */
-  public float model2pixelWidth(double modelWidth) {
-    return (float) (Math.sqrt(Math.abs(deque.peek().det())) * modelWidth);
+  public float model2pixelWidth(Scalar modelWidth) {
+    return (float) (Math.sqrt(Math.abs(deque.peek().det())) * modelWidth.number().doubleValue());
   }
 
   public double pixel2modelWidth(double pixelWidth) {

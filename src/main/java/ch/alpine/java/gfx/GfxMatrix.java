@@ -60,6 +60,10 @@ public enum GfxMatrix {
     });
   }
 
+  public static Tensor translation(Number x, Number y) {
+    return translation(Tensors.vector(x, y));
+  }
+
   /** Hint: function is useful to construct a pixel2model matrix
    * for an image of given height.
    * 

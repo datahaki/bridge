@@ -32,7 +32,7 @@ public class GeometricLayerTest extends TestCase {
     geometricLayer.toPath2D(CirclePoints.of(10), false);
     geometricLayer.toPath2D(CirclePoints.of(10), true);
     geometricLayer.toPath2D(Tensors.empty());
-    float model2pixelWidth = geometricLayer.model2pixelWidth(3);
+    float model2pixelWidth = geometricLayer.model2pixelWidth(RealScalar.of(3));
     double pixel2modelWidth = geometricLayer.pixel2modelWidth(model2pixelWidth);
     Chop._10.requireClose(RealScalar.of(pixel2modelWidth), RealScalar.of(3));
   }
