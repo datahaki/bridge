@@ -2,7 +2,7 @@
 
 # ch.alpine.java
 
-Library for Java, version `0.1.9`
+Library for Java, version `0.2.0`
 
 ## Plots
 
@@ -57,7 +57,7 @@ Specify `repository` and `dependency` of the tensor library in the `pom.xml` fil
   <dependency>
     <groupId>ch.alpine</groupId>
     <artifactId>java</artifactId>
-    <version>0.1.9</version>
+    <version>0.2.0</version>
   </dependency>
 </dependencies>
 ```
