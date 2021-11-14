@@ -35,6 +35,8 @@ public class GuiExtension {
   @FieldFuse
   public Boolean defaultFuse = false;
   public Pivots pivots = Pivots.ARGMAX_ABS;
+  public Boolean status2 = true;
+  public Pivots pivots2 = Pivots.ARGMAX_ABS;
   @FieldExistingDirectory
   public File folder = HomeDirectory.file();
   @FieldExistingFile

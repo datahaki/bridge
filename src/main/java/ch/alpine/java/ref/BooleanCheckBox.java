@@ -11,12 +11,11 @@ import javax.swing.JComponent;
 
   public BooleanCheckBox(FieldWrap fieldWrap, Boolean value) {
     super(fieldWrap);
-    try {
-      jCheckBox.setIcon(FieldsEditorManager.INSTANCE.getIcon(FieldsEditorKey.ICON_CHECKBOX_0));
-      jCheckBox.setSelectedIcon(FieldsEditorManager.INSTANCE.getIcon(FieldsEditorKey.ICON_CHECKBOX_1));
-    } catch (Exception exception) {
-      exception.printStackTrace();
-    }
+    // ---
+    jCheckBox.setIcon(FieldsEditorManager.getIcon(FieldsEditorKey.ICON_CHECKBOX_0));
+    jCheckBox.setSelectedIcon(FieldsEditorManager.getIcon(FieldsEditorKey.ICON_CHECKBOX_1));
+    jCheckBox.setBorder(null);
+    // ---
     jCheckBox.setOpaque(false);
     if (Objects.nonNull(value))
       jCheckBox.setSelected(value);

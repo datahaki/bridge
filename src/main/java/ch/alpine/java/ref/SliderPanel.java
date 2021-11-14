@@ -67,7 +67,7 @@ import ch.alpine.tensor.sca.Clip;
     }
     jSlider = new JSlider(0, resolution, index);
     {
-      FieldsEditorManager.INSTANCE.establish(FieldsEditorKey.INT_SLIDER_HEIGHT, jSlider);
+      FieldsEditorManager.establish(FieldsEditorKey.INT_SLIDER_HEIGHT, jSlider);
     }
     jSlider.setOpaque(false);
     jSlider.setPaintTicks(resolution <= TICKS_MAX);

@@ -15,9 +15,6 @@ import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ann.FieldLabels;
 
 public class PanelFieldsEditor extends FieldsEditor {
-  // TODO implementation is not complete
-  private static final int FALLBACK_HEIGHT_ITEM = 28;
-
   private class Visitor implements ObjectFieldVisitor {
     private int level = 0;
 
