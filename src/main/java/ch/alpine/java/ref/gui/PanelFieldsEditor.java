@@ -15,9 +15,8 @@ import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ann.FieldLabels;
 
 public class PanelFieldsEditor extends FieldsEditor {
-  // TODO this choice for "height" is not sufficiently general
-  private static final int HEIGHT_ITEM = 28;
-  private static final int HEIGHT_PUSH = 20;
+  // TODO implementation is not complete
+  private static final int FALLBACK_HEIGHT_ITEM = 28;
 
   private class Visitor implements ObjectFieldVisitor {
     private int level = 0;
@@ -28,14 +27,14 @@ public class PanelFieldsEditor extends FieldsEditor {
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, null));
       jLabel.setToolTipText(FieldToolTip.of(field));
       FieldPanel fieldPanel = register(fieldWrap.createFieldPanel(value), fieldWrap, object);
-      rowPanel.appendRow(jLabel, StaticHelper.layout(field, fieldPanel.getJComponent()), HEIGHT_ITEM);
+      rowPanel.appendRow(jLabel, StaticHelper.layout(field, fieldPanel.getJComponent()));
     }
 
     @Override // from ObjectFieldVisitor
     public void push(String key, Field field, Integer index) {
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, index));
       jLabel.setEnabled(false);
-      rowPanel.appendRow(jLabel, HEIGHT_PUSH);
+      rowPanel.appendRow(jLabel);
       ++level;
     }
 

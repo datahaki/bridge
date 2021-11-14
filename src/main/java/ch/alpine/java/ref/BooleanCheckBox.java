@@ -6,11 +6,17 @@ import java.util.Objects;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 
-/* package */ class BooleanPanel extends FieldPanel {
+/* package */ class BooleanCheckBox extends FieldPanel {
   private final JCheckBox jCheckBox = new JCheckBox();
 
-  public BooleanPanel(FieldWrap fieldWrap, Boolean value) {
+  public BooleanCheckBox(FieldWrap fieldWrap, Boolean value) {
     super(fieldWrap);
+    try {
+      jCheckBox.setIcon(FieldsEditorManager.INSTANCE.getIcon(FieldsEditorKey.ICON_CHECKBOX_0));
+      jCheckBox.setSelectedIcon(FieldsEditorManager.INSTANCE.getIcon(FieldsEditorKey.ICON_CHECKBOX_1));
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
     jCheckBox.setOpaque(false);
     if (Objects.nonNull(value))
       jCheckBox.setSelected(value);

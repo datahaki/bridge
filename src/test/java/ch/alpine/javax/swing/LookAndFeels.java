@@ -16,11 +16,14 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
+/** Do not invoke LookAndFeel#getDefaults()
+ * but modify keys only via UIManager.getDefaults(). */
 public enum LookAndFeels {
   /** java swing default */
   DEFAULT(new MetalLookAndFeel()), //
   DARK(new FlatDarkLaf()), //
   LIGHT(new FlatLightLaf()), //
+  // does not allow LookAndFeel#getDefaults()
   CDE_MOTIF("com.sun.java.swing.plaf.motif.MotifLookAndFeel"), //
   DRACULA(new FlatDarculaLaf()), //
   INTELLI_J(new FlatIntelliJLaf()), //
