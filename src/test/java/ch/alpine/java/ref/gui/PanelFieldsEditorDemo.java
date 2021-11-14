@@ -8,7 +8,7 @@ import ch.alpine.java.ref.SimpleParam;
 
 public enum PanelFieldsEditorDemo {
   ;
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.lookAndFeels.updateUI();
     // ---

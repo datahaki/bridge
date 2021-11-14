@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.java.ref.gui;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -19,8 +18,8 @@ public final class RowPanel {
     jPanel.setOpaque(false);
   }
 
-  public void appendRow(JComponent jComponent, int height) {
-    setHeight(jComponent, height);
+  /** @param jComponent that spreads over the entire width */
+  public void appendRow(JComponent jComponent) {
     ++gridBagConstraints.gridy; // initially -1
     gridBagConstraints.gridwidth = 2;
     gridBagConstraints.gridx = 0;
@@ -29,9 +28,7 @@ public final class RowPanel {
     jPanel.add(jComponent);
   }
 
-  public void appendRow(JComponent jComponent1, JComponent jComponent2, int height) {
-    setHeight(jComponent1, height);
-    setHeight(jComponent2, height);
+  public void appendRow(JComponent jComponent1, JComponent jComponent2) {
     ++gridBagConstraints.gridy; // initially -1
     // ---
     gridBagConstraints.gridwidth = 1;
@@ -48,11 +45,5 @@ public final class RowPanel {
 
   public JPanel getJPanel() {
     return jPanel;
-  }
-
-  private static void setHeight(JComponent jComponent, int height) {
-    Dimension dimension = jComponent.getPreferredSize();
-    dimension.height = height;
-    jComponent.setPreferredSize(dimension);
   }
 }

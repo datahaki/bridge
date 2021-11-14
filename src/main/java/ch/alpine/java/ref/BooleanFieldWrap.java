@@ -27,7 +27,7 @@ public class BooleanFieldWrap extends BaseFieldWrap {
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object value) {
     return Objects.isNull(fieldFuse) //
-        ? new BooleanPanel(this, (Boolean) value)
+        ? new BooleanCheckBox(this, (Boolean) value)
         : new BooleanButton(this, fieldFuse.text());
   }
 }

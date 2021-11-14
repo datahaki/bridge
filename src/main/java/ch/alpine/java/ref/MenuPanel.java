@@ -30,6 +30,9 @@ import ch.alpine.javax.swing.StandardMenu;
             for (String string : strings) {
               JMenuItem jMenuItem = new JMenuItem(string);
               jMenuItem.setFont(jTextField.getFont());
+              {
+                FieldsEditorManager.establish(FieldsEditorKey.INT_STRING_PANEL_HEIGHT, jMenuItem);
+              }
               jMenuItem.addActionListener(event -> {
                 jTextField.setText(string);
                 indicateGui();

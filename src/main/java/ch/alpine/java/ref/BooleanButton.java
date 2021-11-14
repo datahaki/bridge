@@ -5,23 +5,24 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JToolBar;
+import javax.swing.JPanel;
 
 /* package */ class BooleanButton extends FieldPanel {
-  private final JToolBar jToolBar = new JToolBar();
+  private final JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
   public BooleanButton(FieldWrap fieldWrap, String text) {
     super(fieldWrap);
     JButton jButton = new JButton(text);
+    {
+      FieldsEditorManager.establish(FieldsEditorKey.INT_BUTTON_HEIGHT, jButton);
+    }
     jButton.addActionListener(event -> notifyListeners("true"));
-    jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    jToolBar.setFloatable(false);
-    jToolBar.add(jButton);
+    jPanel.add(jButton);
   }
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
-    return jToolBar;
+    return jPanel;
   }
 
   @Override // from FieldPanel

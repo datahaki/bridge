@@ -10,7 +10,7 @@ import ch.alpine.javax.swing.SpinnerLabel;
 
   public EnumPanel(FieldWrap fieldWrap, Object[] objects, Object object) {
     super(fieldWrap);
-    spinnerLabel.setFont(FONT);
+    spinnerLabel.setFont(FieldsEditorManager.getFont(FieldsEditorKey.FONT_TEXTFIELD));
     spinnerLabel.setArray(objects);
     spinnerLabel.updatePreferredSize();
     spinnerLabel.setValueSafe(object);

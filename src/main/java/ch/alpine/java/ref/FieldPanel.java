@@ -1,7 +1,6 @@
 // code by jph, gjoel
 package ch.alpine.java.ref;
 
-import java.awt.Font;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -11,8 +10,6 @@ import javax.swing.JComponent;
 import ch.alpine.java.ref.gui.FieldsEditor;
 
 public abstract class FieldPanel {
-  public static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 18);
-  // ---
   private final List<Consumer<String>> list = new LinkedList<>();
   private final FieldWrap fieldWrap;
 
