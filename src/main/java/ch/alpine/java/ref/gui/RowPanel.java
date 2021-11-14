@@ -30,6 +30,7 @@ public final class RowPanel {
   }
 
   public void appendRow(JComponent jComponent1, JComponent jComponent2, int height) {
+    // height = Math.max(jComponent1.getPreferredSize().height, jComponent2.getPreferredSize().height);
     setHeight(jComponent1, height);
     setHeight(jComponent2, height);
     ++gridBagConstraints.gridy; // initially -1

@@ -15,6 +15,7 @@ import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ann.FieldLabels;
 
 public class PanelFieldsEditor extends FieldsEditor {
+  // TODO this choice for "height" is not sufficiently general
   private static final int HEIGHT_ITEM = 28;
   private static final int HEIGHT_PUSH = 20;
 

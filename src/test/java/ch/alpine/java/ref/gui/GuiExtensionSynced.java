@@ -13,7 +13,7 @@ import ch.alpine.javax.swing.LookAndFeels;
 
 public enum GuiExtensionSynced {
   ;
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     LookAndFeels.INTELLI_J.updateUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor left_FieldsEditor = new PanelFieldsEditor(guiExtension);
