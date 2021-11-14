@@ -17,8 +17,8 @@ import ch.alpine.tensor.io.ResourceData;
 public enum GuiExtensionDemo {
   ;
   public static void main(String[] args) throws Exception {
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ResourceData.bufferedImage("/image/checkbox/metro/32/0.png")));
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ResourceData.bufferedImage("/image/checkbox/metro/32/1.png")));
+    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ResourceData.bufferedImage("/image/checkbox/metro/22/0.png")));
+    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ResourceData.bufferedImage("/image/checkbox/metro/22/1.png")));
     // FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 20));
     LookAndFeels.INTELLI_J.updateUI();
     GuiExtension guiExtension = new GuiExtension();
