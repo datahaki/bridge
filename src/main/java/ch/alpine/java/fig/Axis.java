@@ -7,6 +7,7 @@ import java.util.Optional;
 import ch.alpine.java.lang.PrettyUnit;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.PackageTestAccess;
 import ch.alpine.tensor.qty.QuantityMagnitude;
@@ -42,10 +43,15 @@ public class Axis {
   }
 
   // ---
+  /** @param clip with non-zero width */
   public void setClip(Clip clip) {
     this.clip = clip;
-    if (Objects.isNull(unit) && Objects.nonNull(clip))
-      setUnit(QuantityUnit.of(clip));
+    if (Objects.nonNull(clip)) {
+      if (Scalars.isZero(clip.width()))
+        System.err.println("empty axis range is not supported");
+      if (Objects.isNull(unit))
+        setUnit(QuantityUnit.of(clip));
+    }
   }
 
   public Optional<Clip> getClip() {

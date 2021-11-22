@@ -10,6 +10,8 @@ import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.undo.UndoManager;
 
 import ch.alpine.javax.swing.UIManagerColor;
@@ -84,6 +86,23 @@ import ch.alpine.javax.swing.UIManagerColor;
         String string = jTextField.getText();
         if (!string.equals(_value))
           nofifyIfValid(_value = string);
+      }
+    });
+    jTextField.getDocument().addDocumentListener(new DocumentListener() {
+      @Override
+      public void removeUpdate(DocumentEvent documentEvent) {
+        // ---
+      }
+
+      @Override
+      public void insertUpdate(DocumentEvent documentEvent) {
+        // for instance in linux, when text is pasted using center mouse button
+        indicateGui();
+      }
+
+      @Override
+      public void changedUpdate(DocumentEvent e) {
+        // ---
       }
     });
     indicateGui();
