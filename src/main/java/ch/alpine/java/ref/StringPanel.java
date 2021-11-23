@@ -96,12 +96,12 @@ import ch.alpine.javax.swing.UIManagerColor;
 
       @Override
       public void insertUpdate(DocumentEvent documentEvent) {
-        // for instance in linux, when text is pasted using center mouse button
+        // when text is pasted. On linux, this may be via center mouse button
         indicateGui();
       }
 
       @Override
-      public void changedUpdate(DocumentEvent e) {
+      public void changedUpdate(DocumentEvent documentEvent) {
         // ---
       }
     });
