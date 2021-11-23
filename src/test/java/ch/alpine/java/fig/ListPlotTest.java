@@ -1,8 +1,11 @@
 // code by jph
 package ch.alpine.java.fig;
 
+import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.UniformDistribution;
 import ch.alpine.tensor.qty.Quantity;
 import junit.framework.TestCase;
 
@@ -45,5 +48,13 @@ public class ListPlotTest extends TestCase {
     visualSet.add(Tensors.empty());
     visualSet.add(Tensors.vector(3, 5), Tensors.vector(1, 2.6).map(suoY));
     TestHelper.draw(ListPlot.of(visualSet, true));
+  }
+
+  public void testAlreadyLarge() {
+    VisualSet visualSet = new VisualSet();
+    int n = 100_000; // tested for up to 10 million
+    Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
+    visualSet.add(points);
+    ListPlot.of(visualSet);
   }
 }

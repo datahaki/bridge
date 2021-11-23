@@ -3,6 +3,7 @@ package ch.alpine.java.ref;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.LinkedList;
@@ -72,11 +73,20 @@ public class ObjectProperties {
 
   // ---
   /** @param object
+   * @param file
+   * @return
+   * @throws FileNotFoundException
+   * @throws IOException */
+  public static void load(Object object, File file) throws FileNotFoundException, IOException {
+    set(object, Import.properties(file));
+  }
+
+  /** @param object
    * @param file properties
    * @return object with fields updated from properties file if loading was successful */
   public static <T> T tryLoad(T object, File file) {
     try {
-      set(object, Import.properties(file));
+      load(object, file);
     } catch (Exception exception) {
       // ---
     }
