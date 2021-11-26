@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.java.fig;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -19,10 +20,18 @@ import ch.alpine.tensor.sca.Clips;
 
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/Axis.html">Axis</a> */
-public class Axis {
+public class Axis implements Serializable {
   private String label = "";
   private Unit unit = null;
   private Clip clip = null;
+
+  public Axis() {
+    // ---
+  }
+
+  public Axis(Clip clip) {
+    setClip(clip);
+  }
 
   /** @param label of axis */
   public void setLabel(String string) {
@@ -54,6 +63,7 @@ public class Axis {
     }
   }
 
+  // TODO rename
   public Optional<Clip> getClip() {
     return Objects.isNull(clip) //
         ? Optional.empty()

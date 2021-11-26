@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import ch.alpine.java.ref.ann.ReflectionMarker;
 
@@ -31,18 +32,18 @@ public class ObjectFields {
   private static final Predicate<Field> IS_NODE = VisibilityPredicate.field( //
       NODE_FILTER, //
       NODE_TESTED);
-  private static final Set<Class<?>> SET = new HashSet<>();
+  private static final Set<Class<?>> REMINDER_SET = new HashSet<>();
 
   /** @param object may be null
    * @param objectFieldVisitor
    * @throws Exception if any input parameter is null */
   public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
-    if (Objects.nonNull(object)) {
-      Class<?> cls = object.getClass();
-      ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
-      if (Objects.isNull(reflectionMarker) && SET.add(cls))
-        System.err.println("hint: use @ReflectionMarker on " + cls);
-    }
+    if (Objects.nonNull(object))
+      for (Class<?> cls : deque(object.getClass())) {
+        ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
+        if (Objects.isNull(reflectionMarker) && REMINDER_SET.add(cls))
+          System.err.println("hint: use @ReflectionMarker on " + cls);
+      }
     new ObjectFields(Objects.requireNonNull(objectFieldVisitor)).visit("", object);
   }
 
@@ -53,15 +54,19 @@ public class ObjectFields {
     this.objectFieldVisitor = objectFieldVisitor;
   }
 
-  public static List<Field> collection(Object object) {
-    List<Field> list = new ArrayList<>();
+  // TODO write test to check ordering
+  public static Deque<Class<?>> deque(Class<?> cls) {
     Deque<Class<?>> deque = new ArrayDeque<>();
-    for (Class<?> cls = object.getClass(); !cls.equals(Object.class); cls = cls.getSuperclass())
+    for (; !cls.equals(Object.class); cls = cls.getSuperclass())
       deque.push(cls);
+    return deque;
+  }
+
+  public static List<Field> collection(Object object) {
+    Deque<Class<?>> deque = deque(object.getClass());
+    List<Field> list = new ArrayList<>();
     while (!deque.isEmpty())
-      for (Field field : deque.pop().getDeclaredFields()) {
-        list.add(field);
-      }
+      Stream.of(deque.pop().getDeclaredFields()).forEach(list::add);
     return list;
   }
 
