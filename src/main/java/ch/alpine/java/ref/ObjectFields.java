@@ -4,6 +4,7 @@ package ch.alpine.java.ref;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
@@ -52,37 +53,44 @@ public class ObjectFields {
     this.objectFieldVisitor = objectFieldVisitor;
   }
 
+  public static List<Field> collection(Object object) {
+    List<Field> list = new ArrayList<>();
+    Deque<Class<?>> deque = new ArrayDeque<>();
+    for (Class<?> cls = object.getClass(); !cls.equals(Object.class); cls = cls.getSuperclass())
+      deque.push(cls);
+    while (!deque.isEmpty())
+      for (Field field : deque.pop().getDeclaredFields()) {
+        list.add(field);
+      }
+    return list;
+  }
+
   private void visit(String _prefix, Object object) {
-    if (Objects.nonNull(object)) {
-      Deque<Class<?>> deque = new ArrayDeque<>();
-      for (Class<?> cls = object.getClass(); !cls.equals(Object.class); cls = cls.getSuperclass())
-        deque.push(cls);
-      while (!deque.isEmpty())
-        for (Field field : deque.pop().getDeclaredFields()) {
-          Class<?> class_field = field.getType();
-          String prefix = _prefix + field.getName();
-          if (FieldWraps.INSTANCE.elemental(class_field)) {
-            if (IS_LEAF.test(field)) {
-              FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
-              if (Objects.nonNull(fieldWrap))
-                objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
-            }
-          } else {
-            if (IS_NODE.test(field))
-              if (class_field.isArray())
-                iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
-              else {
-                if (field.getType().equals(List.class))
-                  iterate(prefix, field, (List<?>) get(field, object));
-                else {
-                  objectFieldVisitor.push(prefix, field, null);
-                  visit(prefix + ".", get(field, object));
-                  objectFieldVisitor.pop();
-                }
-              }
+    if (Objects.nonNull(object))
+      for (Field field : collection(object)) {
+        Class<?> class_field = field.getType();
+        String prefix = _prefix + field.getName();
+        if (FieldWraps.INSTANCE.elemental(class_field)) {
+          if (IS_LEAF.test(field)) {
+            FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
+            if (Objects.nonNull(fieldWrap))
+              objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
           }
+        } else {
+          if (IS_NODE.test(field))
+            if (class_field.isArray())
+              iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
+            else {
+              if (field.getType().equals(List.class))
+                iterate(prefix, field, (List<?>) get(field, object));
+              else {
+                objectFieldVisitor.push(prefix, field, null);
+                visit(prefix + ".", get(field, object));
+                objectFieldVisitor.pop();
+              }
+            }
         }
-    }
+      }
   }
 
   private void iterate(String prefix, Field field, List<?> list) throws IllegalArgumentException {

@@ -21,6 +21,8 @@ import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Clips;
 
 @ReflectionMarker
 public class GuiExtension {
@@ -32,6 +34,7 @@ public class GuiExtension {
   @FieldLabel(text = "Big Fuse")
   @FieldFuse(text = "press to restart")
   public Boolean fuse = false;
+  public Clip clip = Clips.absolute(3);
   @FieldFuse
   public Boolean defaultFuse = false;
   public Pivots pivots = Pivots.ARGMAX_ABS;

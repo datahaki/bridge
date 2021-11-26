@@ -16,6 +16,7 @@ public abstract class SelectableFieldWrap extends BaseFieldWrap {
 
   @Override // from FieldWrap
   public final String toString(Object object) {
+    // TODO why is this final!?
     return object.toString();
   }
 
