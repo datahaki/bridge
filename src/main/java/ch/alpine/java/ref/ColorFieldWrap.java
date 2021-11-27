@@ -7,13 +7,13 @@ import java.lang.reflect.Field;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
 
-public class ColorFieldWrap extends BaseFieldWrap {
+/* package */ class ColorFieldWrap extends BaseFieldWrap {
   public ColorFieldWrap(Field field) {
     super(field);
   }
 
   @Override // from FieldWrap
-  public Object toValue(String string) {
+  public Color toValue(String string) {
     try {
       return ColorFormat.toColor(Tensors.fromString(string));
     } catch (Exception exception) {

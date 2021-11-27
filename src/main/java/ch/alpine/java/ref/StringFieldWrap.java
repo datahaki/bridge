@@ -4,7 +4,7 @@ package ch.alpine.java.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-public class StringFieldWrap extends SelectableFieldWrap {
+/* package */ class StringFieldWrap extends SelectableFieldWrap {
   public StringFieldWrap(Field field) {
     super(field);
   }

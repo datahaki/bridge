@@ -165,8 +165,8 @@ import ch.alpine.tensor.sca.Clip;
     this.visualImage = visualImage;
     {
       VisualSet visualSet = new VisualSet();
-      clipX = visualImage.getAxisX().getClip().orElseThrow();
-      clipY = visualImage.getAxisY().getClip().orElseThrow();
+      clipX = visualImage.getAxisX().getOptionalClip().orElseThrow();
+      clipY = visualImage.getAxisY().getOptionalClip().orElseThrow();
       visualSet.add( //
           Tensors.of(clipX.min(), clipX.max()), //
           Tensors.of(clipY.min(), clipY.max()));

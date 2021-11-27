@@ -8,7 +8,7 @@ import java.util.Objects;
 import ch.alpine.java.ref.ann.FieldExistingDirectory;
 import ch.alpine.java.ref.ann.FieldExistingFile;
 
-public class FileFieldWrap extends BaseFieldWrap {
+/* package */ class FileFieldWrap extends BaseFieldWrap {
   private final FieldExistingDirectory fieldExistingDirectory;
   private final FieldExistingFile fieldExistingFile;
 

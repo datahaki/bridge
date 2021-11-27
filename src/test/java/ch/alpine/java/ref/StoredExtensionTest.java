@@ -1,4 +1,4 @@
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
 import junit.framework.TestCase;
 

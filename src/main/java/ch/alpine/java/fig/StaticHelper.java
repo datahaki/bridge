@@ -67,7 +67,7 @@ import ch.alpine.tensor.sca.Clips;
       NumberAxis numberAxis = (NumberAxis) valueAxis;
       numberAxis.setAutoRangeIncludesZero(false);
     }
-    Optional<Clip> optional = axis.getClip();
+    Optional<Clip> optional = axis.getOptionalClip();
     if (optional.isPresent()) {
       Clip clip = optional.orElseThrow();
       ScalarUnaryOperator suo = QuantityMagnitude.SI().in(axis.getUnit());

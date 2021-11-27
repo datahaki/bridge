@@ -3,14 +3,14 @@ package ch.alpine.java.ref;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import ch.alpine.java.ref.ann.ReflectionMarker;
 
@@ -30,18 +30,21 @@ public class ObjectFields {
   private static final Predicate<Field> IS_NODE = VisibilityPredicate.field( //
       NODE_FILTER, //
       NODE_TESTED);
-  private static final Set<Class<?>> SET = new HashSet<>();
+  private static final Set<Class<?>> REMINDER_SET = new HashSet<>();
+  static {
+    REMINDER_SET.add(Object.class);
+  }
 
   /** @param object may be null
    * @param objectFieldVisitor
    * @throws Exception if any input parameter is null */
   public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
-    if (Objects.nonNull(object)) {
-      Class<?> cls = object.getClass();
-      ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
-      if (Objects.isNull(reflectionMarker) && SET.add(cls))
-        System.err.println("hint: use @ReflectionMarker on " + cls);
-    }
+    if (Objects.nonNull(object))
+      for (Class<?> cls : ClassHierarchy.of(object.getClass())) {
+        ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
+        if (Objects.isNull(reflectionMarker) && REMINDER_SET.add(cls))
+          System.err.println("hint: use @ReflectionMarker on " + cls);
+      }
     new ObjectFields(Objects.requireNonNull(objectFieldVisitor)).visit("", object);
   }
 
@@ -53,36 +56,31 @@ public class ObjectFields {
   }
 
   private void visit(String _prefix, Object object) {
-    if (Objects.nonNull(object)) {
-      Deque<Class<?>> deque = new ArrayDeque<>();
-      for (Class<?> cls = object.getClass(); !cls.equals(Object.class); cls = cls.getSuperclass())
-        deque.push(cls);
-      while (!deque.isEmpty())
-        for (Field field : deque.pop().getDeclaredFields()) {
-          Class<?> class_field = field.getType();
-          String prefix = _prefix + field.getName();
-          if (FieldWraps.INSTANCE.elemental(class_field)) {
-            if (IS_LEAF.test(field)) {
-              FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
-              if (Objects.nonNull(fieldWrap))
-                objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
-            }
-          } else {
-            if (IS_NODE.test(field))
-              if (class_field.isArray())
-                iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
-              else {
-                if (field.getType().equals(List.class))
-                  iterate(prefix, field, (List<?>) get(field, object));
-                else {
-                  objectFieldVisitor.push(prefix, field, null);
-                  visit(prefix + ".", get(field, object));
-                  objectFieldVisitor.pop();
-                }
-              }
+    if (Objects.nonNull(object))
+      for (Field field : list(object.getClass())) {
+        Class<?> class_field = field.getType();
+        String prefix = _prefix + field.getName();
+        if (FieldWraps.INSTANCE.elemental(class_field)) {
+          if (IS_LEAF.test(field)) {
+            FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
+            if (Objects.nonNull(fieldWrap))
+              objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
           }
+        } else {
+          if (IS_NODE.test(field))
+            if (class_field.isArray())
+              iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
+            else {
+              if (field.getType().equals(List.class))
+                iterate(prefix, field, (List<?>) get(field, object));
+              else {
+                objectFieldVisitor.push(prefix, field, null);
+                visit(prefix + ".", get(field, object));
+                objectFieldVisitor.pop();
+              }
+            }
         }
-    }
+      }
   }
 
   private void iterate(String prefix, Field field, List<?> list) throws IllegalArgumentException {
@@ -104,5 +102,15 @@ public class ObjectFields {
       exception.printStackTrace();
     }
     throw new IllegalArgumentException();
+  }
+
+  /** @param cls
+   * @return list of public fields in hierarchy of given class */
+  public static List<Field> list(Class<?> cls) {
+    return ClassHierarchy.of(cls) //
+        .stream() //
+        .map(Class::getDeclaredFields) //
+        .flatMap(Stream::of) //
+        .collect(Collectors.toList());
   }
 }

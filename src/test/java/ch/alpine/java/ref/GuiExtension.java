@@ -1,11 +1,10 @@
 // code by jph
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
 import java.awt.Color;
 import java.io.File;
 
 import ch.alpine.java.ref.Container.NestedEnum;
-import ch.alpine.java.ref.NameString;
 import ch.alpine.java.ref.ann.FieldClip;
 import ch.alpine.java.ref.ann.FieldExistingDirectory;
 import ch.alpine.java.ref.ann.FieldExistingFile;
@@ -21,6 +20,8 @@ import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Clips;
 
 @ReflectionMarker
 public class GuiExtension {
@@ -32,6 +33,8 @@ public class GuiExtension {
   @FieldLabel(text = "Big Fuse")
   @FieldFuse(text = "press to restart")
   public Boolean fuse = false;
+  @FieldSelection(array = { "{0, 3}", "{10, 11}" })
+  public Clip clip = Clips.absolute(3);
   @FieldFuse
   public Boolean defaultFuse = false;
   public Pivots pivots = Pivots.ARGMAX_ABS;

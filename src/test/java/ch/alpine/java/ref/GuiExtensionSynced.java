@@ -1,5 +1,5 @@
 // code by jph, gjoel
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;

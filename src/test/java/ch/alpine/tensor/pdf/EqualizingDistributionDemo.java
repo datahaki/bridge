@@ -17,7 +17,7 @@ public enum EqualizingDistributionDemo {
   ;
   public static void main(String[] args) throws IOException {
     Tensor unscaledPDF = RandomVariate.of(UniformDistribution.unit(), 20);
-    EmpiricalDistribution dist1 = (EmpiricalDistribution) EmpiricalDistribution.fromUnscaledPDF(unscaledPDF);
+    CategoricalDistribution dist1 = (CategoricalDistribution) CategoricalDistribution.fromUnscaledPDF(unscaledPDF);
     EqualizingDistribution dist2 = (EqualizingDistribution) EqualizingDistribution.fromUnscaledPDF(unscaledPDF);
     {
       Tensor domain = Subdivide.of(0, 20, 20 * 10);

@@ -11,6 +11,7 @@ import java.util.function.Function;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.sca.Clip;
 
 public enum FieldWraps {
   INSTANCE;
@@ -24,6 +25,7 @@ public enum FieldWraps {
     map.put(Scalar.class, ScalarFieldWrap::new);
     map.put(Color.class, ColorFieldWrap::new);
     map.put(File.class, FileFieldWrap::new);
+    map.put(Clip.class, ClipFieldWrap::new);
   }
 
   public boolean elemental(Class<?> cls) {
