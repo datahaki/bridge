@@ -1,12 +1,10 @@
 // code by jph
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
-import ch.alpine.java.ref.ObjectProperties;
 
 /* package */ class TestHelper {
   final JPanel jPanel = new JPanel(new BorderLayout());

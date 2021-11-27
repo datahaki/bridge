@@ -1,8 +1,6 @@
 // code by jph
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
-import ch.alpine.java.ref.SimpleParam;
-import ch.alpine.java.ref.V011Param;
 import junit.framework.TestCase;
 
 public class FieldsEditorTest extends TestCase {

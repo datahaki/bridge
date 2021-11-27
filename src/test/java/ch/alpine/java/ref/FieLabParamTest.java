@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.java.ref;
 
-import ch.alpine.java.ref.gui.PanelFieldsEditor;
 import junit.framework.TestCase;
 
 public class FieLabParamTest extends TestCase {

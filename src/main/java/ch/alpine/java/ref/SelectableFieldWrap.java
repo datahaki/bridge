@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import ch.alpine.java.ref.ann.FieldSelection;
 
-public abstract class SelectableFieldWrap extends BaseFieldWrap {
+/* package */ abstract class SelectableFieldWrap extends BaseFieldWrap {
   private final FieldSelection fieldSelection;
 
   public SelectableFieldWrap(Field field) {
@@ -15,13 +15,12 @@ public abstract class SelectableFieldWrap extends BaseFieldWrap {
   }
 
   @Override // from FieldWrap
-  public final String toString(Object object) {
-    // TODO why is this final!?
+  public String toString(Object object) {
     return object.toString();
   }
 
   @Override // from FieldWrap
-  public /* final */ FieldPanel createFieldPanel(Object value) {
+  public FieldPanel createFieldPanel(Object value) {
     if (Objects.nonNull(fieldSelection))
       try {
         return new MenuPanel(this, value, fieldSelection.array());

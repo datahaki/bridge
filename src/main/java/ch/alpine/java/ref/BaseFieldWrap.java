@@ -4,7 +4,7 @@ package ch.alpine.java.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-public abstract class BaseFieldWrap implements FieldWrap {
+/* package */ abstract class BaseFieldWrap implements FieldWrap {
   private final Field field;
 
   public BaseFieldWrap(Field field) {

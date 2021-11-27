@@ -9,7 +9,7 @@ import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
-public class ClipFieldWrap extends BaseFieldWrap {
+/* package */ class ClipFieldWrap extends SelectableFieldWrap {
   public ClipFieldWrap(Field field) {
     super(field);
   }
@@ -30,10 +30,5 @@ public class ClipFieldWrap extends BaseFieldWrap {
   public String toString(Object object) {
     Clip clip = (Clip) object;
     return Tensors.of(clip.min(), clip.max()).toString();
-  }
-
-  @Override // from FieldWrap
-  public FieldPanel createFieldPanel(Object value) {
-    return new StringPanel(this, value);
   }
 }

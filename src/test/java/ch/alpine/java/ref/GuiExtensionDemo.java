@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
 import java.awt.BorderLayout;
 
@@ -9,8 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import ch.alpine.java.ref.FieldsEditorKey;
-import ch.alpine.java.ref.FieldsEditorManager;
 import ch.alpine.javax.swing.LookAndFeels;
 import ch.alpine.tensor.io.ResourceData;
 

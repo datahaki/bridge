@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.java.ref.ann;
 
-import ch.alpine.java.ref.gui.PanelFieldsEditor;
+import ch.alpine.java.ref.PanelFieldsEditor;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import junit.framework.TestCase;

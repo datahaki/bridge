@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
 import java.awt.BorderLayout;
 import java.lang.reflect.Field;
@@ -8,11 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import ch.alpine.java.ref.FieldPanel;
-import ch.alpine.java.ref.FieldWrap;
-import ch.alpine.java.ref.ObjectFieldVisitor;
-import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ann.FieldLabels;
+import ch.alpine.javax.swing.RowPanel;
 
 public class PanelFieldsEditor extends FieldsEditor {
   private class Visitor implements ObjectFieldVisitor {

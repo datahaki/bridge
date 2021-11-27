@@ -1,10 +1,8 @@
 // code by jph
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-
-import ch.alpine.java.ref.SimpleParam;
 
 public enum PanelFieldsEditorDemo {
   ;

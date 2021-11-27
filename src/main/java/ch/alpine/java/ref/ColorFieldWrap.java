@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
 
-public class ColorFieldWrap extends BaseFieldWrap {
+/* package */ class ColorFieldWrap extends BaseFieldWrap {
   public ColorFieldWrap(Field field) {
     super(field);
   }

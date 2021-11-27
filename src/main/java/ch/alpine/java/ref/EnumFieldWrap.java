@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class EnumFieldWrap extends BaseFieldWrap {
+/* package */ class EnumFieldWrap extends BaseFieldWrap {
   private final Object[] enumConstants;
 
   public EnumFieldWrap(Field field) {

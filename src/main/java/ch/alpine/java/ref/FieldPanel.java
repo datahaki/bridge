@@ -7,8 +7,6 @@ import java.util.function.Consumer;
 
 import javax.swing.JComponent;
 
-import ch.alpine.java.ref.gui.FieldsEditor;
-
 public abstract class FieldPanel {
   private final List<Consumer<String>> list = new LinkedList<>();
   private final FieldWrap fieldWrap;

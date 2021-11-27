@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref.gui;
+package ch.alpine.java.ref;
 
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
@@ -9,8 +9,6 @@ import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import ch.alpine.java.ref.NameString;
-import ch.alpine.java.ref.ObjectProperties;
 import ch.alpine.java.ref.ann.FieldClip;
 import ch.alpine.java.ref.ann.FieldExistingDirectory;
 import ch.alpine.java.ref.ann.FieldExistingFile;

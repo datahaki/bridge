@@ -63,8 +63,13 @@ public class Axis implements Serializable {
     }
   }
 
-  // TODO rename
-  public Optional<Clip> getClip() {
+  /** @return
+   * @throws Exception if clip was not defined for this axis */
+  public Clip getClip() {
+    return Objects.requireNonNull(clip);
+  }
+
+  public Optional<Clip> getOptionalClip() {
     return Objects.isNull(clip) //
         ? Optional.empty()
         : Optional.of(slash(clip, UnitConvert.SI().to(unit)));

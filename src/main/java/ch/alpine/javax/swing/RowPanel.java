@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref.gui;
+package ch.alpine.javax.swing;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
