@@ -5,8 +5,11 @@ import java.lang.reflect.Field;
 
 @FunctionalInterface
 public interface ObjectFieldVisitor {
-  /** @param key
-   * @param field */
+  /** invoked before the traversing of a nested element
+   * 
+   * @param key
+   * @param field
+   * @param index of entry of array or list, or null */
   default void push(String key, Field field, Integer index) {
     // ---
   }
@@ -17,6 +20,7 @@ public interface ObjectFieldVisitor {
    * @param value current value may be null */
   void accept(String key, FieldWrap fieldWrap, Object object, Object value);
 
+  /** invoked for every push after the traversing of nested element is complete */
   default void pop() {
     // ---
   }

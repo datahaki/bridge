@@ -3,15 +3,13 @@ package ch.alpine.java.ref;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ch.alpine.java.ref.ann.ReflectionMarker;
@@ -33,13 +31,16 @@ public class ObjectFields {
       NODE_FILTER, //
       NODE_TESTED);
   private static final Set<Class<?>> REMINDER_SET = new HashSet<>();
+  static {
+    REMINDER_SET.add(Object.class);
+  }
 
   /** @param object may be null
    * @param objectFieldVisitor
    * @throws Exception if any input parameter is null */
   public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
     if (Objects.nonNull(object))
-      for (Class<?> cls : deque(object.getClass())) {
+      for (Class<?> cls : ClassHierarchy.of(object.getClass())) {
         ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
         if (Objects.isNull(reflectionMarker) && REMINDER_SET.add(cls))
           System.err.println("hint: use @ReflectionMarker on " + cls);
@@ -54,25 +55,9 @@ public class ObjectFields {
     this.objectFieldVisitor = objectFieldVisitor;
   }
 
-  // TODO write test to check ordering
-  public static Deque<Class<?>> deque(Class<?> cls) {
-    Deque<Class<?>> deque = new ArrayDeque<>();
-    for (; !cls.equals(Object.class); cls = cls.getSuperclass())
-      deque.push(cls);
-    return deque;
-  }
-
-  public static List<Field> collection(Object object) {
-    Deque<Class<?>> deque = deque(object.getClass());
-    List<Field> list = new ArrayList<>();
-    while (!deque.isEmpty())
-      Stream.of(deque.pop().getDeclaredFields()).forEach(list::add);
-    return list;
-  }
-
   private void visit(String _prefix, Object object) {
     if (Objects.nonNull(object))
-      for (Field field : collection(object)) {
+      for (Field field : list(object.getClass())) {
         Class<?> class_field = field.getType();
         String prefix = _prefix + field.getName();
         if (FieldWraps.INSTANCE.elemental(class_field)) {
@@ -117,5 +102,15 @@ public class ObjectFields {
       exception.printStackTrace();
     }
     throw new IllegalArgumentException();
+  }
+
+  /** @param cls
+   * @return list of public fields in hierarchy of given class */
+  public static List<Field> list(Class<?> cls) {
+    return ClassHierarchy.of(cls) //
+        .stream() //
+        .map(Class::getDeclaredFields) //
+        .flatMap(Stream::of) //
+        .collect(Collectors.toList());
   }
 }
