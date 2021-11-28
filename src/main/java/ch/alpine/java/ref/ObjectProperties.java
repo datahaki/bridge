@@ -41,12 +41,14 @@ public class ObjectProperties {
   /** @param object
    * @param file
    * @return true if saving to given file was successful, false otherwise */
-  public static void trySave(Object object, File file) {
+  public static boolean trySave(Object object, File file) {
     try {
       save(object, file);
+      return true;
     } catch (Exception exception) {
       // ---
     }
+    return false;
   }
 
   /** @param object
