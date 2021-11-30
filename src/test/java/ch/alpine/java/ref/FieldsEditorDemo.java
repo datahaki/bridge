@@ -3,6 +3,8 @@ package ch.alpine.java.ref;
 
 import javax.swing.JFrame;
 
+import ch.alpine.java.ref.util.PanelFieldsEditor;
+
 public enum FieldsEditorDemo {
   ;
   public static void main(String[] args) {

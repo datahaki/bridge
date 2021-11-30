@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref;
+package ch.alpine.java.ref.util;
 
 import java.awt.Dimension;
 import java.lang.reflect.Field;

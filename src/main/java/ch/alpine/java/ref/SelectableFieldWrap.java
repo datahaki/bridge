@@ -2,6 +2,7 @@
 package ch.alpine.java.ref;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Objects;
 
 import ch.alpine.java.ref.ann.FieldSelection;
@@ -12,6 +13,27 @@ import ch.alpine.java.ref.ann.FieldSelection;
   public SelectableFieldWrap(Field field) {
     super(field);
     fieldSelection = field.getAnnotation(FieldSelection.class);
+    // Class<?> declaringClass = field.getDeclaringClass();
+    // System.out.println(declaringClass+" "+field.getName());
+    // try {
+    // Method method = declaringClass.getMethod(field.getName()+"Values");
+    // method.invoke(method, null);
+    // } catch (Exception exception) {
+    // // ---
+    // }
+    // new FieldSelection() {
+    // @Override
+    // public Class<? extends Annotation> annotationType() {
+    // // TODO Auto-generated method stub
+    // return null;
+    // }
+    //
+    // @Override
+    // public String[] array() {
+    // // TODO Auto-generated method stub
+    // return null;
+    // }
+    // };
   }
 
   @Override // from FieldWrap
@@ -23,7 +45,7 @@ import ch.alpine.java.ref.ann.FieldSelection;
   public FieldPanel createFieldPanel(Object value) {
     if (Objects.nonNull(fieldSelection))
       try {
-        return new MenuPanel(this, value, fieldSelection.array());
+        return new MenuPanel(this, value, () -> Arrays.asList(fieldSelection.array()));
       } catch (Exception exception) {
         exception.printStackTrace();
       }

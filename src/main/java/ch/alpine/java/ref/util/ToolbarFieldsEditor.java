@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref;
+package ch.alpine.java.ref.util;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -8,6 +8,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
+import ch.alpine.java.ref.BooleanFieldWrap;
+import ch.alpine.java.ref.EnumFieldWrap;
+import ch.alpine.java.ref.FieldPanel;
+import ch.alpine.java.ref.FieldToolTip;
+import ch.alpine.java.ref.FieldWrap;
+import ch.alpine.java.ref.ObjectFieldVisitor;
+import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabels;
 

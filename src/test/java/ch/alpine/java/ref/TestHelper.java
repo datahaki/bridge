@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import ch.alpine.java.ref.util.PanelFieldsEditor;
+
 /* package */ class TestHelper {
   final JPanel jPanel = new JPanel(new BorderLayout());
   final Runnable runnable;

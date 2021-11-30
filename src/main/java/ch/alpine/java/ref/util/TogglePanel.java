@@ -1,10 +1,13 @@
 // code by jph, gjoel
-package ch.alpine.java.ref;
+package ch.alpine.java.ref.util;
 
 import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
+
+import ch.alpine.java.ref.FieldPanel;
+import ch.alpine.java.ref.FieldWrap;
 
 /** toggle button substitution as substitution for checkbox for boolean fields */
 /* package */ class TogglePanel extends FieldPanel {

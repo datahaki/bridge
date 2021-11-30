@@ -3,6 +3,8 @@ package ch.alpine.java.ref;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import ch.alpine.java.ref.Container.NestedEnum;
 import ch.alpine.java.ref.ann.FieldClip;
@@ -57,8 +59,7 @@ public class GuiExtension {
   // ---
   Scalar packsc = Quantity.of(3, "m*s^-1");
 
-  public static String[] stringValues() {
-    System.out.println("generating values");
-    return new String[] { "a", "b", "c" };
+  public List<String> stringSelection_string() {
+    return Arrays.asList("a", "b", string, pivots.toString());
   }
 }

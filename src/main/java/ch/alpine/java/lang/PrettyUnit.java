@@ -56,7 +56,7 @@ public enum PrettyUnit {
         .collect(Collectors.joining(Unit.JOIN_DELIMITER)); // delimited by '*'
   }
 
-  private static final Set<String> SET_MICRO = Set.of("ug", "um", "us", "uF", "uH", "uS", "uSv", "uW");
+  private static final Set<String> SET_MICRO = Set.of("ug", "um", "us", "uF", "uH", "uS", "uSv", "uW", "uV", "uA");
 
   private static String atomString(String atom) {
     if (SET_MICRO.contains(atom))

@@ -1,5 +1,5 @@
 // code by jph, gjoel
-package ch.alpine.java.ref;
+package ch.alpine.java.ref.util;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +7,10 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import ch.alpine.java.ref.FieldPanel;
+import ch.alpine.java.ref.FieldWrap;
+
+// TODO move fieldsEditor and implementations to ref.util package
 public abstract class FieldsEditor {
   /** the association of FieldPanel and Object is required.
    * In a field editor instance, the object as value in the map is not necessary unique. */

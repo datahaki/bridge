@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import ch.alpine.java.ref.util.PanelFieldsEditor;
 import ch.alpine.javax.swing.LookAndFeels;
 
 public enum PartialDemo {

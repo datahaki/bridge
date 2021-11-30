@@ -4,6 +4,8 @@ package ch.alpine.java.ref;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import ch.alpine.java.ref.util.PanelFieldsEditor;
+
 public enum PanelFieldsEditorDemo {
   ;
   public static void main(String[] args) throws Exception {
