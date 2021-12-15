@@ -6,7 +6,7 @@ import java.io.File;
 
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
-import ch.alpine.java.ref.ann.FieldSelection;
+import ch.alpine.java.ref.ann.FieldSelectionArray;
 import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.javax.swing.LookAndFeels;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -21,7 +21,7 @@ public class SimpleParam extends BaseParam {
   private final Integer ignore_Integer = 2;
   @SuppressWarnings("unused")
   private final String ignore_final_String = "asd";
-  @FieldSelection(array = { "a", "b", "c" })
+  @FieldSelectionArray(values = { "a", "b", "c" })
   public String string = "abc";
   @FieldLabel(text = "Emergency Off")
   public Boolean flag = false;

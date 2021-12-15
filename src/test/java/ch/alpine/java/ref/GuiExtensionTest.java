@@ -3,9 +3,6 @@ package ch.alpine.java.ref;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Properties;
 
 import ch.alpine.java.ref.util.PanelFieldsEditor;
@@ -28,23 +25,22 @@ public class GuiExtensionTest extends TestCase {
     }
     assertTrue(23 < properties.entrySet().size());
   }
-
-  public void testGetMethod() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    Method method = GuiExtension.class.getMethod(PanelFieldsEditor.method("string"));
-    GuiExtension guiExtension = new GuiExtension();
-    {
-      List<String> list = (List<String>) method.invoke(guiExtension);
-      assertTrue(list.contains("a"));
-      assertTrue(list.contains("abc"));
-    }
-    guiExtension.string = "123";
-    {
-      List<String> list = (List<String>) method.invoke(guiExtension);
-      assertTrue(list.contains("a"));
-      assertFalse(list.contains("abc"));
-      assertTrue(list.contains("123"));
-    }
-  }
+  // public void testGetMethod() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+  // Method method = GuiExtension.class.getMethod(PanelFieldsEditor.method("string"));
+  // GuiExtension guiExtension = new GuiExtension();
+  // {
+  // List<String> list = (List<String>) method.invoke(guiExtension);
+  // assertTrue(list.contains("a"));
+  // assertTrue(list.contains("abc"));
+  // }
+  // guiExtension.string = "123";
+  // {
+  // List<String> list = (List<String>) method.invoke(guiExtension);
+  // assertTrue(list.contains("a"));
+  // assertFalse(list.contains("abc"));
+  // assertTrue(list.contains("123"));
+  // }
+  // }
 
   public void testGetMethodFail() {
     try {

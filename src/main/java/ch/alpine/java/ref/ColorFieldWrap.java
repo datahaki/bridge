@@ -28,7 +28,7 @@ import ch.alpine.tensor.img.ColorFormat;
   }
 
   @Override // from FieldWrap
-  public FieldPanel createFieldPanel(Object value) {
+  public FieldPanel createFieldPanel(Object object, Object value) {
     return new ColorPanel(this, value);
   }
 }

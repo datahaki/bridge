@@ -10,13 +10,6 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldSelection {
-  /** Works on string, tensor, scalar, ...
-   * 
-   * Example return values:
-   * {"/dev/tty0", "/dev/tty1", "/dev/ttyUSB0"}
-   * {"1[%]", "2[%], "3[%]"}
-   * 
-   * @return */
-  String[] array();
+public @interface FieldSelectionCallback {
+  String method();
 }

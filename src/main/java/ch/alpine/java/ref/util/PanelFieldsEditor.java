@@ -3,9 +3,6 @@ package ch.alpine.java.ref.util;
 
 import java.awt.BorderLayout;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,49 +11,21 @@ import javax.swing.JScrollPane;
 import ch.alpine.java.ref.FieldPanel;
 import ch.alpine.java.ref.FieldToolTip;
 import ch.alpine.java.ref.FieldWrap;
-import ch.alpine.java.ref.MenuPanel;
 import ch.alpine.java.ref.ObjectFieldVisitor;
 import ch.alpine.java.ref.ObjectFields;
-import ch.alpine.java.ref.StringPanel;
 import ch.alpine.java.ref.ann.FieldLabels;
 import ch.alpine.javax.swing.RowPanel;
 
 public class PanelFieldsEditor extends FieldsEditor {
-  public static final String PREFIX = "stringSelection_";
-
-  public static String method(Field field) {
-    return method(field.getName());
-  }
-
-  public static String method(String name) {
-    return PREFIX + name;
-  }
-
   private class Visitor implements ObjectFieldVisitor {
     private int level = 0;
 
-    @SuppressWarnings("unchecked")
     @Override // from ObjectFieldVisitor
     public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
       Field field = fieldWrap.getField();
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, null));
       jLabel.setToolTipText(FieldToolTip.of(field));
-      FieldPanel createFieldPanel = fieldWrap.createFieldPanel(value);
-      // TODO is instanceof StringPanel a good criteria!?
-      if (createFieldPanel instanceof StringPanel)
-        try {
-          Method method = object.getClass().getMethod(method(field));
-          createFieldPanel = new MenuPanel(fieldWrap, value, () -> {
-            try {
-              return (List<String>) method.invoke(object);
-            } catch (Exception exception) {
-              // ---
-            }
-            return Arrays.asList();
-          });
-        } catch (Exception exception) {
-          // ---
-        }
+      FieldPanel createFieldPanel = fieldWrap.createFieldPanel(object, value);
       FieldPanel fieldPanel = register(createFieldPanel, fieldWrap, object);
       rowPanel.appendRow(jLabel, StaticHelper.layout(field, fieldPanel.getJComponent()));
     }

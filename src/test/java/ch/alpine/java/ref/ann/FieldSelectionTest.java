@@ -7,17 +7,17 @@ import junit.framework.TestCase;
 
 public class FieldSelectionTest extends TestCase {
   public void testSimple() {
-    FieldSelection fieldSelection = new FieldSelection() {
+    FieldSelectionArray fieldSelection = new FieldSelectionArray() {
       @Override
       public Class<? extends Annotation> annotationType() {
-        return FieldSelection.class;
+        return FieldSelectionArray.class;
       }
 
       @Override
-      public String[] array() {
+      public String[] values() {
         return new String[] { "fox", "over", "fence" };
       }
     };
-    fieldSelection.array();
+    fieldSelection.values();
   }
 }

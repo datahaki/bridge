@@ -4,7 +4,7 @@ package ch.alpine.java.ref;
 import ch.alpine.java.ref.ann.FieldClip;
 import ch.alpine.java.ref.ann.FieldInteger;
 import ch.alpine.java.ref.ann.FieldPreferredWidth;
-import ch.alpine.java.ref.ann.FieldSelection;
+import ch.alpine.java.ref.ann.FieldSelectionArray;
 import ch.alpine.java.ref.ann.FieldSlider;
 import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
@@ -31,7 +31,7 @@ public class ScalarUnion {
   // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
   // @FieldToolTip(text = "asd")
   @FieldClip(min = "0", max = "20")
-  @FieldSelection(array = { "1[W]", "2[%]", "3[]" })
+  @FieldSelectionArray(values = { "1[W]", "2[%]", "3[]" })
   public Scalar subdiv = Quantity.of(3, "");
   @FieldInteger
   @FieldClip(min = "10", max = "20")

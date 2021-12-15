@@ -12,7 +12,8 @@ import ch.alpine.java.ref.ann.FieldExistingDirectory;
 import ch.alpine.java.ref.ann.FieldExistingFile;
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
-import ch.alpine.java.ref.ann.FieldSelection;
+import ch.alpine.java.ref.ann.FieldSelectionArray;
+import ch.alpine.java.ref.ann.FieldSelectionCallback;
 import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -28,14 +29,15 @@ import ch.alpine.tensor.sca.Clips;
 @ReflectionMarker
 public class GuiExtension {
   public Scalar[] scalars = { Pi.VALUE, RealScalar.ONE };
+  @FieldSelectionCallback(method = "getStringOptions")
   public String string = "abc";
-  @FieldSelection(array = { "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
+  @FieldSelectionArray(values = { "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
   public String selectable = "/dev/ttyS0";
   public Boolean status = true;
   @FieldLabel(text = "Big Fuse")
   @FieldFuse(text = "press to restart")
   public Boolean fuse = false;
-  @FieldSelection(array = { "{0, 3}", "{10, 11}" })
+  @FieldSelectionArray(values = { "{0, 3}", "{10, 11}" })
   public Clip clip = Clips.absolute(3);
   @FieldFuse
   public Boolean defaultFuse = false;
@@ -47,7 +49,7 @@ public class GuiExtension {
   @FieldExistingFile
   public File file = HomeDirectory.file();
   public File anyFile = HomeDirectory.file();
-  @FieldSelection(array = { "1[%]", "2[%]", "3[%]" })
+  @FieldSelectionArray(values = { "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");
   public final ScalarUnion[] scalarUnion = { new ScalarUnion() };
   public Color foreground = new Color(100, 200, 150, 128);
@@ -59,7 +61,7 @@ public class GuiExtension {
   // ---
   Scalar packsc = Quantity.of(3, "m*s^-1");
 
-  public List<String> stringSelection_string() {
+  public List<String> getStringOptions() {
     return Arrays.asList("a", "b", string, pivots.toString());
   }
 }

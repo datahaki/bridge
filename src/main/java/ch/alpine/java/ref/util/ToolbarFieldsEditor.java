@@ -40,7 +40,7 @@ public class ToolbarFieldsEditor extends FieldsEditor {
       boolean isFuse = Objects.nonNull(field.getAnnotation(FieldFuse.class));
       FieldPanel fieldPanel = register(isBoolean && !isFuse //
           ? new TogglePanel(fieldWrap, text, (Boolean) value)
-          : fieldWrap.createFieldPanel(value), fieldWrap, object);
+          : fieldWrap.createFieldPanel(object, value), fieldWrap, object);
       JComponent jComponent = StaticHelper.layout(field, fieldPanel.getJComponent());
       if (fieldWrap instanceof EnumFieldWrap) {
         jComponent.setToolTipText(text);

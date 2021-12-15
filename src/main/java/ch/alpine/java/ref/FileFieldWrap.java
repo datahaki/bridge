@@ -42,7 +42,7 @@ import ch.alpine.java.ref.ann.FieldExistingFile;
   }
 
   @Override // from FieldWrap
-  public FieldPanel createFieldPanel(Object value) {
+  public FieldPanel createFieldPanel(Object object, Object value) {
     return new FilePanel(this, (File) value);
   }
 }
