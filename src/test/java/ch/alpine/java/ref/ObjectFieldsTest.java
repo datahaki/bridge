@@ -14,8 +14,8 @@ public class ObjectFieldsTest extends TestCase {
     List<String> collect = list.stream().map(f -> f.getName()).collect(Collectors.toList());
     // System.out.println(collect);
     assertEquals(collect.get(0), "basic");
-    assertEquals(collect.get(1), "lookAndFeels");
-    assertEquals(collect.get(2), "ignore_int");
+    assertEquals(collect.get(2), "lookAndFeels");
+    assertEquals(collect.get(3), "ignore_int");
   }
 
   public void testSimple() {

@@ -1,7 +1,9 @@
 // code by jph
 package ch.alpine.java.ref.util;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ch.alpine.java.lang.ClassDiscovery;
 import ch.alpine.java.lang.ClassPaths;
@@ -16,5 +18,9 @@ public class ClassFieldCheckTest extends TestCase {
     assertTrue(classFieldCheck.getFailures().contains(FieldClipTest.class));
     List<FieldValueContainer> list = classFieldCheck.invalidFields();
     assertFalse(list.isEmpty());
+    List<String> fields = list.stream().map(FieldValueContainer::getField).map(Field::toString).collect(Collectors.toList());
+    assertTrue(fields.contains("public java.lang.String ch.alpine.java.ref.GuiExtension.optionsFail"));
+    assertTrue(fields.contains("public java.lang.String ch.alpine.java.ref.GuiExtension.optionsMiss"));
+    // fields.forEach(s -> System.out.println(s));
   }
 }

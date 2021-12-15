@@ -29,8 +29,13 @@ import ch.alpine.tensor.sca.Clips;
 @ReflectionMarker
 public class GuiExtension {
   public Scalar[] scalars = { Pi.VALUE, RealScalar.ONE };
-  @FieldSelectionCallback(method = "getStringOptions")
   public String string = "abc";
+  @FieldSelectionCallback(method = "getStrings")
+  public String options = "options";
+  @FieldSelectionCallback(method = "getStringsThrows")
+  public String optionsFail = "options fail";
+  @FieldSelectionCallback(method = "doesnotexist")
+  public String optionsMiss = "options miss";
   @FieldSelectionArray(values = { "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
   public String selectable = "/dev/ttyS0";
   public Boolean status = true;
@@ -61,7 +66,11 @@ public class GuiExtension {
   // ---
   Scalar packsc = Quantity.of(3, "m*s^-1");
 
-  public List<String> getStringOptions() {
+  public List<String> getStrings() {
     return Arrays.asList("a", "b", string, pivots.toString());
+  }
+
+  public List<String> getStringsThrows() {
+    throw new RuntimeException();
   }
 }

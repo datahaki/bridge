@@ -11,12 +11,12 @@ import ch.alpine.java.ref.ann.FieldSelectionArray;
 import ch.alpine.java.ref.ann.FieldSelectionCallback;
 
 /* package */ abstract class SelectableFieldWrap extends BaseFieldWrap {
-  private final FieldSelectionArray fieldSelection;
+  private final FieldSelectionArray fieldSelectionArray;
   private final FieldSelectionCallback fieldSelectionCallback;
 
   public SelectableFieldWrap(Field field) {
     super(field);
-    fieldSelection = field.getAnnotation(FieldSelectionArray.class);
+    fieldSelectionArray = field.getAnnotation(FieldSelectionArray.class);
     fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
   }
 
@@ -28,9 +28,9 @@ import ch.alpine.java.ref.ann.FieldSelectionCallback;
   @SuppressWarnings("unchecked")
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
-    if (Objects.nonNull(fieldSelection))
+    if (Objects.nonNull(fieldSelectionArray))
       try {
-        return new MenuPanel(this, value, () -> Arrays.asList(fieldSelection.values()));
+        return new MenuPanel(this, value, () -> Arrays.asList(fieldSelectionArray.values()));
       } catch (Exception exception) {
         exception.printStackTrace();
       }
