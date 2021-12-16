@@ -19,8 +19,8 @@ public class ClassFieldCheckTest extends TestCase {
     List<FieldValueContainer> list = classFieldCheck.invalidFields();
     assertFalse(list.isEmpty());
     List<String> fields = list.stream().map(FieldValueContainer::getField).map(Field::toString).collect(Collectors.toList());
-    assertTrue(fields.contains("public java.lang.String ch.alpine.java.ref.GuiExtension.optionsFail"));
-    assertTrue(fields.contains("public java.lang.String ch.alpine.java.ref.GuiExtension.optionsMiss"));
+    assertTrue(fields.contains("public java.lang.String ch.alpine.java.ref.GuiTrial.optionsFail"));
+    assertTrue(fields.contains("public java.lang.String ch.alpine.java.ref.GuiTrial.optionsMiss"));
     // fields.forEach(s -> System.out.println(s));
   }
 }

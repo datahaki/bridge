@@ -13,7 +13,6 @@ import ch.alpine.java.ref.ann.FieldExistingFile;
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
 import ch.alpine.java.ref.ann.FieldSelectionArray;
-import ch.alpine.java.ref.ann.FieldSelectionCallback;
 import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -30,12 +29,6 @@ import ch.alpine.tensor.sca.Clips;
 public class GuiExtension {
   public Scalar[] scalars = { Pi.VALUE, RealScalar.ONE };
   public String string = "abc";
-  @FieldSelectionCallback(method = "getStrings")
-  public String options = "options";
-  @FieldSelectionCallback(method = "getStringsThrows")
-  public String optionsFail = "options fail";
-  @FieldSelectionCallback(method = "doesnotexist")
-  public String optionsMiss = "options miss";
   @FieldSelectionArray(values = { "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
   public String selectable = "/dev/ttyS0";
   public Boolean status = true;

@@ -11,14 +11,15 @@ import javax.swing.WindowConstants;
 
 import ch.alpine.java.ref.util.PanelFieldsEditor;
 import ch.alpine.javax.swing.LookAndFeels;
+import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.io.ResourceData;
 
 public enum GuiExtensionDemo {
   ;
   public static void main(String[] args) throws Exception {
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ResourceData.bufferedImage("/image/checkbox/metro/22/0.png")));
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ResourceData.bufferedImage("/image/checkbox/metro/22/1.png")));
-    // FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 20));
+    int n = 22;
+    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage("/image/checkbox/metro/0.png"), n, n)));
+    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage("/image/checkbox/metro/1.png"), n, n)));
     LookAndFeels.INTELLI_J.updateUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor fieldsEditor = new PanelFieldsEditor(guiExtension);
