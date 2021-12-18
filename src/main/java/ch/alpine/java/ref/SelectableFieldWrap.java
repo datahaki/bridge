@@ -30,13 +30,13 @@ import ch.alpine.java.ref.ann.FieldSelectionCallback;
   public FieldPanel createFieldPanel(Object object, Object value) {
     if (Objects.nonNull(fieldSelectionArray))
       try {
-        return new MenuPanel(this, value, () -> Arrays.asList(fieldSelectionArray.values()));
+        return new MenuPanel(this, value, () -> Arrays.asList(fieldSelectionArray.value()));
       } catch (Exception exception) {
         exception.printStackTrace();
       }
     if (Objects.nonNull(fieldSelectionCallback)) {
       try {
-        Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.method());
+        Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
         return new MenuPanel(this, value, () -> {
           try {
             return (List<String>) method.invoke(object);

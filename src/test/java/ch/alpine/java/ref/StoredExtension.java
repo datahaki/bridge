@@ -29,7 +29,7 @@ public class StoredExtension {
   private static final File FILE = HomeDirectory.Downloads(StoredExtension.class.getSimpleName() + ".properties");
   public static final StoredExtension INSTANCE = //
       ObjectProperties.tryLoad(new StoredExtension(), FILE);
-  @FieldLabel(text = "some")
+  @FieldLabel("some")
   public String string = "abc";
   public Boolean status = true;
   public Pivots pivots = Pivots.ARGMAX_ABS;

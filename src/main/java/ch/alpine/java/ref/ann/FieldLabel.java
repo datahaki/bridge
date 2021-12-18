@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface FieldLabel {
   /** @return text of label instead of field name */
-  String text();
+  String value();
 }

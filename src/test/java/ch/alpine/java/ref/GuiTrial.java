@@ -11,13 +11,13 @@ import ch.alpine.java.ref.ann.ReflectionMarker;
 @ReflectionMarker
 public class GuiTrial {
   public String string = "abc";
-  @FieldSelectionCallback(method = "getStrings")
+  @FieldSelectionCallback(value = "getStrings")
   public String options = "options";
-  @FieldSelectionCallback(method = "getStringsThrows")
+  @FieldSelectionCallback(value = "getStringsThrows")
   public String optionsFail = "options fail";
-  @FieldSelectionCallback(method = "doesnotexist")
+  @FieldSelectionCallback(value = "doesnotexist")
   public String optionsMiss = "options miss";
-  @FieldSelectionArray(values = { "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
+  @FieldSelectionArray(value = { "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
   public String selectable = "/dev/ttyS0";
 
   public List<String> getStrings() {

@@ -8,9 +8,9 @@ import junit.framework.TestCase;
 
 @ReflectionMarker
 public class FieldLabelsTest extends TestCase {
-  @FieldLabel(text = "nested %a")
+  @FieldLabel("nested %a")
   public final Nested[] nested1 = { new Nested(), new Nested() };
-  @FieldLabel(text = "nested %d")
+  @FieldLabel("nested %d")
   public final Nested[] nested2 = { new Nested(), new Nested() };
 
   public static class Nested {

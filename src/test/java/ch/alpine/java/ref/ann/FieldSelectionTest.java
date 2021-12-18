@@ -14,10 +14,10 @@ public class FieldSelectionTest extends TestCase {
       }
 
       @Override
-      public String[] values() {
+      public String[] value() {
         return new String[] { "fox", "over", "fence" };
       }
     };
-    fieldSelection.values();
+    fieldSelection.value();
   }
 }

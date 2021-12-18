@@ -36,7 +36,7 @@ public class InvalidAnnotationCollection implements ObjectFieldVisitor {
         fieldWrap.getField().getAnnotation(FieldSelectionCallback.class);
     if (Objects.nonNull(fieldSelectionCallback))
       try {
-        Method method = object.getClass().getMethod(fieldSelectionCallback.method());
+        Method method = object.getClass().getMethod(fieldSelectionCallback.value());
         List<String> list = (List<String>) method.invoke(object);
         list.toString();
       } catch (Exception exception) {

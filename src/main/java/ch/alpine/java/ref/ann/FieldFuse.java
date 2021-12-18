@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface FieldFuse {
   /** @return text on button */
-  String text() default "action";
+  String value() default "action";
 }

@@ -16,7 +16,7 @@ import ch.alpine.java.ref.ann.FieldPreferredWidth;
     if (Objects.nonNull(fieldPreferredWidth)) {
       Dimension dimension = jComponent.getPreferredSize();
       // for instance, a JSlider has a default preferred width of 200
-      dimension.width = fieldPreferredWidth.width();
+      dimension.width = fieldPreferredWidth.value();
       jComponent.setPreferredSize(dimension);
     }
     return jComponent;

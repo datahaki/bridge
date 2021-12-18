@@ -14,7 +14,7 @@ import ch.alpine.tensor.qty.Quantity;
 @ReflectionMarker
 public class ScalarUnion {
   @FieldSlider
-  @FieldPreferredWidth(width = 123)
+  @FieldPreferredWidth(123)
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");
   @FieldSlider
@@ -31,7 +31,7 @@ public class ScalarUnion {
   // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
   // @FieldToolTip(text = "asd")
   @FieldClip(min = "0", max = "20")
-  @FieldSelectionArray(values = { "1[W]", "2[%]", "3[]" })
+  @FieldSelectionArray(value = { "1[W]", "2[%]", "3[]" })
   public Scalar subdiv = Quantity.of(3, "");
   @FieldInteger
   @FieldClip(min = "10", max = "20")

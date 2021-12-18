@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
  * then the default field label is used in the GUI. */
 public @interface FieldLabelArray {
   /** @return array of text of labels */
-  String[] text();
+  String[] value();
 }

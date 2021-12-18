@@ -14,5 +14,5 @@ import ch.alpine.java.ref.util.FieldsEditor;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FieldPreferredWidth {
-  int width();
+  int value();
 }

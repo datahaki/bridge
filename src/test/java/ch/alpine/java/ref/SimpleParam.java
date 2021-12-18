@@ -21,16 +21,16 @@ public class SimpleParam extends BaseParam {
   private final Integer ignore_Integer = 2;
   @SuppressWarnings("unused")
   private final String ignore_final_String = "asd";
-  @FieldSelectionArray(values = { "a", "b", "c" })
+  @FieldSelectionArray(value = { "a", "b", "c" })
   public String string = "abc";
-  @FieldLabel(text = "Emergency Off")
+  @FieldLabel("Emergency Off")
   public Boolean flag = false;
-  @FieldLabel(text = "Choose Pivot")
+  @FieldLabel("Choose Pivot")
   public Pivots pivot = Pivots.ARGMAX_ABS;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
-  @FieldLabel(text = "Another Parameter ASDGHJ")
+  @FieldLabel("Another Parameter ASDGHJ")
   public final AnotherParam anotherParam = new AnotherParam();
-  @FieldLabel(text = "Nested %a")
+  @FieldLabel("Nested %a")
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
 
   public static class AnotherParam {
@@ -39,10 +39,10 @@ public class SimpleParam extends BaseParam {
   }
 
   public static class NestedParam extends BaseParam {
-    @FieldFuse(text = "fuse")
+    @FieldFuse("fuse")
     public Boolean some = true;
     public String text = "grolley";
-    @FieldLabel(text = "Again Another")
+    @FieldLabel("Again Another")
     public final AnotherParam anotherParam = new AnotherParam();
   }
 }

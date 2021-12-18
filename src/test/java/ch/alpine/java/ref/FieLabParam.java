@@ -13,7 +13,7 @@ import ch.alpine.java.ref.ann.ReflectionMarker;
 @ReflectionMarker
 public class FieLabParam {
   public Boolean fuse = true;
-  @FieldLabelArray(text = { "abc" })
+  @FieldLabelArray( { "abc" })
   public final List<NestedParam> list = Arrays.asList(new NestedParam(), new NestedParam());
   public final List<AnotherParam> another;
   public final Boolean[] fuses = new Boolean[] { true, false, true };
