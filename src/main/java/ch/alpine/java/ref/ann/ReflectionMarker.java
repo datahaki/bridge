@@ -21,7 +21,7 @@ import ch.alpine.java.ref.util.ClassFieldCheck;
  * @see ObjectFields
  * @see ClassFieldCheck */
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { TYPE, METHOD })
+@Target({ TYPE, METHOD })
 public @interface ReflectionMarker {
   // ---
 }

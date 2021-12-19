@@ -19,8 +19,8 @@ public enum GuiExtensionDemo {
   public static void main(String[] args) throws Exception {
     int n = 22;
     String asd = "/image/checkbox/metro";
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(asd+"/0.png"), n, n)));
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(asd+"/1.png"), n, n)));
+    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(asd + "/0.png"), n, n)));
+    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(asd + "/1.png"), n, n)));
     LookAndFeels.INTELLI_J.updateUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor fieldsEditor = new PanelFieldsEditor(guiExtension);

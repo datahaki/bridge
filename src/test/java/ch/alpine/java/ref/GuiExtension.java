@@ -39,7 +39,7 @@ public class GuiExtension {
   @FieldLabel("Big Fuse")
   @FieldFuse("press to restart")
   public Boolean fuse = false;
-  @FieldSelectionArray( { "{0, 3}", "{10, 11}" })
+  @FieldSelectionArray({ "{0, 3}", "{10, 11}" })
   public Clip clip = Clips.absolute(3);
   @FieldFuse
   public Boolean defaultFuse = false;

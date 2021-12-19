@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 import junit.framework.TestCase;
 
 public class FieldLabelArrayTest extends TestCase {
-  @FieldLabelArray( "asd")
+  @FieldLabelArray("asd")
   public Integer integer = 3;
 
   public void testSimple() throws NoSuchFieldException, SecurityException {
