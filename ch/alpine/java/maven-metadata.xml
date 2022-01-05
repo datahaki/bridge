@@ -3,10 +3,10 @@
   <groupId>ch.alpine</groupId>
   <artifactId>java</artifactId>
   <versioning>
-    <release>0.2.2</release>
+    <release>0.2.3</release>
     <versions>
-      <version>0.2.2</version>
+      <version>0.2.3</version>
     </versions>
-    <lastUpdated>20211127150202</lastUpdated>
+    <lastUpdated>20220105210146</lastUpdated>
   </versioning>
 </metadata>
