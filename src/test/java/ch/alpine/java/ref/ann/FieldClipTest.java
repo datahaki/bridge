@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.java.ref.ann;
 
-import ch.alpine.java.ref.PanelFieldsEditor;
+import ch.alpine.java.ref.util.PanelFieldsEditor;
 import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.Quantity;

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +30,16 @@ import ch.alpine.tensor.io.Import;
  * of a parse failure, or invalid assignment, the preset/default/current
  * value is retained. */
 public class ObjectProperties {
+  // TODO 20211129 thoroughly check and document API
+  /** @param object
+   * @return */
+  public static List<String> list(Object object) {
+    ObjectFieldList objectFieldList = new ObjectFieldList();
+    ObjectFields.of(object, objectFieldList);
+    return objectFieldList.list;
+  }
+
+  // ---
   /** store tracked fields of given object in given file
    * 
    * @param object
@@ -41,14 +52,17 @@ public class ObjectProperties {
   /** @param object
    * @param file
    * @return true if saving to given file was successful, false otherwise */
-  public static void trySave(Object object, File file) {
+  public static boolean trySave(Object object, File file) {
     try {
       save(object, file);
+      return true;
     } catch (Exception exception) {
       // ---
     }
+    return false;
   }
 
+  // ---
   /** @param object
    * @return */
   public static Properties properties(Object object) {
@@ -58,17 +72,30 @@ public class ObjectProperties {
   }
 
   /** @param object
-   * @return */
-  public static List<String> list(Object object) {
-    ObjectFieldList objectFieldList = new ObjectFieldList();
-    ObjectFields.of(object, objectFieldList);
-    return objectFieldList.list;
+   * @param properties
+   * @return object with fields modified based on properties. In particular,
+   * if properties is empty then the object will not be modified at all. */
+  public static <T> T set(T object, Properties properties) {
+    ObjectFields.of(object, new ObjectFieldImport(properties));
+    return object;
   }
 
+  // ---
   /** @param object
    * @return */
   public static String string(Object object) {
     return list(object).stream().collect(Collectors.joining("\n"));
+  }
+
+  /** @param object
+   * @return string
+   * @throws IOException */
+  public static void fromString(Object object, String string) throws IOException {
+    Properties properties = new Properties();
+    try (StringReader stringReader = new StringReader(string)) {
+      properties.load(stringReader);
+    }
+    set(object, properties);
   }
 
   // ---
@@ -90,15 +117,6 @@ public class ObjectProperties {
     } catch (Exception exception) {
       // ---
     }
-    return object;
-  }
-
-  /** @param object
-   * @param properties
-   * @return object with fields modified based on properties. In particular,
-   * if properties is empty then the object will not be modified at all. */
-  public static <T> T set(T object, Properties properties) {
-    ObjectFields.of(object, new ObjectFieldImport(properties));
     return object;
   }
 

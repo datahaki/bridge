@@ -15,6 +15,7 @@ import ch.alpine.java.ref.ann.FieldExistingFile;
 import ch.alpine.java.ref.ann.FieldInteger;
 import ch.alpine.java.ref.ann.FieldLabel;
 import ch.alpine.java.ref.ann.ReflectionMarker;
+import ch.alpine.java.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -28,7 +29,7 @@ public class StoredExtension {
   private static final File FILE = HomeDirectory.Downloads(StoredExtension.class.getSimpleName() + ".properties");
   public static final StoredExtension INSTANCE = //
       ObjectProperties.tryLoad(new StoredExtension(), FILE);
-  @FieldLabel(text = "some")
+  @FieldLabel("some")
   public String string = "abc";
   public Boolean status = true;
   public Pivots pivots = Pivots.ARGMAX_ABS;

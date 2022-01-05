@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.java.ref;
+package ch.alpine.java.ref.util;
 
 import java.awt.BorderLayout;
 import java.lang.reflect.Field;
@@ -8,6 +8,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import ch.alpine.java.ref.FieldPanel;
+import ch.alpine.java.ref.FieldToolTip;
+import ch.alpine.java.ref.FieldWrap;
+import ch.alpine.java.ref.ObjectFieldVisitor;
+import ch.alpine.java.ref.ObjectFields;
 import ch.alpine.java.ref.ann.FieldLabels;
 import ch.alpine.javax.swing.RowPanel;
 
@@ -20,7 +25,8 @@ public class PanelFieldsEditor extends FieldsEditor {
       Field field = fieldWrap.getField();
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, null));
       jLabel.setToolTipText(FieldToolTip.of(field));
-      FieldPanel fieldPanel = register(fieldWrap.createFieldPanel(value), fieldWrap, object);
+      FieldPanel createFieldPanel = fieldWrap.createFieldPanel(object, value);
+      FieldPanel fieldPanel = register(createFieldPanel, fieldWrap, object);
       rowPanel.appendRow(jLabel, StaticHelper.layout(field, fieldPanel.getJComponent()));
     }
 

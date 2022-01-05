@@ -54,11 +54,11 @@ public class ScalarFieldWrap extends TensorFieldWrap {
   }
 
   @Override
-  public FieldPanel createFieldPanel(Object value) {
+  public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     if (Objects.nonNull(fieldClip) && Objects.nonNull(field.getAnnotation(FieldSlider.class)))
       return new SliderPanel(this, fieldClip, value);
-    return super.createFieldPanel(value);
+    return super.createFieldPanel(object, value);
   }
 }

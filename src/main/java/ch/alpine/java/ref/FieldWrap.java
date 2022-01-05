@@ -29,7 +29,8 @@ public interface FieldWrap {
    * @param string */
   void setIfValid(Object object, String string);
 
-  /** @param value may be null
+  /** @param object
+   * @param value may be null
    * @return */
-  FieldPanel createFieldPanel(Object value);
+  FieldPanel createFieldPanel(Object object, Object value);
 }

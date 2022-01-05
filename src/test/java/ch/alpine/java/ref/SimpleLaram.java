@@ -12,13 +12,13 @@ import ch.alpine.tensor.num.Pi;
 
 @ReflectionMarker
 public class SimpleLaram {
-  @FieldLabel(text = "Nested %a")
+  @FieldLabel("Nested %a")
   public final List<NestedParam> nestedParams = Arrays.asList( //
       new NestedParam(), //
       new NestedParam());
 
   public static class NestedParam extends BaseParam {
-    @FieldFuse(text = "fuse")
+    @FieldFuse(value = "fuse")
     public Boolean some = true;
     public Scalar scalar = Pi.VALUE;
     public String text = "grolley";

@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldLabel {
-  /** @return text of label instead of field name */
+public @interface FieldSelectionCallback {
   String value();
 }

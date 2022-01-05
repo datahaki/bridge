@@ -5,7 +5,8 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-/* package */ class EnumFieldWrap extends BaseFieldWrap {
+/* TODO package */
+public class EnumFieldWrap extends BaseFieldWrap {
   private final Object[] enumConstants;
 
   public EnumFieldWrap(Field field) {
@@ -28,7 +29,7 @@ import java.util.stream.Stream;
   }
 
   @Override // from FieldWrap
-  public FieldPanel createFieldPanel(Object value) {
+  public FieldPanel createFieldPanel(Object object, Object value) {
     return new EnumPanel(this, enumConstants, value);
   }
 }

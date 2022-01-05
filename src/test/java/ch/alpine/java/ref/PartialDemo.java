@@ -1,9 +1,13 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.java.ref;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.time.LocalDateTime;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,22 +15,24 @@ import javax.swing.WindowConstants;
 
 import ch.alpine.java.ref.util.PanelFieldsEditor;
 import ch.alpine.javax.swing.LookAndFeels;
-import ch.alpine.tensor.img.ImageResize;
-import ch.alpine.tensor.io.ResourceData;
 
-public enum GuiExtensionDemo {
+public enum PartialDemo {
   ;
   public static void main(String[] args) throws Exception {
-    int n = 22;
-    String asd = "/image/checkbox/metro";
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(asd + "/0.png"), n, n)));
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(asd + "/1.png"), n, n)));
     LookAndFeels.INTELLI_J.updateUI();
     GuiExtension guiExtension = new GuiExtension();
-    PanelFieldsEditor fieldsEditor = new PanelFieldsEditor(guiExtension);
-    fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
-    TestHelper testHelper = new TestHelper(fieldsEditor, guiExtension);
+    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
+    panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
+    TestHelper testHelper = new TestHelper(panelFieldsEditor, guiExtension);
     // ---
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        guiExtension.string = "" + LocalDateTime.now();
+        panelFieldsEditor.updateJComponents();
+      }
+    }, 1000, 1000);
     JFrame jFrame = new JFrame();
     // File root = GrzSettings.file("GuiExtension");
     // root.mkdirs();
@@ -45,6 +51,12 @@ public enum GuiExtensionDemo {
     }
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 200, 500, 700);
+    jFrame.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosed(WindowEvent e) {
+        timer.cancel();
+      }
+    });
     jFrame.setVisible(true);
   }
 }

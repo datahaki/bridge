@@ -1,16 +1,16 @@
 // code by jph
 package ch.alpine.java.ref.ann;
 
-import ch.alpine.java.ref.PanelFieldsEditor;
+import ch.alpine.java.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import junit.framework.TestCase;
 
 @ReflectionMarker
 public class FieldLabelsTest extends TestCase {
-  @FieldLabel(text = "nested %a")
+  @FieldLabel("nested %a")
   public final Nested[] nested1 = { new Nested(), new Nested() };
-  @FieldLabel(text = "nested %d")
+  @FieldLabel("nested %d")
   public final Nested[] nested2 = { new Nested(), new Nested() };
 
   public static class Nested {

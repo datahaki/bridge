@@ -6,12 +6,12 @@ import java.lang.reflect.Field;
 import junit.framework.TestCase;
 
 public class FieldLabelArrayTest extends TestCase {
-  @FieldLabelArray(text = "asd")
+  @FieldLabelArray("asd")
   public Integer integer = 3;
 
   public void testSimple() throws NoSuchFieldException, SecurityException {
     Field field = FieldLabelArrayTest.class.getField("integer");
     FieldLabelArray fieldLabelArray = field.getAnnotation(FieldLabelArray.class);
-    assertEquals(fieldLabelArray.text().length, 1);
+    assertEquals(fieldLabelArray.value().length, 1);
   }
 }

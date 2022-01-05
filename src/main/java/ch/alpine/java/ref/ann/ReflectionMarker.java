@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.java.ref.ann;
 
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 
 import java.lang.annotation.Retention;
@@ -20,7 +21,7 @@ import ch.alpine.java.ref.util.ClassFieldCheck;
  * @see ObjectFields
  * @see ClassFieldCheck */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(TYPE)
+@Target({ TYPE, METHOD })
 public @interface ReflectionMarker {
   // ---
 }

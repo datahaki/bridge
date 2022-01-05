@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.java.ref.util;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import ch.alpine.java.ref.ann.ReflectionMarker;
 
 public class ClassFieldCheck implements ClassVisitor {
   private final InvalidFieldCollection invalidFieldCollection = new InvalidFieldCollection();
+  private final InvalidAnnotationCollection invalidAnnotationCollection = new InvalidAnnotationCollection();
   private final List<Class<?>> inspected = new LinkedList<>();
   private final List<Class<?>> failures = new LinkedList<>();
 
@@ -31,6 +33,11 @@ public class ClassFieldCheck implements ClassVisitor {
         } catch (Exception exception) {
           failures.add(cls);
         }
+        try {
+          ObjectFields.of(object, invalidAnnotationCollection);
+        } catch (Exception exception) {
+          failures.add(cls);
+        }
       }
     }
   }
@@ -44,6 +51,9 @@ public class ClassFieldCheck implements ClassVisitor {
   }
 
   public List<FieldValueContainer> invalidFields() {
-    return invalidFieldCollection.list();
+    List<FieldValueContainer> list = new ArrayList<>();
+    list.addAll(invalidFieldCollection.list());
+    list.addAll(invalidAnnotationCollection.list());
+    return list;
   }
 }

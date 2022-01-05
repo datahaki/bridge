@@ -7,12 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ch.alpine.java.ref.FieldsEditor;
+import ch.alpine.java.ref.util.FieldsEditor;
 
 /** {@link FieldsEditor} may or may not use this layout hint */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FieldPreferredWidth {
-  int width();
+  int value();
 }
