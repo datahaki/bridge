@@ -31,10 +31,10 @@ import ch.alpine.tensor.sca.Clips;
 public class GuiExtension {
   public Scalar[] scalars = { Pi.VALUE, RealScalar.ONE };
   public String string = "abc";
-  @FieldSelectionCallback("getStrings")
+  @FieldSelectionCallback("getStaticStrings")
   public String function = "abc";
-  @FieldSelectionArray(value = { "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
-  public String selectable = "/dev/ttyS0";
+  @FieldSelectionArray(value = { "ttyS0", "ttyS1", "ttyS2", "ttyS3", "ttyUSB0", "ttyUSB1" })
+  public String selectable = "ttyS0";
   public Boolean status = true;
   @FieldLabel("Big Fuse")
   @FieldFuse("press to restart")
@@ -69,5 +69,10 @@ public class GuiExtension {
     return random.nextBoolean() //
         ? Arrays.asList()
         : Arrays.asList("a", "b", string, pivots.toString());
+  }
+
+  @ReflectionMarker
+  public static List<String> getStaticStrings() {
+    return Arrays.asList("static_a", "static_b", "fixed");
   }
 }

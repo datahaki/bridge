@@ -12,6 +12,7 @@ import ch.alpine.java.fig.VisualSet;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.sca.erf.Erfc;
 
 public enum ErfcDemo {
   ;
