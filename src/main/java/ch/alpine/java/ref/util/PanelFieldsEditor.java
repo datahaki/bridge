@@ -27,7 +27,7 @@ public class PanelFieldsEditor extends FieldsEditor {
       jLabel.setToolTipText(FieldToolTip.of(field));
       FieldPanel createFieldPanel = fieldWrap.createFieldPanel(object, value);
       FieldPanel fieldPanel = register(createFieldPanel, fieldWrap, object);
-      rowPanel.appendRow(jLabel, StaticHelper.layout(field, fieldPanel.getJComponent()));
+      rowPanel.appendRow(jLabel, layout(field, fieldPanel.getJComponent()));
     }
 
     @Override // from ObjectFieldVisitor
