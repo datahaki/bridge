@@ -18,8 +18,8 @@ public enum CielabDemo {
   public static void main(String[] args) throws IOException {
     Tensor domain = Subdivide.of(0, 1, 200);
     VisualSet visualSet = new VisualSet();
-    visualSet.add(domain.map(Cielab::f), domain);
-    visualSet.add(domain, domain.map(Cielab::f_inv));
+    visualSet.add(domain.map(Cielabf::forward), domain);
+    visualSet.add(domain, domain.map(Cielabf::inverse));
     JFreeChart jFreeChart = ListPlot.of(visualSet, true);
     jFreeChart.setBackgroundPaint(Color.WHITE);
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("cielab.png"), jFreeChart, 400, 400);
