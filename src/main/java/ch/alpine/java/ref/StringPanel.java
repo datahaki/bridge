@@ -16,8 +16,7 @@ import javax.swing.undo.UndoManager;
 
 import ch.alpine.javax.swing.UIManagerColor;
 
-/* TODO package */
-public class StringPanel extends FieldPanel {
+/* package */ class StringPanel extends FieldPanel {
   private static final Color COLOR_FAIL_BGND = new Color(255, 192, 192);
   private static final Color COLOR_FAIL_TEXT = new Color(51, 51, 51);
   private static final int MASK = KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK;

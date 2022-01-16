@@ -18,7 +18,6 @@ public @interface FieldSelectionArray {
   /** Works on string, tensor, scalar, ...
    * 
    * Example return values:
-   * {"/dev/tty0", "/dev/tty1", "/dev/ttyUSB0"}
    * {"1[%]", "2[%], "3[%]"}
    * 
    * @return */

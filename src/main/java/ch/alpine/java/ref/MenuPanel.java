@@ -15,8 +15,7 @@ import javax.swing.JPopupMenu;
 
 import ch.alpine.javax.swing.StandardMenu;
 
-/* TODO package */
-public class MenuPanel extends StringPanel {
+/* package */ class MenuPanel extends StringPanel {
   private static final String BUTTON_TEXT = "?";
   // ---
   private final JButton jButton = new JButton(BUTTON_TEXT);

@@ -41,7 +41,7 @@ public class ToolbarFieldsEditor extends FieldsEditor {
       FieldPanel fieldPanel = register(isBoolean && !isFuse //
           ? new TogglePanel(fieldWrap, text, (Boolean) value)
           : fieldWrap.createFieldPanel(object, value), fieldWrap, object);
-      JComponent jComponent = StaticHelper.layout(field, fieldPanel.getJComponent());
+      JComponent jComponent = layout(field, fieldPanel.getJComponent());
       if (fieldWrap instanceof EnumFieldWrap) {
         jComponent.setToolTipText(text);
       } else //
