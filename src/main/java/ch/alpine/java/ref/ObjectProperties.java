@@ -30,13 +30,24 @@ import ch.alpine.tensor.io.Import;
  * of a parse failure, or invalid assignment, the preset/default/current
  * value is retained. */
 public class ObjectProperties {
-  // TODO 20211129 thoroughly check and document API
-  /** @param object
-   * @return */
+  /** list of "key=value" of tracked fields of given object
+   * 
+   * @param object
+   * @return list of strings each of the form "key=value" */
   public static List<String> list(Object object) {
     ObjectFieldList objectFieldList = new ObjectFieldList();
     ObjectFields.of(object, objectFieldList);
     return objectFieldList.list;
+  }
+
+  private static class ObjectFieldList implements ObjectFieldVisitor {
+    private final List<String> list = new LinkedList<>();
+
+    @Override
+    public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
+      if (Objects.nonNull(value))
+        list.add(key + "=" + fieldWrap.toString(value));
+    }
   }
 
   // ---
@@ -49,8 +60,10 @@ public class ObjectProperties {
     Files.write(file.toPath(), (Iterable<String>) list(object)::iterator);
   }
 
-  /** @param object
-   * @param file
+  /** store tracked fields of given object in given file
+   * 
+   * @param object
+   * @param file properties
    * @return true if saving to given file was successful, false otherwise */
   public static boolean trySave(Object object, File file) {
     try {
@@ -64,13 +77,24 @@ public class ObjectProperties {
 
   // ---
   /** @param object
-   * @return */
+   * @return new instance of {@link Properties} */
   public static Properties properties(Object object) {
-    ObjectFieldExport objectFieldList = new ObjectFieldExport();
-    ObjectFields.of(object, objectFieldList);
-    return objectFieldList.properties;
+    ObjectFieldExport objectFieldExport = new ObjectFieldExport();
+    ObjectFields.of(object, objectFieldExport);
+    return objectFieldExport.properties;
   }
 
+  private static class ObjectFieldExport implements ObjectFieldVisitor {
+    private final Properties properties = new Properties();
+
+    @Override // from ObjectFieldVisitor
+    public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
+      if (Objects.nonNull(value))
+        properties.setProperty(prefix, fieldWrap.toString(value));
+    }
+  }
+
+  // ---
   /** @param object
    * @param properties
    * @return object with fields modified based on properties. In particular,
@@ -78,6 +102,21 @@ public class ObjectProperties {
   public static <T> T set(T object, Properties properties) {
     ObjectFields.of(object, new ObjectFieldImport(properties));
     return object;
+  }
+
+  private static class ObjectFieldImport implements ObjectFieldVisitor {
+    private final Properties properties;
+
+    public ObjectFieldImport(Properties properties) {
+      this.properties = properties;
+    }
+
+    @Override
+    public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
+      String string = properties.getProperty(prefix);
+      if (Objects.nonNull(string))
+        fieldWrap.setIfValid(object, string);
+    }
   }
 
   // ---
@@ -118,41 +157,5 @@ public class ObjectProperties {
       // ---
     }
     return object;
-  }
-
-  // ---
-  private static class ObjectFieldImport implements ObjectFieldVisitor {
-    private final Properties properties;
-
-    public ObjectFieldImport(Properties properties) {
-      this.properties = properties;
-    }
-
-    @Override
-    public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
-      String string = properties.getProperty(prefix);
-      if (Objects.nonNull(string))
-        fieldWrap.setIfValid(object, string);
-    }
-  }
-
-  private static class ObjectFieldList implements ObjectFieldVisitor {
-    private final List<String> list = new LinkedList<>();
-
-    @Override
-    public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
-      if (Objects.nonNull(value))
-        list.add(key + "=" + fieldWrap.toString(value));
-    }
-  }
-
-  private static class ObjectFieldExport implements ObjectFieldVisitor {
-    private final Properties properties = new Properties();
-
-    @Override // from ObjectFieldVisitor
-    public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
-      if (Objects.nonNull(value))
-        properties.setProperty(prefix, fieldWrap.toString(value));
-    }
   }
 }

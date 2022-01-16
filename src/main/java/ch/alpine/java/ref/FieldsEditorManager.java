@@ -9,7 +9,14 @@ import java.util.Objects;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 
+import ch.alpine.java.ref.util.FieldsEditor;
+
+/** FieldsEditorManager manages additional keys to specify the layout of instances of
+ * {@link FieldsEditor} that are not already covered by {@link UIManager}.
+ * 
+ * @see FieldsEditorKey */
 public enum FieldsEditorManager {
   ;
   private static final Map<String, Object> MAP = new HashMap<>();

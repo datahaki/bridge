@@ -69,12 +69,21 @@ public abstract class FieldsEditor {
 
   /** in case the object field values have been modified outside the gui, invoking
    * {@link #updateJComponents()} causes the gui components to update their
-   * appearance based on the new value. */
+   * appearance based on the new value.
+   * 
+   * Naturally, this action should not be triggered while the user is actively
+   * modifying the fields, but by a rare, sporadic external trigger. */
   public final void updateJComponents() {
     list.forEach(Entry::updateJComponent);
   }
 
-  /** @param field
+  /** function applies annotations specific to field that concern layout
+   * of corresponding {@link JComponent}.
+   * 
+   * The list of annotations regarded currently consists of:
+   * {@link FieldPreferredWidth}
+   * 
+   * @param field
    * @param jComponent
    * @return given jComponent with layout modified based on annotations */
   public static JComponent layout(Field field, JComponent jComponent) {
