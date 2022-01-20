@@ -19,6 +19,14 @@ import javax.swing.WindowConstants;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
 
+// FIXME if multiple color dialogs remains open after window closes, and after dialog is closed the
+//... JVM does not terminate
+/** in order to reproduce use GuiExtensionDemo:
+ * 1) open dialog for green
+ * 2) open dialog for red
+ * 3) close main window
+ * 4) close dialog for green (via OK or cancel)
+ * 5) close dialog for red (via OK or cancel) */
 /* package */ class ColorPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
   /** For each instance of {@link ColorPanel}, a single JColorChooser may be opened
@@ -32,6 +40,7 @@ import ch.alpine.tensor.img.ColorFormat;
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         if (Objects.isNull(jDialog)) {
+          // fallback color is restored when "Cancel" is pressed
           Color fallback = getColor();
           JColorChooser jColorChooser = new JColorChooser(fallback);
           jColorChooser.getSelectionModel().addChangeListener(changeEvent -> {
@@ -39,9 +48,10 @@ import ch.alpine.tensor.img.ColorFormat;
             notifyListeners(jTextField.getText());
           });
           jDialog = JColorChooser.createDialog( //
-              jColorChooser, "color selection: " + fieldWrap.getField().getName(), //
-              false, jColorChooser, i -> jDialog.dispose(), //
-              i -> {
+              null, "color selection: " + fieldWrap.getField().getName(), //
+              false, jColorChooser, //
+              i -> jDialog.dispose(), // ok listener
+              i -> { // cancel listener
                 jDialog.dispose();
                 updateJComponent(fallback);
                 notifyListeners(jTextField.getText());
@@ -59,6 +69,7 @@ import ch.alpine.tensor.img.ColorFormat;
     });
     jTextField.setEditable(false);
   }
+  // private
 
   private Color getColor() {
     try {
@@ -79,9 +90,8 @@ import ch.alpine.tensor.img.ColorFormat;
 
   @Override // from FieldPanel
   public void updateJComponent(Object value) {
+    super.updateJComponent(value);
     Color color = (Color) value;
-    String string = fieldWrap().toString(color);
-    jTextField.setText(string);
     jButton.setBackground(color);
   }
 }
