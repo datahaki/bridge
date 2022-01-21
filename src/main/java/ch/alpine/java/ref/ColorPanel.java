@@ -19,14 +19,6 @@ import javax.swing.WindowConstants;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
 
-// FIXME if multiple color dialogs remains open after window closes, and after dialog is closed the
-//... JVM does not terminate
-/** in order to reproduce use GuiExtensionDemo:
- * 1) open dialog for green
- * 2) open dialog for red
- * 3) close main window
- * 4) close dialog for green (via OK or cancel)
- * 5) close dialog for red (via OK or cancel) */
 /* package */ class ColorPanel extends StringPanel {
   private final JButton jButton = new JButton("?");
   /** For each instance of {@link ColorPanel}, a single JColorChooser may be opened
@@ -48,7 +40,7 @@ import ch.alpine.tensor.img.ColorFormat;
             notifyListeners(jTextField.getText());
           });
           jDialog = JColorChooser.createDialog( //
-              null, "color selection: " + fieldWrap.getField().getName(), //
+              jButton, "color selection: " + fieldWrap.getField().getName(), //
               false, jColorChooser, //
               i -> jDialog.dispose(), // ok listener
               i -> { // cancel listener
@@ -69,7 +61,6 @@ import ch.alpine.tensor.img.ColorFormat;
     });
     jTextField.setEditable(false);
   }
-  // private
 
   private Color getColor() {
     try {

@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.java.awt;
 
+import java.awt.Color;
 import java.awt.color.ColorSpace;
 
 import ch.alpine.tensor.RealScalar;
@@ -8,6 +9,9 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Integers;
+import ch.alpine.tensor.img.ColorFormat;
+import ch.alpine.tensor.io.Primitives;
+import ch.alpine.tensor.itp.BinaryAverage;
 import ch.alpine.tensor.red.Times;
 
 /** Hint:
@@ -23,6 +27,7 @@ public enum Cielab {
   D50(0.964212, 1, 0.825188), //
   ;
 
+  private static final ColorSpace COLOR_SPACE = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
   private static final Scalar _016 = RealScalar.of(0.16);
   private static final Scalar _116 = RealScalar.of(1.16);
   private static final Scalar _500 = RealScalar.of(5.00);
@@ -58,5 +63,27 @@ public enum Cielab {
     Scalar y = Cielabf.inverse(p);
     Scalar z = Cielabf.inverse(p.subtract(b.divide(_200)));
     return Times.of(Tensors.of(x, y, z), xyzn);
+  }
+
+  /** @param color1
+   * @param color2
+   * @param scalar
+   * @return color that interpolates between color1 and color2 at given parameter index
+   * @see BinaryAverage */
+  public Color split(Color color1, Color color2, Scalar scalar) {
+    float[] rgba1 = color1.getComponents(null); // values are in the unit interval
+    float[] rgba2 = color2.getComponents(null);
+    float[] xyz1 = COLOR_SPACE.fromRGB(rgba1); // length 3
+    float[] xyz2 = COLOR_SPACE.fromRGB(rgba2);
+    Tensor lab1 = xyz2lab(Tensors.vectorFloat(xyz1));
+    Tensor lab2 = xyz2lab(Tensors.vectorFloat(xyz2));
+    // TODO TENSOR v102 use linear binary average
+    Tensor lab = lab2.subtract(lab1).multiply(scalar).add(lab1);
+    Tensor xyz = lab2xyz(lab);
+    float[] rgb = COLOR_SPACE.toRGB(Primitives.toFloatArray(xyz));
+    Scalar a1 = RealScalar.of(rgba1[3]);
+    Scalar a2 = RealScalar.of(rgba2[3]);
+    Scalar alpha = a2.subtract(a1).multiply(scalar).add(a1);
+    return ColorFormat.toColor(Tensors.vectorFloat(rgb).append(alpha).multiply(RealScalar.of(255)));
   }
 }
