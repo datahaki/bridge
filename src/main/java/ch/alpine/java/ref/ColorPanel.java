@@ -32,6 +32,7 @@ import ch.alpine.tensor.img.ColorFormat;
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         if (Objects.isNull(jDialog)) {
+          // fallback color is restored when "Cancel" is pressed
           Color fallback = getColor();
           JColorChooser jColorChooser = new JColorChooser(fallback);
           jColorChooser.getSelectionModel().addChangeListener(changeEvent -> {
@@ -39,9 +40,10 @@ import ch.alpine.tensor.img.ColorFormat;
             notifyListeners(jTextField.getText());
           });
           jDialog = JColorChooser.createDialog( //
-              jColorChooser, "color selection: " + fieldWrap.getField().getName(), //
-              false, jColorChooser, i -> jDialog.dispose(), //
-              i -> {
+              jButton, "color selection: " + fieldWrap.getField().getName(), //
+              false, jColorChooser, //
+              i -> jDialog.dispose(), // ok listener
+              i -> { // cancel listener
                 jDialog.dispose();
                 updateJComponent(fallback);
                 notifyListeners(jTextField.getText());
@@ -79,9 +81,8 @@ import ch.alpine.tensor.img.ColorFormat;
 
   @Override // from FieldPanel
   public void updateJComponent(Object value) {
+    super.updateJComponent(value);
     Color color = (Color) value;
-    String string = fieldWrap().toString(color);
-    jTextField.setText(string);
     jButton.setBackground(color);
   }
 }
