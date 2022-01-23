@@ -12,6 +12,7 @@ import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.img.ColorFormat;
 import ch.alpine.tensor.io.Primitives;
 import ch.alpine.tensor.itp.BinaryAverage;
+import ch.alpine.tensor.itp.LinearBinaryAverage;
 import ch.alpine.tensor.red.Times;
 
 /** Hint:
@@ -77,8 +78,7 @@ public enum Cielab {
     float[] xyz2 = COLOR_SPACE.fromRGB(rgba2);
     Tensor lab1 = xyz2lab(Tensors.vectorFloat(xyz1));
     Tensor lab2 = xyz2lab(Tensors.vectorFloat(xyz2));
-    // TODO TENSOR v102 use linear binary average
-    Tensor lab = lab2.subtract(lab1).multiply(scalar).add(lab1);
+    Tensor lab = LinearBinaryAverage.INSTANCE.split(lab1, lab2, scalar);
     Tensor xyz = lab2xyz(lab);
     float[] rgb = COLOR_SPACE.toRGB(Primitives.toFloatArray(xyz));
     Scalar a1 = RealScalar.of(rgba1[3]);
