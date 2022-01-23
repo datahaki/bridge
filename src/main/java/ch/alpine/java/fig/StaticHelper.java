@@ -60,13 +60,11 @@ import ch.alpine.tensor.sca.Clips;
   }
 
   public static void setRange(Axis axis, ValueAxis valueAxis) {
-    if (valueAxis instanceof NumberAxis) {
+    if (valueAxis instanceof NumberAxis numberAxis)
       // Mathematica does not include zero in the y-axes by default
       // whereas jfreechart does so.
       // the code below emulates the behavior of Mathematica
-      NumberAxis numberAxis = (NumberAxis) valueAxis;
       numberAxis.setAutoRangeIncludesZero(false);
-    }
     Optional<Clip> optional = axis.getOptionalClip();
     if (optional.isPresent()) {
       Clip clip = optional.orElseThrow();
