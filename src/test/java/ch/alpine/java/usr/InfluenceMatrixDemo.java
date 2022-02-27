@@ -16,8 +16,8 @@ import ch.alpine.tensor.ext.Timing;
 import ch.alpine.tensor.mat.gr.InfluenceMatrix;
 import ch.alpine.tensor.mat.gr.Mahalanobis;
 import ch.alpine.tensor.pdf.Distribution;
-import ch.alpine.tensor.pdf.NormalDistribution;
 import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.sca.Chop;
 
 public enum InfluenceMatrixDemo {

@@ -15,6 +15,7 @@ import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.itp.BSplineFunctionString;
+import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 
 public enum TrapezoidalDistributionDemo {
   ;

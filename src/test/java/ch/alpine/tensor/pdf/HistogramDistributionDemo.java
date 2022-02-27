@@ -13,6 +13,8 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.pdf.c.HistogramDistribution;
+import ch.alpine.tensor.pdf.c.NormalDistribution;
 
 public enum HistogramDistributionDemo {
   ;

@@ -9,27 +9,23 @@ import org.jfree.chart.JFreeChart;
 
 import ch.alpine.java.fig.ListPlot;
 import ch.alpine.java.fig.VisualSet;
-import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.ext.HomeDirectory;
-import ch.alpine.tensor.pdf.d.BinomialDistribution;
+import ch.alpine.tensor.mat.HilbertMatrix;
+import ch.alpine.tensor.mat.sv.SingularValueList;
+import ch.alpine.tensor.sca.Log10;
 
-public enum BinomialDistributionDemo {
+/** inspired from strang's book */
+public enum ScreePlotDemo {
   ;
   public static void main(String[] args) throws IOException {
-    int n = 50;
-    Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
-    PDF pdf = PDF.of(distribution);
-    CDF cdf = CDF.of(distribution);
+    Tensor matrix = HilbertMatrix.of(40);
     VisualSet visualSet = new VisualSet();
-    {
-      Tensor domain = Range.of(0, n + 1);
-      visualSet.add(domain, domain.map(pdf::at));
-      visualSet.add(domain, domain.map(cdf::p_lessEquals));
-    }
+    Tensor values = SingularValueList.of(matrix);
+    visualSet.add(Range.of(0, values.length()), values.map(Log10.FUNCTION));
     JFreeChart jFreeChart = ListPlot.of(visualSet, true);
     jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("binomial_distr.png"), jFreeChart, 640, 480);
+    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ScreePlotDemo.class.getSimpleName() + ".png"), jFreeChart, 640, 480);
   }
 }
