@@ -4,6 +4,7 @@ package ch.alpine.java.ref;
 import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
@@ -19,8 +20,8 @@ import ch.alpine.javax.swing.UIManagerColor;
 /* package */ class StringPanel extends FieldPanel {
   private static final Color COLOR_FAIL_BGND = new Color(255, 192, 192);
   private static final Color COLOR_FAIL_TEXT = new Color(51, 51, 51);
-  private static final int MASK = KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK;
-  private static final int UNDO = KeyEvent.CTRL_DOWN_MASK;
+  private static final int MASK = InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK;
+  private static final int UNDO = InputEvent.CTRL_DOWN_MASK;
   private static final int REDO = MASK;
   // ---
   protected final JTextField jTextField;

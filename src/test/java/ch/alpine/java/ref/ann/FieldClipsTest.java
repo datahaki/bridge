@@ -29,13 +29,13 @@ public class FieldClipsTest extends TestCase {
     assertEquals(clip.max(), Quantity.of(6000, "kg*m^2*s^-3"));
   }
 
-  public void testIssue1() throws Exception {
+  public void testIssue1() {
     Clip clip = FieldClips.of(Quantity.of(0, "L*min^-1"), Quantity.of(20, "L*min^-1"));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20, "L*min^-1"))));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20.0, "L*min^-1"))));
   }
 
-  public void testIssue2() throws Exception {
+  public void testIssue2() {
     Clip clip = FieldClips.of(Quantity.of(0, "L*min^-1"), Quantity.of(20.0, "L*min^-1"));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20, "L*min^-1"))));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20.0, "L*min^-1"))));
