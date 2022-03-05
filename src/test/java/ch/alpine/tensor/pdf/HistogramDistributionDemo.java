@@ -19,7 +19,7 @@ import ch.alpine.tensor.pdf.c.NormalDistribution;
 public enum HistogramDistributionDemo {
   ;
   public static void main(String[] args) throws IOException {
-    ContinuousDistribution dist = (ContinuousDistribution) NormalDistribution.of(1, 2);
+    UnivariateDistribution dist = (UnivariateDistribution) NormalDistribution.of(1, 2);
     HistogramDistribution distribution = (HistogramDistribution) //
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
     {

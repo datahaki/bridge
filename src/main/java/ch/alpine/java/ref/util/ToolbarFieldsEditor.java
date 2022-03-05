@@ -8,8 +8,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
-import ch.alpine.java.ref.BooleanFieldWrap;
-import ch.alpine.java.ref.EnumFieldWrap;
 import ch.alpine.java.ref.FieldPanel;
 import ch.alpine.java.ref.FieldToolTip;
 import ch.alpine.java.ref.FieldWrap;
@@ -36,13 +34,13 @@ public class ToolbarFieldsEditor extends FieldsEditor {
     public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
       Field field = fieldWrap.getField();
       String text = FieldLabels.of(key, field, null);
-      boolean isBoolean = fieldWrap instanceof BooleanFieldWrap;
+      boolean isBoolean = field.getType().equals(Boolean.class);
       boolean isFuse = Objects.nonNull(field.getAnnotation(FieldFuse.class));
       FieldPanel fieldPanel = register(isBoolean && !isFuse //
           ? new TogglePanel(fieldWrap, text, (Boolean) value)
           : fieldWrap.createFieldPanel(object, value), fieldWrap, object);
       JComponent jComponent = layout(field, fieldPanel.getJComponent());
-      if (fieldWrap instanceof EnumFieldWrap) {
+      if (field.getType().equals(Enum.class)) {
         jComponent.setToolTipText(text);
       } else //
       if (!isBoolean) {

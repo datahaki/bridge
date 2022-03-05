@@ -25,7 +25,7 @@ public enum ListPlot {
   /** @param visualSet
    * @param joined for lines between coordinates, otherwise scattered points
    * @return */
-  // TODO joined should be property of visualRow but jfreechart does not support this granularity(?)
+  // TODO JAVA ALG joined should be property of visualRow but jfreechart does not support this granularity(?)
   public static JFreeChart of(VisualSet visualSet, boolean joined) {
     XYSeriesCollection xySeriesCollection = DatasetFactory.xySeriesCollection(visualSet);
     JFreeChart jFreeChart = joined //

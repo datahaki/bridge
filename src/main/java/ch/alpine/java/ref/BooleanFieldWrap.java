@@ -6,8 +6,7 @@ import java.util.Objects;
 
 import ch.alpine.java.ref.ann.FieldFuse;
 
-/* TODO package */
-public class BooleanFieldWrap extends BaseFieldWrap {
+/* package */ class BooleanFieldWrap extends BaseFieldWrap {
   private final FieldFuse fieldFuse;
 
   public BooleanFieldWrap(Field field) {
