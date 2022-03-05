@@ -17,7 +17,7 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.red.Times;
-import ch.alpine.tensor.sca.Sin;
+import ch.alpine.tensor.sca.tri.Sin;
 
 public enum PeriodogramDemo {
   ;

@@ -14,7 +14,7 @@ import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.HilbertMatrix;
 import ch.alpine.tensor.mat.sv.SingularValueList;
-import ch.alpine.tensor.sca.Log10;
+import ch.alpine.tensor.sca.exp.Log10;
 
 /** inspired from strang's book */
 public enum ScreePlotDemo {

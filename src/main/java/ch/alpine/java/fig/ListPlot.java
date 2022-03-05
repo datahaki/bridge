@@ -22,10 +22,13 @@ import org.jfree.data.xy.XYSeriesCollection;
  * <a href="https://reference.wolfram.com/language/ref/ListPlot.html">ListPlot</a> */
 public enum ListPlot {
   ;
-  /** @param visualSet
+  /** Remark:
+   * We would like to make joined property of VisualRow, but JFreeChart does not support
+   * this granularity.
+   * 
+   * @param visualSet
    * @param joined for lines between coordinates, otherwise scattered points
    * @return */
-  // TODO JAVA ALG joined should be property of visualRow but jfreechart does not support this granularity(?)
   public static JFreeChart of(VisualSet visualSet, boolean joined) {
     XYSeriesCollection xySeriesCollection = DatasetFactory.xySeriesCollection(visualSet);
     JFreeChart jFreeChart = joined //
