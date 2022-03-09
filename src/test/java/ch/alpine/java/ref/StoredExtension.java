@@ -61,9 +61,6 @@ public class StoredExtension {
     TestHelper testHelper = new TestHelper(panelFieldsEditor, INSTANCE);
     // ---
     JFrame jFrame = new JFrame();
-    // File root = GrzSettings.file("GuiExtension");
-    // root.mkdirs();
-    // WindowConfiguration.attach(jFrame, new File(root, "WindowConfiguration.properties"));
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setContentPane(testHelper.jPanel);
     jFrame.setBounds(500, 200, 500, 700);

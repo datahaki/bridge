@@ -43,11 +43,11 @@ public class ToolbarFieldsEditor extends FieldsEditor {
       if (field.getType().equals(Enum.class)) {
         jComponent.setToolTipText(text);
       } else //
-      if (!isBoolean) {
-        JLabel jLabel = new JLabel(text + " ");
-        jLabel.setToolTipText(FieldToolTip.of(field));
-        jToolBar.add(jLabel);
-      }
+        if (!isBoolean) {
+          JLabel jLabel = new JLabel(text + " ");
+          jLabel.setToolTipText(FieldToolTip.of(field));
+          jToolBar.add(jLabel);
+        }
       jToolBar.add(jComponent);
       jToolBar.addSeparator();
     }

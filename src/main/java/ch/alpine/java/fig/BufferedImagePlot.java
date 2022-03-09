@@ -1156,10 +1156,11 @@ import ch.alpine.tensor.sca.Clip;
       if (this.orientation == PlotOrientation.HORIZONTAL) {
         space.ensureAtLeast(this.fixedDomainAxisSpace.getLeft(), RectangleEdge.LEFT);
         space.ensureAtLeast(this.fixedDomainAxisSpace.getRight(), RectangleEdge.RIGHT);
-      } else if (this.orientation == PlotOrientation.VERTICAL) {
-        space.ensureAtLeast(this.fixedDomainAxisSpace.getTop(), RectangleEdge.TOP);
-        space.ensureAtLeast(this.fixedDomainAxisSpace.getBottom(), RectangleEdge.BOTTOM);
-      }
+      } else
+        if (this.orientation == PlotOrientation.VERTICAL) {
+          space.ensureAtLeast(this.fixedDomainAxisSpace.getTop(), RectangleEdge.TOP);
+          space.ensureAtLeast(this.fixedDomainAxisSpace.getBottom(), RectangleEdge.BOTTOM);
+        }
     } else {
       // reserve space for the domain axes...
       RectangleEdge edge = getDomainAxisEdge(0);
@@ -1184,10 +1185,11 @@ import ch.alpine.tensor.sca.Clip;
       if (this.orientation == PlotOrientation.HORIZONTAL) {
         space.ensureAtLeast(this.fixedRangeAxisSpace.getTop(), RectangleEdge.TOP);
         space.ensureAtLeast(this.fixedRangeAxisSpace.getBottom(), RectangleEdge.BOTTOM);
-      } else if (this.orientation == PlotOrientation.VERTICAL) {
-        space.ensureAtLeast(this.fixedRangeAxisSpace.getLeft(), RectangleEdge.LEFT);
-        space.ensureAtLeast(this.fixedRangeAxisSpace.getRight(), RectangleEdge.RIGHT);
-      }
+      } else
+        if (this.orientation == PlotOrientation.VERTICAL) {
+          space.ensureAtLeast(this.fixedRangeAxisSpace.getLeft(), RectangleEdge.LEFT);
+          space.ensureAtLeast(this.fixedRangeAxisSpace.getRight(), RectangleEdge.RIGHT);
+        }
     } else {
       // reserve space for the range axes...
       RectangleEdge edge = getRangeAxisEdge(0);

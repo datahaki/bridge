@@ -92,10 +92,10 @@ public class SpinnerLabel<T> extends JTextField {
       if (isOverArrows(point))
         increment(point.y < dimension.height / 2 ? -1 : 1); // sign of difference
       else //
-      if (isMenuEnabled) {
-        SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(this, isMenuHover);
-        spinnerMenu.showRight(this);
-      }
+        if (isMenuEnabled) {
+          SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(this, isMenuHover);
+          spinnerMenu.showRight(this);
+        }
     }
   };
 

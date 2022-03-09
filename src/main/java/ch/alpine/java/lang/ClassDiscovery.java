@@ -44,22 +44,22 @@ public class ClassDiscovery {
         // ".");
         String vc = visiting_classpath.isEmpty() ? fname : visiting_classpath + "." + fname;
         visitDirectory(cldr, classpath_entry, file, vc);
-      } else //
-      if (file.isFile() && fname.endsWith(".class")) {
-        // found a .class file. Construct its full classname and pass
-        // it to the class visitor
-        // Modified by Jan in order to enable nested packages
-        // String cn = visiting_classpath + fname.substring(0,
-        // fname.length()-6);
-        String className = visiting_classpath + "." + fname.substring(0, fname.length() - 6);
-        try {
-          Class<?> cls = cldr.loadClass(className);
-          if (Objects.nonNull(cls))
-            classVisitor.accept(classpath_entry, cls);
-        } catch (Throwable ex) {
-          // ---
+      } else
+        if (file.isFile() && fname.endsWith(".class")) {
+          // found a .class file. Construct its full classname and pass
+          // it to the class visitor
+          // Modified by Jan in order to enable nested packages
+          // String cn = visiting_classpath + fname.substring(0,
+          // fname.length()-6);
+          String className = visiting_classpath + "." + fname.substring(0, fname.length() - 6);
+          try {
+            Class<?> cls = cldr.loadClass(className);
+            if (Objects.nonNull(cls))
+              classVisitor.accept(classpath_entry, cls);
+          } catch (Throwable ex) {
+            // ---
+          }
         }
-      }
     }
   }
 

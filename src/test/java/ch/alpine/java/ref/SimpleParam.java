@@ -30,7 +30,7 @@ public class SimpleParam extends BaseParam {
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
   @FieldLabel("Another Parameter ASDGHJ")
   public final AnotherParam anotherParam = new AnotherParam();
-  @FieldLabel("Nested %a")
+  @FieldLabel("Nested %d")
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
 
   public static class AnotherParam {
