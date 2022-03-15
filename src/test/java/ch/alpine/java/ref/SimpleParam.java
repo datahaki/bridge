@@ -16,7 +16,7 @@ import ch.alpine.tensor.mat.re.Pivots;
 
 @ReflectionMarker
 public class SimpleParam extends BaseParam {
-  public LookAndFeels lookAndFeels = LookAndFeels.DARK;
+  public LookAndFeels lookAndFeels = LookAndFeels.DEFAULT;
   @SuppressWarnings("unused")
   private final int ignore_int = 2;
   @SuppressWarnings("unused")
@@ -28,8 +28,9 @@ public class SimpleParam extends BaseParam {
   @FieldLabel("Emergency Off")
   public Boolean flag = false;
   @FieldLabel("Choose Pivot")
+  @FieldListed
   public Pivots pivot = Pivots.ARGMAX_ABS;
-  @FieldLabel("Choose Pivot")
+  @FieldLabel("Color Gradients")
   @FieldListed
   public ColorDataGradients cdg = ColorDataGradients.DEEPSEA;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };

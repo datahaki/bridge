@@ -11,10 +11,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-/* package */ class Enum3Panel extends FieldPanel {
+/* package */ class RadioPanel extends FieldPanel {
   private final JScrollPane jScrollPane;
 
-  public Enum3Panel(FieldWrap fieldWrap, Object[] objects, Object object) {
+  public RadioPanel(FieldWrap fieldWrap, Object[] objects, Object object) {
     super(fieldWrap);
     JPanel jPanel = new JPanel(new GridLayout(objects.length, 1));
     ButtonGroup buttonGroup = new ButtonGroup();
