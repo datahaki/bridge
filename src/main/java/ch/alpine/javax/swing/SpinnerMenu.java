@@ -15,7 +15,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 /* package */ class SpinnerMenu<T> extends StandardMenu {
-  /** background for items in menus that are selected; not Java official */
+  /** background for items in menus that are selected; not Java official
+   * the color is yellowish/golden */
   private static final Color ACTIVE_ITEM = new Color(243, 239, 124);
   // ---
   private final LinkedHashMap<T, JMenuItem> map = new LinkedHashMap<>();
@@ -58,8 +59,9 @@ import javax.swing.JPopupMenu;
     JPopupMenu jPopupMenu = designShow();
     T type = spinnerLabel.getValue();
     if (Objects.nonNull(type)) {
-      int delta = 2;
-      map.get(type).setBackground(ACTIVE_ITEM); // Colors.gold
+      int delta = 2; // TODO JAVA ALG is this a magic constant that depends on l&f ?
+      map.get(type).setBackground(ACTIVE_ITEM);
+      map.get(type).setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
       for (Entry<T, JMenuItem> entry : map.entrySet()) {
         delta += entry.getValue().getPreferredSize().height;
         if (entry.getKey().equals(type)) {

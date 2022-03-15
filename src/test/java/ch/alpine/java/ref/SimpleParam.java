@@ -6,10 +6,12 @@ import java.io.File;
 
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
+import ch.alpine.java.ref.ann.FieldListed;
 import ch.alpine.java.ref.ann.FieldSelectionArray;
 import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.javax.swing.LookAndFeels;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.mat.re.Pivots;
 
 @ReflectionMarker
@@ -27,6 +29,9 @@ public class SimpleParam extends BaseParam {
   public Boolean flag = false;
   @FieldLabel("Choose Pivot")
   public Pivots pivot = Pivots.ARGMAX_ABS;
+  @FieldLabel("Choose Pivot")
+  @FieldListed
+  public ColorDataGradients cdg = ColorDataGradients.DEEPSEA;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
   @FieldLabel("Another Parameter ASDGHJ")
   public final AnotherParam anotherParam = new AnotherParam();

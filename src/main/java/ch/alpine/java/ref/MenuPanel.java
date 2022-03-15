@@ -36,6 +36,7 @@ import ch.alpine.javax.swing.StandardMenu;
               JMenuItem jMenuItem = new JMenuItem(string);
               jMenuItem.setFont(jTextField.getFont());
               {
+                // TODO try background color in menu in each l&f
                 FieldsEditorManager.establish(FieldsEditorKey.INT_STRING_PANEL_HEIGHT, jMenuItem);
               }
               jMenuItem.addActionListener(event -> {
