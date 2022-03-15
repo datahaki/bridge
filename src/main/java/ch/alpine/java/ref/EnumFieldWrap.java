@@ -35,6 +35,7 @@ import ch.alpine.java.ref.ann.FieldListed;
     FieldListed fieldClip = field.getAnnotation(FieldListed.class);
     // TODO JAVA API
     if (Objects.nonNull(fieldClip))
+      // return new RadioPanel(this, enumConstants, value);
       return new ListPanel(this, enumConstants, value);
     // return super.createFieldPanel(object, value);
     return new EnumPanel(this, enumConstants, value);
