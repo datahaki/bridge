@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.tensor.pdf;
+package demo.tensor.pdf;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -13,6 +13,9 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.pdf.InverseCDF;
+import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.UnivariateDistribution;
 import ch.alpine.tensor.pdf.c.HistogramDistribution;
 import ch.alpine.tensor.pdf.c.NormalDistribution;
 

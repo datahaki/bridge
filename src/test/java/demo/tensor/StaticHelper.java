@@ -1,10 +1,13 @@
 // code by jph
-package ch.alpine.tensor;
+package demo.tensor;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.lie.r2.CirclePoints;
 
 /* package */ enum StaticHelper {

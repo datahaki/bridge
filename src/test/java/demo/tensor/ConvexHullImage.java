@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.tensor;
+package demo.tensor;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,6 +12,7 @@ import java.util.Random;
 import ch.alpine.java.awt.RenderQuality;
 import ch.alpine.java.gfx.GeometricLayer;
 import ch.alpine.java.gfx.GfxMatrix;
+import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.io.Export;
 import ch.alpine.tensor.io.ImageFormat;

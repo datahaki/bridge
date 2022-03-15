@@ -1,8 +1,12 @@
 // code by jph
-package ch.alpine.tensor;
+package demo.tensor;
 
 import java.io.IOException;
 
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.alg.Last;
 import ch.alpine.tensor.ext.HomeDirectory;

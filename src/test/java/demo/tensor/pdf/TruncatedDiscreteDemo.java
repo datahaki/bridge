@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.tensor.pdf;
+package demo.tensor.pdf;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -12,6 +12,10 @@ import ch.alpine.java.fig.VisualSet;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.pdf.CDF;
+import ch.alpine.tensor.pdf.Distribution;
+import ch.alpine.tensor.pdf.PDF;
+import ch.alpine.tensor.pdf.TruncatedDistribution;
 import ch.alpine.tensor.pdf.d.PoissonDistribution;
 import ch.alpine.tensor.sca.Clips;
 

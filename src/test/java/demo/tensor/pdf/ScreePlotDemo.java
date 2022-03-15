@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.tensor.pdf;
+package demo.tensor.pdf;
 
 import java.awt.Color;
 import java.io.IOException;
