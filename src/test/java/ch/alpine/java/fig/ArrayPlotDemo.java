@@ -8,6 +8,8 @@ import java.io.IOException;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -36,9 +38,33 @@ public enum ArrayPlotDemo {
     return ArrayPlot.of(visualImage);
   }
 
+  public static JFreeChart create2() {
+    int n = 1000;
+    Tensor domain = Subdivide.of(0, 50, n - 1);
+    Tensor values = domain.map(Scalar::zero);
+    int incr = 3;
+    for (int index = 0; index < domain.length(); index += incr) {
+      values.set(RealScalar.ONE, index);
+      incr++;
+    }
+    BufferedImage bufferedImage = ImageFormat.of(Tensors.of(values).map(ColorDataGradients.CLASSIC));
+    Clip clipX = Clips.interval(0, 50);
+    Clip clipY = Clips.interval(0, 1);
+    VisualImage visualImage = new VisualImage(bufferedImage, clipX, clipY);
+    visualImage.setPlotLabel("Array Plot 2");
+    return ArrayPlot.of(visualImage);
+  }
+
   public static void main(String[] args) throws IOException {
-    JFreeChart jFreeChart = create();
-    jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + ".png"), jFreeChart, 600, 200);
+    {
+      JFreeChart jFreeChart = create();
+      jFreeChart.setBackgroundPaint(Color.WHITE);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + ".png"), jFreeChart, 600, 200);
+    }
+    {
+      JFreeChart jFreeChart = create2();
+      jFreeChart.setBackgroundPaint(Color.WHITE);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "2.png"), jFreeChart, 600, 300);
+    }
   }
 }

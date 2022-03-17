@@ -10,8 +10,6 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldListed {
-  // ---
-  // TOOD potentially rename
-  // TOOD specify max number of elements shown
+public @interface FieldList {
+  FieldListType value() default FieldListType.LIST;
 }

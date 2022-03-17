@@ -6,7 +6,8 @@ import java.io.File;
 
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
-import ch.alpine.java.ref.ann.FieldListed;
+import ch.alpine.java.ref.ann.FieldList;
+import ch.alpine.java.ref.ann.FieldListType;
 import ch.alpine.java.ref.ann.FieldSelectionArray;
 import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.javax.swing.LookAndFeels;
@@ -28,10 +29,10 @@ public class SimpleParam extends BaseParam {
   @FieldLabel("Emergency Off")
   public Boolean flag = false;
   @FieldLabel("Choose Pivot")
-  @FieldListed
+  @FieldList(FieldListType.RADIO)
   public Pivots pivot = Pivots.ARGMAX_ABS;
   @FieldLabel("Color Gradients")
-  @FieldListed
+  @FieldList
   public ColorDataGradients cdg = ColorDataGradients.DEEPSEA;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
   @FieldLabel("Another Parameter ASDGHJ")

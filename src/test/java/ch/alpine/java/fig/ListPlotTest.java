@@ -1,6 +1,9 @@
 // code by jph
 package ch.alpine.java.fig;
 
+import java.util.Random;
+
+import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
@@ -54,6 +57,17 @@ public class ListPlotTest extends TestCase {
     VisualSet visualSet = new VisualSet();
     int n = 100_000; // tested for up to 10 million
     Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
+    visualSet.add(points);
+    ListPlot.of(visualSet);
+  }
+
+  public void testAlreadyLargeNaN() {
+    Random random = new Random();
+    VisualSet visualSet = new VisualSet();
+    int n = 100_000; // tested for up to 10 million
+    Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
+    for (int count = 0; count < 10000; ++count)
+      points.set(Quantity.of(DoubleScalar.INDETERMINATE, "m"), random.nextInt(n), random.nextInt(2));
     visualSet.add(points);
     ListPlot.of(visualSet);
   }

@@ -57,6 +57,7 @@ import org.jfree.data.xy.XYDataset;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.sca.Clip;
 
 /** plot of a {@link BufferedImage} */
@@ -1259,11 +1260,14 @@ import ch.alpine.tensor.sca.Clip;
       double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.max()).number().doubleValue(), dataArea, getDomainAxisEdge());
       double y1 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.min()).number().doubleValue(), dataArea, getRangeAxisEdge());
       double y2 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.max()).number().doubleValue(), dataArea, getRangeAxisEdge());
-      g2.drawImage(visualImage.getBufferedImage(), //
+      BufferedImage bufferedImage = ImageResize.of( //
+          visualImage.getBufferedImage(), //
+          (int) (x2 - x1 + 1), //
+          (int) (y1 - y2 + 1));
+      g2.drawImage(bufferedImage, //
           (int) x1, //
           (int) y2, //
-          (int) (x2 - x1 + 1), //
-          (int) (y1 - y2 + 1), null);
+          null);
     }
     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getForegroundAlpha()));
     AxisState domainAxisState = axisStateMap.get(getDomainAxis());
