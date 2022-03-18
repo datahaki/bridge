@@ -1,13 +1,18 @@
 // code by jph
 package ch.alpine.java.gfx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.awt.geom.Point2D;
+
+import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import junit.framework.TestCase;
 
-public class AffineFrame2DTest extends TestCase {
+public class AffineFrame2DTest {
+  @Test
   public void testSimple() {
     Tensor m1 = GfxMatrix.of(Tensors.vector(1, 2, 3));
     Tensor m2 = GfxMatrix.of(Tensors.vector(-.3, 0.2, .4));
@@ -20,6 +25,7 @@ public class AffineFrame2DTest extends TestCase {
     assertTrue(point2d.distance(af3.toPoint2D(0, 0)) < 1e-9);
   }
 
+  @Test
   public void testPoint() {
     Tensor m1 = GfxMatrix.of(Tensors.vector(1, 2, 3));
     AffineFrame2D af2 = new AffineFrame2D(m1);

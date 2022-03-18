@@ -1,13 +1,16 @@
 // code by jph
 package ch.alpine.javax.swing;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class LookAndFeelsTest extends TestCase {
+public class LookAndFeelsTest {
+  @Test
   public void testSimple() {
     for (LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels())
       try {
@@ -17,11 +20,13 @@ public class LookAndFeelsTest extends TestCase {
       }
   }
 
+  @Test
   public void testUpdateUI() throws Exception {
     for (LookAndFeels lookAndFeels : LookAndFeels.values())
       lookAndFeels.updateUI();
   }
 
+  @Test
   public void testIntro() throws Exception {
     boolean flag = false;
     for (LookAndFeels lookAndFeels : LookAndFeels.values()) {

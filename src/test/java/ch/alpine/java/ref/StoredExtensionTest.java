@@ -1,8 +1,9 @@
 package ch.alpine.java.ref;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class StoredExtensionTest extends TestCase {
+public class StoredExtensionTest {
+  @Test
   public void testSimple() {
     // ObjectProperties.wrap(new StoredExtension());
   }

@@ -1,11 +1,16 @@
 // code by gjoel, jph
 package ch.alpine.java.fig;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.RealScalar;
@@ -16,9 +21,9 @@ import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
-import junit.framework.TestCase;
 
-public class VisualSetTest extends TestCase {
+public class VisualSetTest {
+  @Test
   public void testConstructors() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values = RandomVariate.of(UniformDistribution.unit(), 5);
@@ -33,6 +38,7 @@ public class VisualSetTest extends TestCase {
     assertEquals(set1.visualRows().size(), 0);
   }
 
+  @Test
   public void testAdd() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
@@ -43,6 +49,7 @@ public class VisualSetTest extends TestCase {
     assertEquals(Dimensions.of(row1.points()), Dimensions.of(row2.points()));
   }
 
+  @Test
   public void testSetRowLabel() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
@@ -56,6 +63,7 @@ public class VisualSetTest extends TestCase {
     assertEquals(set.getVisualRow(1).getLabelString(), "row 2");
   }
 
+  @Test
   public void testEmptyPass() throws IOException {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());
@@ -69,16 +77,19 @@ public class VisualSetTest extends TestCase {
     assertFalse(file.exists());
   }
 
+  @Test
   public void testFailScalar() {
     VisualSet visualSet = new VisualSet();
     AssertFail.of(() -> visualSet.add(RealScalar.ZERO, RealScalar.ONE));
   }
 
+  @Test
   public void testFailVector() {
     VisualSet visualSet = new VisualSet();
     AssertFail.of(() -> visualSet.add(Tensors.vector(1, 2, 3, 4), Tensors.vector(1, 2, 3, 4, 5)));
   }
 
+  @Test
   public void testFailUnstructured() {
     VisualSet visualSet = new VisualSet();
     AssertFail.of(() -> visualSet.add(Tensors.fromString("{{1, 2}, {3, 4}, {5, 6}, {3}}")));

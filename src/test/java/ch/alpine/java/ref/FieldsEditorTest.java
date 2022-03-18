@@ -1,10 +1,12 @@
 // code by jph
 package ch.alpine.java.ref;
 
-import ch.alpine.java.ref.util.PanelFieldsEditor;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class FieldsEditorTest extends TestCase {
+import ch.alpine.java.ref.util.PanelFieldsEditor;
+
+public class FieldsEditorTest {
+  @Test
   public void testSimple() {
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(new SimpleParam());
     panelFieldsEditor.createJScrollPane();
@@ -12,6 +14,7 @@ public class FieldsEditorTest extends TestCase {
     panelFieldsEditor.updateJComponents();
   }
 
+  @Test
   public void testV011() {
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(new V011Param(3));
     fieldsPanel.createJScrollPane();

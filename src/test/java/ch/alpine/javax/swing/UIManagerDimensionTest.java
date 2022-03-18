@@ -1,9 +1,10 @@
 // code by jph
 package ch.alpine.javax.swing;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class UIManagerDimensionTest extends TestCase {
+public class UIManagerDimensionTest {
+  @Test
   public void testSimple() {
     for (UIManagerDimension uiManagerDimension : UIManagerDimension.values()) {
       uiManagerDimension.get();

@@ -1,7 +1,11 @@
 // code by gjoel, jph
 package ch.alpine.java.fig;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.awt.BasicStroke;
+
+import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.RealScalar;
@@ -10,9 +14,9 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
-import junit.framework.TestCase;
 
-public class VisualRowTest extends TestCase {
+public class VisualRowTest {
+  @Test
   public void testConstructors() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values = RandomVariate.of(UniformDistribution.unit(), 5);
@@ -28,10 +32,12 @@ public class VisualRowTest extends TestCase {
     row1.setAutoSort(false);
   }
 
+  @Test
   public void testFailNull() {
     AssertFail.of(() -> new VisualSet(null));
   }
 
+  @Test
   public void testPointNonMatrix() {
     VisualSet visualSet = new VisualSet();
     AssertFail.of(() -> visualSet.add(Tensors.vector(1, 2, 3, 4)));

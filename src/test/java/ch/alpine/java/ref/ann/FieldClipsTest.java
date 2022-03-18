@@ -1,7 +1,12 @@
 // code by jph
 package ch.alpine.java.ref.ann;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.Field;
+
+import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.ref.AnnotatedContainer;
 import ch.alpine.tensor.DoubleScalar;
@@ -10,9 +15,9 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
-import junit.framework.TestCase;
 
-public class FieldClipsTest extends TestCase {
+public class FieldClipsTest {
+  @Test
   public void testSimple() throws Exception {
     Field field = AnnotatedContainer.class.getField("clipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
@@ -21,6 +26,7 @@ public class FieldClipsTest extends TestCase {
     assertEquals(clip.max(), RealScalar.of(6));
   }
 
+  @Test
   public void testQuantity() throws Exception {
     Field field = AnnotatedContainer.class.getField("quantityClipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
@@ -29,12 +35,14 @@ public class FieldClipsTest extends TestCase {
     assertEquals(clip.max(), Quantity.of(6000, "kg*m^2*s^-3"));
   }
 
+  @Test
   public void testIssue1() {
     Clip clip = FieldClips.of(Quantity.of(0, "L*min^-1"), Quantity.of(20, "L*min^-1"));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20, "L*min^-1"))));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20.0, "L*min^-1"))));
   }
 
+  @Test
   public void testIssue2() {
     Clip clip = FieldClips.of(Quantity.of(0, "L*min^-1"), Quantity.of(20.0, "L*min^-1"));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20, "L*min^-1"))));
@@ -44,6 +52,7 @@ public class FieldClipsTest extends TestCase {
   @FieldClip(min = "0[super]", max = "Infinity[super]")
   public Scalar awesome = Quantity.of(4, "super");
 
+  @Test
   public void testSimple2() throws NoSuchFieldException, SecurityException {
     FieldClipsTest fieldClipsTest = new FieldClipsTest();
     Field field = fieldClipsTest.getClass().getField("awesome");

@@ -1,16 +1,20 @@
 // code by jph
 package ch.alpine.java.ref.ann;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
+
+import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.lang.ClassDiscovery;
 import ch.alpine.java.lang.ClassPaths;
 import ch.alpine.java.ref.util.ClassFieldCheck;
 import ch.alpine.java.ref.util.FieldValueContainer;
 import ch.alpine.tensor.ext.Timing;
-import junit.framework.TestCase;
 
-public class ReflectionMarkerTest extends TestCase {
+public class ReflectionMarkerTest {
+  @Test
   public void testReflection() {
     Timing timing = Timing.started();
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();

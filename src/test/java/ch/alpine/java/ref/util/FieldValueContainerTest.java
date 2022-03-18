@@ -1,9 +1,12 @@
 // code by jph
 package ch.alpine.java.ref.util;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FieldValueContainerTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class FieldValueContainerTest {
+  @Test
   public void testSimple() {
     FieldValueContainer fvc = new FieldValueContainer("key", null, "object", "value");
     assertEquals(fvc.getKey(), "key");

@@ -1,6 +1,8 @@
 // code by jph
 package ch.alpine.java.fig;
 
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -11,13 +13,14 @@ import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.tri.Cos;
-import junit.framework.TestCase;
 
-public class SpectrogramTest extends TestCase {
+public class SpectrogramTest {
+  @Test
   public void testSimple() {
     TestHelper.draw(SpectrogramDemo.create(0.4, 1.7));
   }
 
+  @Test
   public void testMore() {
     for (int count = 0; count < 2; ++count) {
       ScalarUnaryOperator polynomial = Polynomial.of(Tensors.vector( //

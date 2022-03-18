@@ -1,10 +1,15 @@
 // code by jph
 package ch.alpine.java.ref;
 
-import ch.alpine.tensor.qty.Quantity;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ParamContainerTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+import ch.alpine.tensor.qty.Quantity;
+
+public class ParamContainerTest {
+  @Test
   public void testSimple() {
     ParamContainer paramContainer = ParamContainer.INSTANCE;
     assertTrue(paramContainer.maxTor instanceof Quantity);

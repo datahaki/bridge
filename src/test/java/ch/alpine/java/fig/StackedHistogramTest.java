@@ -1,15 +1,18 @@
 // code by gjoel, jph
 package ch.alpine.java.fig;
 
-import ch.alpine.tensor.Tensors;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class StackedHistogramTest extends TestCase {
+import ch.alpine.tensor.Tensors;
+
+public class StackedHistogramTest {
+  @Test
   public void testEmpty() {
     VisualSet visualSet = new VisualSet();
     TestHelper.draw(StackedHistogram.of(visualSet));
   }
 
+  @Test
   public void testEmptyRow() {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());

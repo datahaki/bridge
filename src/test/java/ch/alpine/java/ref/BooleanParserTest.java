@@ -1,19 +1,26 @@
 // code by jph
 package ch.alpine.java.ref;
 
-import ch.alpine.java.util.AssertFail;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class BooleanParserTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+import ch.alpine.java.util.AssertFail;
+
+public class BooleanParserTest {
+  @Test
   public void testCase() {
     assertNull(BooleanParser.orNull("False"));
   }
 
+  @Test
   public void testBooleanToString() {
     assertEquals(Boolean.TRUE.toString(), "true");
     assertEquals(Boolean.FALSE.toString(), "false");
   }
 
+  @Test
   public void testNullFail() {
     AssertFail.of(() -> BooleanParser.orNull(null));
   }

@@ -1,6 +1,10 @@
 // code by jph
 package ch.alpine.java.io;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,12 +14,14 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.java.ref.TestFile;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.ext.UserName;
-import junit.framework.TestCase;
 
-public class URLFetchTest extends TestCase {
+public class URLFetchTest {
+  @Test
   public void testSimple() throws MalformedURLException, IOException {
     if (UserName.is("travis")) {
       File file = TestFile.withExtension("ico");
@@ -30,6 +36,7 @@ public class URLFetchTest extends TestCase {
     }
   }
 
+  @Test
   public void testNoFileFail() {
     if (UserName.is("travis"))
       try {
@@ -41,6 +48,7 @@ public class URLFetchTest extends TestCase {
       }
   }
 
+  @Test
   public void testInputStream() throws MalformedURLException, IOException {
     BufferedImage bufferedImage = null;
     if (UserName.is("travis"))
@@ -54,6 +62,7 @@ public class URLFetchTest extends TestCase {
       }
   }
 
+  @Test
   public void testDuplicate() throws IOException {
     if (UserName.is("travis")) {
       File file = TestFile.withExtension("ico");

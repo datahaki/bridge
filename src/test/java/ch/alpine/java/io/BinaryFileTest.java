@@ -1,18 +1,23 @@
 // code by jph
 package ch.alpine.java.io;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.io.Primitives;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
-import junit.framework.TestCase;
 
-public class BinaryFileTest extends TestCase {
+public class BinaryFileTest {
+  @Test
   public void testSimple() throws FileNotFoundException, IOException {
     File file = HomeDirectory.file(getClass().getSimpleName());
     assertFalse(file.exists());

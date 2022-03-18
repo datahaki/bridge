@@ -1,9 +1,10 @@
 // code by jph
 package ch.alpine.java.awt;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class MouseLocationTest extends TestCase {
+public class MouseLocationTest {
+  @Test
   public void testSimple() {
     MouseLocation.getMouseLocation();
   }

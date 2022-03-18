@@ -1,11 +1,17 @@
 // code by jph
 package ch.alpine.java.wdog;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.qty.Quantity;
-import junit.framework.TestCase;
 
-public class FrailMapTest extends TestCase {
+public class FrailMapTest {
+  @Test
   public void testSimple() throws InterruptedException {
     FrailMap<Integer, String> frailMap = new FrailMap<>();
     frailMap.put(3, "asd");
@@ -20,6 +26,7 @@ public class FrailMapTest extends TestCase {
     assertFalse(frailMap.get(3).isPresent());
   }
 
+  @Test
   public void testRegisterFail() {
     FrailMap<Integer, String> frailMap = new FrailMap<>();
     AssertFail.of(() -> frailMap.get(2));

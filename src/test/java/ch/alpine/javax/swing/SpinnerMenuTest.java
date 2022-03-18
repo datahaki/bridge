@@ -3,10 +3,12 @@ package ch.alpine.javax.swing;
 
 import javax.swing.JPopupMenu;
 
-import ch.alpine.tensor.mat.re.Pivots;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class SpinnerMenuTest extends TestCase {
+import ch.alpine.tensor.mat.re.Pivots;
+
+public class SpinnerMenuTest {
+  @Test
   public void testSimple() {
     SpinnerLabel<Pivots> spinnerLabel = SpinnerLabel.of(Pivots.values());
     new SpinnerMenu<>(spinnerLabel, false).design(new JPopupMenu());

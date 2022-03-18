@@ -1,9 +1,10 @@
 // code by jph
 package ch.alpine.javax.swing;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class UIManagerIconTest extends TestCase {
+public class UIManagerIconTest {
+  @Test
   public void testSimple() {
     for (UIManagerIcon uiManagerIcon : UIManagerIcon.values()) {
       uiManagerIcon.get();

@@ -3,6 +3,8 @@ package ch.alpine.java.fig;
 
 import java.util.Random;
 
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -10,14 +12,15 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.qty.Quantity;
-import junit.framework.TestCase;
 
-public class ListPlotTest extends TestCase {
+public class ListPlotTest {
+  @Test
   public void testEmpty() {
     VisualSet visualSet = new VisualSet();
     ListPlot.of(visualSet, true);
   }
 
+  @Test
   public void testEmptyRow() {
     VisualSet visualSet = new VisualSet();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
@@ -30,6 +33,7 @@ public class ListPlotTest extends TestCase {
   private static final ScalarUnaryOperator suoX = s -> Quantity.of(s, "s");
   private static final ScalarUnaryOperator suoY = s -> Quantity.of(s, "m");
 
+  @Test
   public void testUnitsX() {
     VisualSet visualSet = new VisualSet();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
@@ -42,6 +46,7 @@ public class ListPlotTest extends TestCase {
     TestHelper.draw(ListPlot.of(visualSet, true));
   }
 
+  @Test
   public void testUnitsY() {
     VisualSet visualSet = new VisualSet();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
@@ -53,6 +58,7 @@ public class ListPlotTest extends TestCase {
     TestHelper.draw(ListPlot.of(visualSet, true));
   }
 
+  @Test
   public void testAlreadyLarge() {
     VisualSet visualSet = new VisualSet();
     int n = 100_000; // tested for up to 10 million
@@ -61,6 +67,7 @@ public class ListPlotTest extends TestCase {
     ListPlot.of(visualSet);
   }
 
+  @Test
   public void testAlreadyLargeNaN() {
     Random random = new Random();
     VisualSet visualSet = new VisualSet();

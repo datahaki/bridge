@@ -1,12 +1,17 @@
 // code by jph
 package ch.alpine.java.io;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 
-import ch.alpine.tensor.ext.HomeDirectory;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class HtmlUtf8Test extends TestCase {
+import ch.alpine.tensor.ext.HomeDirectory;
+
+public class HtmlUtf8Test {
+  @Test
   public void testSimple() {
     File file = HomeDirectory.file(HtmlUtf8Test.class.getSimpleName() + "Page.html");
     assertFalse(file.exists());
@@ -17,6 +22,7 @@ public class HtmlUtf8Test extends TestCase {
     file.delete();
   }
 
+  @Test
   public void testIndex() {
     File file = HomeDirectory.file(HtmlUtf8Test.class.getSimpleName() + "Index.html");
     assertFalse(file.exists());

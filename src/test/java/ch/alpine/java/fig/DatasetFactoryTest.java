@@ -1,10 +1,12 @@
 // code by gjoel, jph
 package ch.alpine.java.fig;
 
-import ch.alpine.tensor.Tensors;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class DatasetFactoryTest extends TestCase {
+import ch.alpine.tensor.Tensors;
+
+public class DatasetFactoryTest {
+  @Test
   public void testSimple() {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.fromString("{{0, 0}, {1, NaN}}"));

@@ -1,8 +1,13 @@
 // code by jph
 package ch.alpine.java.gfx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
+
+import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.RealScalar;
@@ -13,9 +18,9 @@ import ch.alpine.tensor.ext.Serialization;
 import ch.alpine.tensor.lie.r2.CirclePoints;
 import ch.alpine.tensor.mat.IdentityMatrix;
 import ch.alpine.tensor.sca.Chop;
-import junit.framework.TestCase;
 
-public class GeometricLayerTest extends TestCase {
+public class GeometricLayerTest {
+  @Test
   public void testPush() {
     Tensor a = GfxMatrix.translation(Tensors.vector(10, 10));
     GeometricLayer geometricLayer = new GeometricLayer(a);
@@ -37,11 +42,13 @@ public class GeometricLayerTest extends TestCase {
     Chop._10.requireClose(RealScalar.of(pixel2modelWidth), RealScalar.of(3));
   }
 
+  @Test
   public void testPopFail() {
     GeometricLayer geometricLayer = new GeometricLayer(GfxMatrix.translation(Tensors.vector(0, 0)));
     AssertFail.of(() -> geometricLayer.popMatrix());
   }
 
+  @Test
   public void testSimple() {
     Deque<Integer> deque = new ArrayDeque<>();
     deque.push(2);
@@ -56,6 +63,7 @@ public class GeometricLayerTest extends TestCase {
     assertEquals(deque.peek(), null);
   }
 
+  @Test
   public void testConstruction() {
     Tensor model2pixel = Tensors.fromString("{{1, 2, 3}, {2, -1, 7}, {0, 0, 1}}");
     // Tensor mouseSe2State = Tensors.vector(9, 7, 2);
@@ -69,6 +77,7 @@ public class GeometricLayerTest extends TestCase {
     AssertFail.of(() -> geometricLayer.popMatrix());
   }
 
+  @Test
   public void testVector() {
     Tensor model2pixel = Tensors.fromString("{{1, 2, 3}, {2, -1, 7}, {0, 0, 1}}");
     // Tensor mouseSe2State = Tensors.vector(9, 7, 2);
@@ -81,11 +90,13 @@ public class GeometricLayerTest extends TestCase {
     assertEquals(expected, v2);
   }
 
+  @Test
   public void testStackFail() {
     GeometricLayer geometricLayer = new GeometricLayer(IdentityMatrix.of(3));
     AssertFail.of(() -> geometricLayer.popMatrix());
   }
 
+  @Test
   public void testSerializableFail() {
     GeometricLayer geometricLayer = new GeometricLayer(IdentityMatrix.of(3));
     try {

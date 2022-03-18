@@ -1,14 +1,17 @@
 // code by jph
 package ch.alpine.java.ref.ann;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.lang.reflect.Field;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class FieldLabelArrayTest extends TestCase {
+public class FieldLabelArrayTest {
   @FieldLabelArray("asd")
   public Integer integer = 3;
 
+  @Test
   public void testSimple() throws NoSuchFieldException, SecurityException {
     Field field = FieldLabelArrayTest.class.getField("integer");
     FieldLabelArray fieldLabelArray = field.getAnnotation(FieldLabelArray.class);

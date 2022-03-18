@@ -1,14 +1,18 @@
 // code by jph
 package ch.alpine.java.ref.util;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class InvalidFieldCollectionTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class InvalidFieldCollectionTest {
+  @Test
   public void testFieldClip() {
     FieldClipInvalidExample fieldClipInvalidExample = new FieldClipInvalidExample();
     assertFalse(InvalidFieldCollection.isEmpty(fieldClipInvalidExample));
   }
 
+  @Test
   public void testFieldInteger() {
     FieldIntegerInvalidExample fieldIntegerInvalidExample = new FieldIntegerInvalidExample();
     assertFalse(InvalidFieldCollection.isEmpty(fieldIntegerInvalidExample));

@@ -1,18 +1,24 @@
 // code by jph
 package ch.alpine.java.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class DisjointSetsTest extends TestCase {
+public class DisjointSetsTest {
+  @Test
   public void testAllocate() {
     DisjointSets.allocate(123);
   }
 
+  @Test
   public void testSimple() {
     int n = 100;
     DisjointSets disjointSets = new DisjointSets();
@@ -40,6 +46,7 @@ public class DisjointSetsTest extends TestCase {
     disjointSets.createMap(HashSet::new);
   }
 
+  @Test
   public void testSingle() {
     int n = 1000;
     DisjointSets disjointSets = new DisjointSets();
@@ -53,6 +60,7 @@ public class DisjointSetsTest extends TestCase {
     disjointSets.createMap(HashSet::new);
   }
 
+  @Test
   public void testDual() {
     int n = 1000;
     DisjointSets disjointSets = new DisjointSets();
@@ -66,6 +74,7 @@ public class DisjointSetsTest extends TestCase {
     disjointSets.createMap(HashSet::new);
   }
 
+  @Test
   public void testSame() {
     int n = 1000;
     DisjointSets disjointSets = new DisjointSets();

@@ -1,10 +1,15 @@
 // code by jph
 package ch.alpine.java.wdog;
 
-import ch.alpine.tensor.qty.Quantity;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HardWatchdogTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+import ch.alpine.tensor.qty.Quantity;
+
+public class HardWatchdogTest {
+  @Test
   public void testSimple() throws Exception {
     Watchdog watchdog = HardWatchdog.notified(Quantity.of(0.05, "s"));
     assertFalse(watchdog.isBarking());
@@ -20,6 +25,7 @@ public class HardWatchdogTest extends TestCase {
     assertTrue(watchdog.isBarking());
   }
 
+  @Test
   public void testLazy() throws Exception {
     Watchdog watchdog = HardWatchdog.notified(Quantity.of(0.05, "s"));
     assertFalse(watchdog.isBarking());

@@ -33,7 +33,7 @@ public class SimpleParam extends BaseParam {
   public Pivots pivot = Pivots.ARGMAX_ABS;
   @FieldLabel("Color Gradients")
   @FieldList
-  public ColorDataGradients cdg = ColorDataGradients.DEEPSEA;
+  public ColorDataGradients cdg = ColorDataGradients.DEEP_SEA;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
   @FieldLabel("Another Parameter ASDGHJ")
   public final AnotherParam anotherParam = new AnotherParam();
