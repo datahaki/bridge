@@ -1,14 +1,19 @@
 // code by jph
 package ch.alpine.java.ref;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Properties;
 
-import ch.alpine.java.ref.util.PanelFieldsEditor;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class GuiExtensionTest extends TestCase {
+import ch.alpine.java.ref.util.PanelFieldsEditor;
+
+public class GuiExtensionTest {
+  @Test
   public void testSimple() {
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
@@ -16,6 +21,7 @@ public class GuiExtensionTest extends TestCase {
     fieldsPanel.createJScrollPane();
   }
 
+  @Test
   public void testReader() throws IOException {
     GuiExtension guiExtension = new GuiExtension();
     String string = ObjectProperties.string(guiExtension);
@@ -42,6 +48,7 @@ public class GuiExtensionTest extends TestCase {
   // }
   // }
 
+  @Test
   public void testGetMethodFail() {
     try {
       GuiExtension.class.getMethod("stringValues2");

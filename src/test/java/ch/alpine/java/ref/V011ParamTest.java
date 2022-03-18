@@ -3,9 +3,10 @@ package ch.alpine.java.ref;
 
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class V011ParamTest extends TestCase {
+public class V011ParamTest {
+  @Test
   public void testSimple() {
     V011Param v011Param = new V011Param(3);
     v011Param.list.set(1, null);

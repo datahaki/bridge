@@ -14,7 +14,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.pdf.RandomVariate;
-import ch.alpine.tensor.pdf.UniformDistribution;
+import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.qty.Quantity;
 
 /* package */ enum ListPlotDemo {

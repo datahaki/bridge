@@ -1,9 +1,10 @@
 // code by jph
 package ch.alpine.java.fig;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class PeriodogramTest extends TestCase {
+public class PeriodogramTest {
+  @Test
   public void testSimple() {
     PeriodogramDemo.create();
   }

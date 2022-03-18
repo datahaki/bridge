@@ -57,6 +57,7 @@ import org.jfree.data.xy.XYDataset;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.sca.Clip;
 
 /** plot of a {@link BufferedImage} */
@@ -1156,10 +1157,11 @@ import ch.alpine.tensor.sca.Clip;
       if (this.orientation == PlotOrientation.HORIZONTAL) {
         space.ensureAtLeast(this.fixedDomainAxisSpace.getLeft(), RectangleEdge.LEFT);
         space.ensureAtLeast(this.fixedDomainAxisSpace.getRight(), RectangleEdge.RIGHT);
-      } else if (this.orientation == PlotOrientation.VERTICAL) {
-        space.ensureAtLeast(this.fixedDomainAxisSpace.getTop(), RectangleEdge.TOP);
-        space.ensureAtLeast(this.fixedDomainAxisSpace.getBottom(), RectangleEdge.BOTTOM);
-      }
+      } else
+        if (this.orientation == PlotOrientation.VERTICAL) {
+          space.ensureAtLeast(this.fixedDomainAxisSpace.getTop(), RectangleEdge.TOP);
+          space.ensureAtLeast(this.fixedDomainAxisSpace.getBottom(), RectangleEdge.BOTTOM);
+        }
     } else {
       // reserve space for the domain axes...
       RectangleEdge edge = getDomainAxisEdge(0);
@@ -1184,10 +1186,11 @@ import ch.alpine.tensor.sca.Clip;
       if (this.orientation == PlotOrientation.HORIZONTAL) {
         space.ensureAtLeast(this.fixedRangeAxisSpace.getTop(), RectangleEdge.TOP);
         space.ensureAtLeast(this.fixedRangeAxisSpace.getBottom(), RectangleEdge.BOTTOM);
-      } else if (this.orientation == PlotOrientation.VERTICAL) {
-        space.ensureAtLeast(this.fixedRangeAxisSpace.getLeft(), RectangleEdge.LEFT);
-        space.ensureAtLeast(this.fixedRangeAxisSpace.getRight(), RectangleEdge.RIGHT);
-      }
+      } else
+        if (this.orientation == PlotOrientation.VERTICAL) {
+          space.ensureAtLeast(this.fixedRangeAxisSpace.getLeft(), RectangleEdge.LEFT);
+          space.ensureAtLeast(this.fixedRangeAxisSpace.getRight(), RectangleEdge.RIGHT);
+        }
     } else {
       // reserve space for the range axes...
       RectangleEdge edge = getRangeAxisEdge(0);
@@ -1257,11 +1260,14 @@ import ch.alpine.tensor.sca.Clip;
       double x2 = getDomainAxis().valueToJava2D(Unprotect.withoutUnit(clipX.max()).number().doubleValue(), dataArea, getDomainAxisEdge());
       double y1 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.min()).number().doubleValue(), dataArea, getRangeAxisEdge());
       double y2 = getRangeAxis().valueToJava2D(Unprotect.withoutUnit(clipY.max()).number().doubleValue(), dataArea, getRangeAxisEdge());
-      g2.drawImage(visualImage.getBufferedImage(), //
+      BufferedImage bufferedImage = ImageResize.of( //
+          visualImage.getBufferedImage(), //
+          (int) (x2 - x1 + 1), //
+          (int) (y1 - y2 + 1));
+      g2.drawImage(bufferedImage, //
           (int) x1, //
           (int) y2, //
-          (int) (x2 - x1 + 1), //
-          (int) (y1 - y2 + 1), null);
+          null);
     }
     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getForegroundAlpha()));
     AxisState domainAxisState = axisStateMap.get(getDomainAxis());

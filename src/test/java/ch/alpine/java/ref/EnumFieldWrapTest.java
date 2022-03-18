@@ -1,19 +1,25 @@
 // code by jph
 package ch.alpine.java.ref;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 import java.util.Properties;
 
-import ch.alpine.tensor.mat.re.Pivots;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class EnumFieldWrapTest extends TestCase {
+import ch.alpine.tensor.mat.re.Pivots;
+
+public class EnumFieldWrapTest {
+  @Test
   public void testEnum() {
     GuiExtension guiExtension = new GuiExtension();
     List<String> list = ObjectProperties.list(guiExtension);
     assertTrue(list.contains("pivots=ARGMAX_ABS"));
   }
 
+  @Test
   public void testProperties() {
     Properties properties = new Properties();
     properties.setProperty("key", "SOMETHING_WITH_UNDERSCORES");
@@ -21,6 +27,7 @@ public class EnumFieldWrapTest extends TestCase {
     assertEquals(string, "SOMETHING_WITH_UNDERSCORES");
   }
 
+  @Test
   public void testEnumProp() {
     Properties properties = ObjectProperties.properties(new GuiExtension());
     String string = properties.getProperty("pivots");

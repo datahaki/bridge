@@ -15,8 +15,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 public class ChartPanelDemo implements Runnable {
-  JFrame jFrame = new JFrame();
-  XYSeries xySeries = new XYSeries("some", false);
+  private final JFrame jFrame = new JFrame();
+  private final XYSeries xySeries = new XYSeries("some", false);
 
   public ChartPanelDemo() {
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

@@ -1,10 +1,11 @@
 // code by jph
 package ch.alpine.java.ref;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import java.io.File;
 
 import ch.alpine.tensor.ext.HomeDirectory;
-import junit.framework.Assert;
 
 public enum TestFile {
   ;
@@ -24,7 +25,7 @@ public enum TestFile {
         ? className.substring(index + 1)
         : className;
     File file = HomeDirectory.file(className + "_" + stackTraceElement.getMethodName() + "." + extension);
-    Assert.assertFalse(file.exists());
+    assertFalse(file.exists());
     return file;
   }
 }

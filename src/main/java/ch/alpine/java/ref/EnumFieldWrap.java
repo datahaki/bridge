@@ -5,8 +5,10 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-/* TODO package */
-public class EnumFieldWrap extends BaseFieldWrap {
+import ch.alpine.java.ref.ann.FieldList;
+import ch.alpine.java.ref.ann.FieldListType;
+
+/* package */ class EnumFieldWrap extends BaseFieldWrap {
   private final Object[] enumConstants;
 
   public EnumFieldWrap(Field field) {
@@ -30,6 +32,15 @@ public class EnumFieldWrap extends BaseFieldWrap {
 
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
-    return new EnumPanel(this, enumConstants, value);
+    Field field = getField();
+    FieldList fieldListType = field.getAnnotation(FieldList.class);
+    FieldListType f = Objects.isNull(fieldListType) //
+        ? FieldListType.TEXT_FIELD
+        : fieldListType.value();
+    return switch (f) {
+    case TEXT_FIELD -> new EnumPanel(this, enumConstants, value);
+    case LIST -> new ListPanel(this, enumConstants, value);
+    case RADIO -> new RadioPanel(this, enumConstants, value);
+    };
   }
 }

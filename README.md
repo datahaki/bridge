@@ -2,7 +2,7 @@
 
 # ch.alpine.java
 
-Library for Java, version `0.3.0`
+Library for Java, version `0.3.1`
 
 ## Plots
 
@@ -32,6 +32,7 @@ MyConfig myConfig = new MyConfig();
 PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(myConfig);
 panelFieldsEditor.addUniversalListener(() -> System.out.println("my config changed"));
 JFrame jFrame = new JFrame();
+jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 jFrame.setContentPane(panelFieldsEditor.createJScrollPane());
 jFrame.setBounds(100, 100, 320, 200);
 jFrame.setVisible(true);
@@ -57,7 +58,7 @@ Specify `repository` and `dependency` of the tensor library in the `pom.xml` fil
   <dependency>
     <groupId>ch.alpine</groupId>
     <artifactId>java</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
   </dependency>
 </dependencies>
 ```

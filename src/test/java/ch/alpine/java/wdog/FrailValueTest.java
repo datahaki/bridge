@@ -1,10 +1,14 @@
 // code by jph
 package ch.alpine.java.wdog;
 
-import ch.alpine.tensor.qty.Quantity;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FrailValueTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+import ch.alpine.tensor.qty.Quantity;
+
+public class FrailValueTest {
+  @Test
   public void testSimple() throws InterruptedException {
     FrailValue<Integer> frailValue = new FrailValue<>(Quantity.of(0.04, "s"));
     assertTrue(frailValue.getValue().isEmpty());

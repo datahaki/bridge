@@ -1,16 +1,21 @@
 // code by jph
 package ch.alpine.java.ref.util;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.java.lang.ClassDiscovery;
 import ch.alpine.java.lang.ClassPaths;
 import ch.alpine.java.ref.ann.FieldClipTest;
-import junit.framework.TestCase;
 
-public class ClassFieldCheckTest extends TestCase {
+public class ClassFieldCheckTest {
+  @Test
   public void testSimple() {
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);

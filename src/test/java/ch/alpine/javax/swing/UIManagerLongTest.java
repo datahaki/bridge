@@ -1,9 +1,10 @@
 // code by jph
 package ch.alpine.javax.swing;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class UIManagerLongTest extends TestCase {
+public class UIManagerLongTest {
+  @Test
   public void testSimple() {
     for (UIManagerLong uiManagerLong : UIManagerLong.values()) {
       uiManagerLong.getAsLong();

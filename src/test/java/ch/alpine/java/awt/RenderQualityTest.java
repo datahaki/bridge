@@ -4,9 +4,10 @@ package ch.alpine.java.awt;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class RenderQualityTest extends TestCase {
+public class RenderQualityTest {
+  @Test
   public void testSimple() {
     BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bufferedImage.createGraphics();

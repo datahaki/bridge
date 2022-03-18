@@ -1,14 +1,19 @@
 // code by jph
 package ch.alpine.java.ref;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 import java.util.Properties;
 
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.Clips;
-import junit.framework.TestCase;
 
-public class ClipParamTest extends TestCase {
+public class ClipParamTest {
+  @Test
   public void testSimple() {
     ClipParam clipParam = new ClipParam();
     List<String> list = ObjectProperties.list(clipParam);
@@ -16,6 +21,7 @@ public class ClipParamTest extends TestCase {
     assertTrue(list.contains("clipMeter={-1[m], 1[m]}"));
   }
 
+  @Test
   public void testModify() {
     ClipParam clipParam = new ClipParam();
     clipParam.clipReal = Clips.interval(10, 11);
@@ -24,6 +30,7 @@ public class ClipParamTest extends TestCase {
     assertTrue(list.contains("clipMeter={-1[m], 1[m]}"));
   }
 
+  @Test
   public void testRecreate() {
     ClipParam clipParam = new ClipParam();
     clipParam.clipReal = Clips.interval(20, 21);

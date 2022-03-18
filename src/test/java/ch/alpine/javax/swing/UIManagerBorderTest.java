@@ -1,9 +1,10 @@
 // code by jph
 package ch.alpine.javax.swing;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class UIManagerBorderTest extends TestCase {
+public class UIManagerBorderTest {
+  @Test
   public void testSimple() {
     for (UIManagerBorder uiManagerBorder : UIManagerBorder.values()) {
       uiManagerBorder.get();

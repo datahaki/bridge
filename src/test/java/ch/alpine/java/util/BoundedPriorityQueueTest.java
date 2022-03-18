@@ -1,6 +1,10 @@
 // code by jph
 package ch.alpine.java.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -13,14 +17,16 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.OrderedQ;
 import ch.alpine.tensor.alg.Reverse;
 import ch.alpine.tensor.ext.Serialization;
 import ch.alpine.tensor.num.RandomPermutation;
-import junit.framework.TestCase;
 
-public class BoundedPriorityQueueTest extends TestCase {
+public class BoundedPriorityQueueTest {
+  @Test
   public void testMin() throws ClassNotFoundException, IOException {
     @SuppressWarnings("unchecked")
     Queue<Integer> queue = Serialization.copy(BoundedPriorityQueue.min(2, //
@@ -33,10 +39,12 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(queue.poll().intValue(), 3);
   }
 
+  @Test
   public void testMinNonSerializable() {
     BoundedPriorityQueue.min(2, Integer::compare);
   }
 
+  @Test
   public void testMax() throws ClassNotFoundException, IOException {
     @SuppressWarnings("unchecked")
     Queue<Integer> queue = Serialization.copy(BoundedPriorityQueue.max(2, //
@@ -51,6 +59,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(queue.poll().intValue(), 9);
   }
 
+  @Test
   public void testNegativeFail() {
     AssertFail.of(() -> BoundedPriorityQueue.min(0, Integer::compare));
     AssertFail.of(() -> BoundedPriorityQueue.max(0, Integer::compare));
@@ -58,6 +67,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     AssertFail.of(() -> BoundedPriorityQueue.max(-1, Integer::compare));
   }
 
+  @Test
   public void testNaturalNull() {
     PriorityQueue<Integer> d = new PriorityQueue<>(10);
     d.add(5);
@@ -77,6 +87,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(d.poll().intValue(), 6);
   }
 
+  @Test
   public void testPriorityQueueDrain() {
     PriorityQueue<Integer> d = new PriorityQueue<>(10);
     d.add(5);
@@ -93,6 +104,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertTrue(OrderedQ.of(Tensors.vector(l2)));
   }
 
+  @Test
   public void testDrainMinQueue() {
     Queue<Integer> queue = BoundedPriorityQueue.min(5, Integer::compare);
     queue.add(6);
@@ -107,6 +119,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertTrue(OrderedQ.of(Reverse.of(Tensors.vector(l2))));
   }
 
+  @Test
   public void testNaturalSpecific() {
     PriorityQueue<Integer> d = new PriorityQueue<>(10, Integer::compare);
     d.add(9);
@@ -118,6 +131,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(d.poll().intValue(), 6);
   }
 
+  @Test
   public void testPriorityQueue() {
     PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
     priorityQueue.offer(3);
@@ -128,6 +142,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(priorityQueue.poll().intValue(), 5);
   }
 
+  @Test
   public void testMaxOld() {
     Queue<Integer> queue = BoundedPriorityQueue.max(3, Integer::compare);
     assertTrue(queue.offer(3));
@@ -147,6 +162,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(queue.poll().intValue(), 5);
   }
 
+  @Test
   public void testPriorityQueueReverseOrder() {
     PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(Collections.reverseOrder());
     priorityQueue.offer(3);
@@ -157,6 +173,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(priorityQueue.poll().intValue(), 1);
   }
 
+  @Test
   public void testMinOld() {
     Queue<Integer> queue = BoundedPriorityQueue.min(3, Integer::compare);
     assertTrue(queue.offer(3));
@@ -176,6 +193,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertEquals(queue.poll().intValue(), 1);
   }
 
+  @Test
   public void testRandomMin() {
     int[] array = RandomPermutation.of(13);
     Queue<Integer> queue = BoundedPriorityQueue.min(2, Integer::compare);
@@ -185,6 +203,7 @@ public class BoundedPriorityQueueTest extends TestCase {
     assertTrue(queue.isEmpty());
   }
 
+  @Test
   public void testRandomMax() {
     int[] array = RandomPermutation.of(13);
     {

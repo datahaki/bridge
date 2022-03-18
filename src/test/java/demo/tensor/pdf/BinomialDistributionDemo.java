@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.tensor.pdf;
+package demo.tensor.pdf;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -13,6 +13,10 @@ import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.pdf.CDF;
+import ch.alpine.tensor.pdf.Distribution;
+import ch.alpine.tensor.pdf.PDF;
+import ch.alpine.tensor.pdf.d.BinomialDistribution;
 
 public enum BinomialDistributionDemo {
   ;

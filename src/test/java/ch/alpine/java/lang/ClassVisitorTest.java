@@ -1,13 +1,17 @@
 // code by jph
 package ch.alpine.java.lang;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import ch.alpine.java.wdog.Watchdog;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class ClassVisitorTest extends TestCase {
+import ch.alpine.java.wdog.Watchdog;
+
+public class ClassVisitorTest {
+  @Test
   public void testSimple() {
     Set<Class<?>> set = new HashSet<>();
     ClassVisitor classVisitor = new ClassVisitor() {

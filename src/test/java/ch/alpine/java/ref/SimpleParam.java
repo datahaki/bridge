@@ -6,15 +6,18 @@ import java.io.File;
 
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
+import ch.alpine.java.ref.ann.FieldList;
+import ch.alpine.java.ref.ann.FieldListType;
 import ch.alpine.java.ref.ann.FieldSelectionArray;
 import ch.alpine.java.ref.ann.ReflectionMarker;
 import ch.alpine.javax.swing.LookAndFeels;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.mat.re.Pivots;
 
 @ReflectionMarker
 public class SimpleParam extends BaseParam {
-  public LookAndFeels lookAndFeels = LookAndFeels.DARK;
+  public LookAndFeels lookAndFeels = LookAndFeels.DEFAULT;
   @SuppressWarnings("unused")
   private final int ignore_int = 2;
   @SuppressWarnings("unused")
@@ -26,11 +29,15 @@ public class SimpleParam extends BaseParam {
   @FieldLabel("Emergency Off")
   public Boolean flag = false;
   @FieldLabel("Choose Pivot")
+  @FieldList(FieldListType.RADIO)
   public Pivots pivot = Pivots.ARGMAX_ABS;
+  @FieldLabel("Color Gradients")
+  @FieldList
+  public ColorDataGradients cdg = ColorDataGradients.DEEP_SEA;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
   @FieldLabel("Another Parameter ASDGHJ")
   public final AnotherParam anotherParam = new AnotherParam();
-  @FieldLabel("Nested %a")
+  @FieldLabel("Nested %d")
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
 
   public static class AnotherParam {

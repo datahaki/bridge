@@ -1,16 +1,22 @@
 // code by jph
 package ch.alpine.java.ref;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.awt.Color;
 import java.io.File;
 import java.util.Collections;
 import java.util.Properties;
 
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.ext.HomeDirectory;
-import junit.framework.TestCase;
 
-public class ObjectPropertiesTest extends TestCase {
+public class ObjectPropertiesTest {
+  @Test
   public void testSimple() {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[1].some = false;
@@ -24,11 +30,13 @@ public class ObjectPropertiesTest extends TestCase {
     assertFalse(simpleCopy.nestedParams[1].basic);
   }
 
+  @Test
   public void testNull() {
     assertEquals(ObjectProperties.list(null), Collections.emptyList());
     assertEquals(ObjectProperties.string(null), "");
   }
 
+  @Test
   public void testTrySaveAndLoad() {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[0].some = false;
@@ -44,6 +52,7 @@ public class ObjectPropertiesTest extends TestCase {
     assertEquals(ObjectProperties.list(simplePar), ObjectProperties.list(simpleParam));
   }
 
+  @Test
   public void testLaram() {
     SimpleLaram simpleLaram = new SimpleLaram();
     String string0 = ObjectProperties.string(simpleLaram);

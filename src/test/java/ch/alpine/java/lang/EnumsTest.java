@@ -1,15 +1,21 @@
 // code by jph
 package ch.alpine.java.lang;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Set;
+
+import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.mat.re.Pivot;
 import ch.alpine.tensor.mat.re.Pivots;
-import junit.framework.TestCase;
 
-public class EnumsTest extends TestCase {
+public class EnumsTest {
+  @Test
   public void testSimple() {
     Set<ColorDataGradients> set = Enums.setFromMask(ColorDataGradients.class, 2 | 8);
     assertFalse(set.contains(ColorDataGradients.CLASSIC));
@@ -18,6 +24,7 @@ public class EnumsTest extends TestCase {
     assertTrue(set.contains(ColorDataGradients.SUNSET));
   }
 
+  @Test
   public void testAdvance() {
     Class<? extends Pivots> cls = Pivots.ARGMAX_ABS.getClass();
     assertTrue(cls.isAnonymousClass());

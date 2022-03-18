@@ -1,11 +1,14 @@
 // code by jph
 package ch.alpine.java.lang;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class ClassDiscoveryTest extends TestCase {
+public class ClassDiscoveryTest {
+  @Test
   public void testSimple() {
     AtomicInteger count = new AtomicInteger();
     ClassVisitor classVisitor = new ClassVisitor() {

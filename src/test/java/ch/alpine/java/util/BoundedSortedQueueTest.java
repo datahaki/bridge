@@ -1,17 +1,22 @@
 // code by jph
 package ch.alpine.java.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.Test;
+
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.ext.Serialization;
-import junit.framework.TestCase;
 
-public class BoundedSortedQueueTest extends TestCase {
+public class BoundedSortedQueueTest {
+  @Test
   public void testSimpleMin() throws ClassNotFoundException, IOException {
     BoundedSortedQueue<Double, String> boundedSortedQueue = Serialization.copy(BoundedSortedQueue.min(3));
     boundedSortedQueue.offer(0.7, "7");
@@ -30,6 +35,7 @@ public class BoundedSortedQueueTest extends TestCase {
     }
   }
 
+  @Test
   public void testScalar() {
     BoundedSortedQueue<Scalar, String> boundedSortedQueue = BoundedSortedQueue.min(3);
     boundedSortedQueue.offer(RealScalar.of(0.7), "7");
@@ -43,6 +49,7 @@ public class BoundedSortedQueueTest extends TestCase {
     assertTrue(collection.contains("3"));
   }
 
+  @Test
   public void testSimpleMax() throws ClassNotFoundException, IOException {
     BoundedSortedQueue<Double, String> boundedSortedQueue = Serialization.copy(BoundedSortedQueue.max(3));
     boundedSortedQueue.offer(0.7, "7");
@@ -57,6 +64,7 @@ public class BoundedSortedQueueTest extends TestCase {
     assertEquals(collection.size(), 3);
   }
 
+  @Test
   public void testFail() {
     AssertFail.of(() -> BoundedSortedQueue.min(0));
     AssertFail.of(() -> BoundedSortedQueue.max(0));

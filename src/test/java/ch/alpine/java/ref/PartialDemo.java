@@ -34,9 +34,6 @@ public enum PartialDemo {
       }
     }, 1000, 1000);
     JFrame jFrame = new JFrame();
-    // File root = GrzSettings.file("GuiExtension");
-    // root.mkdirs();
-    // WindowConfiguration.attach(jFrame, new File(root, "WindowConfiguration.properties"));
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(BorderLayout.CENTER, testHelper.jPanel);

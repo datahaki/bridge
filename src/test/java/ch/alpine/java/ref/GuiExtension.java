@@ -13,6 +13,7 @@ import ch.alpine.java.ref.ann.FieldExistingDirectory;
 import ch.alpine.java.ref.ann.FieldExistingFile;
 import ch.alpine.java.ref.ann.FieldFuse;
 import ch.alpine.java.ref.ann.FieldLabel;
+import ch.alpine.java.ref.ann.FieldList;
 import ch.alpine.java.ref.ann.FieldSelectionArray;
 import ch.alpine.java.ref.ann.FieldSelectionCallback;
 import ch.alpine.java.ref.ann.ReflectionMarker;
@@ -43,6 +44,7 @@ public class GuiExtension {
   public Clip clip = Clips.absolute(3);
   @FieldFuse
   public Boolean defaultFuse = false;
+  @FieldList
   public Pivots pivots = Pivots.ARGMAX_ABS;
   public Boolean status2 = true;
   public Pivots pivots2 = Pivots.ARGMAX_ABS;

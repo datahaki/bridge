@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.tensor.pdf;
+package demo.tensor.pdf;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -15,6 +15,10 @@ import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.itp.BSplineFunctionString;
+import ch.alpine.tensor.pdf.CDF;
+import ch.alpine.tensor.pdf.Distribution;
+import ch.alpine.tensor.pdf.PDF;
+import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 
 public enum TrapezoidalDistributionDemo {
   ;

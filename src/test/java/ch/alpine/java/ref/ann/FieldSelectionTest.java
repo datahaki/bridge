@@ -3,9 +3,10 @@ package ch.alpine.java.ref.ann;
 
 import java.lang.annotation.Annotation;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class FieldSelectionTest extends TestCase {
+public class FieldSelectionTest {
+  @Test
   public void testSimple() {
     FieldSelectionArray fieldSelection = new FieldSelectionArray() {
       @Override
