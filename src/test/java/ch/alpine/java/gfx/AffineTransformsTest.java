@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.java.gfx;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -15,12 +15,7 @@ public class AffineTransformsTest {
   @Test
   public void testSimple() {
     AffineTransform affineTransform = AffineTransforms.of(Array.zeros(3, 3));
-    try {
-      affineTransform.createInverse();
-      fail();
-    } catch (Exception exception) {
-      // ---
-    }
+    assertThrows(Exception.class, () -> affineTransform.createInverse());
   }
 
   @Test

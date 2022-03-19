@@ -1,8 +1,8 @@
 // code by jph
 package ch.alpine.java.ref;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -50,11 +50,6 @@ public class GuiExtensionTest {
 
   @Test
   public void testGetMethodFail() {
-    try {
-      GuiExtension.class.getMethod("stringValues2");
-      fail();
-    } catch (Exception e) {
-      // ---
-    }
+    assertThrows(Exception.class, () -> GuiExtension.class.getMethod("stringValues2"));
   }
 }

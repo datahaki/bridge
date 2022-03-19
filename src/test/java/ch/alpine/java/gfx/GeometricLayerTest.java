@@ -3,7 +3,6 @@ package ch.alpine.java.gfx;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -99,11 +98,6 @@ public class GeometricLayerTest {
   @Test
   public void testSerializableFail() {
     GeometricLayer geometricLayer = new GeometricLayer(IdentityMatrix.of(3));
-    try {
-      Serialization.copy(geometricLayer);
-      fail();
-    } catch (Exception exception) {
-      // ---
-    }
+    assertThrows(Exception.class, () -> Serialization.copy(geometricLayer));
   }
 }

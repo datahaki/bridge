@@ -15,16 +15,16 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import ch.alpine.java.ref.TestFile;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.ext.UserName;
 
 public class URLFetchTest {
   @Test
-  public void testSimple() throws MalformedURLException, IOException {
+  public void testSimple(@TempDir File tempDir) throws MalformedURLException, IOException {
     if (UserName.is("travis")) {
-      File file = TestFile.withExtension("ico");
+      File file = new File(tempDir, "file.ico");
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/favicon.ico"))) {
         assertEquals(urlFetch.length(), 1406);
         assertEquals(urlFetch.contentType(), "image/x-icon");
@@ -63,9 +63,10 @@ public class URLFetchTest {
   }
 
   @Test
-  public void testDuplicate() throws IOException {
+  public void testDuplicate(@TempDir File tempDir) throws IOException {
+    // TODO check if internet is available
     if (UserName.is("travis")) {
-      File file = TestFile.withExtension("ico");
+      File file = new File(tempDir, "file.ico");
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/favicon.ico"))) {
         urlFetch.downloadIfMissing(file);
         urlFetch.downloadIfMissing(file);
