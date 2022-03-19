@@ -2,10 +2,10 @@
 package ch.alpine.java.fig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
@@ -27,7 +27,7 @@ public class AxisTest {
     axis.setUnit(Unit.of("m"));
     assertEquals(axis.getUnitString(), "[m]");
     axis.toReals().apply(Quantity.of(1, "km"));
-    AssertFail.of(() -> axis.toReals().apply(Quantity.of(1, "A")));
+    assertThrows(Exception.class, () -> axis.toReals().apply(Quantity.of(1, "A")));
   }
 
   @Test

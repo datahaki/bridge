@@ -2,12 +2,12 @@
 package ch.alpine.java.awt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.Color;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -34,7 +34,7 @@ public class CielabTest {
 
   @Test
   public void testVectorFail() {
-    AssertFail.of(() -> Cielab.D65.xyz2lab(Tensors.vector(0, 0, 0, 0)));
-    AssertFail.of(() -> Cielab.D65.lab2xyz(Tensors.vector(0, 0, 0, 0)));
+    assertThrows(Exception.class, () -> Cielab.D65.xyz2lab(Tensors.vector(0, 0, 0, 0)));
+    assertThrows(Exception.class, () -> Cielab.D65.lab2xyz(Tensors.vector(0, 0, 0, 0)));
   }
 }

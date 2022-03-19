@@ -2,14 +2,13 @@
 package ch.alpine.java.ref;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
-
-import ch.alpine.java.util.AssertFail;
 
 public class ObjectFieldsTest {
   @Test
@@ -24,6 +23,6 @@ public class ObjectFieldsTest {
 
   @Test
   public void testSimple() {
-    AssertFail.of(() -> ObjectFields.of(null, null));
+    assertThrows(Exception.class, () -> ObjectFields.of(null, null));
   }
 }

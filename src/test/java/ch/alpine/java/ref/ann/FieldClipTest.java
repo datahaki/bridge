@@ -1,10 +1,11 @@
 // code by jph
 package ch.alpine.java.ref.ann;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.ref.util.PanelFieldsEditor;
-import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.Quantity;
 
@@ -16,6 +17,6 @@ public class FieldClipTest {
   @Test
   public void testFailEx() {
     FieldClipTest fieldClipCorrupt = new FieldClipTest();
-    AssertFail.of(() -> new PanelFieldsEditor(fieldClipCorrupt));
+    assertThrows(Exception.class, () -> new PanelFieldsEditor(fieldClipCorrupt));
   }
 }

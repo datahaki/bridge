@@ -2,12 +2,12 @@
 package ch.alpine.java.fig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.BasicStroke;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -34,13 +34,13 @@ public class VisualRowTest {
 
   @Test
   public void testFailNull() {
-    AssertFail.of(() -> new VisualSet(null));
+    assertThrows(Exception.class, () -> new VisualSet(null));
   }
 
   @Test
   public void testPointNonMatrix() {
     VisualSet visualSet = new VisualSet();
-    AssertFail.of(() -> visualSet.add(Tensors.vector(1, 2, 3, 4)));
-    AssertFail.of(() -> visualSet.add(RealScalar.ZERO));
+    assertThrows(Exception.class, () -> visualSet.add(Tensors.vector(1, 2, 3, 4)));
+    assertThrows(Exception.class, () -> visualSet.add(RealScalar.ZERO));
   }
 }

@@ -3,10 +3,9 @@ package ch.alpine.java.ref;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
-
-import ch.alpine.java.util.AssertFail;
 
 public class BooleanParserTest {
   @Test
@@ -22,6 +21,6 @@ public class BooleanParserTest {
 
   @Test
   public void testNullFail() {
-    AssertFail.of(() -> BooleanParser.orNull(null));
+    assertThrows(Exception.class, () -> BooleanParser.orNull(null));
   }
 }

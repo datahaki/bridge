@@ -2,6 +2,7 @@
 package ch.alpine.java.gfx;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayDeque;
@@ -9,7 +10,6 @@ import java.util.Deque;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -45,7 +45,7 @@ public class GeometricLayerTest {
   @Test
   public void testPopFail() {
     GeometricLayer geometricLayer = new GeometricLayer(GfxMatrix.translation(Tensors.vector(0, 0)));
-    AssertFail.of(() -> geometricLayer.popMatrix());
+    assertThrows(Exception.class, () -> geometricLayer.popMatrix());
   }
 
   @Test
@@ -74,7 +74,7 @@ public class GeometricLayerTest {
     assertEquals(geometricLayer.getMatrix(), model2pixel);
     geometricLayer.popMatrix();
     // assertEquals(mouseSe2State, geometricLayer.getMouseSe2State());
-    AssertFail.of(() -> geometricLayer.popMatrix());
+    assertThrows(Exception.class, () -> geometricLayer.popMatrix());
   }
 
   @Test
@@ -93,7 +93,7 @@ public class GeometricLayerTest {
   @Test
   public void testStackFail() {
     GeometricLayer geometricLayer = new GeometricLayer(IdentityMatrix.of(3));
-    AssertFail.of(() -> geometricLayer.popMatrix());
+    assertThrows(Exception.class, () -> geometricLayer.popMatrix());
   }
 
   @Test

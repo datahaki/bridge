@@ -2,12 +2,11 @@
 package ch.alpine.java.awt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.Color;
 
 import org.junit.jupiter.api.Test;
-
-import ch.alpine.java.util.AssertFail;
 
 public class HsluvTest {
   @Test
@@ -19,6 +18,6 @@ public class HsluvTest {
 
   @Test
   public void testFail() {
-    AssertFail.of(() -> Hsluv.of(1 / 0.0, 1, 1, 1));
+    assertThrows(Exception.class, () -> Hsluv.of(1 / 0.0, 1, 1, 1));
   }
 }

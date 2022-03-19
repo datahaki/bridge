@@ -3,6 +3,7 @@ package ch.alpine.java.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -61,10 +62,10 @@ public class BoundedPriorityQueueTest {
 
   @Test
   public void testNegativeFail() {
-    AssertFail.of(() -> BoundedPriorityQueue.min(0, Integer::compare));
-    AssertFail.of(() -> BoundedPriorityQueue.max(0, Integer::compare));
-    AssertFail.of(() -> BoundedPriorityQueue.min(-1, Integer::compare));
-    AssertFail.of(() -> BoundedPriorityQueue.max(-1, Integer::compare));
+    assertThrows(Exception.class, () -> BoundedPriorityQueue.min(0, Integer::compare));
+    assertThrows(Exception.class, () -> BoundedPriorityQueue.max(0, Integer::compare));
+    assertThrows(Exception.class, () -> BoundedPriorityQueue.min(-1, Integer::compare));
+    assertThrows(Exception.class, () -> BoundedPriorityQueue.max(-1, Integer::compare));
   }
 
   @Test

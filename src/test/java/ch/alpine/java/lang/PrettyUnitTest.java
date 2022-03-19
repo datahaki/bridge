@@ -2,10 +2,10 @@
 package ch.alpine.java.lang;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.qty.Quantity;
@@ -65,6 +65,6 @@ public class PrettyUnitTest {
 
   @Test
   public void testNullFail() {
-    AssertFail.of(() -> PrettyUnit.of((Unit) null));
+    assertThrows(Exception.class, () -> PrettyUnit.of((Unit) null));
   }
 }

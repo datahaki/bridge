@@ -3,6 +3,7 @@ package ch.alpine.java.fig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -12,7 +13,6 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -80,20 +80,20 @@ public class VisualSetTest {
   @Test
   public void testFailScalar() {
     VisualSet visualSet = new VisualSet();
-    AssertFail.of(() -> visualSet.add(RealScalar.ZERO, RealScalar.ONE));
+    assertThrows(Exception.class, () -> visualSet.add(RealScalar.ZERO, RealScalar.ONE));
   }
 
   @Test
   public void testFailVector() {
     VisualSet visualSet = new VisualSet();
-    AssertFail.of(() -> visualSet.add(Tensors.vector(1, 2, 3, 4), Tensors.vector(1, 2, 3, 4, 5)));
+    assertThrows(Exception.class, () -> visualSet.add(Tensors.vector(1, 2, 3, 4), Tensors.vector(1, 2, 3, 4, 5)));
   }
 
   @Test
   public void testFailUnstructured() {
     VisualSet visualSet = new VisualSet();
-    AssertFail.of(() -> visualSet.add(Tensors.fromString("{{1, 2}, {3, 4}, {5, 6}, {3}}")));
-    AssertFail.of(() -> visualSet.add(Tensors.fromString("{{1, 2}, {3, 4}, {5, 6}, 4}")));
-    AssertFail.of(() -> visualSet.add(Tensors.fromString("{{1, 2, 3}, {3, 4, 2}, {5, 6, 3}, {3, 5, 3}}")));
+    assertThrows(Exception.class, () -> visualSet.add(Tensors.fromString("{{1, 2}, {3, 4}, {5, 6}, {3}}")));
+    assertThrows(Exception.class, () -> visualSet.add(Tensors.fromString("{{1, 2}, {3, 4}, {5, 6}, 4}")));
+    assertThrows(Exception.class, () -> visualSet.add(Tensors.fromString("{{1, 2, 3}, {3, 4, 2}, {5, 6, 3}, {3, 5, 3}}")));
   }
 }

@@ -2,6 +2,7 @@
 package ch.alpine.java.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -66,9 +67,9 @@ public class BoundedSortedQueueTest {
 
   @Test
   public void testFail() {
-    AssertFail.of(() -> BoundedSortedQueue.min(0));
-    AssertFail.of(() -> BoundedSortedQueue.max(0));
-    AssertFail.of(() -> BoundedSortedQueue.min(-1));
-    AssertFail.of(() -> BoundedSortedQueue.max(-1));
+    assertThrows(Exception.class, () -> BoundedSortedQueue.min(0));
+    assertThrows(Exception.class, () -> BoundedSortedQueue.max(0));
+    assertThrows(Exception.class, () -> BoundedSortedQueue.min(-1));
+    assertThrows(Exception.class, () -> BoundedSortedQueue.max(-1));
   }
 }

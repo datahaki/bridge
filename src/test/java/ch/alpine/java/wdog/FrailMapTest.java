@@ -3,11 +3,11 @@ package ch.alpine.java.wdog;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.java.util.AssertFail;
 import ch.alpine.tensor.qty.Quantity;
 
 public class FrailMapTest {
@@ -29,9 +29,9 @@ public class FrailMapTest {
   @Test
   public void testRegisterFail() {
     FrailMap<Integer, String> frailMap = new FrailMap<>();
-    AssertFail.of(() -> frailMap.get(2));
+    assertThrows(Exception.class, () -> frailMap.get(2));
     frailMap.registerKey(3, Quantity.of(0.01, "s"));
     assertTrue(frailMap.get(3).isEmpty());
-    AssertFail.of(() -> frailMap.registerKey(3, Quantity.of(0.01, "s")));
+    assertThrows(Exception.class, () -> frailMap.registerKey(3, Quantity.of(0.01, "s")));
   }
 }
