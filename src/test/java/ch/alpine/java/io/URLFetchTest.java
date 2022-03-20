@@ -18,12 +18,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.ext.HomeDirectory;
-import ch.alpine.tensor.ext.UserName;
 
 public class URLFetchTest {
   @Test
   public void testSimple(@TempDir File tempDir) throws MalformedURLException, IOException {
-    if (UserName.is("travis")) {
+    if (TestHelper.IS_ONLINE) {
       File file = new File(tempDir, "file.ico");
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/favicon.ico"))) {
         assertEquals(urlFetch.length(), 1406);
@@ -38,7 +37,7 @@ public class URLFetchTest {
 
   @Test
   public void testNoFileFail() {
-    if (UserName.is("travis"))
+    if (TestHelper.IS_ONLINE)
       try {
         try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/doesnotexist.file.unknown"))) {
           fail();
@@ -51,7 +50,7 @@ public class URLFetchTest {
   @Test
   public void testInputStream() throws MalformedURLException, IOException {
     BufferedImage bufferedImage = null;
-    if (UserName.is("travis"))
+    if (TestHelper.IS_ONLINE)
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/_images/icon.bik.png"))) {
         assertEquals(urlFetch.length(), 481);
         try (InputStream inputStream = urlFetch.inputStream()) {
@@ -64,8 +63,7 @@ public class URLFetchTest {
 
   @Test
   public void testDuplicate(@TempDir File tempDir) throws IOException {
-    // TODO check if internet is available
-    if (UserName.is("travis")) {
+    if (TestHelper.IS_ONLINE) {
       File file = new File(tempDir, "file.ico");
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/favicon.ico"))) {
         urlFetch.downloadIfMissing(file);
@@ -78,8 +76,6 @@ public class URLFetchTest {
         }
       }
       assertEquals(file.length(), 1406);
-      file.delete();
-      assertFalse(file.exists());
     }
   }
 }

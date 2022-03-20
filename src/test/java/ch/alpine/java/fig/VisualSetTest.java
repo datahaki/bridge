@@ -12,13 +12,13 @@ import java.io.IOException;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Dimensions;
 import ch.alpine.tensor.alg.Transpose;
-import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 
@@ -64,17 +64,15 @@ public class VisualSetTest {
   }
 
   @Test
-  public void testEmptyPass() throws IOException {
+  public void testEmptyPass(@TempDir File tempDir) throws IOException {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());
     JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-    File file = HomeDirectory.Downloads(VisualSetTest.class.getSimpleName() + ".png");
+    File file = new File(tempDir, "file.png");
     assertFalse(file.exists());
     ChartUtils.saveChartAsPNG(file, jFreeChart, 100, 100);
     assertTrue(file.isFile());
     assertTrue(file.canWrite());
-    file.delete();
-    assertFalse(file.exists());
   }
 
   @Test

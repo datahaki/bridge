@@ -11,9 +11,9 @@ import java.util.Collections;
 import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.RationalScalar;
-import ch.alpine.tensor.ext.HomeDirectory;
 
 public class ObjectPropertiesTest {
   @Test
@@ -37,13 +37,13 @@ public class ObjectPropertiesTest {
   }
 
   @Test
-  public void testTrySaveAndLoad() {
+  public void testTrySaveAndLoad(@TempDir File tempDir) {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[0].some = false;
     simpleParam.nestedParams[1].text = "here!";
     simpleParam.nestedParams[0].anotherParam.color = Color.PINK;
     simpleParam.nestedParams[1].basic = false;
-    File file = HomeDirectory.file(getClass().getSimpleName() + ".properties");
+    File file = new File(tempDir, "file.properties");
     assertFalse(file.exists());
     ObjectProperties.trySave(simpleParam, file);
     assertTrue(file.exists());
