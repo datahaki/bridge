@@ -30,22 +30,22 @@ public enum FieldsEditorManager {
 
   public static Integer getInteger(FieldsEditorKey fieldsEditorKey) {
     Object object = MAP.get(fieldsEditorKey.key());
-    return object instanceof Integer integer ? integer : null;
+    return object instanceof Integer ? (Integer) object : null;
   }
 
   public static String getString(FieldsEditorKey fieldsEditorKey) {
     Object object = MAP.get(fieldsEditorKey.key());
-    return object instanceof String string ? string : null;
+    return object instanceof String ? (String) object : null;
   }
 
   public static Icon getIcon(FieldsEditorKey fieldsEditorKey) {
     Object object = MAP.get(fieldsEditorKey.key());
-    return object instanceof Icon icon ? icon : null;
+    return object instanceof Icon ? (Icon) object : null;
   }
 
   public static Font getFont(FieldsEditorKey fieldsEditorKey) {
     Object object = MAP.get(fieldsEditorKey.key());
-    return object instanceof Font font ? font : null;
+    return object instanceof Font ? (Font) object : null;
   }
 
   // ---

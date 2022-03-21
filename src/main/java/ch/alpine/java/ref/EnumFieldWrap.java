@@ -37,10 +37,14 @@ import ch.alpine.java.ref.ann.FieldListType;
     FieldListType f = Objects.isNull(fieldListType) //
         ? FieldListType.TEXT_FIELD
         : fieldListType.value();
-    return switch (f) {
-    case TEXT_FIELD -> new EnumPanel(this, enumConstants, value);
-    case LIST -> new ListPanel(this, enumConstants, value);
-    case RADIO -> new RadioPanel(this, enumConstants, value);
-    };
+    switch (f) {
+    case TEXT_FIELD:
+      return new EnumPanel(this, enumConstants, value);
+    case LIST:
+      return new ListPanel(this, enumConstants, value);
+    case RADIO:
+      return new RadioPanel(this, enumConstants, value);
+    }
+    throw new IllegalArgumentException();
   }
 }
