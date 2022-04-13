@@ -2,6 +2,7 @@
 package ch.alpine.java.ref;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.util.Objects;
 
 import javax.swing.JComponent;
@@ -34,12 +35,13 @@ import ch.alpine.tensor.sca.Clip;
   private final int resolution;
   private final ScalarUnaryOperator scalarUnaryOperator;
   private final JSlider jSlider;
+  private final JLabel jLabel;
   private int index;
 
   /** @param fieldWrap
    * @param fieldClip non-null
    * @param value */
-  public SliderPanel(FieldWrap fieldWrap, FieldClip fieldClip, Object value, boolean showRange) {
+  public SliderPanel(FieldWrap fieldWrap, FieldClip fieldClip, Object value, boolean showValue, boolean showRange) {
     super(fieldWrap);
     this.showRange = showRange;
     clip = FieldClips.of(fieldClip); // si-units
@@ -51,11 +53,13 @@ import ch.alpine.tensor.sca.Clip;
       resolution = RESOLUTION;
     if (Objects.isNull(value)) {
       scalarUnaryOperator = i -> i;
-      index = 0; //
+      index = 0;
+      jLabel = null;
     } else {
       Scalar scalar = (Scalar) value;
       scalarUnaryOperator = UnitConvert.SI().to(QuantityUnit.of(scalar));
       index = indexOf(scalar);
+      jLabel = showValue ? new JLabel(PrettyUnit.of((Scalar) value), JLabel.CENTER) : null;
     }
     jSlider = new JSlider(0, resolution, index);
     {
@@ -68,8 +72,12 @@ import ch.alpine.tensor.sca.Clip;
       @Override
       public void stateChanged(ChangeEvent changeEvent) {
         int value = jSlider.getValue();
-        if (index != value) // prevent notifications if slider value hasn't changed
-          notifyListeners(interp(index = value).toString());
+        if (index != value) { // prevent notifications if slider value hasn't changed
+          Scalar scalar = interp(index = value);
+          if (Objects.nonNull(jLabel))
+            jLabel.setText(PrettyUnit.of(scalar));
+          notifyListeners(scalar.toString());
+        }
       }
 
       private Scalar interp(int count) {
@@ -89,6 +97,8 @@ import ch.alpine.tensor.sca.Clip;
     JComponent jComponent = jSlider;
     if (showRange)
       jComponent = addRangeLabels(jComponent);
+    if (Objects.nonNull(jLabel))
+      jComponent = addValueLabel(jComponent);
     return jComponent;
   }
 
@@ -97,6 +107,13 @@ import ch.alpine.tensor.sca.Clip;
     jPanel.add(new JLabel(PrettyUnit.of(clip.min())), BorderLayout.WEST);
     jPanel.add(jComponent, BorderLayout.CENTER);
     jPanel.add(new JLabel(PrettyUnit.of(clip.max())), BorderLayout.EAST);
+    return jPanel;
+  }
+
+  private JPanel addValueLabel(JComponent jComponent) {
+    JPanel jPanel = new JPanel(new GridLayout(2, 1));
+    jPanel.add(jLabel);
+    jPanel.add(jComponent);
     return jPanel;
   }
 
