@@ -1,13 +1,17 @@
 // code by jph, gjoel
 package ch.alpine.java.ref;
 
+import java.awt.BorderLayout;
 import java.util.Objects;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ch.alpine.java.lang.PrettyUnit;
 import ch.alpine.java.ref.ann.FieldClip;
 import ch.alpine.java.ref.ann.FieldClips;
 import ch.alpine.java.ref.ann.FieldInteger;
@@ -25,31 +29,19 @@ import ch.alpine.tensor.sca.Clip;
   private static final int RESOLUTION = 1000;
   private static final int TICKS_MAX = 20;
   // ---
+  private final boolean showRange;
   private final Clip clip;
   private final int resolution;
   private final ScalarUnaryOperator scalarUnaryOperator;
   private final JSlider jSlider;
-  private final ChangeListener changeListener = new ChangeListener() {
-    @Override
-    public void stateChanged(ChangeEvent changeEvent) {
-      int value = jSlider.getValue();
-      if (index != value) // prevent notifications if slider value hasn't changed
-        notifyListeners(interp(index = value).toString());
-    }
-
-    private Scalar interp(int count) {
-      return scalarUnaryOperator.apply( //
-          clip.min().multiply(RationalScalar.of(resolution - count, resolution)) //
-              .add(clip.max().multiply(RationalScalar.of(count, resolution))));
-    }
-  };
   private int index;
 
   /** @param fieldWrap
    * @param fieldClip non-null
    * @param value */
-  public SliderPanel(FieldWrap fieldWrap, FieldClip fieldClip, Object value) {
+  public SliderPanel(FieldWrap fieldWrap, FieldClip fieldClip, Object value, boolean showRange) {
     super(fieldWrap);
+    this.showRange = showRange;
     clip = FieldClips.of(fieldClip); // si-units
     if (Objects.nonNull(fieldWrap.getField().getAnnotation(FieldInteger.class))) {
       int max = Scalars.intValueExact(clip.max());
@@ -72,7 +64,20 @@ import ch.alpine.tensor.sca.Clip;
     jSlider.setOpaque(false);
     jSlider.setPaintTicks(resolution <= TICKS_MAX);
     jSlider.setMinorTickSpacing(1);
-    jSlider.addChangeListener(changeListener);
+    jSlider.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent changeEvent) {
+        int value = jSlider.getValue();
+        if (index != value) // prevent notifications if slider value hasn't changed
+          notifyListeners(interp(index = value).toString());
+      }
+
+      private Scalar interp(int count) {
+        return scalarUnaryOperator.apply( //
+            clip.min().multiply(RationalScalar.of(resolution - count, resolution)) //
+                .add(clip.max().multiply(RationalScalar.of(count, resolution))));
+      }
+    });
   }
 
   private int indexOf(Scalar scalar) {
@@ -81,13 +86,24 @@ import ch.alpine.tensor.sca.Clip;
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
-    return jSlider;
+    JComponent jComponent = jSlider;
+    if (showRange)
+      jComponent = addRangeLabels(jComponent);
+    return jComponent;
+  }
+
+  private JPanel addRangeLabels(JComponent jComponent) {
+    JPanel jPanel = new JPanel(new BorderLayout());
+    jPanel.add(new JLabel(PrettyUnit.of(clip.min())), BorderLayout.WEST);
+    jPanel.add(jComponent, BorderLayout.CENTER);
+    jPanel.add(new JLabel(PrettyUnit.of(clip.max())), BorderLayout.EAST);
+    return jPanel;
   }
 
   @Override // from FieldPanel
   public void updateJComponent(Object value) {
     index = indexOf((Scalar) value);
-    /** Quote from JSlider:
+    /* Quote from JSlider:
      * "If the new value is different from the previous value, all change listeners are notified."
      * In case the value is not different from the previous value the function returns immediately
      * and no change listeners are notified. */
