@@ -11,7 +11,6 @@ import org.jfree.data.xy.TableXYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import ch.alpine.tensor.NumberQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
@@ -37,10 +36,14 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
           : labelString, //
           visualRow.getAutoSort());
       for (Tensor point : visualRow.points()) {
-        Scalar valueX = toRealsX.apply(point.Get(0));
-        Scalar valueY = toRealsY.apply(point.Get(1));
-        Number numberY = NumberQ.of(valueY) ? valueY.number() : Double.NaN;
-        xySeries.add(valueX.number(), numberY);
+        Number numberX = toRealsX.apply(point.Get(0)).number();
+        Number numberY = toRealsY.apply(point.Get(1)).number();
+        xySeries.add( //
+            numberX, //
+            // infinity throws an IllegalArgumentException
+            Double.isFinite(numberY.doubleValue()) //
+                ? numberY
+                : Double.NaN);
       }
       xySeriesCollection.addSeries(xySeries);
     }

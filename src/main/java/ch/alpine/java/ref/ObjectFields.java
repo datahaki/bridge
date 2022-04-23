@@ -66,7 +66,7 @@ public class ObjectFields {
             if (Objects.nonNull(fieldWrap))
               objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
           }
-        } else {
+        } else
           if (IS_NODE.test(field))
             if (class_field.isArray())
               iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
@@ -79,7 +79,6 @@ public class ObjectFields {
                 objectFieldVisitor.pop();
               }
             }
-        }
       }
   }
 

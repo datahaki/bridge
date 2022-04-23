@@ -38,7 +38,6 @@ import ch.alpine.tensor.qty.Quantity;
     visualSet.add(domain3.map(suoX), values3.map(suoY));
     Tensor domain4 = Tensors.vector(1, 3, 2, 5, 4).multiply(RealScalar.of(0.2));
     visualSet.add(domain4.map(suoX), domain4.map(suoY));
-    /* amodeus specific */
     // ChartFactory.setChartTheme(ChartTheme.STANDARD);
     {
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);

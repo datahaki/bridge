@@ -11,7 +11,7 @@ import ch.alpine.java.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
-import ch.alpine.tensor.io.StringScalarQ;
+import ch.alpine.tensor.io.StringScalar;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 
@@ -37,7 +37,7 @@ public class ScalarFieldWrap extends TensorFieldWrap {
   @Override // from FieldWrap
   public boolean isValidValue(Object value) {
     Scalar scalar = (Scalar) value;
-    if (StringScalarQ.of(scalar))
+    if (scalar instanceof StringScalar)
       return false;
     // ---
     if (Objects.nonNull(fieldIntegerQ) && !IntegerQ.of(scalar))
