@@ -7,8 +7,8 @@ import java.awt.Stroke;
 import java.io.Serializable;
 import java.util.Objects;
 
-import ch.alpine.tensor.ScalarQ;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.chq.ScalarQ;
 
 public class VisualRow implements Serializable {
   private static final Stroke STROKE_DEFAULT = new BasicStroke(1f);

@@ -2,7 +2,7 @@
 package ch.alpine.java.ref;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ public class ParamContainerTest {
   @Test
   public void testSimple() {
     ParamContainer paramContainer = ParamContainer.INSTANCE;
-    assertTrue(paramContainer.maxTor instanceof Quantity);
+    assertInstanceOf(Quantity.class, paramContainer.maxTor);
     assertEquals(paramContainer.shape.length(), 4);
   }
   // public void testFile() {
