@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.qty.Quantity;
 
-public class StaticHelperTest {
+class StaticHelperTest {
   @Test
   public void testSimpleS1() {
     long nanos = StaticHelper.nanos(Quantity.of(3, "s"));

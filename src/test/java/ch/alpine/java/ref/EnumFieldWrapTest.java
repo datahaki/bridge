@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.mat.re.Pivots;
 
-public class EnumFieldWrapTest {
+class EnumFieldWrapTest {
   @Test
   public void testEnum() {
     GuiExtension guiExtension = new GuiExtension();

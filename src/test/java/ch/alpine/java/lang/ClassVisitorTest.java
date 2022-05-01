@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.wdog.Watchdog;
 
-public class ClassVisitorTest {
+class ClassVisitorTest {
   @Test
   public void testSimple() {
     Set<Class<?>> set = new HashSet<>();

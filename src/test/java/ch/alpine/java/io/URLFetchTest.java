@@ -19,7 +19,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.ext.HomeDirectory;
 
-public class URLFetchTest {
+class URLFetchTest {
   @Test
   public void testSimple(@TempDir File tempDir) throws MalformedURLException, IOException {
     if (TestHelper.IS_ONLINE) {

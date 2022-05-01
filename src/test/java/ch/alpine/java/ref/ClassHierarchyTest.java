@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-public class ClassHierarchyTest {
+class ClassHierarchyTest {
   @Test
   public void testOrder() {
     Deque<Class<?>> deque = ClassHierarchy.of(ArrayList.class);

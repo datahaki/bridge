@@ -14,7 +14,7 @@ import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.tri.Cos;
 
-public class SpectrogramTest {
+class SpectrogramTest {
   @Test
   public void testSimple() {
     TestHelper.draw(SpectrogramDemo.create(0.4, 1.7));

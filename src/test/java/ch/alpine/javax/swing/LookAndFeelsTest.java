@@ -9,7 +9,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.junit.jupiter.api.Test;
 
-public class LookAndFeelsTest {
+class LookAndFeelsTest {
   @Test
   public void testSimple() {
     for (LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels())

@@ -14,7 +14,7 @@ import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.mat.re.Pivot;
 import ch.alpine.tensor.mat.re.Pivots;
 
-public class EnumsTest {
+class EnumsTest {
   @Test
   public void testSimple() {
     Set<ColorDataGradients> set = Enums.setFromMask(ColorDataGradients.class, 2 | 8);

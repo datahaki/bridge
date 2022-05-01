@@ -11,7 +11,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 
-public class PrettyUnitTest {
+class PrettyUnitTest {
   @Test
   public void testOne() {
     String string = PrettyUnit.of(Unit.ONE);

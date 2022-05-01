@@ -26,7 +26,7 @@ import ch.alpine.tensor.alg.Reverse;
 import ch.alpine.tensor.ext.Serialization;
 import ch.alpine.tensor.num.RandomPermutation;
 
-public class BoundedPriorityQueueTest {
+class BoundedPriorityQueueTest {
   @Test
   public void testMin() throws ClassNotFoundException, IOException {
     @SuppressWarnings("unchecked")

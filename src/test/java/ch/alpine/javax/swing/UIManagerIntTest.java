@@ -3,7 +3,7 @@ package ch.alpine.javax.swing;
 
 import org.junit.jupiter.api.Test;
 
-public class UIManagerIntTest {
+class UIManagerIntTest {
   @Test
   public void testSimple() {
     for (UIManagerInt uiManagerInt : UIManagerInt.values()) {

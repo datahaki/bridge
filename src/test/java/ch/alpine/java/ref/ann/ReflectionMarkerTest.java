@@ -13,7 +13,7 @@ import ch.alpine.java.ref.util.ClassFieldCheck;
 import ch.alpine.java.ref.util.FieldValueContainer;
 import ch.alpine.tensor.ext.Timing;
 
-public class ReflectionMarkerTest {
+class ReflectionMarkerTest {
   @Test
   public void testReflection() {
     Timing timing = Timing.started();

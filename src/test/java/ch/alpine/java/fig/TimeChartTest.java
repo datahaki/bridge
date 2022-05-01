@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import ch.alpine.tensor.ext.DeleteDirectory;
 import ch.alpine.tensor.ext.HomeDirectory;
 
-public class TimeChartTest {
+class TimeChartTest {
   @Test
   public void testAll() throws IOException {
     File folder = HomeDirectory.Pictures(getClass().getSimpleName());

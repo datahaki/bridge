@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.ext.HomeDirectory;
 
-public class FileBlockTest {
+class FileBlockTest {
   @Test
   public void testSimple() {
     assertFalse(FileBlock.of(HomeDirectory.file(), getClass(), false));

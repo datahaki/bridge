@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.qty.Quantity;
 
-public class HardWatchdogTest {
+class HardWatchdogTest {
   @Test
   public void testSimple() throws Exception {
     Watchdog watchdog = HardWatchdog.notified(Quantity.of(0.05, "s"));

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.ref.util.PanelFieldsEditor;
 
-public class PanelFieldsEditorTest {
+class PanelFieldsEditorTest {
   @Test
   public void testSimple() {
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(new GuiExtension());

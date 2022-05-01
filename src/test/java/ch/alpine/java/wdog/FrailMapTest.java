@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.qty.Quantity;
 
-public class FrailMapTest {
+class FrailMapTest {
   @Test
   public void testSimple() throws InterruptedException {
     FrailMap<Integer, String> frailMap = new FrailMap<>();

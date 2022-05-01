@@ -13,7 +13,7 @@ import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.qty.Quantity;
 
-public class ListPlotTest {
+class ListPlotTest {
   @Test
   public void testEmpty() {
     VisualSet visualSet = new VisualSet();

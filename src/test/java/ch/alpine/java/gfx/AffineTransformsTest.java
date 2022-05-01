@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.mat.IdentityMatrix;
 
-public class AffineTransformsTest {
+class AffineTransformsTest {
   @Test
   public void testSimple() {
     AffineTransform affineTransform = AffineTransforms.of(Array.zeros(3, 3));

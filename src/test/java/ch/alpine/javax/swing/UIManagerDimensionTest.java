@@ -3,7 +3,7 @@ package ch.alpine.javax.swing;
 
 import org.junit.jupiter.api.Test;
 
-public class UIManagerDimensionTest {
+class UIManagerDimensionTest {
   @Test
   public void testSimple() {
     for (UIManagerDimension uiManagerDimension : UIManagerDimension.values()) {

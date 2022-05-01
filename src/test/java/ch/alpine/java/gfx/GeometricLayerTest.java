@@ -18,7 +18,7 @@ import ch.alpine.tensor.lie.r2.CirclePoints;
 import ch.alpine.tensor.mat.IdentityMatrix;
 import ch.alpine.tensor.sca.Chop;
 
-public class GeometricLayerTest {
+class GeometricLayerTest {
   @Test
   public void testPush() {
     Tensor a = GfxMatrix.translation(Tensors.vector(10, 10));

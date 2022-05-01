@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-public class ObjectFieldsTest {
+class ObjectFieldsTest {
   @Test
   public void testFields() {
     List<Field> list = ObjectFields.list(SimpleParam.class);

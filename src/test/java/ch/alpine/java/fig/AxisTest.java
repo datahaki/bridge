@@ -12,7 +12,7 @@ import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
-public class AxisTest {
+class AxisTest {
   @Test
   public void testSimple() {
     assertEquals(new Axis().getUnitString(), "");

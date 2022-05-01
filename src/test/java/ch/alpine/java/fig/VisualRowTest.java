@@ -15,7 +15,7 @@ import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 
-public class VisualRowTest {
+class VisualRowTest {
   @Test
   public void testConstructors() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");

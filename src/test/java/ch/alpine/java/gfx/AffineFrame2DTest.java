@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 
-public class AffineFrame2DTest {
+class AffineFrame2DTest {
   @Test
   public void testSimple() {
     Tensor m1 = GfxMatrix.of(Tensors.vector(1, 2, 3));

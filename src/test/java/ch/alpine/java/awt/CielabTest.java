@@ -14,7 +14,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.sca.Clips;
 
-public class CielabTest {
+class CielabTest {
   @Test
   public void testSimple() {
     Tensor xyz = Tensors.vector(0.3, 0.4, 0.5);

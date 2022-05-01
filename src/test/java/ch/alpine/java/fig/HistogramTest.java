@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.Tensors;
 
-public class HistogramTest {
+class HistogramTest {
   @Test
   public void testEmpty() {
     VisualSet visualSet = new VisualSet();

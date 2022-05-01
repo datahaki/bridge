@@ -18,7 +18,7 @@ import ch.alpine.tensor.ext.DeleteDirectory;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 
-public class ZipDirectoryTest {
+class ZipDirectoryTest {
   @Test
   public void testSimple(@TempDir File tempDir) throws FileNotFoundException, IOException {
     File folder = new File(tempDir, "folder");

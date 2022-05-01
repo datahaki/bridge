@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 
-public class DisjointSetsTest {
+class DisjointSetsTest {
   @Test
   public void testAllocate() {
     DisjointSets.allocate(123);

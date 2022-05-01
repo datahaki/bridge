@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.Tensors;
 
-public class StackedTablePlotTest {
+class StackedTablePlotTest {
   @Test
   public void testEmpty() {
     VisualSet visualSet = new VisualSet();

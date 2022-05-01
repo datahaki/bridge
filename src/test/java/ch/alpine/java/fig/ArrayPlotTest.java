@@ -17,7 +17,7 @@ import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 
-public class ArrayPlotTest {
+class ArrayPlotTest {
   @Test
   public void testSimple() {
     TestHelper.draw(ArrayPlotDemo.create());

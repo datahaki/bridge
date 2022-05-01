@@ -14,7 +14,7 @@ import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.io.ResourceData;
 import ch.alpine.tensor.sca.Clips;
 
-public class VisualImageTest {
+class VisualImageTest {
   @Test
   public void testSimple() {
     VisualImage visualImage = new VisualImage(ImageFormat.of(Array.zeros(10, 20, 4)), Clips.unit(), Clips.unit());

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.qty.Quantity;
 
-public class FrailValueTest {
+class FrailValueTest {
   @Test
   public void testSimple() throws InterruptedException {
     FrailValue<Integer> frailValue = new FrailValue<>(Quantity.of(0.04, "s"));

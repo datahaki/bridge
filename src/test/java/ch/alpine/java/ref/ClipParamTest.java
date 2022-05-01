@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.Clips;
 
-public class ClipParamTest {
+class ClipParamTest {
   @Test
   public void testSimple() {
     ClipParam clipParam = new ClipParam();

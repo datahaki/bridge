@@ -6,17 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.ref.util.PanelFieldsEditor;
-import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.qty.Quantity;
 
 @ReflectionMarker
-public class FieldClipTest {
-  @FieldClip(min = "0[A]", max = "3[W]")
-  public Scalar current = Quantity.of(4, "A");
-
+class FieldClipTest {
   @Test
   public void testFailEx() {
-    FieldClipTest fieldClipCorrupt = new FieldClipTest();
+    FieldClipT fieldClipCorrupt = new FieldClipT();
     assertThrows(Exception.class, () -> new PanelFieldsEditor(fieldClipCorrupt));
   }
 }

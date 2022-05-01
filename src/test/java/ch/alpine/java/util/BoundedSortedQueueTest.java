@@ -16,7 +16,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.ext.Serialization;
 
-public class BoundedSortedQueueTest {
+class BoundedSortedQueueTest {
   @Test
   public void testSimpleMin() throws ClassNotFoundException, IOException {
     BoundedSortedQueue<Double, String> boundedSortedQueue = Serialization.copy(BoundedSortedQueue.min(3));

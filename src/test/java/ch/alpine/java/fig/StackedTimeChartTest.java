@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.Tensors;
 
-public class StackedTimeChartTest {
+class StackedTimeChartTest {
   @Test
   public void testEmpty() {
     VisualSet visualSet = new VisualSet();

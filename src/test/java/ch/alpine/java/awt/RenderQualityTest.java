@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 import org.junit.jupiter.api.Test;
 
-public class RenderQualityTest {
+class RenderQualityTest {
   @Test
   public void testSimple() {
     BufferedImage bufferedImage = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);

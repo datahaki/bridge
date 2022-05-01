@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.mat.re.Pivots;
 
-public class SpinnerMenuTest {
+class SpinnerMenuTest {
   @Test
   public void testSimple() {
     SpinnerLabel<Pivots> spinnerLabel = SpinnerLabel.of(Pivots.values());

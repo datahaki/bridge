@@ -7,7 +7,7 @@ import java.awt.Color;
 
 import org.junit.jupiter.api.Test;
 
-public class StaticHelperTest {
+class StaticHelperTest {
   @Test
   public void testSimple() {
     assertEquals(StaticHelper.alpha064(Color.WHITE).getAlpha(), 64);

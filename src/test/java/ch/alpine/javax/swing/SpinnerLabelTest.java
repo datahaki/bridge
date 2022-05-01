@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 
 import org.junit.jupiter.api.Test;
 
-public class SpinnerLabelTest {
+class SpinnerLabelTest {
   @Test
   public void testSimple() {
     assertTrue(new JLabel("asd").getPreferredSize().getWidth() //

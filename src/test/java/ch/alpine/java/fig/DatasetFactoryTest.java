@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.Tensors;
 
-public class DatasetFactoryTest {
+class DatasetFactoryTest {
   @Test
   public void testSimple() {
     VisualSet visualSet = new VisualSet();

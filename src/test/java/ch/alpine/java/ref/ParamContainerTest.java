@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.qty.Quantity;
 
-public class ParamContainerTest {
+class ParamContainerTest {
   @Test
   public void testSimple() {
     ParamContainer paramContainer = ParamContainer.INSTANCE;

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-public class ClassPathsTest {
+class ClassPathsTest {
   @Test
   public void testSimple() {
     String expected = String.join(System.getProperty("path.separator"), "b", "asd");

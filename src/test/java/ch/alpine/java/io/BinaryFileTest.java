@@ -16,7 +16,7 @@ import ch.alpine.tensor.io.Primitives;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 
-public class BinaryFileTest {
+class BinaryFileTest {
   @Test
   public void testSimple(@TempDir File tempDir) throws FileNotFoundException, IOException {
     File file = new File(tempDir, "file");

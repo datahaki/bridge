@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
-public class FieldLabelArrayTest {
+class FieldLabelArrayTest {
   @FieldLabelArray("asd")
   public Integer integer = 3;
 

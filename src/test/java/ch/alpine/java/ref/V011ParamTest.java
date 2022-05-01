@@ -5,7 +5,7 @@ import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 
-public class V011ParamTest {
+class V011ParamTest {
   @Test
   public void testSimple() {
     V011Param v011Param = new V011Param(3);

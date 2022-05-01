@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.ref.util.PanelFieldsEditor;
 
-public class GuiExtensionTest {
+class GuiExtensionTest {
   @Test
   public void testSimple() {
     GuiExtension guiExtension = new GuiExtension();

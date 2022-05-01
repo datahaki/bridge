@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class ComparableLabelTest {
+class ComparableLabelTest {
   @Test
   public void testSimple() {
     ComparableLabel comparableLabel1 = new ComparableLabel(3);

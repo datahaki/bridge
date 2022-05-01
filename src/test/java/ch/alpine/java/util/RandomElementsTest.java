@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-public class RandomElementsTest {
+class RandomElementsTest {
   @Test
   public void testEmpty() {
     List<Integer> elements = RandomElements.of(Arrays.asList(), 3);

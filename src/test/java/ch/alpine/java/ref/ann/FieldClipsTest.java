@@ -16,7 +16,7 @@ import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 
-public class FieldClipsTest {
+class FieldClipsTest {
   @Test
   public void testSimple() throws Exception {
     Field field = AnnotatedContainer.class.getField("clipped");

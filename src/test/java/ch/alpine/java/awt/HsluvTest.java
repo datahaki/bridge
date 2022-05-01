@@ -8,7 +8,7 @@ import java.awt.Color;
 
 import org.junit.jupiter.api.Test;
 
-public class HsluvTest {
+class HsluvTest {
   @Test
   public void testNegative() {
     Color color1 = Hsluv.of(-0.1, 1, 1, 1);

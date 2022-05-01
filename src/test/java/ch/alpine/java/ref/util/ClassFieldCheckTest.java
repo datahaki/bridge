@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.java.lang.ClassDiscovery;
 import ch.alpine.java.lang.ClassPaths;
-import ch.alpine.java.ref.ann.FieldClipTest;
+import ch.alpine.java.ref.ann.FieldClipT;
 
-public class ClassFieldCheckTest {
+class ClassFieldCheckTest {
   @Test
   public void testSimple() {
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
     assertTrue(6 < classFieldCheck.getInspected().size());
-    assertTrue(classFieldCheck.getFailures().contains(FieldClipTest.class));
+    assertTrue(classFieldCheck.getFailures().contains(FieldClipT.class));
     List<FieldValueContainer> list = classFieldCheck.invalidFields();
     assertFalse(list.isEmpty());
     List<String> fields = list.stream().map(FieldValueContainer::getField).map(Field::toString).collect(Collectors.toList());

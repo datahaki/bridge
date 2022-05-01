@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-public class TargetSumTest {
+class TargetSumTest {
   @Test
   public void testSimple() {
     int nums1[] = { 2, 5, 10, 4 }; // true

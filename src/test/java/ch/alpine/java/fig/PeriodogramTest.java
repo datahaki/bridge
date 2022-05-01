@@ -3,7 +3,7 @@ package ch.alpine.java.fig;
 
 import org.junit.jupiter.api.Test;
 
-public class PeriodogramTest {
+class PeriodogramTest {
   @Test
   public void testSimple() {
     PeriodogramDemo.create();

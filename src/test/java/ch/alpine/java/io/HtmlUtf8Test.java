@@ -9,7 +9,7 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class HtmlUtf8Test {
+class HtmlUtf8Test {
   @Test
   public void testSimple(@TempDir File tempDir) {
     File file = new File(tempDir, "file.html");

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.qty.Quantity;
 
-public class SoftWatchdogTest {
+class SoftWatchdogTest {
   @Test
   public void testPacified() throws InterruptedException {
     Watchdog watchdog = SoftWatchdog.notified(Quantity.of(100, "ms")); // 100[ms]

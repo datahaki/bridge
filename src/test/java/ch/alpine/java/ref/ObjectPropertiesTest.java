@@ -15,7 +15,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.RationalScalar;
 
-public class ObjectPropertiesTest {
+class ObjectPropertiesTest {
   @Test
   public void testSimple() {
     SimpleParam simpleParam = new SimpleParam();

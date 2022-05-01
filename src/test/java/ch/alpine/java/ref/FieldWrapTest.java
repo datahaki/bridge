@@ -16,7 +16,7 @@ import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
 
-public class FieldWrapTest {
+class FieldWrapTest {
   @Test
   public void testSimple() throws NoSuchFieldException, SecurityException {
     Field field = ParamContainerEnum.class.getField("pivots");

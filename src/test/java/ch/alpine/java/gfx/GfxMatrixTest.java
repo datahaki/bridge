@@ -14,7 +14,7 @@ import ch.alpine.tensor.mat.IdentityMatrix;
 import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.mat.re.Det;
 
-public class GfxMatrixTest {
+class GfxMatrixTest {
   @Test
   public void testSimple() {
     Tensor eye = Dot.of(GfxMatrix.flipY(100), GfxMatrix.flipY(100));

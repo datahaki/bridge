@@ -3,7 +3,7 @@ package ch.alpine.java.awt;
 
 import org.junit.jupiter.api.Test;
 
-public class ScreenRectangleTest {
+class ScreenRectangleTest {
   @Test
   public void testSimple() {
     new ScreenRectangle().getScreenRectangle();
