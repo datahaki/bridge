@@ -18,19 +18,14 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-      - name: set up env
-        run: sudo apt-get install xvfb
       - name: mvn install tensor
         working-directory: .
         run: |
           cd ..
           git clone https://github.com/datahaki/tensor.git
           cd tensor
-          pwd
           git checkout v106
           mvn clean install -DskipTests=true
       - name: mvn test
         working-directory: .
-        run: |
-          pwd
-          xvfb-run --auto-servernum mvn test -B
+        run: xvfb-run --auto-servernum mvn test -B
