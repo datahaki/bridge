@@ -2,12 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ch.alpine</groupId>
-	<artifactId>java</artifactId>
+	<artifactId>bridge</artifactId>
 	<version>0.3.2</version>
 	<packaging>jar</packaging>
 
 	<name>java</name>
-	<url>https://github.com/datahaki/java</url>
+	<url>https://github.com/datahaki/bridge</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -127,7 +127,7 @@
 					<includes>
 						<include>**/*</include>
 					</includes>
-					<repositoryName>java</repositoryName>
+					<repositoryName>bridge</repositoryName>
 					<repositoryOwner>datahaki</repositoryOwner>
 				</configuration>
 				<executions>

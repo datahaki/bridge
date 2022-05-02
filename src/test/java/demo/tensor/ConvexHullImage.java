@@ -9,9 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-import ch.alpine.java.awt.RenderQuality;
-import ch.alpine.java.gfx.GeometricLayer;
-import ch.alpine.java.gfx.GfxMatrix;
+import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.bridge.gfx.GeometricLayer;
+import ch.alpine.bridge.gfx.GfxMatrix;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.io.Export;
