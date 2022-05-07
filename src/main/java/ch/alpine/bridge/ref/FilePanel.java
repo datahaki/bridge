@@ -23,7 +23,7 @@ import javax.swing.JPanel;
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         JFileChooser jFileChooser = new JFileChooser();
-        File file = new File(jTextField.getText());
+        File file = new File(getJTextField().getText());
         jFileChooser.setApproveButtonText("Done");
         jFileChooser.setApproveButtonToolTipText("Select file");
         jFileChooser.setDialogTitle("File selection");
@@ -33,13 +33,13 @@ import javax.swing.JPanel;
         if (openDialog == JFileChooser.APPROVE_OPTION) {
           File selectedFile = jFileChooser.getSelectedFile();
           String string = fieldWrap.toString(selectedFile);
-          jTextField.setText(string);
+          getJTextField().setText(string);
           indicateGui();
           nofifyIfValid(string);
         }
       }
     });
-    jPanel.add(BorderLayout.CENTER, jTextField);
+    jPanel.add(BorderLayout.CENTER, getJTextField());
     jPanel.add(BorderLayout.EAST, jButton);
   }
 

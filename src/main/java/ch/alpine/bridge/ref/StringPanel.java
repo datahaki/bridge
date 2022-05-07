@@ -9,7 +9,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
 
-import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -17,14 +16,15 @@ import javax.swing.undo.UndoManager;
 
 import ch.alpine.bridge.swing.UIManagerColor;
 
-/* package */ class StringPanel extends FieldPanel {
+/* package */ abstract class StringPanel extends FieldPanel {
   private static final Color COLOR_FAIL_BGND = new Color(255, 192, 192);
   private static final Color COLOR_FAIL_TEXT = new Color(51, 51, 51);
+  // private static final int CARET_WIDTH = 2;
   private static final int MASK = InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK;
   private static final int UNDO = InputEvent.CTRL_DOWN_MASK;
   private static final int REDO = MASK;
   // ---
-  protected final JTextField jTextField;
+  private final JTextField jTextField;
   private String fallbackValue = null;
 
   public StringPanel(FieldWrap fieldWrap, Object value) {
@@ -110,8 +110,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
     addListener(string -> fallbackValue = string);
   }
 
-  @Override
-  public JComponent getJComponent() {
+  protected final JTextField getJTextField() {
     return jTextField;
   }
 

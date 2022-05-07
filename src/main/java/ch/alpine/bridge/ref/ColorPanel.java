@@ -38,7 +38,7 @@ import ch.alpine.tensor.img.ColorFormat;
           JColorChooser jColorChooser = new JColorChooser(fallback);
           jColorChooser.getSelectionModel().addChangeListener(changeEvent -> {
             updateJComponent(jColorChooser.getColor());
-            notifyListeners(jTextField.getText());
+            notifyListeners(getJTextField().getText());
           });
           jDialog = JColorChooser.createDialog( //
               jButton, "color selection: " + fieldWrap.getField().getName(), //
@@ -47,7 +47,7 @@ import ch.alpine.tensor.img.ColorFormat;
               i -> { // cancel listener
                 jDialog.dispose();
                 updateJComponent(fallback);
-                notifyListeners(jTextField.getText());
+                notifyListeners(getJTextField().getText());
               });
           jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
           jDialog.addWindowListener(new WindowAdapter() {
@@ -60,14 +60,14 @@ import ch.alpine.tensor.img.ColorFormat;
         }
       }
     });
-    jTextField.setEditable(false);
-    jPanel.add(BorderLayout.CENTER, jTextField);
+    getJTextField().setEditable(false);
+    jPanel.add(BorderLayout.CENTER, getJTextField());
     jPanel.add(BorderLayout.EAST, jButton);
   }
 
   private Color getColor() {
     try {
-      return ColorFormat.toColor(Tensors.fromString(jTextField.getText()));
+      return ColorFormat.toColor(Tensors.fromString(getJTextField().getText()));
     } catch (Exception exception) {
       // ---
     }

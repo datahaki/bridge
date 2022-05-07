@@ -26,7 +26,6 @@ import ch.alpine.bridge.swing.StandardMenu;
    * @param supplier invoked when menu button "?" is pressed */
   public MenuPanel(FieldWrap fieldWrap, Object object, Supplier<List<String>> supplier) {
     super(fieldWrap, object);
-    // SpinnerLabel.updatePreferredSize(jTextField, Arrays.asList(strings));
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
@@ -35,13 +34,13 @@ import ch.alpine.bridge.swing.StandardMenu;
           protected void design(JPopupMenu jPopupMenu) {
             for (String string : supplier.get()) {
               JMenuItem jMenuItem = new JMenuItem(string);
-              jMenuItem.setFont(jTextField.getFont());
+              jMenuItem.setFont(getJTextField().getFont());
               {
                 // TODO try background color in menu in each l&f
                 FieldsEditorManager.establish(FieldsEditorKey.INT_STRING_PANEL_HEIGHT, jMenuItem);
               }
               jMenuItem.addActionListener(event -> {
-                jTextField.setText(string);
+                getJTextField().setText(string);
                 indicateGui();
                 nofifyIfValid(string);
               });
@@ -52,7 +51,7 @@ import ch.alpine.bridge.swing.StandardMenu;
         standardMenu.south(jButton);
       }
     });
-    jPanel.add(BorderLayout.CENTER, jTextField);
+    jPanel.add(BorderLayout.CENTER, getJTextField());
     jPanel.add(BorderLayout.EAST, jButton);
   }
 

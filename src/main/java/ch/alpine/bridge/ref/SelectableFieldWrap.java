@@ -49,6 +49,6 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
         exception.printStackTrace();
       }
     }
-    return new StringPanel(this, value);
+    return new PlainStringPanel(this, value);
   }
 }
