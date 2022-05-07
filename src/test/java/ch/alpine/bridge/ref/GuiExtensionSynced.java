@@ -29,7 +29,7 @@ public enum GuiExtensionSynced {
       ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(fieldsEditor, guiExtension);
       JPanel jGrid = new JPanel(new GridLayout(2, 1));
       jGrid.add(fieldsEditor.createJScrollPane());
-      jGrid.add(objectPropertiesArea.getJComponent());
+      jGrid.add(objectPropertiesArea.createJComponent());
       JPanel jPanel = new JPanel(new BorderLayout());
       jPanel.add(BorderLayout.CENTER, jGrid);
       {
@@ -38,14 +38,14 @@ public enum GuiExtensionSynced {
           JButton jButton = new JButton("reset fuse");
           jButton.addActionListener(event -> {
             guiExtension.fuse = false;
-            objectPropertiesArea.run();
+            objectPropertiesArea.update();
           });
           buttonPanel.add(jButton);
         }
         {
           JButton jButton = new JButton("sync");
           jButton.addActionListener(event -> fieldsEditor.updateJComponents());
-          jButton.addActionListener(event -> objectPropertiesArea.run());
+          jButton.addActionListener(event -> objectPropertiesArea.update());
           buttonPanel.add(jButton);
         }
         jPanel.add(BorderLayout.SOUTH, buttonPanel);

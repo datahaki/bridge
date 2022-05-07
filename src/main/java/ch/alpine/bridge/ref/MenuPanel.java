@@ -18,6 +18,7 @@ import ch.alpine.bridge.swing.StandardMenu;
 /* package */ class MenuPanel extends StringPanel {
   private static final String BUTTON_TEXT = "?";
   // ---
+  private final JPanel jPanel = new JPanel(new BorderLayout());
   private final JButton jButton = new JButton(BUTTON_TEXT);
 
   /** @param fieldWrap
@@ -51,13 +52,12 @@ import ch.alpine.bridge.swing.StandardMenu;
         standardMenu.south(jButton);
       }
     });
+    jPanel.add(BorderLayout.CENTER, jTextField);
+    jPanel.add(BorderLayout.EAST, jButton);
   }
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
-    JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, jTextField);
-    jPanel.add(BorderLayout.EAST, jButton);
     return jPanel;
   }
 }

@@ -66,7 +66,7 @@ public class StoredExtension {
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
     jGrid.add(panelFieldsEditor.createJScrollPane());
-    jGrid.add(objectPropertiesArea.getJComponent());
+    jGrid.add(objectPropertiesArea.createJComponent());
     jFrame.setContentPane(jGrid);
     jFrame.setBounds(500, 200, 500, 700);
     jFrame.addWindowListener(new WindowAdapter() {

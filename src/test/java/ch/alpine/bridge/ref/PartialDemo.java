@@ -39,13 +39,13 @@ public enum PartialDemo {
     JPanel jPanel = new JPanel(new BorderLayout());
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
     jGrid.add(panelFieldsEditor.createJScrollPane());
-    jGrid.add(objectPropertiesArea.getJComponent());
+    jGrid.add(objectPropertiesArea.createJComponent());
     jPanel.add(BorderLayout.CENTER, jGrid);
     {
       JButton jButton = new JButton("reset fuse");
       jButton.addActionListener(l -> {
         guiExtension.fuse = false;
-        objectPropertiesArea.run();
+        objectPropertiesArea.update();
       });
       jPanel.add(BorderLayout.SOUTH, jButton);
     }

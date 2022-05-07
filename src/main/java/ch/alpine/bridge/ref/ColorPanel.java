@@ -20,6 +20,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
 
 /* package */ class ColorPanel extends StringPanel {
+  private final JPanel jPanel = new JPanel(new BorderLayout());
   private final JButton jButton = new JButton("?");
   /** For each instance of {@link ColorPanel}, a single JColorChooser may be opened
    * by the user. The jDialog field is non-null whenever the dialog is visible. */
@@ -60,6 +61,8 @@ import ch.alpine.tensor.img.ColorFormat;
       }
     });
     jTextField.setEditable(false);
+    jPanel.add(BorderLayout.CENTER, jTextField);
+    jPanel.add(BorderLayout.EAST, jButton);
   }
 
   private Color getColor() {
@@ -73,9 +76,6 @@ import ch.alpine.tensor.img.ColorFormat;
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
-    JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, jTextField);
-    jPanel.add(BorderLayout.EAST, jButton);
     return jPanel;
   }
 

@@ -29,14 +29,14 @@ public abstract class FieldPanel {
     list.forEach(consumer -> consumer.accept(text));
   }
 
-  /** Remark: the function should not be invoked by the application layer
+  /** Remark: The function should not be invoked by the application layer.
+   * Repeated calls to this function return the same instance.
    * 
    * @return component to be shown in the {@link FieldsEditor} */
   public abstract JComponent getJComponent();
 
-  /** The function does not invoke {@link #notifyListeners(String)}
-   * 
-   * Remark: the function should not be invoked by the application layer
+  /** Remark: The function should not be invoked by the application layer.
+   * The function does not invoke {@link #notifyListeners(String)}
    * 
    * @param value is non-null */
   public abstract void updateJComponent(Object value);

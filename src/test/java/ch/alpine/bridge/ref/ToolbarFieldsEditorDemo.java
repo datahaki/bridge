@@ -1,12 +1,13 @@
+// code by jph
 package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.ref.util.FieldsEditor;
@@ -26,17 +27,11 @@ public enum ToolbarFieldsEditorDemo {
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    // TestHelper testHelper = new TestHelper(fieldsEditor, guiExtension);
-    jPanel.add(BorderLayout.NORTH, new JScrollPane(jToolBar, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
-    {
-      JButton jButton = new JButton("reset fuse");
-      jButton.addActionListener(l -> {
-        guiExtension.fuse = false;
-        // testHelper.runnable.run();
-        // fieldsEditor.list().forEach(fp->fp.notifyListeners(""));
-      });
-      jPanel.add(BorderLayout.SOUTH, jButton);
-    }
+    jPanel.add(BorderLayout.NORTH, new JScrollPane(jToolBar, //
+        ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, //
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS));
+    ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(fieldsEditor, guiExtension);
+    jPanel.add(BorderLayout.CENTER, objectPropertiesArea.createJComponent());
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(50, 200, 1500, 300);
     jFrame.setVisible(true);

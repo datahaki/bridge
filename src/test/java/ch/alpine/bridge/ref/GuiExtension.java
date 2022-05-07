@@ -30,6 +30,7 @@ import ch.alpine.tensor.sca.Clips;
 
 @ReflectionMarker
 public class GuiExtension {
+  // the scalar array is not tracked by the FieldEditor
   public Scalar[] scalars = { Pi.VALUE, RealScalar.ONE };
   @FieldSelectionCallback("getStrings")
   public String string = "abc";

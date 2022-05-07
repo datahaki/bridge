@@ -23,7 +23,7 @@ public enum PanelFieldsEditorDemo {
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, simpleParam);
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
     jGrid.add(panelFieldsEditor.createJScrollPane());
-    jGrid.add(objectPropertiesArea.getJComponent());
+    jGrid.add(objectPropertiesArea.createJComponent());
     jFrame.setContentPane(jGrid);
     jFrame.setBounds(100, 100, 500, 900);
     jFrame.setVisible(true);

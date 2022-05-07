@@ -23,7 +23,6 @@ import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
-import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.Clip;
 
 public class ToolbarFieldsEditor extends FieldsEditor {
@@ -40,29 +39,34 @@ public class ToolbarFieldsEditor extends FieldsEditor {
       JComponent jComponent = fieldPanel.getJComponent();
       Field field = fieldWrap.getField();
       // System.out.println("HE");
+      // if (false)
+      // if (field.getType().equals(Scalar.class))
+      System.out.println("---");
+      System.out.println(fieldWrap.getField().getName());
       if (false)
-        if (field.getType().equals(Scalar.class)) {
-          if (jComponent instanceof JTextField) {
-            FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-            FontMetrics fontMetrics = jComponent.getFontMetrics(jComponent.getFont());
-            int max = fontMetrics.stringWidth("XXX");
-            if (Objects.nonNull(fieldClip)) {
-              Clip clip = FieldClips.of(fieldClip);
-              max = Math.max(max, Math.max( //
-                  fontMetrics.stringWidth(clip.min().toString()), //
-                  fontMetrics.stringWidth(clip.max().toString())));
-            }
-            Border border = jComponent.getBorder();
-            Insets insets = Objects.nonNull(border) //
-                ? border.getBorderInsets(jComponent)
-                : new Insets(0, 0, 0, 0);
-            max += insets.left + insets.right + CARET_WIDTH;
-            Dimension dimension = jComponent.getPreferredSize();
-            // look and fields should not define a minimum preferred width
-            dimension.width = max;
-            System.out.println(dimension);
-            jComponent.setPreferredSize(dimension);
+        if (jComponent instanceof JTextField) {
+          FieldClip fieldClip = field.getAnnotation(FieldClip.class);
+          FontMetrics fontMetrics = jComponent.getFontMetrics(jComponent.getFont());
+          int max = fontMetrics.stringWidth("XXX");
+          if (Objects.nonNull(fieldClip)) {
+            Clip clip = FieldClips.of(fieldClip);
+            max = Math.max(max, Math.max( //
+                fontMetrics.stringWidth(clip.min().toString()), //
+                fontMetrics.stringWidth(clip.max().toString())));
           }
+          Border border = jComponent.getBorder();
+          Insets insets = Objects.nonNull(border) //
+              ? border.getBorderInsets(jComponent)
+              : new Insets(0, 0, 0, 0);
+          max += insets.left + insets.right + CARET_WIDTH;
+          Dimension dimension = jComponent.getPreferredSize();
+          // look and fields should not define a minimum preferred width
+          dimension.width = max;
+          System.out.println(dimension);
+          jComponent.setPreferredSize(dimension);
+          jComponent.setMinimumSize(dimension);
+        } else {
+          System.err.println(jComponent);
         }
     }
     return fieldsEditor;

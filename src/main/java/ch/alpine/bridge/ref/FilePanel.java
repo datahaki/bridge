@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
 /* package */ class FilePanel extends StringPanel {
+  private final JPanel jPanel = new JPanel(new BorderLayout());
   private final JButton jButton = new JButton("?");
 
   /** @param fieldWrap
@@ -38,13 +39,12 @@ import javax.swing.JPanel;
         }
       }
     });
+    jPanel.add(BorderLayout.CENTER, jTextField);
+    jPanel.add(BorderLayout.EAST, jButton);
   }
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
-    JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, jTextField);
-    jPanel.add(BorderLayout.EAST, jButton);
     return jPanel;
   }
 }

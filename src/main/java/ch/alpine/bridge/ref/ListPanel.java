@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
   public static final int SCROLL_THRESHOLD = 8;
   // ---
   private final JList<Object> jList;
+  private final JComponent jComponent;
 
   public ListPanel(FieldWrap fieldWrap, Object[] objects, Object object) {
     super(fieldWrap);
@@ -34,10 +35,10 @@ import javax.swing.event.ListSelectionListener;
         }
       }
     });
+    jComponent = createJComponent();
   }
 
-  @Override // from FieldPanel
-  public JComponent getJComponent() {
+  private JComponent createJComponent() {
     if (SCROLL_THRESHOLD < jList.getModel().getSize()) {
       JScrollPane jScrollPane = new JScrollPane(jList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
       Dimension dimension = jList.getPreferredSize();
@@ -46,6 +47,11 @@ import javax.swing.event.ListSelectionListener;
       return jScrollPane;
     }
     return jList;
+  }
+
+  @Override
+  public JComponent getJComponent() {
+    return jComponent;
   }
 
   @Override // from FieldPanel

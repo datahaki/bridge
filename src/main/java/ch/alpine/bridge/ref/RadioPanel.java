@@ -18,6 +18,7 @@ import javax.swing.ScrollPaneConstants;
 
 /* package */ class RadioPanel extends FieldPanel {
   private final JPanel jPanel;
+  private final JComponent jComponent;
   private final Map<Object, JRadioButton> map = new HashMap<>();
   private String previous = null;
 
@@ -44,10 +45,10 @@ import javax.swing.ScrollPaneConstants;
       jPanel.add(jRadioButton);
       map.put(value, jRadioButton);
     }
+    jComponent = createJComponent();
   }
 
-  @Override // from FieldPanel
-  public JComponent getJComponent() {
+  private JComponent createJComponent() {
     if (ListPanel.SCROLL_THRESHOLD < map.size()) {
       JScrollPane jScrollPane = new JScrollPane(jPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
       Dimension dimension = jScrollPane.getPreferredSize();
@@ -56,6 +57,11 @@ import javax.swing.ScrollPaneConstants;
       return jScrollPane;
     }
     return jPanel;
+  }
+
+  @Override
+  public JComponent getJComponent() {
+    return jComponent;
   }
 
   @Override // from FieldPanel

@@ -29,7 +29,7 @@ public enum GuiExtensionDemo {
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
     jGrid.add(panelFieldsEditor.createJScrollPane());
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, guiExtension);
-    jGrid.add(objectPropertiesArea.getJComponent());
+    jGrid.add(objectPropertiesArea.createJComponent());
     // ---
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -39,7 +39,7 @@ public enum GuiExtensionDemo {
       JButton jButton = new JButton("reset fuse");
       jButton.addActionListener(l -> {
         guiExtension.fuse = false;
-        objectPropertiesArea.run();
+        objectPropertiesArea.update();
       });
       jPanel.add(BorderLayout.SOUTH, jButton);
     }
