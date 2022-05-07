@@ -49,6 +49,7 @@ public enum LookAndFeels {
     return lookAndFeel;
   }
 
+  /** @throws Exception */
   public void updateUI() throws Exception {
     if (Objects.nonNull(lookAndFeel))
       UIManager.setLookAndFeel(lookAndFeel);

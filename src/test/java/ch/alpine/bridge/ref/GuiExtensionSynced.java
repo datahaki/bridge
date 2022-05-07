@@ -26,23 +26,26 @@ public enum GuiExtensionSynced {
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel content = new JPanel(new GridLayout(1, 2, 20, 0));
     for (PanelFieldsEditor fieldsEditor : new PanelFieldsEditor[] { left_FieldsEditor, rightFieldsEditor }) {
-      TestHelper testHelper = new TestHelper(fieldsEditor, guiExtension);
+      ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(fieldsEditor, guiExtension);
+      JPanel jGrid = new JPanel(new GridLayout(2, 1));
+      jGrid.add(fieldsEditor.createJScrollPane());
+      jGrid.add(objectPropertiesArea.getJComponent());
       JPanel jPanel = new JPanel(new BorderLayout());
-      jPanel.add(BorderLayout.CENTER, testHelper.jPanel);
+      jPanel.add(BorderLayout.CENTER, jGrid);
       {
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
         {
           JButton jButton = new JButton("reset fuse");
           jButton.addActionListener(event -> {
             guiExtension.fuse = false;
-            testHelper.runnable.run();
+            objectPropertiesArea.run();
           });
           buttonPanel.add(jButton);
         }
         {
           JButton jButton = new JButton("sync");
           jButton.addActionListener(event -> fieldsEditor.updateJComponents());
-          jButton.addActionListener(event -> testHelper.runnable.run());
+          jButton.addActionListener(event -> objectPropertiesArea.run());
           buttonPanel.add(jButton);
         }
         jPanel.add(BorderLayout.SOUTH, buttonPanel);

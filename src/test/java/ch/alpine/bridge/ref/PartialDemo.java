@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public enum PartialDemo {
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
-    TestHelper testHelper = new TestHelper(panelFieldsEditor, guiExtension);
+    ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, guiExtension);
     // ---
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {
@@ -36,15 +37,17 @@ public enum PartialDemo {
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, testHelper.jPanel);
+    JPanel jGrid = new JPanel(new GridLayout(2, 1));
+    jGrid.add(panelFieldsEditor.createJScrollPane());
+    jGrid.add(objectPropertiesArea.getJComponent());
+    jPanel.add(BorderLayout.CENTER, jGrid);
     {
       JButton jButton = new JButton("reset fuse");
       jButton.addActionListener(l -> {
         guiExtension.fuse = false;
-        testHelper.runnable.run();
-        // fieldsEditor.list().forEach(fp->fp.notifyListeners(""));
+        objectPropertiesArea.run();
       });
-      jPanel.add("South", jButton);
+      jPanel.add(BorderLayout.SOUTH, jButton);
     }
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 200, 500, 700);

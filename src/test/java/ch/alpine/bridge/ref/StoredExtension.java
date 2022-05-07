@@ -2,11 +2,13 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -58,11 +60,14 @@ public class StoredExtension {
 
   public static void main(String[] args) {
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(INSTANCE);
-    TestHelper testHelper = new TestHelper(panelFieldsEditor, INSTANCE);
+    ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, INSTANCE);
     // ---
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setContentPane(testHelper.jPanel);
+    JPanel jGrid = new JPanel(new GridLayout(2, 1));
+    jGrid.add(panelFieldsEditor.createJScrollPane());
+    jGrid.add(objectPropertiesArea.getJComponent());
+    jFrame.setContentPane(jGrid);
     jFrame.setBounds(500, 200, 500, 700);
     jFrame.addWindowListener(new WindowAdapter() {
       @Override
