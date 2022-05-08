@@ -17,7 +17,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.itp.Fit;
 import ch.alpine.tensor.qty.Quantity;
 
-/* package */ enum FitDemo {
+/* package */ enum FitShow {
   ;
   public static void main(String[] args) throws IOException {
     for (int degree = 0; degree <= 4; ++degree) {

@@ -35,15 +35,13 @@ import ch.alpine.bridge.swing.StandardMenu;
             for (String string : supplier.get()) {
               JMenuItem jMenuItem = new JMenuItem(string);
               jMenuItem.setFont(getJTextField().getFont());
-              {
-                // TODO try background color in menu in each l&f
-                FieldsEditorManager.establish(FieldsEditorKey.INT_STRING_PANEL_HEIGHT, jMenuItem);
-              }
+              FieldsEditorManager.establish(FieldsEditorKey.INT_STRING_PANEL_HEIGHT, jMenuItem);
               jMenuItem.addActionListener(event -> {
                 getJTextField().setText(string);
                 indicateGui();
                 nofifyIfValid(string);
               });
+              // TODO BRIDGE here the item is not yet selected as in SpinnerMenu...
               jPopupMenu.add(jMenuItem);
             }
           }

@@ -22,7 +22,7 @@ import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.sca.Clips;
 
 // 3
-/* package */ enum ConvexHullImage {
+/* package */ enum ConvexHullShow {
   ;
   private static Tensor image(int seed) {
     Random random = new Random(seed);
@@ -49,14 +49,14 @@ import ch.alpine.tensor.sca.Clips;
   }
 
   public static void main(String[] args) throws IOException {
-    File folder = HomeDirectory.Pictures(ConvexHullImage.class.getSimpleName());
+    File folder = HomeDirectory.Pictures(ConvexHullShow.class.getSimpleName());
     folder.mkdir();
     for (int seed = 0; seed < 51; ++seed) {
       Tensor image = image(seed);
       Export.of(new File(folder, String.format("%03d.png", seed)), image);
     }
     {
-      Export.of(HomeDirectory.Pictures(ConvexHullImage.class.getSimpleName() + ".png"), image(3));
+      Export.of(HomeDirectory.Pictures(ConvexHullShow.class.getSimpleName() + ".png"), image(3));
     }
   }
 }

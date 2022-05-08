@@ -22,7 +22,8 @@ public enum GuiExtensionDemo {
     String folder = "/image/checkbox/ballot/";
     FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
     FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
-    LookAndFeels.INTELLI_J.updateUI();
+    LookAndFeels.GTK_PLUS.updateUI();
+    // ---
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));

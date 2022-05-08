@@ -6,7 +6,7 @@
 	<version>0.3.2</version>
 	<packaging>jar</packaging>
 
-	<name>java</name>
+	<name>bridge</name>
 	<url>https://github.com/datahaki/bridge</url>
 
 	<properties>

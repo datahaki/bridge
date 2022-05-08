@@ -24,11 +24,11 @@ import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 // 4 22 35
-/* package */ class BipartitionImage {
+/* package */ class BipartitionShow {
   BufferedImage bufferedImage = StaticHelper.createWhite(192 * 2);
   Graphics2D graphics = bufferedImage.createGraphics();
 
-  public BipartitionImage(int seed, boolean lines) {
+  public BipartitionShow(int seed, boolean lines) {
     Random random = new Random(seed);
     Tensor points1 = RandomVariate.of(UniformDistribution.unit(), random, 9, 2);
     Tensor points2 = RandomVariate.of(UniformDistribution.unit(), random, 13, 2);
@@ -63,15 +63,15 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
   }
 
   public static void main(String[] args) throws IOException {
-    File folder = HomeDirectory.Pictures(BipartitionImage.class.getSimpleName());
+    File folder = HomeDirectory.Pictures(BipartitionShow.class.getSimpleName());
     folder.mkdir();
     for (int seed = 0; seed < 50; ++seed) {
       {
-        Tensor tensor = ImageFormat.from(new BipartitionImage(seed, false).bufferedImage);
+        Tensor tensor = ImageFormat.from(new BipartitionShow(seed, false).bufferedImage);
         Export.of(new File(folder, String.format("%03da.png", seed)), tensor);
       }
       {
-        Tensor tensor = ImageFormat.from(new BipartitionImage(seed, true).bufferedImage);
+        Tensor tensor = ImageFormat.from(new BipartitionShow(seed, true).bufferedImage);
         Export.of(new File(folder, String.format("%03db.png", seed)), tensor);
       }
     }
