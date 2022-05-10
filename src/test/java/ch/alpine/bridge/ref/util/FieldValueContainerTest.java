@@ -9,9 +9,9 @@ class FieldValueContainerTest {
   @Test
   public void testSimple() {
     FieldValueContainer fvc = new FieldValueContainer("key", null, "object", "value");
-    assertEquals(fvc.getKey(), "key");
-    assertEquals(fvc.getObject(), "object");
-    assertEquals(fvc.getValue(), "value");
-    assertEquals(fvc.getFieldWrap(), null);
+    assertEquals(fvc.key(), "key");
+    assertEquals(fvc.object(), "object");
+    assertEquals(fvc.value(), "value");
+    assertEquals(fvc.fieldWrap(), null);
   }
 }

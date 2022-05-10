@@ -59,7 +59,7 @@ import javax.swing.JPopupMenu;
     JPopupMenu jPopupMenu = designShow();
     T type = spinnerLabel.getValue();
     if (Objects.nonNull(type)) {
-      int delta = 2; // TODO JAVA ALG is this a magic constant that depends on l&f ?
+      int delta = 2; // TODO BRIDGE ALG is this a magic constant that depends on l&f ?
       map.get(type).setBackground(ACTIVE_ITEM);
       map.get(type).setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
       for (Entry<T, JMenuItem> entry : map.entrySet()) {

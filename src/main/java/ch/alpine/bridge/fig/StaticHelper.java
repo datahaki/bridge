@@ -23,7 +23,7 @@ import ch.alpine.tensor.sca.Clips;
 
 /* package */ enum StaticHelper {
   ;
-  // TODO JAVA ALG the implementation can be improved by implementing TimePeriod
+  // TODO BRIDGE ALG the implementation can be improved by implementing TimePeriod
   private static final Calendar CALENDAR = Calendar.getInstance();
 
   /** @param time

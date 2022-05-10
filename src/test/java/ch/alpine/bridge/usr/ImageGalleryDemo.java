@@ -31,7 +31,7 @@ import ch.alpine.tensor.sca.pow.Sqrt;
 
 @Deprecated
 public class ImageGalleryDemo {
-  // FIXME OWL demo broken and may corrupt files
+  // FIXME BRIDGE demo broken and may corrupt files
   private final Map<File, String> map = new HashMap<>();
   private final File dst_thumb;
   private final File dst_image;

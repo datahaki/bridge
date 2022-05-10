@@ -35,7 +35,7 @@ class ReflectionMarkerTest {
     {
       List<FieldValueContainer> list = classFieldCheck.invalidFields();
       for (FieldValueContainer fvc : list) {
-        fvc.getField().toString();
+        fvc.field().toString();
       }
     }
   }

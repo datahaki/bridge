@@ -2,7 +2,7 @@
 
 # ch.alpine.bridge
 
-Library for Java, version `0.3.2`
+Library for Java, version `0.3.3`
 
 ## Plots
 

@@ -23,7 +23,7 @@ class ClassFieldCheckTest {
     assertTrue(classFieldCheck.getFailures().contains(FieldClipT.class));
     List<FieldValueContainer> list = classFieldCheck.invalidFields();
     assertFalse(list.isEmpty());
-    List<String> fields = list.stream().map(FieldValueContainer::getField).map(Field::toString).collect(Collectors.toList());
+    List<String> fields = list.stream().map(FieldValueContainer::field).map(Field::toString).collect(Collectors.toList());
     assertTrue(fields.contains("public java.lang.String ch.alpine.bridge.ref.GuiTrial.optionsFail"));
     assertTrue(fields.contains("public java.lang.String ch.alpine.bridge.ref.GuiTrial.optionsMiss"));
     // fields.forEach(s -> System.out.println(s));
