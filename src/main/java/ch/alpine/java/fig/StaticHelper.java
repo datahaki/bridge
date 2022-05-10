@@ -11,6 +11,9 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimePeriod;
 
+import ch.alpine.bridge.fig.Axis;
+import ch.alpine.bridge.fig.VisualImage;
+import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Last;

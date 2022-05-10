@@ -1,8 +1,12 @@
 ![alpine_877](https://user-images.githubusercontent.com/4012178/116814864-1b1a1580-ab5b-11eb-97e6-1441af4ececa.png)
 
-# ch.alpine.java
+# ch.alpine.bridge
 
+<<<<<<< HEAD
 Library for Java, version `0.3.2-jdk-11`
+=======
+Library for Java, version `0.3.3`
+>>>>>>> branch 'v033_11' of git@github.com:datahaki/bridge.git
 
 ## Plots
 
@@ -45,8 +49,8 @@ Specify `repository` and `dependency` of the tensor library in the `pom.xml` fil
 ```xml
 <repositories>
   <repository>
-    <id>tensor-mvn-repo</id>
-    <url>https://raw.github.com/datahaki/java/mvn-repo/</url>
+    <id>bridge-mvn-repo</id>
+    <url>https://raw.github.com/datahaki/bridge/mvn-repo/</url>
     <snapshots>
       <enabled>true</enabled>
       <updatePolicy>always</updatePolicy>
@@ -57,8 +61,13 @@ Specify `repository` and `dependency` of the tensor library in the `pom.xml` fil
 <dependencies>
   <dependency>
     <groupId>ch.alpine</groupId>
+<<<<<<< HEAD
     <artifactId>java</artifactId>
     <version>0.3.2-jdk-11</version>
+=======
+    <artifactId>bridge</artifactId>
+    <version>0.3.2</version>
+>>>>>>> branch 'v033_11' of git@github.com:datahaki/bridge.git
   </dependency>
 </dependencies>
 ```

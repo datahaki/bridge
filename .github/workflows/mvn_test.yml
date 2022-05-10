@@ -13,13 +13,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+<<<<<<< HEAD
       - name: Set up JDK 11
+=======
+      - name: set up JDK 17
+>>>>>>> branch 'v033_11' of git@github.com:datahaki/bridge.git
         uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Set up env
-        run: sudo apt-get install xvfb
-      - name: mvn install
+      - name: mvn install tensor
         working-directory: .
-        run: xvfb-run --auto-servernum mvn install -B
+        run: |
+          cd ..
+          git clone https://github.com/datahaki/tensor.git
+          cd tensor
+          git checkout v106
+          mvn clean install -DskipTests=true
+      - name: mvn test
+        working-directory: .
+        run: xvfb-run --auto-servernum mvn test -B
