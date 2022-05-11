@@ -19,7 +19,7 @@ public enum GuiExtensionDemo {
   ;
   public static void main(String[] args) throws Exception {
     int n = 24;
-    String folder = "/image/checkbox/ballot/";
+    String folder = "/ch/alpine/bridge/ref/checkbox/ballot/";
     FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
     FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
     LookAndFeels.GTK_PLUS.updateUI();

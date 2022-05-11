@@ -213,6 +213,7 @@ public class SpinnerLabel<T> extends JTextField {
   /** does not invoke call backs
    * 
    * @param type */
+  // TODO BRIDGE provide feedback if index was set
   public void setValue(T type) {
     index = list.indexOf(type);
     updateLabel();
