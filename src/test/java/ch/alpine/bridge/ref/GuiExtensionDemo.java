@@ -4,7 +4,6 @@ package ch.alpine.bridge.ref;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,19 +11,19 @@ import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
-import ch.alpine.tensor.img.ImageResize;
-import ch.alpine.tensor.io.ResourceData;
 
 public enum GuiExtensionDemo {
   ;
   public static void main(String[] args) throws Exception {
-    int n = 24;
-    String folder = "/ch/alpine/bridge/ref/checkbox/ballot/";
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
-    FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
+    // int n = 24;
+    // String folder = "/ch/alpine/bridge/ref/checkbox/ballot/";
+    // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
+    // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
     LookAndFeels.GTK_PLUS.updateUI();
     // ---
     GuiExtension guiExtension = new GuiExtension();
+    // guiExtension.pivots = ;
+    // guiExtension.pivots2 = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     JPanel jGrid = new JPanel(new GridLayout(2, 1));

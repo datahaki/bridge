@@ -41,7 +41,7 @@ public enum SpectrogramDemo {
     visualSet.getAxisY().setUnit(Unit.of("Hz"));
     visualSet.getAxisY().setLabel("frequency");
     ColorDataGradient colorDataGradient = //
-        LinearColorDataGradient.of(Reverse.of(ResourceData.of("/colorscheme/sunset.csv")));
+        LinearColorDataGradient.of(Reverse.of(ResourceData.of("/ch/alpine/tensor/img/colorscheme/sunset.csv")));
     return Spectrogram.of(visualSet, DirichletWindow.FUNCTION, colorDataGradient);
   }
 
