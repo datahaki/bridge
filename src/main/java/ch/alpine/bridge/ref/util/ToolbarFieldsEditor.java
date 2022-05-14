@@ -12,7 +12,7 @@ import javax.swing.JToolBar;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldToolTip;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.ObjectFieldVisitor;
+import ch.alpine.bridge.ref.ObjectFieldGui;
 import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
@@ -25,7 +25,7 @@ public class ToolbarFieldsEditor extends FieldsEditor {
     return new ToolbarFieldsEditor(object, jToolBar);
   }
 
-  private class Visitor implements ObjectFieldVisitor {
+  private class Visitor extends ObjectFieldGui {
     private final JToolBar jToolBar;
 
     public Visitor(JToolBar jToolBar) {

@@ -40,7 +40,7 @@ public class ObjectProperties {
     return objectFieldList.list;
   }
 
-  private static class ObjectFieldList implements ObjectFieldVisitor {
+  private static class ObjectFieldList extends ObjectFieldIo {
     private final List<String> list = new LinkedList<>();
 
     @Override
@@ -84,7 +84,7 @@ public class ObjectProperties {
     return objectFieldExport.properties;
   }
 
-  private static class ObjectFieldExport implements ObjectFieldVisitor {
+  private static class ObjectFieldExport extends ObjectFieldIo {
     private final Properties properties = new Properties();
 
     @Override // from ObjectFieldVisitor
@@ -104,7 +104,7 @@ public class ObjectProperties {
     return object;
   }
 
-  private static class ObjectFieldImport implements ObjectFieldVisitor {
+  private static class ObjectFieldImport extends ObjectFieldIo {
     private final Properties properties;
 
     public ObjectFieldImport(Properties properties) {

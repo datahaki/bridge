@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Objects;
 
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.ObjectFieldVisitor;
+import ch.alpine.bridge.ref.ObjectFieldIo;
 import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 
-public class InvalidAnnotationCollection implements ObjectFieldVisitor {
+public class InvalidAnnotationCollection extends ObjectFieldIo {
   /** @param object
    * @return */
   public static List<FieldValueContainer> of(Object object) {

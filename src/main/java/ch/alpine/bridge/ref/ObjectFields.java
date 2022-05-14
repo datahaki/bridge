@@ -2,35 +2,20 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ch.alpine.bridge.ref.ObjectFieldVisitor.Type;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 
 public class ObjectFields {
-  private static final int LEAF_FILTER = Modifier.PUBLIC;
-  private static final int LEAF_TESTED = LEAF_FILTER //
-      | Modifier.PRIVATE | Modifier.PROTECTED //
-      | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
-  private static final Predicate<Field> IS_LEAF = VisibilityPredicate.field( //
-      LEAF_FILTER, //
-      LEAF_TESTED);
-  // ---
-  private static final int NODE_FILTER = Modifier.PUBLIC | Modifier.FINAL;
-  private static final int NODE_TESTED = NODE_FILTER //
-      | Modifier.PRIVATE | Modifier.PROTECTED //
-      | Modifier.FINAL | Modifier.STATIC | Modifier.TRANSIENT;
-  private static final Predicate<Field> IS_NODE = VisibilityPredicate.field( //
-      NODE_FILTER, //
-      NODE_TESTED);
-  private static final Set<Class<?>> REMINDER_SET = new HashSet<>();
+  private static final Set<Class<?>> REMINDER_SET = Collections.synchronizedSet(new HashSet<>());
   static {
     REMINDER_SET.add(Object.class);
   }
@@ -58,27 +43,32 @@ public class ObjectFields {
   private void visit(String _prefix, Object object) {
     if (Objects.nonNull(object))
       for (Field field : list(object.getClass())) {
-        Class<?> class_field = field.getType();
+        Type type = objectFieldVisitor.getType(field);
         String prefix = _prefix + field.getName();
-        if (FieldWraps.INSTANCE.elemental(class_field)) {
-          if (IS_LEAF.test(field)) {
-            FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
-            if (Objects.nonNull(fieldWrap))
-              objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
-          }
-        } else
-          if (IS_NODE.test(field))
-            if (class_field.isArray())
-              iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
+        switch (type) {
+        case NODE -> {
+          Class<?> class_field = field.getType();
+          if (class_field.isArray())
+            iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
+          else {
+            if (field.getType().equals(List.class))
+              iterate(prefix, field, (List<?>) get(field, object));
             else {
-              if (field.getType().equals(List.class))
-                iterate(prefix, field, (List<?>) get(field, object));
-              else {
-                objectFieldVisitor.push(prefix, field, null);
-                visit(prefix + ".", get(field, object));
-                objectFieldVisitor.pop();
-              }
+              objectFieldVisitor.push(prefix, field, null);
+              visit(prefix + ".", get(field, object));
+              objectFieldVisitor.pop();
             }
+          }
+        }
+        case LEAF -> {
+          FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
+          if (Objects.nonNull(fieldWrap))
+            objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
+        }
+        default -> {
+          // skip
+        }
+        }
       }
   }
 
