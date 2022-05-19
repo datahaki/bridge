@@ -20,7 +20,8 @@ import ch.alpine.bridge.ref.ann.FieldLabels;
 public class ToolbarFieldsEditor extends FieldsEditor {
   /** @param object
    * @param jToolBar
-   * @return fields editor */
+   * @return fields editor to which callback functions may be attached via
+   * {@link #addUniversalListener(Runnable)} */
   public static FieldsEditor add(Object object, JToolBar jToolBar) {
     return new ToolbarFieldsEditor(object, jToolBar);
   }
@@ -61,7 +62,7 @@ public class ToolbarFieldsEditor extends FieldsEditor {
       jToolBar.add(jComponent);
       // some look and feels introduce a vertical line | as separator...
       // jToolBar.addSeparator();
-      jToolBar.add(new JLabel("\u3000"));
+      jToolBar.add(new JLabel("\u2000"));
     }
   }
 

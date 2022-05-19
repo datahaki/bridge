@@ -6,21 +6,23 @@ import java.lang.reflect.Modifier;
 import java.util.function.Predicate;
 
 public abstract class ObjectFieldGui implements ObjectFieldVisitor {
-  static final int LEAF_FILTER = Modifier.PUBLIC;
-  static final int LEAF_TESTED = LEAF_FILTER //
-      | Modifier.PRIVATE | Modifier.PROTECTED //
-      | Modifier.FINAL | Modifier.STATIC;
-  private static final Predicate<Field> IS_LEAF = VisibilityPredicate.field( //
-      LEAF_FILTER, //
-      LEAF_TESTED);
+  static final int LEAF_DEMAND = 0 //
+      | Modifier.PUBLIC;
+  static final int LEAF_REJECT = 0 //
+      | Modifier.FINAL //
+      | Modifier.STATIC;
+  private static final Predicate<Field> IS_LEAF = VisibilityPredicate.of( //
+      LEAF_DEMAND, //
+      LEAF_REJECT);
   // ---
-  static final int NODE_FILTER = Modifier.PUBLIC | Modifier.FINAL;
-  static final int NODE_TESTED = NODE_FILTER //
-      | Modifier.PRIVATE | Modifier.PROTECTED //
-      | Modifier.FINAL | Modifier.STATIC;
-  private static final Predicate<Field> IS_NODE = VisibilityPredicate.field( //
-      NODE_FILTER, //
-      NODE_TESTED);
+  static final int NODE_DEMAND = 0 //
+      | Modifier.PUBLIC //
+      | Modifier.FINAL;
+  static final int NODE_REJECT = 0 //
+      | Modifier.STATIC;
+  private static final Predicate<Field> IS_NODE = VisibilityPredicate.of( //
+      NODE_DEMAND, //
+      NODE_REJECT);
 
   @Override
   public final Type getType(Field field) {

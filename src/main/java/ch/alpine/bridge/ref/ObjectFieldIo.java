@@ -5,19 +5,17 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.function.Predicate;
 
-/** disallow transient */
+/** allow all elements tracked by gui except for transient */
 public abstract class ObjectFieldIo implements ObjectFieldVisitor {
-  private static final int LEAF_FILTER = ObjectFieldGui.LEAF_FILTER;
-  private static final int LEAF_TESTED = ObjectFieldGui.LEAF_TESTED | Modifier.TRANSIENT;
-  private static final Predicate<Field> IS_LEAF = VisibilityPredicate.field( //
-      LEAF_FILTER, //
-      LEAF_TESTED);
+  private static final Predicate<Field> IS_LEAF = VisibilityPredicate.of( //
+      ObjectFieldGui.LEAF_DEMAND, //
+      ObjectFieldGui.LEAF_REJECT //
+          | Modifier.TRANSIENT);
   // ---
-  private static final int NODE_FILTER = ObjectFieldGui.NODE_FILTER;
-  private static final int NODE_TESTED = ObjectFieldGui.NODE_TESTED | Modifier.TRANSIENT;
-  private static final Predicate<Field> IS_NODE = VisibilityPredicate.field( //
-      NODE_FILTER, //
-      NODE_TESTED);
+  private static final Predicate<Field> IS_NODE = VisibilityPredicate.of( //
+      ObjectFieldGui.NODE_DEMAND, //
+      ObjectFieldGui.NODE_REJECT //
+          | Modifier.TRANSIENT);
 
   @Override
   public final Type getType(Field field) {

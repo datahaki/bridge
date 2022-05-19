@@ -33,12 +33,12 @@ public class GuiExtension {
   // the scalar array is not tracked by the FieldEditor
   public Scalar[] scalars = { Pi.VALUE, RealScalar.ONE };
   @FieldSelectionCallback("getStrings")
-  public String string = "abc";
+  protected String string = "abc";
   @FieldSelectionCallback("getStaticStrings")
   public String function = "abc";
   @FieldSelectionArray(value = { "ttyS0", "ttyS1", "ttyS2", "ttyS3", "ttyUSB0", "ttyUSB1" })
   public String selectable = "ttyS0";
-  public Boolean status = true;
+  protected Boolean status = true;
   @FieldLabel("Big Fuse")
   @FieldFuse("press to restart")
   public Boolean fuse = false;
