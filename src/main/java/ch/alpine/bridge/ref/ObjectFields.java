@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -101,5 +102,33 @@ public class ObjectFields {
         .map(Class::getDeclaredFields) //
         .flatMap(Stream::of) //
         .collect(Collectors.toList());
+  }
+
+  private static List<Object> privateList(Object object) {
+    List<Object> list = new ArrayList<>();
+    ObjectFields.of(object, new ObjectFieldGui() {
+      @Override
+      public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
+        list.add(value);
+      }
+    });
+    return list;
+  }
+
+  /** @param object1
+   * @param object2
+   * @return true if given objects are of the same class and all fields
+   * satisfy {@link #equals(Object)} */
+  public static boolean deepEquals(Object object1, Object object2) {
+    return Objects.nonNull(object1) //
+        && Objects.nonNull(object2) //
+        && object1.getClass().equals(object2.getClass()) //
+        && privateList(object1).equals(privateList(object2));
+  }
+
+  /** @param object
+   * @return hash code of all field values */
+  public static int hash(Object object) {
+    return privateList(object).hashCode();
   }
 }
