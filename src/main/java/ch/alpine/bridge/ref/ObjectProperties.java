@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -30,34 +29,13 @@ import ch.alpine.tensor.io.Import;
  * of a parse failure, or invalid assignment, the preset/default/current
  * value is retained. */
 public class ObjectProperties {
-  /** list of "key=value" of tracked fields of given object
-   * 
-   * @param object
-   * @return list of strings each of the form "key=value" */
-  public static List<String> list(Object object) {
-    ObjectFieldList objectFieldList = new ObjectFieldList();
-    ObjectFields.of(object, objectFieldList);
-    return objectFieldList.list;
-  }
-
-  private static class ObjectFieldList extends ObjectFieldIo {
-    private final List<String> list = new LinkedList<>();
-
-    @Override
-    public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
-      if (Objects.nonNull(value))
-        list.add(key + "=" + fieldWrap.toString(value));
-    }
-  }
-
-  // ---
   /** store tracked fields of given object in given file
    * 
    * @param object
    * @param file properties
    * @throws IOException */
   public static void save(Object object, File file) throws IOException {
-    Files.write(file.toPath(), (Iterable<String>) list(object)::iterator);
+    ExportExt.properties(file, properties(object));
   }
 
   /** store tracked fields of given object in given file
@@ -120,6 +98,26 @@ public class ObjectProperties {
   }
 
   // ---
+  /** list of "key=value" of tracked fields of given object
+   * 
+   * @param object
+   * @return list of strings each of the form "key=value" */
+  public static List<String> list(Object object) {
+    ObjectFieldList objectFieldList = new ObjectFieldList();
+    ObjectFields.of(object, objectFieldList);
+    return objectFieldList.list;
+  }
+
+  private static class ObjectFieldList extends ObjectFieldIo {
+    private final List<String> list = new LinkedList<>();
+
+    @Override
+    public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
+      if (Objects.nonNull(value))
+        list.add(key + "=" + fieldWrap.toString(value));
+    }
+  }
+
   /** @param object
    * @return */
   public static String string(Object object) {
