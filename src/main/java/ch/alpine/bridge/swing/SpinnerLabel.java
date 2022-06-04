@@ -26,6 +26,7 @@ import ch.alpine.bridge.awt.LazyMouseListener;
 import ch.alpine.tensor.ext.Integers;
 
 /** selector in gui for easy scrolling through a list with mouse-wheel but no pull-down menu */
+// TODO BRIDGE first step: pass reduced list of enums to spinner label from reflection API
 public class SpinnerLabel<T> extends JTextField {
   /** JToggleButton background when selected is 184 207 229 selection color
    * subtracts 24 from each RGB value */

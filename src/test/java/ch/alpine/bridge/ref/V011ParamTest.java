@@ -14,7 +14,7 @@ class V011ParamTest {
     ObjectProperties.list(v011Param);
     ObjectProperties.string(v011Param);
     // System.out.println();
-    Properties properties = ObjectProperties.properties(v011Param);
+    Properties properties = DeprecatedObjProp.properties(v011Param);
     ObjectProperties.set(new V011Param(1), properties);
     ObjectProperties.set(new V011Param(2), properties);
   }

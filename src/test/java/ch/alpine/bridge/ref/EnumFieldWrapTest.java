@@ -29,7 +29,7 @@ class EnumFieldWrapTest {
 
   @Test
   public void testEnumProp() {
-    Properties properties = ObjectProperties.properties(new GuiExtension());
+    Properties properties = DeprecatedObjProp.properties(new GuiExtension());
     String string = properties.getProperty("pivots");
     assertEquals(string, "ARGMAX_ABS");
     properties.setProperty("pivots", "doesnotexist");

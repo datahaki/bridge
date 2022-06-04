@@ -2,8 +2,10 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.Color;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.LinkedList;
@@ -30,15 +32,39 @@ import ch.alpine.tensor.io.Import;
  * value is retained. */
 public class ObjectProperties {
   /** store tracked fields of given object in given file
+   * in the {@link Properties}-format.
+   * The ordering of the key-value pairs in the file
+   * is as they are visited by {@link ObjectFields}.
    * 
    * @param object
    * @param file properties
    * @throws IOException */
   public static void save(Object object, File file) throws IOException {
-    ExportExt.properties(file, properties(object));
+    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+      ObjectFieldVisitor objectFieldVisitor = new ObjectFieldIo() {
+        @Override // from ObjectFieldVisitor
+        public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
+          if (Objects.nonNull(value)) {
+            boolean escUnicode = false;
+            String key = PropertiesExt.saveConvert(prefix, true, escUnicode);
+            String val = PropertiesExt.saveConvert(fieldWrap.toString(value), false, escUnicode);
+            try {
+              bufferedWriter.write(key + "=" + val);
+              bufferedWriter.newLine();
+            } catch (Exception exception) {
+              throw new RuntimeException();
+            }
+          }
+        }
+      };
+      ObjectFields.of(object, objectFieldVisitor);
+    }
   }
 
   /** store tracked fields of given object in given file
+   * in the {@link Properties}-format.
+   * The ordering of the key-value pairs in the file
+   * is as they are visited by {@link ObjectFields}.
    * 
    * @param object
    * @param file properties
@@ -51,25 +77,6 @@ public class ObjectProperties {
       // ---
     }
     return false;
-  }
-
-  // ---
-  /** @param object
-   * @return new instance of {@link Properties} */
-  public static Properties properties(Object object) {
-    ObjectFieldExport objectFieldExport = new ObjectFieldExport();
-    ObjectFields.of(object, objectFieldExport);
-    return objectFieldExport.properties;
-  }
-
-  private static class ObjectFieldExport extends ObjectFieldIo {
-    private final Properties properties = new Properties();
-
-    @Override // from ObjectFieldVisitor
-    public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
-      if (Objects.nonNull(value))
-        properties.setProperty(prefix, fieldWrap.toString(value));
-    }
   }
 
   // ---
