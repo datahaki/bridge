@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.bridge.lang;
 
 import java.util.EnumSet;
@@ -15,12 +15,11 @@ public enum Enums {
     }
     return set;
   }
-
-  /* TODO address or ignore as suited
-  * would element::getDeclaringClass solve the problem described in hint and hence,
-  * make elementType obsolete?
-  * why is enumConstant generic and not array of given type? this would make the
-  * unchecked cast obsolete */
+  /* TODO BRIDGE address or ignore as suited
+   * would element::getDeclaringClass solve the problem described in hint and hence,
+   * make elementType obsolete?
+   * why is enumConstant generic and not array of given type? this would make the
+   * unchecked cast obsolete */
 
   /** Hint: the enum class <b>cannot</b> always be determined via element.getClass.
    * One could determine the enum class from given element via enclosing class etc.
@@ -46,6 +45,6 @@ public enum Enums {
   @SuppressWarnings("unchecked")
   public static <E extends Enum<E>> E cycle(Class<E> elementType, E element) {
     Enum<?>[] enumConstants = elementType.getEnumConstants();
-    return (E) enumConstants[(element.ordinal() + 1) % enumConstants.length];
+    return (E) enumConstants[Math.floorMod(element.ordinal() + 1, enumConstants.length)];
   }
 }

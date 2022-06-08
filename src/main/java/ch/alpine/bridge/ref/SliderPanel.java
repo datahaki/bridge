@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -30,12 +31,12 @@ import ch.alpine.tensor.sca.Clip;
   private static final int RESOLUTION = 1000;
   private static final int TICKS_MAX = 20;
   // ---
-  private final boolean showRange;
   private final Clip clip;
   private final int resolution;
   private final ScalarUnaryOperator scalarUnaryOperator;
   private final JSlider jSlider;
   private final JLabel jLabel;
+  private final JComponent jComponent;
   private int index;
 
   /** @param fieldWrap
@@ -43,7 +44,6 @@ import ch.alpine.tensor.sca.Clip;
    * @param value */
   public SliderPanel(FieldWrap fieldWrap, FieldClip fieldClip, Object value, boolean showValue, boolean showRange) {
     super(fieldWrap);
-    this.showRange = showRange;
     clip = FieldClips.of(fieldClip); // si-units
     if (Objects.nonNull(fieldWrap.getField().getAnnotation(FieldInteger.class))) {
       int max = Scalars.intValueExact(clip.max());
@@ -59,7 +59,7 @@ import ch.alpine.tensor.sca.Clip;
       Scalar scalar = (Scalar) value;
       scalarUnaryOperator = UnitConvert.SI().to(QuantityUnit.of(scalar));
       index = indexOf(scalar);
-      jLabel = showValue ? new JLabel(PrettyUnit.of((Scalar) value), JLabel.CENTER) : null;
+      jLabel = showValue ? new JLabel(PrettyUnit.of((Scalar) value), SwingConstants.CENTER) : null;
     }
     jSlider = new JSlider(0, resolution, index);
     {
@@ -86,6 +86,12 @@ import ch.alpine.tensor.sca.Clip;
                 .add(clip.max().multiply(RationalScalar.of(count, resolution))));
       }
     });
+    JComponent jComponent = jSlider;
+    if (showRange)
+      jComponent = addRangeLabels(jComponent);
+    if (Objects.nonNull(jLabel))
+      jComponent = addValueLabel(jComponent);
+    this.jComponent = jComponent;
   }
 
   private int indexOf(Scalar scalar) {
@@ -94,11 +100,6 @@ import ch.alpine.tensor.sca.Clip;
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
-    JComponent jComponent = jSlider;
-    if (showRange)
-      jComponent = addRangeLabels(jComponent);
-    if (Objects.nonNull(jLabel))
-      jComponent = addValueLabel(jComponent);
     return jComponent;
   }
 

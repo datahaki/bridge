@@ -35,4 +35,10 @@ class EnumsTest {
     assertEquals(pivot, Pivots.FIRST_NON_ZERO);
     assertThrows(Exception.class, () -> Enums.increment(Pivots.class, Pivots.FIRST_NON_ZERO));
   }
+
+  @Test
+  public void testCycle() {
+    Pivot pivot = Enums.cycle(Pivots.class, Enums.cycle(Pivots.class, Pivots.ARGMAX_ABS));
+    assertEquals(pivot, Pivots.ARGMAX_ABS);
+  }
 }
