@@ -15,6 +15,10 @@ import ch.alpine.tensor.mat.re.Pivot;
 import ch.alpine.tensor.mat.re.Pivots;
 
 class EnumsTest {
+  private static enum NestedEnum {
+    A, B, C;
+  }
+
   @Test
   public void testSimple() {
     Set<ColorDataGradients> set = Enums.setFromMask(ColorDataGradients.class, 2 | 8);
@@ -31,14 +35,19 @@ class EnumsTest {
     Class<?> enc = cls.getEnclosingClass();
     assertFalse(enc.isAnonymousClass());
     assertTrue(Enum.class.isAssignableFrom(enc));
-    Pivot pivot = Enums.increment(Pivots.class, Pivots.ARGMAX_ABS);
+    Pivot pivot = Enums.increment(Pivots.ARGMAX_ABS);
     assertEquals(pivot, Pivots.FIRST_NON_ZERO);
-    assertThrows(Exception.class, () -> Enums.increment(Pivots.class, Pivots.FIRST_NON_ZERO));
+    assertThrows(Exception.class, () -> Enums.increment(Pivots.FIRST_NON_ZERO));
   }
 
   @Test
   public void testCycle() {
-    Pivot pivot = Enums.cycle(Pivots.class, Enums.cycle(Pivots.class, Pivots.ARGMAX_ABS));
+    Pivot pivot = Enums.cycle(Enums.cycle(Pivots.ARGMAX_ABS));
     assertEquals(pivot, Pivots.ARGMAX_ABS);
+  }
+
+  @Test
+  public void testNested() {
+    assertEquals(Enums.increment(NestedEnum.A), NestedEnum.B);
   }
 }
