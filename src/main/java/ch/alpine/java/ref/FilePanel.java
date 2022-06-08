@@ -10,23 +10,27 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
 
 /* package */ class FilePanel extends StringPanel {
   private final JButton jButton = new JButton("?");
 
   /** @param fieldWrap
-   * @param _file initially */
-  public FilePanel(FieldWrap fieldWrap, File _file) {
+   * @param _file initially
+   * @param filters */
+  public FilePanel(FieldWrap fieldWrap, File _file, FileFilter... filters) {
     super(fieldWrap, _file);
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         JFileChooser jFileChooser = new JFileChooser();
+        for (FileFilter filter : filters)
+          jFileChooser.setFileFilter(filter);
         File file = new File(jTextField.getText());
         jFileChooser.setApproveButtonText("Done");
         jFileChooser.setApproveButtonToolTipText("Select file");
         jFileChooser.setDialogTitle("File selection");
-        jFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); // always both?
         jFileChooser.setSelectedFile(file);
         int openDialog = jFileChooser.showOpenDialog(jButton);
         if (openDialog == JFileChooser.APPROVE_OPTION) {
