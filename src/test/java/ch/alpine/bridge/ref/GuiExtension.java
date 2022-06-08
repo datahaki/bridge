@@ -4,6 +4,7 @@ package ch.alpine.bridge.ref;
 import java.awt.Color;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -11,6 +12,7 @@ import ch.alpine.bridge.ref.Container.NestedEnum;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
+import ch.alpine.bridge.ref.ann.FieldFileExtension;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabel;
 import ch.alpine.bridge.ref.ann.FieldList;
@@ -54,6 +56,9 @@ public class GuiExtension {
   public File folder = HomeDirectory.file();
   @FieldExistingFile
   public File file = HomeDirectory.file();
+  @FieldExistingFile
+  @FieldFileExtension(description = "Text-Files", extensions = "txt")
+  public File txtFile = HomeDirectory.file();
   public File anyFile = HomeDirectory.file();
   @FieldSelectionArray({ "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");
@@ -71,7 +76,7 @@ public class GuiExtension {
   @ReflectionMarker
   public List<String> getStrings() {
     return random.nextBoolean() //
-        ? Arrays.asList()
+        ? Collections.emptyList() //
         : Arrays.asList("a", "b", string, pivots.toString());
   }
 

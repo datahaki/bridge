@@ -57,8 +57,11 @@ public class ScalarFieldWrap extends TensorFieldWrap {
   public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    if (Objects.nonNull(fieldClip) && Objects.nonNull(field.getAnnotation(FieldSlider.class)))
-      return new SliderPanel(this, fieldClip, value);
+    if (Objects.nonNull(fieldClip)) {
+      FieldSlider fieldSlider = field.getAnnotation(FieldSlider.class);
+      if (Objects.nonNull(fieldSlider))
+        return new SliderPanel(this, fieldClip, value, fieldSlider.value(), fieldSlider.showRange());
+    }
     return super.createFieldPanel(object, value);
   }
 }
