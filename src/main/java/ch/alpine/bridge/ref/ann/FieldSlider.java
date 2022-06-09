@@ -1,4 +1,4 @@
-// code by jph
+// code by jph, gjoel
 package ch.alpine.bridge.ref.ann;
 
 import java.lang.annotation.Documented;
@@ -14,5 +14,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FieldSlider {
-  // ---
+  /** @return whether to display the current slider value */
+  boolean value() default false;
+
+  /** @return whether to show the min and max values of the slider */
+  boolean showRange() default false;
 }

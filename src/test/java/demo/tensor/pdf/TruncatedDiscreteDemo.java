@@ -24,7 +24,6 @@ public enum TruncatedDiscreteDemo {
   public static void main(String[] args) throws IOException {
     Distribution original = PoissonDistribution.of(7);
     Distribution distribution = TruncatedDistribution.of(original, Clips.interval(5, 10));
-    System.out.println(distribution);
     PDF pdf = PDF.of(distribution);
     CDF cdf = CDF.of(distribution);
     PDF pdf_o = PDF.of(original);

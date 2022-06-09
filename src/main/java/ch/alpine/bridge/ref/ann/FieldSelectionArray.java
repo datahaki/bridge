@@ -18,7 +18,7 @@ public @interface FieldSelectionArray {
   /** Works on string, tensor, scalar, ...
    * 
    * Example return values:
-   * {"1[%]", "2[%], "3[%]"}
+   * {"1[%]", "2[%]", "3[%]"}
    * 
    * @return */
   String[] value();

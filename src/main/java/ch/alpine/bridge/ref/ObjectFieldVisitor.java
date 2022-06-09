@@ -3,8 +3,18 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 
-@FunctionalInterface
 public interface ObjectFieldVisitor {
+  public static enum Type {
+    /** a node invokes push and pop at a later point */
+    NODE,
+    /** accept is called for a leaf */
+    LEAF,
+    /** ignore field */
+    SKIP;
+  }
+
+  Type getType(Field field);
+
   /** invoked before the traversing of a nested element
    * 
    * @param key

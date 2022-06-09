@@ -23,7 +23,7 @@ class ObjectPropertiesTest {
     simpleParam.nestedParams[1].text = "here!";
     simpleParam.nestedParams[1].anotherParam.color = Color.BLUE;
     simpleParam.nestedParams[1].basic = false;
-    Properties properties = ObjectProperties.properties(simpleParam);
+    Properties properties = DeprecatedObjProp.properties(simpleParam);
     simpleParam = null;
     SimpleParam simpleCopy = ObjectProperties.set(new SimpleParam(), properties);
     assertEquals(simpleCopy.nestedParams[1].anotherParam.color, Color.BLUE);
@@ -60,7 +60,7 @@ class ObjectPropertiesTest {
     simpleLaram.nestedParams.get(1).text = "new text";
     simpleLaram.nestedParams.get(1).scalar = RationalScalar.HALF;
     String string1 = ObjectProperties.string(simpleLaram);
-    Properties properties = ObjectProperties.properties(simpleLaram);
+    Properties properties = DeprecatedObjProp.properties(simpleLaram);
     simpleLaram = null;
     SimpleLaram simpleCopy = ObjectProperties.set(new SimpleLaram(), properties);
     String string2 = ObjectProperties.string(simpleCopy);

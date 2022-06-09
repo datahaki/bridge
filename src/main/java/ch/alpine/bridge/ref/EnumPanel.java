@@ -6,14 +6,14 @@ import javax.swing.JComponent;
 import ch.alpine.bridge.swing.SpinnerLabel;
 
 /* package */ class EnumPanel extends FieldPanel {
-  private final SpinnerLabel<Object> spinnerLabel = new SpinnerLabel<>();
+  private final SpinnerLabel<Object> spinnerLabel;
 
   public EnumPanel(FieldWrap fieldWrap, Object[] objects, Object object) {
     super(fieldWrap);
+    spinnerLabel = SpinnerLabel.of(objects);
     spinnerLabel.setFont(FieldsEditorManager.getFont(FieldsEditorKey.FONT_TEXTFIELD));
-    spinnerLabel.setArray(objects);
     spinnerLabel.updatePreferredSize();
-    spinnerLabel.setValueSafe(object);
+    spinnerLabel.setValue(object); // throws an Exception if object is null (deliberate)
     spinnerLabel.addSpinnerListener(value -> notifyListeners(fieldWrap.toString(value)));
   }
 

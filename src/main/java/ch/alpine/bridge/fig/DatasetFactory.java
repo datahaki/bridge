@@ -55,12 +55,14 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
    * @return */
   public static CategoryDataset defaultCategoryDataset(VisualSet visualSet, Function<Scalar, String> naming) {
     DefaultCategoryDataset defaultCategoryDataset = new DefaultCategoryDataset();
+    ScalarUnaryOperator toRealsY = visualSet.getAxisY().toReals();
     for (VisualRow visualRow : visualSet.visualRows())
-      for (Tensor point : visualRow.points())
+      for (Tensor point : visualRow.points()) {
         defaultCategoryDataset.addValue( //
-            point.Get(1).number().doubleValue(), //
+            toRealsY.apply(point.Get(1)).number(), //
             visualRow.getLabel(), //
             naming.apply(point.Get(0)));
+      }
     return defaultCategoryDataset;
   }
 
@@ -74,26 +76,31 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
    * @return */
   public static TableXYDataset timeTableXYDataset(VisualSet visualSet) {
     TimeTableXYDataset timeTableXYDataset = new TimeTableXYDataset();
+    ScalarUnaryOperator toRealsY = visualSet.getAxisY().toReals();
     for (VisualRow visualRow : visualSet.visualRows())
       for (Tensor point : visualRow.points())
         timeTableXYDataset.add( //
             StaticHelper.timePeriod(point.Get(0)), //
-            point.Get(1).number().doubleValue(), //
-            visualRow.getLabel());
+            toRealsY.apply(point.Get(1)).number(), //
+            visualRow.getLabel(), //
+            true);
     return timeTableXYDataset;
   }
 
   public static TableXYDataset categoryTableXYDataset(VisualSet visualSet) {
     CategoryTableXYDataset categoryTableXYDataset = new CategoryTableXYDataset();
+    ScalarUnaryOperator toRealsX = visualSet.getAxisX().toReals();
+    ScalarUnaryOperator toRealsY = visualSet.getAxisY().toReals();
     for (VisualRow visualRow : visualSet.visualRows()) {
       String label = visualRow.getLabelString().isEmpty() //
           ? String.valueOf(categoryTableXYDataset.getSeriesCount())
           : visualRow.getLabelString();
       for (Tensor point : visualRow.points())
         categoryTableXYDataset.add( //
-            point.Get(0).number().doubleValue(), //
-            point.Get(1).number().doubleValue(), //
-            label); // requires string, might lead to overwriting
+            toRealsX.apply(point.Get(0)).number(), //
+            toRealsY.apply(point.Get(1)).number(), //
+            label, //
+            true); // requires string, might lead to overwriting
     }
     return categoryTableXYDataset;
   }

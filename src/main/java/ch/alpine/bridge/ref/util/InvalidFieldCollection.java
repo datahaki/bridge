@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.ObjectFieldVisitor;
+import ch.alpine.bridge.ref.ObjectFieldIo;
 import ch.alpine.bridge.ref.ObjectFields;
 
-public class InvalidFieldCollection implements ObjectFieldVisitor {
+public class InvalidFieldCollection extends ObjectFieldIo {
   /** @param object
    * @return */
   public static List<FieldValueContainer> of(Object object) {

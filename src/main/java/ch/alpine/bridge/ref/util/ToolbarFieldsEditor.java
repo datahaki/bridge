@@ -12,20 +12,22 @@ import javax.swing.JToolBar;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldToolTip;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.ObjectFieldVisitor;
+import ch.alpine.bridge.ref.ObjectFieldGui;
 import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
+// TODO BRIDGE field fuse -> button text as variable name!
 public class ToolbarFieldsEditor extends FieldsEditor {
   /** @param object
    * @param jToolBar
-   * @return fields editor */
+   * @return fields editor to which callback functions may be attached via
+   * {@link #addUniversalListener(Runnable)} */
   public static FieldsEditor add(Object object, JToolBar jToolBar) {
     return new ToolbarFieldsEditor(object, jToolBar);
   }
 
-  private class Visitor implements ObjectFieldVisitor {
+  private class Visitor extends ObjectFieldGui {
     private final JToolBar jToolBar;
 
     public Visitor(JToolBar jToolBar) {
@@ -61,7 +63,7 @@ public class ToolbarFieldsEditor extends FieldsEditor {
       jToolBar.add(jComponent);
       // some look and feels introduce a vertical line | as separator...
       // jToolBar.addSeparator();
-      jToolBar.add(new JLabel("\u3000"));
+      jToolBar.add(new JLabel("\u2000"));
     }
   }
 

@@ -2,11 +2,12 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.Color;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -30,37 +31,40 @@ import ch.alpine.tensor.io.Import;
  * of a parse failure, or invalid assignment, the preset/default/current
  * value is retained. */
 public class ObjectProperties {
-  /** list of "key=value" of tracked fields of given object
-   * 
-   * @param object
-   * @return list of strings each of the form "key=value" */
-  public static List<String> list(Object object) {
-    ObjectFieldList objectFieldList = new ObjectFieldList();
-    ObjectFields.of(object, objectFieldList);
-    return objectFieldList.list;
-  }
-
-  private static class ObjectFieldList implements ObjectFieldVisitor {
-    private final List<String> list = new LinkedList<>();
-
-    @Override
-    public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
-      if (Objects.nonNull(value))
-        list.add(key + "=" + fieldWrap.toString(value));
-    }
-  }
-
-  // ---
   /** store tracked fields of given object in given file
+   * in the {@link Properties}-format.
+   * The ordering of the key-value pairs in the file
+   * is as they are visited by {@link ObjectFields}.
    * 
    * @param object
    * @param file properties
    * @throws IOException */
   public static void save(Object object, File file) throws IOException {
-    Files.write(file.toPath(), (Iterable<String>) list(object)::iterator);
+    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+      ObjectFieldVisitor objectFieldVisitor = new ObjectFieldIo() {
+        @Override // from ObjectFieldVisitor
+        public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
+          if (Objects.nonNull(value)) {
+            boolean escUnicode = false;
+            String key = PropertiesExt.saveConvert(prefix, true, escUnicode);
+            String val = PropertiesExt.saveConvert(fieldWrap.toString(value), false, escUnicode);
+            try {
+              bufferedWriter.write(key + "=" + val);
+              bufferedWriter.newLine();
+            } catch (Exception exception) {
+              throw new RuntimeException();
+            }
+          }
+        }
+      };
+      ObjectFields.of(object, objectFieldVisitor);
+    }
   }
 
   /** store tracked fields of given object in given file
+   * in the {@link Properties}-format.
+   * The ordering of the key-value pairs in the file
+   * is as they are visited by {@link ObjectFields}.
    * 
    * @param object
    * @param file properties
@@ -77,25 +81,6 @@ public class ObjectProperties {
 
   // ---
   /** @param object
-   * @return new instance of {@link Properties} */
-  public static Properties properties(Object object) {
-    ObjectFieldExport objectFieldExport = new ObjectFieldExport();
-    ObjectFields.of(object, objectFieldExport);
-    return objectFieldExport.properties;
-  }
-
-  private static class ObjectFieldExport implements ObjectFieldVisitor {
-    private final Properties properties = new Properties();
-
-    @Override // from ObjectFieldVisitor
-    public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
-      if (Objects.nonNull(value))
-        properties.setProperty(prefix, fieldWrap.toString(value));
-    }
-  }
-
-  // ---
-  /** @param object
    * @param properties
    * @return object with fields modified based on properties. In particular,
    * if properties is empty then the object will not be modified at all. */
@@ -104,7 +89,7 @@ public class ObjectProperties {
     return object;
   }
 
-  private static class ObjectFieldImport implements ObjectFieldVisitor {
+  private static class ObjectFieldImport extends ObjectFieldIo {
     private final Properties properties;
 
     public ObjectFieldImport(Properties properties) {
@@ -120,6 +105,26 @@ public class ObjectProperties {
   }
 
   // ---
+  /** list of "key=value" of tracked fields of given object
+   * 
+   * @param object
+   * @return list of strings each of the form "key=value" */
+  public static List<String> list(Object object) {
+    ObjectFieldList objectFieldList = new ObjectFieldList();
+    ObjectFields.of(object, objectFieldList);
+    return objectFieldList.list;
+  }
+
+  private static class ObjectFieldList extends ObjectFieldIo {
+    private final List<String> list = new LinkedList<>();
+
+    @Override
+    public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
+      if (Objects.nonNull(value))
+        list.add(key + "=" + fieldWrap.toString(value));
+    }
+  }
+
   /** @param object
    * @return */
   public static String string(Object object) {

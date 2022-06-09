@@ -31,7 +31,7 @@ import javax.swing.JPopupMenu;
   @Override
   protected void design(JPopupMenu jPopupMenu) {
     Font font = spinnerLabel.getFont();
-    for (T type : spinnerLabel.list) {
+    for (T type : spinnerLabel.getList()) {
       JMenuItem jMenuItem = new JMenuItem(type.toString());
       jMenuItem.setFont(font);
       if (hover)
@@ -51,7 +51,7 @@ import javax.swing.JPopupMenu;
   }
 
   private void setValue(T type) {
-    spinnerLabel.setValueSafe(type);
+    spinnerLabel.setValue(type);
     spinnerLabel.reportToAll();
   }
 

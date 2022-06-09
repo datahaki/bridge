@@ -33,11 +33,11 @@ import ch.alpine.bridge.ref.ann.FieldListType;
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();
-    FieldList fieldListType = field.getAnnotation(FieldList.class);
-    FieldListType f = Objects.isNull(fieldListType) //
+    FieldList fieldList = field.getAnnotation(FieldList.class);
+    FieldListType fieldListType = Objects.isNull(fieldList) //
         ? FieldListType.TEXT_FIELD
-        : fieldListType.value();
-    switch (f) {
+        : fieldList.value();
+    switch (fieldListType) {
     case TEXT_FIELD:
       return new EnumPanel(this, enumConstants, value);
     case LIST:

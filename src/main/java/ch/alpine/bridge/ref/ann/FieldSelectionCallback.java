@@ -11,5 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FieldSelectionCallback {
+  /** @return name of function that returns a list of objects */
   String value();
 }

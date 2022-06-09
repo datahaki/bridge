@@ -13,7 +13,7 @@ import ch.alpine.tensor.qty.Quantity;
 
 @ReflectionMarker
 public class ScalarUnion {
-  @FieldSlider
+  @FieldSlider(value = true, showRange = true)
   @FieldPreferredWidth(123)
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");

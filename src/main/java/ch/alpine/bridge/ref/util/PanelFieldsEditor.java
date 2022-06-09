@@ -11,13 +11,13 @@ import javax.swing.JScrollPane;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldToolTip;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.ObjectFieldVisitor;
+import ch.alpine.bridge.ref.ObjectFieldGui;
 import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 import ch.alpine.bridge.swing.RowPanel;
 
 public class PanelFieldsEditor extends FieldsEditor {
-  private class Visitor implements ObjectFieldVisitor {
+  private class Visitor extends ObjectFieldGui {
     private int level = 0;
 
     @Override // from ObjectFieldVisitor

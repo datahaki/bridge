@@ -34,7 +34,7 @@ class ClipParamTest {
   public void testRecreate() {
     ClipParam clipParam = new ClipParam();
     clipParam.clipReal = Clips.interval(20, 21);
-    Properties properties = ObjectProperties.properties(clipParam);
+    Properties properties = DeprecatedObjProp.properties(clipParam);
     properties.put("clipMeter", "{9[m], 10[m]}");
     ClipParam clipParam2 = ObjectProperties.set(new ClipParam(), properties);
     assertEquals(clipParam2.clipReal, Clips.interval(20, 21));
