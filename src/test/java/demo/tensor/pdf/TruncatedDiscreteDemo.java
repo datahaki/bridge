@@ -21,7 +21,7 @@ import ch.alpine.tensor.sca.Clips;
 
 public enum TruncatedDiscreteDemo {
   ;
-  public static void main(String[] args) throws IOException {
+  public static JFreeChart generate() {
     Distribution original = PoissonDistribution.of(7);
     Distribution distribution = TruncatedDistribution.of(original, Clips.interval(5, 10));
     PDF pdf = PDF.of(distribution);
@@ -36,7 +36,11 @@ public enum TruncatedDiscreteDemo {
     }
     JFreeChart jFreeChart = Histogram.of(visualSet);
     jFreeChart.setBackgroundPaint(Color.WHITE);
+    return jFreeChart;
+  }
+
+  public static void main(String[] args) throws IOException {
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures( //
-        TruncatedDiscreteDemo.class.getSimpleName() + ".png"), jFreeChart, 640, 480);
+        TruncatedDiscreteDemo.class.getSimpleName() + ".png"), generate(), 640, 480);
   }
 }

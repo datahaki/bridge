@@ -6,8 +6,6 @@ import java.io.File;
 
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabel;
-import ch.alpine.bridge.ref.ann.FieldList;
-import ch.alpine.bridge.ref.ann.FieldListType;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.swing.LookAndFeels;
@@ -24,15 +22,13 @@ public class SimpleParam extends BaseParam {
   private final Integer ignore_Integer = 2;
   @SuppressWarnings("unused")
   private final String ignore_final_String = "asd";
-  @FieldSelectionArray(value = { "a", "b", "c" })
+  @FieldSelectionArray({ "a", "b", "c" })
   public String string = "abc";
   @FieldLabel("Emergency Off")
   public Boolean flag = false;
   @FieldLabel("Choose Pivot")
-  @FieldList(FieldListType.RADIO)
   public Pivots pivot = Pivots.ARGMAX_ABS;
   @FieldLabel("Color Gradients")
-  @FieldList
   public ColorDataGradients cdg = ColorDataGradients.DEEP_SEA;
   // public Scalar[] scalars = { Pi.VALUE, RealScalar.ZERO, ComplexScalar.I };
   @FieldLabel("Another Parameter ASDGHJ")

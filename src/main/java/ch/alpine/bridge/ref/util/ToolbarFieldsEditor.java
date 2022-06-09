@@ -17,7 +17,6 @@ import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
-// TODO BRIDGE field fuse -> button text as variable name!
 public class ToolbarFieldsEditor extends FieldsEditor {
   /** @param object
    * @param jToolBar
@@ -44,7 +43,7 @@ public class ToolbarFieldsEditor extends FieldsEditor {
           ? new TogglePanel(fieldWrap, text, (Boolean) value)
           : fieldWrap.createFieldPanel(object, value), fieldWrap, object);
       JComponent jComponent = layout(field, fieldPanel.getJComponent());
-      if (field.getType().equals(Enum.class)) {
+      if (field.getType().isEnum()) {
         jComponent.setToolTipText(text);
       } else //
         if (!isBoolean) {

@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldList {
+/* package */ @interface FieldList {
   FieldListType value() default FieldListType.LIST;
 }

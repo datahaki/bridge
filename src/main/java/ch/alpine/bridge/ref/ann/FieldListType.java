@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.bridge.ref.ann;
 
-public enum FieldListType {
+/* package */ enum FieldListType {
   /** appears as single line text field with selected value as text
    * a button to display options in a drop down menu */
   TEXT_FIELD,

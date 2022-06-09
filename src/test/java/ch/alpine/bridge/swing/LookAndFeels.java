@@ -21,7 +21,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 public enum LookAndFeels {
   /** java swing default */
   DEFAULT(new MetalLookAndFeel()), //
-  // TODO BRIDGE the background highlighting in selected item in menu is not suitable in DARK
   DARK(new FlatDarkLaf()), //
   LIGHT(new FlatLightLaf()), //
   // does not allow LookAndFeel#getDefaults()

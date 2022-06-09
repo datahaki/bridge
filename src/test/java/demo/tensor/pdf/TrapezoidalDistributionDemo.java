@@ -22,7 +22,7 @@ import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 
 public enum TrapezoidalDistributionDemo {
   ;
-  public static void main(String[] args) throws IOException {
+  public static JFreeChart generate() {
     Distribution distribution = TrapezoidalDistribution.of(0.5, 1.5, 1.5, 2.5);
     PDF pdf = PDF.of(distribution);
     CDF cdf = CDF.of(distribution);
@@ -40,6 +40,10 @@ public enum TrapezoidalDistributionDemo {
     }
     JFreeChart jFreeChart = ListPlot.of(visualSet, true);
     jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("trap_distr.png"), jFreeChart, 640, 480);
+    return jFreeChart;
+  }
+
+  public static void main(String[] args) throws IOException {
+    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("trap_distr.png"), generate(), 640, 480);
   }
 }

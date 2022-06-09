@@ -20,6 +20,7 @@ public enum GuiExtensionDemo {
     // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
     // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
     LookAndFeels.GTK_PLUS.updateUI();
+    // LookAndFeels.DARK.updateUI();
     // ---
     GuiExtension guiExtension = new GuiExtension();
     // guiExtension.pivots = ;
