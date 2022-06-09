@@ -6,6 +6,9 @@ import java.util.Set;
 
 public enum Enums {
   ;
+  /** @param elementType
+   * @param mask of up to 64 bits
+   * @return set of elementTypes that contains enum of oridinal if mask & (1<<oridinal) != 0 */
   public static <E extends Enum<E>> Set<E> setFromMask(Class<E> elementType, long mask) {
     Set<E> set = EnumSet.noneOf(elementType);
     for (E element : elementType.getEnumConstants()) {

@@ -1,15 +1,28 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Subdivide;
+import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.itp.BSplineFunctionString;
+import ch.alpine.tensor.pdf.CDF;
+import ch.alpine.tensor.pdf.Distribution;
+import ch.alpine.tensor.pdf.PDF;
 import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.qty.Quantity;
 
@@ -77,5 +90,27 @@ class ListPlotTest {
       points.set(Quantity.of(DoubleScalar.INDETERMINATE, "m"), random.nextInt(n), random.nextInt(2));
     visualSet.add(points);
     ListPlot.of(visualSet);
+  }
+
+  @Test
+  public void testDistribution(@TempDir File folder) throws IOException {
+    Distribution distribution = TrapezoidalDistribution.of(0.5, 1.5, 1.5, 2.5);
+    PDF pdf = PDF.of(distribution);
+    CDF cdf = CDF.of(distribution);
+    VisualSet visualSet = new VisualSet();
+    {
+      Tensor domain = Subdivide.of(0, 4, 100);
+      visualSet.add(domain, domain.map(pdf::at));
+      visualSet.add(domain, domain.map(cdf::p_lessEquals));
+    }
+    {
+      Tensor sequence = Tensors.vector(0, 0, 1, 1);
+      Tensor domain = Subdivide.of(0, sequence.length() - 1, 100);
+      ScalarTensorFunction suo = BSplineFunctionString.of(2, sequence);
+      visualSet.add(domain, domain.map(suo));
+    }
+    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    jFreeChart.setBackgroundPaint(Color.WHITE);
+    ChartUtils.saveChartAsPNG(new File(folder, "trap_distr.png"), jFreeChart, 640, 480);
   }
 }
