@@ -17,7 +17,7 @@ public class GuiTrial {
   public String optionsFail = "options fail";
   @FieldSelectionCallback(value = "doesnotexist")
   public String optionsMiss = "options miss";
-  @FieldSelectionArray(value = { "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
+  @FieldSelectionArray({ "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
   public String selectable = "/dev/ttyS0";
 
   public List<String> getStrings() {

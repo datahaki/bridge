@@ -2,11 +2,14 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import ch.alpine.bridge.ref.ann.FieldList;
-import ch.alpine.bridge.ref.ann.FieldListType;
+import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 
 /* package */ class EnumFieldWrap extends BaseFieldWrap {
   private final Object[] enumConstants;
@@ -33,14 +36,22 @@ import ch.alpine.bridge.ref.ann.FieldListType;
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();
-    FieldList fieldList = field.getAnnotation(FieldList.class);
-    FieldListType fieldListType = Objects.isNull(fieldList) //
-        ? FieldListType.TEXT_FIELD
-        : fieldList.value();
-    return switch (fieldListType) {
-    case TEXT_FIELD -> new EnumPanel(this, enumConstants, value);
-    case LIST -> new ListPanel(this, enumConstants, value);
-    case RADIO -> new RadioPanel(this, enumConstants, value);
-    };
+    Supplier<List<Object>> supplier = () -> Arrays.asList(enumConstants);
+    FieldSelectionCallback fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
+    if (Objects.nonNull(fieldSelectionCallback))
+      try {
+        Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
+        supplier = () -> {
+          try {
+            return (List<Object>) method.invoke(object);
+          } catch (Exception exception) {
+            exception.printStackTrace();
+          }
+          return Arrays.asList();
+        };
+      } catch (Exception exception) {
+        exception.printStackTrace();
+      }
+    return new EnumPanel(this, supplier, value);
   }
 }

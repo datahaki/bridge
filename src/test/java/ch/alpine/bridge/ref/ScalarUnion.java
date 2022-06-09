@@ -31,7 +31,7 @@ public class ScalarUnion {
   // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
   // @FieldToolTip(text = "asd")
   @FieldClip(min = "0", max = "20")
-  @FieldSelectionArray(value = { "1[W]", "2[%]", "3[]" })
+  @FieldSelectionArray({ "1[W]", "2[%]", "3[]" })
   public Scalar subdiv = Quantity.of(3, "");
   @FieldInteger
   @FieldClip(min = "10", max = "20")

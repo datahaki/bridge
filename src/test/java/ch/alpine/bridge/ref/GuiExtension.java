@@ -15,7 +15,6 @@ import ch.alpine.bridge.ref.ann.FieldExistingFile;
 import ch.alpine.bridge.ref.ann.FieldFileExtension;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabel;
-import ch.alpine.bridge.ref.ann.FieldList;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
@@ -24,6 +23,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
@@ -48,10 +48,10 @@ public class GuiExtension {
   public Clip clip = Clips.absolute(3);
   @FieldFuse
   public Boolean defaultFuse = false;
-  @FieldList
   public Pivots pivots = Pivots.ARGMAX_ABS;
   public Boolean status2 = true;
-  public Pivots pivots2 = Pivots.ARGMAX_ABS;
+  @FieldSelectionCallback("cdgSelection")
+  public ColorDataGradients cdg = ColorDataGradients.BLACK_BODY_SPECTRUM;
   @FieldExistingDirectory
   public File folder = HomeDirectory.file();
   @FieldExistingFile
@@ -72,6 +72,11 @@ public class GuiExtension {
   // ---
   Scalar packsc = Quantity.of(3, "m*s^-1");
   private final Random random = new Random();
+
+  @ReflectionMarker
+  public List<ColorDataGradients> cdgSelection() {
+    return Arrays.asList(ColorDataGradients.AURORA, ColorDataGradients.SUNSET);
+  }
 
   @ReflectionMarker
   public List<String> getStrings() {

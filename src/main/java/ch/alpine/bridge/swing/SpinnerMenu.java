@@ -58,19 +58,22 @@ import javax.swing.JPopupMenu;
   public void showRight(JComponent jComponent) {
     JPopupMenu jPopupMenu = designShow();
     T type = spinnerLabel.getValue();
+    int delta = 2; // TODO BRIDGE ALG is this a magic constant that depends on l&f ?
     if (Objects.nonNull(type)) {
-      int delta = 2; // TODO BRIDGE ALG is this a magic constant that depends on l&f ?
-      map.get(type).setBackground(ACTIVE_ITEM);
-      map.get(type).setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
-      for (Entry<T, JMenuItem> entry : map.entrySet()) {
-        delta += entry.getValue().getPreferredSize().height;
-        if (entry.getKey().equals(type)) {
-          delta -= entry.getValue().getPreferredSize().height / 2;
-          break;
+      JMenuItem jMenuItem = map.get(type);
+      if (Objects.nonNull(jMenuItem)) {
+        jMenuItem.setBackground(ACTIVE_ITEM);
+        jMenuItem.setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
+        for (Entry<T, JMenuItem> entry : map.entrySet()) {
+          delta += entry.getValue().getPreferredSize().height;
+          if (entry.getKey().equals(type)) {
+            delta -= entry.getValue().getPreferredSize().height / 2;
+            break;
+          }
         }
       }
-      Dimension dimension = jComponent.getSize();
-      jPopupMenu.show(jComponent, dimension.width, dimension.height / 2 - delta);
     }
+    Dimension dimension = jComponent.getSize();
+    jPopupMenu.show(jComponent, dimension.width, dimension.height / 2 - delta);
   }
 }
