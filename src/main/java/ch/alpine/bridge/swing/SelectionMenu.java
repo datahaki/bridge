@@ -15,10 +15,17 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.img.ColorFormat;
+import ch.alpine.tensor.red.Mean;
+
 public abstract class SelectionMenu<T> extends StandardMenu {
   /** background for items in menus that are selected; not Java official
    * the color is yellowish/golden */
-  private static final Color ACTIVE_ITEM = new Color(243, 239, 124);
+  private static final Color ACTIVE_ITEM_LIGHT = new Color(243, 239, 124);
+  private static final Color ACTIVE_ITEM_DARK = new Color(95, 95, 0);
   // ---
   private final LinkedHashMap<T, JMenuItem> map = new LinkedHashMap<>();
   private final List<T> list;
@@ -67,7 +74,10 @@ public abstract class SelectionMenu<T> extends StandardMenu {
     if (Objects.nonNull(type)) {
       JMenuItem jMenuItem = map.get(type);
       if (Objects.nonNull(jMenuItem)) {
-        jMenuItem.setBackground(ACTIVE_ITEM);
+        Scalar mean = Mean.ofVector(ColorFormat.toVector(jMenuItem.getForeground()).extract(0, 3));
+        jMenuItem.setBackground(Scalars.lessThan(RealScalar.of(128), mean) //
+            ? ACTIVE_ITEM_DARK
+            : ACTIVE_ITEM_LIGHT);
         jMenuItem.setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
         for (Entry<T, JMenuItem> entry : map.entrySet()) {
           delta += entry.getValue().getPreferredSize().height;

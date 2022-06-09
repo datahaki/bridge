@@ -33,6 +33,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
     return ((Enum<?>) object).name();
   }
 
+  @SuppressWarnings("unchecked")
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();

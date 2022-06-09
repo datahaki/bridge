@@ -3,11 +3,14 @@ package ch.alpine.bridge.swing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import javax.swing.JMenu;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class LookAndFeelsTest {
   @Test
@@ -20,10 +23,12 @@ class LookAndFeelsTest {
       }
   }
 
-  @Test
-  public void testUpdateUI() throws Exception {
-    for (LookAndFeels lookAndFeels : LookAndFeels.values())
-      lookAndFeels.updateUI();
+  @ParameterizedTest
+  @EnumSource(LookAndFeels.class)
+  public void testUpdateUI(LookAndFeels lookAndFeels) throws Exception {
+    lookAndFeels.updateUI();
+    JMenu jMenu = new JMenu();
+    System.out.println(lookAndFeels + "  " + jMenu.getForeground());
   }
 
   @Test
