@@ -52,6 +52,6 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
       } catch (Exception exception) {
         exception.printStackTrace();
       }
-    return new EnumPanel(this, supplier, value);
+    return new EnumPanel(this, value, supplier);
   }
 }

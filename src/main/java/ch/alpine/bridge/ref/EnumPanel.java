@@ -11,7 +11,7 @@ import ch.alpine.bridge.swing.SpinnerLabel;
 /* package */ class EnumPanel extends FieldPanel {
   private final SpinnerLabel<Object> spinnerLabel;
 
-  public EnumPanel(FieldWrap fieldWrap, Supplier<List<Object>> supplier, Object object) {
+  public EnumPanel(FieldWrap fieldWrap, Object object, Supplier<List<Object>> supplier) {
     super(fieldWrap);
     spinnerLabel = SpinnerLabel.of(supplier);
     spinnerLabel.setFont(FieldsEditorManager.getFont(FieldsEditorKey.FONT_TEXTFIELD));
