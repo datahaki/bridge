@@ -2,7 +2,7 @@
 
 # ch.alpine.bridge
 
-Library for Java, version `0.3.3`
+Library for Java, version `0.3.5`
 
 ## Plots
 
@@ -58,7 +58,7 @@ Specify `repository` and `dependency` of the tensor library in the `pom.xml` fil
   <dependency>
     <groupId>ch.alpine</groupId>
     <artifactId>bridge</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.5</version>
   </dependency>
 </dependencies>
 ```
