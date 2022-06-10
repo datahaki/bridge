@@ -15,6 +15,7 @@ import javax.swing.event.PopupMenuListener;
 
 import ch.alpine.bridge.awt.MouseLocation;
 
+// TODO BRIDGE API refactor?
 public abstract class StandardMenu {
   public static <T extends StandardMenu> void bind(JButton jButton, Supplier<T> supplier) {
     jButton.addActionListener(new ActionListener() {

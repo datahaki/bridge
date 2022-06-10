@@ -38,6 +38,12 @@ class GfxMatrixTest {
   }
 
   @Test
+  public void testTranslation2() {
+    Tensor t1 = GfxMatrix.translation(2, 4.0);
+    assertEquals(GfxMatrix.translation(Tensors.vector(2, 4)), t1);
+  }
+
+  @Test
   public void testFlipY() {
     Tensor tensor = GfxMatrix.flipY(5);
     ExactTensorQ.require(tensor);

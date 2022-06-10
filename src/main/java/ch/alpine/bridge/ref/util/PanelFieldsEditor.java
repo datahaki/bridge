@@ -70,6 +70,8 @@ public class PanelFieldsEditor extends FieldsEditor {
   /** THE USE OF THIS FUNCTION IN THE APPLICATION LAYER IS NOT RECOMMENDED !
    * 
    * @return */
+  // TODO BRIDGE check if needed and remove if possible
+  @Deprecated
   public RowPanel getRowPanel() {
     return rowPanel;
   }
