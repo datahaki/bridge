@@ -25,7 +25,8 @@ import ch.alpine.bridge.awt.LazyMouse;
 import ch.alpine.bridge.awt.LazyMouseListener;
 
 /** selector in gui for easy scrolling through a list with mouse-wheel
- * and menu to the side upon mouse-click */
+ * and menu to the side upon mouse-click
+ * extends from a non-editable text field therefore the name "label" */
 public abstract class SpinnerLabel<T> extends JTextField {
   /** JToggleButton background when selected is 184 207 229 selection color
    * subtracts 24 from each RGB value */
