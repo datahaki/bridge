@@ -119,14 +119,12 @@ public abstract class SpinnerLabel<T> extends JTextField {
         increment(point.y < dimension.height / 2 ? -1 : 1); // sign of difference
       else //
         if (isMenuEnabled) {
-          SelectionMenu<T> spinnerMenu = new SelectionMenu<>( //
-              getList(), getValue(), getFont(), isMenuHover) {
-            @Override
-            public void update(T type) {
-              setValue(type);
-              reportToAll();
-            }
-          };
+          SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(getList(), getValue(), isMenuHover);
+          spinnerMenu.setFont(getFont());
+          spinnerMenu.addSpinnerListener(type -> {
+            setValue(type);
+            reportToAll();
+          });
           spinnerMenu.showRight(this);
         }
     }
