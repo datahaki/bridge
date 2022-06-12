@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +54,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
   /** @param values
    * @return */
   public static <T> SpinnerLabel<T> of(@SuppressWarnings("unchecked") T... values) {
-    return of(Arrays.asList(values));
+    return of(List.of(values));
   }
 
   public static <T extends Enum<T>> SpinnerLabel<T> of(Class<T> cls) {

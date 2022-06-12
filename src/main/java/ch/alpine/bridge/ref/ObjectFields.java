@@ -3,7 +3,6 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +49,7 @@ public class ObjectFields {
         case NODE -> {
           Class<?> class_field = field.getType();
           if (class_field.isArray())
-            iterate(prefix, field, Arrays.asList((Object[]) get(field, object)));
+            iterate(prefix, field, List.of((Object[]) get(field, object)));
           else {
             if (field.getType().equals(List.class))
               iterate(prefix, field, (List<?>) get(field, object));

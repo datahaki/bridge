@@ -1,13 +1,12 @@
 // code by jph
 package ch.alpine.bridge.io;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -25,7 +24,7 @@ class BinaryFileTest {
       byte[] array = Primitives.toByteArray(RandomVariate.of(UniformDistribution.unit(), 23948));
       BinaryFile.write(file, array);
       byte[] read = BinaryFile.read(file);
-      assertTrue(Arrays.equals(array, read));
+      assertArrayEquals(array, read);
     }
   }
 }

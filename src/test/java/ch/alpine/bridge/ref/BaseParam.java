@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.ref;
 
-import java.util.Arrays;
 import java.util.List;
 
 import ch.alpine.bridge.ref.ann.FieldLabel;
@@ -16,6 +15,6 @@ public class BaseParam {
   public String more = "asd";
 
   public List<String> here() {
-    return Arrays.asList("asdf", more, more + "123");
+    return List.of("asdf", more, more + "123");
   }
 }
