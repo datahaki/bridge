@@ -21,7 +21,7 @@ public enum FieldsEditorManager {
   ;
   private static final Map<String, Object> MAP = new HashMap<>();
   static {
-    set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 18));
+    set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
   }
 
   public static void set(FieldsEditorKey fieldsEditorKey, Object object) {

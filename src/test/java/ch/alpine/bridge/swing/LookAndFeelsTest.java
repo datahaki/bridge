@@ -25,16 +25,21 @@ class LookAndFeelsTest {
 
   @ParameterizedTest
   @EnumSource(LookAndFeels.class)
-  public void testUpdateUI(LookAndFeels lookAndFeels) throws Exception {
-    lookAndFeels.updateUI();
-    JMenu jMenu = new JMenu();
-    System.out.println(lookAndFeels + "  " + jMenu.getForeground());
+  public void testUpdateUI(LookAndFeels lookAndFeels) {
+    try {
+      lookAndFeels.updateUI();
+      JMenu jMenu = new JMenu();
+      System.out.println(lookAndFeels + "  " + jMenu.getForeground());
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
   }
 
-  @Test
-  public void testIntro() throws Exception {
+  @ParameterizedTest
+  @EnumSource(LookAndFeels.class)
+  public void testIntro(LookAndFeels lookAndFeels) {
     boolean flag = false;
-    for (LookAndFeels lookAndFeels : LookAndFeels.values()) {
+    try {
       lookAndFeels.updateUI();
       assertEquals(UIManager.getInt("asd"), flag ? 123 : 0);
       UIDefaults uiDefaults = UIManager.getDefaults();
@@ -45,6 +50,8 @@ class LookAndFeelsTest {
       assertEquals(int1, 123);
       int int2 = UIManager.getInt("asd");
       assertEquals(int2, 123);
+    } catch (Exception exception) {
+      exception.printStackTrace();
     }
   }
 }

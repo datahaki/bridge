@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ public enum GuiExtensionDemo {
     // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
     // LookAndFeels.GTK_PLUS.updateUI();
     LookAndFeels.DARK.updateUI();
+    FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
     // ---
     GuiExtension guiExtension = new GuiExtension();
     guiExtension.cdg = null;
