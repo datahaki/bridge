@@ -7,14 +7,14 @@ import org.junit.jupiter.api.Test;
 
 class UIManagerBooleanTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     for (UIManagerBoolean uiManagerInt : UIManagerBoolean.values()) {
       uiManagerInt.getAsBoolean();
     }
   }
 
   @Test
-  public void testLength() {
+  void testLength() {
     assertEquals(UIManagerBoolean.values().length, 36);
   }
 }

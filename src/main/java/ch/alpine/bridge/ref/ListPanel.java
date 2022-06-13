@@ -11,7 +11,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-/** based on JList */
+/** EXPERIMENTAL currently not used
+ * 
+ * based on JList */
 /* package */ class ListPanel extends FieldPanel {
   public static final int MAX_HEIGHT = 160;
   public static final int SCROLL_THRESHOLD = 8;

@@ -20,7 +20,7 @@ import ch.alpine.tensor.sca.Chop;
 
 class GeometricLayerTest {
   @Test
-  public void testPush() {
+  void testPush() {
     Tensor a = GfxMatrix.translation(Tensors.vector(10, 10));
     GeometricLayer geometricLayer = new GeometricLayer(a);
     Tensor b = GfxMatrix.of(Tensors.vector(2, 3, 4));
@@ -42,13 +42,13 @@ class GeometricLayerTest {
   }
 
   @Test
-  public void testPopFail() {
+  void testPopFail() {
     GeometricLayer geometricLayer = new GeometricLayer(GfxMatrix.translation(Tensors.vector(0, 0)));
     assertThrows(Exception.class, () -> geometricLayer.popMatrix());
   }
 
   @Test
-  public void testSimple() {
+  void testSimple() {
     Deque<Integer> deque = new ArrayDeque<>();
     deque.push(2);
     deque.push(4);
@@ -63,7 +63,7 @@ class GeometricLayerTest {
   }
 
   @Test
-  public void testConstruction() {
+  void testConstruction() {
     Tensor model2pixel = Tensors.fromString("{{1, 2, 3}, {2, -1, 7}, {0, 0, 1}}");
     // Tensor mouseSe2State = Tensors.vector(9, 7, 2);
     GeometricLayer geometricLayer = new GeometricLayer(model2pixel);
@@ -77,7 +77,7 @@ class GeometricLayerTest {
   }
 
   @Test
-  public void testVector() {
+  void testVector() {
     Tensor model2pixel = Tensors.fromString("{{1, 2, 3}, {2, -1, 7}, {0, 0, 1}}");
     // Tensor mouseSe2State = Tensors.vector(9, 7, 2);
     GeometricLayer geometricLayer = new GeometricLayer(model2pixel);
@@ -90,13 +90,13 @@ class GeometricLayerTest {
   }
 
   @Test
-  public void testStackFail() {
+  void testStackFail() {
     GeometricLayer geometricLayer = new GeometricLayer(IdentityMatrix.of(3));
     assertThrows(Exception.class, () -> geometricLayer.popMatrix());
   }
 
   @Test
-  public void testSerializableFail() {
+  void testSerializableFail() {
     GeometricLayer geometricLayer = new GeometricLayer(IdentityMatrix.of(3));
     assertThrows(Exception.class, () -> Serialization.copy(geometricLayer));
   }

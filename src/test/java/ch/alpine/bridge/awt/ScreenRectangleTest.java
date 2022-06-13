@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class ScreenRectangleTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     new ScreenRectangle().getScreenRectangle();
   }
 }

@@ -10,7 +10,7 @@ import ch.alpine.tensor.qty.Quantity;
 
 class HardWatchdogTest {
   @Test
-  public void testSimple() throws Exception {
+  void testSimple() throws Exception {
     Watchdog watchdog = HardWatchdog.notified(Quantity.of(0.05, "s"));
     assertFalse(watchdog.isBarking());
     Thread.sleep(20);
@@ -26,7 +26,7 @@ class HardWatchdogTest {
   }
 
   @Test
-  public void testLazy() throws Exception {
+  void testLazy() throws Exception {
     Watchdog watchdog = HardWatchdog.notified(Quantity.of(0.05, "s"));
     assertFalse(watchdog.isBarking());
     Thread.sleep(70);

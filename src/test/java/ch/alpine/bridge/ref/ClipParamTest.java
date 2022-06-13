@@ -14,7 +14,7 @@ import ch.alpine.tensor.sca.Clips;
 
 class ClipParamTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     ClipParam clipParam = new ClipParam();
     List<String> list = ObjectProperties.list(clipParam);
     assertTrue(list.contains("clipReal={2, 3}"));
@@ -22,7 +22,7 @@ class ClipParamTest {
   }
 
   @Test
-  public void testModify() {
+  void testModify() {
     ClipParam clipParam = new ClipParam();
     clipParam.clipReal = Clips.interval(10, 11);
     List<String> list = ObjectProperties.list(clipParam);
@@ -31,7 +31,7 @@ class ClipParamTest {
   }
 
   @Test
-  public void testRecreate() {
+  void testRecreate() {
     ClipParam clipParam = new ClipParam();
     clipParam.clipReal = Clips.interval(20, 21);
     Properties properties = DeprecatedObjProp.properties(clipParam);

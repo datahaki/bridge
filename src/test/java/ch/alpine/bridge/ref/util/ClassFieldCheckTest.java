@@ -16,7 +16,7 @@ import ch.alpine.bridge.ref.ann.FieldClipT;
 
 class ClassFieldCheckTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
     assertTrue(6 < classFieldCheck.getInspected().size());

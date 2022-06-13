@@ -13,13 +13,13 @@ import ch.alpine.tensor.mat.IdentityMatrix;
 
 class AffineTransformsTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     AffineTransform affineTransform = AffineTransforms.of(Array.zeros(3, 3));
     assertThrows(Exception.class, () -> affineTransform.createInverse());
   }
 
   @Test
-  public void testEye() throws NoninvertibleTransformException {
+  void testEye() throws NoninvertibleTransformException {
     AffineTransform affineTransform = AffineTransforms.of(IdentityMatrix.of(3));
     affineTransform.createInverse();
   }

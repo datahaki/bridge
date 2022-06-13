@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -14,27 +13,21 @@ import org.junit.jupiter.api.io.TempDir;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.alg.Subdivide;
-import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.itp.BSplineFunctionString;
-import ch.alpine.tensor.pdf.CDF;
-import ch.alpine.tensor.pdf.Distribution;
-import ch.alpine.tensor.pdf.PDF;
 import ch.alpine.tensor.pdf.RandomVariate;
-import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.qty.Quantity;
+import demo.tensor.pdf.TrapezoidalDistributionDemo;
 
 class ListPlotTest {
   @Test
-  public void testEmpty() {
+  void testEmpty() {
     VisualSet visualSet = new VisualSet();
     ListPlot.of(visualSet, true);
   }
 
   @Test
-  public void testEmptyRow() {
+  void testEmptyRow() {
     VisualSet visualSet = new VisualSet();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
@@ -47,7 +40,7 @@ class ListPlotTest {
   private static final ScalarUnaryOperator suoY = s -> Quantity.of(s, "m");
 
   @Test
-  public void testUnitsX() {
+  void testUnitsX() {
     VisualSet visualSet = new VisualSet();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
@@ -60,7 +53,7 @@ class ListPlotTest {
   }
 
   @Test
-  public void testUnitsY() {
+  void testUnitsY() {
     VisualSet visualSet = new VisualSet();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
@@ -72,7 +65,7 @@ class ListPlotTest {
   }
 
   @Test
-  public void testAlreadyLarge() {
+  void testAlreadyLarge() {
     VisualSet visualSet = new VisualSet();
     int n = 100_000; // tested for up to 10 million
     Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
@@ -81,7 +74,7 @@ class ListPlotTest {
   }
 
   @Test
-  public void testAlreadyLargeNaN() {
+  void testAlreadyLargeNaN() {
     Random random = new Random();
     VisualSet visualSet = new VisualSet();
     int n = 100_000; // tested for up to 10 million
@@ -93,24 +86,8 @@ class ListPlotTest {
   }
 
   @Test
-  public void testDistribution(@TempDir File folder) throws IOException {
-    Distribution distribution = TrapezoidalDistribution.of(0.5, 1.5, 1.5, 2.5);
-    PDF pdf = PDF.of(distribution);
-    CDF cdf = CDF.of(distribution);
-    VisualSet visualSet = new VisualSet();
-    {
-      Tensor domain = Subdivide.of(0, 4, 100);
-      visualSet.add(domain, domain.map(pdf::at));
-      visualSet.add(domain, domain.map(cdf::p_lessEquals));
-    }
-    {
-      Tensor sequence = Tensors.vector(0, 0, 1, 1);
-      Tensor domain = Subdivide.of(0, sequence.length() - 1, 100);
-      ScalarTensorFunction suo = BSplineFunctionString.of(2, sequence);
-      visualSet.add(domain, domain.map(suo));
-    }
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-    jFreeChart.setBackgroundPaint(Color.WHITE);
+  void testDistribution(@TempDir File folder) throws IOException {
+    JFreeChart jFreeChart = TrapezoidalDistributionDemo.generate();
     ChartUtils.saveChartAsPNG(new File(folder, "trap_distr.png"), jFreeChart, 640, 480);
   }
 }

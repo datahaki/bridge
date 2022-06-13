@@ -12,35 +12,49 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import ch.alpine.bridge.awt.LazyMouse;
 import ch.alpine.bridge.awt.LazyMouseListener;
-import ch.alpine.tensor.ext.Integers;
 
-/** selector in gui for easy scrolling through a list with mouse-wheel but no pull-down menu */
-// TODO BRIDGE first step: pass reduced list of enums to spinner label from reflection API
-public class SpinnerLabel<T> extends JTextField {
+/** selector in gui for easy scrolling through a list with mouse-wheel
+ * and menu to the side upon mouse-click
+ * extends from a non-editable text field therefore the name "label" */
+public abstract class SpinnerLabel<T> extends JTextField {
   /** JToggleButton background when selected is 184 207 229 selection color
    * subtracts 24 from each RGB value */
   private static final Color SELECTION = new Color(160, 183, 205);
   private static final int BORDER_WIDTH_MIN = 9;
   private static final int BORDER_WIDTH_MAX = 16;
 
+  /** @param supplier
+   * @return */
+  public static <T> SpinnerLabel<T> of(Supplier<List<T>> supplier) {
+    SpinnerLabel<T> spinnerLabel = new SpinnerLabel<>() {
+      @Override
+      public List<T> getList() {
+        return supplier.get();
+      }
+    };
+    return spinnerLabel;
+  }
+
+  /** @param list
+   * @return */
+  public static <T> SpinnerLabel<T> of(List<T> list) {
+    return of(() -> list);
+  }
+
   /** @param values
    * @return */
   public static <T> SpinnerLabel<T> of(@SuppressWarnings("unchecked") T... values) {
-    SpinnerLabel<T> spinnerLabel = new SpinnerLabel<>();
-    spinnerLabel.setList(Arrays.asList(values));
-    spinnerLabel.setIndex(0);
-    return spinnerLabel;
+    return of(List.of(values));
   }
 
   public static <T extends Enum<T>> SpinnerLabel<T> of(Class<T> cls) {
@@ -48,10 +62,14 @@ public class SpinnerLabel<T> extends JTextField {
   }
 
   // ---
+  private final List<SpinnerListener<T>> spinnerListeners = new LinkedList<>();
+  private T value;
   private boolean mouseInside = false;
   private Point lastMouse = new Point();
   private int border_width = 0;
-  private final List<SpinnerListener<T>> spinnerListeners = new LinkedList<>();
+  private boolean isMenuEnabled = true;
+  private boolean isMenuHover = false;
+  private boolean cyclic = false;
 
   @Override
   protected void paintComponent(Graphics _graphics) {
@@ -92,8 +110,6 @@ public class SpinnerLabel<T> extends JTextField {
     }
   }
 
-  private boolean isMenuEnabled = true;
-  private boolean isMenuHover = false;
   private final LazyMouseListener lazyMouseListener = mouseEvent -> {
     if (mouseEvent.getButton() == MouseEvent.BUTTON1 && isEnabled()) {
       Dimension dimension = getSize();
@@ -102,30 +118,18 @@ public class SpinnerLabel<T> extends JTextField {
         increment(point.y < dimension.height / 2 ? -1 : 1); // sign of difference
       else //
         if (isMenuEnabled) {
-          SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(this, isMenuHover);
+          SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(getList(), getValue(), isMenuHover);
+          spinnerMenu.setFont(getFont());
+          spinnerMenu.addSpinnerListener(type -> {
+            setValue(type);
+            reportToAll();
+          });
           spinnerMenu.showRight(this);
         }
     }
   };
 
-  public void setMenuEnabled(boolean isMenuEnabled) {
-    this.isMenuEnabled = isMenuEnabled;
-  }
-
-  public void setMenuHover(boolean hover) {
-    this.isMenuHover = hover;
-  }
-
-  private boolean cyclic = false;
-  private int index = -1;
-  private List<T> list;
-
-  public boolean isOverArrows(Point myPoint) {
-    Dimension dimension = getSize();
-    return mouseInside && dimension.width - border_width < myPoint.x;
-  }
-
-  public SpinnerLabel() {
+  private SpinnerLabel() {
     setEditable(false);
     addMouseWheelListener(mouseWheelEvent -> {
       if (isEnabled())
@@ -175,12 +179,21 @@ public class SpinnerLabel<T> extends JTextField {
     });
   }
 
-  public SpinnerLabel(SpinnerListener<T> spinnerListener) {
-    addSpinnerListener(spinnerListener);
-  }
-
   public void addSpinnerListener(SpinnerListener<T> spinnerListener) {
     spinnerListeners.add(spinnerListener);
+  }
+
+  public void setMenuEnabled(boolean isMenuEnabled) {
+    this.isMenuEnabled = isMenuEnabled;
+  }
+
+  public void setMenuHover(boolean hover) {
+    this.isMenuHover = hover;
+  }
+
+  public boolean isOverArrows(Point point) {
+    Dimension dimension = getSize();
+    return mouseInside && dimension.width - border_width < point.x;
   }
 
   public void setCyclic(boolean cyclic) {
@@ -192,12 +205,15 @@ public class SpinnerLabel<T> extends JTextField {
   }
 
   private void increment(int delta) {
-    int prev = index;
-    index = cyclic //
-        ? Math.floorMod(index + delta, numel())
-        : Math.min(Math.max(0, index + delta), numel() - 1);
+    List<T> list = getList();
+    int prev = list.indexOf(value);
+    if (prev < 0)
+      return;
+    int index = cyclic //
+        ? Math.floorMod(prev + delta, list.size())
+        : Math.min(Math.max(0, prev + delta), list.size() - 1);
     if (index != prev) {
-      updateLabel();
+      setValue(list.get(index));
       reportToAll();
     }
   }
@@ -207,57 +223,18 @@ public class SpinnerLabel<T> extends JTextField {
     spinnerListeners.forEach(spinnerListener -> spinnerListener.actionPerformed(type));
   }
 
-  /** @param list
-   * is used by reference. Any modification to myList is discouraged
-   * and (eventually) reflected in the {@link SpinnerLabel}. */
-  public void setList(List<T> list) {
-    this.list = list;
-    // TODO ensure that index is in valid range
-  }
-
   public T getValue() {
-    return 0 <= index && index < numel() //
-        ? list.get(index)
-        : null;
+    return value;
   }
 
-  public int getIndex() {
-    return index;
-  }
-
-  private int numel() {
-    return list == null ? 0 : list.size();
-  }
-
-  public List<T> getList() {
-    return Collections.unmodifiableList(list);
-  }
+  public abstract List<T> getList();
 
   /** does not invoke call backs
    * 
    * @param type non-null
    * @throws Exception if type is not present in list */
   public void setValue(T type) {
-    Objects.requireNonNull(type);
-    int index = list.indexOf(type);
-    if (index == -1)
-      throw new IndexOutOfBoundsException(index);
-    _setIndex(index);
-  }
-
-  public void setIndex(int index) {
-    Integers.requirePositiveOrZero(index);
-    if (list.size() <= index)
-      throw new IndexOutOfBoundsException(index);
-    _setIndex(index);
-  }
-
-  private void _setIndex(int index) {
-    this.index = index;
-    updateLabel();
-  }
-
-  private void updateLabel() {
+    value = Objects.requireNonNull(type);
     setText(String.valueOf(getValue()));
   }
 
@@ -283,6 +260,6 @@ public class SpinnerLabel<T> extends JTextField {
   }
 
   public void updatePreferredSize() {
-    updatePreferredSize(this, list);
+    updatePreferredSize(this, getList());
   }
 }

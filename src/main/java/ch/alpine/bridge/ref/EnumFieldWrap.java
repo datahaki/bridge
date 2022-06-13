@@ -2,11 +2,13 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import ch.alpine.bridge.ref.ann.FieldList;
-import ch.alpine.bridge.ref.ann.FieldListType;
+import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 
 /* package */ class EnumFieldWrap extends BaseFieldWrap {
   private final Object[] enumConstants;
@@ -30,22 +32,26 @@ import ch.alpine.bridge.ref.ann.FieldListType;
     return ((Enum<?>) object).name();
   }
 
+  @SuppressWarnings("unchecked")
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();
-    FieldList fieldList = field.getAnnotation(FieldList.class);
-    FieldListType fieldListType = Objects.isNull(fieldList) //
-        ? FieldListType.TEXT_FIELD
-        : fieldList.value();
-    switch (fieldListType) {
-    case TEXT_FIELD:
-      return new EnumPanel(this, enumConstants, value);
-    case LIST:
-      return new ListPanel(this, enumConstants, value);
-    case RADIO:
-      return new RadioPanel(this, enumConstants, value);
-    default:
-      throw new IllegalArgumentException();
-    }
+    Supplier<List<Object>> supplier = () -> List.of(enumConstants);
+    FieldSelectionCallback fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
+    if (Objects.nonNull(fieldSelectionCallback))
+      try {
+        Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
+        supplier = () -> {
+          try {
+            return (List<Object>) method.invoke(object);
+          } catch (Exception exception) {
+            exception.printStackTrace();
+          }
+          return List.of();
+        };
+      } catch (Exception exception) {
+        exception.printStackTrace();
+      }
+    return new EnumPanel(this, value, supplier);
   }
 }

@@ -13,13 +13,13 @@ import ch.alpine.tensor.qty.Unit;
 
 class PrettyUnitTest {
   @Test
-  public void testOne() {
+  void testOne() {
     String string = PrettyUnit.of(Unit.ONE);
     assertEquals(string, "");
   }
 
   @Test
-  public void testOfUnit() {
+  void testOfUnit() {
     assertEquals(PrettyUnit.of(Unit.of("kg*m*s^-2")), "kg*m/s\u00b2");
     assertEquals(PrettyUnit.of(Unit.of("kg*m*s^-2*z^-1")), "kg*m*s\u207b\u00b2*z\u207b\u00b9");
     assertEquals(PrettyUnit.of(Unit.of("kg*m^2")), "kg*m\u00b2");
@@ -27,7 +27,7 @@ class PrettyUnitTest {
   }
 
   @Test
-  public void testOfUnitChar() {
+  void testOfUnitChar() {
     assertEquals(PrettyUnit.of(Unit.of("EUR")), "\u20ac");
     assertEquals(PrettyUnit.of(Unit.of("K")), "\u212a");
     assertEquals(PrettyUnit.of(Unit.of("Ohm")), "\u2126");
@@ -36,7 +36,7 @@ class PrettyUnitTest {
   }
 
   @Test
-  public void testQuantity() {
+  void testQuantity() {
     assertEquals(PrettyUnit.of(RealScalar.of(3)), "3");
     assertEquals(PrettyUnit.of(Quantity.of(3, "s^2")), "3 s\u00b2");
     assertEquals(PrettyUnit.of(Quantity.of(3, "s^-2")), "3 s\u207b\u00b2");
@@ -48,23 +48,23 @@ class PrettyUnitTest {
   }
 
   @Test
-  public void testDegC() {
+  void testDegC() {
     assertEquals(PrettyUnit.of(Quantity.of(-23, "degC")), "-23 \u2103");
   }
 
   @Test
-  public void testIndeterminate() {
+  void testIndeterminate() {
     PrettyUnit.of(Quantity.of(DoubleScalar.INDETERMINATE, "degC"));
   }
 
   @Test
-  public void testMicro() {
+  void testMicro() {
     assertEquals(PrettyUnit.of(Unit.of("us")), "\u03BCs");
     assertEquals(PrettyUnit.of(Unit.of("uF")), "\u03BCF");
   }
 
   @Test
-  public void testNullFail() {
+  void testNullFail() {
     assertThrows(Exception.class, () -> PrettyUnit.of((Unit) null));
   }
 }

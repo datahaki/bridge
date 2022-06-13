@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class V011ParamTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     V011Param v011Param = new V011Param(3);
     v011Param.list.set(1, null);
     v011Param.another.set(1, null);

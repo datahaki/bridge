@@ -17,7 +17,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 class VisualRowTest {
   @Test
-  public void testConstructors() {
+  void testConstructors() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor points = Transpose.of(Tensors.of(domain, values));
@@ -33,12 +33,12 @@ class VisualRowTest {
   }
 
   @Test
-  public void testFailNull() {
+  void testFailNull() {
     assertThrows(Exception.class, () -> new VisualSet(null));
   }
 
   @Test
-  public void testPointNonMatrix() {
+  void testPointNonMatrix() {
     VisualSet visualSet = new VisualSet();
     assertThrows(Exception.class, () -> visualSet.add(Tensors.vector(1, 2, 3, 4)));
     assertThrows(Exception.class, () -> visualSet.add(RealScalar.ZERO));

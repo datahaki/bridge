@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class UIManagerLongTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     for (UIManagerLong uiManagerLong : UIManagerLong.values()) {
       uiManagerLong.getAsLong();
     }

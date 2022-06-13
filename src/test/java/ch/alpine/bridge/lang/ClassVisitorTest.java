@@ -12,7 +12,7 @@ import ch.alpine.bridge.wdog.Watchdog;
 
 class ClassVisitorTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     Set<Class<?>> set = new HashSet<>();
     ClassVisitor classVisitor = new ClassVisitor() {
       @Override

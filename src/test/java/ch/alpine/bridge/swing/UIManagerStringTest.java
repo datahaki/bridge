@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class UIManagerStringTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     for (UIManagerString uiManagerString : UIManagerString.values()) {
       uiManagerString.get();
     }

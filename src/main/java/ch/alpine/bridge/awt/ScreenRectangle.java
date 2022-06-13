@@ -6,6 +6,8 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
+/** <p>inspired by
+ * <a href="https://reference.wolfram.com/language/ref/ScreenRectangle.html">ScreenRectangle</a> */
 public class ScreenRectangle {
   private Rectangle screen = new Rectangle();
 

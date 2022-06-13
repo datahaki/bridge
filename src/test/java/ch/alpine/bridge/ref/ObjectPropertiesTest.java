@@ -17,7 +17,7 @@ import ch.alpine.tensor.RationalScalar;
 
 class ObjectPropertiesTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[1].some = false;
     simpleParam.nestedParams[1].text = "here!";
@@ -31,13 +31,13 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  public void testNull() {
+  void testNull() {
     assertEquals(ObjectProperties.list(null), Collections.emptyList());
     assertEquals(ObjectProperties.string(null), "");
   }
 
   @Test
-  public void testTrySaveAndLoad(@TempDir File tempDir) {
+  void testTrySaveAndLoad(@TempDir File tempDir) {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[0].some = false;
     simpleParam.nestedParams[1].text = "here!";
@@ -53,7 +53,7 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  public void testLaram() {
+  void testLaram() {
     SimpleLaram simpleLaram = new SimpleLaram();
     String string0 = ObjectProperties.string(simpleLaram);
     simpleLaram.nestedParams.get(0).some = false;

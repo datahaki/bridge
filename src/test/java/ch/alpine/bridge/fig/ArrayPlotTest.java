@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.pdf.RandomVariate;
@@ -19,12 +18,12 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 class ArrayPlotTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     TestHelper.draw(ArrayPlotDemo.create());
   }
 
   @Test
-  public void testResolution(@TempDir File tempDir) throws IOException {
+  void testResolution(@TempDir File tempDir) throws IOException {
     // the test exists to check whether the image size is constrained by 2^16
     // and finds that the image size may exceed that
     Tensor raw = RandomVariate.of(UniformDistribution.unit(), 2, 70000);
@@ -32,6 +31,5 @@ class ArrayPlotTest {
     VisualImage visualImage = new VisualImage(bufferedImage);
     JFreeChart jFreeChart = ArrayPlot.of(visualImage);
     ChartUtils.saveChartAsPNG(new File(tempDir, "file.png"), jFreeChart, 1000, 300);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("file.png"), jFreeChart, 1000, 300);
   }
 }

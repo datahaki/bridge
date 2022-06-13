@@ -10,7 +10,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 
 class FileBlockTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     assertFalse(FileBlock.of(HomeDirectory.file(), getClass(), false));
     assertTrue(FileBlock.of(HomeDirectory.file(), getClass(), false));
     assertTrue(FileBlock.of(HomeDirectory.file(), getClass(), false));

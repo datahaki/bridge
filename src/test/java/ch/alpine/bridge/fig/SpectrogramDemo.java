@@ -3,7 +3,6 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.Objects;
 
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
@@ -11,14 +10,11 @@ import org.jfree.chart.JFreeChart;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.alg.Reverse;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.img.ColorDataGradient;
 import ch.alpine.tensor.img.ColorDataGradients;
-import ch.alpine.tensor.img.LinearColorDataGradient;
-import ch.alpine.tensor.io.ResourceData;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
@@ -42,11 +38,7 @@ public enum SpectrogramDemo {
     visualSet.getAxisX().setLabel("time");
     visualSet.getAxisY().setUnit(Unit.of("Hz"));
     visualSet.getAxisY().setLabel("frequency");
-    // TODO BRIDGE tensor 107 pending
-    Tensor tensor = ResourceData.of("/ch/alpine/tensor/img/colorscheme/sunset.csv");
-    ColorDataGradient colorDataGradient = Objects.nonNull(tensor) //
-        ? LinearColorDataGradient.of(Reverse.of(tensor))
-        : ColorDataGradients.ALPINE;
+    ColorDataGradient colorDataGradient = ColorDataGradients.SUNSET_REVERSED;
     return Spectrogram.of(visualSet, DirichletWindow.FUNCTION, colorDataGradient);
   }
 

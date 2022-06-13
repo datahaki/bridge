@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class UIManagerDimensionTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     for (UIManagerDimension uiManagerDimension : UIManagerDimension.values()) {
       uiManagerDimension.get();
     }

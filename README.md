@@ -2,11 +2,7 @@
 
 # ch.alpine.bridge
 
-<<<<<<< HEAD
-Library for Java, version `0.3.2-jdk-11`
-=======
-Library for Java, version `0.3.3`
->>>>>>> branch 'v033_11' of git@github.com:datahaki/bridge.git
+Library for Java, version `0.3.5-jdk-11`
 
 ## Plots
 
@@ -61,13 +57,8 @@ Specify `repository` and `dependency` of the tensor library in the `pom.xml` fil
 <dependencies>
   <dependency>
     <groupId>ch.alpine</groupId>
-<<<<<<< HEAD
     <artifactId>java</artifactId>
-    <version>0.3.2-jdk-11</version>
-=======
-    <artifactId>bridge</artifactId>
-    <version>0.3.2</version>
->>>>>>> branch 'v033_11' of git@github.com:datahaki/bridge.git
+    <version>0.3.5-jdk-11</version>
   </dependency>
 </dependencies>
 ```

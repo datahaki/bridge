@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class ComparableLabelTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     ComparableLabel comparableLabel1 = new ComparableLabel(3);
     ComparableLabel comparableLabel2 = new ComparableLabel(5);
     assertEquals(Integer.compare(3, 5), comparableLabel1.compareTo(comparableLabel2));

@@ -10,7 +10,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 @ReflectionMarker
 class FieldClipTest {
   @Test
-  public void testFailEx() {
+  void testFailEx() {
     FieldClipT fieldClipCorrupt = new FieldClipT();
     assertThrows(Exception.class, () -> new PanelFieldsEditor(fieldClipCorrupt));
   }

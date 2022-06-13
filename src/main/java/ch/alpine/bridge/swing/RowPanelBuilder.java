@@ -7,13 +7,12 @@ import java.awt.GridBagLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-/** THE USE OF THIS CLASS IN THE APPLICATION LAYER IS NOT RECOMMENDED ! */
-public final class RowPanel {
+public final class RowPanelBuilder {
   private final GridBagLayout gridBagLayout = new GridBagLayout();
   private final JPanel jPanel = new JPanel(gridBagLayout);
   private final GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
-  public RowPanel() {
+  public RowPanelBuilder() {
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
     jPanel.setOpaque(false);
   }
@@ -28,6 +27,11 @@ public final class RowPanel {
     jPanel.add(jComponent);
   }
 
+  /** append a row consisting of two components of equal height:
+   * jComponent1 is shown to the left, and jComponent2 to the right
+   * 
+   * @param jComponent1
+   * @param jComponent2 */
   public void appendRow(JComponent jComponent1, JComponent jComponent2) {
     ++gridBagConstraints.gridy; // initially -1
     // ---

@@ -10,7 +10,7 @@ import ch.alpine.tensor.qty.Quantity;
 
 class ParamContainerTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     ParamContainer paramContainer = ParamContainer.INSTANCE;
     assertInstanceOf(Quantity.class, paramContainer.maxTor);
     assertEquals(paramContainer.shape.length(), 4);

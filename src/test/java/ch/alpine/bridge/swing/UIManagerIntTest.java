@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class UIManagerIntTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     for (UIManagerInt uiManagerInt : UIManagerInt.values()) {
       uiManagerInt.getAsInt();
     }

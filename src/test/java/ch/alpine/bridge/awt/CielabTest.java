@@ -16,7 +16,7 @@ import ch.alpine.tensor.sca.Clips;
 
 class CielabTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     Tensor xyz = Tensors.vector(0.3, 0.4, 0.5);
     Tensor lab = Cielab.D65.xyz2lab(xyz);
     lab.map(Clips.absolute(1)::requireInside);
@@ -25,7 +25,7 @@ class CielabTest {
   }
 
   @Test
-  public void testAlpha() {
+  void testAlpha() {
     Color c1 = new Color(255, 255, 255, 0);
     Color c2 = new Color(255, 255, 255, 255);
     Color split = Cielab.D50.split(c1, c2, RealScalar.of(0.3));
@@ -33,7 +33,7 @@ class CielabTest {
   }
 
   @Test
-  public void testVectorFail() {
+  void testVectorFail() {
     assertThrows(Exception.class, () -> Cielab.D65.xyz2lab(Tensors.vector(0, 0, 0, 0)));
     assertThrows(Exception.class, () -> Cielab.D65.lab2xyz(Tensors.vector(0, 0, 0, 0)));
   }

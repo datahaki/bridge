@@ -12,7 +12,7 @@ class FieldLabelArrayTest {
   public Integer integer = 3;
 
   @Test
-  public void testSimple() throws NoSuchFieldException, SecurityException {
+  void testSimple() throws NoSuchFieldException, SecurityException {
     Field field = FieldLabelArrayTest.class.getField("integer");
     FieldLabelArray fieldLabelArray = field.getAnnotation(FieldLabelArray.class);
     assertEquals(fieldLabelArray.value().length, 1);

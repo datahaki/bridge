@@ -9,11 +9,10 @@ import java.util.function.Supplier;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 
-import ch.alpine.bridge.swing.StandardMenu;
+import ch.alpine.bridge.swing.SpinnerMenu;
 
 /* package */ class MenuPanel extends StringPanel {
   private static final String BUTTON_TEXT = "?";
@@ -29,24 +28,15 @@ import ch.alpine.bridge.swing.StandardMenu;
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
-        StandardMenu standardMenu = new StandardMenu() {
-          @Override
-          protected void design(JPopupMenu jPopupMenu) {
-            for (String string : supplier.get()) {
-              JMenuItem jMenuItem = new JMenuItem(string);
-              jMenuItem.setFont(getJTextField().getFont());
-              FieldsEditorManager.establish(FieldsEditorKey.INT_STRING_PANEL_HEIGHT, jMenuItem);
-              jMenuItem.addActionListener(event -> {
-                getJTextField().setText(string);
-                indicateGui();
-                nofifyIfValid(string);
-              });
-              // TODO BRIDGE here the item is not yet selected as in SpinnerMenu...
-              jPopupMenu.add(jMenuItem);
-            }
-          }
-        };
-        standardMenu.south(jButton);
+        JTextField jTextField = getJTextField();
+        SpinnerMenu<String> spinnerMenu = new SpinnerMenu<>(supplier.get(), jTextField.getText(), false);
+        spinnerMenu.setFont(jTextField.getFont());
+        spinnerMenu.addSpinnerListener(string -> {
+          jTextField.setText(string);
+          indicateGui();
+          nofifyIfValid(string);
+        });
+        spinnerMenu.showRight(jButton);
       }
     });
     jPanel.add(BorderLayout.CENTER, getJTextField());

@@ -7,7 +7,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 class FieLabParamTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     ObjectProperties.string(new FieLabParam(4));
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(new FieLabParam(4));
     fieldsPanel.createJScrollPane();

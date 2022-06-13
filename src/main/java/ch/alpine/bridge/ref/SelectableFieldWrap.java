@@ -3,7 +3,6 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,7 +29,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
   public FieldPanel createFieldPanel(Object object, Object value) {
     if (Objects.nonNull(fieldSelectionArray))
       try {
-        return new MenuPanel(this, value, () -> Arrays.asList(fieldSelectionArray.value()));
+        return new MenuPanel(this, value, () -> List.of(fieldSelectionArray.value()));
       } catch (Exception exception) {
         exception.printStackTrace();
       }
@@ -43,7 +42,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
           } catch (Exception exception) {
             exception.printStackTrace();
           }
-          return Arrays.asList();
+          return List.of();
         });
       } catch (Exception exception) {
         exception.printStackTrace();

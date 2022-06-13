@@ -83,6 +83,7 @@ import ch.alpine.tensor.img.ColorFormat;
   public void updateJComponent(Object value) {
     super.updateJComponent(value);
     Color color = (Color) value;
+    // background color modification does not work for all l&f, for instance GTK_PLUS
     jButton.setBackground(color);
   }
 }
