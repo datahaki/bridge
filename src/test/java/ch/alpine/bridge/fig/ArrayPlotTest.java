@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.pdf.RandomVariate;
@@ -32,6 +31,5 @@ class ArrayPlotTest {
     VisualImage visualImage = new VisualImage(bufferedImage);
     JFreeChart jFreeChart = ArrayPlot.of(visualImage);
     ChartUtils.saveChartAsPNG(new File(tempDir, "file.png"), jFreeChart, 1000, 300);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("file.png"), jFreeChart, 1000, 300);
   }
 }
