@@ -22,7 +22,6 @@ public class PanelFieldsEditor extends FieldsEditor {
 
     @Override // from ObjectFieldVisitor
     public void push(String key, Field field, Integer index) {
-      System.out.println("HERE " + key);
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, index));
       jLabel.setEnabled(false);
       rowPanelBuilder.appendRow(jLabel);

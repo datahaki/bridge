@@ -11,7 +11,7 @@ import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 
-/** denotes that a field of type {@link Scalar} should satisfy {@link IntegerQ} 
+/** denotes that a field of type {@link Scalar} should satisfy {@link IntegerQ}
  * 
  * @see InvalidFieldDetection */
 @Documented
