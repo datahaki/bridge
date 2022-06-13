@@ -3,10 +3,10 @@
   <groupId>ch.alpine</groupId>
   <artifactId>bridge</artifactId>
   <versioning>
-    <release>0.3.5-jdk-11</release>
+    <release>0.3.6-jdk-11</release>
     <versions>
-      <version>0.3.5-jdk-11</version>
+      <version>0.3.6-jdk-11</version>
     </versions>
-    <lastUpdated>20220613040410</lastUpdated>
+    <lastUpdated>20220613092907</lastUpdated>
   </versioning>
 </metadata>
