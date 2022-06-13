@@ -105,7 +105,7 @@ public class ObjectFields {
 
   private static List<Object> privateList(Object object) {
     List<Object> list = new ArrayList<>();
-    ObjectFields.of(object, new ObjectFieldGui() {
+    ObjectFields.of(object, new ObjectFieldAll() {
       @Override
       public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
         list.add(value);

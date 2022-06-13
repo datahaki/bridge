@@ -12,29 +12,37 @@ import javax.swing.JOptionPane;
 
 /** also works if file already exists before any launch */
 public class FileBlock {
-  public static boolean of(File folder, Class<?> cls, boolean showMessage) {
-    FileBlock fileBlock = new FileBlock(folder, cls);
+  /** @param folder to generated `.lock` file in
+   * @param uid as filename
+   * @param showMessage whether to pop-up error dialog
+   * @return */
+  public static boolean of(File folder, String uid, boolean showMessage) {
+    FileBlock fileBlock = new FileBlock(folder, uid);
     boolean isActive = fileBlock.isActive();
     if (isActive && showMessage)
       fileBlock.showMessage();
     return isActive;
   }
 
+  public static boolean of(File folder, Class<?> cls, boolean showMessage) {
+    return of(folder, cls.getCanonicalName(), showMessage);
+  }
+
   // ---
   private final File folder;
-  private final Class<?> cls;
+  private final String uid;
   private RandomAccessFile randomAccessFile;
   private FileChannel fileChannel;
   private FileLock fileLock;
 
-  private FileBlock(File folder, Class<?> cls) {
+  private FileBlock(File folder, String identifier) {
     this.folder = folder;
-    this.cls = cls;
+    this.uid = identifier;
   }
 
   /* package */ boolean isActive() {
     try {
-      File file = new File(folder, '.' + cls.getCanonicalName() + ".lock");
+      File file = new File(folder, '.' + uid + ".lock");
       randomAccessFile = new RandomAccessFile(file, "rw");
       fileChannel = randomAccessFile.getChannel();
       fileLock = fileChannel.tryLock(); // documentation not clear on "return vs. exception"
@@ -75,6 +83,10 @@ public class FileBlock {
   }
 
   private void showMessage() {
-    JOptionPane.showMessageDialog(null, cls.getSimpleName() + " is already running.", "Execution blocked", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog( //
+        null, //
+        uid + " is already running.", //
+        "Execution blocked", //
+        JOptionPane.ERROR_MESSAGE);
   }
 }

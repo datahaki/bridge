@@ -34,7 +34,7 @@ class ObjectFieldGuiTest {
 
   @Test
   void test() {
-    ObjectFields.of(param, new ObjectFieldGui() {
+    ObjectFields.of(param, new ObjectFieldAll() {
       @Override
       public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
         ++countGui;
