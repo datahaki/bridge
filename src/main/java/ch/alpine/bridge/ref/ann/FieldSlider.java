@@ -7,9 +7,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ch.alpine.bridge.ref.util.InvalidFieldDetection;
+
 /** The field slider is an annotation for a scalar field.
  * In order to take effect, the field also has to be annotated with a
- * {@link FieldClip} of finite width. */
+ * {@link FieldClip} of finite width.
+ * 
+ * @see InvalidFieldDetection */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

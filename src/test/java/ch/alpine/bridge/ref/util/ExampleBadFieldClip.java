@@ -7,7 +7,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.Quantity;
 
 @ReflectionMarker
-public class FieldClipInvalidExample {
+public class ExampleBadFieldClip {
   @FieldClip(min = "0[A]", max = "3[A]")
   public Scalar current = Quantity.of(4, "A");
 }
