@@ -7,7 +7,7 @@ import ch.alpine.tensor.Tensors;
 
 class DatasetFactoryTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.fromString("{{0, 0}, {1, NaN}}"));
     DatasetFactory.xySeriesCollection(visualSet);

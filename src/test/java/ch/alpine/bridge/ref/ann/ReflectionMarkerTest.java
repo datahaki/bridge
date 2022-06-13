@@ -15,7 +15,7 @@ import ch.alpine.tensor.ext.Timing;
 
 class ReflectionMarkerTest {
   @Test
-  public void testReflection() {
+  void testReflection() {
     Timing timing = Timing.started();
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class UIManagerBorderTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     for (UIManagerBorder uiManagerBorder : UIManagerBorder.values()) {
       uiManagerBorder.get();
     }

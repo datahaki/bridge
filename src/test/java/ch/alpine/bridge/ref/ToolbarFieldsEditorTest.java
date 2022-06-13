@@ -13,13 +13,13 @@ import ch.alpine.bridge.ref.util.ToolbarFieldsEditor;
 
 class ToolbarFieldsEditorTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     FieldsEditor fieldsEditor = ToolbarFieldsEditor.add(new GuiExtension(), new JToolBar());
     fieldsEditor.updateJComponents();
   }
 
   @Test
-  public void testChallenge() throws InterruptedException {
+  void testChallenge() throws InterruptedException {
     GuiExtension guiExtension = new GuiExtension();
     guiExtension.function = null;
     guiExtension.status = null;
@@ -45,7 +45,7 @@ class ToolbarFieldsEditorTest {
   }
 
   @Test
-  public void testFrame() throws InterruptedException {
+  void testFrame() throws InterruptedException {
     GuiExtension guiExtension = new GuiExtension();
     JToolBar jToolBar = new JToolBar();
     ToolbarFieldsEditor.add(guiExtension, jToolBar);

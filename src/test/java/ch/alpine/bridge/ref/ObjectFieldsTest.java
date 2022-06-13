@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 class ObjectFieldsTest {
   @Test
-  public void testFields() {
+  void testFields() {
     List<Field> list = ObjectFields.list(SimpleParam.class);
     List<String> collect = list.stream().map(f -> f.getName()).collect(Collectors.toList());
     // System.out.println(collect);
@@ -24,12 +24,12 @@ class ObjectFieldsTest {
   }
 
   @Test
-  public void testSimple() {
+  void testSimple() {
     assertThrows(Exception.class, () -> ObjectFields.of(null, null));
   }
 
   @Test
-  public void testDeepEquals() {
+  void testDeepEquals() {
     SimpleParam sp1 = new SimpleParam();
     SimpleParam sp2 = new SimpleParam();
     assertTrue(ObjectFields.deepEquals(sp1, sp2));

@@ -9,7 +9,7 @@ import ch.alpine.tensor.qty.Quantity;
 
 class FrailValueTest {
   @Test
-  public void testSimple() throws InterruptedException {
+  void testSimple() throws InterruptedException {
     FrailValue<Integer> frailValue = new FrailValue<>(Quantity.of(0.04, "s"));
     assertTrue(frailValue.getValue().isEmpty());
     frailValue.setValue(314);

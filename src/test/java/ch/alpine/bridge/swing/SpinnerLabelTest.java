@@ -14,18 +14,18 @@ import ch.alpine.tensor.mat.re.Pivots;
 
 class SpinnerLabelTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     assertTrue(new JLabel("asd").getPreferredSize().getWidth() //
         < new JLabel("asd123123").getPreferredSize().getWidth());
   }
 
   @Test
-  public void testEnum() {
+  void testEnum() {
     SpinnerLabel.of(Pivots.class);
   }
 
   @Test
-  public void testFrame() throws InterruptedException {
+  void testFrame() throws InterruptedException {
     JFrame jFrame = new JFrame();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);

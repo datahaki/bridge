@@ -21,7 +21,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 
 class URLFetchTest {
   @Test
-  public void testSimple(@TempDir File tempDir) throws MalformedURLException, IOException {
+  void testSimple(@TempDir File tempDir) throws MalformedURLException, IOException {
     if (TestHelper.IS_ONLINE) {
       File file = new File(tempDir, "file.ico");
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/favicon.ico"))) {
@@ -36,7 +36,7 @@ class URLFetchTest {
   }
 
   @Test
-  public void testNoFileFail() {
+  void testNoFileFail() {
     if (TestHelper.IS_ONLINE)
       try {
         try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/doesnotexist.file.unknown"))) {
@@ -48,7 +48,7 @@ class URLFetchTest {
   }
 
   @Test
-  public void testInputStream() throws MalformedURLException, IOException {
+  void testInputStream() throws MalformedURLException, IOException {
     BufferedImage bufferedImage = null;
     if (TestHelper.IS_ONLINE)
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/_images/icon.bik.png"))) {
@@ -62,7 +62,7 @@ class URLFetchTest {
   }
 
   @Test
-  public void testDuplicate(@TempDir File tempDir) throws IOException {
+  void testDuplicate(@TempDir File tempDir) throws IOException {
     if (TestHelper.IS_ONLINE) {
       File file = new File(tempDir, "file.ico");
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/favicon.ico"))) {

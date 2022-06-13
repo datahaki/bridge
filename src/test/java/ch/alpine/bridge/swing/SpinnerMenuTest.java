@@ -13,7 +13,7 @@ import ch.alpine.tensor.mat.re.Pivots;
 
 class SpinnerMenuTest {
   @Test
-  public void testSimple() throws InterruptedException {
+  void testSimple() throws InterruptedException {
     SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), Pivots.ARGMAX_ABS, false);
     spinnerMenu.addSpinnerListener(type -> System.out.println(type));
     JFrame jFrame = new JFrame();
@@ -26,7 +26,7 @@ class SpinnerMenuTest {
   }
 
   @Test
-  public void testNull() throws InterruptedException {
+  void testNull() throws InterruptedException {
     SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), null, false);
     spinnerMenu.addSpinnerListener(type -> System.out.println(type));
     JFrame jFrame = new JFrame();
@@ -39,7 +39,7 @@ class SpinnerMenuTest {
   }
 
   @Test
-  public void testNonContains() throws InterruptedException {
+  void testNonContains() throws InterruptedException {
     SpinnerMenu<ColorDataGradients> spinnerMenu = new SpinnerMenu<>(Arrays.asList(ColorDataGradients.ALPINE), ColorDataGradients.CLASSIC, false);
     spinnerMenu.addSpinnerListener(type -> System.out.println(type));
     JFrame jFrame = new JFrame();

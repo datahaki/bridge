@@ -23,20 +23,20 @@ import demo.tensor.pdf.TruncatedDiscreteDemo;
 
 class HistogramTest {
   @Test
-  public void testEmpty() {
+  void testEmpty() {
     VisualSet visualSet = new VisualSet();
     TestHelper.draw(Histogram.of(visualSet));
   }
 
   @Test
-  public void testEmptyRow() {
+  void testEmptyRow() {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());
     TestHelper.draw(Histogram.of(visualSet));
   }
 
   @Test
-  public void testQuantity(@TempDir File folder) throws IOException {
+  void testQuantity(@TempDir File folder) throws IOException {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.fromString("{{2[m],3[s]}, {4[m],5[s]}, {5[m],1[s]}}"));
     JFreeChart jFreeChart = Histogram.of(visualSet);
@@ -45,7 +45,7 @@ class HistogramTest {
   }
 
   @Test
-  public void testDistrib1(@TempDir File folder) throws IOException {
+  void testDistrib1(@TempDir File folder) throws IOException {
     UnivariateDistribution dist = (UnivariateDistribution) NormalDistribution.of(1, 2);
     HistogramDistribution distribution = (HistogramDistribution) //
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
@@ -62,7 +62,7 @@ class HistogramTest {
   }
 
   @Test
-  public void testDistrib2(@TempDir File folder) throws IOException {
+  void testDistrib2(@TempDir File folder) throws IOException {
     UnivariateDistribution dist = (UnivariateDistribution) NormalDistribution.of(1, 2);
     HistogramDistribution distribution = (HistogramDistribution) //
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
@@ -80,7 +80,7 @@ class HistogramTest {
   }
 
   @Test
-  public void testTruncated(@TempDir File folder) throws IOException {
+  void testTruncated(@TempDir File folder) throws IOException {
     JFreeChart jFreeChart = TruncatedDiscreteDemo.generate();
     ChartUtils.saveChartAsPNG(new File(folder, "truncated.png"), jFreeChart, 640, 480);
   }

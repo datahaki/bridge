@@ -18,12 +18,12 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 class ArrayPlotTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     TestHelper.draw(ArrayPlotDemo.create());
   }
 
   @Test
-  public void testResolution(@TempDir File tempDir) throws IOException {
+  void testResolution(@TempDir File tempDir) throws IOException {
     // the test exists to check whether the image size is constrained by 2^16
     // and finds that the image size may exceed that
     Tensor raw = RandomVariate.of(UniformDistribution.unit(), 2, 70000);

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 class StoredExtensionTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     // ObjectProperties.wrap(new StoredExtension());
   }
 }

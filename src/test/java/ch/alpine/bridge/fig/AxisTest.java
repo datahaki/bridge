@@ -14,7 +14,7 @@ import ch.alpine.tensor.sca.Clips;
 
 class AxisTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     assertEquals(new Axis().getUnitString(), "");
     Axis axis = new Axis();
     axis.setUnit(Unit.ONE);
@@ -22,7 +22,7 @@ class AxisTest {
   }
 
   @Test
-  public void testUnit() {
+  void testUnit() {
     Axis axis = new Axis();
     axis.setUnit(Unit.of("m"));
     assertEquals(axis.getUnitString(), "[m]");
@@ -31,7 +31,7 @@ class AxisTest {
   }
 
   @Test
-  public void testMap() {
+  void testMap() {
     Clip clip = Axis.slash(Clips.interval(Quantity.of(3, "km"), Quantity.of(4, "km")), UnitConvert.SI().to("mi"));
     assertEquals(clip.toString(), "Clip[15625/8382[mi], 31250/12573[mi]]");
   }

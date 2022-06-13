@@ -14,7 +14,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 class PanelFieldsEditorTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(new GuiExtension());
     panelFieldsEditor.addUniversalListener(() -> {
       // ---
@@ -23,7 +23,7 @@ class PanelFieldsEditorTest {
   }
 
   @Test
-  public void testInstances() {
+  void testInstances() {
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(new GuiExtension());
     List<JComponent> l1 = panelFieldsEditor.list().stream().map(FieldPanel::getJComponent).collect(Collectors.toList());
     List<JComponent> l2 = panelFieldsEditor.list().stream().map(FieldPanel::getJComponent).collect(Collectors.toList());

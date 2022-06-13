@@ -14,7 +14,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 class GuiExtensionTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
     fieldsPanel.addUniversalListener(() -> System.out.println("changed"));
@@ -22,7 +22,7 @@ class GuiExtensionTest {
   }
 
   @Test
-  public void testReader() throws IOException {
+  void testReader() throws IOException {
     GuiExtension guiExtension = new GuiExtension();
     String string = ObjectProperties.string(guiExtension);
     Properties properties = new Properties();
@@ -49,7 +49,7 @@ class GuiExtensionTest {
   // }
 
   @Test
-  public void testGetMethodFail() {
+  void testGetMethodFail() {
     assertThrows(Exception.class, () -> GuiExtension.class.getMethod("stringValues2"));
   }
 }

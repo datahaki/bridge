@@ -9,7 +9,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 class FieldLabelsTest {
   @Test
-  public void testFormatFail() {
+  void testFormatFail() {
     FieldLabelsT fieldLabelsT = new FieldLabelsT();
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(fieldLabelsT);
     assertEquals(fieldsPanel.list().size(), 4);

@@ -14,12 +14,12 @@ import org.junit.jupiter.api.Test;
 
 class DisjointSetsTest {
   @Test
-  public void testAllocate() {
+  void testAllocate() {
     DisjointSets.allocate(123);
   }
 
   @Test
-  public void testSimple() {
+  void testSimple() {
     int n = 100;
     DisjointSets disjointSets = new DisjointSets();
     IntStream.range(0, n).forEach(i -> disjointSets.add());
@@ -47,7 +47,7 @@ class DisjointSetsTest {
   }
 
   @Test
-  public void testSingle() {
+  void testSingle() {
     int n = 1000;
     DisjointSets disjointSets = new DisjointSets();
     IntStream.range(0, n).forEach(i -> disjointSets.add());
@@ -61,7 +61,7 @@ class DisjointSetsTest {
   }
 
   @Test
-  public void testDual() {
+  void testDual() {
     int n = 1000;
     DisjointSets disjointSets = new DisjointSets();
     IntStream.range(0, n).forEach(i -> disjointSets.add());
@@ -75,7 +75,7 @@ class DisjointSetsTest {
   }
 
   @Test
-  public void testSame() {
+  void testSame() {
     int n = 1000;
     DisjointSets disjointSets = new DisjointSets();
     IntStream.range(0, n).forEach(i -> disjointSets.add());

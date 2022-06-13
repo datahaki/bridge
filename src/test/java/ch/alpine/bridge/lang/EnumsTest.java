@@ -20,7 +20,7 @@ class EnumsTest {
   }
 
   @Test
-  public void testSimple() {
+  void testSimple() {
     Set<ColorDataGradients> set = Enums.setFromMask(ColorDataGradients.class, 2 | 8);
     assertFalse(set.contains(ColorDataGradients.CLASSIC));
     assertTrue(set.contains(ColorDataGradients.HUE));
@@ -29,7 +29,7 @@ class EnumsTest {
   }
 
   @Test
-  public void testAdvance() {
+  void testAdvance() {
     Class<? extends Pivots> cls = Pivots.ARGMAX_ABS.getClass();
     assertTrue(cls.isAnonymousClass());
     Class<?> enc = cls.getEnclosingClass();
@@ -41,13 +41,13 @@ class EnumsTest {
   }
 
   @Test
-  public void testCycle() {
+  void testCycle() {
     Pivot pivot = Enums.cycle(Enums.cycle(Pivots.ARGMAX_ABS));
     assertEquals(pivot, Pivots.ARGMAX_ABS);
   }
 
   @Test
-  public void testNested() {
+  void testNested() {
     assertEquals(Enums.increment(NestedEnum.A), NestedEnum.B);
   }
 }

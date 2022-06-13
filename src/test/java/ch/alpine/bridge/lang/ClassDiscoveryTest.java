@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class ClassDiscoveryTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     AtomicInteger count = new AtomicInteger();
     ClassVisitor classVisitor = new ClassVisitor() {
       @Override

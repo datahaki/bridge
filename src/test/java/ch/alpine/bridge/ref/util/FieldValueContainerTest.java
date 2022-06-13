@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class FieldValueContainerTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     FieldValueContainer fvc = new FieldValueContainer("key", null, "object", "value");
     assertEquals(fvc.key(), "key");
     assertEquals(fvc.object(), "object");

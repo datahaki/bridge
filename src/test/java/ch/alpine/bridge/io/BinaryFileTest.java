@@ -17,7 +17,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 class BinaryFileTest {
   @Test
-  public void testSimple(@TempDir File tempDir) throws FileNotFoundException, IOException {
+  void testSimple(@TempDir File tempDir) throws FileNotFoundException, IOException {
     File file = new File(tempDir, "file");
     assertFalse(file.exists());
     {

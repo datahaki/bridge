@@ -20,7 +20,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 class ZipDirectoryTest {
   @Test
-  public void testSimple(@TempDir File tempDir) throws FileNotFoundException, IOException {
+  void testSimple(@TempDir File tempDir) throws FileNotFoundException, IOException {
     File folder = new File(tempDir, "folder");
     assertFalse(folder.exists());
     folder.mkdirs();

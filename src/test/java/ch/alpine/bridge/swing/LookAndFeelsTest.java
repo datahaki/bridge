@@ -1,10 +1,7 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import javax.swing.JMenu;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -14,7 +11,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 class LookAndFeelsTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     for (LookAndFeelInfo lookAndFeelInfo : UIManager.getInstalledLookAndFeels())
       try {
         UIManager.setLookAndFeel(lookAndFeelInfo.getClassName());
@@ -25,31 +22,11 @@ class LookAndFeelsTest {
 
   @ParameterizedTest
   @EnumSource(LookAndFeels.class)
-  public void testUpdateUI(LookAndFeels lookAndFeels) {
+  void testUpdateUI(LookAndFeels lookAndFeels) {
     try {
       lookAndFeels.updateUI();
       JMenu jMenu = new JMenu();
       System.out.println(lookAndFeels + "  " + jMenu.getForeground());
-    } catch (Exception exception) {
-      exception.printStackTrace();
-    }
-  }
-
-  @ParameterizedTest
-  @EnumSource(LookAndFeels.class)
-  public void testIntro(LookAndFeels lookAndFeels) {
-    boolean flag = false;
-    try {
-      lookAndFeels.updateUI();
-      assertEquals(UIManager.getInt("asd"), flag ? 123 : 0);
-      UIDefaults uiDefaults = UIManager.getDefaults();
-      assertEquals(uiDefaults.getInt("asd"), flag ? 123 : 0);
-      uiDefaults.put("asd", 123);
-      flag = true;
-      int int1 = uiDefaults.getInt("asd");
-      assertEquals(int1, 123);
-      int int2 = UIManager.getInt("asd");
-      assertEquals(int2, 123);
     } catch (Exception exception) {
       exception.printStackTrace();
     }
