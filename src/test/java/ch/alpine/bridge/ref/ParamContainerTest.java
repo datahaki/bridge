@@ -15,33 +15,6 @@ class ParamContainerTest {
     assertInstanceOf(Quantity.class, paramContainer.maxTor);
     assertEquals(paramContainer.shape.length(), 4);
   }
-  // public void testFile() {
-  // ParamContainerFile paramContainerFile = new ParamContainerFile();
-  // paramContainerFile.file = HomeDirectory.file("file.txt");
-  // ObjectProperties tensorProperties = ObjectProperties.wrap(paramContainerFile);
-  // Properties properties = tensorProperties.createProperties();
-  // ParamContainerFile copy = new ParamContainerFile();
-  // ObjectProperties wrap = ObjectProperties.wrap(copy);
-  // wrap.set(properties);
-  // // System.out.println(properties);
-  // assertEquals(copy.file, paramContainerFile.file);
-  // }
-  //
-  // public void testExportImport() throws IOException {
-  // ParamContainerFile paramContainerFile = new ParamContainerFile();
-  // paramContainerFile.text = "abc";
-  // paramContainerFile.tensor = Tensors.vector(1, 2, 3);
-  // paramContainerFile.file = HomeDirectory.file("file.txt");
-  // ObjectProperties tensorProperties = ObjectProperties.wrap(paramContainerFile);
-  // File storage = TestFile.withExtension("properties");
-  // tensorProperties.save(storage);
-  // ParamContainerFile loaded = ObjectProperties.wrap(new ParamContainerFile()).tryLoad(storage);
-  // assertEquals(loaded.file, paramContainerFile.file);
-  // assertEquals(loaded.tensor, paramContainerFile.tensor);
-  // assertEquals(loaded.text, paramContainerFile.text);
-  // storage.delete();
-  // }
-  //
   // public void testEnumPropagate() {
   // Properties properties;
   // {

@@ -29,4 +29,13 @@ class PanelFieldsEditorTest {
     List<JComponent> l2 = panelFieldsEditor.list().stream().map(FieldPanel::getJComponent).collect(Collectors.toList());
     assertEquals(l1, l2);
   }
+
+  @Test
+  void testNullValues() {
+    GuiExtension guiExtension = new GuiExtension();
+    guiExtension.cdg = null;
+    guiExtension.pivots = null;
+    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
+    panelFieldsEditor.createJScrollPane();
+  }
 }

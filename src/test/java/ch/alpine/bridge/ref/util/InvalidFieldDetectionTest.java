@@ -13,6 +13,11 @@ class InvalidFieldDetectionTest {
   }
 
   @Test
+  void testStringScalar() {
+    assertFalse(InvalidFieldDetection.isEmpty(new ExampleBadScalar()));
+  }
+
+  @Test
   void testClip() {
     assertThrows(Exception.class, () -> InvalidFieldDetection.of(new ExampleBadClip()));
   }
