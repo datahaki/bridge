@@ -11,7 +11,8 @@ import ch.alpine.tensor.io.ResourceData;
 
 @ReflectionMarker
 public class ParamContainer {
-  public static final ParamContainer INSTANCE = ObjectProperties.set(new ParamContainer(), ResourceData.properties("/ch/alpine/bridge/io/ParamContainer.properties"));
+  public static final ParamContainer INSTANCE = ObjectProperties.set(new ParamContainer(),
+      ResourceData.properties("/ch/alpine/bridge/io/ParamContainer.properties"));
   // ---
   public String string;
   public Scalar maxTor;

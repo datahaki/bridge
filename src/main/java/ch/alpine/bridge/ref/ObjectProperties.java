@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -22,8 +23,8 @@ import ch.alpine.tensor.io.Import;
  * 
  * values of non-final, non-static, non-transient but public members of type
  * {@link Tensor}, {@link Scalar}, {@link String}, {@link File}, {@link Boolean},
- * {@link Enum}, {@link Color}
- * are stored in, and retrieved from files in the {@link Properties} format
+ * {@link Enum}, {@link Color}, as well as nested parameters or arrays/lists
+ * thereof are stored in, and retrieved from files in the {@link Properties} format.
  * 
  * the listed of supported types can be extended, see {@link FieldWraps}
  * 
@@ -31,6 +32,8 @@ import ch.alpine.tensor.io.Import;
  * of a parse failure, or invalid assignment, the preset/default/current
  * value is retained. */
 public class ObjectProperties {
+  private static final Charset CHARSET = Charset.forName("ISO8859-1");
+
   /** store tracked fields of given object in given file
    * in the {@link Properties}-format.
    * The ordering of the key-value pairs in the file
@@ -40,7 +43,8 @@ public class ObjectProperties {
    * @param file properties
    * @throws IOException */
   public static void save(Object object, File file) throws IOException {
-    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+    // TODO BRIDGE only covers characters up to code point 0xff
+    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, CHARSET))) {
       ObjectFieldVisitor objectFieldVisitor = new ObjectFieldIo() {
         @Override // from ObjectFieldVisitor
         public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
@@ -77,6 +81,29 @@ public class ObjectProperties {
       // ---
     }
     return false;
+  }
+
+  // ---
+  /** @param object
+   * @param file properties
+   * @return
+   * @throws FileNotFoundException
+   * @throws IOException
+   * @see Properties */
+  public static void load(Object object, File file) throws FileNotFoundException, IOException {
+    set(object, Import.properties(file));
+  }
+
+  /** @param object
+   * @param file properties
+   * @return object with fields updated from properties file if loading was successful */
+  public static <T> T tryLoad(T object, File file) {
+    try {
+      load(object, file);
+    } catch (Exception exception) {
+      // ---
+    }
+    return object;
   }
 
   // ---
@@ -128,6 +155,8 @@ public class ObjectProperties {
   /** @param object
    * @return */
   public static String string(Object object) {
+    // TODO BRIDGE does not work for all string content! not even for backslash
+    // ... solution use the properties export binary contant as string
     return list(object).stream().collect(Collectors.joining("\n"));
   }
 
@@ -135,32 +164,11 @@ public class ObjectProperties {
    * @return string
    * @throws IOException */
   public static void fromString(Object object, String string) throws IOException {
+    // TODO BRIDGE does not work for all string content!
     Properties properties = new Properties();
     try (StringReader stringReader = new StringReader(string)) {
       properties.load(stringReader);
     }
     set(object, properties);
-  }
-
-  // ---
-  /** @param object
-   * @param file
-   * @return
-   * @throws FileNotFoundException
-   * @throws IOException */
-  public static void load(Object object, File file) throws FileNotFoundException, IOException {
-    set(object, Import.properties(file));
-  }
-
-  /** @param object
-   * @param file properties
-   * @return object with fields updated from properties file if loading was successful */
-  public static <T> T tryLoad(T object, File file) {
-    try {
-      load(object, file);
-    } catch (Exception exception) {
-      // ---
-    }
-    return object;
   }
 }
