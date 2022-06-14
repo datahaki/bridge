@@ -170,7 +170,7 @@ public class ObjectProperties {
 
   /** @param object
    * @return single string expression that encodes the content of given object */
-  public static String save(Object object) {
+  public static String join(Object object) {
     return list(object).stream().collect(Collectors.joining("\n"));
   }
 
@@ -180,8 +180,8 @@ public class ObjectProperties {
    * @param object to be assigned the values specified in given string
    * @param string single string expression that encodes the content of given object
    * @throws IOException
-   * @see {@link #save(Object)} */
-  public static void load(Object object, String string) throws IOException {
+   * @see {@link #join(Object)} */
+  public static void part(Object object, String string) throws IOException {
     Properties properties = new Properties();
     try (Reader reader = new StringReader(string)) {
       properties.load(reader);
