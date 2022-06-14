@@ -25,6 +25,6 @@ public class V011Param {
   }
 
   public static void main(String[] args) {
-    System.out.println(ObjectProperties.string(new V011Param(4)));
+    System.out.println(ObjectProperties.save(new V011Param(4)));
   }
 }

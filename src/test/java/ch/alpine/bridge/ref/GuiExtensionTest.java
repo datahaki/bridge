@@ -24,7 +24,7 @@ class GuiExtensionTest {
   @Test
   void testReader() throws IOException {
     GuiExtension guiExtension = new GuiExtension();
-    String string = ObjectProperties.string(guiExtension);
+    String string = ObjectProperties.save(guiExtension);
     Properties properties = new Properties();
     try (StringReader stringReader = new StringReader(string)) {
       properties.load(stringReader);

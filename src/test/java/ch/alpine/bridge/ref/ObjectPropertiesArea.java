@@ -24,7 +24,7 @@ import ch.alpine.bridge.ref.util.FieldsEditor;
   }
 
   public void update() {
-    jTextArea.setText(ObjectProperties.string(object));
+    jTextArea.setText(ObjectProperties.save(object));
     jTextArea.setCaretPosition(0);
   }
 }

@@ -26,6 +26,7 @@ public class ObjectFields {
   public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
     if (Objects.nonNull(object))
       for (Class<?> cls : ClassHierarchy.of(object.getClass())) {
+        // TODO BRIDGE this is insufficient, also need to check nested classes that are discovered by the visitor
         ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
         if (Objects.isNull(reflectionMarker) && REMINDER_SET.add(cls))
           System.err.println("hint: use @ReflectionMarker on " + cls);
