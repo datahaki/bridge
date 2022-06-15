@@ -49,7 +49,14 @@ public enum LookAndFeels {
     return lookAndFeel;
   }
 
-  /** @throws Exception */
+  /** as of April 2022, this function should be called
+   * once before any GUI is initialized.
+   * 
+   * changing the layout while GUI elements are already visible
+   * will result in exceptions thrown, and possibly the
+   * program not terminating at all!
+   * 
+   * @throws Exception */
   public void updateUI() throws Exception {
     if (Objects.nonNull(lookAndFeel))
       UIManager.setLookAndFeel(lookAndFeel);

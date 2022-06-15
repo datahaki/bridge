@@ -3,34 +3,23 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ch.alpine.bridge.ref.ObjectFieldVisitor.Type;
-import ch.alpine.bridge.ref.ann.ReflectionMarker;
 
 public class ObjectFields {
-  private static final Set<Class<?>> REMINDER_SET = Collections.synchronizedSet(new HashSet<>());
-  static {
-    REMINDER_SET.add(Object.class);
-  }
-
   /** @param object may be null
    * @param objectFieldVisitor
    * @throws Exception if any input parameter is null */
   public static void of(Object object, ObjectFieldVisitor objectFieldVisitor) {
-    if (Objects.nonNull(object))
-      for (Class<?> cls : ClassHierarchy.of(object.getClass())) {
-        ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
-        if (Objects.isNull(reflectionMarker) && REMINDER_SET.add(cls))
-          System.err.println("hint: use @ReflectionMarker on " + cls);
-      }
-    new ObjectFields(Objects.requireNonNull(objectFieldVisitor)).visit("", object);
+    Objects.requireNonNull(objectFieldVisitor);
+    if (Objects.nonNull(object)) {
+      ReflectionMarkers.INSTANCE.register(object);
+      new ObjectFields(objectFieldVisitor).visit("", object);
+    }
   }
 
   // ---

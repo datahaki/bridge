@@ -5,9 +5,12 @@ import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -16,14 +19,13 @@ import java.util.stream.Collectors;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.io.Import;
 
 /** manages configurable parameters by introspection of a given instance
  * 
  * values of non-final, non-static, non-transient but public members of type
  * {@link Tensor}, {@link Scalar}, {@link String}, {@link File}, {@link Boolean},
- * {@link Enum}, {@link Color}
- * are stored in, and retrieved from files in the {@link Properties} format
+ * {@link Enum}, {@link Color}, as well as nested parameters or arrays/lists
+ * thereof are stored in, and retrieved from files in the {@link Properties} format.
  * 
  * the listed of supported types can be extended, see {@link FieldWraps}
  * 
@@ -31,6 +33,24 @@ import ch.alpine.tensor.io.Import;
  * of a parse failure, or invalid assignment, the preset/default/current
  * value is retained. */
 public class ObjectProperties {
+  /** charset UTF-8 guarantees the storage and loading of special
+   * characters such as Chinese characters. */
+  private static final Charset CHARSET = Charset.forName("UTF-8");
+
+  /** function is used to store in properties-file
+   * and also to compile a list of strings, or a single string expression
+   * 
+   * @param prefix
+   * @param value_toString
+   * @return conceptually the function returns prefix=value_toString
+   * but uses the formatting defined by {@link Properties} */
+  private static String line(String prefix, String value_toString) {
+    boolean escUnicode = false;
+    String key = PropertiesExt.saveConvert(prefix, true, escUnicode);
+    String val = PropertiesExt.saveConvert(value_toString, false, escUnicode);
+    return key + "=" + val;
+  }
+
   /** store tracked fields of given object in given file
    * in the {@link Properties}-format.
    * The ordering of the key-value pairs in the file
@@ -40,21 +60,17 @@ public class ObjectProperties {
    * @param file properties
    * @throws IOException */
   public static void save(Object object, File file) throws IOException {
-    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, CHARSET))) {
       ObjectFieldVisitor objectFieldVisitor = new ObjectFieldIo() {
         @Override // from ObjectFieldVisitor
         public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
-          if (Objects.nonNull(value)) {
-            boolean escUnicode = false;
-            String key = PropertiesExt.saveConvert(prefix, true, escUnicode);
-            String val = PropertiesExt.saveConvert(fieldWrap.toString(value), false, escUnicode);
+          if (Objects.nonNull(value))
             try {
-              bufferedWriter.write(key + "=" + val);
+              bufferedWriter.write(line(prefix, fieldWrap.toString(value)));
               bufferedWriter.newLine();
             } catch (Exception exception) {
               throw new RuntimeException();
             }
-          }
         }
       };
       ObjectFields.of(object, objectFieldVisitor);
@@ -77,6 +93,33 @@ public class ObjectProperties {
       // ---
     }
     return false;
+  }
+
+  // ---
+  /** @param object
+   * @param file properties
+   * @return
+   * @throws FileNotFoundException
+   * @throws IOException
+   * @see Properties */
+  public static void load(Object object, File file) throws FileNotFoundException, IOException {
+    Properties properties = new Properties();
+    try (Reader reader = new FileReader(file, CHARSET)) {
+      properties.load(reader);
+    }
+    set(object, properties);
+  }
+
+  /** @param object
+   * @param file properties
+   * @return object with fields updated from properties file if loading was successful */
+  public static <T> T tryLoad(T object, File file) {
+    try {
+      load(object, file);
+    } catch (Exception exception) {
+      // ---
+    }
+    return object;
   }
 
   // ---
@@ -119,48 +162,30 @@ public class ObjectProperties {
     private final List<String> list = new LinkedList<>();
 
     @Override
-    public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
+    public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
       if (Objects.nonNull(value))
-        list.add(key + "=" + fieldWrap.toString(value));
+        list.add(line(prefix, fieldWrap.toString(value)));
     }
   }
 
   /** @param object
-   * @return */
-  public static String string(Object object) {
+   * @return single string expression that encodes the content of given object */
+  public static String join(Object object) {
     return list(object).stream().collect(Collectors.joining("\n"));
   }
 
-  /** @param object
-   * @return string
-   * @throws IOException */
-  public static void fromString(Object object, String string) throws IOException {
+  /** function assigns the fields in given object based on the content
+   * specification given by string
+   * 
+   * @param object to be assigned the values specified in given string
+   * @param string single string expression that encodes the content of given object
+   * @throws IOException
+   * @see {@link #join(Object)} */
+  public static void part(Object object, String string) throws IOException {
     Properties properties = new Properties();
-    try (StringReader stringReader = new StringReader(string)) {
-      properties.load(stringReader);
+    try (Reader reader = new StringReader(string)) {
+      properties.load(reader);
     }
     set(object, properties);
-  }
-
-  // ---
-  /** @param object
-   * @param file
-   * @return
-   * @throws FileNotFoundException
-   * @throws IOException */
-  public static void load(Object object, File file) throws FileNotFoundException, IOException {
-    set(object, Import.properties(file));
-  }
-
-  /** @param object
-   * @param file properties
-   * @return object with fields updated from properties file if loading was successful */
-  public static <T> T tryLoad(T object, File file) {
-    try {
-      load(object, file);
-    } catch (Exception exception) {
-      // ---
-    }
-    return object;
   }
 }

@@ -33,7 +33,7 @@ class ObjectPropertiesTest {
   @Test
   void testNull() {
     assertEquals(ObjectProperties.list(null), Collections.emptyList());
-    assertEquals(ObjectProperties.string(null), "");
+    assertEquals(ObjectProperties.join(null), "");
   }
 
   @Test
@@ -55,15 +55,15 @@ class ObjectPropertiesTest {
   @Test
   void testLaram() {
     SimpleLaram simpleLaram = new SimpleLaram();
-    String string0 = ObjectProperties.string(simpleLaram);
+    String string0 = ObjectProperties.join(simpleLaram);
     simpleLaram.nestedParams.get(0).some = false;
     simpleLaram.nestedParams.get(1).text = "new text";
     simpleLaram.nestedParams.get(1).scalar = RationalScalar.HALF;
-    String string1 = ObjectProperties.string(simpleLaram);
+    String string1 = ObjectProperties.join(simpleLaram);
     Properties properties = DeprecatedObjProp.properties(simpleLaram);
     simpleLaram = null;
     SimpleLaram simpleCopy = ObjectProperties.set(new SimpleLaram(), properties);
-    String string2 = ObjectProperties.string(simpleCopy);
+    String string2 = ObjectProperties.join(simpleCopy);
     assertEquals(simpleCopy.nestedParams.get(1).text, "new text");
     assertEquals(simpleCopy.nestedParams.get(1).scalar, RationalScalar.HALF);
     assertFalse(string0.equals(string1));
