@@ -1,13 +1,13 @@
 name: java
-#on:
-#  push:
-#    paths:
-#      - '**'
-#  pull_request:
-#    branches:
-#      - main
-#    types:
-#      - opened
+on:
+  push:
+    paths:
+      - '**'
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
 jobs:
   CI:
     runs-on: ubuntu-latest
