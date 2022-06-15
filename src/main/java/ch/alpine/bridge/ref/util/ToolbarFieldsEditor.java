@@ -17,7 +17,6 @@ import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
-// TODO BRIDGE field fuse -> button text as variable name!
 public class ToolbarFieldsEditor extends FieldsEditor {
   /** @param object
    * @param jToolBar

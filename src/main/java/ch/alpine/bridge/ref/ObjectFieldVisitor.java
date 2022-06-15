@@ -3,7 +3,6 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 
-/** Hint: extend from {@link ObjectFieldGui} or {@link ObjectFieldIo} */
 public interface ObjectFieldVisitor {
   public static enum Type {
     /** a node invokes push and pop at a later point */

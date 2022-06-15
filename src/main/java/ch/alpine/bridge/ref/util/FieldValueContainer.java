@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 
 import ch.alpine.bridge.ref.FieldWrap;
 
-public class FieldValueContainer {
+public final class FieldValueContainer {
   private final String key;
   private final FieldWrap fieldWrap;
   private final Object object;
