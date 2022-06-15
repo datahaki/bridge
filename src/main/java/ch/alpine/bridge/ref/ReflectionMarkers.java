@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.ref;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -33,7 +32,7 @@ public enum ReflectionMarkers {
   public void register(Object object) {
     Class<? extends Object> cls = object.getClass();
     if (!checked.contains(cls))
-      synchronized (INSTANCE) {
+      synchronized (this) {
         ClassHierarchy.of(cls).forEach(this::expected);
         ObjectFields.of(object, objectFieldVisitor);
       }
@@ -48,7 +47,11 @@ public enum ReflectionMarkers {
     }
   }
 
+  /** @return set of all classes that where discovered up to this point
+   * with missing {@link ReflectionMarker} annotation */
   public Set<Class<?>> missing() {
-    return Collections.unmodifiableSet(missing);
+    synchronized (this) {
+      return Set.copyOf(missing);
+    }
   }
 }
