@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class PeriodogramTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     PeriodogramDemo.create();
   }
 }

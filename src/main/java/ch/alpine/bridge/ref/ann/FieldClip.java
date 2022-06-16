@@ -7,12 +7,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 import ch.alpine.tensor.qty.UnitSystem;
 
 /** any unit may be used to state the limits.
  * 
  * <p>For comparison, the values will be converted using
- * {@link UnitSystem#SI()} */
+ * {@link UnitSystem#SI()}
+ * 
+ * @see InvalidFieldDetection */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

@@ -13,14 +13,14 @@ import org.junit.jupiter.api.Test;
 
 class ClassHierarchyTest {
   @Test
-  public void testOrder() {
+  void testOrder() {
     Deque<Class<?>> deque = ClassHierarchy.of(ArrayList.class);
     List<String> list = deque.stream().map(Class::getSimpleName).collect(Collectors.toList());
     assertEquals(list.toString(), "[Object, AbstractCollection, AbstractList, ArrayList]");
   }
 
   @Test
-  public void testNull() {
+  void testNull() {
     Deque<Class<?>> deque = ClassHierarchy.of(null);
     assertTrue(deque.isEmpty());
   }

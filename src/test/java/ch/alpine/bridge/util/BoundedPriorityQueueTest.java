@@ -28,7 +28,7 @@ import ch.alpine.tensor.num.RandomPermutation;
 
 class BoundedPriorityQueueTest {
   @Test
-  public void testMin() throws ClassNotFoundException, IOException {
+  void testMin() throws ClassNotFoundException, IOException {
     @SuppressWarnings("unchecked")
     Queue<Integer> queue = Serialization.copy(BoundedPriorityQueue.min(2, //
         (Comparator<Integer> & Serializable) Integer::compare));
@@ -41,12 +41,12 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testMinNonSerializable() {
+  void testMinNonSerializable() {
     BoundedPriorityQueue.min(2, Integer::compare);
   }
 
   @Test
-  public void testMax() throws ClassNotFoundException, IOException {
+  void testMax() throws ClassNotFoundException, IOException {
     @SuppressWarnings("unchecked")
     Queue<Integer> queue = Serialization.copy(BoundedPriorityQueue.max(2, //
         (Comparator<Integer> & Serializable) Integer::compare));
@@ -61,7 +61,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testNegativeFail() {
+  void testNegativeFail() {
     assertThrows(Exception.class, () -> BoundedPriorityQueue.min(0, Integer::compare));
     assertThrows(Exception.class, () -> BoundedPriorityQueue.max(0, Integer::compare));
     assertThrows(Exception.class, () -> BoundedPriorityQueue.min(-1, Integer::compare));
@@ -69,7 +69,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testNaturalNull() {
+  void testNaturalNull() {
     PriorityQueue<Integer> d = new PriorityQueue<>(10);
     d.add(5);
     d.add(9);
@@ -89,7 +89,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testPriorityQueueDrain() {
+  void testPriorityQueueDrain() {
     PriorityQueue<Integer> d = new PriorityQueue<>(10);
     d.add(5);
     d.add(9);
@@ -106,7 +106,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testDrainMinQueue() {
+  void testDrainMinQueue() {
     Queue<Integer> queue = BoundedPriorityQueue.min(5, Integer::compare);
     queue.add(6);
     queue.add(4);
@@ -121,7 +121,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testNaturalSpecific() {
+  void testNaturalSpecific() {
     PriorityQueue<Integer> d = new PriorityQueue<>(10, Integer::compare);
     d.add(9);
     d.add(3);
@@ -133,7 +133,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testPriorityQueue() {
+  void testPriorityQueue() {
     PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
     priorityQueue.offer(3);
     priorityQueue.offer(1);
@@ -144,7 +144,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testMaxOld() {
+  void testMaxOld() {
     Queue<Integer> queue = BoundedPriorityQueue.max(3, Integer::compare);
     assertTrue(queue.offer(3));
     assertEquals(queue.size(), 1);
@@ -164,7 +164,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testPriorityQueueReverseOrder() {
+  void testPriorityQueueReverseOrder() {
     PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(Collections.reverseOrder());
     priorityQueue.offer(3);
     priorityQueue.offer(1);
@@ -175,7 +175,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testMinOld() {
+  void testMinOld() {
     Queue<Integer> queue = BoundedPriorityQueue.min(3, Integer::compare);
     assertTrue(queue.offer(3));
     assertEquals(queue.size(), 1);
@@ -195,7 +195,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testRandomMin() {
+  void testRandomMin() {
     int[] array = RandomPermutation.of(13);
     Queue<Integer> queue = BoundedPriorityQueue.min(2, Integer::compare);
     IntStream.of(array).boxed().forEach(queue::add);
@@ -205,7 +205,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  public void testRandomMax() {
+  void testRandomMax() {
     int[] array = RandomPermutation.of(13);
     {
       Queue<Integer> queue = BoundedPriorityQueue.max(2, Integer::compare);

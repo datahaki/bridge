@@ -11,7 +11,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 class HtmlUtf8Test {
   @Test
-  public void testSimple(@TempDir File tempDir) {
+  void testSimple(@TempDir File tempDir) {
     File file = new File(tempDir, "file.html");
     assertFalse(file.exists());
     try (HtmlUtf8 htmlUtf8 = HtmlUtf8.page(file)) {
@@ -21,7 +21,7 @@ class HtmlUtf8Test {
   }
 
   @Test
-  public void testIndex(@TempDir File tempDir) {
+  void testIndex(@TempDir File tempDir) {
     File file = new File(tempDir, "file.html");
     assertFalse(file.exists());
     HtmlUtf8.index(file, "title", "cols", "fl", "vl", "fr", "vr");

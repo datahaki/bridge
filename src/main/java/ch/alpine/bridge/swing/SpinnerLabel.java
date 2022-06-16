@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +24,8 @@ import ch.alpine.bridge.awt.LazyMouse;
 import ch.alpine.bridge.awt.LazyMouseListener;
 
 /** selector in gui for easy scrolling through a list with mouse-wheel
- * and menu to the side upon mouse-click */
+ * and menu to the side upon mouse-click
+ * extends from a non-editable text field therefore the name "label" */
 public abstract class SpinnerLabel<T> extends JTextField {
   /** JToggleButton background when selected is 184 207 229 selection color
    * subtracts 24 from each RGB value */
@@ -54,7 +54,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
   /** @param values
    * @return */
   public static <T> SpinnerLabel<T> of(@SuppressWarnings("unchecked") T... values) {
-    return of(Arrays.asList(values));
+    return of(List.of(values));
   }
 
   public static <T extends Enum<T>> SpinnerLabel<T> of(Class<T> cls) {
@@ -118,14 +118,12 @@ public abstract class SpinnerLabel<T> extends JTextField {
         increment(point.y < dimension.height / 2 ? -1 : 1); // sign of difference
       else //
         if (isMenuEnabled) {
-          SelectionMenu<T> spinnerMenu = new SelectionMenu<>( //
-              getList(), getValue(), getFont(), isMenuHover) {
-            @Override
-            public void update(T type) {
-              setValue(type);
-              reportToAll();
-            }
-          };
+          SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(getList(), getValue(), isMenuHover);
+          spinnerMenu.setFont(getFont());
+          spinnerMenu.addSpinnerListener(type -> {
+            setValue(type);
+            reportToAll();
+          });
           spinnerMenu.showRight(this);
         }
     }

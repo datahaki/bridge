@@ -11,8 +11,7 @@ import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 
 public class ClassFieldCheck implements ClassVisitor {
-  private final InvalidFieldCollection invalidFieldCollection = new InvalidFieldCollection();
-  private final InvalidAnnotationCollection invalidAnnotationCollection = new InvalidAnnotationCollection();
+  private final InvalidFieldDetection invalidFieldCollection = new InvalidFieldDetection();
   private final List<Class<?>> inspected = new LinkedList<>();
   private final List<Class<?>> failures = new LinkedList<>();
 
@@ -33,11 +32,6 @@ public class ClassFieldCheck implements ClassVisitor {
         } catch (Exception exception) {
           failures.add(cls);
         }
-        try {
-          ObjectFields.of(object, invalidAnnotationCollection);
-        } catch (Exception exception) {
-          failures.add(cls);
-        }
       }
     }
   }
@@ -53,7 +47,6 @@ public class ClassFieldCheck implements ClassVisitor {
   public List<FieldValueContainer> invalidFields() {
     List<FieldValueContainer> list = new ArrayList<>();
     list.addAll(invalidFieldCollection.list());
-    list.addAll(invalidAnnotationCollection.list());
     return list;
   }
 }

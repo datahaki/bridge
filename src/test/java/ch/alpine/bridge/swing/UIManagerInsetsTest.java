@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class UIManagerInsetsTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     for (UIManagerInsets uiManagerInsets : UIManagerInsets.values()) {
       uiManagerInsets.get();
     }

@@ -16,13 +16,13 @@ import ch.alpine.tensor.mat.re.Det;
 
 class GfxMatrixTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     Tensor eye = Dot.of(GfxMatrix.flipY(100), GfxMatrix.flipY(100));
     assertEquals(eye, IdentityMatrix.of(3));
   }
 
   @Test
-  public void testXya() {
+  void testXya() {
     Tensor xya = Tensors.vector(1, 2, 3);
     Tensor matrix = GfxMatrix.of(xya);
     Tensor vector = GfxMatrix.toVector(matrix);
@@ -30,7 +30,7 @@ class GfxMatrixTest {
   }
 
   @Test
-  public void testTranslations() {
+  void testTranslations() {
     Tensor xya = Tensors.vector(1, 2, 0);
     Tensor translate = GfxMatrix.translation(xya.extract(0, 2));
     assertEquals(GfxMatrix.of(xya), translate);
@@ -38,7 +38,13 @@ class GfxMatrixTest {
   }
 
   @Test
-  public void testFlipY() {
+  void testTranslation2() {
+    Tensor t1 = GfxMatrix.translation(2, 4.0);
+    assertEquals(GfxMatrix.translation(Tensors.vector(2, 4)), t1);
+  }
+
+  @Test
+  void testFlipY() {
     Tensor tensor = GfxMatrix.flipY(5);
     ExactTensorQ.require(tensor);
     assertEquals(tensor, Tensors.fromString("{{1, 0, 0}, {0, -1, 5}, {0, 0, 1}}"));

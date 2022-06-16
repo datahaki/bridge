@@ -7,6 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ch.alpine.bridge.ref.util.InvalidFieldDetection;
+
 /** intended for user to set Boolean value to true
  * whereas the software only sets Boolean value to false
  * 
@@ -16,7 +18,9 @@ import java.lang.annotation.Target;
  * and cleared to false immediately.
  * 
  * Typically, the boolean field is marked as transient
- * to prevent storing it in the true-state. */
+ * to prevent storing it in the true-state.
+ * 
+ * @see InvalidFieldDetection */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

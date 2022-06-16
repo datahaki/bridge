@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -14,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 class ObjectFieldsTest {
   @Test
-  public void testFields() {
+  void testFields() {
     List<Field> list = ObjectFields.list(SimpleParam.class);
     List<String> collect = list.stream().map(f -> f.getName()).collect(Collectors.toList());
     // System.out.println(collect);
@@ -24,12 +25,12 @@ class ObjectFieldsTest {
   }
 
   @Test
-  public void testSimple() {
+  void testSimple() {
     assertThrows(Exception.class, () -> ObjectFields.of(null, null));
   }
 
   @Test
-  public void testDeepEquals() {
+  void testDeepEquals() {
     SimpleParam sp1 = new SimpleParam();
     SimpleParam sp2 = new SimpleParam();
     assertTrue(ObjectFields.deepEquals(sp1, sp2));
@@ -37,5 +38,20 @@ class ObjectFieldsTest {
     assertFalse(ObjectFields.deepEquals(sp1, sp2));
     assertFalse(ObjectFields.deepEquals(sp1, false));
     assertFalse(ObjectFields.deepEquals(false, sp2));
+  }
+
+  @Test
+  void testFallthrough() {
+    switch (0) {
+    case 0 -> {
+      // ---
+    }
+    case 1 -> {
+      fail();
+    }
+    default -> {
+      // ---
+    }
+    }
   }
 }

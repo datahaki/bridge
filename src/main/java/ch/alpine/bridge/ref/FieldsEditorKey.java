@@ -12,6 +12,6 @@ public enum FieldsEditorKey {
   ;
 
   String key() {
-    return getClass().getSimpleName() + "." + name();
+    return "FieldsEditorKey." + name();
   }
 }

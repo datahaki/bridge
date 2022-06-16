@@ -13,7 +13,7 @@ import ch.alpine.tensor.Tensors;
 
 class AffineFrame2DTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     Tensor m1 = GfxMatrix.of(Tensors.vector(1, 2, 3));
     Tensor m2 = GfxMatrix.of(Tensors.vector(-.3, 0.2, .4));
     AffineFrame2D af2 = new AffineFrame2D(m1);
@@ -26,7 +26,7 @@ class AffineFrame2DTest {
   }
 
   @Test
-  public void testPoint() {
+  void testPoint() {
     Tensor m1 = GfxMatrix.of(Tensors.vector(1, 2, 3));
     AffineFrame2D af2 = new AffineFrame2D(m1);
     Tensor v = Tensors.vector(-.3, -.4, 1);

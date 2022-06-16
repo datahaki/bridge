@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ch.alpine.bridge.swing.SelectionMenu;
+import ch.alpine.bridge.swing.SpinnerMenu;
 
 /* package */ class MenuPanel extends StringPanel {
   private static final String BUTTON_TEXT = "?";
@@ -29,14 +29,13 @@ import ch.alpine.bridge.swing.SelectionMenu;
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         JTextField jTextField = getJTextField();
-        SelectionMenu<String> spinnerMenu = new SelectionMenu<>(supplier.get(), jTextField.getText(), jTextField.getFont(), false) {
-          @Override
-          public void update(String string) {
-            jTextField.setText(string);
-            indicateGui();
-            nofifyIfValid(string);
-          }
-        };
+        SpinnerMenu<String> spinnerMenu = new SpinnerMenu<>(supplier.get(), jTextField.getText(), false);
+        spinnerMenu.setFont(jTextField.getFont());
+        spinnerMenu.addSpinnerListener(string -> {
+          jTextField.setText(string);
+          indicateGui();
+          nofifyIfValid(string);
+        });
         spinnerMenu.showRight(jButton);
       }
     });

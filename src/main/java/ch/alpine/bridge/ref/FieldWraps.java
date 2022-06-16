@@ -52,7 +52,7 @@ public enum FieldWraps {
    * @param function */
   public void insert(Class<?> cls, Function<Field, FieldWrap> function) {
     if (map.containsKey(cls))
-      throw new RuntimeException();
+      throw new IllegalArgumentException(cls.getCanonicalName());
     map.put(cls, function);
   }
 }

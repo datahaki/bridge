@@ -7,10 +7,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /** interprets specification in {@link FieldFileExtension} to {@link FileFilter} */
 public enum FieldFileExtensions {
   ;
-  /** @param fileExtension
+  /** @param fieldFileExtension
    * @return {@link FileNameExtensionFilter} with description {@link FieldFileExtension#description()}
    * and extensions {@link FieldFileExtension#extensions()} */
-  public static FileFilter of(FieldFileExtension fileExtension) {
-    return new FileNameExtensionFilter(fileExtension.description(), fileExtension.extensions());
+  public static FileFilter of(FieldFileExtension fieldFileExtension) {
+    return new FileNameExtensionFilter(fieldFileExtension.description(), fieldFileExtension.extensions());
   }
 }

@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
@@ -17,6 +18,10 @@ public class VisualImage extends VisualBase {
     this.bufferedImage = Objects.requireNonNull(bufferedImage);
     getAxisX().setClip(clipX);
     getAxisY().setClip(clipY);
+  }
+
+  public VisualImage(BufferedImage bufferedImage, CoordinateBoundingBox coordinateBoundingBox) {
+    this(bufferedImage, coordinateBoundingBox.getClip(0), coordinateBoundingBox.getClip(1));
   }
 
   /** @param bufferedImage */

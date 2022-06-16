@@ -15,7 +15,7 @@ import ch.alpine.tensor.ext.Timing;
 
 class ReflectionMarkerTest {
   @Test
-  public void testReflection() {
+  void testReflection() {
     Timing timing = Timing.started();
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
@@ -29,8 +29,6 @@ class ReflectionMarkerTest {
     {
       List<Class<?>> list = classFieldCheck.getFailures();
       assertTrue(1 < list.size()); // the exact value doesn't matter
-      for (Class<?> cls : list)
-        System.err.println(cls);
     }
     {
       List<FieldValueContainer> list = classFieldCheck.invalidFields();

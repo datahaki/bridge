@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class FieldSelectionTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     FieldSelectionArray fieldSelection = new FieldSelectionArray() {
       @Override
       public Class<? extends Annotation> annotationType() {

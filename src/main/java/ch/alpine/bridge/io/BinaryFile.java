@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+// TODO BRIDGE is this obsolete with java 17?
 public enum BinaryFile {
   ;
   /** @param file

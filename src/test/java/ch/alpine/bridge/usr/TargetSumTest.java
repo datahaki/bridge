@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 class TargetSumTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     int nums1[] = { 2, 5, 10, 4 }; // true
     assertTrue(TargetSum.check(nums1, 0));
     assertTrue(TargetSum.check(nums1, 11));
@@ -20,7 +20,7 @@ class TargetSumTest {
   }
 
   @Test
-  public void testDuplicates() {
+  void testDuplicates() {
     int nums1[] = { 2, 5, 10, 2 }; // true
     assertTrue(TargetSum.check(nums1, 0));
     assertTrue(TargetSum.check(nums1, 9));

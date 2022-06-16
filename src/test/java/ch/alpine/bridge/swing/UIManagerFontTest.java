@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class UIManagerFontTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     for (UIManagerFont uiManagerFont : UIManagerFont.values()) {
       uiManagerFont.get();
     }

@@ -9,18 +9,18 @@ import org.junit.jupiter.api.Test;
 
 class BooleanParserTest {
   @Test
-  public void testCase() {
+  void testCase() {
     assertNull(BooleanParser.orNull("False"));
   }
 
   @Test
-  public void testBooleanToString() {
+  void testBooleanToString() {
     assertEquals(Boolean.TRUE.toString(), "true");
     assertEquals(Boolean.FALSE.toString(), "false");
   }
 
   @Test
-  public void testNullFail() {
+  void testNullFail() {
     assertThrows(Exception.class, () -> BooleanParser.orNull(null));
   }
 }

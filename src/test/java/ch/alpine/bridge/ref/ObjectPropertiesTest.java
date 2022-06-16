@@ -17,7 +17,7 @@ import ch.alpine.tensor.RationalScalar;
 
 class ObjectPropertiesTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[1].some = false;
     simpleParam.nestedParams[1].text = "here!";
@@ -31,13 +31,13 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  public void testNull() {
+  void testNull() {
     assertEquals(ObjectProperties.list(null), Collections.emptyList());
-    assertEquals(ObjectProperties.string(null), "");
+    assertEquals(ObjectProperties.join(null), "");
   }
 
   @Test
-  public void testTrySaveAndLoad(@TempDir File tempDir) {
+  void testTrySaveAndLoad(@TempDir File tempDir) {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[0].some = false;
     simpleParam.nestedParams[1].text = "here!";
@@ -53,17 +53,17 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  public void testLaram() {
+  void testLaram() {
     SimpleLaram simpleLaram = new SimpleLaram();
-    String string0 = ObjectProperties.string(simpleLaram);
+    String string0 = ObjectProperties.join(simpleLaram);
     simpleLaram.nestedParams.get(0).some = false;
     simpleLaram.nestedParams.get(1).text = "new text";
     simpleLaram.nestedParams.get(1).scalar = RationalScalar.HALF;
-    String string1 = ObjectProperties.string(simpleLaram);
+    String string1 = ObjectProperties.join(simpleLaram);
     Properties properties = DeprecatedObjProp.properties(simpleLaram);
     simpleLaram = null;
     SimpleLaram simpleCopy = ObjectProperties.set(new SimpleLaram(), properties);
-    String string2 = ObjectProperties.string(simpleCopy);
+    String string2 = ObjectProperties.join(simpleCopy);
     assertEquals(simpleCopy.nestedParams.get(1).text, "new text");
     assertEquals(simpleCopy.nestedParams.get(1).scalar, RationalScalar.HALF);
     assertFalse(string0.equals(string1));

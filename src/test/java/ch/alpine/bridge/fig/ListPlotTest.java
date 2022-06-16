@@ -21,13 +21,13 @@ import demo.tensor.pdf.TrapezoidalDistributionDemo;
 
 class ListPlotTest {
   @Test
-  public void testEmpty() {
+  void testEmpty() {
     VisualSet visualSet = new VisualSet();
     ListPlot.of(visualSet, true);
   }
 
   @Test
-  public void testEmptyRow() {
+  void testEmptyRow() {
     VisualSet visualSet = new VisualSet();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
@@ -40,7 +40,7 @@ class ListPlotTest {
   private static final ScalarUnaryOperator suoY = s -> Quantity.of(s, "m");
 
   @Test
-  public void testUnitsX() {
+  void testUnitsX() {
     VisualSet visualSet = new VisualSet();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
@@ -53,7 +53,7 @@ class ListPlotTest {
   }
 
   @Test
-  public void testUnitsY() {
+  void testUnitsY() {
     VisualSet visualSet = new VisualSet();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
@@ -65,7 +65,7 @@ class ListPlotTest {
   }
 
   @Test
-  public void testAlreadyLarge() {
+  void testAlreadyLarge() {
     VisualSet visualSet = new VisualSet();
     int n = 100_000; // tested for up to 10 million
     Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
@@ -74,7 +74,7 @@ class ListPlotTest {
   }
 
   @Test
-  public void testAlreadyLargeNaN() {
+  void testAlreadyLargeNaN() {
     Random random = new Random();
     VisualSet visualSet = new VisualSet();
     int n = 100_000; // tested for up to 10 million
@@ -86,7 +86,7 @@ class ListPlotTest {
   }
 
   @Test
-  public void testDistribution(@TempDir File folder) throws IOException {
+  void testDistribution(@TempDir File folder) throws IOException {
     JFreeChart jFreeChart = TrapezoidalDistributionDemo.generate();
     ChartUtils.saveChartAsPNG(new File(folder, "trap_distr.png"), jFreeChart, 640, 480);
   }

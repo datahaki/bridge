@@ -13,7 +13,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 
 class TimeChartTest {
   @Test
-  public void testAll() throws IOException {
+  void testAll() throws IOException {
     File folder = HomeDirectory.Pictures(getClass().getSimpleName());
     assertFalse(folder.exists());
     folder.mkdirs();

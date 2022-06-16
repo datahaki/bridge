@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -19,10 +20,12 @@ public enum GuiExtensionDemo {
     // String folder = "/ch/alpine/bridge/ref/checkbox/ballot/";
     // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
     // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
-    LookAndFeels.GTK_PLUS.updateUI();
-    // LookAndFeels.DARK.updateUI();
+    // LookAndFeels.GTK_PLUS.updateUI();
+    LookAndFeels.DARK.updateUI();
+    FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
     // ---
     GuiExtension guiExtension = new GuiExtension();
+    guiExtension.cdg = null;
     // guiExtension.pivots = ;
     // guiExtension.pivots2 = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
@@ -45,7 +48,7 @@ public enum GuiExtensionDemo {
       jPanel.add(BorderLayout.SOUTH, jButton);
     }
     jFrame.setContentPane(jPanel);
-    jFrame.setBounds(500, 200, 500, 700);
+    jFrame.setBounds(500, 100, 500, 900);
     jFrame.setVisible(true);
   }
 }

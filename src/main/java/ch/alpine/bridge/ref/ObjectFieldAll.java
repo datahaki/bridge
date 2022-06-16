@@ -5,7 +5,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.function.Predicate;
 
-public abstract class ObjectFieldGui implements ObjectFieldVisitor {
+/** visits all fields that are covered by reflection */
+public abstract class ObjectFieldAll extends ObjectFieldBase {
   static final int LEAF_DEMAND = 0 //
       | Modifier.PUBLIC;
   static final int LEAF_REJECT = 0 //
@@ -24,12 +25,7 @@ public abstract class ObjectFieldGui implements ObjectFieldVisitor {
       NODE_DEMAND, //
       NODE_REJECT);
 
-  @Override
-  public final Type getType(Field field) {
-    if (IS_LEAF.test(field))
-      return Type.LEAF;
-    if (IS_NODE.test(field))
-      return Type.NODE;
-    return Type.SKIP;
+  public ObjectFieldAll() {
+    super(IS_LEAF, IS_NODE);
   }
 }

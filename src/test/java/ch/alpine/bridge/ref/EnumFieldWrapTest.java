@@ -13,14 +13,14 @@ import ch.alpine.tensor.mat.re.Pivots;
 
 class EnumFieldWrapTest {
   @Test
-  public void testEnum() {
+  void testEnum() {
     GuiExtension guiExtension = new GuiExtension();
     List<String> list = ObjectProperties.list(guiExtension);
     assertTrue(list.contains("pivots=ARGMAX_ABS"));
   }
 
   @Test
-  public void testProperties() {
+  void testProperties() {
     Properties properties = new Properties();
     properties.setProperty("key", "SOMETHING_WITH_UNDERSCORES");
     String string = properties.getProperty("key");
@@ -28,7 +28,7 @@ class EnumFieldWrapTest {
   }
 
   @Test
-  public void testEnumProp() {
+  void testEnumProp() {
     Properties properties = DeprecatedObjProp.properties(new GuiExtension());
     String string = properties.getProperty("pivots");
     assertEquals(string, "ARGMAX_ABS");

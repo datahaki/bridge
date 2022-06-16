@@ -24,7 +24,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 class VisualSetTest {
   @Test
-  public void testConstructors() {
+  void testConstructors() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor points = Transpose.of(Tensors.of(domain, values));
@@ -39,7 +39,7 @@ class VisualSetTest {
   }
 
   @Test
-  public void testAdd() {
+  void testAdd() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 5);
@@ -50,7 +50,7 @@ class VisualSetTest {
   }
 
   @Test
-  public void testSetRowLabel() {
+  void testSetRowLabel() {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 5);
@@ -64,7 +64,7 @@ class VisualSetTest {
   }
 
   @Test
-  public void testEmptyPass(@TempDir File tempDir) throws IOException {
+  void testEmptyPass(@TempDir File tempDir) throws IOException {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());
     JFreeChart jFreeChart = ListPlot.of(visualSet, true);
@@ -76,19 +76,19 @@ class VisualSetTest {
   }
 
   @Test
-  public void testFailScalar() {
+  void testFailScalar() {
     VisualSet visualSet = new VisualSet();
     assertThrows(Exception.class, () -> visualSet.add(RealScalar.ZERO, RealScalar.ONE));
   }
 
   @Test
-  public void testFailVector() {
+  void testFailVector() {
     VisualSet visualSet = new VisualSet();
     assertThrows(Exception.class, () -> visualSet.add(Tensors.vector(1, 2, 3, 4), Tensors.vector(1, 2, 3, 4, 5)));
   }
 
   @Test
-  public void testFailUnstructured() {
+  void testFailUnstructured() {
     VisualSet visualSet = new VisualSet();
     assertThrows(Exception.class, () -> visualSet.add(Tensors.fromString("{{1, 2}, {3, 4}, {5, 6}, {3}}")));
     assertThrows(Exception.class, () -> visualSet.add(Tensors.fromString("{{1, 2}, {3, 4}, {5, 6}, 4}")));

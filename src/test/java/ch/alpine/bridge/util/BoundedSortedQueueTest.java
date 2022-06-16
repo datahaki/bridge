@@ -18,7 +18,7 @@ import ch.alpine.tensor.ext.Serialization;
 
 class BoundedSortedQueueTest {
   @Test
-  public void testSimpleMin() throws ClassNotFoundException, IOException {
+  void testSimpleMin() throws ClassNotFoundException, IOException {
     BoundedSortedQueue<Double, String> boundedSortedQueue = Serialization.copy(BoundedSortedQueue.min(3));
     boundedSortedQueue.offer(0.7, "7");
     boundedSortedQueue.offer(0.0, "0");
@@ -37,7 +37,7 @@ class BoundedSortedQueueTest {
   }
 
   @Test
-  public void testScalar() {
+  void testScalar() {
     BoundedSortedQueue<Scalar, String> boundedSortedQueue = BoundedSortedQueue.min(3);
     boundedSortedQueue.offer(RealScalar.of(0.7), "7");
     boundedSortedQueue.offer(RealScalar.of(0.0), "0");
@@ -51,7 +51,7 @@ class BoundedSortedQueueTest {
   }
 
   @Test
-  public void testSimpleMax() throws ClassNotFoundException, IOException {
+  void testSimpleMax() throws ClassNotFoundException, IOException {
     BoundedSortedQueue<Double, String> boundedSortedQueue = Serialization.copy(BoundedSortedQueue.max(3));
     boundedSortedQueue.offer(0.7, "7");
     boundedSortedQueue.offer(0.0, "0");
@@ -66,7 +66,7 @@ class BoundedSortedQueueTest {
   }
 
   @Test
-  public void testFail() {
+  void testFail() {
     assertThrows(Exception.class, () -> BoundedSortedQueue.min(0));
     assertThrows(Exception.class, () -> BoundedSortedQueue.max(0));
     assertThrows(Exception.class, () -> BoundedSortedQueue.min(-1));

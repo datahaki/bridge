@@ -12,7 +12,7 @@ import ch.alpine.tensor.qty.Quantity;
 
 class FrailMapTest {
   @Test
-  public void testSimple() throws InterruptedException {
+  void testSimple() throws InterruptedException {
     FrailMap<Integer, String> frailMap = new FrailMap<>();
     frailMap.put(3, "asd");
     frailMap.registerKey(3, Quantity.of(0.01, "s"));
@@ -27,7 +27,7 @@ class FrailMapTest {
   }
 
   @Test
-  public void testRegisterFail() {
+  void testRegisterFail() {
     FrailMap<Integer, String> frailMap = new FrailMap<>();
     assertThrows(Exception.class, () -> frailMap.get(2));
     frailMap.registerKey(3, Quantity.of(0.01, "s"));

@@ -16,12 +16,12 @@ import ch.alpine.tensor.sca.tri.Cos;
 
 class SpectrogramTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     TestHelper.draw(SpectrogramDemo.create(0.4, 1.7));
   }
 
   @Test
-  public void testMore() {
+  void testMore() {
     for (int count = 0; count < 2; ++count) {
       ScalarUnaryOperator polynomial = Polynomial.of(Tensors.vector( //
           0, //

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class ScreenInsetsTest {
   @Test
-  public void testSimple() {
+  void testSimple() {
     ScreenInsets.of(0, 0);
     ScreenInsets.of(0);
   }

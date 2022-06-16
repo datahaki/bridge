@@ -17,6 +17,9 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
 
+/** this demo periodically invokes updateJComponents
+ * to illustrate what is the behavior of the dialog
+ * elements. */
 public enum PartialDemo {
   ;
   public static void main(String[] args) throws Exception {
@@ -30,7 +33,7 @@ public enum PartialDemo {
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
-        guiExtension.string = "" + LocalDateTime.now();
+        guiExtension.function = "" + LocalDateTime.now();
         panelFieldsEditor.updateJComponents();
       }
     }, 1000, 1000);

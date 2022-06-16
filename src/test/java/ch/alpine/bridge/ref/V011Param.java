@@ -14,6 +14,8 @@ public class V011Param {
   public Boolean fuse = true;
   public final List<NestedParam> list = Arrays.asList(new NestedParam(), new NestedParam());
   public final List<AnotherParam> another;
+  public final AnotherParam anotherParam = new AnotherParam();
+  public String string = "abc";
   public final Boolean[] fuses = new Boolean[] { true, false, true };
 
   public V011Param(int l) {
@@ -23,6 +25,6 @@ public class V011Param {
   }
 
   public static void main(String[] args) {
-    System.out.println(ObjectProperties.string(new V011Param(4)));
+    System.out.println(ObjectProperties.join(new V011Param(4)));
   }
 }

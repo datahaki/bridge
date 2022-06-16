@@ -3,7 +3,6 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -37,7 +36,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();
-    Supplier<List<Object>> supplier = () -> Arrays.asList(enumConstants);
+    Supplier<List<Object>> supplier = () -> List.of(enumConstants);
     FieldSelectionCallback fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
     if (Objects.nonNull(fieldSelectionCallback))
       try {
@@ -48,7 +47,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
           } catch (Exception exception) {
             exception.printStackTrace();
           }
-          return Arrays.asList();
+          return List.of();
         };
       } catch (Exception exception) {
         exception.printStackTrace();

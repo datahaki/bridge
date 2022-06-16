@@ -17,7 +17,14 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 /** Do not invoke LookAndFeel#getDefaults()
- * but modify keys only via UIManager.getDefaults(). */
+ * but modify keys only via UIManager.getDefaults().
+ * 
+ * as of April 2022, this function should be called
+ * once before any GUI is initialized.
+ * 
+ * changing the layout while GUI elements are already visible
+ * will result in exceptions thrown, and possibly the
+ * program not terminating at all! */
 public enum LookAndFeels {
   /** java swing default */
   DEFAULT(new MetalLookAndFeel()), //
@@ -49,7 +56,16 @@ public enum LookAndFeels {
     return lookAndFeel;
   }
 
-  /** @throws Exception */
+  public boolean tryUpdateUI() {
+    try {
+      updateUI();
+      return true;
+    } catch (Exception exception) {
+      exception.printStackTrace();
+    }
+    return false;
+  }
+
   public void updateUI() throws Exception {
     if (Objects.nonNull(lookAndFeel))
       UIManager.setLookAndFeel(lookAndFeel);

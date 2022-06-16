@@ -18,7 +18,7 @@ import ch.alpine.tensor.sca.Clip;
 
 class FieldClipsTest {
   @Test
-  public void testSimple() throws Exception {
+  void testSimple() throws Exception {
     Field field = AnnotatedContainer.class.getField("clipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     Clip clip = FieldClips.of(fieldClip);
@@ -27,7 +27,7 @@ class FieldClipsTest {
   }
 
   @Test
-  public void testQuantity() throws Exception {
+  void testQuantity() throws Exception {
     Field field = AnnotatedContainer.class.getField("quantityClipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     Clip clip = FieldClips.of(fieldClip);
@@ -36,14 +36,14 @@ class FieldClipsTest {
   }
 
   @Test
-  public void testIssue1() {
+  void testIssue1() {
     Clip clip = FieldClips.of(Quantity.of(0, "L*min^-1"), Quantity.of(20, "L*min^-1"));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20, "L*min^-1"))));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20.0, "L*min^-1"))));
   }
 
   @Test
-  public void testIssue2() {
+  void testIssue2() {
     Clip clip = FieldClips.of(Quantity.of(0, "L*min^-1"), Quantity.of(20.0, "L*min^-1"));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20, "L*min^-1"))));
     assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20.0, "L*min^-1"))));
@@ -53,7 +53,7 @@ class FieldClipsTest {
   public Scalar awesome = Quantity.of(4, "super");
 
   @Test
-  public void testSimple2() throws NoSuchFieldException, SecurityException {
+  void testSimple2() throws NoSuchFieldException, SecurityException {
     FieldClipsTest fieldClipsTest = new FieldClipsTest();
     Field field = fieldClipsTest.getClass().getField("awesome");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
