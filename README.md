@@ -2,7 +2,16 @@
 
 # ch.alpine.bridge
 
+<<<<<<< HEAD
 Library for Java, version `0.3.7-jdk-11`
+=======
+Library for Java. Features include 
+
+* wrapper for `jfreechart` library, API inspired by Mathematica
+* reflection-based serialization to properties-files, and gui generation
+* data structures `BoundedPriorityQueue`, `DisjointSets`, ...
+* class discovery
+>>>>>>> master
 
 ## Plots
 
@@ -40,10 +49,11 @@ jFrame.setVisible(true);
 
 ## Integration
 
-Specify `repository` and `dependency` of the tensor library in the `pom.xml` file of your maven project:
+From time to time, a version is deployed and made available for maven integration. Specify `repository` and `dependency` of the bridge library in the `pom.xml` file of your maven project:
 
 ```xml
 <repositories>
+  <!-- other repositories -->
   <repository>
     <id>bridge-mvn-repo</id>
     <url>https://raw.github.com/datahaki/bridge/mvn-repo/</url>
@@ -55,12 +65,24 @@ Specify `repository` and `dependency` of the tensor library in the `pom.xml` fil
 </repositories>
 
 <dependencies>
+  <!-- other dependencies -->
   <dependency>
     <groupId>ch.alpine</groupId>
+<<<<<<< HEAD
     <artifactId>java</artifactId>
     <version>0.3.7-jdk-11</version>
+=======
+    <artifactId>bridge</artifactId>
+    <version>0.3.6-jdk-11</version>
+>>>>>>> master
   </dependency>
 </dependencies>
 ```
 
+For Java 17, for `version` use [...].
+
+For Java 11, for `version` use `1.0.6-jdk-11`.
+
 The source code is attached to every release.
+
+The branch `master` always contains the latest features for Java 17, and does not correspond to the most recent deployed version generally.

@@ -29,8 +29,6 @@ class ReflectionMarkerTest {
     {
       List<Class<?>> list = classFieldCheck.getFailures();
       assertTrue(1 < list.size()); // the exact value doesn't matter
-      for (Class<?> cls : list)
-        System.err.println(cls);
     }
     {
       List<FieldValueContainer> list = classFieldCheck.invalidFields();

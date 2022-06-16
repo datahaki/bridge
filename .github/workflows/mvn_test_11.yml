@@ -1,4 +1,4 @@
-name: mvn test using jdk 11
+name: mvn test using JDK 11
 on:
   push:
     paths:
@@ -9,8 +9,11 @@ on:
     types:
       - opened
 jobs:
-  CI:
-    runs-on: ubuntu-latest
+  os_matrix:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -24,7 +27,7 @@ jobs:
           cd ..
           git clone https://github.com/datahaki/tensor.git
           cd tensor
-          git checkout v106_11
+          git checkout v107_11
           mvn clean install -DskipTests=true
       - name: mvn test
         working-directory: .

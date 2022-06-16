@@ -18,9 +18,17 @@ public enum ReflectionMarkers {
       expected(fieldWrap.getField().getDeclaringClass());
     }
   };
+  private boolean debugPrint = false;
 
   private ReflectionMarkers() {
     checked.add(Object.class);
+  }
+
+  /**
+   * 
+   */
+  public void enableDebugPrint() {
+    debugPrint = true;
   }
 
   /** function checks if class of given object has been analyzed
@@ -42,7 +50,10 @@ public enum ReflectionMarkers {
     if (!checked.contains(cls)) {
       checked.add(cls);
       ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
-      if (Objects.isNull(reflectionMarker) && missing.add(cls))
+      // careful: the if statement modifies the set `missing`
+      if (Objects.isNull(reflectionMarker) && //
+          missing.add(cls) && //
+          debugPrint)
         System.err.println("hint: use @ReflectionMarker on " + cls);
     }
   }

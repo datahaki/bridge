@@ -7,25 +7,32 @@ import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import ch.alpine.tensor.ext.PackageTestAccess;
+
 /** also works if file already exists before any launch */
 public class FileBlock {
+  private static final Pattern PATTERN = Pattern.compile("^[\\w-.]{1,255}$");
+
+  @PackageTestAccess
+  static boolean validFilename(String string) {
+    return PATTERN.matcher(string).matches();
+  }
+
   /** @param folder to generated `.lock` file in
-   * @param uid as filename
+   * @param uid unique identifier that is may be used as part of filename
    * @param showMessage whether to pop-up error dialog
-   * @return */
+   * @return
+   * @throws Exception if given uid cannot be used as part of filename */
   public static boolean of(File folder, String uid, boolean showMessage) {
     FileBlock fileBlock = new FileBlock(folder, uid);
     boolean isActive = fileBlock.isActive();
     if (isActive && showMessage)
       fileBlock.showMessage();
     return isActive;
-  }
-
-  public static boolean of(File folder, Class<?> cls, boolean showMessage) {
-    return of(folder, cls.getCanonicalName(), showMessage);
   }
 
   // ---
@@ -57,7 +64,7 @@ public class FileBlock {
       }));
       return false;
     } catch (Exception exception) {
-      System.err.println(getClass().getSimpleName() + ": " + exception.getMessage());
+      // ---
     }
     release();
     return true;
