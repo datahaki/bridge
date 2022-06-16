@@ -56,7 +56,14 @@ public abstract class FieldsEditor {
     return fieldPanel;
   }
 
-  /** @return field panel for each field in the object that appears in the editor */
+  /** the function exposes the FieldPanel instances used for the fields in the editor.
+   * By appending a consumer via {@link FieldPanel#addListener(Consumer)} to a single
+   * instance, granular behavior can be achieved.
+   * 
+   * In contrast {@link #addUniversalListener(Runnable)} adds a given consumer to every
+   * FieldPanel instance, because this is the more needed option in applications.
+   * 
+   * @return field panel for each field in the object that appears in the editor */
   public final List<FieldPanel> list() {
     return list.stream().map(Entry::getFieldPanel).collect(Collectors.toList());
   }

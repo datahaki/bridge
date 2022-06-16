@@ -20,16 +20,12 @@ import javax.swing.JComponent;
     jCheckBox.setOpaque(false);
     if (Objects.nonNull(value))
       jCheckBox.setSelected(value);
-    jCheckBox.addActionListener(event -> notifyListeners(getText()));
+    jCheckBox.addActionListener(event -> notifyListeners(fieldWrap.toString(jCheckBox.isSelected())));
   }
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
     return jCheckBox;
-  }
-
-  private String getText() {
-    return fieldWrap().toString(jCheckBox.isSelected());
   }
 
   @Override // from FieldPanel

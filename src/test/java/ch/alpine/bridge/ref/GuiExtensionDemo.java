@@ -30,6 +30,15 @@ public enum GuiExtensionDemo {
     // guiExtension.pivots2 = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
+    // the code below demonstrates that individual listeners can be attached
+    for (FieldPanel fieldPanel : panelFieldsEditor.list()) {
+      FieldWrap fieldWrap = fieldPanel.fieldWrap();
+      if (fieldWrap.getField().getName().startsWith("s")) {
+        fieldPanel.addListener(s -> {
+          System.out.println(fieldWrap.getField().getName() + " = " + s);
+        });
+      }
+    }
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
     jGrid.add(panelFieldsEditor.createJScrollPane());
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, guiExtension);
