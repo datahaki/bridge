@@ -26,7 +26,7 @@ class LookAndFeelsTest {
     try {
       lookAndFeels.updateUI();
       JMenu jMenu = new JMenu();
-      System.out.println(lookAndFeels + "  " + jMenu.getForeground());
+      jMenu.getForeground();
     } catch (Exception exception) {
       exception.printStackTrace();
     }

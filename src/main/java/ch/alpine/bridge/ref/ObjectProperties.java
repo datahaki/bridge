@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.io.Import;
 
 /** manages configurable parameters by introspection of a given instance
  * 
@@ -103,11 +103,7 @@ public class ObjectProperties {
    * @throws IOException
    * @see Properties */
   public static void load(Object object, File file) throws FileNotFoundException, IOException {
-    Properties properties = new Properties();
-    try (Reader reader = new FileReader(file, CHARSET)) {
-      properties.load(reader);
-    }
-    set(object, properties);
+    set(object, Import.properties(file, CHARSET));
   }
 
   /** @param object
