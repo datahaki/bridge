@@ -9,13 +9,13 @@ class StackedTimeChartTest {
   @Test
   void testEmpty() {
     VisualSet visualSet = new VisualSet();
-    TestHelper.draw(StackedTimeChart.of(visualSet));
+    CascadeHelper.draw(StackedTimeChart.of(visualSet));
   }
 
   @Test
   void testEmptyRow() {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());
-    TestHelper.draw(StackedTimeChart.of(visualSet));
+    CascadeHelper.draw(StackedTimeChart.of(visualSet));
   }
 }

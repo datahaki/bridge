@@ -9,13 +9,13 @@ class StackedHistogramTest {
   @Test
   void testEmpty() {
     VisualSet visualSet = new VisualSet();
-    TestHelper.draw(StackedHistogram.of(visualSet));
+    CascadeHelper.draw(StackedHistogram.of(visualSet));
   }
 
   @Test
   void testEmptyRow() {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());
-    TestHelper.draw(StackedHistogram.of(visualSet));
+    CascadeHelper.draw(StackedHistogram.of(visualSet));
   }
 }

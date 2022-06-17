@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.usr;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -7,20 +7,19 @@ import java.io.IOException;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 
+import ch.alpine.bridge.fig.Spectrogram;
+import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.alg.Reverse;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.img.ColorDataGradient;
-import ch.alpine.tensor.img.LinearColorDataGradient;
-import ch.alpine.tensor.io.ResourceData;
+import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
-import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.tri.Cos;
 import ch.alpine.tensor.sca.win.DirichletWindow;
 
@@ -36,18 +35,17 @@ public enum SpectrogramDemo {
     VisualSet visualSet = new VisualSet();
     visualSet.setPlotLabel("Spectrogram");
     visualSet.add(domain.map(s -> Quantity.of(s, "s")), signal);
-    visualSet.getAxisX().setUnit(Unit.of("s"));
     visualSet.getAxisX().setLabel("time");
-    visualSet.getAxisY().setUnit(Unit.of("Hz"));
     visualSet.getAxisY().setLabel("frequency");
-    ColorDataGradient colorDataGradient = //
-        LinearColorDataGradient.of(Reverse.of(ResourceData.of("/ch/alpine/tensor/img/colorscheme/sunset.csv")));
+    ColorDataGradient colorDataGradient = ColorDataGradients.SUNSET_REVERSED;
     return Spectrogram.of(visualSet, DirichletWindow.FUNCTION, colorDataGradient);
   }
 
   public static void main(String[] args) throws IOException {
     JFreeChart jFreeChart = create(0.0, 1.65);
     jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(Spectrogram.class.getSimpleName() + ".png"), jFreeChart, 512, 288);
+    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(Spectrogram.class.getSimpleName() + ".png"), //
+        jFreeChart, //
+        DemoHelper.DEMO_W, DemoHelper.DEMO_H);
   }
 }

@@ -9,13 +9,13 @@ class StackedTablePlotTest {
   @Test
   void testEmpty() {
     VisualSet visualSet = new VisualSet();
-    TestHelper.draw(StackedTablePlot.of(visualSet));
+    CascadeHelper.draw(StackedTablePlot.of(visualSet));
   }
 
   @Test
   void testEmptyRow() {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());
-    TestHelper.draw(StackedTablePlot.of(visualSet));
+    CascadeHelper.draw(StackedTablePlot.of(visualSet));
   }
 }

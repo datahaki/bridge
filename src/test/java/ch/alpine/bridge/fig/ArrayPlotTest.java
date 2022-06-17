@@ -10,6 +10,7 @@ import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.usr.ArrayPlotDemo;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
@@ -19,7 +20,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 class ArrayPlotTest {
   @Test
   void testSimple() {
-    TestHelper.draw(ArrayPlotDemo.create());
+    CascadeHelper.draw(ArrayPlotDemo.create());
   }
 
   @Test

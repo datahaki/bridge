@@ -25,14 +25,14 @@ class HistogramTest {
   @Test
   void testEmpty() {
     VisualSet visualSet = new VisualSet();
-    TestHelper.draw(Histogram.of(visualSet));
+    CascadeHelper.draw(Histogram.of(visualSet));
   }
 
   @Test
   void testEmptyRow() {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());
-    TestHelper.draw(Histogram.of(visualSet));
+    CascadeHelper.draw(Histogram.of(visualSet));
   }
 
   @Test
@@ -41,7 +41,7 @@ class HistogramTest {
     visualSet.add(Tensors.fromString("{{2[m],3[s]}, {4[m],5[s]}, {5[m],1[s]}}"));
     JFreeChart jFreeChart = Histogram.of(visualSet);
     ChartUtils.saveChartAsPNG(new File(folder, "histunit.png"), jFreeChart, 640, 480);
-    TestHelper.draw(jFreeChart);
+    CascadeHelper.draw(jFreeChart);
   }
 
   @Test

@@ -17,8 +17,8 @@ class TimeChartTest {
     File folder = HomeDirectory.Pictures(getClass().getSimpleName());
     assertFalse(folder.exists());
     folder.mkdirs();
-    TestHelper.cascade(new File(folder, "1"), true);
-    TestHelper.cascade(new File(folder, "0"), false);
+    CascadeHelper.cascade(new File(folder, "1"), true);
+    CascadeHelper.cascade(new File(folder, "0"), false);
     DeleteDirectory.of(folder, 2, 20);
     assertFalse(folder.exists());
   }
