@@ -19,6 +19,8 @@ Features include
 
 ![Spectrogram](https://user-images.githubusercontent.com/4012178/174349666-ed465170-9bd7-4427-add7-d299e23db011.png)
 
+![Histogram](https://user-images.githubusercontent.com/4012178/174354957-3134ea12-34a8-4a72-a680-f0ec38e8bce9.png)
+
 ## Reflection
 
 For non-final fields of type `String`, `Boolean`, `File`, `Color`, etc. of a class

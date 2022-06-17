@@ -27,7 +27,6 @@ import ch.alpine.tensor.sca.Clips;
     visualSet.add(domain, rgba.get(Tensor.ALL, 0)).setLabel("red");
     visualSet.add(domain, rgba.get(Tensor.ALL, 1)).setLabel("green");
     visualSet.add(domain, rgba.get(Tensor.ALL, 2)).setLabel("blue");
-    // ListPlot.of(null)
     JFreeChart jFreeChart = ListPlot.of(visualSet);
     jFreeChart.setBackgroundPaint(Color.WHITE);
     File file = HomeDirectory.Pictures(ListPlot.class.getSimpleName() + ".png");
