@@ -14,7 +14,7 @@ import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 
-class ObjectFieldGuiTest {
+class ObjectFieldAllTest {
   @ReflectionMarker
   public static class Param {
     @FieldSlider

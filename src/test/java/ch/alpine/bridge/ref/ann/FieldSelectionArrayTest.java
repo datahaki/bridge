@@ -5,7 +5,7 @@ import java.lang.annotation.Annotation;
 
 import org.junit.jupiter.api.Test;
 
-class FieldSelectionTest {
+class FieldSelectionArrayTest {
   @Test
   void testSimple() {
     FieldSelectionArray fieldSelection = new FieldSelectionArray() {

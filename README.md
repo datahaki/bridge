@@ -2,7 +2,11 @@
 
 # ch.alpine.bridge
 
-Library for Java. Features include 
+Library for Java.
+
+![](https://github.com/datahaki/bridge/actions/workflows/mvn_test.yml/badge.svg)
+
+Features include 
 
 * wrapper for `jfreechart` library, API inspired by Mathematica
 * reflection-based serialization to properties-files, and gui generation

@@ -34,7 +34,8 @@ import ch.alpine.tensor.io.Import;
  * value is retained. */
 public class ObjectProperties {
   /** charset UTF-8 guarantees the storage and loading of special
-   * characters such as Chinese characters. */
+   * characters such as Chinese characters.
+   * As of Java 18, the default charset is UTF-8. */
   private static final Charset CHARSET = Charset.forName("UTF-8");
 
   /** function is used to store in properties-file

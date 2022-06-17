@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -10,7 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.ref.util.PanelFieldsEditor;
+import ch.alpine.bridge.ref.FieldPanel;
+import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorKey;
+import ch.alpine.bridge.ref.FieldsEditorManager;
+import ch.alpine.bridge.ref.GuiExtension;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum GuiExtensionDemo {

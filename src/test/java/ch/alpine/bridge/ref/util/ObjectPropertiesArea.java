@@ -1,11 +1,11 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import ch.alpine.bridge.ref.util.FieldsEditor;
+import ch.alpine.bridge.ref.ObjectProperties;
 
 /* package */ class ObjectPropertiesArea {
   private final JTextArea jTextArea = new JTextArea();

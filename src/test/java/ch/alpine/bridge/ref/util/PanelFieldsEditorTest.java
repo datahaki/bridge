@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -10,7 +10,8 @@ import javax.swing.JComponent;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.util.PanelFieldsEditor;
+import ch.alpine.bridge.ref.FieldPanel;
+import ch.alpine.bridge.ref.GuiExtension;
 
 class PanelFieldsEditorTest {
   @Test
