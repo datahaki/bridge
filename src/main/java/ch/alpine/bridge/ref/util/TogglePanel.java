@@ -19,16 +19,12 @@ import ch.alpine.bridge.ref.FieldWrap;
     jToggleButton = new JToggleButton(text);
     if (Objects.nonNull(value))
       jToggleButton.setSelected(value);
-    jToggleButton.addActionListener(event -> notifyListeners(getText()));
+    jToggleButton.addActionListener(event -> notifyListeners(fieldWrap.toString(jToggleButton.isSelected())));
   }
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
     return jToggleButton;
-  }
-
-  private String getText() {
-    return fieldWrap().toString(jToggleButton.isSelected());
   }
 
   @Override // from FieldPanel
