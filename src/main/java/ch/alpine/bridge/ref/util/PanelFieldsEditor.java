@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref.util;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.lang.reflect.Field;
 
 import javax.swing.JLabel;
@@ -23,7 +24,8 @@ public class PanelFieldsEditor extends FieldsEditor {
     @Override // from ObjectFieldVisitor
     public void push(String key, Field field, Integer index) {
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, index));
-      jLabel.setEnabled(false);
+      jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
+      // jLabel.setForeground(new Color(192,192,255)); // for DARK
       rowPanelBuilder.appendRow(jLabel);
       ++level;
     }

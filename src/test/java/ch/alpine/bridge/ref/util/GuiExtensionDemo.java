@@ -6,10 +6,13 @@ import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.RecursiveEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.FieldsEditorKey;
@@ -25,7 +28,7 @@ public enum GuiExtensionDemo {
     // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
     // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
     // LookAndFeels.GTK_PLUS.updateUI();
-    LookAndFeels.DARK.updateUI();
+    LookAndFeels.LIGHT.updateUI();
     FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
     // ---
     GuiExtension guiExtension = new GuiExtension();
@@ -53,12 +56,22 @@ public enum GuiExtensionDemo {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(BorderLayout.CENTER, jGrid);
     {
-      JButton jButton = new JButton("reset fuse");
-      jButton.addActionListener(l -> {
-        guiExtension.fuse = false;
-        objectPropertiesArea.update();
-      });
-      jPanel.add(BorderLayout.SOUTH, jButton);
+      JToolBar jToolBar = new JToolBar();
+      {
+        JButton jButton = new JButton("reset fuse");
+        jButton.addActionListener(l -> {
+          guiExtension.fuse = false;
+          objectPropertiesArea.update();
+        });
+        jToolBar.add(jButton);
+      }
+      jToolBar.addSeparator();
+      {
+        JCheckBox jCheckBox = new JCheckBox("disable");
+        jCheckBox.addActionListener(a -> RecursiveEnabler.setEnabled(jGrid, !jCheckBox.isSelected()));
+        jToolBar.add(jCheckBox);
+      }
+      jPanel.add(BorderLayout.SOUTH, jToolBar);
     }
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 100, 500, 900);
