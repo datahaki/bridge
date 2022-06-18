@@ -18,6 +18,7 @@ import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.FieldsEditorKey;
 import ch.alpine.bridge.ref.FieldsEditorManager;
 import ch.alpine.bridge.ref.GuiExtension;
+import ch.alpine.bridge.swing.CheckBoxIcons;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum GuiExtensionDemo {
@@ -28,6 +29,7 @@ public enum GuiExtensionDemo {
     // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
     // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
     // LookAndFeels.GTK_PLUS.updateUI();
+    CheckBoxIcons.BALLIT.init(32);
     LookAndFeels.LIGHT.updateUI();
     FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
     // ---
