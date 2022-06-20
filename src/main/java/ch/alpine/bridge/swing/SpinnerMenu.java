@@ -46,7 +46,7 @@ public class SpinnerMenu<T> {
         jMenuItem.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseEntered(MouseEvent mouseEvent) {
-            spinnerListeners.forEach(spinnerListener -> spinnerListener.actionPerformed(type));
+            spinnerListeners.forEach(spinnerListener -> spinnerListener.spun(type));
           }
         });
       if (type.equals(selectedValue)) {
@@ -56,7 +56,7 @@ public class SpinnerMenu<T> {
             : ACTIVE_ITEM_LIGHT);
         jMenuItem.setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
       } else {
-        jMenuItem.addActionListener(actionEvent -> spinnerListeners.forEach(spinnerListener -> spinnerListener.actionPerformed(type)));
+        jMenuItem.addActionListener(actionEvent -> spinnerListeners.forEach(spinnerListener -> spinnerListener.spun(type)));
       }
       jPopupMenu.add(jMenuItem);
       map.put(type, jMenuItem);

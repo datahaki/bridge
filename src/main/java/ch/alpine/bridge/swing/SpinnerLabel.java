@@ -45,7 +45,9 @@ public abstract class SpinnerLabel<T> extends JTextField {
     return spinnerLabel;
   }
 
-  /** @param list
+  /** Careful: any outside modification of given list is reflected in gui
+   * 
+   * @param list
    * @return */
   public static <T> SpinnerLabel<T> of(List<T> list) {
     return of(() -> list);
@@ -53,7 +55,8 @@ public abstract class SpinnerLabel<T> extends JTextField {
 
   /** @param values
    * @return */
-  public static <T> SpinnerLabel<T> of(@SuppressWarnings("unchecked") T... values) {
+  @SafeVarargs
+  public static <T> SpinnerLabel<T> of(T... values) {
     return of(List.of(values));
   }
 
@@ -220,7 +223,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
 
   public void reportToAll() {
     T type = getValue();
-    spinnerListeners.forEach(spinnerListener -> spinnerListener.actionPerformed(type));
+    spinnerListeners.forEach(spinnerListener -> spinnerListener.spun(type));
   }
 
   public T getValue() {
@@ -229,7 +232,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
 
   public abstract List<T> getList();
 
-  /** does not invoke call backs
+  /** does not invoke callbacks
    * 
    * @param type non-null
    * @throws Exception if type is not present in list */

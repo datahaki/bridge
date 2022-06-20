@@ -14,7 +14,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.HomeDirectory;
-import ch.alpine.tensor.itp.Fit;
+import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
 
 /* package */ enum FitShow {
@@ -23,8 +23,8 @@ import ch.alpine.tensor.qty.Quantity;
     for (int degree = 0; degree <= 4; ++degree) {
       Tensor x = Tensors.fromString("{100[K], 110.0[K], 120[K], 133[K], 140[K], 150[K]}");
       Tensor y = Tensors.fromString("{10[bar], 20[bar], 22[bar], 23[bar], 25[bar], 26.0[bar]}");
-      ScalarUnaryOperator x_to_y = Fit.polynomial(x, y, degree);
-      ScalarUnaryOperator y_to_x = Fit.polynomial(y, x, degree);
+      ScalarUnaryOperator x_to_y = Polynomial.fit(x, y, degree);
+      ScalarUnaryOperator y_to_x = Polynomial.fit(y, x, degree);
       Tensor samples_x = Subdivide.of(Quantity.of(100, "K"), Quantity.of(150, "K"), 50);
       Tensor samples_y = Subdivide.of(Quantity.of(10, "bar"), Quantity.of(26, "bar"), 50);
       samples_x.map(x_to_y);

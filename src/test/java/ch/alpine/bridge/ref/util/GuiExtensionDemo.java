@@ -24,7 +24,6 @@ import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {
   private final GuiExtension guiExtension = new GuiExtension();
-  // private final
   public final JPanel jGrid = new JPanel(new GridLayout(2, 1));
   private final JFrame jFrame = new JFrame();
 
@@ -73,11 +72,6 @@ public class GuiExtensionDemo {
   }
 
   public static void main(String[] args) throws Exception {
-    // int n = 24;
-    // String folder = "/ch/alpine/bridge/ref/checkbox/ballot/";
-    // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
-    // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
-    // LookAndFeels.GTK_PLUS.updateUI();
     CheckBoxIcons.BALLIT.init(32);
     LookAndFeels.DARK.updateUI();
     FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
