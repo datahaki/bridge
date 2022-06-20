@@ -1,16 +1,19 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.util.PanelFieldsEditor;
+import ch.alpine.bridge.ref.SimpleParam;
+import ch.alpine.bridge.ref.V011Param;
 
 class FieldsEditorTest {
   @Test
   void testSimple() {
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(new SimpleParam());
     panelFieldsEditor.createJScrollPane();
-    panelFieldsEditor.list().forEach(fieldPanel -> fieldPanel.notifyListeners(""));
+    panelFieldsEditor.list().forEach(fieldPanel -> fieldPanel.addListener(s -> {
+      // ---
+    }));
     panelFieldsEditor.updateJComponents();
   }
 

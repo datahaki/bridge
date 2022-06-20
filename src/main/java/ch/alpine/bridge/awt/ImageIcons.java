@@ -15,7 +15,7 @@ public enum ImageIcons {
     Graphics2D graphics = bufferedImage.createGraphics();
     RenderQuality.setQuality(graphics);
     graphics.drawImage(image, 0, 0, size, size, null);
-    return new ImageIcon(bufferedImage);
+    return create(bufferedImage);
   }
 
   public static Icon create(Image image) {

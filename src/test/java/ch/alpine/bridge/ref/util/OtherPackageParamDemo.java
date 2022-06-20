@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -8,8 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.ref.util.OtherPackageParam;
-import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum OtherPackageParamDemo {

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.usr;
 
 import java.awt.Color;
 import java.io.File;
@@ -8,6 +8,8 @@ import java.io.IOException;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 
+import ch.alpine.bridge.fig.Periodogram;
+import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;

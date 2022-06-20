@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -11,10 +12,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.DoubleScalar;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.pdf.InverseCDF;
 import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.UnivariateDistribution;
+import ch.alpine.tensor.pdf.c.HistogramDistribution;
+import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.qty.Quantity;
 import demo.tensor.pdf.TrapezoidalDistributionDemo;
@@ -32,8 +39,8 @@ class ListPlotTest {
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
     visualSet.add(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6));
-    TestHelper.draw(ListPlot.of(visualSet, true));
-    TestHelper.draw(ListPlot.of(visualSet, false));
+    CascadeHelper.draw(ListPlot.of(visualSet, true));
+    CascadeHelper.draw(ListPlot.of(visualSet, false));
   }
 
   private static final ScalarUnaryOperator suoX = s -> Quantity.of(s, "s");
@@ -49,7 +56,7 @@ class ListPlotTest {
     visualSet.add(Tensors.empty());
     visualSet.add(Tensors.vector(0, 2, 5).map(suoX), Tensors.vector(1, 2, 1.6));
     visualSet.add(Tensors.empty());
-    TestHelper.draw(ListPlot.of(visualSet, true));
+    CascadeHelper.draw(ListPlot.of(visualSet, true));
   }
 
   @Test
@@ -61,7 +68,7 @@ class ListPlotTest {
     visualSet.add(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).map(suoY));
     visualSet.add(Tensors.empty());
     visualSet.add(Tensors.vector(3, 5), Tensors.vector(1, 2.6).map(suoY));
-    TestHelper.draw(ListPlot.of(visualSet, true));
+    CascadeHelper.draw(ListPlot.of(visualSet, true));
   }
 
   @Test
@@ -89,5 +96,66 @@ class ListPlotTest {
   void testDistribution(@TempDir File folder) throws IOException {
     JFreeChart jFreeChart = TrapezoidalDistributionDemo.generate();
     ChartUtils.saveChartAsPNG(new File(folder, "trap_distr.png"), jFreeChart, 640, 480);
+  }
+
+  @Test
+  void testSome(@TempDir File folder) throws IOException {
+    Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
+    Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
+    Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
+    VisualSet visualSet = new VisualSet();
+    visualSet.setPlotLabel("List Plot Demo");
+    Tensor domain1 = RandomVariate.of(UniformDistribution.unit(), values1.length());
+    ScalarUnaryOperator suoX = s -> Quantity.of(s.add(RealScalar.of(100)), "s");
+    ScalarUnaryOperator suoY = s -> Quantity.of(s.add(RealScalar.of(300)), "m");
+    VisualRow visualRow1 = visualSet.add(domain1.map(suoX), values1.map(suoY));
+    visualRow1.setLabel("first");
+    Tensor domain2 = RandomVariate.of(UniformDistribution.unit(), values2.length());
+    VisualRow visualRow2 = visualSet.add(domain2.map(suoX), values2.map(suoY));
+    visualRow2.setAutoSort(true);
+    Tensor domain3 = RandomVariate.of(UniformDistribution.unit(), values3.length());
+    visualSet.add(domain3.map(suoX), values3.map(suoY));
+    Tensor domain4 = Tensors.vector(1, 3, 2, 5, 4).multiply(RealScalar.of(0.2));
+    visualSet.add(domain4.map(suoX), domain4.map(suoY));
+    // ChartFactory.setChartTheme(ChartTheme.STANDARD);
+    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    jFreeChart.setBackgroundPaint(Color.WHITE);
+    File file = new File(folder, ListPlot.class.getSimpleName() + ".png");
+    ChartUtils.saveChartAsPNG(file, jFreeChart, 500, 300);
+  }
+
+  @Test
+  void testDistrib1(@TempDir File folder) throws IOException {
+    UnivariateDistribution dist = (UnivariateDistribution) NormalDistribution.of(1, 2);
+    HistogramDistribution distribution = (HistogramDistribution) //
+    HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
+    {
+      Tensor domain = Subdivide.of(-5, 8, 300);
+      VisualSet visualSet = new VisualSet();
+      visualSet.add(domain, domain.map(distribution::at));
+      visualSet.add(domain, domain.map(distribution::p_lessEquals));
+      visualSet.add(domain, domain.map(dist::at));
+      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      jFreeChart.setBackgroundPaint(Color.WHITE);
+      ChartUtils.saveChartAsPNG(new File(folder, "hd.png"), jFreeChart, 640, 480);
+    }
+  }
+
+  @Test
+  void testDistrib2(@TempDir File folder) throws IOException {
+    UnivariateDistribution dist = (UnivariateDistribution) NormalDistribution.of(1, 2);
+    HistogramDistribution distribution = (HistogramDistribution) //
+    HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
+    {
+      Tensor domain = Subdivide.of(0, 1, 300);
+      InverseCDF inv1 = InverseCDF.of(distribution);
+      InverseCDF inv2 = InverseCDF.of(dist);
+      VisualSet visualSet = new VisualSet();
+      visualSet.add(domain, domain.map(inv1::quantile));
+      visualSet.add(domain, domain.map(inv2::quantile));
+      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      jFreeChart.setBackgroundPaint(Color.WHITE);
+      ChartUtils.saveChartAsPNG(new File(folder, "hd_inv.png"), jFreeChart, 640, 480);
+    }
   }
 }

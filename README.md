@@ -3,9 +3,17 @@
 # ch.alpine.bridge
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Library for Java, version `0.3.7-jdk-11`
 =======
 Library for Java. Features include 
+=======
+Library for Java.
+
+![](https://github.com/datahaki/bridge/actions/workflows/mvn_test.yml/badge.svg)
+
+Features include 
+>>>>>>> master
 
 * wrapper for `jfreechart` library, API inspired by Mathematica
 * reflection-based serialization to properties-files, and gui generation
@@ -15,7 +23,11 @@ Library for Java. Features include
 
 ## Plots
 
-![Spectrogram](https://user-images.githubusercontent.com/4012178/138568940-d96657ee-9e42-4065-aa93-64cbee7b3087.png)
+![ListPlot](https://user-images.githubusercontent.com/4012178/174350881-199e3d17-514d-402c-b59c-8418ee6fcdb8.png)
+
+![Spectrogram](https://user-images.githubusercontent.com/4012178/174349666-ed465170-9bd7-4427-add7-d299e23db011.png)
+
+![Histogram](https://user-images.githubusercontent.com/4012178/174354957-3134ea12-34a8-4a72-a680-f0ec38e8bce9.png)
 
 ## Reflection
 
@@ -52,6 +64,15 @@ jFrame.setVisible(true);
 From time to time, a version is deployed and made available for maven integration. Specify `repository` and `dependency` of the bridge library in the `pom.xml` file of your maven project:
 
 ```xml
+<dependencies>
+  <!-- other dependencies -->
+  <dependency>
+    <groupId>ch.alpine</groupId>
+    <artifactId>bridge</artifactId>
+    <version>0.3.6-jdk-11</version>
+  </dependency>
+</dependencies>
+
 <repositories>
   <!-- other repositories -->
   <repository>
@@ -63,6 +84,7 @@ From time to time, a version is deployed and made available for maven integratio
     </snapshots>
   </repository>
 </repositories>
+<<<<<<< HEAD
 
 <dependencies>
   <!-- other dependencies -->
@@ -77,6 +99,8 @@ From time to time, a version is deployed and made available for maven integratio
 >>>>>>> master
   </dependency>
 </dependencies>
+=======
+>>>>>>> master
 ```
 
 For Java 17, for `version` use [...].

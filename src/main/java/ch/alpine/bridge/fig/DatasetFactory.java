@@ -54,15 +54,15 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
    * @param naming for instance Scalar::toString
    * @return */
   public static CategoryDataset defaultCategoryDataset(VisualSet visualSet, Function<Scalar, String> naming) {
+    // TODO BRIDGE may result in "unordered" domain depending on ordering of rows
     DefaultCategoryDataset defaultCategoryDataset = new DefaultCategoryDataset();
     ScalarUnaryOperator toRealsY = visualSet.getAxisY().toReals();
     for (VisualRow visualRow : visualSet.visualRows())
-      for (Tensor point : visualRow.points()) {
+      for (Tensor point : visualRow.points())
         defaultCategoryDataset.addValue( //
             toRealsY.apply(point.Get(1)).number(), //
             visualRow.getLabel(), //
             naming.apply(point.Get(0)));
-      }
     return defaultCategoryDataset;
   }
 
