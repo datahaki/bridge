@@ -2,11 +2,9 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.Color;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -20,6 +18,7 @@ import java.util.stream.Collectors;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.io.Import;
 
 /** manages configurable parameters by introspection of a given instance
  * 
@@ -105,16 +104,7 @@ public class ObjectProperties {
    * @throws IOException
    * @see Properties */
   public static void load(Object object, File file) throws FileNotFoundException, IOException {
-    set(object, properties(file, CHARSET));
-  }
-
-  // TODO BRIDGE TENSOR 107 function obsolete
-  private static Properties properties(File file, Charset charset) throws FileNotFoundException, IOException {
-    try (Reader reader = new BufferedReader(new FileReader(file, charset))) {
-      Properties properties = new Properties();
-      properties.load(reader);
-      return properties;
-    }
+    set(object, Import.properties(file, CHARSET));
   }
 
   /** @param object
