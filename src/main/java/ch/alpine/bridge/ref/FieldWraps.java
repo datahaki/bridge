@@ -4,6 +4,7 @@ package ch.alpine.bridge.ref;
 import java.awt.Color;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -26,7 +27,7 @@ public enum FieldWraps {
     map.put(Color.class, ColorFieldWrap::new);
     map.put(File.class, FileFieldWrap::new);
     map.put(Clip.class, ClipFieldWrap::new);
-    // TODO BRIDGE consider adding LocalDateTime
+    map.put(LocalDateTime.class, LocalDateTimeFieldWrap::new);
   }
 
   public boolean elemental(Class<?> cls) {

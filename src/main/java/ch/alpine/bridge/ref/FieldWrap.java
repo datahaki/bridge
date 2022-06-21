@@ -10,7 +10,7 @@ public interface FieldWrap {
   /** @param string non-null
    * @return value parsed from string. note that the parsed value might
    * violate constraints defined by field annotations. If the given string
-   * cannot be parsed null is returned.
+   * cannot be parsed, then null is returned.
    * @throws Exception if given string is null */
   Object toValue(String string);
 
