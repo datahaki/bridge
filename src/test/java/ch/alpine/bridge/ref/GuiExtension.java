@@ -38,7 +38,7 @@ public class GuiExtension {
   protected String string = "abc";
   @FieldSelectionCallback("getStaticStrings")
   public String function = "abc";
-  @FieldSelectionArray(value = { "ttyS0", "ttyS1", "ttyS2", "ttyS3", "ttyUSB0", "ttyUSB1" })
+  @FieldSelectionArray({ "ttyS0", "ttyS1", "ttyS2", "ttyS3", "ttyUSB0", "ttyUSB1" })
   public String selectable = "ttyS0";
   protected Boolean status = true;
   @FieldLabel("Big Fuse")

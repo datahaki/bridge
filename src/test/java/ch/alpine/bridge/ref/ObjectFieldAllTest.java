@@ -24,7 +24,7 @@ class ObjectFieldAllTest {
     @FieldPreferredWidth(150)
     @FieldInteger
     public Scalar length = RealScalar.of(300);
-    @FieldFuse(value = "generate")
+    @FieldFuse("generate")
     public transient Boolean generate = true;
   }
 

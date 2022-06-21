@@ -19,7 +19,7 @@ import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 @Target(ElementType.FIELD)
 public @interface FieldSlider {
   /** @return whether to display the current slider value */
-  boolean value() default false;
+  boolean showValue() default false;
 
   /** @return whether to show the min and max values of the slider */
   boolean showRange() default false;

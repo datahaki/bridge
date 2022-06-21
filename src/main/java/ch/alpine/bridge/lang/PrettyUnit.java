@@ -13,9 +13,7 @@ import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.Sign;
 
-/** IMPLEMENTATION IS EXPERIMENTAL
- * 
- * "m*s^-1" -> "m/s"
+/** "m*s^-1" -> "m/s"
  * use of unicode characters for degC, Ohm and micro-x
  * use of unicode characters for exponents such as ^-2
  * etc. */
@@ -56,15 +54,23 @@ public enum PrettyUnit {
         .collect(Collectors.joining(Unit.JOIN_DELIMITER)); // delimited by '*'
   }
 
-  private static final Set<String> SET_MICRO = Set.of("ug", "um", "us", "uF", "uH", "uS", "uSv", "uW", "uV", "uA");
+  private static final Set<String> SET_MICRO = Set.of( //
+      "ubar", "ug", "um", "umol", "us", //
+      "uF", "uH", "uHz", "uOhm", "uPa", "uS", "uSv", "uW", "uWb", "uV", "uA");
 
   private static String atomString(String atom) {
     if (SET_MICRO.contains(atom))
-      return "\u03BC" + atom.substring(1);
+      return '\u03BC' + terminate(atom.substring(1));
+    return terminate(atom);
+  }
+
+  private static String terminate(String atom) {
     if (atom.equals("degC"))
       return "\u2103"; // unicode oC
     if (atom.equals("EUR"))
       return "\u20ac"; // unicode EUR
+    if (atom.equals("USD"))
+      return "$"; // unicode EUR
     if (atom.equals("K"))
       return "\u212a"; // unicode K
     if (atom.equals("Ohm"))

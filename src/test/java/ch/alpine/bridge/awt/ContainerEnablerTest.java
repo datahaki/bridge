@@ -12,9 +12,9 @@ class ContainerEnablerTest {
   void test() {
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
     Random random = new Random();
-    ContainerEnabler.setEnabled(guiExtensionDemo.jGrid, random.nextBoolean());
-    ContainerEnabler.setEnabled(guiExtensionDemo.jGrid, false);
-    ContainerEnabler.setEnabled(guiExtensionDemo.jGrid, true);
-    ContainerEnabler.setEnabled(guiExtensionDemo.jGrid, false);
+    ContainerEnabler.setEnabled(guiExtensionDemo.jSplitPane, random.nextBoolean());
+    ContainerEnabler.setEnabled(guiExtensionDemo.jSplitPane, false);
+    ContainerEnabler.setEnabled(guiExtensionDemo.jSplitPane, true);
+    ContainerEnabler.setEnabled(guiExtensionDemo.jSplitPane, false);
   }
 }
