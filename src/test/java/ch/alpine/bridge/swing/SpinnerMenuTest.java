@@ -2,6 +2,7 @@
 package ch.alpine.bridge.swing;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,7 +16,7 @@ class SpinnerMenuTest {
   @Test
   void testSimple() throws InterruptedException {
     SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), Pivots.ARGMAX_ABS, false);
-    spinnerMenu.addSpinnerListener(type -> System.out.println(type));
+    spinnerMenu.addSpinnerListener(System.out::println);
     JFrame jFrame = new JFrame();
     JButton jButton = new JButton();
     jFrame.setContentPane(jButton);
@@ -28,7 +29,8 @@ class SpinnerMenuTest {
   @Test
   void testNull() throws InterruptedException {
     SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), null, false);
-    spinnerMenu.addSpinnerListener(type -> System.out.println(type));
+    spinnerMenu.addSpinnerListener(Objects::requireNonNull);
+    spinnerMenu.spinnerListeners_spun(Pivots.ARGMAX_ABS);
     JFrame jFrame = new JFrame();
     JButton jButton = new JButton();
     jFrame.setContentPane(jButton);

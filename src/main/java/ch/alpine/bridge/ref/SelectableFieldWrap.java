@@ -29,7 +29,8 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
   public FieldPanel createFieldPanel(Object object, Object value) {
     if (Objects.nonNull(fieldSelectionArray))
       try {
-        return new MenuPanel(this, value, () -> List.of(fieldSelectionArray.value()));
+        List<String> list = List.of(fieldSelectionArray.value());
+        return new MenuPanel(this, value, () -> list);
       } catch (Exception exception) {
         exception.printStackTrace();
       }
