@@ -64,6 +64,12 @@ class PrettyUnitTest {
   }
 
   @Test
+  void testMicroList() {
+    // UnitSystem.SI().map().keySet().stream().filter(s->s.startsWith("u")).forEach(System.out::println);
+    assertEquals(PrettyUnit.of(Unit.of("uOhm")), "\u03BC\u2126");
+  }
+
+  @Test
   void testNullFail() {
     assertThrows(Exception.class, () -> PrettyUnit.of((Unit) null));
   }

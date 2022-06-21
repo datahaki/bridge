@@ -3,12 +3,12 @@ package ch.alpine.bridge.ref.util;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
@@ -24,8 +24,7 @@ import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {
   private final GuiExtension guiExtension = new GuiExtension();
-  // private final
-  public final JPanel jGrid = new JPanel(new GridLayout(2, 1));
+  public final JSplitPane jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
   private final JFrame jFrame = new JFrame();
 
   public GuiExtensionDemo() {
@@ -43,13 +42,13 @@ public class GuiExtensionDemo {
         });
       }
     }
-    jGrid.add(panelFieldsEditor.createJScrollPane());
+    jSplitPane.add(panelFieldsEditor.createJScrollPane());
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, guiExtension);
-    jGrid.add(objectPropertiesArea.createJComponent());
+    jSplitPane.add(objectPropertiesArea.createJComponent());
     // ---
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, jGrid);
+    jPanel.add(BorderLayout.CENTER, jSplitPane);
     {
       JToolBar jToolBar = new JToolBar();
       {
@@ -63,21 +62,17 @@ public class GuiExtensionDemo {
       jToolBar.addSeparator();
       {
         JCheckBox jCheckBox = new JCheckBox("disable");
-        jCheckBox.addActionListener(a -> ContainerEnabler.setEnabled(jGrid, !jCheckBox.isSelected()));
+        jCheckBox.addActionListener(a -> ContainerEnabler.setEnabled(jSplitPane, !jCheckBox.isSelected()));
         jToolBar.add(jCheckBox);
       }
       jPanel.add(BorderLayout.SOUTH, jToolBar);
     }
+    jSplitPane.setDividerLocation(500);
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 100, 500, 900);
   }
 
   public static void main(String[] args) throws Exception {
-    // int n = 24;
-    // String folder = "/ch/alpine/bridge/ref/checkbox/ballot/";
-    // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_0, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "0.png"), n, n)));
-    // FieldsEditorManager.set(FieldsEditorKey.ICON_CHECKBOX_1, new ImageIcon(ImageResize.of(ResourceData.bufferedImage(folder + "1.png"), n, n)));
-    // LookAndFeels.GTK_PLUS.updateUI();
     CheckBoxIcons.BALLIT.init(32);
     LookAndFeels.DARK.updateUI();
     FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));

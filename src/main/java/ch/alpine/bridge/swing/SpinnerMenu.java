@@ -19,6 +19,7 @@ import javax.swing.JPopupMenu;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.ext.PackageTestAccess;
 import ch.alpine.tensor.img.ColorFormat;
 import ch.alpine.tensor.red.Mean;
 
@@ -40,27 +41,31 @@ public class SpinnerMenu<T> {
   public SpinnerMenu(List<T> list, T selectedValue, boolean hover) {
     this.selectedValue = selectedValue;
     // ---
-    for (T type : list) {
-      JMenuItem jMenuItem = new JMenuItem(type.toString());
+    for (T value : list) {
+      JMenuItem jMenuItem = new JMenuItem(value.toString());
       if (hover)
         jMenuItem.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseEntered(MouseEvent mouseEvent) {
-            spinnerListeners.forEach(spinnerListener -> spinnerListener.actionPerformed(type));
+            spinnerListeners_spun(value);
           }
         });
-      if (type.equals(selectedValue)) {
+      if (value.equals(selectedValue)) {
         Scalar mean = Mean.ofVector(ColorFormat.toVector(jMenuItem.getForeground()).extract(0, 3));
         jMenuItem.setBackground(Scalars.lessThan(RealScalar.of(128), mean) //
             ? ACTIVE_ITEM_DARK
             : ACTIVE_ITEM_LIGHT);
         jMenuItem.setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
-      } else {
-        jMenuItem.addActionListener(actionEvent -> spinnerListeners.forEach(spinnerListener -> spinnerListener.actionPerformed(type)));
-      }
+      } else
+        jMenuItem.addActionListener(actionEvent -> spinnerListeners_spun(value));
       jPopupMenu.add(jMenuItem);
-      map.put(type, jMenuItem);
+      map.put(value, jMenuItem);
     }
+  }
+
+  @PackageTestAccess
+  void spinnerListeners_spun(T value) {
+    spinnerListeners.forEach(spinnerListener -> spinnerListener.spun(value));
   }
 
   public void setFont(Font font) {

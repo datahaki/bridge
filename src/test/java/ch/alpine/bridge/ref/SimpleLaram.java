@@ -18,7 +18,7 @@ public class SimpleLaram {
       new NestedParam());
 
   public static class NestedParam extends BaseParam {
-    @FieldFuse(value = "fuse")
+    @FieldFuse("fuse")
     public Boolean some = true;
     public Scalar scalar = Pi.VALUE;
     public String text = "grolley";

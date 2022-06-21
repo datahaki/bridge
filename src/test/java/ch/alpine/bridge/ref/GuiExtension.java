@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref;
 
 import java.awt.Color;
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +39,7 @@ public class GuiExtension {
   protected String string = "abc";
   @FieldSelectionCallback("getStaticStrings")
   public String function = "abc";
-  @FieldSelectionArray(value = { "ttyS0", "ttyS1", "ttyS2", "ttyS3", "ttyUSB0", "ttyUSB1" })
+  @FieldSelectionArray({ "ttyS0", "ttyS1", "ttyS2", "ttyS3", "ttyUSB0", "ttyUSB1" })
   public String selectable = "ttyS0";
   protected Boolean status = true;
   @FieldLabel("Big Fuse")
@@ -52,6 +53,7 @@ public class GuiExtension {
   public Boolean status2 = true;
   @FieldSelectionCallback("cdgSelection")
   public ColorDataGradients cdg = ColorDataGradients.BLACK_BODY_SPECTRUM;
+  public LocalDateTime dateTime = LocalDateTime.now();
   @FieldExistingDirectory
   public File folder = HomeDirectory.file();
   @FieldExistingFile

@@ -11,11 +11,11 @@ import ch.alpine.bridge.ref.ann.ReflectionMarker;
 @ReflectionMarker
 public class GuiTrial {
   public String string = "abc";
-  @FieldSelectionCallback(value = "getStrings")
+  @FieldSelectionCallback("getStrings")
   public String options = "options";
-  @FieldSelectionCallback(value = "getStringsThrows")
+  @FieldSelectionCallback("getStringsThrows")
   public String optionsFail = "options fail";
-  @FieldSelectionCallback(value = "doesnotexist")
+  @FieldSelectionCallback("doesnotexist")
   public String optionsMiss = "options miss";
   @FieldSelectionArray({ "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
   public String selectable = "/dev/ttyS0";
