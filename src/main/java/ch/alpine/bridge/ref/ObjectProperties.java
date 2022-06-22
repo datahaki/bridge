@@ -104,7 +104,7 @@ public class ObjectProperties {
    * @throws IOException
    * @see Properties */
   public static void load(Object object, File file) throws FileNotFoundException, IOException {
-    set(object, Import.properties(file, CHARSET));
+    set(object, Import.properties(file));
   }
 
   /** @param object

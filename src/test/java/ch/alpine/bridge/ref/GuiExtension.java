@@ -3,7 +3,9 @@ package ch.alpine.bridge.ref;
 
 import java.awt.Color;
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -54,6 +56,8 @@ public class GuiExtension {
   @FieldSelectionCallback("cdgSelection")
   public ColorDataGradients cdg = ColorDataGradients.BLACK_BODY_SPECTRUM;
   public LocalDateTime dateTime = LocalDateTime.now();
+  public LocalDate date = LocalDate.now();
+  public LocalTime time = LocalTime.now();
   @FieldExistingDirectory
   public File folder = HomeDirectory.file();
   @FieldExistingFile
