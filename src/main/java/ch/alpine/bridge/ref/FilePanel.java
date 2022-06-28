@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -18,16 +19,15 @@ import javax.swing.filechooser.FileFilter;
 
   /** @param fieldWrap
    * @param _file initially
-   * @param filters */
-  public FilePanel(FieldWrap fieldWrap, File _file, FileFilter... filters) {
+   * @param fileFilters */
+  public FilePanel(FieldWrap fieldWrap, File _file, List<FileFilter> fileFilters) {
     super(fieldWrap, _file);
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         JFileChooser jFileChooser = new JFileChooser();
-        // File file = new File(getJTextField().getText());
-        for (FileFilter filter : filters)
-          jFileChooser.setFileFilter(filter);
+        for (FileFilter fileFilter : fileFilters)
+          jFileChooser.setFileFilter(fileFilter);
         File file = new File(jTextField.getText());
         jFileChooser.setApproveButtonText("Done");
         jFileChooser.setApproveButtonToolTipText("Select file");

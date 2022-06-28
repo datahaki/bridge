@@ -63,8 +63,12 @@ public class GuiExtension {
   @FieldExistingFile
   public File file = HomeDirectory.file();
   @FieldExistingFile
-  @FieldFileExtension(description = "Text-Files", extensions = "txt")
+  @FieldFileExtension(description = "Plain Text-Files", extensions = { "txt", "md" })
   public File txtFile = HomeDirectory.file();
+  @FieldExistingFile
+  @FieldFileExtension(description = "PNG-Files", extensions = "png")
+  @FieldFileExtension(description = "JPG-Files", extensions = "jpg")
+  public File imgFile = HomeDirectory.file();
   public File anyFile = HomeDirectory.file();
   @FieldSelectionArray({ "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");
