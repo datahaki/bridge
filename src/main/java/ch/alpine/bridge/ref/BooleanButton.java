@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-/* package */ class BooleanButton extends FieldPanel {
+/* package */ final class BooleanButton extends FieldPanel {
   private final JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
   public BooleanButton(FieldWrap fieldWrap, String text) {
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
     {
       FieldsEditorManager.establish(FieldsEditorKey.INT_BUTTON_HEIGHT, jButton);
     }
-    jButton.addActionListener(event -> notifyListeners("true"));
+    jButton.addActionListener(event -> notifyListeners(BooleanParser.TRUE));
     jPanel.add(jButton);
   }
 

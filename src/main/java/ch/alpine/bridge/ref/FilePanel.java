@@ -15,7 +15,7 @@ import javax.swing.filechooser.FileFilter;
 
 /* package */ class FilePanel extends StringPanel {
   private final JPanel jPanel = new JPanel(new BorderLayout());
-  private final JButton jButton = new JButton("?");
+  private final JButton jButton = new JButton(StaticHelper.BUTTON_TEXT);
 
   /** @param fieldWrap
    * @param _file initially

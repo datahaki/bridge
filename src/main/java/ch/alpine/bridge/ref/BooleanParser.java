@@ -6,9 +6,9 @@ package ch.alpine.bridge.ref;
 /* package */ enum BooleanParser {
   ;
   /** "true" */
-  private static final String TRUE = Boolean.TRUE.toString();
+  public static final String TRUE = Boolean.TRUE.toString();
   /** "false" */
-  private static final String FALSE = Boolean.FALSE.toString();
+  public static final String FALSE = Boolean.FALSE.toString();
 
   /** stricter function than {@link Boolean#parseBoolean(String)}
    * 

@@ -139,7 +139,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
         && fieldWrap().isValidValue(object);
   }
 
-  @Override
+  @Override // from FieldPanel
   public void updateJComponent(Object value) {
     String string = fieldWrap().toString(value);
     jTextField.setText(string);

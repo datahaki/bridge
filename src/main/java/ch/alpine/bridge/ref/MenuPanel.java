@@ -15,10 +15,8 @@ import javax.swing.JTextField;
 import ch.alpine.bridge.swing.SpinnerMenu;
 
 /* package */ class MenuPanel extends StringPanel {
-  private static final String BUTTON_TEXT = "?";
-  // ---
   private final JPanel jPanel = new JPanel(new BorderLayout());
-  private final JButton jButton = new JButton(BUTTON_TEXT);
+  private final JButton jButton = new JButton(StaticHelper.BUTTON_TEXT);
 
   /** @param fieldWrap
    * @param object

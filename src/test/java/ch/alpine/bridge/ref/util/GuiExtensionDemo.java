@@ -73,7 +73,7 @@ public class GuiExtensionDemo {
 
   public static void main(String[] args) throws Exception {
     CheckBoxIcons.BALLIT.init(32);
-    // LookAndFeels.DARK.updateUI();
+    // LookAndFeels.LIGHT.updateUI();
     FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
     // ---
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
