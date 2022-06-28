@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import ch.alpine.bridge.lang.ClassHierarchy;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 
 public enum ReflectionMarkers {

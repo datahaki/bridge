@@ -9,7 +9,7 @@ import java.util.Objects;
  * 23:59
  * 23:59:45
  * 23:59:45.694872200 */
-/* package */ class LocalTimeFieldWrap extends SelectableFieldWrap {
+/* package */ class LocalTimeFieldWrap extends BaseFieldWrap {
   public LocalTimeFieldWrap(Field field) {
     super(field);
   }
@@ -23,5 +23,15 @@ import java.util.Objects;
       // ---
     }
     return null;
+  }
+
+  @Override // from FieldWrap
+  public String toString(Object value) {
+    return value.toString();
+  }
+
+  @Override // from FieldWrap
+  public FieldPanel createFieldPanel(Object object, Object value) {
+    return new LocalTimePanel(this, value);
   }
 }

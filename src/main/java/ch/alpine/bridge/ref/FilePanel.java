@@ -28,7 +28,7 @@ import javax.swing.filechooser.FileFilter;
         JFileChooser jFileChooser = new JFileChooser();
         for (FileFilter fileFilter : fileFilters)
           jFileChooser.setFileFilter(fileFilter);
-        File file = new File(jTextField.getText());
+        File file = new File(getJTextField().getText());
         jFileChooser.setApproveButtonText("Done");
         jFileChooser.setApproveButtonToolTipText("Select file");
         jFileChooser.setDialogTitle("File selection");

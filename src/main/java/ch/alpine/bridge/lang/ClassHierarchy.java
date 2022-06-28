@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.lang;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ch.alpine.bridge.lang.ClassHierarchy;
+
 public class ObjectFields {
   /** @param object may be null
    * @param objectFieldVisitor
