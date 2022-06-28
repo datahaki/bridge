@@ -11,14 +11,17 @@ import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.io.StringScalar;
-import ch.alpine.tensor.qty.UnitSystem;
+import ch.alpine.tensor.qty.QuantityUnit;
+import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.sca.Clip;
 
 /* package */ final class ScalarFieldWrap extends TensorFieldWrap {
   private final FieldInteger fieldIntegerQ;
   private Clip clip = null;
+  private ScalarUnaryOperator suo = i -> i;
 
   /** @param field
    * @throws Exception if annotations are corrupt */
@@ -26,8 +29,10 @@ import ch.alpine.tensor.sca.Clip;
     super(field);
     fieldIntegerQ = field.getAnnotation(FieldInteger.class);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    if (Objects.nonNull(fieldClip))
+    if (Objects.nonNull(fieldClip)) {
       clip = FieldClips.of(fieldClip);
+      suo = UnitConvert.SI().to(QuantityUnit.of(clip));
+    }
   }
 
   @Override // from FieldWrap
@@ -46,7 +51,8 @@ import ch.alpine.tensor.sca.Clip;
     // ---
     if (Objects.nonNull(clip))
       try { // throws exception if units are incompatible
-        if (clip.isOutside(UnitSystem.SI().apply(scalar)))
+        // Unit unit = ;
+        if (clip.isOutside(suo.apply(scalar)))
           return false;
       } catch (Exception exception) {
         return false;
@@ -61,7 +67,7 @@ import ch.alpine.tensor.sca.Clip;
     if (Objects.nonNull(fieldSlider)) {
       Clip clip = FieldClips.of(field.getAnnotation(FieldClip.class)); // si-units
       if (FiniteScalarQ.of(clip.width()))
-        return new SliderPanel(this, clip, value, fieldSlider.showValue(), fieldSlider.showRange());
+        return new SliderPanel(this, clip, value, fieldSlider);
     }
     return super.createFieldPanel(object, value);
   }

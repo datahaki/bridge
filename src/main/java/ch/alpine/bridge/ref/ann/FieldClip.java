@@ -8,12 +8,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import ch.alpine.bridge.ref.util.InvalidFieldDetection;
-import ch.alpine.tensor.qty.UnitSystem;
+import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.qty.Unit;
 
-/** any unit may be used to state the limits.
+/** annotation to defined the limits for a field of type {@link Scalar}
  * 
- * <p>For comparison, the values will be converted using
- * {@link UnitSystem#SI()}
+ * the {@link Unit} of min and max must be identical
  * 
  * @see InvalidFieldDetection */
 @Documented

@@ -13,17 +13,18 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ch.alpine.bridge.lang.PrettyUnit;
+import ch.alpine.bridge.lang.UnicodeScalar;
 import ch.alpine.bridge.ref.ann.FieldInteger;
+import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.itp.LinearInterpolation;
+import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.UnitConvert;
-import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Round;
 
@@ -32,42 +33,43 @@ import ch.alpine.tensor.sca.Round;
   private static final int TICKS_MAX = 20;
   // ---
   private final Clip clip;
-  private final int resolution;
+  /** operator maps a scalar to a {@link Quantity} with unit as clip.min and clip.max */
   private final ScalarUnaryOperator scalarUnaryOperator;
-  private final JSlider jSlider;
+  private final int resolution;
   private final JLabel jLabel;
+  private final JSlider jSlider;
   private final JComponent jComponent;
   private int index;
 
   /** @param fieldWrap
-   * @param fieldClip non-null
-   * @param value */
-  public SliderPanel(FieldWrap fieldWrap, Clip clip, Object value, boolean showValue, boolean showRange) {
+   * @param clip
+   * @param value
+   * @param fieldSlider */
+  public SliderPanel(FieldWrap fieldWrap, Clip clip, Object value, FieldSlider fieldSlider) {
     super(fieldWrap);
     this.clip = clip;
+    scalarUnaryOperator = UnitConvert.SI().to(QuantityUnit.of(clip));
+    // determine resolution
     if (Objects.nonNull(fieldWrap.getField().getAnnotation(FieldInteger.class))) {
       int max = Scalars.intValueExact(clip.max());
       int min = Scalars.intValueExact(clip.min());
       resolution = max - min;
     } else
       resolution = RESOLUTION;
-    if (Objects.isNull(value)) {
-      scalarUnaryOperator = i -> i;
-      index = 0;
+    if (Objects.isNull(value))
       jLabel = null;
-    } else {
+    else {
       Scalar scalar = (Scalar) value;
-      scalarUnaryOperator = UnitConvert.SI().to(QuantityUnit.of(scalar));
-      index = indexOf(scalar);
-      jLabel = showValue //
-          ? new JLabel(PrettyUnit.of(scalar), SwingConstants.CENTER)
+      jLabel = fieldSlider.showValue() //
+          ? new JLabel(UnicodeScalar.of(scalar), SwingConstants.CENTER)
           : null;
+      index = indexOf(scalar);
     }
     jSlider = new JSlider(0, resolution, index);
     {
       FieldsEditorManager.establish(FieldsEditorKey.INT_SLIDER_HEIGHT, jSlider);
     }
-    jSlider.setOpaque(false);
+    jSlider.setOpaque(false); // for use in toolbar
     jSlider.setPaintTicks(resolution <= TICKS_MAX);
     jSlider.setMinorTickSpacing(1);
     jSlider.addChangeListener(new ChangeListener() {
@@ -77,7 +79,7 @@ import ch.alpine.tensor.sca.Round;
         if (index != value) { // prevent notifications if slider value hasn't changed
           Scalar scalar = interp(index = value);
           if (Objects.nonNull(jLabel))
-            jLabel.setText(PrettyUnit.of(scalar));
+            jLabel.setText(UnicodeScalar.of(scalar));
           notifyListeners(scalar.toString());
         }
       }
@@ -87,7 +89,7 @@ import ch.alpine.tensor.sca.Round;
       }
     });
     JComponent jComponent = jSlider;
-    if (showRange)
+    if (fieldSlider.showRange())
       jComponent = addRangeLabels(jComponent);
     if (Objects.nonNull(jLabel))
       jComponent = addValueLabel(jComponent);
@@ -95,7 +97,7 @@ import ch.alpine.tensor.sca.Round;
   }
 
   private int indexOf(Scalar scalar) {
-    Scalar rescale = clip.rescale(UnitSystem.SI().apply(scalar));
+    Scalar rescale = clip.rescale(scalarUnaryOperator.apply(scalar));
     return Round.FUNCTION.apply(rescale.multiply(RealScalar.of(resolution))).number().intValue();
   }
 
@@ -106,9 +108,9 @@ import ch.alpine.tensor.sca.Round;
 
   private JPanel addRangeLabels(JComponent jComponent) {
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(new JLabel(PrettyUnit.of(clip.min())), BorderLayout.WEST);
+    jPanel.add(new JLabel(UnicodeScalar.of(clip.min())), BorderLayout.WEST);
     jPanel.add(jComponent, BorderLayout.CENTER);
-    jPanel.add(new JLabel(PrettyUnit.of(clip.max())), BorderLayout.EAST);
+    jPanel.add(new JLabel(UnicodeScalar.of(clip.max())), BorderLayout.EAST);
     return jPanel;
   }
 

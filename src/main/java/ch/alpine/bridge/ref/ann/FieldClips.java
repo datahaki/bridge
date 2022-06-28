@@ -4,7 +4,6 @@ package ch.alpine.bridge.ref.ann;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.Quantity;
-import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.red.Max;
 import ch.alpine.tensor.red.Min;
 import ch.alpine.tensor.sca.Clip;
@@ -29,8 +28,12 @@ public enum FieldClips {
    * although equality is expected. As a remedy therefore the smaller/larger of
    * the exact and numeric value of min/max is taken. */
   public static Clip of(Scalar min, Scalar max) {
+    // TODO BRIDGE argue why UnitSystem SI is necessary, why not leave as is
+    // return Clips.interval( //
+    // Min.of(UnitSystem.SI().apply(min), UnitSystem.SI().apply(N.DOUBLE.apply(min))), //
+    // Max.of(UnitSystem.SI().apply(max), UnitSystem.SI().apply(N.DOUBLE.apply(max))));
     return Clips.interval( //
-        Min.of(UnitSystem.SI().apply(min), UnitSystem.SI().apply(N.DOUBLE.apply(min))), //
-        Max.of(UnitSystem.SI().apply(max), UnitSystem.SI().apply(N.DOUBLE.apply(max))));
+        Min.of(min, N.DOUBLE.apply(min)), //
+        Max.of(max, N.DOUBLE.apply(max)));
   }
 }

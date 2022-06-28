@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.bridge.lang.PrettyUnit;
+import ch.alpine.bridge.lang.UnicodeUnit;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -106,7 +106,7 @@ public class Axis implements Serializable {
 
   /* package */ String getUnitString() {
     Unit unit = getAxisUnit();
-    return Unit.ONE.equals(unit) ? "" : '[' + PrettyUnit.of(unit) + ']';
+    return Unit.ONE.equals(unit) ? "" : '[' + UnicodeUnit.of(unit) + ']';
   }
 
   private Unit getAxisUnit() {

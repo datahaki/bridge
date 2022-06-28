@@ -8,8 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Unprotect;
-import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.Sign;
 
@@ -17,17 +15,8 @@ import ch.alpine.tensor.sca.Sign;
  * use of unicode characters for degC, Ohm and micro-x
  * use of unicode characters for exponents such as ^-2
  * etc. */
-public enum PrettyUnit {
+public enum UnicodeUnit {
   ;
-  /** @param scalar
-   * @return */
-  public static String of(Scalar scalar) {
-    Unit unit = QuantityUnit.of(scalar);
-    return Unit.ONE.equals(unit) //
-        ? scalar.toString()
-        : Unprotect.withoutUnit(scalar) + " " + of(unit);
-  }
-
   /** @param unit
    * @return */
   public static String of(Unit unit) {

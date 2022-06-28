@@ -12,8 +12,10 @@ import ch.alpine.bridge.ref.AnnotatedContainer;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.qty.Quantity;
-import ch.alpine.tensor.qty.UnitSystem;
+import ch.alpine.tensor.qty.QuantityUnit;
+import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.sca.Clip;
 
 class FieldClipsTest {
@@ -31,22 +33,26 @@ class FieldClipsTest {
     Field field = AnnotatedContainer.class.getField("quantityClipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     Clip clip = FieldClips.of(fieldClip);
-    assertEquals(clip.min(), Quantity.of(2000, "kg*m^2*s^-3"));
-    assertEquals(clip.max(), Quantity.of(6000, "kg*m^2*s^-3"));
+    // assertEquals(clip.min(), Quantity.of(2000, "kg*m^2*s^-3"));
+    // assertEquals(clip.max(), Quantity.of(6000, "kg*m^2*s^-3"));
+    assertEquals(clip.min(), Quantity.of(2, "kW"));
+    assertEquals(clip.max(), Quantity.of(6, "kW"));
   }
 
   @Test
   void testIssue1() {
     Clip clip = FieldClips.of(Quantity.of(0, "L*min^-1"), Quantity.of(20, "L*min^-1"));
-    assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20, "L*min^-1"))));
-    assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20.0, "L*min^-1"))));
+    ScalarUnaryOperator suo = UnitConvert.SI().to(QuantityUnit.of(clip));
+    assertTrue(clip.isInside(suo.apply(Quantity.of(20, "L*min^-1"))));
+    assertTrue(clip.isInside(suo.apply(Quantity.of(20.0, "L*min^-1"))));
   }
 
   @Test
   void testIssue2() {
     Clip clip = FieldClips.of(Quantity.of(0, "L*min^-1"), Quantity.of(20.0, "L*min^-1"));
-    assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20, "L*min^-1"))));
-    assertTrue(clip.isInside(UnitSystem.SI().apply(Quantity.of(20.0, "L*min^-1"))));
+    ScalarUnaryOperator suo = UnitConvert.SI().to(QuantityUnit.of(clip));
+    assertTrue(clip.isInside(suo.apply(Quantity.of(20, "L*min^-1"))));
+    assertTrue(clip.isInside(suo.apply(Quantity.of(20.0, "L*min^-1"))));
   }
 
   @FieldClip(min = "0[super]", max = "Infinity[super]")
