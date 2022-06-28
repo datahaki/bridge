@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.awt.Color;
 import java.io.BufferedWriter;
@@ -16,6 +16,8 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldWraps;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.Import;
@@ -120,7 +122,10 @@ public class ObjectProperties {
   }
 
   // ---
-  /** @param object
+  /** Remark: API intentionally does not provide
+   * a function that creates {@link Properties} from given object
+   * 
+   * @param object
    * @param properties
    * @return object with fields modified based on properties. In particular,
    * if properties is empty then the object will not be modified at all. */

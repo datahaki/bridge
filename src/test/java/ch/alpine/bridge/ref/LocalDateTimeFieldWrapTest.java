@@ -12,6 +12,8 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.ref.util.ObjectProperties;
+
 class LocalDateTimeFieldWrapTest {
   @Test
   void test(@TempDir File folder) throws IOException {

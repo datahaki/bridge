@@ -7,6 +7,11 @@ import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.ref.util.ObjectFieldAll;
+import ch.alpine.bridge.ref.util.ObjectFieldIo;
+import ch.alpine.bridge.ref.util.ObjectFieldVisitor;
+import ch.alpine.bridge.ref.util.ObjectFields;
+
 class EmptyParamTest {
   @Test
   void testGui() {

@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.ref.util.ObjectProperties;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 class FieLabParamTest {

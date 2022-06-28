@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

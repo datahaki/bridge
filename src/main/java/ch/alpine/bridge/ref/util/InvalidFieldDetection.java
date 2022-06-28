@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Objects;
 
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.ObjectFieldIo;
-import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;

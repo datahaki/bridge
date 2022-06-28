@@ -1,7 +1,10 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.lang.reflect.Field;
+
+import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldWraps;
 
 public interface ObjectFieldVisitor {
   public static enum Type {

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ch.alpine.bridge.lang.ClassHierarchy;
+import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldWraps;
 
 public class ObjectFields {
   /** @param object may be null

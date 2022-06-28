@@ -1,8 +1,10 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.lang.reflect.Field;
 import java.util.function.Predicate;
+
+import ch.alpine.bridge.ref.FieldWraps;
 
 public abstract class ObjectFieldBase implements ObjectFieldVisitor {
   private final Predicate<Field> isLeaf;

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 import ch.alpine.bridge.lang.ClassVisitor;
-import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 
 public class ClassFieldCheck implements ClassVisitor {
