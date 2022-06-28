@@ -11,11 +11,12 @@ import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.io.StringScalar;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 
-public class ScalarFieldWrap extends TensorFieldWrap {
+/* package */ final class ScalarFieldWrap extends TensorFieldWrap {
   private final FieldInteger fieldIntegerQ;
   private Clip clip = null;
 
@@ -56,11 +57,11 @@ public class ScalarFieldWrap extends TensorFieldWrap {
   @Override
   public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();
-    FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    if (Objects.nonNull(fieldClip)) {
-      FieldSlider fieldSlider = field.getAnnotation(FieldSlider.class);
-      if (Objects.nonNull(fieldSlider))
-        return new SliderPanel(this, fieldClip, value, fieldSlider.showValue(), fieldSlider.showRange());
+    FieldSlider fieldSlider = field.getAnnotation(FieldSlider.class);
+    if (Objects.nonNull(fieldSlider)) {
+      Clip clip = FieldClips.of(field.getAnnotation(FieldClip.class)); // si-units
+      if (FiniteScalarQ.of(clip.width()))
+        return new SliderPanel(this, clip, value, fieldSlider.showValue(), fieldSlider.showRange());
     }
     return super.createFieldPanel(object, value);
   }

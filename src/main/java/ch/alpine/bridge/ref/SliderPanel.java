@@ -14,18 +14,18 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ch.alpine.bridge.lang.PrettyUnit;
-import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Round;
 
 /* package */ class SliderPanel extends FieldPanel {
   private static final int RESOLUTION = 1000;
@@ -42,9 +42,9 @@ import ch.alpine.tensor.sca.Clip;
   /** @param fieldWrap
    * @param fieldClip non-null
    * @param value */
-  public SliderPanel(FieldWrap fieldWrap, FieldClip fieldClip, Object value, boolean showValue, boolean showRange) {
+  public SliderPanel(FieldWrap fieldWrap, Clip clip, Object value, boolean showValue, boolean showRange) {
     super(fieldWrap);
-    clip = FieldClips.of(fieldClip); // si-units
+    this.clip = clip;
     if (Objects.nonNull(fieldWrap.getField().getAnnotation(FieldInteger.class))) {
       int max = Scalars.intValueExact(clip.max());
       int min = Scalars.intValueExact(clip.min());
@@ -59,7 +59,9 @@ import ch.alpine.tensor.sca.Clip;
       Scalar scalar = (Scalar) value;
       scalarUnaryOperator = UnitConvert.SI().to(QuantityUnit.of(scalar));
       index = indexOf(scalar);
-      jLabel = showValue ? new JLabel(PrettyUnit.of((Scalar) value), SwingConstants.CENTER) : null;
+      jLabel = showValue //
+          ? new JLabel(PrettyUnit.of(scalar), SwingConstants.CENTER)
+          : null;
     }
     jSlider = new JSlider(0, resolution, index);
     {
@@ -81,9 +83,7 @@ import ch.alpine.tensor.sca.Clip;
       }
 
       private Scalar interp(int count) {
-        return scalarUnaryOperator.apply( //
-            clip.min().multiply(RationalScalar.of(resolution - count, resolution)) //
-                .add(clip.max().multiply(RationalScalar.of(count, resolution))));
+        return scalarUnaryOperator.apply(LinearInterpolation.of(clip).At(RationalScalar.of(count, resolution)));
       }
     });
     JComponent jComponent = jSlider;
@@ -95,7 +95,8 @@ import ch.alpine.tensor.sca.Clip;
   }
 
   private int indexOf(Scalar scalar) {
-    return clip.rescale(UnitSystem.SI().apply(scalar)).multiply(RealScalar.of(resolution)).number().intValue();
+    Scalar rescale = clip.rescale(UnitSystem.SI().apply(scalar));
+    return Round.FUNCTION.apply(rescale.multiply(RealScalar.of(resolution))).number().intValue();
   }
 
   @Override // from FieldPanel

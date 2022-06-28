@@ -72,7 +72,7 @@ public class GuiExtension {
   public File anyFile = HomeDirectory.file();
   @FieldSelectionArray({ "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");
-  public final ScalarUnion[] scalarUnion = { new ScalarUnion() };
+  public final ScalarUnion[] scalarUnion = { new ScalarUnion(), new ScalarUnion() };
   public Color foreground = new Color(100, 200, 150, 128);
   public Color background = new Color(200, 100, 150, 128);
   public NameString nameString = NameString.SECOND;

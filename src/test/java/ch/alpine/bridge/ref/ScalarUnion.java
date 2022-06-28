@@ -23,7 +23,7 @@ public class ScalarUnion {
   @FieldSlider
   @FieldInteger
   @FieldClip(min = "1", max = "10")
-  public Scalar scalarInt = Quantity.of(10, "");
+  public Scalar scalarInt = Quantity.of(8.9, "");
   public Scalar scalar1 = Quantity.of(3, "m*s^-1");
   public Scalar scalar2 = Quantity.of(3, "m*s^-1");
   @FieldClip(min = "1000[W]", max = "10000[W]")
