@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.tensor.ComplexScalar;
+import ch.alpine.tensor.DoubleScalar;
+import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.qty.Quantity;
 
@@ -28,23 +31,31 @@ class UnicodeScalarTest {
 
   @Test
   void testInteger() {
-    System.out.println(UnicodeScalar.of(RealScalar.of(123456789)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(12345678)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(1234567)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(-123456789)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(-12345678)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(-1234567)));
+    assertEquals(UnicodeScalar.of(RealScalar.of(123456789)), "123\u2009456\u2009789");
+    assertEquals(UnicodeScalar.of(RealScalar.of(12345678)), "12\u2009345\u2009678");
+    assertEquals(UnicodeScalar.of(RealScalar.of(1234567)), "1\u2009234\u2009567");
+    assertEquals(UnicodeScalar.of(RealScalar.of(-123456789)), "-123\u2009456\u2009789");
+    assertEquals(UnicodeScalar.of(RealScalar.of(-12345678)), "-12\u2009345\u2009678");
+    assertEquals(UnicodeScalar.of(RealScalar.of(-1234567)), "-1\u2009234\u2009567");
   }
 
   @Test
   void testDouble() {
-    System.out.println(UnicodeScalar.of(RealScalar.of(123456789.123123)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(12345678.123123)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(1234567.123123)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(123456789.25)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(123456789.25)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(-123456789.123123)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(-12345678.123123)));
-    System.out.println(UnicodeScalar.of(RealScalar.of(-1234567.123123)));
+    assertEquals(UnicodeScalar.of(RealScalar.of(1234567.123123)), "1\u2009234\u2009567.123123");
+  }
+
+  @Test
+  void testRational() {
+    assertEquals(UnicodeScalar.of(RationalScalar.of(1234, 233567)), "1\u2009234 / 233\u2009567");
+  }
+
+  @Test
+  void testNaN() {
+    assertEquals(UnicodeScalar.of(DoubleScalar.INDETERMINATE), "NaN");
+  }
+
+  @Test
+  void testComplex() {
+    assertEquals(UnicodeScalar.of(ComplexScalar.I), "I");
   }
 }

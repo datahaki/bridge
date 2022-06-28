@@ -12,7 +12,9 @@ import ch.alpine.tensor.qty.Quantity;
 
 public enum UnicodeScalar {
   ;
-  private static final char SPACE = '\u2009';
+  private static final char SPACE = ' ';
+  private static final String OVER = SPACE + "/" + SPACE;
+  private static final char NARROW = '\u2009';
 
   /** @param scalar
    * @return */
@@ -21,9 +23,9 @@ public enum UnicodeScalar {
     if (optional.isPresent())
       return of(optional.orElseThrow());
     if (scalar instanceof RationalScalar rationalScalar)
-      return of(rationalScalar.numerator()) + " / " + of(rationalScalar.denominator());
+      return of(rationalScalar.numerator()) + OVER + of(rationalScalar.denominator());
     if (scalar instanceof Quantity quantity)
-      return of(quantity.value()) + " " + UnicodeUnit.of(quantity.unit());
+      return of(quantity.value()) + SPACE + UnicodeUnit.of(quantity.unit());
     if (scalar instanceof DoubleScalar doubleScalar) {
       String string = scalar.toString();
       int index = string.indexOf('.');
@@ -44,7 +46,7 @@ public enum UnicodeScalar {
       stringBuilder.append('-');
     stringBuilder.append(string.substring(0, offset));
     for (int index = offset; index < string.length(); index += 3) {
-      stringBuilder.append(SPACE);
+      stringBuilder.append(NARROW);
       stringBuilder.append(string.substring(index, index + 3));
     }
     return stringBuilder.toString();
