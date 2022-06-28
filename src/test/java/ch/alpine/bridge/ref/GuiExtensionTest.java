@@ -24,6 +24,8 @@ class GuiExtensionTest {
     for (FieldPanel fieldPanel : list) {
       FieldWrap fieldWrap = fieldPanel.fieldWrap();
       assertThrows(Exception.class, () -> fieldWrap.isValidValue(null));
+      assertThrows(Exception.class, () -> fieldWrap.toString(null));
+      assertThrows(Exception.class, () -> fieldWrap.toValue(null));
     }
   }
 

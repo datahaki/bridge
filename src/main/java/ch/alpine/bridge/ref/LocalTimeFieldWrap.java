@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 import java.time.LocalTime;
+import java.util.Objects;
 
 /** for strings that can be parsed into {@link LocalTime}, for instance
  * 23:59
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 
   @Override
   public LocalTime toValue(String string) {
+    Objects.requireNonNull(string);
     try {
       return LocalTime.parse(string);
     } catch (Exception exception) {

@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
+import java.util.Objects;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
@@ -14,6 +15,7 @@ import ch.alpine.tensor.img.ColorFormat;
 
   @Override // from FieldWrap
   public Color toValue(String string) {
+    Objects.requireNonNull(string);
     try {
       return ColorFormat.toColor(Tensors.fromString(string));
     } catch (Exception exception) {

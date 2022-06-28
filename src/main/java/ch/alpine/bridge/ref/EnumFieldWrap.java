@@ -20,6 +20,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 
   @Override // from FieldWrap
   public Object toValue(String string) {
+    Objects.requireNonNull(string);
     return Stream.of(enumConstants) //
         .map(Enum.class::cast) //
         .filter(object -> object.name().equals(string)) //
