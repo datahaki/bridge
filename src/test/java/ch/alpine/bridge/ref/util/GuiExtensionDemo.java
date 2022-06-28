@@ -19,7 +19,6 @@ import ch.alpine.bridge.ref.FieldsEditorKey;
 import ch.alpine.bridge.ref.FieldsEditorManager;
 import ch.alpine.bridge.ref.GuiExtension;
 import ch.alpine.bridge.swing.CheckBoxIcons;
-import ch.alpine.bridge.swing.LookAndFeels;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {
@@ -74,7 +73,7 @@ public class GuiExtensionDemo {
 
   public static void main(String[] args) throws Exception {
     CheckBoxIcons.BALLIT.init(32);
-    LookAndFeels.DARK.updateUI();
+    // LookAndFeels.DARK.updateUI();
     FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
     // ---
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();

@@ -36,7 +36,7 @@ public class ScalarFieldWrap extends TensorFieldWrap {
 
   @Override // from FieldWrap
   public boolean isValidValue(Object value) {
-    Scalar scalar = (Scalar) value;
+    Scalar scalar = (Scalar) Objects.requireNonNull(value);
     if (scalar instanceof StringScalar)
       return false;
     // ---

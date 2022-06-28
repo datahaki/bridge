@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,11 @@ class GuiExtensionTest {
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
     fieldsPanel.addUniversalListener(() -> System.out.println("changed"));
     fieldsPanel.createJScrollPane();
+    List<FieldPanel> list = fieldsPanel.list();
+    for (FieldPanel fieldPanel : list) {
+      FieldWrap fieldWrap = fieldPanel.fieldWrap();
+      assertThrows(Exception.class, () -> fieldWrap.isValidValue(null));
+    }
   }
 
   @Test

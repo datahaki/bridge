@@ -4,9 +4,11 @@ package ch.alpine.bridge.ref;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+/** base class for all implementations of {@link FieldWrap} */
 /* package */ abstract class BaseFieldWrap implements FieldWrap {
   private final Field field;
 
+  /** @param field non-null */
   public BaseFieldWrap(Field field) {
     this.field = Objects.requireNonNull(field);
   }
@@ -18,6 +20,7 @@ import java.util.Objects;
 
   @Override // from FieldWrap
   public boolean isValidValue(Object value) {
+    Objects.requireNonNull(value);
     return true;
   }
 

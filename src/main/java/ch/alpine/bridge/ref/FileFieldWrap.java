@@ -40,7 +40,7 @@ import ch.alpine.bridge.ref.ann.FieldFileExtensions;
 
   @Override // from FieldWrap
   public boolean isValidValue(Object value) {
-    File file = (File) value;
+    File file = (File) Objects.requireNonNull(value);
     // ---
     if (Objects.nonNull(fieldExistingDirectory) && !file.isDirectory())
       return false;
