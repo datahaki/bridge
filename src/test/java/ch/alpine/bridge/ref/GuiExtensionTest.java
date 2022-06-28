@@ -22,6 +22,10 @@ class GuiExtensionTest {
     fieldsPanel.createJScrollPane();
     List<FieldPanel> list = fieldsPanel.list();
     for (FieldPanel fieldPanel : list) {
+      assertThrows(Exception.class, () -> fieldPanel.updateJComponent(null));
+      assertThrows(Exception.class, () -> fieldPanel.addListener(null));
+    }
+    for (FieldPanel fieldPanel : list) {
       FieldWrap fieldWrap = fieldPanel.fieldWrap();
       assertThrows(Exception.class, () -> fieldWrap.isValidValue(null));
       assertThrows(Exception.class, () -> fieldWrap.toString(null));

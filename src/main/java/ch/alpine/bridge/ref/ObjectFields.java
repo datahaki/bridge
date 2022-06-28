@@ -8,8 +8,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ch.alpine.bridge.ref.ObjectFieldVisitor.Type;
-
 public class ObjectFields {
   /** @param object may be null
    * @param objectFieldVisitor
@@ -32,9 +30,8 @@ public class ObjectFields {
   private void visit(String _prefix, Object object) {
     if (Objects.nonNull(object))
       for (Field field : list(object.getClass())) {
-        Type type = objectFieldVisitor.getType(field);
         String prefix = _prefix + field.getName();
-        switch (type) {
+        switch (objectFieldVisitor.classify(field)) {
         case NODE -> {
           Class<?> class_field = field.getType();
           if (class_field.isArray())

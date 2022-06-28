@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.FlowLayout;
+import java.util.Objects;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -27,6 +28,6 @@ import javax.swing.JPanel;
 
   @Override // from FieldPanel
   public void updateJComponent(Object value) {
-    // ---
+    Objects.requireNonNull(value);
   }
 }

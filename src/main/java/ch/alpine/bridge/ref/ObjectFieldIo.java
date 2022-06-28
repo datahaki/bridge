@@ -5,7 +5,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.function.Predicate;
 
-/** allow all elements tracked by gui except for transient */
+/** in comparison to {@link ObjectFieldAll} this visitor skips transient
+ * fields, which is intended for use with persistent storage */
 public abstract class ObjectFieldIo extends ObjectFieldBase {
   private static final Predicate<Field> IS_LEAF = VisibilityPredicate.of( //
       ObjectFieldAll.LEAF_DEMAND, //

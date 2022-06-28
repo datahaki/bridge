@@ -26,7 +26,8 @@ public interface FieldWrap {
   boolean isValidValue(Object value);
 
   /** @param object
-   * @param string */
+   * @param string non-null
+   * @throws Exception if given string is null */
   void setIfValid(Object object, String string);
 
   /** @param object

@@ -24,10 +24,10 @@ import java.util.Objects;
     return true;
   }
 
-  @Override
+  @Override // from FieldWrap
   public final void setIfValid(Object object, String string) {
+    Object value = toValue(string);
     try {
-      Object value = toValue(string);
       if (Objects.nonNull(value) && isValidValue(value)) // otherwise retain current assignment
         field.set(object, value);
     } catch (Exception exception) {
