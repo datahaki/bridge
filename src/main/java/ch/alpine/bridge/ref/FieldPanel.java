@@ -28,6 +28,7 @@ public abstract class FieldPanel {
   /** @param consumer will be provided with the string expression of the value
    * edited in the gui */
   public final void addListener(Consumer<String> consumer) {
+    Objects.requireNonNull(consumer);
     list.add(consumer);
   }
 
@@ -35,6 +36,7 @@ public abstract class FieldPanel {
    * 
    * @param text string expression of value after edit */
   protected final void notifyListeners(String text) {
+    Objects.requireNonNull(text);
     list.forEach(consumer -> consumer.accept(text));
   }
 

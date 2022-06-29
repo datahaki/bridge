@@ -11,13 +11,13 @@ import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.io.StringScalar;
-import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 
-public class ScalarFieldWrap extends TensorFieldWrap {
+/* package */ final class ScalarFieldWrap extends TensorFieldWrap {
   private final FieldInteger fieldIntegerQ;
-  private Clip clip = null;
+  private ClipCheck clipCheck = null;
 
   /** @param field
    * @throws Exception if annotations are corrupt */
@@ -26,7 +26,7 @@ public class ScalarFieldWrap extends TensorFieldWrap {
     fieldIntegerQ = field.getAnnotation(FieldInteger.class);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     if (Objects.nonNull(fieldClip))
-      clip = FieldClips.of(fieldClip);
+      clipCheck = new ClipCheck(FieldClips.of(fieldClip));
   }
 
   @Override // from FieldWrap
@@ -36,31 +36,28 @@ public class ScalarFieldWrap extends TensorFieldWrap {
 
   @Override // from FieldWrap
   public boolean isValidValue(Object value) {
-    Scalar scalar = (Scalar) value;
+    Scalar scalar = (Scalar) Objects.requireNonNull(value);
     if (scalar instanceof StringScalar)
       return false;
     // ---
     if (Objects.nonNull(fieldIntegerQ) && !IntegerQ.of(scalar))
       return false;
     // ---
-    if (Objects.nonNull(clip))
-      try { // throws exception if units are incompatible
-        if (clip.isOutside(UnitSystem.SI().apply(scalar)))
-          return false;
-      } catch (Exception exception) {
-        return false;
-      }
+    if (Objects.nonNull(clipCheck) && !clipCheck.test(scalar))
+      return false;
+    // ---
     return true;
   }
 
-  @Override
+  @Override // from SelectableFieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();
-    FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    if (Objects.nonNull(fieldClip)) {
-      FieldSlider fieldSlider = field.getAnnotation(FieldSlider.class);
-      if (Objects.nonNull(fieldSlider))
-        return new SliderPanel(this, fieldClip, value, fieldSlider.showValue(), fieldSlider.showRange());
+    FieldSlider fieldSlider = field.getAnnotation(FieldSlider.class);
+    if (Objects.nonNull(fieldSlider)) {
+      // clipCheck is expected to be non-null here, otherwise exception
+      Clip clip = clipCheck.clip();
+      if (FiniteScalarQ.of(clip.width()))
+        return new SliderPanel(this, clip, value, fieldSlider);
     }
     return super.createFieldPanel(object, value);
   }

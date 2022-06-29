@@ -8,8 +8,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.util.ClassFieldCheck;
+import ch.alpine.bridge.ref.util.ObjectFields;
 
 /** This marker annotation is a hint for the test framework, and developers that
  * a class is subject to introspection and reflection.

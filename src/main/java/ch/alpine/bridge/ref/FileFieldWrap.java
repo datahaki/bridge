@@ -4,7 +4,9 @@ package ch.alpine.bridge.ref;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -16,16 +18,15 @@ import ch.alpine.bridge.ref.ann.FieldFileExtensions;
 /* package */ class FileFieldWrap extends BaseFieldWrap {
   private final FieldExistingDirectory fieldExistingDirectory;
   private final FieldExistingFile fieldExistingFile;
-  private final FileFilter[] filters;
+  private final List<FileFilter> fileFilters;
 
   public FileFieldWrap(Field field) {
     super(field);
     fieldExistingDirectory = field.getAnnotation(FieldExistingDirectory.class);
     fieldExistingFile = field.getAnnotation(FieldExistingFile.class);
-    FieldFileExtension.List fieldExtensionFiles = field.getAnnotation(FieldFileExtension.List.class);
-    filters = Objects.nonNull(fieldExtensionFiles) //
-        ? Arrays.stream(fieldExtensionFiles.value()).map(FieldFileExtensions::of).toArray(FileFilter[]::new) //
-        : new FileFilter[] {};
+    fileFilters = Arrays.stream(field.getAnnotationsByType(FieldFileExtension.class)) //
+        .map(FieldFileExtensions::of) //
+        .collect(Collectors.toList());
   }
 
   @Override // from FieldWrap
@@ -40,7 +41,7 @@ import ch.alpine.bridge.ref.ann.FieldFileExtensions;
 
   @Override // from FieldWrap
   public boolean isValidValue(Object value) {
-    File file = (File) value;
+    File file = (File) Objects.requireNonNull(value);
     // ---
     if (Objects.nonNull(fieldExistingDirectory) && !file.isDirectory())
       return false;
@@ -48,7 +49,7 @@ import ch.alpine.bridge.ref.ann.FieldFileExtensions;
     if (Objects.nonNull(fieldExistingFile) && !file.isFile())
       return false;
     // ---
-    if (filters.length > 0 && Arrays.stream(filters).noneMatch(filter -> filter.accept(file)))
+    if (!fileFilters.isEmpty() && fileFilters.stream().noneMatch(filter -> filter.accept(file)))
       return false;
     // ---
     return true;
@@ -56,6 +57,6 @@ import ch.alpine.bridge.ref.ann.FieldFileExtensions;
 
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
-    return new FilePanel(this, (File) value, filters);
+    return new FilePanel(this, (File) value, fileFilters);
   }
 }

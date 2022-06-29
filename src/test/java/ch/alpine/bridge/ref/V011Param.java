@@ -8,6 +8,7 @@ import java.util.List;
 import ch.alpine.bridge.ref.SimpleParam.AnotherParam;
 import ch.alpine.bridge.ref.SimpleParam.NestedParam;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
+import ch.alpine.bridge.ref.util.ObjectProperties;
 
 @ReflectionMarker
 public class V011Param {

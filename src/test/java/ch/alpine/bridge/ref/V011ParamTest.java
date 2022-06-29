@@ -5,25 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-class V011ParamTest {
-  @Test
-  void testSimple() {
-    V011Param v011Param = new V011Param(3);
-    v011Param.list.set(1, null);
-    v011Param.another.set(1, null);
-    ObjectProperties.list(v011Param);
-    ObjectProperties.join(v011Param);
-    // System.out.println();
-    Properties properties = DeprecatedObjProp.properties(v011Param);
-    ObjectProperties.set(new V011Param(1), properties);
-    ObjectProperties.set(new V011Param(2), properties);
-  }
+import ch.alpine.bridge.ref.util.ObjectFields;
+import ch.alpine.bridge.ref.util.ObjectProperties;
 
+class V011ParamTest {
   @Test
   void testFromString() throws IOException {
     V011Param v011Param1 = new V011Param(2);

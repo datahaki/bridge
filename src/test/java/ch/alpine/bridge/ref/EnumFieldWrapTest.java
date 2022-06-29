@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.tensor.mat.re.Pivots;
+import ch.alpine.bridge.ref.util.ObjectProperties;
 
 class EnumFieldWrapTest {
   @Test
@@ -25,17 +25,5 @@ class EnumFieldWrapTest {
     properties.setProperty("key", "SOMETHING_WITH_UNDERSCORES");
     String string = properties.getProperty("key");
     assertEquals(string, "SOMETHING_WITH_UNDERSCORES");
-  }
-
-  @Test
-  void testEnumProp() {
-    Properties properties = DeprecatedObjProp.properties(new GuiExtension());
-    String string = properties.getProperty("pivots");
-    assertEquals(string, "ARGMAX_ABS");
-    properties.setProperty("pivots", "doesnotexist");
-    GuiExtension guiExtension = new GuiExtension();
-    guiExtension.pivots = Pivots.FIRST_NON_ZERO;
-    ObjectProperties.set(guiExtension, properties);
-    assertEquals(guiExtension.pivots, Pivots.FIRST_NON_ZERO);
   }
 }

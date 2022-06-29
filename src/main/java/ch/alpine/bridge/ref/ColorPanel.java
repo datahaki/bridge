@@ -5,8 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Objects;
 
 import javax.swing.JButton;
@@ -16,12 +14,15 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.WindowClosed;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ColorFormat;
 
-/* package */ class ColorPanel extends StringPanel {
+/* package */ final class ColorPanel extends StringPanel {
+  private static final Color FALLBACK = Color.WHITE;
+  // ---
   private final JPanel jPanel = new JPanel(new BorderLayout());
-  private final JButton jButton = new JButton("?");
+  private final JButton jButton = new JButton(StaticHelper.BUTTON_TEXT);
   /** For each instance of {@link ColorPanel}, a single JColorChooser may be opened
    * by the user. The jDialog field is non-null whenever the dialog is visible. */
   private JDialog jDialog = null;
@@ -50,12 +51,7 @@ import ch.alpine.tensor.img.ColorFormat;
                 notifyListeners(getJTextField().getText());
               });
           jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-          jDialog.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent windowEvent) {
-              jDialog = null;
-            }
-          });
+          WindowClosed.runs(jDialog, () -> jDialog = null);
           jDialog.setVisible(true);
         }
       }
@@ -71,7 +67,7 @@ import ch.alpine.tensor.img.ColorFormat;
     } catch (Exception exception) {
       // ---
     }
-    return Color.WHITE;
+    return FALLBACK;
   }
 
   @Override // from FieldPanel
@@ -79,7 +75,7 @@ import ch.alpine.tensor.img.ColorFormat;
     return jPanel;
   }
 
-  @Override // from FieldPanel
+  @Override // from StringPanel
   public void updateJComponent(Object value) {
     super.updateJComponent(value);
     Color color = (Color) value;

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.awt.Color;
 import java.io.BufferedWriter;
@@ -10,12 +10,15 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldWraps;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.Import;
@@ -36,7 +39,7 @@ public class ObjectProperties {
   /** charset UTF-8 guarantees the storage and loading of special
    * characters such as Chinese characters.
    * As of Java 18, the default charset is UTF-8. */
-  private static final Charset CHARSET = Charset.forName("UTF-8");
+  private static final Charset CHARSET = StandardCharsets.UTF_8;
 
   /** function is used to store in properties-file
    * and also to compile a list of strings, or a single string expression
@@ -120,7 +123,10 @@ public class ObjectProperties {
   }
 
   // ---
-  /** @param object
+  /** Remark: API intentionally does not provide
+   * a function that creates {@link Properties} from given object
+   * 
+   * @param object
    * @param properties
    * @return object with fields modified based on properties. In particular,
    * if properties is empty then the object will not be modified at all. */

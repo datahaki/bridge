@@ -5,8 +5,6 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import ch.alpine.bridge.ref.ObjectProperties;
-
 /* package */ class ObjectPropertiesArea {
   private final JTextArea jTextArea = new JTextArea();
   private final Object object;

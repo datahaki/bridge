@@ -24,7 +24,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
   private static final int UNDO = InputEvent.CTRL_DOWN_MASK;
   private static final int REDO = MASK;
   // ---
-  /* protected */ final JTextField jTextField;
+  private final JTextField jTextField;
   private String fallbackValue = null;
 
   public StringPanel(FieldWrap fieldWrap, Object value) {
@@ -139,7 +139,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
         && fieldWrap().isValidValue(object);
   }
 
-  @Override
+  @Override // from FieldPanel
   public void updateJComponent(Object value) {
     String string = fieldWrap().toString(value);
     jTextField.setText(string);

@@ -16,14 +16,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: mvn install tensor
-        working-directory: .
-        run: |
-          cd ..
-          git clone https://github.com/datahaki/tensor.git
-          cd tensor
-          git checkout v107_11
-          mvn clean install -DskipTests=true
       - name: mvn test
         working-directory: .
         run: xvfb-run --auto-servernum mvn test -B

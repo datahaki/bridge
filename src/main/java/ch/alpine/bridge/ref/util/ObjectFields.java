@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -8,7 +8,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ch.alpine.bridge.ref.ObjectFieldVisitor.Type;
+import ch.alpine.bridge.lang.ClassHierarchy;
+import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldWraps;
 
 public class ObjectFields {
   /** @param object may be null
@@ -32,9 +34,8 @@ public class ObjectFields {
   private void visit(String _prefix, Object object) {
     if (Objects.nonNull(object))
       for (Field field : list(object.getClass())) {
-        Type type = objectFieldVisitor.getType(field);
         String prefix = _prefix + field.getName();
-        switch (type) {
+        switch (objectFieldVisitor.classify(field)) {
         case NODE: {
           Class<?> class_field = field.getType();
           if (class_field.isArray())

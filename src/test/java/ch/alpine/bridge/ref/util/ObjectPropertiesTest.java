@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,6 +13,8 @@ import java.util.Properties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.ref.SimpleLaram;
+import ch.alpine.bridge.ref.SimpleParam;
 import ch.alpine.tensor.RationalScalar;
 
 class ObjectPropertiesTest {
@@ -23,7 +25,7 @@ class ObjectPropertiesTest {
     simpleParam.nestedParams[1].text = "here!";
     simpleParam.nestedParams[1].anotherParam.color = Color.BLUE;
     simpleParam.nestedParams[1].basic = false;
-    Properties properties = DeprecatedObjProp.properties(simpleParam);
+    Properties properties = ObjectPropertiesExt.properties(simpleParam);
     simpleParam = null;
     SimpleParam simpleCopy = ObjectProperties.set(new SimpleParam(), properties);
     assertEquals(simpleCopy.nestedParams[1].anotherParam.color, Color.BLUE);
@@ -60,7 +62,7 @@ class ObjectPropertiesTest {
     simpleLaram.nestedParams.get(1).text = "new text";
     simpleLaram.nestedParams.get(1).scalar = RationalScalar.HALF;
     String string1 = ObjectProperties.join(simpleLaram);
-    Properties properties = DeprecatedObjProp.properties(simpleLaram);
+    Properties properties = ObjectPropertiesExt.properties(simpleLaram);
     simpleLaram = null;
     SimpleLaram simpleCopy = ObjectProperties.set(new SimpleLaram(), properties);
     String string2 = ObjectProperties.join(simpleCopy);

@@ -1,5 +1,5 @@
-// code by jph
-package ch.alpine.bridge.ref;
+// code adapted by jph
+package ch.alpine.bridge.ref.util;
 
 import java.util.Properties;
 

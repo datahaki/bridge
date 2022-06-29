@@ -6,10 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.ref.util.ObjectProperties;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 class GuiExtensionTest {
@@ -19,6 +21,17 @@ class GuiExtensionTest {
     PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
     fieldsPanel.addUniversalListener(() -> System.out.println("changed"));
     fieldsPanel.createJScrollPane();
+    List<FieldPanel> list = fieldsPanel.list();
+    for (FieldPanel fieldPanel : list) {
+      assertThrows(Exception.class, () -> fieldPanel.updateJComponent(null));
+      assertThrows(Exception.class, () -> fieldPanel.addListener(null));
+    }
+    for (FieldPanel fieldPanel : list) {
+      FieldWrap fieldWrap = fieldPanel.fieldWrap();
+      assertThrows(Exception.class, () -> fieldWrap.isValidValue(null));
+      assertThrows(Exception.class, () -> fieldWrap.toString(null));
+      assertThrows(Exception.class, () -> fieldWrap.toValue(null));
+    }
   }
 
   @Test

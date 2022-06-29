@@ -3,7 +3,9 @@ package ch.alpine.bridge.ref;
 
 import java.awt.Color;
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -54,17 +56,23 @@ public class GuiExtension {
   @FieldSelectionCallback("cdgSelection")
   public ColorDataGradients cdg = ColorDataGradients.BLACK_BODY_SPECTRUM;
   public LocalDateTime dateTime = LocalDateTime.now();
+  public LocalDate date = LocalDate.now();
+  public LocalTime time = LocalTime.now();
   @FieldExistingDirectory
   public File folder = HomeDirectory.file();
   @FieldExistingFile
   public File file = HomeDirectory.file();
   @FieldExistingFile
-  @FieldFileExtension(description = "Text-Files", extensions = "txt")
+  @FieldFileExtension(description = "Plain Text-Files", extensions = { "txt", "md" })
   public File txtFile = HomeDirectory.file();
+  @FieldExistingFile
+  @FieldFileExtension(description = "PNG-Files", extensions = "png")
+  @FieldFileExtension(description = "JPG-Files", extensions = "jpg")
+  public File imgFile = HomeDirectory.file();
   public File anyFile = HomeDirectory.file();
   @FieldSelectionArray({ "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");
-  public final ScalarUnion[] scalarUnion = { new ScalarUnion() };
+  public final ScalarUnion[] scalarUnion = { new ScalarUnion(), new ScalarUnion() };
   public Color foreground = new Color(100, 200, 150, 128);
   public Color background = new Color(200, 100, 150, 128);
   public NameString nameString = NameString.SECOND;

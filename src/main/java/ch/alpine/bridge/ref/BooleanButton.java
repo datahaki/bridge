@@ -2,12 +2,13 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.FlowLayout;
+import java.util.Objects;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-/* package */ class BooleanButton extends FieldPanel {
+/* package */ final class BooleanButton extends FieldPanel {
   private final JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
   public BooleanButton(FieldWrap fieldWrap, String text) {
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
     {
       FieldsEditorManager.establish(FieldsEditorKey.INT_BUTTON_HEIGHT, jButton);
     }
-    jButton.addActionListener(event -> notifyListeners("true"));
+    jButton.addActionListener(event -> notifyListeners(BooleanParser.TRUE));
     jPanel.add(jButton);
   }
 
@@ -27,6 +28,6 @@ import javax.swing.JPanel;
 
   @Override // from FieldPanel
   public void updateJComponent(Object value) {
-    // ---
+    Objects.requireNonNull(value);
   }
 }

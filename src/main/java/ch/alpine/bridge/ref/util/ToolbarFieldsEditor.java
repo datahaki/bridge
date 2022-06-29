@@ -10,10 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
 import ch.alpine.bridge.ref.FieldPanel;
-import ch.alpine.bridge.ref.FieldToolTip;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.ObjectFieldAll;
-import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 

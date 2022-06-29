@@ -1,10 +1,12 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import java.util.Objects;
 import java.util.Properties;
 
-enum DeprecatedObjProp {
+import ch.alpine.bridge.ref.FieldWrap;
+
+enum ObjectPropertiesExt {
   ;
   /** @param object
    * @return new instance of {@link Properties} */

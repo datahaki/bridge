@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Objects;
 
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.ObjectFieldIo;
-import ch.alpine.bridge.ref.ObjectFields;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
@@ -21,6 +19,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.Scalar;
 
+// TODO BRIDGE argue why Io is more suitable than All
 public class InvalidFieldDetection extends ObjectFieldIo {
   /** @param object
    * @return */
@@ -39,10 +38,14 @@ public class InvalidFieldDetection extends ObjectFieldIo {
   // ---
   private final List<FieldValueContainer> list = new LinkedList<>();
 
+  /** @param field
+   * @param annotationClass
+   * @param cls
+   * @return whether annotationClass can be combined with field */
   private static <T extends Annotation> boolean require(Field field, Class<T> annotationClass, Class<?> cls) {
     Class<?> class_field = field.getType();
-    T fieldFuse = field.getAnnotation(annotationClass);
-    return Objects.isNull(fieldFuse) || class_field.equals(cls);
+    T annotation = field.getAnnotation(annotationClass);
+    return Objects.isNull(annotation) || class_field.equals(cls);
   }
 
   @Override

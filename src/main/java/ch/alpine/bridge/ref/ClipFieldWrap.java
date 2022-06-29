@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
+import java.util.Objects;
 
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -16,6 +17,7 @@ import ch.alpine.tensor.sca.Clips;
 
   @Override // from FieldWrap
   public Clip toValue(String string) {
+    Objects.requireNonNull(string);
     try {
       Tensor vector = Tensors.fromString(string);
       VectorQ.requireLength(vector, 2);

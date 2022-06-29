@@ -4,7 +4,9 @@ package ch.alpine.bridge.ref;
 import java.awt.Color;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,15 +29,20 @@ public enum FieldWraps {
     map.put(Color.class, ColorFieldWrap::new);
     map.put(File.class, FileFieldWrap::new);
     map.put(Clip.class, ClipFieldWrap::new);
+    // ---
     map.put(LocalDateTime.class, LocalDateTimeFieldWrap::new);
+    map.put(LocalDate.class, LocalDateFieldWrap::new);
+    map.put(LocalTime.class, LocalTimeFieldWrap::new);
   }
 
+  /** @param cls
+   * @return whether a given type maps to a {@link FieldWrap} */
   public boolean elemental(Class<?> cls) {
     return map.containsKey(cls) //
         || cls.isEnum();
   }
 
-  /** @param field
+  /** @param field non-null
    * @return instance of {@link FieldWrap} or null if field type is not supported */
   public FieldWrap wrap(Field field) {
     Class<?> cls = field.getType();
