@@ -28,7 +28,7 @@ public enum Enums {
   }
 
   /** @param element
-   * @return */
+   * @return next enum constant after given element, or the first if element is last */
   public static <T extends Enum<T>> T cycle(T element) {
     T[] enumConstants = element.getDeclaringClass().getEnumConstants();
     return enumConstants[Math.floorMod(element.ordinal() + 1, enumConstants.length)];

@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
@@ -20,17 +21,17 @@ class PropertiesExtTest {
   void testStoreLoadISO8859_1(@TempDir File folder) throws IOException {
     final String string = "special\u00e3tab\tnewline\nbackslash\\termination";
     File file = new File(folder, "sample.properties");
-    Charset CHARSET = Charset.forName("ISO8859-1");
+    Charset charset = StandardCharsets.ISO_8859_1;
     {
       Properties properties = new Properties();
       properties.setProperty("key", string);
-      try (FileWriter fileWriter = new FileWriter(file, CHARSET)) {
+      try (FileWriter fileWriter = new FileWriter(file, charset)) {
         properties.store(fileWriter, null);
       }
     }
     {
       Properties properties = new Properties();
-      try (FileReader fileWriter = new FileReader(file, CHARSET)) {
+      try (FileReader fileWriter = new FileReader(file, charset)) {
         properties.load(fileWriter);
       }
       String property = properties.getProperty("key");
@@ -43,17 +44,17 @@ class PropertiesExtTest {
     final String string = "special\u00e3tab\tnewline\nbackslash\\termination\u3000&#blub";
     File file = new File(folder, "sample.properties");
     file = HomeDirectory.file("some.properties");
-    Charset CHARSET = Charset.forName("UTF-8");
+    Charset charset = StandardCharsets.UTF_8;
     {
       Properties properties = new Properties();
       properties.setProperty("key", string);
-      try (FileWriter fileWriter = new FileWriter(file, CHARSET)) {
+      try (FileWriter fileWriter = new FileWriter(file, charset)) {
         properties.store(fileWriter, null);
       }
     }
     {
       Properties properties = new Properties();
-      try (FileReader fileWriter = new FileReader(file, CHARSET)) {
+      try (FileReader fileWriter = new FileReader(file, charset)) {
         properties.load(fileWriter);
       }
       String property = properties.getProperty("key");

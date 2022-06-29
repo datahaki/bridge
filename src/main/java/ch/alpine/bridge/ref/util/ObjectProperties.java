@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +39,7 @@ public class ObjectProperties {
   /** charset UTF-8 guarantees the storage and loading of special
    * characters such as Chinese characters.
    * As of Java 18, the default charset is UTF-8. */
-  private static final Charset CHARSET = Charset.forName("UTF-8");
+  private static final Charset CHARSET = StandardCharsets.UTF_8;
 
   /** function is used to store in properties-file
    * and also to compile a list of strings, or a single string expression

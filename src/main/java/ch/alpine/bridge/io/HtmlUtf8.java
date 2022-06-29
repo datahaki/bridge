@@ -7,11 +7,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /** HtmlUtf8 exports strings to html pages in utf-8 encoding. All logs of MissionControl are exported with HtmlUtf8. */
 public abstract class HtmlUtf8 implements Closeable {
-  protected static final Charset CHARSET = Charset.forName("UTF-8");
+  protected static final Charset CHARSET = StandardCharsets.UTF_8;
 
   /** @param file
    * @return */
