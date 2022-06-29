@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.io.ResourceData;
 import ch.alpine.tensor.qty.Unit;
+import ch.alpine.tensor.qty.UnitSystem;
 
 /* package */ enum UnicodeHelper {
   INSTANCE;
@@ -20,12 +21,17 @@ import ch.alpine.tensor.qty.Unit;
 
   private UnicodeHelper() {
     terminators.put("degC", "\u2103"); // unicode oC
-    terminators.put("EUR", "\u20ac"); // unicode EUR
-    terminators.put("USD", "$"); // unicode EUR
     terminators.put("K", "\u212a"); // unicode K
-    terminators.put("Ohm", "\u2126"); // unicode Omega
-    terminators.put("kOhm", "k\u2126");
-    terminators.put("MOhm", "M\u2126");
+    for (String unit : UnitSystem.SI().map().keySet())
+      if (unit.endsWith("Ohm")) {
+        String prefix = unit.substring(0, unit.length() - 3);
+        terminators.put(unit, prefix + '\u2126'); // unicode Omega
+      }
+    // ---
+    terminators.put("EUR", "\u20ac"); // unicode EUR
+    terminators.put("GBP", "\u00a3"); // unicode GBP
+    terminators.put("USD", "$"); // unicode USD
+    terminators.put("JPY", "\u00a5"); // unicode JPY
     // ---
     exponents.put("1", "");
     exponents.put("-1", "\u207b\u00b9");

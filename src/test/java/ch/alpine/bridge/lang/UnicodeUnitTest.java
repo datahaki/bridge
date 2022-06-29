@@ -27,11 +27,20 @@ class UnicodeUnitTest {
 
   @Test
   void testOfUnitChar() {
-    assertEquals(UnicodeUnit.of(Unit.of("EUR")), "\u20ac");
     assertEquals(UnicodeUnit.of(Unit.of("K")), "\u212a");
+    assertEquals(UnicodeUnit.of(Unit.of("nOhm")), "n\u2126");
     assertEquals(UnicodeUnit.of(Unit.of("Ohm")), "\u2126");
     assertEquals(UnicodeUnit.of(Unit.of("kOhm")), "k\u2126");
     assertEquals(UnicodeUnit.of(Unit.of("MOhm")), "M\u2126");
+    assertEquals(UnicodeUnit.of(Unit.of("GOhm")), "G\u2126");
+  }
+
+  @Test
+  void testCurrency() {
+    assertEquals(UnicodeUnit.of(Unit.of("EUR")), "\u20ac");
+    assertEquals(UnicodeUnit.of(Unit.of("USD")), "$");
+    assertEquals(UnicodeUnit.of(Unit.of("GBP")), "\u00a3");
+    assertEquals(UnicodeUnit.of(Unit.of("JPY")), "\u00a5");
   }
 
   @Test
@@ -49,16 +58,12 @@ class UnicodeUnitTest {
   void testMicro() {
     assertEquals(UnicodeUnit.of(Unit.of("us")), "\u03BCs");
     assertEquals(UnicodeUnit.of(Unit.of("uF")), "\u03BCF");
-  }
-
-  @Test
-  void testMicroList() {
-    // UnitSystem.SI().map().keySet().stream().filter(s->s.startsWith("u")).forEach(System.out::println);
     assertEquals(UnicodeUnit.of(Unit.of("uOhm")), "\u03BC\u2126");
+    assertEquals(UnicodeUnit.of(Unit.of("uS")), "\u03BCS");
   }
 
   @Test
   void testNullFail() {
-    assertThrows(Exception.class, () -> UnicodeUnit.of((Unit) null));
+    assertThrows(Exception.class, () -> UnicodeUnit.of(null));
   }
 }

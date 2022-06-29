@@ -1,12 +1,11 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.util.ObjectProperties;
-import ch.alpine.bridge.ref.util.ReflectionMarkers;
+import ch.alpine.bridge.ref.MissingMarkerParam;
 
 class ReflectionMarkersTest {
   @Test
