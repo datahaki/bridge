@@ -12,9 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.WindowClosed;
+import ch.alpine.bridge.swing.LocalTimeDialog;
 
 /* package */ class LocalTimePanel extends StringPanel {
   private final JPanel jPanel = new JPanel(new BorderLayout());
@@ -29,10 +29,9 @@ import ch.alpine.bridge.awt.WindowClosed;
         if (Objects.isNull(jDialog)) {
           // fallback localTime is restored when "Cancel" is pressed
           jDialog = new LocalTimeDialog(jButton, localTime, localTime -> getJTextField().setText(localTime.toString()));
+          WindowClosed.runs(jDialog, () -> jDialog = null);
           Point point = jButton.getLocationOnScreen();
           jDialog.setLocation(point);
-          jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-          WindowClosed.runs(jDialog, () -> jDialog = null);
           jDialog.setVisible(true);
         }
       }

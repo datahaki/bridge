@@ -30,7 +30,7 @@ public enum LocalTimeDisplay {
   /** @param graphics
    * @param localTime
    * @param center */
-  public void drawClock(Graphics2D graphics, LocalTime localTime, Point center) {
+  public void draw(Graphics2D graphics, LocalTime localTime, Point center) {
     RenderQuality.setQuality(graphics);
     graphics.setColor(Color.WHITE);
     graphics.fillArc(center.x - wid, center.y - wid, 2 * wid, 2 * wid, 0, 360);
