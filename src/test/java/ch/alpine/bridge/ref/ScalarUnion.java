@@ -15,10 +15,10 @@ import ch.alpine.tensor.qty.Quantity;
 public class ScalarUnion {
   @FieldSlider(showValue = true, showRange = true)
   @FieldPreferredWidth(123)
-  @FieldClip(min = "1[m*min^-1]", max = "100[m*min^-1]")
+  @FieldClip(min = "1[m*min^-1]", max = "100[m*s^-1]")
   public Scalar scalar = Quantity.of(1, "m*s^-1");
   @FieldSlider(showValue = true)
-  @FieldClip(min = "0[%]", max = "100[%]")
+  @FieldClip(min = "0[%]", max = "1")
   public Scalar percent = Quantity.of(10, "%");
   @FieldSlider
   @FieldInteger

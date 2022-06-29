@@ -10,10 +10,13 @@ import java.lang.annotation.Target;
 import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.Unit;
+import ch.alpine.tensor.qty.UnitConvert;
 
 /** annotation to defined the limits for a field of type {@link Scalar}
  * 
- * the {@link Unit} of min and max must be identical
+ * if the {@link Unit} of min and max are not identical
+ * then max is converted to a quantity of unit of min via
+ * {@link UnitConvert#SI()}
  * 
  * @see InvalidFieldDetection */
 @Documented
