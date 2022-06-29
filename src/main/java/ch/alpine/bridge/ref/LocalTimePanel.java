@@ -2,8 +2,10 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
 import java.util.Objects;
 
 import javax.swing.JButton;
@@ -19,17 +21,16 @@ import ch.alpine.bridge.awt.WindowClosed;
   private final JButton jButton = new JButton(StaticHelper.BUTTON_TEXT);
   private JDialog jDialog = null;
 
-  public LocalTimePanel(FieldWrap fieldWrap, Object value) {
-    super(fieldWrap, value);
+  public LocalTimePanel(FieldWrap fieldWrap, LocalTime localTime) {
+    super(fieldWrap, localTime);
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         if (Objects.isNull(jDialog)) {
-          // fallback color is restored when "Cancel" is pressed
-          jDialog = new LocalTimeDialog(jButton, lt -> {
-            getJTextField().setText(lt.toString());
-          });
-          jDialog.setBounds(100, 100, 300, 300);
+          // fallback localTime is restored when "Cancel" is pressed
+          jDialog = new LocalTimeDialog(jButton, localTime, localTime -> getJTextField().setText(localTime.toString()));
+          Point point = jButton.getLocationOnScreen();
+          jDialog.setLocation(point);
           jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
           WindowClosed.runs(jDialog, () -> jDialog = null);
           jDialog.setVisible(true);

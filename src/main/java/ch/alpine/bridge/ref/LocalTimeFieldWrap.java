@@ -32,6 +32,6 @@ import java.util.Objects;
 
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
-    return new LocalTimePanel(this, value);
+    return new LocalTimePanel(this, (LocalTime) value);
   }
 }
