@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ch.alpine.bridge.lang.UnicodeScalar;
+import ch.alpine.bridge.lang.Unicode;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.RationalScalar;
@@ -61,7 +61,7 @@ import ch.alpine.tensor.sca.Round;
     else {
       Scalar scalar = (Scalar) value;
       jLabel = fieldSlider.showValue() //
-          ? new JLabel(UnicodeScalar.of(scalar), SwingConstants.CENTER)
+          ? new JLabel(Unicode.valueOf(scalar), SwingConstants.CENTER)
           : null;
       index = indexOf(scalar);
     }
@@ -79,7 +79,7 @@ import ch.alpine.tensor.sca.Round;
         if (index != value) { // prevent notifications if slider value hasn't changed
           Scalar scalar = interp(index = value);
           if (Objects.nonNull(jLabel))
-            jLabel.setText(UnicodeScalar.of(scalar));
+            jLabel.setText(Unicode.valueOf(scalar));
           notifyListeners(scalar.toString());
         }
       }
@@ -108,9 +108,9 @@ import ch.alpine.tensor.sca.Round;
 
   private JPanel addRangeLabels(JComponent jComponent) {
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(new JLabel(UnicodeScalar.of(clip.min())), BorderLayout.WEST);
+    jPanel.add(new JLabel(Unicode.valueOf(clip.min())), BorderLayout.WEST);
     jPanel.add(jComponent, BorderLayout.CENTER);
-    jPanel.add(new JLabel(UnicodeScalar.of(clip.max())), BorderLayout.EAST);
+    jPanel.add(new JLabel(Unicode.valueOf(clip.max())), BorderLayout.EAST);
     return jPanel;
   }
 

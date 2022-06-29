@@ -10,6 +10,6 @@ import org.junit.jupiter.api.Test;
 class UnicodeHelperTest {
   @Test
   void testPackageVisibility() {
-    assertFalse(Modifier.isPublic(UnicodeHelper.class.getModifiers()));
+    assertFalse(Modifier.isPublic(UnicodeUnit.class.getModifiers()));
   }
 }
