@@ -2,8 +2,10 @@
 package ch.alpine.bridge.lang;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 
 import org.junit.jupiter.api.Test;
@@ -70,5 +72,10 @@ class UnicodeUnitTest {
     assertThrows(Exception.class, () -> Unicode.valueOf((Scalar) null));
     assertThrows(Exception.class, () -> Unicode.valueOf((BigInteger) null));
     assertThrows(Exception.class, () -> Unicode.valueOf((Unit) null));
+  }
+
+  @Test
+  void testPackageVisibility() {
+    assertFalse(Modifier.isPublic(UnicodeUnit.class.getModifiers()));
   }
 }

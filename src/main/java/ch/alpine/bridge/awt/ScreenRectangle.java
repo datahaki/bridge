@@ -34,6 +34,6 @@ public class ScreenRectangle {
 
   @Override
   public String toString() {
-    return "Display point=(" + screen.x + ", " + screen.y + ") dimension=(" + screen.width + ", " + screen.height + ")";
+    return "Screen point=(" + screen.x + ", " + screen.y + ") dimension=(" + screen.width + ", " + screen.height + ")";
   }
 }

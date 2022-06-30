@@ -2,19 +2,30 @@
 package ch.alpine.bridge.lang;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.ext.Cache;
 import ch.alpine.tensor.io.ResourceData;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitSystem;
+import ch.alpine.tensor.sca.Sign;
 
 /* package */ enum UnicodeUnit {
   INSTANCE;
 
+  /** @param unit
+   * @return string expression of unit using unicode characters */
+  public static String toString(Unit unit) {
+    return INSTANCE.cache.apply(unit);
+  }
+
+  private final Cache<Unit, String> cache = Cache.of(this::build, 512);
   private final Map<String, String> terminators = new HashMap<>();
   private final Map<String, String> exponents = new HashMap<>();
   private final Map<String, String> micros = new HashMap<>();
@@ -51,9 +62,22 @@ import ch.alpine.tensor.qty.UnitSystem;
       }
   }
 
+  private String build(Unit unit) {
+    Map<String, Scalar> map = unit.map();
+    List<Entry<String, Scalar>> list = map.entrySet().stream() //
+        .filter(entry -> Sign.isNegative(entry.getValue())) //
+        .collect(Collectors.toList());
+    if (list.size() == 1 && 1 < map.size()) {
+      Entry<String, Scalar> entry = list.iterator().next();
+      Unit den = Unit.of(entry.getKey() + Unit.POWER_DELIMITER + entry.getValue().negate());
+      return toString(unit.add(den).map()) + "/" + toString(den.map());
+    }
+    return toString(map);
+  }
+
   /** @param map
    * @return for instance "m*s^-2" */
-  public String toString(Map<String, Scalar> map) {
+  private String toString(Map<String, Scalar> map) {
     return map.entrySet().stream() //
         .map(entry -> atomString(entry.getKey()) + exponentString(entry.getValue().toString())) //
         .collect(Collectors.joining(Unit.JOIN_DELIMITER)); // delimited by '*'

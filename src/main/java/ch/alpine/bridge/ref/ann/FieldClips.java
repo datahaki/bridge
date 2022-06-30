@@ -8,6 +8,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.chq.FiniteScalarQ;
+import ch.alpine.tensor.ext.PackageTestAccess;
 import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.qty.CompatibleUnitQ;
 import ch.alpine.tensor.qty.Quantity;
@@ -48,10 +49,6 @@ public class FieldClips implements Predicate<Scalar> {
     return FiniteScalarQ.of(clip.width());
   }
 
-  public Clip clip() {
-    return clip;
-  }
-
   @Override
   public boolean test(Scalar scalar) {
     return scalar.equals(scalar) // reject if NaN
@@ -80,10 +77,16 @@ public class FieldClips implements Predicate<Scalar> {
     return Round.FUNCTION.apply(rescale.multiply(RealScalar.of(resolution))).number().intValue();
   }
 
-  /** @return */
+  /** @return
+   * @throws Exception if clip does not define integer range */
   public int getIntegerResolution() {
     return Math.subtractExact( //
         Scalars.intValueExact(clip.max()), //
         Scalars.intValueExact(clip.min()));
+  }
+
+  @PackageTestAccess
+  /* package */ Clip clip() {
+    return clip;
   }
 }

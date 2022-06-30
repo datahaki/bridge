@@ -11,7 +11,7 @@ import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.qty.Quantity;
 
-class UnicodeScalarTest {
+class UnicodeTest {
   @Test
   void testQuantity() {
     assertEquals(Unicode.valueOf(RealScalar.of(3)), "3");
