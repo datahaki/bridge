@@ -11,13 +11,11 @@ import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
-import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.io.StringScalar;
-import ch.alpine.tensor.sca.Clip;
 
 /* package */ final class ScalarFieldWrap extends TensorFieldWrap {
   private final FieldInteger fieldIntegerQ;
-  private ClipCheck clipCheck = null;
+  private FieldClips fieldClips = null;
 
   /** @param field
    * @throws Exception if annotations are corrupt */
@@ -26,7 +24,7 @@ import ch.alpine.tensor.sca.Clip;
     fieldIntegerQ = field.getAnnotation(FieldInteger.class);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     if (Objects.nonNull(fieldClip))
-      clipCheck = new ClipCheck(FieldClips.of(fieldClip));
+      fieldClips = FieldClips.wrap(fieldClip);
   }
 
   @Override // from FieldWrap
@@ -43,7 +41,7 @@ import ch.alpine.tensor.sca.Clip;
     if (Objects.nonNull(fieldIntegerQ) && !IntegerQ.of(scalar))
       return false;
     // ---
-    if (Objects.nonNull(clipCheck) && !clipCheck.test(scalar))
+    if (Objects.nonNull(fieldClips) && !fieldClips.test(scalar))
       return false;
     // ---
     return true;
@@ -53,12 +51,8 @@ import ch.alpine.tensor.sca.Clip;
   public FieldPanel createFieldPanel(Object object, Object value) {
     Field field = getField();
     FieldSlider fieldSlider = field.getAnnotation(FieldSlider.class);
-    if (Objects.nonNull(fieldSlider)) {
-      // clipCheck is expected to be non-null here, otherwise exception
-      Clip clip = clipCheck.clip();
-      if (FiniteScalarQ.of(clip.width()))
-        return new SliderPanel(this, clip, value, fieldSlider);
-    }
-    return super.createFieldPanel(object, value);
+    return Objects.nonNull(fieldSlider) && fieldClips.isFinite() // slider implies clip non-null
+        ? new SliderPanel(this, fieldClips, value, fieldSlider)
+        : super.createFieldPanel(object, value);
   }
 }
