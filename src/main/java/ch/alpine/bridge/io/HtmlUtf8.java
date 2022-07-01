@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -41,19 +41,19 @@ public abstract class HtmlUtf8 implements Closeable {
       String fileStringL, String nameStringL, //
       String fileStringR, String nameStringR) {
     try {
-      StringBuilder stringBuffer = new StringBuilder();
-      stringBuffer.append("<html>\n");
+      StringBuilder stringBuilder = new StringBuilder();
+      stringBuilder.append("<html>\n");
       if (Objects.nonNull(title) && !title.isEmpty())
-        stringBuffer.append("<head><title>" + title + "</title></head>\n");
-      stringBuffer.append("<frameset " + split + ">\n");
-      stringBuffer.append("<frame src=\"" + fileStringL + "\" name=\"" + nameStringL + "\">\n");
-      stringBuffer.append("<frame src=\"" + fileStringR + "\" name=\"" + nameStringR + "\">\n");
-      stringBuffer.append("</frameset>\n</html>\n");
-      try (OutputStream outputStream = new FileOutputStream(file)) {
-        outputStream.write(stringBuffer.toString().getBytes(CHARSET));
+        stringBuilder.append("<head><title>" + title + "</title></head>\n");
+      stringBuilder.append("<frameset " + split + ">\n");
+      stringBuilder.append("<frame src=\"" + fileStringL + "\" name=\"" + nameStringL + "\">\n");
+      stringBuilder.append("<frame src=\"" + fileStringR + "\" name=\"" + nameStringR + "\">\n");
+      stringBuilder.append("</frameset>\n</html>\n");
+      try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), CHARSET)) {
+        outputStreamWriter.write(stringBuilder.toString());
       }
     } catch (Exception exception) {
-      exception.printStackTrace();
+      throw new RuntimeException(exception);
     }
   }
 

@@ -78,9 +78,8 @@ public class ObjectFields {
     try {
       return field.get(object);
     } catch (Exception exception) {
-      exception.printStackTrace();
+      throw new RuntimeException(exception);
     }
-    throw new IllegalArgumentException();
   }
 
   /** @param cls

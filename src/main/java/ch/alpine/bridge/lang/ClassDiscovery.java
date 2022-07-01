@@ -116,7 +116,7 @@ public class ClassDiscovery {
         }
       }
     } catch (Exception exception) {
-      exception.printStackTrace();
+      throw new RuntimeException(exception);
     }
   }
 }

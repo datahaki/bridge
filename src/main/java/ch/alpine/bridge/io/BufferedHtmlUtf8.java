@@ -23,7 +23,7 @@ import java.io.OutputStreamWriter;
     try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), CHARSET)) {
       outputStreamWriter.write(stringBuilder.toString());
     } catch (Exception exception) {
-      exception.printStackTrace();
+      throw new RuntimeException(exception);
     }
   }
 }
