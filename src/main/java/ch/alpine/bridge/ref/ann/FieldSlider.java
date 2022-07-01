@@ -8,8 +8,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import ch.alpine.bridge.ref.util.InvalidFieldDetection;
+import ch.alpine.tensor.Scalar;
 
-/** The field slider is an annotation for a scalar field.
+/** The field slider is an annotation for a {@link Scalar} field.
  * In order to take effect, the field also has to be annotated with a
  * {@link FieldClip} of finite width.
  * 

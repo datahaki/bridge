@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 
-/** intended for user to set Boolean value to true
+/** intended for user to set {@link Boolean} value to true
  * whereas the software only sets Boolean value to false
  * 
  * Typically, the boolean value of the flag is initially

@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 import org.jfree.chart.JFreeChart;
 
+import ch.alpine.bridge.lang.Unicode;
 import ch.alpine.tensor.Scalar;
 
 /** inspired by
@@ -22,7 +23,7 @@ public enum Histogram {
    * @return
    * @see StackedHistogram */
   /* package */ static JFreeChart of(VisualSet visualSet, boolean stacked) {
-    return JFreeChartFactory.barChart(visualSet, stacked, Scalar::toString);
+    return JFreeChartFactory.barChart(visualSet, stacked, Unicode::valueOf);
   }
 
   /** @param visualSet

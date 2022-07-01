@@ -10,4 +10,9 @@ class PeriodogramTest {
   void testSimple() {
     PeriodogramDemo.create();
   }
+
+  @Test
+  void testSimple2() {
+    PeriodogramDemo.create2();
+  }
 }

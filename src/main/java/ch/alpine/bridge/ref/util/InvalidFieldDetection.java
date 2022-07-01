@@ -13,13 +13,15 @@ import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
+import ch.alpine.bridge.ref.ann.FieldFileExtension;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.Scalar;
 
-// TODO BRIDGE argue why Io is more suitable than All
+/** Remark:
+ * field with the modifier `transient` are excluded from inspection */
 public class InvalidFieldDetection extends ObjectFieldIo {
   /** @param object
    * @return */
@@ -59,6 +61,7 @@ public class InvalidFieldDetection extends ObjectFieldIo {
       valid &= require(field, FieldSlider.class, Scalar.class);
       valid &= require(field, FieldExistingDirectory.class, File.class);
       valid &= require(field, FieldExistingFile.class, File.class);
+      valid &= require(field, FieldFileExtension.class, File.class);
     }
     {
       FieldSelectionCallback fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
