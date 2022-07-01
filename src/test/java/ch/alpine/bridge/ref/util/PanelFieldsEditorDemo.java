@@ -15,7 +15,7 @@ public enum PanelFieldsEditorDemo {
   public static void main(String[] args) throws Exception {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.lookAndFeels = LookAndFeels.LIGHT;
-    simpleParam.lookAndFeels.updateUI();
+    simpleParam.lookAndFeels.updateComponentTreeUI();
     // ---
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

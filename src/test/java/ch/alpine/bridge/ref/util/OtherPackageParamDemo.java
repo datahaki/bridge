@@ -13,7 +13,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
 public enum OtherPackageParamDemo {
   ;
   public static void main(String[] args) throws Exception {
-    LookAndFeels.GTK_PLUS.updateUI();
+    LookAndFeels.LIGHT.updateComponentTreeUI();
     // ---
     OtherPackageParam otherPackageParam = new OtherPackageParam();
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(otherPackageParam);

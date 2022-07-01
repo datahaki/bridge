@@ -1,7 +1,8 @@
-// code by gjoel
+// code by gjoel, jph
 package ch.alpine.bridge.swing;
 
 import java.awt.Window;
+import java.util.List;
 import java.util.Objects;
 
 import javax.swing.LookAndFeel;
@@ -37,7 +38,12 @@ public enum LookAndFeels {
   /** synth gives trouble on linux: dash pc, jan's pc ... */
   SYNTH(new SynthLookAndFeel()), //
   NIMBUS(new NimbusLookAndFeel()), //
-  GTK_PLUS("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+  GTK_PLUS("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"), //
+  ;
+
+  public static List<LookAndFeels> standard() {
+    return List.of(DEFAULT, DARK, LIGHT, CDE_MOTIF, DRACULA, INTELLI_J);
+  }
 
   private final LookAndFeel lookAndFeel;
   private final String className;
@@ -47,31 +53,22 @@ public enum LookAndFeels {
     className = lookAndFeel.getClass().getName();
   }
 
-  LookAndFeels(String className) {
+  private LookAndFeels(String className) {
     lookAndFeel = null;
     this.className = className;
   }
 
-  public LookAndFeel get() {
-    return lookAndFeel;
-  }
-
-  public boolean tryUpdateUI() {
+  /** @throws Exception */
+  public void updateComponentTreeUI() {
     try {
-      updateUI();
-      return true;
+      if (Objects.nonNull(lookAndFeel))
+        UIManager.setLookAndFeel(lookAndFeel);
+      else
+        UIManager.setLookAndFeel(className);
+      for (Window window : Window.getWindows())
+        SwingUtilities.updateComponentTreeUI(window);
     } catch (Exception exception) {
-      exception.printStackTrace();
+      throw new RuntimeException(exception);
     }
-    return false;
-  }
-
-  public void updateUI() throws Exception {
-    if (Objects.nonNull(lookAndFeel))
-      UIManager.setLookAndFeel(lookAndFeel);
-    else
-      UIManager.setLookAndFeel(className);
-    for (Window window : Window.getWindows())
-      SwingUtilities.updateComponentTreeUI(window);
   }
 }

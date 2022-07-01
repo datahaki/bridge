@@ -15,7 +15,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
 public enum GuiExtensionSynced {
   ;
   public static void main(String[] args) throws Exception {
-    LookAndFeels.INTELLI_J.updateUI();
+    LookAndFeels.INTELLI_J.updateComponentTreeUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor left_FieldsEditor = new PanelFieldsEditor(guiExtension);
     PanelFieldsEditor rightFieldsEditor = new PanelFieldsEditor(guiExtension);
