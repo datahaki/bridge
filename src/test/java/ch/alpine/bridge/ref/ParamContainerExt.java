@@ -11,7 +11,7 @@ import ch.alpine.tensor.io.ResourceData;
 @ReflectionMarker
 public class ParamContainerExt extends ParamContainer {
   public static final ParamContainerExt INSTANCE_EXT = //
-      ObjectProperties.set(new ParamContainerExt(), ResourceData.properties("/io/ParamContainerExt.properties"));
+      ObjectProperties.set(new ParamContainerExt(), ResourceData.properties("/ch/alpine/bridge/io/ParamContainerExt.properties"));
   // ---
   public Tensor onlyInExt = Tensors.vector(1, 2, 3);
   @SuppressWarnings("unused")
