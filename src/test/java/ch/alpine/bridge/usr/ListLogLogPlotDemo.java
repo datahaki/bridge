@@ -17,12 +17,16 @@ import ch.alpine.tensor.sca.pow.Power;
 
 public enum ListLogLogPlotDemo {
   ;
-  public static void main(String[] args) throws IOException {
+  public static JFreeChart create() {
     Tensor domain = Range.of(1, 21);
     VisualSet visualSet = new VisualSet();
     visualSet.setPlotLabel(ListLogLogPlot.class.getSimpleName());
     visualSet.add(domain, domain.map(Power.function(3)));
-    JFreeChart jFreeChart = ListLogLogPlot.of(visualSet);
+    return ListLogLogPlot.of(visualSet);
+  }
+
+  public static void main(String[] args) throws IOException {
+    JFreeChart jFreeChart = create();
     jFreeChart.setBackgroundPaint(Color.WHITE);
     File file = HomeDirectory.Pictures(ListLogLogPlotDemo.class.getSimpleName() + ".png");
     ChartUtils.saveChartAsPNG(file, jFreeChart, DemoHelper.DEMO_W, DemoHelper.DEMO_H);

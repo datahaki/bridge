@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.AnnotatedContainer;
 import ch.alpine.tensor.DoubleScalar;
+import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
@@ -129,6 +130,7 @@ class FieldClipsTest {
     assertFalse(fieldClips.test(DoubleScalar.INDETERMINATE));
     assertFalse(fieldClips.test(DoubleScalar.POSITIVE_INFINITY));
     assertFalse(fieldClips.test(DoubleScalar.NEGATIVE_INFINITY));
+    assertEquals(fieldClips.interp(RationalScalar.HALF).toString(), "1353/2");
   }
 
   @Test

@@ -73,7 +73,7 @@ public class ObjectProperties {
               bufferedWriter.write(line(prefix, fieldWrap.toString(value)));
               bufferedWriter.newLine();
             } catch (Exception exception) {
-              throw new RuntimeException();
+              throw new RuntimeException(exception);
             }
         }
       };

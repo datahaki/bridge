@@ -51,9 +51,7 @@ public class ObjectFields {
           }
         }
         case LEAF -> {
-          FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
-          if (Objects.nonNull(fieldWrap))
-            objectFieldVisitor.accept(prefix, fieldWrap, object, get(field, object));
+          objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, get(field, object));
         }
         default -> {
           // skip

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -70,6 +71,13 @@ class CopyOnWriteLinkedSetTest {
     assertTrue(set.contains(3));
     assertFalse(set.contains(11));
     assertFalse(set.isEmpty());
+    set.remove(2);
+    set.remove(4);
+    set.remove(6);
+    set.remove(8);
+    assertFalse(set.contains(2));
+    assertEquals(Arrays.asList(set.toArray()).toString(), "[0, 1, 3, 5, 7, 9]");
+    assertEquals(Arrays.asList(set.toArray(Integer[]::new)).toString(), "[0, 1, 3, 5, 7, 9]");
     set.clear();
     assertTrue(set.isEmpty());
     assertFalse(set.contains(3));
@@ -83,5 +91,6 @@ class CopyOnWriteLinkedSetTest {
     assertTrue(set.containsAll(List.of(2, 3, 3)));
     assertFalse(set.containsAll(List.of(2, 3, 4)));
     assertThrows(Exception.class, () -> set.addAll(List.of(0, 1, 2)));
+    assertThrows(Exception.class, () -> set.retainAll(null));
   }
 }
