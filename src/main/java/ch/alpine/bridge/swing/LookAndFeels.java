@@ -3,19 +3,19 @@ package ch.alpine.bridge.swing;
 
 import java.awt.Window;
 import java.util.List;
-import java.util.Objects;
 
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import javax.swing.plaf.synth.SynthLookAndFeel;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+
+import ch.alpine.tensor.ext.PackageTestAccess;
 
 /** Do not invoke LookAndFeel#getDefaults()
  * but modify keys only via UIManager.getDefaults().
@@ -36,39 +36,34 @@ public enum LookAndFeels {
   DRACULA(new FlatDarculaLaf()), //
   INTELLI_J(new FlatIntelliJLaf()), //
   /** synth gives trouble on linux: dash pc, jan's pc ... */
-  SYNTH(new SynthLookAndFeel()), //
+  // SYNTH(new SynthLookAndFeel()), //
   NIMBUS(new NimbusLookAndFeel()), //
   GTK_PLUS("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"), //
   ;
 
-  public static List<LookAndFeels> standard() {
-    return List.of(DEFAULT, DARK, LIGHT, CDE_MOTIF, DRACULA, INTELLI_J);
-  }
-
-  private final LookAndFeel lookAndFeel;
   private final String className;
 
   private LookAndFeels(LookAndFeel lookAndFeel) {
-    this.lookAndFeel = lookAndFeel;
-    className = lookAndFeel.getClass().getName();
+    this(lookAndFeel.getClass().getName());
   }
 
   private LookAndFeels(String className) {
-    lookAndFeel = null;
     this.className = className;
   }
 
   /** @throws Exception */
   public void updateComponentTreeUI() {
     try {
-      if (Objects.nonNull(lookAndFeel))
-        UIManager.setLookAndFeel(lookAndFeel);
-      else
-        UIManager.setLookAndFeel(className);
+      UIManager.setLookAndFeel(className);
       for (Window window : Window.getWindows())
         SwingUtilities.updateComponentTreeUI(window);
     } catch (Exception exception) {
       throw new RuntimeException(exception);
     }
+  }
+
+  @PackageTestAccess
+  /* package */ static List<LookAndFeels> standard() {
+    return List.of(DEFAULT, DARK, LIGHT, CDE_MOTIF, DRACULA, INTELLI_J);
   }
 }
