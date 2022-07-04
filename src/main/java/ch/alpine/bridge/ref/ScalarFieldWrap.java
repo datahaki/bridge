@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Objects;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -11,17 +12,18 @@ import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.io.StringScalar;
 
 /* package */ final class ScalarFieldWrap extends TensorFieldWrap {
-  private final FieldInteger fieldIntegerQ;
+  private final FieldInteger fieldInteger;
   private FieldClips fieldClips = null;
 
   /** @param field
    * @throws Exception if annotations are corrupt */
   public ScalarFieldWrap(Field field) {
     super(field);
-    fieldIntegerQ = field.getAnnotation(FieldInteger.class);
+    fieldInteger = field.getAnnotation(FieldInteger.class);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     if (Objects.nonNull(fieldClip))
       fieldClips = FieldClips.wrap(fieldClip);
@@ -38,13 +40,25 @@ import ch.alpine.tensor.io.StringScalar;
     if (scalar instanceof StringScalar)
       return false;
     // ---
-    if (Objects.nonNull(fieldIntegerQ) && !IntegerQ.of(scalar))
+    if (Objects.nonNull(fieldInteger) && !IntegerQ.of(scalar))
       return false;
     // ---
     if (Objects.nonNull(fieldClips) && !fieldClips.test(scalar))
       return false;
     // ---
     return true;
+  }
+
+  @Override // from FieldWrap
+  public List<String> options(Object object) {
+    if (super.options(object).isEmpty())
+      if (Objects.nonNull(fieldInteger) && Objects.nonNull(fieldClips) && fieldClips.isFinite()) {
+        Scalar min = fieldClips.min();
+        Scalar max = fieldClips.max();
+        return Range.of(Scalars.longValueExact(min), Scalars.longValueExact(max) + 1).stream() //
+            .map(Object::toString).toList();
+      }
+    return List.of();
   }
 
   @Override // from SelectableFieldWrap

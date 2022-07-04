@@ -25,30 +25,28 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
   }
 
   @SuppressWarnings("unchecked")
-  @Override // from FieldWrap
-  public FieldPanel createFieldPanel(Object object, Object value) {
+  @Override
+  public List<String> options(Object object) {
     if (Objects.nonNull(fieldSelectionArray))
-      try {
-        List<String> list = List.of(fieldSelectionArray.value());
-        return new MenuPanel(this, value, () -> list);
-      } catch (Exception exception) {
-        exception.printStackTrace();
-      }
-    if (Objects.nonNull(fieldSelectionCallback)) {
+      return List.of(fieldSelectionArray.value());
+    if (Objects.nonNull(fieldSelectionCallback))
       try {
         Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
-        return new MenuPanel(this, value, () -> {
-          try {
-            return (List<String>) method.invoke(object);
-          } catch (Exception exception) {
-            exception.printStackTrace();
-          }
-          return List.of();
-        });
+        try {
+          return (List<String>) method.invoke(object);
+        } catch (Exception exception) {
+          throw new RuntimeException(exception);
+        }
       } catch (Exception exception) {
-        exception.printStackTrace();
+        throw new RuntimeException(exception);
       }
-    }
+    return List.of();
+  }
+
+  @Override // from FieldWrap
+  public FieldPanel createFieldPanel(Object object, Object value) {
+    if (Objects.nonNull(fieldSelectionArray) || Objects.nonNull(fieldSelectionCallback))
+      return new MenuPanel(this, value, () -> options(object));
     return new PlainStringPanel(this, value);
   }
 }

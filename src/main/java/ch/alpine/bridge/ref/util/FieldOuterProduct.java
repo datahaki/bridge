@@ -1,25 +1,16 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldClips;
-import ch.alpine.bridge.ref.ann.FieldInteger;
-import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Array;
-import ch.alpine.tensor.alg.Range;
 
 public class FieldOuterProduct extends ObjectFieldIo {
   /** @param object
@@ -39,34 +30,9 @@ public class FieldOuterProduct extends ObjectFieldIo {
 
   @Override
   public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
-    Field field = fieldWrap.getField();
-    Class<?> type = field.getType();
-    // TODO BRIDGE
-    // FieldSelectionArray
-    // FieldSelectionCallback
-    if (type.equals(Boolean.class))
-      map.put(key, List.of("false", "true"));
-    if (type.equals(Scalar.class)) {
-      FieldInteger fieldInteger = field.getAnnotation(FieldInteger.class);
-      if (Objects.nonNull(fieldInteger)) {
-        FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-        if (Objects.nonNull(fieldClip)) {
-          FieldClips fieldClips = FieldClips.wrap(fieldClip);
-          if (fieldClips.isFinite()) {
-            Scalar min = fieldClips.min();
-            Scalar max = fieldClips.max();
-            map.put(key, Range.of(Scalars.longValueExact(min), Scalars.longValueExact(max) + 1).stream() //
-                .map(Object::toString).toList());
-          }
-        }
-      }
-    }
-    if (type.isEnum()) {
-      map.put(key, Arrays.stream(type.getEnumConstants()) //
-          .map(Enum.class::cast) //
-          .map(Enum::name) //
-          .toList());
-    }
+    List<String> list = fieldWrap.options(object);
+    if (1 < list.size())
+      map.put(key, list);
   }
 
   private <T> void _forEach(T object, Consumer<T> consumer) {

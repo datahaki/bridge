@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Objects;
 
 import ch.alpine.bridge.ref.ann.FieldFuse;
@@ -22,6 +23,13 @@ import ch.alpine.bridge.ref.ann.FieldFuse;
   @Override // from FieldWrap
   public String toString(Object object) {
     return object.toString();
+  }
+
+  @Override // from FieldWrap
+  public List<String> options(Object object) {
+    return List.of( //
+        Boolean.FALSE.toString(), //
+        Boolean.TRUE.toString());
   }
 
   @Override // from FieldWrap

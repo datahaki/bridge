@@ -5,17 +5,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 
 /* package */ class EnumFieldWrap extends BaseFieldWrap {
   private final Object[] enumConstants;
+  private final FieldSelectionCallback fieldSelectionCallback;
 
   public EnumFieldWrap(Field field) {
     super(field);
     enumConstants = Objects.requireNonNull(field.getType().getEnumConstants());
+    fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
   }
 
   @Override // from FieldWrap
@@ -34,25 +35,31 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
   }
 
   @SuppressWarnings("unchecked")
-  @Override // from FieldWrap
-  public FieldPanel createFieldPanel(Object object, Object value) {
-    Field field = getField();
-    Supplier<List<Object>> supplier = () -> List.of(enumConstants);
-    FieldSelectionCallback fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
+  private List<Object> private_options(Object object) {
     if (Objects.nonNull(fieldSelectionCallback))
       try {
         Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
-        supplier = () -> {
-          try {
-            return (List<Object>) method.invoke(object);
-          } catch (Exception exception) {
-            exception.printStackTrace();
-          }
-          return List.of();
-        };
+        try {
+          return (List<Object>) method.invoke(object);
+        } catch (Exception exception) {
+          throw new RuntimeException(exception);
+        }
       } catch (Exception exception) {
-        exception.printStackTrace();
+        throw new RuntimeException(exception);
       }
-    return new EnumPanel(this, value, supplier);
+    return List.of(enumConstants); //
+  }
+
+  @Override // from FieldWrap
+  public List<String> options(Object object) {
+    return private_options(object).stream() //
+        .map(Enum.class::cast) //
+        .map(Enum::name) //
+        .toList();
+  }
+
+  @Override // from FieldWrap
+  public FieldPanel createFieldPanel(Object object, Object value) {
+    return new EnumPanel(this, value, () -> private_options(object));
   }
 }
