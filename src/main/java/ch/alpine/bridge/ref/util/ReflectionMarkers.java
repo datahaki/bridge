@@ -26,9 +26,8 @@ public enum ReflectionMarkers {
     checked.add(Object.class);
   }
 
-  /**
-   * 
-   */
+  /** permanently set global flag to print out debug information
+   * on reflection marker checks */
   public void enableDebugPrint() {
     debugPrint = true;
   }
