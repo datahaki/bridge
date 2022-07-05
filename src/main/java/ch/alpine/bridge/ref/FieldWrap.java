@@ -32,8 +32,8 @@ public interface FieldWrap {
   void setIfValid(Object object, String string);
 
   /** @param object
-   * @return list of string expressions that are known to be available as values
-   * for this field */
+   * @return list of objects that are available for this field of given object
+   * for convenient selection by user */
   List<Object> options(Object object);
 
   /** @param object

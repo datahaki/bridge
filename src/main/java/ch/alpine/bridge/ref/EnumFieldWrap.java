@@ -29,7 +29,7 @@ import java.util.stream.Stream;
     return Enum.class.cast(object).name();
   }
 
-  @Override
+  @Override // from FieldWrap
   public List<Object> options(Object object) {
     List<Object> list = super.options(object);
     return list.isEmpty() //

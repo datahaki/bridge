@@ -30,7 +30,7 @@ import ch.alpine.tensor.img.ColorFormat;
     return ColorFormat.toVector((Color) object).toString();
   }
 
-  @Override
+  @Override // from FieldWrap
   public List<Object> options(Object object) {
     return List.of();
   }
