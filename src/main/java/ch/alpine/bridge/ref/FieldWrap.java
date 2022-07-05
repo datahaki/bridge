@@ -33,8 +33,8 @@ public interface FieldWrap {
 
   /** @param object
    * @return list of string expressions that are known to be available as values
-   * via {@link #toValue(String)} for this field */
-  List<String> options(Object object);
+   * for this field */
+  List<Object> options(Object object);
 
   /** @param object
    * @param value may be null

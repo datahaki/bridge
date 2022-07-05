@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,16 +25,16 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
     return value.toString();
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public List<String> options(Object object) {
+  @SuppressWarnings("unchecked")
+  public List<Object> options(Object object) {
     if (Objects.nonNull(fieldSelectionArray))
-      return List.of(fieldSelectionArray.value());
+      return Arrays.stream(fieldSelectionArray.value()).map(this::toValue).toList();
     if (Objects.nonNull(fieldSelectionCallback))
       try {
         Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
         try {
-          return (List<String>) method.invoke(object);
+          return (List<Object>) method.invoke(object);
         } catch (Exception exception) {
           throw new RuntimeException(exception);
         }
@@ -45,7 +46,10 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
-    if (Objects.nonNull(fieldSelectionArray) || Objects.nonNull(fieldSelectionCallback))
+    List<Object> list = options(object);
+    if (Objects.nonNull(fieldSelectionArray) || //
+        Objects.nonNull(fieldSelectionCallback) || //
+        !list.isEmpty())
       return new MenuPanel(this, value, () -> options(object));
     return new PlainStringPanel(this, value);
   }

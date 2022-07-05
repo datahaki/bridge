@@ -4,6 +4,7 @@ package ch.alpine.bridge.ref;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
@@ -50,15 +51,16 @@ import ch.alpine.tensor.io.StringScalar;
   }
 
   @Override // from FieldWrap
-  public List<String> options(Object object) {
-    if (super.options(object).isEmpty())
+  public List<Object> options(Object object) {
+    List<Object> list = super.options(object);
+    if (list.isEmpty())
       if (Objects.nonNull(fieldInteger) && Objects.nonNull(fieldClips) && fieldClips.isFinite()) {
         Scalar min = fieldClips.min();
         Scalar max = fieldClips.max();
         return Range.of(Scalars.longValueExact(min), Scalars.longValueExact(max) + 1).stream() //
-            .map(Object::toString).toList();
+            .map(Scalar.class::cast).collect(Collectors.toList());
       }
-    return List.of();
+    return list;
   }
 
   @Override // from SelectableFieldWrap

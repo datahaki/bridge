@@ -4,7 +4,6 @@ package ch.alpine.bridge.swing;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldInteger;
@@ -12,6 +11,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.sca.Floor;
 import ch.alpine.tensor.sca.Round;
 
@@ -20,7 +20,6 @@ public class LocalTimeParam {
   private static final Scalar NANOS = RealScalar.of(1_000_000_000);
   @FieldInteger
   @FieldClip(min = "0", max = "23")
-  @FieldSelectionCallback("hours")
   public Scalar h;
   // ---
   @FieldInteger
@@ -41,16 +40,9 @@ public class LocalTimeParam {
       s = Round._9.apply(s.add(RealScalar.of(nano).divide(NANOS)));
   }
 
-  public List<String> hours() {
-    return IntStream.range(0, 24) //
-        .mapToObj(Integer::toString) //
-        .collect(Collectors.toList());
-  }
-
-  public List<String> sixty() {
-    return IntStream.range(0, 12) //
-        .map(i -> i * 5) //
-        .mapToObj(Integer::toString) //
+  public List<Scalar> sixty() {
+    return Range.of(0, 12).multiply(RealScalar.of(5)).stream() //
+        .map(Scalar.class::cast) //
         .collect(Collectors.toList());
   }
 

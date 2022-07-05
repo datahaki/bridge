@@ -39,11 +39,14 @@ public class FieldOuterProduct extends ObjectFieldIo {
    * @param consumer of given object
    * @param limit of number of invocations */
   public static <T> void randomize(T object, Consumer<T> consumer, int limit) {
-    FieldOuterProduct fieldOptions = new FieldOuterProduct();
-    ObjectFields.of(object, fieldOptions);
-    fieldOptions._forEach(object, consumer, limit);
+    FieldOuterProduct fieldOuterProduct = new FieldOuterProduct();
+    ObjectFields.of(object, fieldOuterProduct);
+    String string = ObjectProperties.join(object);
+    fieldOuterProduct._forEach(object, consumer, limit);
+    ObjectProperties.part(object, string);
   }
 
+  // ---
   private final Map<String, List<String>> map = new LinkedHashMap<>();
 
   private FieldOuterProduct() {
@@ -52,9 +55,9 @@ public class FieldOuterProduct extends ObjectFieldIo {
 
   @Override
   public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
-    List<String> list = fieldWrap.options(object);
+    List<Object> list = fieldWrap.options(object);
     if (1 < list.size())
-      map.put(key, list);
+      map.put(key, list.stream().map(fieldWrap::toString).toList());
   }
 
   private <T> void _forEach(T object, Consumer<T> consumer) {
@@ -65,7 +68,7 @@ public class FieldOuterProduct extends ObjectFieldIo {
   private <T> void _forEach(T object, Consumer<T> consumer, int limit) {
     List<String> keys = map.keySet().stream().collect(Collectors.toList());
     int[] array = keys.stream().map(map::get).mapToInt(List::size).toArray();
-    if (IntStream.of(array).reduce(Math::multiplyExact).getAsInt() < limit)
+    if (IntStream.of(array).mapToLong(i -> i).reduce(Math::multiplyExact).getAsLong() <= limit)
       _forEach(object, consumer);
     else
       for (int count = 0; count < limit; ++count)

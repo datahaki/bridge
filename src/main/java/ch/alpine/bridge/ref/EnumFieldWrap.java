@@ -34,8 +34,9 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
     return ((Enum<?>) object).name();
   }
 
+  @Override
   @SuppressWarnings("unchecked")
-  private List<Object> private_options(Object object) {
+  public List<Object> options(Object object) {
     if (Objects.nonNull(fieldSelectionCallback))
       try {
         Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
@@ -51,15 +52,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
   }
 
   @Override // from FieldWrap
-  public List<String> options(Object object) {
-    return private_options(object).stream() //
-        .map(Enum.class::cast) //
-        .map(Enum::name) //
-        .toList();
-  }
-
-  @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
-    return new EnumPanel(this, value, () -> private_options(object));
+    return new EnumPanel(this, value, () -> options(object));
   }
 }

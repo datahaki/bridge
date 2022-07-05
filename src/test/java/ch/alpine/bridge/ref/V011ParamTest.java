@@ -14,7 +14,7 @@ import ch.alpine.bridge.ref.util.ObjectProperties;
 
 class V011ParamTest {
   @Test
-  void testFromString() throws IOException {
+  void testFromString() {
     V011Param v011Param1 = new V011Param(2);
     v011Param1.anotherParam.file = new File("c:\\windows\\here.txt");
     v011Param1.string = "abc\u00a3 here more\njaja\tasd";
