@@ -24,9 +24,4 @@ import java.util.Objects;
     }
     return null;
   }
-
-  @Override // from FieldWrap
-  public String toString(Object value) {
-    return value.toString();
-  }
 }

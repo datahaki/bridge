@@ -27,7 +27,7 @@ import ch.alpine.bridge.swing.SpinnerMenu;
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         JTextField jTextField = getJTextField();
-        SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>(supplier.get(), jTextField.getText(), false);
+        SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>(supplier.get(), jTextField.getText(), fieldWrap::toString, false);
         spinnerMenu.setFont(jTextField.getFont());
         spinnerMenu.addSpinnerListener(value -> {
           String string = fieldWrap.toString(value);

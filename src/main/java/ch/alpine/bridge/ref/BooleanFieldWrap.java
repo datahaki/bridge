@@ -20,11 +20,6 @@ import ch.alpine.bridge.ref.ann.FieldFuse;
     return BooleanParser.orNull(string);
   }
 
-  @Override // from FieldWrap
-  public String toString(Object object) {
-    return object.toString();
-  }
-
   @Override
   public List<Object> options(Object object) {
     return List.of( //

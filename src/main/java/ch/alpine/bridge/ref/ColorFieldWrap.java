@@ -26,8 +26,8 @@ import ch.alpine.tensor.img.ColorFormat;
   }
 
   @Override // from FieldWrap
-  public String toString(Object object) {
-    return ColorFormat.toVector((Color) object).toString();
+  public String toString(Object value) {
+    return ColorFormat.toVector((Color) value).toString();
   }
 
   @Override // from FieldWrap

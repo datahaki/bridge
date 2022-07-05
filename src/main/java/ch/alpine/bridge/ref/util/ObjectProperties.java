@@ -123,7 +123,9 @@ public class ObjectProperties {
   }
 
   // ---
-  /** Remark: API intentionally does not provide
+  /** function modifies fields of given object based on given properties
+   * 
+   * Remark: API intentionally does not provide
    * a function that creates {@link Properties} from given object
    * 
    * @param object

@@ -1,11 +1,13 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
+import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,7 +16,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.ann.FieldClip;
+import ch.alpine.bridge.ref.ann.FieldClips;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.alg.Array;
+import ch.alpine.tensor.pdf.Distribution;
+import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 /** {@link FieldOuterProduct} creates a complete, or random set of
  * assignments of a parameter object.
@@ -48,6 +56,7 @@ public class FieldOuterProduct extends ObjectFieldIo {
 
   // ---
   private final Map<String, List<String>> map = new LinkedHashMap<>();
+  private final Map<String, Distribution> dis = new LinkedHashMap<>();
 
   private FieldOuterProduct() {
     // ---
@@ -58,6 +67,18 @@ public class FieldOuterProduct extends ObjectFieldIo {
     List<Object> list = fieldWrap.options(object);
     if (1 < list.size())
       map.put(key, list.stream().map(fieldWrap::toString).toList());
+    else {
+      Field field = fieldWrap.getField();
+      Class<?> cls = field.getType();
+      if (cls.equals(Scalar.class)) {
+        FieldClip fieldClip = field.getAnnotation(FieldClip.class);
+        if (Objects.nonNull(fieldClip)) {
+          FieldClips fieldClips = FieldClips.wrap(fieldClip);
+          if (fieldClips.isFinite())
+            dis.put(key, UniformDistribution.of(fieldClips.clip()));
+        }
+      }
+    }
   }
 
   private <T> void _forEach(T object, Consumer<T> consumer) {
@@ -68,7 +89,8 @@ public class FieldOuterProduct extends ObjectFieldIo {
   private <T> void _forEach(T object, Consumer<T> consumer, int limit) {
     List<String> keys = map.keySet().stream().collect(Collectors.toList());
     int[] array = keys.stream().map(map::get).mapToInt(List::size).toArray();
-    if (IntStream.of(array).mapToLong(i -> i).reduce(Math::multiplyExact).getAsLong() <= limit)
+    if (IntStream.of(array).mapToLong(i -> i).reduce(Math::multiplyExact).getAsLong() <= limit && //
+        dis.size() == 0)
       _forEach(object, consumer);
     else
       for (int count = 0; count < limit; ++count)
@@ -80,6 +102,9 @@ public class FieldOuterProduct extends ObjectFieldIo {
     AtomicInteger atomicInteger = new AtomicInteger();
     for (String key : map.keySet())
       properties.put(key, map.get(key).get(list.get(atomicInteger.getAndIncrement())));
+    // TODO BRIDGE impl not ideal
+    for (String key : dis.keySet())
+      properties.put(key, RandomVariate.of(dis.get(key), RANDOM).toString());
     consumer.accept(ObjectProperties.set(object, properties));
   }
 }

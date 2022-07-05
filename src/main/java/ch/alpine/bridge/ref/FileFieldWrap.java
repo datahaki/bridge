@@ -35,11 +35,6 @@ import ch.alpine.bridge.ref.ann.FieldFileExtensions;
   }
 
   @Override // from FieldWrap
-  public String toString(Object object) {
-    return object.toString();
-  }
-
-  @Override // from FieldWrap
   public boolean isValidValue(Object value) {
     File file = (File) Objects.requireNonNull(value);
     // ---

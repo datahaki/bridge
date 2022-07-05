@@ -26,8 +26,8 @@ import ch.alpine.tensor.sca.Clips;
   }
 
   @Override // from FieldWrap
-  public String toString(Object object) {
-    Clip clip = (Clip) object;
+  public String toString(Object value) {
+    Clip clip = (Clip) value;
     return Tensors.of(clip.min(), clip.max()).toString();
   }
 }
