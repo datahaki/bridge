@@ -3,20 +3,14 @@ package ch.alpine.bridge.lang;
 
 import java.awt.Graphics;
 import java.math.BigInteger;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
-import ch.alpine.tensor.ext.Cache;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
-import ch.alpine.tensor.sca.Sign;
 
 public class Unicode {
   private Unicode() {
@@ -68,10 +62,7 @@ public class Unicode {
     }
     return stringBuilder.toString();
   }
-
   // ---
-  private static final int MAX_SIZE = 512;
-  private static final Cache<Unit, String> CACHE = Cache.of(Unicode::build, MAX_SIZE);
 
   /** "m*s^-1" -> "m/s"
    * use of unicode characters for degC, Ohm and micro-x
@@ -81,19 +72,6 @@ public class Unicode {
    * @param unit
    * @return string expression of given unit suitable for rendering in {@link Graphics} */
   public static String valueOf(Unit unit) {
-    return CACHE.apply(unit);
-  }
-
-  private static String build(Unit unit) {
-    Map<String, Scalar> map = unit.map();
-    List<Entry<String, Scalar>> list = map.entrySet().stream() //
-        .filter(entry -> Sign.isNegative(entry.getValue())) //
-        .collect(Collectors.toList());
-    if (list.size() == 1 && 1 < map.size()) {
-      Entry<String, Scalar> entry = list.iterator().next();
-      Unit den = Unit.of(entry.getKey() + Unit.POWER_DELIMITER + entry.getValue().negate());
-      return UnicodeUnit.INSTANCE.toString(unit.add(den).map()) + "/" + UnicodeUnit.INSTANCE.toString(den.map());
-    }
-    return UnicodeUnit.INSTANCE.toString(map);
+    return UnicodeUnit.toString(unit);
   }
 }

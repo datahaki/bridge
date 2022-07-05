@@ -1,25 +1,92 @@
 // code by jph
 package ch.alpine.bridge.ref.ann;
 
+import java.util.function.Predicate;
+
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.chq.FiniteScalarQ;
+import ch.alpine.tensor.ext.PackageTestAccess;
+import ch.alpine.tensor.itp.LinearInterpolation;
+import ch.alpine.tensor.qty.CompatibleUnitQ;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityUnit;
+import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
+import ch.alpine.tensor.sca.Round;
 
-/** interprets specification in {@link FieldClip} to {@link Clip} */
-public enum FieldClips {
-  ;
+public class FieldClips implements Predicate<Scalar> {
   /** @param fieldClip
-   * @return clip with min and max {@link Quantity}
+   * @return
    * @throws Exception if parsing of strings to scalars fails
    * @throws Exception if units of min and max are different */
-  public static Clip of(FieldClip fieldClip) {
-    Scalar min = Scalars.fromString(fieldClip.min());
-    Scalar max = Scalars.fromString(fieldClip.max());
-    max = UnitConvert.SI().to(QuantityUnit.of(min)).apply(max);
-    return Clips.interval(min, max);
+  public static FieldClips wrap(FieldClip fieldClip) {
+    return new FieldClips(fieldClip);
+  }
+
+  // ---
+  private final Scalar min;
+  private final Scalar max;
+  private final Clip clip;
+  private final Predicate<Scalar> compatible;
+  /** operator maps a scalar to a {@link Quantity} with unit as clip.min and clip.max */
+  private final ScalarUnaryOperator convert;
+
+  private FieldClips(FieldClip fieldClip) {
+    min = Scalars.fromString(fieldClip.min());
+    max = Scalars.fromString(fieldClip.max());
+    Unit unit = QuantityUnit.of(min);
+    compatible = CompatibleUnitQ.SI().with(unit);
+    convert = UnitConvert.SI().to(unit);
+    clip = Clips.interval(min, convert.apply(max));
+  }
+
+  public boolean isFinite() {
+    return FiniteScalarQ.of(clip.width());
+  }
+
+  @Override
+  public boolean test(Scalar scalar) {
+    return scalar.equals(scalar) // reject if NaN
+        && compatible.test(scalar) //
+        && clip.isInside(convert.apply(scalar));
+  }
+
+  /** @return min scalar as parsed from {@link FieldClip} */
+  public Scalar min() {
+    return min;
+  }
+
+  /** @return max scalar as parsed from {@link FieldClip} */
+  public Scalar max() {
+    return max;
+  }
+
+  /** @param ratio in the unit interval
+   * @return */
+  public Scalar interp(Scalar ratio) {
+    return LinearInterpolation.of(clip).At(ratio);
+  }
+
+  public int indexOf(Scalar scalar, int resolution) {
+    Scalar rescale = clip.rescale(convert.apply(scalar));
+    return Round.FUNCTION.apply(rescale.multiply(RealScalar.of(resolution))).number().intValue();
+  }
+
+  /** @return
+   * @throws Exception if clip does not define integer range */
+  public int getIntegerResolution() {
+    return Math.subtractExact( //
+        Scalars.intValueExact(clip.max()), //
+        Scalars.intValueExact(clip.min()));
+  }
+
+  @PackageTestAccess
+  /* package */ Clip clip() {
+    return clip;
   }
 }

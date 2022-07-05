@@ -27,11 +27,11 @@ import java.util.Objects;
   @Override // from FieldWrap
   public final void setIfValid(Object object, String string) {
     Object value = toValue(string);
-    try {
-      if (Objects.nonNull(value) && isValidValue(value)) // otherwise retain current assignment
+    if (Objects.nonNull(value) && isValidValue(value)) // else retain current assignment
+      try {
         field.set(object, value);
-    } catch (Exception exception) {
-      exception.printStackTrace();
-    }
+      } catch (Exception exception) {
+        throw new RuntimeException(exception);
+      }
   }
 }

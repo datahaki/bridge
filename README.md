@@ -2,15 +2,20 @@
 
 # ch.alpine.bridge
 
-Library for Java.
+Library for Java
 
 ![](https://github.com/datahaki/bridge/actions/workflows/mvn_test_11.yml/badge.svg)
 
 Features include 
-* wrapper for `jfreechart` library, API inspired by Mathematica
+* data plotting API inspired by Mathematica: `ListPlot`, `Spectrogram`, ...
 * reflection-based serialization to properties-files, and gui generation
 * data structures `BoundedPriorityQueue`, `DisjointSets`, ...
 * class discovery
+
+3rd party dependencies are
+
+* JFreeChart
+* FlatLaf
 
 ## Plots
 
@@ -19,6 +24,10 @@ Features include
 ![Spectrogram](https://user-images.githubusercontent.com/4012178/174349666-ed465170-9bd7-4427-add7-d299e23db011.png)
 
 ![Histogram](https://user-images.githubusercontent.com/4012178/174354957-3134ea12-34a8-4a72-a680-f0ec38e8bce9.png)
+
+## Dialogs
+
+![LocalTime selection](https://user-images.githubusercontent.com/4012178/176491828-21d48be8-46d0-4999-a87a-f461e1df1aab.png)
 
 ## Reflection
 
@@ -60,7 +69,7 @@ From time to time, a version is deployed and made available for maven integratio
   <dependency>
     <groupId>ch.alpine</groupId>
     <artifactId>bridge</artifactId>
-    <version>0.4.0-jdk-11</version>
+    <version>0.4.1-jdk-11</version>
   </dependency>
 </dependencies>
 

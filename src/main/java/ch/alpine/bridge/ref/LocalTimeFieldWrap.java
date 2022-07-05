@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 
 /** for strings that can be parsed into {@link LocalTime}, for instance
@@ -30,8 +31,13 @@ import java.util.Objects;
     return value.toString();
   }
 
+  @Override
+  public List<Object> options(Object object) {
+    return List.of();
+  }
+
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
-    return new LocalTimePanel(this, value);
+    return new LocalTimePanel(this, (LocalTime) value);
   }
 }

@@ -73,7 +73,7 @@ public class ObjectProperties {
               bufferedWriter.write(line(prefix, fieldWrap.toString(value)));
               bufferedWriter.newLine();
             } catch (Exception exception) {
-              throw new RuntimeException();
+              throw new RuntimeException(exception);
             }
         }
       };
@@ -182,13 +182,14 @@ public class ObjectProperties {
    * 
    * @param object to be assigned the values specified in given string
    * @param string single string expression that encodes the content of given object
-   * @throws IOException
    * @see {@link #join(Object)} */
-  public static void part(Object object, String string) throws IOException {
-    Properties properties = new Properties();
+  public static void part(Object object, String string) {
     try (Reader reader = new StringReader(string)) {
+      Properties properties = new Properties();
       properties.load(reader);
+      set(object, properties);
+    } catch (Exception exception) {
+      throw new RuntimeException(exception);
     }
-    set(object, properties);
   }
 }

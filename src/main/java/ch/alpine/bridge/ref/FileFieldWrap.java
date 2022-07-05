@@ -55,6 +55,11 @@ import ch.alpine.bridge.ref.ann.FieldFileExtensions;
     return true;
   }
 
+  @Override
+  public List<Object> options(Object object) {
+    return List.of();
+  }
+
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
     return new FilePanel(this, (File) value, fileFilters);

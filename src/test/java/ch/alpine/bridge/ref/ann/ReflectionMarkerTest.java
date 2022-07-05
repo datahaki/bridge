@@ -11,15 +11,12 @@ import ch.alpine.bridge.lang.ClassDiscovery;
 import ch.alpine.bridge.lang.ClassPaths;
 import ch.alpine.bridge.ref.util.ClassFieldCheck;
 import ch.alpine.bridge.ref.util.FieldValueContainer;
-import ch.alpine.tensor.ext.Timing;
 
 class ReflectionMarkerTest {
   @Test
   void testReflection() {
-    Timing timing = Timing.started();
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
-    timing.stop();
     {
       List<Class<?>> list = classFieldCheck.getInspected();
       // for (Class<?> cls : list)

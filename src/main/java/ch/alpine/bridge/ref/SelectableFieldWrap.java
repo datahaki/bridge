@@ -3,8 +3,10 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
@@ -19,36 +21,35 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
     fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
   }
 
-  @Override // from FieldWrap
-  public String toString(Object value) {
-    return value.toString();
-  }
-
+  @Override
   @SuppressWarnings("unchecked")
-  @Override // from FieldWrap
-  public FieldPanel createFieldPanel(Object object, Object value) {
+  public List<Object> options(Object object) {
     if (Objects.nonNull(fieldSelectionArray))
-      try {
-        List<String> list = List.of(fieldSelectionArray.value());
-        return new MenuPanel(this, value, () -> list);
-      } catch (Exception exception) {
-        exception.printStackTrace();
-      }
-    if (Objects.nonNull(fieldSelectionCallback)) {
+      return Arrays.stream(fieldSelectionArray.value()) //
+          .map(this::toValue) //
+          .map(Objects::requireNonNull) //
+          .collect(Collectors.toList());
+    if (Objects.nonNull(fieldSelectionCallback))
       try {
         Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
-        return new MenuPanel(this, value, () -> {
-          try {
-            return (List<String>) method.invoke(object);
-          } catch (Exception exception) {
-            exception.printStackTrace();
-          }
-          return List.of();
-        });
+        try {
+          return (List<Object>) method.invoke(object);
+        } catch (Exception exception) {
+          throw new RuntimeException(exception);
+        }
       } catch (Exception exception) {
-        exception.printStackTrace();
+        throw new RuntimeException(exception);
       }
-    }
+    return List.of();
+  }
+
+  @Override // from FieldWrap
+  public FieldPanel createFieldPanel(Object object, Object value) {
+    List<Object> list = options(object);
+    if (Objects.nonNull(fieldSelectionArray) || //
+        Objects.nonNull(fieldSelectionCallback) || //
+        !list.isEmpty())
+      return new MenuPanel(this, value, () -> options(object));
     return new PlainStringPanel(this, value);
   }
 }

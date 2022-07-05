@@ -16,7 +16,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
 public enum ToolbarFieldsEditorDemo {
   ;
   public static void main(String[] args) throws Exception {
-    LookAndFeels.DARK.updateUI();
+    LookAndFeels.DARK.updateComponentTreeUI();
     GuiExtension guiExtension = new GuiExtension();
     JToolBar jToolBar = new JToolBar();
     jToolBar.setFloatable(false);

@@ -18,6 +18,11 @@ import ch.alpine.tensor.io.StringScalarQ;
   }
 
   @Override // from FieldWrap
+  public String toString(Object value) {
+    return value.toString();
+  }
+
+  @Override // from FieldWrap
   public boolean isValidValue(Object value) {
     Tensor tensor = (Tensor) value;
     return !StringScalarQ.any(tensor); // throws exception if value is null

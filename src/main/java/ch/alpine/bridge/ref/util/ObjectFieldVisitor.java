@@ -7,7 +7,7 @@ import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.FieldWraps;
 
 public interface ObjectFieldVisitor {
-  public static enum Type {
+  public enum Type {
     /** a node invokes push and pop at a later point */
     NODE,
     /** a leaf is guaranteed to have an associated {@link FieldWrap}

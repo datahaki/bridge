@@ -14,10 +14,13 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.num.Pi;
+import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.red.Times;
 import ch.alpine.tensor.sca.tri.Sin;
 
@@ -47,17 +50,19 @@ public enum PeriodogramDemo {
 
   public static JFreeChart create2() {
     int n = 128;
-    Tensor domain = Subdivide.of(0.0, 0.3, n - 1);
-    Tensor signal = Tensors.vector(i -> _f(RealScalar.of(i)), n);
+    Tensor noised = RandomVariate.of(UniformDistribution.of(-1, 1), n);
+    Tensor domain = Range.of(0, n);
+    Tensor signal = Tensors.vector(i -> _f(RealScalar.of(i)), n).add(noised);
     VisualSet visualSet = new VisualSet();
+    visualSet.setPlotLabel(Periodogram.class.getSimpleName());
     visualSet.add(domain, signal);
     return Periodogram.of(visualSet);
   }
 
   public static void main(String[] args) throws IOException {
     JFreeChart jFreeChart = PeriodogramDemo.create2();
-    File file = HomeDirectory.Pictures("periodogram.png");
+    File file = HomeDirectory.Pictures(Periodogram.class.getSimpleName() + ".png");
     jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(file, jFreeChart, 500, 300);
+    ChartUtils.saveChartAsPNG(file, jFreeChart, DemoHelper.DEMO_W, DemoHelper.DEMO_H);
   }
 }

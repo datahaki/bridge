@@ -19,3 +19,4 @@ jobs:
       - name: mvn test
         working-directory: .
         run: xvfb-run --auto-servernum mvn test -B
+

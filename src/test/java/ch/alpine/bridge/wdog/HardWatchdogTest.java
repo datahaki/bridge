@@ -11,17 +11,17 @@ import ch.alpine.tensor.qty.Quantity;
 class HardWatchdogTest {
   @Test
   void testSimple() throws Exception {
-    Watchdog watchdog = HardWatchdog.notified(Quantity.of(0.05, "s"));
+    Watchdog watchdog = HardWatchdog.notified(Quantity.of(100, "ms"));
     assertFalse(watchdog.isBarking());
-    Thread.sleep(20);
-    assertFalse(watchdog.isBarking());
-    watchdog.notifyWatchdog();
-    assertFalse(watchdog.isBarking());
-    Thread.sleep(20);
+    Thread.sleep(2);
     assertFalse(watchdog.isBarking());
     watchdog.notifyWatchdog();
     assertFalse(watchdog.isBarking());
-    Thread.sleep(70);
+    Thread.sleep(2);
+    assertFalse(watchdog.isBarking());
+    watchdog.notifyWatchdog();
+    assertFalse(watchdog.isBarking());
+    Thread.sleep(102);
     assertTrue(watchdog.isBarking());
   }
 

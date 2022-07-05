@@ -2,14 +2,17 @@
 package ch.alpine.bridge.ref.ann;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.AnnotatedContainer;
 import ch.alpine.tensor.DoubleScalar;
+import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
@@ -25,7 +28,7 @@ class FieldClipsTest {
   void testSimple() throws Exception {
     Field field = AnnotatedContainer.class.getField("clipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    Clip clip = FieldClips.of(fieldClip);
+    Clip clip = FieldClips.wrap(fieldClip).clip();
     assertEquals(clip.min(), RealScalar.of(2));
     assertEquals(clip.max(), RealScalar.of(6));
   }
@@ -34,7 +37,7 @@ class FieldClipsTest {
   void testQuantity() throws Exception {
     Field field = AnnotatedContainer.class.getField("quantityClipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    Clip clip = FieldClips.of(fieldClip);
+    Clip clip = FieldClips.wrap(fieldClip).clip();
     // assertEquals(clip.min(), Quantity.of(2000, "kg*m^2*s^-3"));
     // assertEquals(clip.max(), Quantity.of(6000, "kg*m^2*s^-3"));
     assertEquals(clip.min(), Quantity.of(2, "kW"));
@@ -78,7 +81,79 @@ class FieldClipsTest {
     FieldClipsTest fieldClipsTest = new FieldClipsTest();
     Field field = fieldClipsTest.getClass().getField("awesome");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    Clip clip = FieldClips.of(fieldClip);
+    Clip clip = FieldClips.wrap(fieldClip).clip();
     assertEquals(clip.max(), Quantity.of(DoubleScalar.POSITIVE_INFINITY, "super"));
+  }
+
+  @Test
+  void testWithUnit() {
+    FieldClip fieldClip = new FieldClip() {
+      @Override
+      public Class<? extends Annotation> annotationType() {
+        return FieldClip.class;
+      }
+
+      @Override
+      public String min() {
+        return "123[m]";
+      }
+
+      @Override
+      public String max() {
+        return "123[km]";
+      }
+    };
+    FieldClips fieldClips = FieldClips.wrap(fieldClip);
+    Clip clip = fieldClips.clip();
+    clip.requireInside(Quantity.of(124, "m"));
+  }
+
+  @Test
+  void test() {
+    FieldClip fieldClip = new FieldClip() {
+      @Override
+      public Class<? extends Annotation> annotationType() {
+        return FieldClip.class;
+      }
+
+      @Override
+      public String min() {
+        return "123";
+      }
+
+      @Override
+      public String max() {
+        return "1230";
+      }
+    };
+    FieldClips fieldClips = FieldClips.wrap(fieldClip);
+    assertFalse(fieldClips.test(DoubleScalar.INDETERMINATE));
+    assertFalse(fieldClips.test(DoubleScalar.POSITIVE_INFINITY));
+    assertFalse(fieldClips.test(DoubleScalar.NEGATIVE_INFINITY));
+    assertEquals(fieldClips.interp(RationalScalar.HALF).toString(), "1353/2");
+  }
+
+  @Test
+  void testInfty() {
+    FieldClip fieldClip = new FieldClip() {
+      @Override
+      public Class<? extends Annotation> annotationType() {
+        return FieldClip.class;
+      }
+
+      @Override
+      public String min() {
+        return "0";
+      }
+
+      @Override
+      public String max() {
+        return "Infinity";
+      }
+    };
+    FieldClips fieldClips = FieldClips.wrap(fieldClip);
+    assertFalse(fieldClips.test(DoubleScalar.INDETERMINATE));
+    assertTrue(fieldClips.test(DoubleScalar.POSITIVE_INFINITY));
+    assertFalse(fieldClips.test(DoubleScalar.NEGATIVE_INFINITY));
   }
 }

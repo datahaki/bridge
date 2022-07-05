@@ -21,15 +21,16 @@ import ch.alpine.bridge.swing.SpinnerMenu;
   /** @param fieldWrap
    * @param object
    * @param supplier invoked when menu button "?" is pressed */
-  public MenuPanel(FieldWrap fieldWrap, Object object, Supplier<List<String>> supplier) {
+  public MenuPanel(FieldWrap fieldWrap, Object object, Supplier<List<Object>> supplier) {
     super(fieldWrap, object);
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         JTextField jTextField = getJTextField();
-        SpinnerMenu<String> spinnerMenu = new SpinnerMenu<>(supplier.get(), jTextField.getText(), false);
+        SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>(supplier.get(), jTextField.getText(), false);
         spinnerMenu.setFont(jTextField.getFont());
-        spinnerMenu.addSpinnerListener(string -> {
+        spinnerMenu.addSpinnerListener(value -> {
+          String string = fieldWrap.toString(value);
           jTextField.setText(string);
           indicateGui();
           nofifyIfValid(string);

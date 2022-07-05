@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 public interface FieldWrap {
   /** @return field non-null wrapped by this instance */
@@ -27,8 +28,13 @@ public interface FieldWrap {
 
   /** @param object
    * @param string non-null
-   * @throws Exception if given string is null */
+   * @throws Exception if given string is null, or set operation failed */
   void setIfValid(Object object, String string);
+
+  /** @param object
+   * @return list of objects that are available for this field of given object
+   * for convenient selection by user */
+  List<Object> options(Object object);
 
   /** @param object
    * @param value may be null

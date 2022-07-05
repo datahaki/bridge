@@ -2,7 +2,7 @@
 package ch.alpine.bridge.ref;
 
 public class Container {
-  public static enum NestedEnum {
+  public enum NestedEnum {
     FIRST, SECOND, THIRD;
   }
 }

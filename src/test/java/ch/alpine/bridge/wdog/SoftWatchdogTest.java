@@ -17,7 +17,7 @@ class SoftWatchdogTest {
     assertTrue(watchdog.isBarking());
     watchdog.notifyWatchdog();
     assertFalse(watchdog.isBarking());
-    Thread.sleep(40);
+    Thread.sleep(2); // mac os has trouble
     assertFalse(watchdog.isBarking());
     Thread.sleep(100);
     assertTrue(watchdog.isBarking());
@@ -33,7 +33,7 @@ class SoftWatchdogTest {
     assertTrue(watchdog.isBarking());
     watchdog.notifyWatchdog();
     assertFalse(watchdog.isBarking());
-    Thread.sleep(40);
+    Thread.sleep(2); // mac os has trouble
     assertFalse(watchdog.isBarking());
     Thread.sleep(100);
     assertTrue(watchdog.isBarking());

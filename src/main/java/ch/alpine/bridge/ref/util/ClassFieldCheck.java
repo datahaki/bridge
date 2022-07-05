@@ -9,8 +9,10 @@ import java.util.Objects;
 import ch.alpine.bridge.lang.ClassVisitor;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 
+/** class visitor that visits classes that are annotated with
+ * {@link ReflectionMarker} */
 public class ClassFieldCheck implements ClassVisitor {
-  private final InvalidFieldDetection invalidFieldCollection = new InvalidFieldDetection();
+  private final InvalidFieldDetection invalidFieldDetection = new InvalidFieldDetection();
   private final List<Class<?>> inspected = new LinkedList<>();
   private final List<Class<?>> failures = new LinkedList<>();
 
@@ -27,7 +29,7 @@ public class ClassFieldCheck implements ClassVisitor {
       if (Objects.nonNull(object)) {
         inspected.add(cls);
         try {
-          ObjectFields.of(object, invalidFieldCollection);
+          ObjectFields.of(object, invalidFieldDetection);
         } catch (Exception exception) {
           failures.add(cls);
         }
@@ -35,17 +37,20 @@ public class ClassFieldCheck implements ClassVisitor {
     }
   }
 
+  /** @return collection of all inspected classes */
   public List<Class<?>> getInspected() {
     return inspected;
   }
 
+  /** @return collection of all classes where a failure occurred */
   public List<Class<?>> getFailures() {
     return failures;
   }
 
+  /** @return invalid fields */
   public List<FieldValueContainer> invalidFields() {
     List<FieldValueContainer> list = new ArrayList<>();
-    list.addAll(invalidFieldCollection.list());
+    list.addAll(invalidFieldDetection.list());
     return list;
   }
 }

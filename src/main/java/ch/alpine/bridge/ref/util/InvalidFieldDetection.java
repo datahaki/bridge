@@ -5,6 +5,7 @@ import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -13,13 +14,16 @@ import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
+import ch.alpine.bridge.ref.ann.FieldFileExtension;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldInteger;
+import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.Scalar;
 
-// TODO BRIDGE argue why Io is more suitable than All
+/** Remark:
+ * field with the modifier `transient` are excluded from inspection */
 public class InvalidFieldDetection extends ObjectFieldIo {
   /** @param object
    * @return */
@@ -59,6 +63,19 @@ public class InvalidFieldDetection extends ObjectFieldIo {
       valid &= require(field, FieldSlider.class, Scalar.class);
       valid &= require(field, FieldExistingDirectory.class, File.class);
       valid &= require(field, FieldExistingFile.class, File.class);
+      valid &= require(field, FieldFileExtension.class, File.class);
+    }
+    try {
+      fieldWrap.options(object);
+    } catch (Exception exception) {
+      valid = false;
+    }
+    {
+      FieldSelectionArray fieldSelectionArray = field.getAnnotation(FieldSelectionArray.class);
+      if (Objects.nonNull(fieldSelectionArray))
+        valid &= Arrays.stream(fieldSelectionArray.value()) //
+            .map(fieldWrap::toValue) //
+            .allMatch(Objects::nonNull);
     }
     {
       FieldSelectionCallback fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);

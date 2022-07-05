@@ -54,13 +54,13 @@ import ch.alpine.bridge.swing.UIManagerColor;
             try {
               undoManager.undo();
             } catch (Exception exception) {
-              exception.printStackTrace();
+              throw new RuntimeException(exception);
             }
           if ((modifiers & MASK) == REDO && undoManager.canRedo())
             try {
               undoManager.redo();
             } catch (Exception exception) {
-              exception.printStackTrace();
+              throw new RuntimeException(exception);
             }
           break;
         }

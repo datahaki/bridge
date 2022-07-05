@@ -4,10 +4,13 @@ package ch.alpine.bridge.fig;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeriesCollection;
+
+import ch.alpine.bridge.fig.Axis.Type;
 
 /** Hint:
  * to render list plot in a custom graphics use
@@ -55,6 +58,15 @@ public enum ListPlot {
       VisualRow visualRow = visualSet.getVisualRow(index);
       xyItemRenderer.setSeriesPaint(index, visualRow.getColor());
       xyItemRenderer.setSeriesStroke(index, visualRow.getStroke());
+    }
+    // https://github.com/jfree/jfreechart/issues/301
+    if (visualSet.getAxisX().getType().equals(Type.LOGARITHMIC)) {
+      LogAxis logAxis = new LogAxis(visualSet.getAxisX().getAxisLabel());
+      jFreeChart.getXYPlot().setDomainAxis(logAxis);
+    }
+    if (visualSet.getAxisY().getType().equals(Type.LOGARITHMIC)) {
+      LogAxis logAxis = new LogAxis(visualSet.getAxisY().getAxisLabel());
+      jFreeChart.getXYPlot().setRangeAxis(logAxis);
     }
     StaticHelper.setRange(visualSet.getAxisX(), jFreeChart.getXYPlot().getDomainAxis());
     StaticHelper.setRange(visualSet.getAxisY(), jFreeChart.getXYPlot().getRangeAxis());

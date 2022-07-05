@@ -36,7 +36,7 @@ public abstract class FieldsEditor {
       try {
         value = fieldPanel.fieldWrap().getField().get(object);
       } catch (IllegalAccessException illegalAccessException) {
-        illegalAccessException.printStackTrace();
+        throw new RuntimeException(illegalAccessException);
       }
       if (Objects.nonNull(value))
         // any exception caused by implementation based on presented value is deliberately not caught

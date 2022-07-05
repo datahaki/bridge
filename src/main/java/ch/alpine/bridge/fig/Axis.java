@@ -21,9 +21,15 @@ import ch.alpine.tensor.sca.Clips;
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/Axis.html">Axis</a> */
 public class Axis implements Serializable {
+  public enum Type {
+    LINEAR, //
+    LOGARITHMIC, //
+  }
+
   private String label = "";
   private Unit unit = null;
   private Clip clip = null;
+  private Type type = Type.LINEAR;
 
   public Axis() {
     // ---
@@ -49,6 +55,14 @@ public class Axis implements Serializable {
 
   public Unit getUnit() {
     return unit;
+  }
+
+  public void setType(Type type) {
+    this.type = type;
+  }
+
+  public Type getType() {
+    return type;
   }
 
   // ---
