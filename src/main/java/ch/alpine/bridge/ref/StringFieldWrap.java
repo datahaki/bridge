@@ -13,4 +13,9 @@ import java.util.Objects;
   public Object toValue(String string) {
     return Objects.requireNonNull(string);
   }
+
+  @Override // from FieldWrap
+  public String toString(Object value) {
+    return value.toString();
+  }
 }

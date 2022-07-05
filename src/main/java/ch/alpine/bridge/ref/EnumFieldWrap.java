@@ -2,21 +2,16 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
-
-/* package */ class EnumFieldWrap extends BaseFieldWrap {
+/* package */ class EnumFieldWrap extends SelectableFieldWrap {
   private final Object[] enumConstants;
-  private final FieldSelectionCallback fieldSelectionCallback;
 
   public EnumFieldWrap(Field field) {
     super(field);
     enumConstants = Objects.requireNonNull(field.getType().getEnumConstants());
-    fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
   }
 
   @Override // from FieldWrap
@@ -31,24 +26,15 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 
   @Override // from FieldWrap
   public String toString(Object object) {
-    return ((Enum<?>) object).name();
+    return Enum.class.cast(object).name();
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public List<Object> options(Object object) {
-    if (Objects.nonNull(fieldSelectionCallback))
-      try {
-        Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
-        try {
-          return (List<Object>) method.invoke(object);
-        } catch (Exception exception) {
-          throw new RuntimeException(exception);
-        }
-      } catch (Exception exception) {
-        throw new RuntimeException(exception);
-      }
-    return List.of(enumConstants); //
+    List<Object> list = super.options(object);
+    return list.isEmpty() //
+        ? List.of(enumConstants)
+        : list;
   }
 
   @Override // from FieldWrap

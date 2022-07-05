@@ -20,11 +20,6 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
     fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
   }
 
-  @Override // from FieldWrap
-  public String toString(Object value) {
-    return value.toString();
-  }
-
   @Override
   @SuppressWarnings("unchecked")
   public List<Object> options(Object object) {
