@@ -15,8 +15,8 @@ Features include
 
 3rd party dependencies are
 
-* JFreeChart
-* FlatLaf
+* `JFreeChart`
+* `FlatLaf`
 
 ## Plots
 
@@ -87,7 +87,7 @@ From time to time, a version is deployed and made available for maven integratio
 </repositories>
 ```
 
-For Java 11, for `version` use `0.4.0-jdk-11`.
+For Java 11, for `version` use `0.4.1-jdk-11`.
 
 The source code is attached to every release.
 

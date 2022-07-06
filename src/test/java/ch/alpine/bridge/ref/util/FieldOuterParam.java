@@ -7,6 +7,7 @@ import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.mat.re.Pivots;
+import ch.alpine.tensor.qty.Quantity;
 
 @ReflectionMarker
 public class FieldOuterParam {
@@ -21,4 +22,6 @@ public class FieldOuterParam {
   @FieldInteger
   @FieldClip(min = "3", max = "5")
   public Scalar integer = RealScalar.of(3);
+  @FieldClip(min = "50[%]", max = "100[%]")
+  public Scalar ratio = Quantity.of(75, "%");
 }
