@@ -3,7 +3,6 @@ package ch.alpine.bridge.ref.util;
 
 import java.util.Properties;
 import java.util.Random;
-import java.util.function.Consumer;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.tensor.RealScalar;
@@ -20,11 +19,11 @@ import ch.alpine.tensor.alg.Array;
  * Remark:
  * If given limit in {@link #randomize(int)} exceeds number of possible
  * combinations, then a complete, systematic enumeration is performed. */
-public class OuterFieldsAssignment<T> extends BaseFieldsAssignment<T> {
+public class OuterFieldsAssignment extends BaseFieldsAssignment {
   /** @param object
    * @param consumer of given object but with fields assigned based on all possible
    * combinations suggested by the field type, and annotations */
-  public OuterFieldsAssignment(T object, Consumer<T> consumer) {
+  public OuterFieldsAssignment(Object object, Runnable consumer) {
     super(object, consumer);
   }
 

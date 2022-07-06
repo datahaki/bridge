@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -16,11 +15,11 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.ext.Integers;
 
-/* package */ abstract class BaseFieldsAssignment<T> {
+/* package */ abstract class BaseFieldsAssignment {
   protected static final Random RANDOM = new SecureRandom();
   // ---
-  private final T object;
-  private final Consumer<T> consumer;
+  private final Object object;
+  private final Runnable consumer;
   private final String string;
   protected final FieldOptionsCollector fieldOptionsCollector;
   private final Map<String, List<String>> map;
@@ -31,7 +30,7 @@ import ch.alpine.tensor.ext.Integers;
   /** @param object
    * @param consumer of given object but with fields assigned based on all possible
    * combinations suggested by the field type, and annotations */
-  protected BaseFieldsAssignment(T object, Consumer<T> consumer) {
+  protected BaseFieldsAssignment(Object object, Runnable consumer) {
     this.object = object;
     this.consumer = consumer;
     string = ObjectProperties.join(object);
@@ -68,7 +67,8 @@ import ch.alpine.tensor.ext.Integers;
     for (String key : keys)
       properties.put(key, map.get(key).get(list.get(atomicInteger.getAndIncrement())));
     insert(properties, random);
-    consumer.accept(ObjectProperties.set(object, properties));
+    ObjectProperties.set(object, properties);
+    consumer.run();
   }
 
   /** restore original content of given object */

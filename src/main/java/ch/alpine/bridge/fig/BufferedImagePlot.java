@@ -25,7 +25,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.api.RectangleEdge;
+import org.jfree.chart.api.RectangleInsets;
 import org.jfree.chart.axis.AxisCollection;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.AxisSpace;
@@ -33,6 +34,8 @@ import org.jfree.chart.axis.AxisState;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.event.PlotChangeEvent;
+import org.jfree.chart.internal.Args;
+import org.jfree.chart.legend.LegendItemCollection;
 import org.jfree.chart.plot.CrosshairState;
 import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.Pannable;
@@ -45,10 +48,6 @@ import org.jfree.chart.plot.ValueAxisPlot;
 import org.jfree.chart.plot.Zoomable;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.ui.RectangleEdge;
-import org.jfree.chart.ui.RectangleInsets;
-import org.jfree.chart.util.Args;
-import org.jfree.chart.util.ResourceBundleWrapper;
 import org.jfree.chart.util.ShadowGenerator;
 import org.jfree.data.Range;
 import org.jfree.data.general.DatasetChangeEvent;
@@ -68,7 +67,7 @@ import ch.alpine.tensor.sca.Clip;
   /** The default grid line paint. */
   public static final Paint DEFAULT_GRIDLINE_PAINT = Color.LIGHT_GRAY;
   /** The resourceBundle for the localization. */
-  protected static ResourceBundle localizationResources = ResourceBundleWrapper.getBundle("org.jfree.chart.plot.LocalizationBundle");
+  protected static ResourceBundle localizationResources = ResourceBundle.getBundle("org.jfree.chart.plot.LocalizationBundle");
   /** The plot orientation. */
   private PlotOrientation orientation;
   /** The offset between the data area and the axes. */

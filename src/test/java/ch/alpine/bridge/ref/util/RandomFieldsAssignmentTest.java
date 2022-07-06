@@ -14,9 +14,9 @@ class RandomFieldsAssignmentTest {
   @Test
   void test() {
     Set<Scalar> set = new HashSet<>();
-    RandomFieldsAssignment<FieldOuterParam> fieldOuterProduct = new RandomFieldsAssignment<>(new FieldOuterParam(), e -> {
-      // System.out.println(e.ratio);
-      set.add(e.ratio);
+    FieldOuterParam fieldOuterParam = new FieldOuterParam();
+    RandomFieldsAssignment fieldOuterProduct = new RandomFieldsAssignment(fieldOuterParam, () -> {
+      set.add(fieldOuterParam.ratio);
     });
     assertEquals(set.size(), 0);
     fieldOuterProduct.randomize(3);

@@ -5,7 +5,10 @@ import java.util.function.Function;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.AbstractRenderer;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StackedBarRenderer;
@@ -29,7 +32,9 @@ import ch.alpine.tensor.Scalar;
         : new BarRenderer();
     barRenderer.setDrawBarOutline(true);
     formatLines(visualSet, barRenderer);
-    jFreeChart.getCategoryPlot().setRenderer(barRenderer);
+    Plot plot = jFreeChart.getPlot();
+    CategoryPlot asd = (CategoryPlot) plot;
+    asd.setRenderer(barRenderer);
     return jFreeChart;
   }
 
@@ -47,7 +52,9 @@ import ch.alpine.tensor.Scalar;
             visualSet.getAxisY().getAxisLabel(), //
             tableXYDataset, //
             PlotOrientation.VERTICAL, visualSet.hasLegend(), true, false);
-    formatLines(visualSet, (AbstractXYItemRenderer) jFreeChart.getXYPlot().getRenderer());
+    Plot plot = jFreeChart.getPlot();
+    XYPlot xyPlot = (XYPlot) plot;
+    formatLines(visualSet, (AbstractXYItemRenderer) xyPlot.getRenderer());
     return jFreeChart;
   }
 

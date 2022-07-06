@@ -4,7 +4,7 @@ package ch.alpine.bridge.usr;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.jfree.chart.ChartPanel;
+import org.jfree.chart.swing.ChartPanel;
 
 public class BufferedImagePlotDemo {
   private final JFrame jFrame = new JFrame();
