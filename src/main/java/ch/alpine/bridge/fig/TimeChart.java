@@ -5,7 +5,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickUnit;
 import org.jfree.chart.axis.DateTickUnitType;
-import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.XYPlot;
 
 public enum TimeChart {
@@ -20,8 +19,7 @@ public enum TimeChart {
     domainAxis.setLabel(visualSet.getAxisX().getAxisLabel());
     domainAxis.setTickUnit(new DateTickUnit(DateTickUnitType.SECOND, 1));
     domainAxis.setAutoTickUnitSelection(true);
-    Plot plot = jFreeChart.getPlot();
-    XYPlot xyPlot = (XYPlot) plot;
+    XYPlot xyPlot = (XYPlot) jFreeChart.getPlot();
     xyPlot.setDomainAxis(domainAxis);
     return jFreeChart;
   }
