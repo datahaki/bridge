@@ -5,9 +5,6 @@ import java.util.Properties;
 import java.util.Random;
 
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.tensor.RealScalar;
-import ch.alpine.tensor.Scalars;
-import ch.alpine.tensor.alg.Array;
 
 /** OuterFieldsAssignment creates a complete, or randomized set of
  * assignments of a parameter object. The assignments are based on
@@ -19,20 +16,17 @@ import ch.alpine.tensor.alg.Array;
  * Remark:
  * If given limit in {@link #randomize(int)} exceeds number of possible
  * combinations, then a complete, systematic enumeration is performed. */
-public class OuterFieldsAssignment extends BaseFieldsAssignment {
+public class OuterFieldsAssignment extends FieldsAssignment {
   /** @param object
-   * @param consumer of given object but with fields assigned based on all possible
+   * @param runnable of given object but with fields assigned based on all possible
    * combinations suggested by the field type, and annotations */
-  public OuterFieldsAssignment(Object object, Runnable consumer) {
-    super(object, consumer);
+  public static FieldsAssignment of(Object object, Runnable runnable) {
+    return new OuterFieldsAssignment(object, runnable);
   }
 
-  @Override // from BaseFieldsAssignment
-  public void randomize(Random random, int limit) {
-    if (Scalars.lessEquals(total, RealScalar.of(limit)))
-      forEach();
-    else
-      super.randomize(random, limit);
+  // ---
+  private OuterFieldsAssignment(Object object, Runnable runnable) {
+    super(object, runnable);
   }
 
   @Override // from BaseFieldsAssignment
@@ -40,8 +34,8 @@ public class OuterFieldsAssignment extends BaseFieldsAssignment {
     // ---
   }
 
-  /** Careful: the number of combinations may be large */
-  public void forEach() {
-    Array.forEach(list -> build(list, RANDOM), array);
+  @Override // from BaseFieldsAssignment
+  protected boolean isGrid() {
+    return true;
   }
 }

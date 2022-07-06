@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
@@ -13,13 +14,17 @@ import java.util.stream.IntStream;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.ext.Integers;
 
-/* package */ abstract class BaseFieldsAssignment {
+/** The modifications occur on the given object.
+ * The given object does not need to be instance of {@link Serializable}. */
+public abstract class FieldsAssignment {
   protected static final Random RANDOM = new SecureRandom();
   // ---
   private final Object object;
-  private final Runnable consumer;
+  private final Runnable runnable;
   private final String string;
   protected final FieldOptionsCollector fieldOptionsCollector;
   private final Map<String, List<String>> map;
@@ -28,11 +33,11 @@ import ch.alpine.tensor.ext.Integers;
   protected final Scalar total;
 
   /** @param object
-   * @param consumer of given object but with fields assigned based on all possible
+   * @param runnable of given object but with fields assigned based on all possible
    * combinations suggested by the field type, and annotations */
-  protected BaseFieldsAssignment(Object object, Runnable consumer) {
+  protected FieldsAssignment(Object object, Runnable runnable) {
     this.object = object;
-    this.consumer = consumer;
+    this.runnable = runnable;
     string = ObjectProperties.join(object);
     fieldOptionsCollector = new FieldOptionsCollector();
     ObjectFields.of(object, fieldOptionsCollector);
@@ -47,32 +52,43 @@ import ch.alpine.tensor.ext.Integers;
 
   /** @param random
    * @param limit of number of invocations */
-  public void randomize(Random random, int limit) {
+  public final void randomize(Random random, int limit) {
     Integers.requirePositiveOrZero(limit);
-    for (int count = 0; count < limit; ++count) {
-      List<Integer> list = Integers.asList(Arrays.stream(array).map(random::nextInt).toArray());
-      build(list, random);
-    }
+    if (Scalars.lessEquals(total, RealScalar.of(limit)) && isGrid())
+      forEach();
+    else
+      for (int count = 0; count < limit; ++count)
+        build(Integers.asList(Arrays.stream(array).map(random::nextInt).toArray()), random);
   }
 
   public final void randomize(int limit) {
     randomize(RANDOM, limit);
   }
 
+  /** restore original content of given object */
+  public final void restore() {
+    ObjectProperties.part(object, string);
+  }
+
+  /** Careful: the number of combinations may be large */
+  public final void forEach() {
+    Array.forEach(list -> build(list, RANDOM), array);
+  }
+
+  /** @param properties
+   * @param random */
   protected abstract void insert(Properties properties, Random random);
 
-  protected final void build(List<Integer> list, Random random) {
+  /** @return whether enumeration is random free */
+  protected abstract boolean isGrid();
+
+  private void build(List<Integer> list, Random random) {
     Properties properties = new Properties();
     AtomicInteger atomicInteger = new AtomicInteger();
     for (String key : keys)
       properties.put(key, map.get(key).get(list.get(atomicInteger.getAndIncrement())));
     insert(properties, random);
     ObjectProperties.set(object, properties);
-    consumer.run();
-  }
-
-  /** restore original content of given object */
-  public final void restore() {
-    ObjectProperties.part(object, string);
+    runnable.run();
   }
 }

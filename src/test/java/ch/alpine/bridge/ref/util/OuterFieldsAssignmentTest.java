@@ -17,7 +17,7 @@ class OuterFieldsAssignmentTest {
     Set<String> set = new HashSet<>();
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
-    OuterFieldsAssignment fieldOuterProduct = new OuterFieldsAssignment(fieldOuterParam, () -> {
+    FieldsAssignment fieldOuterProduct = OuterFieldsAssignment.of(fieldOuterParam, () -> {
       atomicInteger.getAndIncrement();
       assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
       assertEquals(fieldOuterParam.nestedParam[1].text, "abc");
@@ -32,20 +32,22 @@ class OuterFieldsAssignmentTest {
   void testLimit() {
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
-    OuterFieldsAssignment fieldOuterProduct = new OuterFieldsAssignment(fieldOuterParam, () -> {
+    FieldsAssignment fieldOuterProduct = OuterFieldsAssignment.of(fieldOuterParam, () -> {
       atomicInteger.getAndIncrement();
       assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
       assertEquals(fieldOuterParam.nestedParam[1].text, "abc");
     });
     fieldOuterProduct.randomize(15);
     assertEquals(atomicInteger.get(), 15);
+    fieldOuterProduct.randomize(100);
+    assertEquals(atomicInteger.get(), 15 + 96);
   }
 
   @Test
   void testGuiExtensions() {
     AtomicInteger atomicInteger = new AtomicInteger();
     GuiExtension guiExtension = new GuiExtension();
-    OuterFieldsAssignment fieldOuterProduct = new OuterFieldsAssignment(guiExtension, () -> {
+    FieldsAssignment fieldOuterProduct = OuterFieldsAssignment.of(guiExtension, () -> {
       atomicInteger.getAndIncrement();
     });
     fieldOuterProduct.randomize(133);

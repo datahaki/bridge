@@ -17,17 +17,29 @@ import ch.alpine.tensor.pdf.RandomVariate;
  * 
  * This is useful for automatic testing of functionality when subject
  * to different assignments of a parameter object. */
-public class RandomFieldsAssignment extends BaseFieldsAssignment {
+public class RandomFieldsAssignment extends FieldsAssignment {
+  /** @param object
+   * @param runnable */
+  public static FieldsAssignment of(Object object, Runnable runnable) {
+    return new RandomFieldsAssignment(object, runnable);
+  }
+
+  // ---
   private final Map<String, Distribution> distributions;
 
-  public RandomFieldsAssignment(Object object, Runnable consumer) {
-    super(object, consumer);
+  private RandomFieldsAssignment(Object object, Runnable runnable) {
+    super(object, runnable);
     distributions = fieldOptionsCollector.distributions();
   }
 
-  @Override
+  @Override // from BaseFieldsAssignment
   protected void insert(Properties properties, Random random) {
     for (Entry<String, Distribution> entry : distributions.entrySet())
       properties.put(entry.getKey(), RandomVariate.of(entry.getValue(), random).toString()); // toString() is necessary!
+  }
+
+  @Override
+  protected boolean isGrid() {
+    return distributions.isEmpty();
   }
 }

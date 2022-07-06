@@ -11,6 +11,7 @@ import ch.alpine.tensor.qty.Quantity;
 
 @ReflectionMarker
 public class FieldOuterParam {
+  @ReflectionMarker
   public static class NestedParam {
     public String text = "abc";
     public Boolean status = true;
