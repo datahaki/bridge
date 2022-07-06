@@ -5,11 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.jfree.chart.StandardChartTheme;
+import org.jfree.chart.api.RectangleInsets;
 import org.jfree.chart.plot.DefaultDrawingSupplier;
-import org.jfree.chart.plot.PieLabelLinkStyle;
+import org.jfree.chart.plot.pie.PieLabelLinkStyle;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
-import org.jfree.chart.ui.RectangleInsets;
 
 /* package */ enum DefaultChartTheme {
   ;

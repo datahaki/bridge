@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Random;
-import java.util.function.Consumer;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -18,10 +17,10 @@ import ch.alpine.tensor.pdf.RandomVariate;
  * 
  * This is useful for automatic testing of functionality when subject
  * to different assignments of a parameter object. */
-public class RandomFieldsAssignment<T> extends BaseFieldsAssignment<T> {
+public class RandomFieldsAssignment extends BaseFieldsAssignment {
   private final Map<String, Distribution> distributions;
 
-  public RandomFieldsAssignment(T object, Consumer<T> consumer) {
+  public RandomFieldsAssignment(Object object, Runnable consumer) {
     super(object, consumer);
     distributions = fieldOptionsCollector.distributions();
   }

@@ -16,11 +16,12 @@ class OuterFieldsAssignmentTest {
   void test() {
     Set<String> set = new HashSet<>();
     AtomicInteger atomicInteger = new AtomicInteger();
-    OuterFieldsAssignment<FieldOuterParam> fieldOuterProduct = new OuterFieldsAssignment<>(new FieldOuterParam(), e -> {
+    FieldOuterParam fieldOuterParam = new FieldOuterParam();
+    OuterFieldsAssignment fieldOuterProduct = new OuterFieldsAssignment(fieldOuterParam, () -> {
       atomicInteger.getAndIncrement();
-      assertEquals(e.nestedParam[0].text, "abc");
-      assertEquals(e.nestedParam[1].text, "abc");
-      set.add(ObjectProperties.join(e));
+      assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
+      assertEquals(fieldOuterParam.nestedParam[1].text, "abc");
+      set.add(ObjectProperties.join(fieldOuterParam));
     });
     fieldOuterProduct.forEach();
     assertEquals(atomicInteger.get(), 96);
@@ -30,10 +31,11 @@ class OuterFieldsAssignmentTest {
   @Test
   void testLimit() {
     AtomicInteger atomicInteger = new AtomicInteger();
-    OuterFieldsAssignment<FieldOuterParam> fieldOuterProduct = new OuterFieldsAssignment<>(new FieldOuterParam(), e -> {
+    FieldOuterParam fieldOuterParam = new FieldOuterParam();
+    OuterFieldsAssignment fieldOuterProduct = new OuterFieldsAssignment(fieldOuterParam, () -> {
       atomicInteger.getAndIncrement();
-      assertEquals(e.nestedParam[0].text, "abc");
-      assertEquals(e.nestedParam[1].text, "abc");
+      assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
+      assertEquals(fieldOuterParam.nestedParam[1].text, "abc");
     });
     fieldOuterProduct.randomize(15);
     assertEquals(atomicInteger.get(), 15);
@@ -42,7 +44,8 @@ class OuterFieldsAssignmentTest {
   @Test
   void testGuiExtensions() {
     AtomicInteger atomicInteger = new AtomicInteger();
-    OuterFieldsAssignment<GuiExtension> fieldOuterProduct = new OuterFieldsAssignment<>(new GuiExtension(), e -> {
+    GuiExtension guiExtension = new GuiExtension();
+    OuterFieldsAssignment fieldOuterProduct = new OuterFieldsAssignment(guiExtension, () -> {
       atomicInteger.getAndIncrement();
     });
     fieldOuterProduct.randomize(133);
