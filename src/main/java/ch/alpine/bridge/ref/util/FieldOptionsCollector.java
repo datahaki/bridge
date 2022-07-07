@@ -1,23 +1,28 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
+import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
+import java.util.function.Function;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.pdf.Distribution;
+import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
+import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
 
 /* package */ class FieldOptionsCollector extends ObjectFieldAll {
   private final Map<String, List<String>> map = new LinkedHashMap<>();
-  private final Map<String, Distribution> distributions = new LinkedHashMap<>();
+  private final Map<String, Function<Random, Object>> distributions = new LinkedHashMap<>();
 
   @Override // from ObjectFieldVisitor
   public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
@@ -31,9 +36,15 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
         FieldClip fieldClip = field.getAnnotation(FieldClip.class);
         if (Objects.nonNull(fieldClip)) {
           FieldClips fieldClips = FieldClips.wrap(fieldClip);
-          if (fieldClips.isFinite())
-            distributions.put(key, UniformDistribution.of(fieldClips.clip()));
+          if (fieldClips.isFinite()) {
+            Distribution distribution = UniformDistribution.of(fieldClips.clip());
+            distributions.put(key, random -> RandomVariate.of(distribution, random));
+          }
         }
+      }
+      if (cls.equals(Color.class)) {
+        Distribution distribution = DiscreteUniformDistribution.of(0, 256);
+        distributions.put(key, random -> RandomVariate.of(distribution, random, 4));
       }
     }
   }
@@ -43,7 +54,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
     return Collections.unmodifiableMap(map);
   }
 
-  public Map<String, Distribution> distributions() {
+  public Map<String, Function<Random, Object>> distributions() {
     return Collections.unmodifiableMap(distributions);
   }
 }

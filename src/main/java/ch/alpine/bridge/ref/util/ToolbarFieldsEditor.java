@@ -36,9 +36,10 @@ public class ToolbarFieldsEditor extends FieldsEditor {
       String text = FieldLabels.of(key, field, null);
       boolean isBoolean = field.getType().equals(Boolean.class);
       boolean isFuse = Objects.nonNull(field.getAnnotation(FieldFuse.class));
-      FieldPanel fieldPanel = register(isBoolean && !isFuse //
+      FieldPanel fieldPanel = isBoolean && !isFuse //
           ? new TogglePanel(fieldWrap, text, (Boolean) value)
-          : fieldWrap.createFieldPanel(object, value), fieldWrap, object);
+          : fieldWrap.createFieldPanel(object, value);
+      register(fieldPanel, fieldWrap, object);
       JComponent jComponent = layout(field, fieldPanel.getJComponent());
       if (field.getType().isEnum()) {
         jComponent.setToolTipText(text);

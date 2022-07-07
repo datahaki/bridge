@@ -5,11 +5,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Random;
+import java.util.function.Function;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.tensor.pdf.Distribution;
-import ch.alpine.tensor.pdf.RandomVariate;
 
 /** RandomFieldsAssignment creates a randomized set of assignments of
  * a parameter object. The assignments are based on {@link FieldWrap#options(Object)}
@@ -25,7 +24,7 @@ public class RandomFieldsAssignment extends FieldsAssignment {
   }
 
   // ---
-  private final Map<String, Distribution> distributions;
+  private final Map<String, Function<Random, Object>> distributions;
 
   private RandomFieldsAssignment(Object object, Runnable runnable) {
     super(object, runnable);
@@ -34,8 +33,9 @@ public class RandomFieldsAssignment extends FieldsAssignment {
 
   @Override // from BaseFieldsAssignment
   protected void insert(Properties properties, Random random) {
-    for (Entry<String, Distribution> entry : distributions.entrySet())
-      properties.put(entry.getKey(), RandomVariate.of(entry.getValue(), random).toString()); // toString() is necessary!
+    for (Entry<String, Function<Random, Object>> entry : distributions.entrySet())
+      // mechanism of Properties requires Strings as values, therefore toString()
+      properties.put(entry.getKey(), entry.getValue().apply(random).toString());
   }
 
   @Override

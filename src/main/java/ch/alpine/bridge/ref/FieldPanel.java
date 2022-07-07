@@ -28,7 +28,6 @@ public abstract class FieldPanel {
   /** @param consumer will be provided with the string expression of the value
    * edited in the gui */
   public final void addListener(Consumer<String> consumer) {
-    Objects.requireNonNull(consumer);
     set.add(consumer);
   }
 

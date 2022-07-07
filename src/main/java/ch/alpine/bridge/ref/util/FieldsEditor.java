@@ -17,6 +17,10 @@ import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldPreferredWidth;
 import ch.alpine.bridge.util.CopyOnWriteLinkedSet;
 
+/** Order of listener notification:
+ * 1) the value is updated in the object's field
+ * 2) the universal listeners are notified
+ * 3) the specific {@link FieldPanel} listeners are notified */
 public abstract class FieldsEditor {
   /** the association of FieldPanel and Object is required.
    * In a field editor instance, the object as value in the map is not necessary unique. */
@@ -51,12 +55,11 @@ public abstract class FieldsEditor {
 
   /** @param fieldPanel
    * @param fieldWrap
-   * @param object
-   * @return given fieldPanel */
-  protected final FieldPanel register(FieldPanel fieldPanel, FieldWrap fieldWrap, Object object) {
+   * @param object */
+  protected final void register(FieldPanel fieldPanel, FieldWrap fieldWrap, Object object) {
     list.add(new Entry(fieldPanel, object));
     fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
-    return fieldPanel;
+    fieldPanel.addListener(string -> notifyUniversalListeners());
   }
 
   /** the function exposes the FieldPanel instances used for the fields in the editor.
@@ -71,14 +74,6 @@ public abstract class FieldsEditor {
     return list.stream().map(Entry::fieldPanel).collect(Collectors.toList());
   }
 
-  /** @param runnable that will be run if any value in editor was subject to change */
-  public final void addUniversalListener(Runnable runnable) {
-    set.add(runnable);
-    // TODO BRIDGE listener structure necessary!?
-    Consumer<String> consumer = string -> runnable.run();
-    list.forEach(entry -> entry.fieldPanel().addListener(consumer));
-  }
-
   /** in case the object field values have been modified outside the gui, invoking
    * {@link #updateJComponents()} causes the gui components to update their
    * appearance based on the new value.
@@ -89,9 +84,19 @@ public abstract class FieldsEditor {
     list.forEach(Entry::updateJComponent);
   }
 
+  /** @param runnable that will be run if any value in editor was subject to change */
+  public final void addUniversalListener(Runnable runnable) {
+    set.add(runnable);
+  }
+
+  /** @param runnable to remove from set of universal listeners */
+  public final void removeUniversalListener(Runnable runnable) {
+    set.remove(runnable);
+  }
+
   /** Hint:
    * typically this function is not called by the application layer */
-  public final void notifyListeners() {
+  public final void notifyUniversalListeners() {
     set.forEach(Runnable::run);
   }
 
