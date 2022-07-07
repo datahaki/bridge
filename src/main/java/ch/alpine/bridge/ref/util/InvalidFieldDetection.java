@@ -20,6 +20,7 @@ import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.FieldSlider;
+import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.Scalar;
 
 /** Remark:
@@ -52,7 +53,7 @@ public class InvalidFieldDetection extends ObjectFieldIo {
     return Objects.isNull(annotation) || class_field.equals(cls);
   }
 
-  @Override
+  @Override // from ObjectFieldVisitor
   public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
     Field field = fieldWrap.getField();
     boolean valid = true;
@@ -82,14 +83,14 @@ public class InvalidFieldDetection extends ObjectFieldIo {
       if (Objects.nonNull(fieldSelectionCallback))
         try {
           Method method = object.getClass().getMethod(fieldSelectionCallback.value());
-          Object handle = method.invoke(object);
-          if (handle instanceof List) {
-            @SuppressWarnings("unchecked")
-            List<Object> list = (List<Object>) handle;
-            for (Object entry : list)
-              Objects.requireNonNull(entry);
-          } else
-            valid = false;
+          {
+            ReflectionMarker reflectionMarker = method.getAnnotation(ReflectionMarker.class);
+            if (Objects.isNull(reflectionMarker)) {
+              System.err.println("not annotated: " + method);
+              valid = false;
+            }
+          }
+          valid &= method.invoke(object) instanceof List<?> list && list.stream().allMatch(Objects::nonNull);
         } catch (Exception exception) {
           valid = false;
         }

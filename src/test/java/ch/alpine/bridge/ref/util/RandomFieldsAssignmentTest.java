@@ -3,7 +3,10 @@ package ch.alpine.bridge.ref.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.awt.Color;
+import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,29 +20,51 @@ class RandomFieldsAssignmentTest {
   void test() {
     Set<Scalar> set = new HashSet<>();
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
-    FieldsAssignment fieldOuterProduct = RandomFieldsAssignment.of(fieldOuterParam, () -> {
+    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(fieldOuterParam, () -> {
       set.add(fieldOuterParam.ratio);
     });
     assertEquals(set.size(), 0);
-    fieldOuterProduct.randomize(3);
+    fieldsAssignment.randomize(3);
     assertEquals(set.size(), 3);
-    fieldOuterProduct.randomize(7);
+    fieldsAssignment.randomize(7);
     assertEquals(set.size(), 10);
-    fieldOuterProduct.randomize(100);
+    fieldsAssignment.randomize(100);
     assertEquals(set.size(), 10 + 100);
   }
 
   @Test
-  void testgrid() {
+  void testGrid() {
     AtomicInteger atomicInteger = new AtomicInteger();
     NestedParam nestedParam = new NestedParam();
-    FieldsAssignment fieldOuterProduct = RandomFieldsAssignment.of(nestedParam, () -> {
+    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(nestedParam, () -> {
       atomicInteger.getAndIncrement();
     });
     assertEquals(atomicInteger.get(), 0);
-    fieldOuterProduct.randomize(2);
+    fieldsAssignment.randomize(2);
     assertEquals(atomicInteger.get(), 2);
-    fieldOuterProduct.randomize(10);
+    fieldsAssignment.randomize(10);
     assertEquals(atomicInteger.get(), 2 + 4);
+  }
+
+  @Test
+  void testColor() {
+    Set<Color> set_color = new HashSet<>();
+    Set<LocalTime> set_time = new HashSet<>();
+    ColorParam colorParam = new ColorParam();
+    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(colorParam, () -> {
+      set_color.add(colorParam.color);
+      set_time.add(colorParam.localTime);
+    });
+    assertEquals(set_color.size(), 0);
+    assertEquals(set_time.size(), 0);
+    int n = 20;
+    Random random = new Random(3);
+    fieldsAssignment.randomize(random, n);
+    assertEquals(set_color.size(), n);
+    assertEquals(set_time.size(), n);
+    random = new Random(3);
+    fieldsAssignment.randomize(random, n);
+    assertEquals(set_color.size(), n);
+    assertEquals(set_time.size(), n);
   }
 }

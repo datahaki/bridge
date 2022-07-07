@@ -144,7 +144,7 @@ public class ObjectProperties {
       this.properties = properties;
     }
 
-    @Override
+    @Override // from ObjectFieldVisitor
     public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
       String string = properties.getProperty(prefix);
       if (Objects.nonNull(string))
@@ -166,7 +166,7 @@ public class ObjectProperties {
   private static class ObjectFieldList extends ObjectFieldIo {
     private final List<String> list = new LinkedList<>();
 
-    @Override
+    @Override // from ObjectFieldVisitor
     public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
       if (Objects.nonNull(value))
         list.add(line(prefix, fieldWrap.toString(value)));

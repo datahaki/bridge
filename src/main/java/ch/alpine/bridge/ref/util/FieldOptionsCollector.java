@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref.util;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,6 +47,8 @@ import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
         Distribution distribution = DiscreteUniformDistribution.of(0, 256);
         distributions.put(key, random -> RandomVariate.of(distribution, random, 4));
       }
+      if (cls.equals(LocalTime.class))
+        distributions.put(key, random -> LocalTime.of(random.nextInt(24), random.nextInt(60), random.nextInt(60), random.nextInt(1_000_000_000)));
     }
   }
 

@@ -11,8 +11,10 @@ import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 
 /** introduces options for quick selection
  * 
- * the options are computed at runtime and may depend
- * on the current state of the object, or software.
+ * the options are computed at runtime and may depend on the current
+ * state of the object, or software.
+ * 
+ * The method should be annotated with {@link ReflectionMarker}.
  * 
  * @see InvalidFieldDetection */
 @Documented

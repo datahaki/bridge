@@ -9,6 +9,7 @@ public class ExampleBadReturn {
   @FieldSelectionCallback("callback")
   public String text = "abc";
 
+  @ReflectionMarker
   public String callback() {
     return "not a list";
   }
