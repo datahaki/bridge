@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import javax.swing.JComponent;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldPreferredWidth;
+import ch.alpine.bridge.util.CopyOnWriteLinkedSet;
 
 public abstract class FieldsEditor {
   /** the association of FieldPanel and Object is required.
@@ -27,7 +29,7 @@ public abstract class FieldsEditor {
       this.object = object;
     }
 
-    public FieldPanel getFieldPanel() {
+    public FieldPanel fieldPanel() {
       return fieldPanel;
     }
 
@@ -45,6 +47,7 @@ public abstract class FieldsEditor {
   }
 
   private final List<Entry> list = new LinkedList<>();
+  private final Set<Runnable> set = new CopyOnWriteLinkedSet<>();
 
   /** @param fieldPanel
    * @param fieldWrap
@@ -65,13 +68,15 @@ public abstract class FieldsEditor {
    * 
    * @return field panel for each field in the object that appears in the editor */
   public final List<FieldPanel> list() {
-    return list.stream().map(Entry::getFieldPanel).collect(Collectors.toList());
+    return list.stream().map(Entry::fieldPanel).collect(Collectors.toList());
   }
 
   /** @param runnable that will be run if any value in editor was subject to change */
   public final void addUniversalListener(Runnable runnable) {
+    set.add(runnable);
+    // TODO BRIDGE listener structure necessary!?
     Consumer<String> consumer = string -> runnable.run();
-    list.forEach(entry -> entry.getFieldPanel().addListener(consumer));
+    list.forEach(entry -> entry.fieldPanel().addListener(consumer));
   }
 
   /** in case the object field values have been modified outside the gui, invoking
@@ -82,6 +87,12 @@ public abstract class FieldsEditor {
    * modifying the fields, but by a rare, sporadic external trigger. */
   public final void updateJComponents() {
     list.forEach(Entry::updateJComponent);
+  }
+
+  /** Hint:
+   * typically this function is not called by the application layer */
+  public final void notifyListeners() {
+    set.forEach(Runnable::run);
   }
 
   /** function applies annotations specific to field that concern layout

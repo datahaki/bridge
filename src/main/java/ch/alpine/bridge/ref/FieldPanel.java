@@ -1,18 +1,18 @@
 // code by jph, gjoel
 package ch.alpine.bridge.ref;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import javax.swing.JComponent;
 
 import ch.alpine.bridge.ref.util.FieldsEditor;
+import ch.alpine.bridge.util.CopyOnWriteLinkedSet;
 
 /** base class for all gui elements managed by {@link FieldsEditor} */
 public abstract class FieldPanel {
-  private final List<Consumer<String>> list = new LinkedList<>();
+  private final Set<Consumer<String>> set = new CopyOnWriteLinkedSet<>();
   private final FieldWrap fieldWrap;
 
   /** @param fieldWrap non-null */
@@ -29,7 +29,7 @@ public abstract class FieldPanel {
    * edited in the gui */
   public final void addListener(Consumer<String> consumer) {
     Objects.requireNonNull(consumer);
-    list.add(consumer);
+    set.add(consumer);
   }
 
   /** function invoked by the gui element that the value was edited in the gui
@@ -37,7 +37,7 @@ public abstract class FieldPanel {
    * @param text string expression of value after edit */
   protected final void notifyListeners(String text) {
     Objects.requireNonNull(text);
-    list.forEach(consumer -> consumer.accept(text));
+    set.forEach(consumer -> consumer.accept(text));
   }
 
   /** Remark: The function should not be invoked by the application layer.

@@ -15,7 +15,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.pdf.Distribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 
-/* package */ class FieldOptionsCollector extends ObjectFieldIo {
+/* package */ class FieldOptionsCollector extends ObjectFieldAll {
   private final Map<String, List<String>> map = new LinkedHashMap<>();
   private final Map<String, Distribution> distributions = new LinkedHashMap<>();
 
