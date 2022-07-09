@@ -24,8 +24,8 @@ class OuterFieldsAssignmentTest {
       set.add(ObjectProperties.join(fieldOuterParam));
     });
     fieldsAssignment.forEach();
-    assertEquals(atomicInteger.get(), 96);
-    assertEquals(set.size(), 96);
+    assertEquals(atomicInteger.get(), 2 * 96);
+    assertEquals(set.size(), 2 * 96);
   }
 
   @Test
@@ -39,8 +39,8 @@ class OuterFieldsAssignmentTest {
     });
     fieldsAssignment.randomize(15);
     assertEquals(atomicInteger.get(), 15);
-    fieldsAssignment.randomize(100);
-    assertEquals(atomicInteger.get(), 15 + 96);
+    fieldsAssignment.randomize(200);
+    assertEquals(atomicInteger.get(), 15 + 192);
   }
 
   @Test

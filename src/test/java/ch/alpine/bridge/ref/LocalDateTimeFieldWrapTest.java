@@ -21,7 +21,7 @@ class LocalDateTimeFieldWrapTest {
     timeParam.dateTime = LocalDateTime.of(2020, 1, 1, 0, 0);
     timeParam.date = LocalDate.of(1923, 12, 31);
     timeParam.time = LocalTime.of(23, 59, 33);
-    File file = new File(folder, "some.properties");
+    File file = new File(folder, "file.properties");
     ObjectProperties.save(timeParam, file);
     timeParam = new TimeParam();
     ObjectProperties.load(timeParam, file);

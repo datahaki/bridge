@@ -11,19 +11,25 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.pdf.Distribution;
+import ch.alpine.tensor.pdf.MixtureDistribution;
 import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.c.DiracDeltaDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
+import ch.alpine.tensor.sca.Clip;
 
 /* package */ class FieldOptionsCollector extends ObjectFieldAll {
   private final Map<String, List<String>> map = new LinkedHashMap<>();
-  private final Map<String, Function<Random, Object>> distributions = new LinkedHashMap<>();
+  private final Map<String, Function<Random, String>> distributions = new LinkedHashMap<>();
 
   @Override // from ObjectFieldVisitor
   public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
@@ -37,18 +43,28 @@ import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
         FieldClip fieldClip = field.getAnnotation(FieldClip.class);
         if (Objects.nonNull(fieldClip)) {
           FieldClips fieldClips = FieldClips.wrap(fieldClip);
+          Clip clip = fieldClips.clip();
+          {
+            map.put(key, Stream.of(clip.min(), clip.max()) //
+                .filter(FiniteScalarQ::of) //
+                .map(fieldWrap::toString) //
+                .toList());
+          }
           if (fieldClips.isFinite()) {
-            Distribution distribution = UniformDistribution.of(fieldClips.clip());
-            distributions.put(key, random -> RandomVariate.of(distribution, random));
+            Distribution distribution = MixtureDistribution.of(Tensors.vector(10, 1, 1), //
+                UniformDistribution.of(clip), //
+                DiracDeltaDistribution.of(clip.min()), //
+                DiracDeltaDistribution.of(clip.max()));
+            distributions.put(key, random -> fieldWrap.toString(RandomVariate.of(distribution, random)));
           }
         }
       }
       if (cls.equals(Color.class)) {
         Distribution distribution = DiscreteUniformDistribution.of(0, 256);
-        distributions.put(key, random -> RandomVariate.of(distribution, random, 4));
+        distributions.put(key, random -> fieldWrap.toString(RandomVariate.of(distribution, random, 4)));
       }
       if (cls.equals(LocalTime.class))
-        distributions.put(key, random -> LocalTime.of(random.nextInt(24), random.nextInt(60), random.nextInt(60), random.nextInt(1_000_000_000)));
+        distributions.put(key, random -> fieldWrap.toString(RandomLocalTime.of(random)));
     }
   }
 
@@ -57,7 +73,7 @@ import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
     return Collections.unmodifiableMap(map);
   }
 
-  public Map<String, Function<Random, Object>> distributions() {
+  public Map<String, Function<Random, String>> distributions() {
     return Collections.unmodifiableMap(distributions);
   }
 }

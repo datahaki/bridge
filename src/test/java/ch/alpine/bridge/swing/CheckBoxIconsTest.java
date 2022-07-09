@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 class CheckBoxIconsTest {
   @ParameterizedTest
-  @EnumSource(CheckBoxIcons.class)
+  @EnumSource
   void test(CheckBoxIcons checkBoxIcons) {
     checkBoxIcons.init(32);
   }

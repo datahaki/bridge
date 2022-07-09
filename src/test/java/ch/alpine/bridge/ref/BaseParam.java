@@ -14,6 +14,7 @@ public class BaseParam {
   @FieldSelectionCallback("here")
   public String more = "asd";
 
+  @ReflectionMarker
   public List<String> here() {
     return List.of("asdf", more, more + "123");
   }

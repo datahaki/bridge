@@ -39,10 +39,12 @@ public class FieldClips implements Predicate<Scalar> {
   private FieldClips(FieldClip fieldClip) {
     min = Scalars.fromString(fieldClip.min());
     max = Scalars.fromString(fieldClip.max());
-    Unit unit = QuantityUnit.of(min);
+    Unit unit = fieldClip.useMinUnit() //
+        ? QuantityUnit.of(min)
+        : QuantityUnit.of(max);
     compatible = CompatibleUnitQ.SI().with(unit);
     convert = UnitConvert.SI().to(unit);
-    clip = Clips.interval(min, convert.apply(max));
+    clip = Clips.interval(convert.apply(min), convert.apply(max));
   }
 
   public boolean isFinite() {

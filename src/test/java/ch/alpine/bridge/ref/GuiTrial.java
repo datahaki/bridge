@@ -20,10 +20,12 @@ public class GuiTrial {
   @FieldSelectionArray({ "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", "/dev/ttyUSB0", "/dev/ttyUSB1" })
   public String selectable = "/dev/ttyS0";
 
+  @ReflectionMarker
   public List<String> getStrings() {
     return Arrays.asList("a", "b", string, selectable);
   }
 
+  @ReflectionMarker
   public List<String> getStringsThrows() {
     throw new RuntimeException();
   }

@@ -15,8 +15,7 @@ import ch.alpine.tensor.qty.UnitConvert;
 /** annotation to defined the limits for a field of type {@link Scalar}
  * 
  * if the {@link Unit} of min and max are not identical
- * then max is converted to a quantity of unit of min via
- * {@link UnitConvert#SI()}
+ * then {@link UnitConvert#SI()} is used for unification.
  * 
  * @see InvalidFieldDetection */
 @Documented
@@ -28,4 +27,13 @@ public @interface FieldClip {
 
   /** @return permitted upper bound */
   String max();
+
+  /** useful only when min and max are specified with
+   * different {@link Unit}s. By default, the unit
+   * of {@link #min()} is taken for clipping.
+   * By overriding the default, the unit of
+   * {@link #max()} is taken.
+   * 
+   * @return */
+  boolean useMinUnit() default true;
 }

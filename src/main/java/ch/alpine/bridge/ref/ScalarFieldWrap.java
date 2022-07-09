@@ -11,12 +11,15 @@ import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.io.StringScalar;
+import ch.alpine.tensor.sca.Clip;
 
 /* package */ final class ScalarFieldWrap extends TensorFieldWrap {
+  private static final Scalar WIDTH_LIMIT = RealScalar.of(20);
   private final FieldInteger fieldInteger;
   private FieldClips fieldClips = null;
 
@@ -55,10 +58,9 @@ import ch.alpine.tensor.io.StringScalar;
     List<Object> list = super.options(object);
     if (list.isEmpty())
       if (Objects.nonNull(fieldInteger) && Objects.nonNull(fieldClips) && fieldClips.isFinite()) {
-        Scalar min = fieldClips.min();
-        Scalar max = fieldClips.max();
-        return Range.of(Scalars.longValueExact(min), Scalars.longValueExact(max) + 1).stream() //
-            .map(Scalar.class::cast).collect(Collectors.toList());
+        Clip clip = fieldClips.clip();
+        if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
+          return Range.of(clip).stream().map(Scalar.class::cast).collect(Collectors.toList());
       }
     return list;
   }

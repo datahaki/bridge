@@ -24,7 +24,7 @@ public class RandomFieldsAssignment extends FieldsAssignment {
   }
 
   // ---
-  private final Map<String, Function<Random, Object>> distributions;
+  private final Map<String, Function<Random, String>> distributions;
 
   private RandomFieldsAssignment(Object object, Runnable runnable) {
     super(object, runnable);
@@ -33,9 +33,9 @@ public class RandomFieldsAssignment extends FieldsAssignment {
 
   @Override // from BaseFieldsAssignment
   protected void insert(Properties properties, Random random) {
-    for (Entry<String, Function<Random, Object>> entry : distributions.entrySet())
+    for (Entry<String, Function<Random, String>> entry : distributions.entrySet())
       // mechanism of Properties requires Strings as values, therefore toString()
-      properties.put(entry.getKey(), entry.getValue().apply(random).toString());
+      properties.put(entry.getKey(), entry.getValue().apply(random));
   }
 
   @Override
