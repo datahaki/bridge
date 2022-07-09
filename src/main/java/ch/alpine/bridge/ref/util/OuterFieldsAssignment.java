@@ -29,12 +29,12 @@ public class OuterFieldsAssignment extends FieldsAssignment {
     super(object, runnable);
   }
 
-  @Override // from BaseFieldsAssignment
+  @Override // from FieldsAssignment
   protected void insert(Properties properties, Random random) {
     // ---
   }
 
-  @Override // from BaseFieldsAssignment
+  @Override // from FieldsAssignment
   protected boolean isGrid() {
     return true;
   }

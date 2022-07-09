@@ -54,7 +54,7 @@ import ch.alpine.tensor.Scalar;
     }
     jSlider = new JSlider(0, resolution, index);
     {
-      FieldsEditorManager.establish(FieldsEditorKey.INT_SLIDER_HEIGHT, jSlider);
+      FieldsEditorManager.setHeight(FieldsEditorKey.INT_SLIDER_HEIGHT, jSlider);
     }
     jSlider.setOpaque(false); // for use in toolbar
     jSlider.setPaintTicks(resolution <= TICKS_MAX);

@@ -22,6 +22,7 @@ public enum FieldsEditorManager {
   private static final Map<String, Object> MAP = new HashMap<>();
   static {
     set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
+    set(FieldsEditorKey.INT_TOOLBAR_COMPONENT_HEIGHT, 28);
   }
 
   public static void set(FieldsEditorKey fieldsEditorKey, Object object) {
@@ -49,11 +50,20 @@ public enum FieldsEditorManager {
   }
 
   // ---
-  public static void establish(FieldsEditorKey fieldsEditorKey, JComponent jComponent) {
+  public static void setHeight(FieldsEditorKey fieldsEditorKey, JComponent jComponent) {
     Integer height = getInteger(fieldsEditorKey);
     if (Objects.nonNull(height)) {
       Dimension dimension = jComponent.getPreferredSize();
       dimension.height = height;
+      jComponent.setPreferredSize(dimension);
+    }
+  }
+
+  public static void maxHeight(JComponent jComponent) {
+    Integer height = getInteger(FieldsEditorKey.INT_TOOLBAR_COMPONENT_HEIGHT);
+    if (Objects.nonNull(height)) {
+      Dimension dimension = jComponent.getPreferredSize();
+      dimension.height = Math.max(dimension.height, height);
       jComponent.setPreferredSize(dimension);
     }
   }

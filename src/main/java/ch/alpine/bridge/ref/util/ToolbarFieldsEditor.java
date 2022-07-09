@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
-import java.awt.Font;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
@@ -11,6 +10,7 @@ import javax.swing.JToolBar;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorManager;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
@@ -40,20 +40,21 @@ public class ToolbarFieldsEditor extends FieldsEditor {
           ? new TogglePanel(fieldWrap, text, (Boolean) value)
           : fieldWrap.createFieldPanel(object, value);
       register(fieldPanel, fieldWrap, object);
-      JComponent jComponent = layout(field, fieldPanel.getJComponent());
+      JComponent jComponent = setPreferredWidth(field, fieldPanel.getJComponent());
+      FieldsEditorManager.maxHeight(jComponent);
       if (field.getType().isEnum()) {
         jComponent.setToolTipText(text);
       } else //
         if (!isBoolean) {
           JLabel jLabel = new JLabel(text + " ");
-          Font font = jLabel.getFont();
-          final int _style = font.getStyle();
-          int style = _style;
-          if (_style == Font.BOLD) // for default look and feel
-            style = Font.PLAIN;
-          if (_style == Font.PLAIN)
-            style = Font.ITALIC;
-          jLabel.setFont(font.deriveFont(style));
+          // Font font = jLabel.getFont();
+          // final int _style = font.getStyle();
+          // int style = _style;
+          // if (_style == Font.BOLD) // for default look and feel
+          // style = Font.PLAIN;
+          // if (_style == Font.PLAIN)
+          // style = Font.ITALIC;
+          // jLabel.setFont(font.deriveFont(style));
           jLabel.setToolTipText(FieldToolTip.of(field));
           jToolBar.add(jLabel);
         }

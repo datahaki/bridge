@@ -34,7 +34,7 @@ public class PanelFieldsEditor extends FieldsEditor {
       jLabel.setToolTipText(FieldToolTip.of(field));
       FieldPanel fieldPanel = fieldWrap.createFieldPanel(object, value);
       register(fieldPanel, fieldWrap, object);
-      rowPanelBuilder.appendRow(jLabel, layout(field, fieldPanel.getJComponent()));
+      rowPanelBuilder.appendRow(jLabel, setPreferredWidth(field, fieldPanel.getJComponent()));
     }
 
     @Override // from ObjectFieldVisitor

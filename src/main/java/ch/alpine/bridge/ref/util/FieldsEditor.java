@@ -24,11 +24,11 @@ import ch.alpine.bridge.util.CopyOnWriteLinkedSet;
 public abstract class FieldsEditor {
   /** the association of FieldPanel and Object is required.
    * In a field editor instance, the object as value in the map is not necessary unique. */
-  private static class Entry {
+  private static class FieldPanelObject {
     private final FieldPanel fieldPanel;
     private final Object object;
 
-    public Entry(FieldPanel fieldPanel, Object object) {
+    public FieldPanelObject(FieldPanel fieldPanel, Object object) {
       this.fieldPanel = fieldPanel;
       this.object = object;
     }
@@ -50,14 +50,17 @@ public abstract class FieldsEditor {
     }
   }
 
-  private final List<Entry> list = new LinkedList<>();
+  private final List<FieldPanelObject> list = new LinkedList<>();
   private final Set<Runnable> set = new CopyOnWriteLinkedSet<>();
 
-  /** @param fieldPanel
+  /** register listener that converts GUI update to value and assigns field
+   * register listener to notify universal listeners
+   * 
+   * @param fieldPanel
    * @param fieldWrap
    * @param object */
   protected final void register(FieldPanel fieldPanel, FieldWrap fieldWrap, Object object) {
-    list.add(new Entry(fieldPanel, object));
+    list.add(new FieldPanelObject(fieldPanel, object));
     fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
     fieldPanel.addListener(string -> notifyUniversalListeners());
   }
@@ -71,7 +74,7 @@ public abstract class FieldsEditor {
    * 
    * @return field panel for each field in the object that appears in the editor */
   public final List<FieldPanel> list() {
-    return list.stream().map(Entry::fieldPanel).collect(Collectors.toList());
+    return list.stream().map(FieldPanelObject::fieldPanel).collect(Collectors.toList());
   }
 
   /** in case the object field values have been modified outside the gui, invoking
@@ -81,7 +84,7 @@ public abstract class FieldsEditor {
    * Naturally, this action should not be triggered while the user is actively
    * modifying the fields, but by a rare, sporadic external trigger. */
   public final void updateJComponents() {
-    list.forEach(Entry::updateJComponent);
+    list.forEach(FieldPanelObject::updateJComponent);
   }
 
   /** @param runnable that will be run if any value in editor was subject to change */
@@ -109,7 +112,7 @@ public abstract class FieldsEditor {
    * @param field
    * @param jComponent
    * @return given jComponent with layout modified based on annotations */
-  public static JComponent layout(Field field, JComponent jComponent) {
+  protected static JComponent setPreferredWidth(Field field, JComponent jComponent) {
     FieldPreferredWidth fieldPreferredWidth = field.getAnnotation(FieldPreferredWidth.class);
     if (Objects.nonNull(fieldPreferredWidth)) {
       Dimension dimension = jComponent.getPreferredSize();

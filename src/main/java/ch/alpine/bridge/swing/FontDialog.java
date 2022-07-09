@@ -5,12 +5,13 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.time.LocalTime;
 import java.util.function.Consumer;
 
 import javax.swing.JButton;
@@ -22,45 +23,48 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.gfx.LocalTimeDisplay;
+import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
-public class LocalTimeDialog extends JDialog {
+public class FontDialog extends JDialog {
+  private static final String DEMO = "Abc123!";
   private final JComponent jComponent = new JComponent() {
     @Override
     protected void paintComponent(Graphics _g) {
       Dimension dimension = getSize();
       Point point = new Point(dimension.width / 2, dimension.height / 2);
       Graphics2D graphics = (Graphics2D) _g;
-      LocalTimeDisplay.INSTANCE.draw(graphics, localTime, point);
+      RenderQuality.setQuality(graphics);
+      graphics.setFont(font);
+      FontMetrics fontMetrics = graphics.getFontMetrics();
+      int ascent = fontMetrics.getAscent();
+      int stringWidth = fontMetrics.stringWidth(DEMO);
+      graphics.drawString(DEMO, point.x - stringWidth / 2, point.y + ascent / 2);
     }
   };
-  private LocalTime localTime;
+  private Font font;
 
-  /** @param component
-   * @param localTime_fallback
-   * @param consumer */
-  public LocalTimeDialog(Component component, final LocalTime localTime_fallback, Consumer<LocalTime> consumer) {
+  public FontDialog(Component component, final Font font_fallback, Consumer<Font> consumer) {
     super(JOptionPane.getFrameForComponent(component));
-    setTitle("LocalTime selection");
-    setSize(320, 200);
+    setTitle("Font selection");
+    setSize(400, 160);
     setResizable(false);
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
     // ---
-    localTime = localTime_fallback;
-    jComponent.setPreferredSize(new Dimension(130, 130));
+    font = font_fallback;
+    jComponent.setPreferredSize(new Dimension(200, 80));
     jPanel.add(BorderLayout.WEST, jComponent);
     // ---
-    LocalTimeParam localTimeParam = new LocalTimeParam(localTime);
+    FontParam fontParam = new FontParam(font);
     {
-      PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(localTimeParam);
+      PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(fontParam);
       panelFieldsEditor.addUniversalListener( //
           () -> {
-            localTime = localTimeParam.toLocalTime();
+            font = fontParam.toFont();
             jComponent.repaint();
-            consumer.accept(localTime);
+            consumer.accept(font);
           });
       jPanel.add(BorderLayout.CENTER, panelFieldsEditor.getJPanel());
     }
@@ -78,7 +82,7 @@ public class LocalTimeDialog extends JDialog {
       {
         JButton jButton = new JButton("Cancel");
         jButton.addActionListener(actionEvent -> {
-          consumer.accept(localTime_fallback);
+          consumer.accept(font_fallback);
           dispose();
         });
         jToolBar.add(jButton);
@@ -91,7 +95,7 @@ public class LocalTimeDialog extends JDialog {
       @Override
       public void windowClosing(WindowEvent windowEvent) {
         // propagate fallback value
-        consumer.accept(localTime_fallback);
+        consumer.accept(font_fallback);
       }
     });
   }

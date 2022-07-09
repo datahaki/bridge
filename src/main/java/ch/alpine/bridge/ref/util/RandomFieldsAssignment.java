@@ -31,14 +31,13 @@ public class RandomFieldsAssignment extends FieldsAssignment {
     distributions = fieldOptionsCollector.distributions();
   }
 
-  @Override // from BaseFieldsAssignment
+  @Override // from FieldsAssignment
   protected void insert(Properties properties, Random random) {
     for (Entry<String, Function<Random, String>> entry : distributions.entrySet())
-      // mechanism of Properties requires Strings as values, therefore toString()
-      properties.put(entry.getKey(), entry.getValue().apply(random));
+      properties.put(entry.getKey(), entry.getValue().apply(random)); // Properties requires a String as value
   }
 
-  @Override
+  @Override // from FieldsAssignment
   protected boolean isGrid() {
     return distributions.isEmpty();
   }

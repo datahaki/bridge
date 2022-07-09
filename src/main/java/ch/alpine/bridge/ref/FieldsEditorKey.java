@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 public enum FieldsEditorKey {
+  INT_TOOLBAR_COMPONENT_HEIGHT, //
   INT_STRING_PANEL_HEIGHT, //
   INT_SLIDER_HEIGHT, //
   INT_BUTTON_HEIGHT, //
