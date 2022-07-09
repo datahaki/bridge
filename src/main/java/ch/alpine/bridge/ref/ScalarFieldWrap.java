@@ -19,7 +19,9 @@ import ch.alpine.tensor.io.StringScalar;
 import ch.alpine.tensor.sca.Clip;
 
 /* package */ final class ScalarFieldWrap extends TensorFieldWrap {
-  private static final Scalar WIDTH_LIMIT = RealScalar.of(20);
+  /** allow choosing of hours 0,1,...,23 */
+  private static final Scalar WIDTH_LIMIT = RealScalar.of(24);
+  // ---
   private final FieldInteger fieldInteger;
   private FieldClips fieldClips = null;
 

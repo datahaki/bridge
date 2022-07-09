@@ -3,8 +3,11 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 
+import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
@@ -16,12 +19,16 @@ import ch.alpine.tensor.sca.Clips;
   @Override // from FieldWrap
   public Clip toValue(String string) {
     Tensor vector = Tensors.fromString(string); // throws exception if string is null
-    if (vector.length() == 2)
+    if (VectorQ.ofLength(vector, 2)) {
+      Scalar min = vector.Get(0);
+      Scalar max = vector.Get(1);
       try {
-        return Clips.interval(vector.Get(0), vector.Get(1));
+        if (Scalars.lessEquals(min, max))
+          return Clips.interval(min, max);
       } catch (Exception exception) {
         // ---
       }
+    }
     return null;
   }
 

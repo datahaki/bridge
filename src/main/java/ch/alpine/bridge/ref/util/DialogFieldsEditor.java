@@ -3,7 +3,6 @@ package ch.alpine.bridge.ref.util;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
@@ -46,7 +45,9 @@ public class DialogFieldsEditor extends JDialog {
    * @param object non-null
    * @return dialog */
   public DialogFieldsEditor(Component parentComponent, String title, Object object) {
-    super(JOptionPane.getFrameForComponent(parentComponent), title, Dialog.DEFAULT_MODALITY_TYPE);
+    super(JOptionPane.getFrameForComponent(parentComponent));
+    setTitle(title);
+    // , title, Dialog.DEFAULT_MODALITY_TYPE
     this.object = Objects.requireNonNull(object);
     panelFieldsEditor = new PanelFieldsEditor(object);
     fallback = ObjectProperties.join(object);
