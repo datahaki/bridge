@@ -15,7 +15,7 @@ import ch.alpine.bridge.swing.SpinnerLabel;
   public EnumPanel(FieldWrap fieldWrap, Object object, Supplier<List<Object>> supplier) {
     super(fieldWrap);
     spinnerLabel = SpinnerLabel.of(supplier);
-    spinnerLabel.setFont(FieldsEditorParam.GLOBAL.textFieldFont.toFont());
+    FieldsEditorParam.GLOBAL.setFont(spinnerLabel);
     spinnerLabel.updatePreferredSize();
     if (Objects.nonNull(object))
       spinnerLabel.setValue(object);

@@ -10,7 +10,7 @@ import javax.swing.JToolBar;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.FieldsEditorManager;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
@@ -41,7 +41,7 @@ public class ToolbarFieldsEditor extends FieldsEditor {
           : fieldWrap.createFieldPanel(object, value);
       register(fieldPanel, fieldWrap, object);
       JComponent jComponent = setPreferredWidth(field, fieldPanel.getJComponent());
-      FieldsEditorManager.maxHeight(jComponent);
+      FieldsEditorParam.GLOBAL.maxHeight(jComponent);
       if (field.getType().isEnum()) {
         jComponent.setToolTipText(text);
       } else //

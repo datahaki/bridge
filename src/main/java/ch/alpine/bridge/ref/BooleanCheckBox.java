@@ -13,9 +13,7 @@ import javax.swing.JComponent;
   public BooleanCheckBox(FieldWrap fieldWrap, Boolean value) {
     super(fieldWrap);
     // ---
-    
-    jCheckBox.setIcon(FieldsEditorParam.GLOBAL.getIcon(false));
-    jCheckBox.setSelectedIcon(FieldsEditorParam.GLOBAL.getIcon(true));
+    FieldsEditorParam.GLOBAL.setIcon(jCheckBox);
     // System.out.println(jCheckBox.getInsets());
     // ---
     jCheckBox.setOpaque(false);

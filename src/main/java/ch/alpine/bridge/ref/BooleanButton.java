@@ -15,7 +15,7 @@ import javax.swing.JPanel;
     super(fieldWrap);
     JButton jButton = new JButton(text);
     {
-      FieldsEditorManager.setHeight(FieldsEditorParam.GLOBAL.buttonHeight, jButton);
+      FieldsEditorParam.setHeight(FieldsEditorParam.GLOBAL.buttonHeight, jButton);
     }
     jButton.addActionListener(event -> notifyListeners(BooleanParser.TRUE));
     jPanel.add(jButton);
