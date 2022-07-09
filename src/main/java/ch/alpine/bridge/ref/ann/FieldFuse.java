@@ -25,6 +25,6 @@ import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FieldFuse {
-  /** @return text on button */
-  String value() default "action";
+  /** @return text on button, or empty to use field name as text */
+  String value() default "";
 }
