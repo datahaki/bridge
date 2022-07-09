@@ -24,7 +24,6 @@ import ch.alpine.tensor.pdf.MixtureDistribution;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.DiracDeltaDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
-import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
 import ch.alpine.tensor.sca.Clip;
 
 /* package */ class FieldOptionsCollector extends ObjectFieldAll {
@@ -59,12 +58,10 @@ import ch.alpine.tensor.sca.Clip;
           }
         }
       }
-      if (cls.equals(Color.class)) {
-        Distribution distribution = DiscreteUniformDistribution.of(0, 256);
-        distributions.put(key, random -> fieldWrap.toString(RandomVariate.of(distribution, random, 4)));
-      }
+      if (cls.equals(Color.class))
+        distributions.put(key, random -> fieldWrap.toString(Randoms.color(random)));
       if (cls.equals(LocalTime.class))
-        distributions.put(key, random -> fieldWrap.toString(RandomLocalTime.of(random)));
+        distributions.put(key, random -> fieldWrap.toString(Randoms.localTime(random)));
     }
   }
 

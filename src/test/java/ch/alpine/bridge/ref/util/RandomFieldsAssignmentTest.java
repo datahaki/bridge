@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 import java.time.LocalTime;
@@ -24,12 +25,8 @@ class RandomFieldsAssignmentTest {
       set.add(fieldOuterParam.ratio);
     });
     assertEquals(set.size(), 0);
-    fieldsAssignment.randomize(3);
-    assertEquals(set.size(), 3);
-    fieldsAssignment.randomize(7);
-    assertEquals(set.size(), 10);
-    fieldsAssignment.randomize(100);
-    assertEquals(set.size(), 10 + 100);
+    fieldsAssignment.randomize(300);
+    assertTrue(100 < set.size());
   }
 
   @Test
