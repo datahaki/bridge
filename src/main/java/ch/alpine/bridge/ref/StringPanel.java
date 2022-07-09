@@ -34,9 +34,9 @@ import ch.alpine.bridge.swing.UIManagerColor;
         : new JTextField(fallbackValue = fieldWrap.toString(value));
     UndoManager undoManager = new UndoManager();
     jTextField.getDocument().addUndoableEditListener(undoManager);
-    jTextField.setFont(FieldsEditorManager.getFont(FieldsEditorKey.FONT_TEXTFIELD));
+    jTextField.setFont(FieldsEditorParam.GLOBAL.textFieldFont.toFont());
     {
-      FieldsEditorManager.setHeight(FieldsEditorKey.INT_STRING_PANEL_HEIGHT, jTextField);
+      FieldsEditorManager.setHeight(FieldsEditorParam.GLOBAL.stringPanelHeight, jTextField);
     }
     jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));
     jTextField.addKeyListener(new KeyAdapter() {

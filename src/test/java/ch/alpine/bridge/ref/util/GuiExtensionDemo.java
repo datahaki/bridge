@@ -15,11 +15,12 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.FieldsEditorKey;
-import ch.alpine.bridge.ref.FieldsEditorManager;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.GuiExtension;
-import ch.alpine.bridge.swing.CheckBoxIcons;
+import ch.alpine.bridge.swing.CheckBoxIcon;
+import ch.alpine.bridge.swing.FontParam;
 import ch.alpine.bridge.swing.LookAndFeels;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {
@@ -73,9 +74,11 @@ public class GuiExtensionDemo {
   }
 
   public static void main(String[] args) {
-    CheckBoxIcons.BALLIT.init(32);
     LookAndFeels.DRACULA.updateComponentTreeUI();
-    FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
+    
+    FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.BALLIT;
+    FieldsEditorParam.GLOBAL.checkBoxIconSize = RealScalar.of(32);
+    FieldsEditorParam.GLOBAL.textFieldFont = new FontParam(new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
     // ---
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
     guiExtensionDemo.jFrame.setVisible(true);

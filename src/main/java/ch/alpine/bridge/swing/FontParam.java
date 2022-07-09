@@ -11,11 +11,11 @@ import ch.alpine.tensor.Scalar;
 
 @ReflectionMarker
 public class FontParam {
-  public FontName name = FontName.Dialog;
-  public FontStyle style = FontStyle.PLAIN;
+  public FontName name; // = FontName.Dialog;
+  public FontStyle style; // = FontStyle.PLAIN;
   @FieldInteger
   @FieldSelectionArray({ "12", "14", "15", "16", "17", "18" })
-  public Scalar size = RealScalar.of(12);
+  public Scalar size; // = RealScalar.of(12);
 
   public FontParam(Font font) {
     name = FontName.valueOf(font.getName());
