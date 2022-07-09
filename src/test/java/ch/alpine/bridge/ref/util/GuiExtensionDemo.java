@@ -15,7 +15,6 @@ import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.GuiExtension;
-import ch.alpine.bridge.swing.LookAndFeels;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {
@@ -47,6 +46,7 @@ public class GuiExtensionDemo {
     jPanel.add(BorderLayout.CENTER, jSplitPane);
     {
       JToolBar jToolBar = new JToolBar();
+      jToolBar.setFloatable(false);
       {
         JButton jButton = new JButton("reset fuse");
         jButton.addActionListener(l -> {
@@ -69,7 +69,9 @@ public class GuiExtensionDemo {
   }
 
   public static void main(String[] args) {
-    LookAndFeels.DRACULA.updateComponentTreeUI();
+    // LookAndFeels.DRACULA.updateComponentTreeUI();
+    // ---
+    // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.BALLIT;
     // ---
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
     guiExtensionDemo.jFrame.setVisible(true);

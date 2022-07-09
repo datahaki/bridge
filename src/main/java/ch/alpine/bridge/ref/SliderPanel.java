@@ -53,9 +53,6 @@ import ch.alpine.tensor.Scalar;
       index = fieldClips.indexOf(scalar, resolution);
     }
     jSlider = new JSlider(0, resolution, index);
-    {
-      FieldsEditorParam.setHeight(FieldsEditorParam.GLOBAL.sliderHeight, jSlider);
-    }
     jSlider.setOpaque(false); // for use in toolbar
     jSlider.setPaintTicks(resolution <= TICKS_MAX);
     jSlider.setMinorTickSpacing(1);

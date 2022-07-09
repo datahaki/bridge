@@ -20,8 +20,7 @@ import javax.swing.WindowConstants;
 
 /** the standalone dialog allows the user to modify the contents of the given object
  * (changes take effect immediately) and finally decide whether to affirm or cancel. */
-// TODO UTIL move to bridge
-public class ObjectFieldsDialog extends JDialog {
+public class DialogFieldsEditor extends JDialog {
   private static final int MARGIN_WIDTH = 200;
   private static final int MARGIN_HEIGHT = 60;
 
@@ -30,10 +29,10 @@ public class ObjectFieldsDialog extends JDialog {
    * @param object non-null
    * @return optional that is non-empty with given object only if user has pressed button "Ok" */
   public static Optional<Object> block(Component parentComponent, String title, Object object) {
-    ObjectFieldsDialog quickParamDialog = new ObjectFieldsDialog(parentComponent, title, object);
-    quickParamDialog.setLocationRelativeTo(parentComponent);
-    quickParamDialog.setVisible(true);
-    return quickParamDialog.getSelection();
+    DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(parentComponent, title, object);
+    dialogFieldsEditor.setLocationRelativeTo(parentComponent);
+    dialogFieldsEditor.setVisible(true);
+    return dialogFieldsEditor.getSelection();
   }
 
   // ---
@@ -46,7 +45,7 @@ public class ObjectFieldsDialog extends JDialog {
    * @param title of dialog window
    * @param object non-null
    * @return dialog */
-  public ObjectFieldsDialog(Component parentComponent, String title, Object object) {
+  public DialogFieldsEditor(Component parentComponent, String title, Object object) {
     super(JOptionPane.getFrameForComponent(parentComponent), title, Dialog.DEFAULT_MODALITY_TYPE);
     this.object = Objects.requireNonNull(object);
     panelFieldsEditor = new PanelFieldsEditor(object);

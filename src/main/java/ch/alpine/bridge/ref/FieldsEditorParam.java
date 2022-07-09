@@ -23,22 +23,9 @@ public class FieldsEditorParam {
   public static final FieldsEditorParam GLOBAL = new FieldsEditorParam();
   // ---
   public Scalar toolbarComponentHeight;
-  public Scalar stringPanelHeight;
-  public Scalar sliderHeight;
-  public Scalar buttonHeight;
-  public Scalar labelHeight;
   public FontParam textFieldFont;
   public CheckBoxIcon checkBoxIcon = CheckBoxIcon.DEFAULT;
   public Scalar checkBoxIconSize = RealScalar.of(16);
-
-  public static void setHeight(Scalar fieldsEditorKey, JComponent jComponent) {
-    if (Objects.nonNull(fieldsEditorKey)) {
-      int height = fieldsEditorKey.number().intValue();
-      Dimension dimension = jComponent.getPreferredSize();
-      dimension.height = height;
-      jComponent.setPreferredSize(dimension);
-    }
-  }
 
   public void maxHeight(JComponent jComponent) {
     if (Objects.nonNull(toolbarComponentHeight)) {

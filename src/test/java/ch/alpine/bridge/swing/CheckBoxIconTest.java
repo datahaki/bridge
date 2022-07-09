@@ -4,7 +4,7 @@ package ch.alpine.bridge.swing;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-class CheckBoxIconsTest {
+class CheckBoxIconTest {
   @ParameterizedTest
   @EnumSource
   void test(CheckBoxIcon checkBoxIcons) {

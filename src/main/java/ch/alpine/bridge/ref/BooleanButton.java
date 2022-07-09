@@ -14,9 +14,6 @@ import javax.swing.JPanel;
   public BooleanButton(FieldWrap fieldWrap, String text) {
     super(fieldWrap);
     JButton jButton = new JButton(text);
-    {
-      FieldsEditorParam.setHeight(FieldsEditorParam.GLOBAL.buttonHeight, jButton);
-    }
     jButton.addActionListener(event -> notifyListeners(BooleanParser.TRUE));
     jPanel.add(jButton);
   }

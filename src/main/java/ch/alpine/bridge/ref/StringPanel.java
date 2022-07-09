@@ -35,9 +35,6 @@ import ch.alpine.bridge.swing.UIManagerColor;
     UndoManager undoManager = new UndoManager();
     jTextField.getDocument().addUndoableEditListener(undoManager);
     FieldsEditorParam.GLOBAL.setFont(jTextField);
-    {
-      FieldsEditorParam.setHeight(FieldsEditorParam.GLOBAL.stringPanelHeight, jTextField);
-    }
     jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));
     jTextField.addKeyListener(new KeyAdapter() {
       @Override
