@@ -25,6 +25,14 @@ public enum ListLogPlotDemo {
     return ListLogPlot.of(visualSet, true);
   }
 
+  public static JFreeChart create2() {
+    Tensor domain = Range.of(1, 21);
+    VisualSet visualSet = new VisualSet();
+    visualSet.setPlotLabel(ListLogPlot.class.getSimpleName());
+    visualSet.add(domain, domain.map(Factorial.FUNCTION));
+    return ListLogPlot.of(visualSet);
+  }
+
   public static void main(String[] args) throws IOException {
     JFreeChart jFreeChart = create();
     jFreeChart.setBackgroundPaint(Color.WHITE);

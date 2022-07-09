@@ -26,12 +26,12 @@ public class DialogFieldsEditor extends JDialog {
   /** @param parentComponent may be null
    * @param title of dialog window
    * @param object non-null
-   * @return optional that is non-empty with given object only if user has pressed button "Ok" */
-  public static Optional<Object> block(Component parentComponent, String title, Object object) {
+   * @return dialog */
+  public static DialogFieldsEditor show(Component parentComponent, String title, Object object) {
     DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(parentComponent, title, object);
     dialogFieldsEditor.setLocationRelativeTo(parentComponent);
     dialogFieldsEditor.setVisible(true);
-    return dialogFieldsEditor.getSelection();
+    return dialogFieldsEditor;
   }
 
   // ---
@@ -100,7 +100,8 @@ public class DialogFieldsEditor extends JDialog {
     return panelFieldsEditor;
   }
 
-  private Optional<Object> getSelection() {
+  /** @return optional that is non-empty with given object only if user has pressed button "Ok" */
+  public Optional<Object> getSelection() {
     return status //
         ? Optional.of(object)
         : Optional.empty();

@@ -14,7 +14,7 @@ public class FontParam {
   public FontName name; // = FontName.Dialog;
   public FontStyle style; // = FontStyle.PLAIN;
   @FieldInteger
-  @FieldSelectionArray({ "12", "14", "15", "16", "17", "18" })
+  @FieldSelectionArray({ "12", "14", "16", "18", "20", "22" })
   public Scalar size; // = RealScalar.of(12);
 
   public FontParam(Font font) {

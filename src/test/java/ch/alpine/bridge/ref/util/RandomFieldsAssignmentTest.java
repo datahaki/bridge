@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Random;
@@ -14,9 +15,51 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.util.FieldOuterParam.NestedParam;
+import ch.alpine.bridge.swing.FontParam;
 import ch.alpine.tensor.Scalar;
 
 class RandomFieldsAssignmentTest {
+  public static class Holder {
+    public final Object[] objects;
+
+    public Holder(Object... objects) {
+      this.objects = objects;
+    }
+  }
+
+  @Test
+  void dynamic() {
+    Holder holder = new Holder(new FontParam(new Font(Font.DIALOG, Font.BOLD, 3)), new ColorParam());
+    AtomicInteger atomicInteger = new AtomicInteger();
+    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder, () -> {
+      atomicInteger.getAndIncrement();
+    });
+    fieldsAssignment.forEach();
+    assertEquals(atomicInteger.get(), 90);
+  }
+
+  @Test
+  void dynamicEmpty() {
+    Holder holder = new Holder();
+    AtomicInteger atomicInteger = new AtomicInteger();
+    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder, () -> {
+      atomicInteger.getAndIncrement();
+    });
+    fieldsAssignment.forEach();
+    assertEquals(atomicInteger.get(), 1);
+  }
+
+  @Test
+  void dynamicEmpty2() {
+    Holder holder = new Holder();
+    AtomicInteger atomicInteger = new AtomicInteger();
+    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder, () -> {
+      atomicInteger.getAndIncrement();
+    });
+    fieldsAssignment.randomize(10);
+    assertEquals(atomicInteger.get(), 1);
+  }
+
   @Test
   void test() {
     Set<Scalar> set = new HashSet<>();

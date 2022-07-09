@@ -7,7 +7,12 @@ import ch.alpine.bridge.usr.ListLogPlotDemo;
 
 class ListLogPlotTest {
   @Test
-  void test() {
+  void test1() {
     ListLogPlotDemo.create();
+  }
+
+  @Test
+  void test2() {
+    ListLogPlotDemo.create2();
   }
 }
