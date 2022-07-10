@@ -26,7 +26,7 @@ public class ScalarUnion {
   public Scalar scalarInt = Quantity.of(8.9, "");
   public Scalar scalar1 = Quantity.of(3, "m*s^-1");
   public Scalar scalar2 = Quantity.of(3, "m*s^-1");
-  @FieldClip(min = "1000[W]", max = "10000[W]")
+  @FieldClip(min = "1000[W]", max = "10[kW]")
   public Scalar quantity = Quantity.of(3, "kW");
   // @FieldSubdivide(start = "-4[m*s^-1]", end = "10[m*s^-1]", intervals = 7)
   // @FieldToolTip(text = "asd")

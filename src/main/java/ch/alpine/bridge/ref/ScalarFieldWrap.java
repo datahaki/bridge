@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
@@ -15,6 +16,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Range;
+import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.io.StringScalar;
 import ch.alpine.tensor.sca.Clip;
 
@@ -58,12 +60,17 @@ import ch.alpine.tensor.sca.Clip;
   @Override // from FieldWrap
   public List<Object> options(Object object) {
     List<Object> list = super.options(object);
-    if (list.isEmpty())
-      if (Objects.nonNull(fieldInteger) && Objects.nonNull(fieldClips) && fieldClips.isFinite()) {
+    if (list.isEmpty() && Objects.nonNull(fieldClips)) {
+      if (Objects.nonNull(fieldInteger) && fieldClips.isFinite()) {
         Clip clip = fieldClips.clip();
         if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
           return Range.of(clip).stream().map(Scalar.class::cast).collect(Collectors.toList());
       }
+      return Stream.of(fieldClips.min(), fieldClips.max()) //
+          .filter(FiniteScalarQ::of) //
+          .map(this::toString) //
+          .collect(Collectors.toList());
+    }
     return list;
   }
 

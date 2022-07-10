@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -20,7 +19,6 @@ import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.pdf.Distribution;
 import ch.alpine.tensor.pdf.MixtureDistribution;
 import ch.alpine.tensor.pdf.RandomVariate;
@@ -38,37 +36,30 @@ import ch.alpine.tensor.sca.Clip;
     List<Object> list = fieldWrap.options(object);
     if (1 < list.size())
       map.put(key, list.stream().map(fieldWrap::toString).toList());
-    else {
-      Field field = fieldWrap.getField();
-      Class<?> cls = field.getType();
-      if (cls.equals(Scalar.class)) {
-        FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-        if (Objects.nonNull(fieldClip)) {
-          FieldClips fieldClips = FieldClips.wrap(fieldClip);
+    // ---
+    Field field = fieldWrap.getField();
+    Class<?> cls = field.getType();
+    if (cls.equals(Scalar.class)) {
+      FieldClip fieldClip = field.getAnnotation(FieldClip.class);
+      if (Objects.nonNull(fieldClip)) {
+        FieldClips fieldClips = FieldClips.wrap(fieldClip);
+        if (fieldClips.isFinite()) {
           Clip clip = fieldClips.clip();
-          {
-            map.put(key, Stream.of(clip.min(), clip.max()) //
-                .filter(FiniteScalarQ::of) //
-                .map(fieldWrap::toString) //
-                .toList());
-          }
-          if (fieldClips.isFinite()) {
-            FieldInteger fieldInteger = field.getAnnotation(FieldInteger.class);
-            Distribution distribution = Objects.isNull(fieldInteger) //
-                ? MixtureDistribution.of(Tensors.vector(10, 1, 1), //
-                    UniformDistribution.of(clip), //
-                    DiracDeltaDistribution.of(clip.min()), //
-                    DiracDeltaDistribution.of(clip.max()))
-                : DiscreteUniformDistribution.of(clip.min(), clip.max().add(RealScalar.ONE));
-            distributions.put(key, random -> fieldWrap.toString(RandomVariate.of(distribution, random)));
-          }
+          FieldInteger fieldInteger = field.getAnnotation(FieldInteger.class);
+          Distribution distribution = Objects.isNull(fieldInteger) //
+              ? MixtureDistribution.of(Tensors.vector(10, 1, 1), //
+                  UniformDistribution.of(clip), //
+                  DiracDeltaDistribution.of(fieldClips.min()), //
+                  DiracDeltaDistribution.of(fieldClips.max()))
+              : DiscreteUniformDistribution.of(clip.min(), clip.max().add(RealScalar.ONE));
+          distributions.put(key, random -> fieldWrap.toString(RandomVariate.of(distribution, random)));
         }
       }
-      if (cls.equals(Color.class))
-        distributions.put(key, random -> fieldWrap.toString(Randoms.color(random)));
-      if (cls.equals(LocalTime.class))
-        distributions.put(key, random -> fieldWrap.toString(Randoms.localTime(random)));
     }
+    if (cls.equals(Color.class))
+      distributions.put(key, random -> fieldWrap.toString(Randoms.color(random)));
+    if (cls.equals(LocalTime.class))
+      distributions.put(key, random -> fieldWrap.toString(Randoms.localTime(random)));
   }
 
   /** @return mapping from field name to list of suggested value strings */
