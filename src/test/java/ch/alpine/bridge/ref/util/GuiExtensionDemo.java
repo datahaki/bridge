@@ -71,7 +71,11 @@ public class GuiExtensionDemo {
   public static void main(String[] args) {
     // LookAndFeels.DRACULA.updateComponentTreeUI();
     // ---
-    // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.BALLIT;
+    // FieldsEditorParam.GLOBAL.checkBoxIcon_override = true;
+    // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.METRO
+    //
+    // ;
+    // FieldsEditorParam.GLOBAL.checkBoxIconSize = RealScalar.of(32);
     // ---
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
     guiExtensionDemo.jFrame.setVisible(true);
