@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.ref.GuiExtension;
+import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 /** this demo periodically invokes updateJComponents

@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.ref.ex.TimeParam;
 import ch.alpine.bridge.ref.util.ObjectProperties;
 
 class LocalDateTimeFieldWrapTest {

@@ -9,7 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.GuiExtension;
+import ch.alpine.bridge.ref.ex.FieldOuterParam;
+import ch.alpine.bridge.ref.ex.GuiExtension;
 
 class OuterFieldsAssignmentTest {
   @Test

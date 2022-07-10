@@ -14,7 +14,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.util.FieldOuterParam.NestedParam;
+import ch.alpine.bridge.ref.ex.ColorParam;
+import ch.alpine.bridge.ref.ex.FieldOuterParam;
+import ch.alpine.bridge.ref.ex.FieldOuterParam.NestedParam;
 import ch.alpine.bridge.swing.FontParam;
 import ch.alpine.tensor.Scalar;
 

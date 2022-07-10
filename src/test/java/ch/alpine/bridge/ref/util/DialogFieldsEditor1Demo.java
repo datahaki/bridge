@@ -2,7 +2,7 @@
 package ch.alpine.bridge.ref.util;
 
 import ch.alpine.bridge.awt.WindowClosed;
-import ch.alpine.bridge.ref.GuiExtension;
+import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 class DialogFieldsEditor1Demo {

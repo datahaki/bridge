@@ -4,6 +4,7 @@ package ch.alpine.bridge.ref;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.ref.ex.MyConfig;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 public enum FieldsEditorDemo {

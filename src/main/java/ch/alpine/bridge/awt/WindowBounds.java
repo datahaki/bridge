@@ -44,6 +44,7 @@ public class WindowBounds {
     bounds = Tensors.vector(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
   }
 
+  // TODO BRDIGE
   public Rectangle getBounds() {
     return new ScreenRectangle().allVisible(new Rectangle( //
         Scalars.intValueExact(bounds.Get(0)), //
@@ -56,13 +57,13 @@ public class WindowBounds {
 
   private void private_attach(Window window, File file) {
     window.setBounds(getBounds());
-    WindowBounds windowConfiguration = this;
+    WindowBounds windowBounds = this;
     WindowClosed.runs(window, () -> {
       Rectangle rectangle = window.getBounds();
       rectangle.x -= shift.x;
       rectangle.y -= shift.y;
-      windowConfiguration.setBounds(rectangle);
-      ObjectProperties.trySave(windowConfiguration, file);
+      windowBounds.setBounds(rectangle);
+      ObjectProperties.trySave(windowBounds, file);
     });
     window.addComponentListener(new ComponentAdapter() {
       private final Timing timing = Timing.stopped();

@@ -14,7 +14,7 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.GuiExtension;
+import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {

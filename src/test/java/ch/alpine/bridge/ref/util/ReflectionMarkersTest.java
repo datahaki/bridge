@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.MissingMarkerParam;
+import ch.alpine.bridge.ref.ex.MissingMarkerParam;
 
 class ReflectionMarkersTest {
   @Test

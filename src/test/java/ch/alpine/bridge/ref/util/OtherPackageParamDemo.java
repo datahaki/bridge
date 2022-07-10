@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.ref.ex.OtherPackageParam;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum OtherPackageParamDemo {
