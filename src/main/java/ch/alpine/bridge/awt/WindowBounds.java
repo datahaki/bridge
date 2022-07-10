@@ -40,11 +40,14 @@ public class WindowBounds {
   // ---
   public Tensor bounds = Tensors.vector(100, 100, 800, 800);
 
+  private WindowBounds() {
+    // ---
+  }
+
   public void setBounds(Rectangle rectangle) {
     bounds = Tensors.vector(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
   }
 
-  // TODO BRDIGE
   public Rectangle getBounds() {
     return new ScreenRectangle().allVisible(new Rectangle( //
         Scalars.intValueExact(bounds.Get(0)), //

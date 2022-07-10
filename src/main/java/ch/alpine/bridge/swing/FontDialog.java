@@ -2,6 +2,7 @@
 package ch.alpine.bridge.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -34,11 +35,14 @@ public class FontDialog extends JDialog {
       Dimension dimension = getSize();
       Point point = new Point(dimension.width / 2, dimension.height / 2);
       Graphics2D graphics = (Graphics2D) _g;
+      graphics.setColor(Color.WHITE);
+      graphics.fillRect(0, 0, dimension.width, dimension.height);
       RenderQuality.setQuality(graphics);
       graphics.setFont(font);
       FontMetrics fontMetrics = graphics.getFontMetrics();
       int ascent = fontMetrics.getAscent();
       int stringWidth = fontMetrics.stringWidth(DEMO);
+      graphics.setColor(Color.DARK_GRAY);
       graphics.drawString(DEMO, point.x - stringWidth / 2, point.y + ascent / 2);
     }
   };
@@ -47,15 +51,15 @@ public class FontDialog extends JDialog {
   public FontDialog(Component component, final Font font_fallback, Consumer<Font> consumer) {
     super(JOptionPane.getFrameForComponent(component));
     setTitle("Font selection");
-    setSize(400, 160);
+    setSize(300, 220);
     setResizable(false);
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
     // ---
     font = font_fallback;
-    jComponent.setPreferredSize(new Dimension(200, 80));
-    jPanel.add(BorderLayout.WEST, jComponent);
+    jComponent.setPreferredSize(new Dimension(200, 60));
+    jPanel.add(BorderLayout.NORTH, jComponent);
     // ---
     FontParam fontParam = new FontParam(font);
     {
@@ -68,6 +72,7 @@ public class FontDialog extends JDialog {
           });
       jPanel.add(BorderLayout.CENTER, panelFieldsEditor.getJPanel());
     }
+    jPanel.add(BorderLayout.WEST, new JLabel("\u3000"));
     jPanel.add(BorderLayout.EAST, new JLabel("\u3000"));
     {
       JToolBar jToolBar = new JToolBar();

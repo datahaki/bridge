@@ -28,7 +28,9 @@ Features include
 
 ## Dialogs
 
-![LocalTime selection](https://user-images.githubusercontent.com/4012178/176491828-21d48be8-46d0-4999-a87a-f461e1df1aab.png)
+![LocalTime selection](https://user-images.githubusercontent.com/4012178/178134198-8b94131f-6163-408b-9b26-2bfb344d0da3.png)
+
+![Font selection](https://user-images.githubusercontent.com/4012178/178134124-766d1067-8645-4060-8c06-33cb252e5c97.png)
 
 ## Reflection
 

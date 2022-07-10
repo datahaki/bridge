@@ -1272,13 +1272,13 @@ import ch.alpine.tensor.sca.Clip;
     AxisState domainAxisState = axisStateMap.get(getDomainAxis());
     if (domainAxisState == null) {
       if (parentState != null) {
-        domainAxisState = (AxisState) parentState.getSharedAxisStates().get(getDomainAxis());
+        domainAxisState = parentState.getSharedAxisStates().get(getDomainAxis());
       }
     }
     AxisState rangeAxisState = axisStateMap.get(getRangeAxis());
     if (rangeAxisState == null) {
       if (parentState != null) {
-        rangeAxisState = (AxisState) parentState.getSharedAxisStates().get(getRangeAxis());
+        rangeAxisState = parentState.getSharedAxisStates().get(getRangeAxis());
       }
     }
     Graphics2D savedG2 = g2;
@@ -1326,7 +1326,6 @@ import ch.alpine.tensor.sca.Clip;
    * permitted).
    *
    * @return A map containing the state for each axis drawn. */
-  @SuppressWarnings("unchecked")
   protected Map<org.jfree.chart.axis.Axis, AxisState> drawAxes(Graphics2D g2, Rectangle2D plotArea, Rectangle2D dataArea, PlotRenderingInfo plotState) {
     AxisCollection axisCollection = new AxisCollection();
     // add domain axes to lists...

@@ -1,13 +1,13 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import java.awt.Font;
+import java.time.LocalTime;
 
-enum FontDialogDemo {
+enum LocalTimeDialogDemo {
   ;
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
-    FontDialog fontDialog = new FontDialog(null, new Font(Font.DIALOG_INPUT, Font.BOLD, 34), lt -> {
+    LocalTimeDialog fontDialog = new LocalTimeDialog(null, LocalTime.now(), lt -> {
       // ---
     });
     fontDialog.setLocation(100, 200);
