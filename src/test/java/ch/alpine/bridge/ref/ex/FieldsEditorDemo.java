@@ -1,10 +1,9 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.ref.ex;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.ref.ex.MyConfig;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 public enum FieldsEditorDemo {

@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -13,8 +14,11 @@ import javax.swing.JPanel;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.FieldPanel;
+import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.ex.FieLabParam;
 import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.ref.ex.OtherPackageParam;
+import ch.alpine.bridge.ref.ex.SliderFailParam;
 
 class PanelFieldsEditorTest {
   @Test
@@ -50,5 +54,37 @@ class PanelFieldsEditorTest {
     guiExtension.pivots = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
     panelFieldsEditor.createJScrollPane();
+  }
+
+  @Test
+  void testFieLabParam() {
+    ObjectProperties.join(new FieLabParam(4));
+    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(new FieLabParam(4));
+    fieldsPanel.createJScrollPane();
+  }
+
+  @Test
+  void testGuiExtension() {
+    GuiExtension guiExtension = new GuiExtension();
+    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
+    fieldsPanel.addUniversalListener(() -> System.out.println("changed"));
+    fieldsPanel.createJScrollPane();
+    List<FieldPanel> list = fieldsPanel.list();
+    for (FieldPanel fieldPanel : list) {
+      assertThrows(Exception.class, () -> fieldPanel.updateJComponent(null));
+      assertThrows(Exception.class, () -> fieldPanel.addListener(null));
+    }
+    for (FieldPanel fieldPanel : list) {
+      FieldWrap fieldWrap = fieldPanel.fieldWrap();
+      assertThrows(Exception.class, () -> fieldWrap.isValidValue(null));
+      assertThrows(Exception.class, () -> fieldWrap.toString(null));
+      assertThrows(Exception.class, () -> fieldWrap.toValue(null));
+    }
+  }
+
+  @Test
+  void testSliderFailPanel() {
+    SliderFailParam sliderFailParam = new SliderFailParam();
+    assertThrows(Exception.class, () -> new PanelFieldsEditor(sliderFailParam));
   }
 }

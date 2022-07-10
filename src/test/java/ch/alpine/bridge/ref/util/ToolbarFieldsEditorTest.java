@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.swing.JFrame;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.ref.ex.OtherPackageParam;
+import ch.alpine.bridge.ref.ex.SliderFailParam;
 
 class ToolbarFieldsEditorTest {
   @Test
@@ -66,5 +68,11 @@ class ToolbarFieldsEditorTest {
     jFrame.setVisible(true);
     Thread.sleep(100);
     jFrame.setVisible(false);
+  }
+
+  @Test
+  void testSliderFailToolbar() {
+    SliderFailParam sliderFailParam = new SliderFailParam();
+    assertThrows(Exception.class, () -> ToolbarFieldsEditor.add(sliderFailParam, new JToolBar()));
   }
 }

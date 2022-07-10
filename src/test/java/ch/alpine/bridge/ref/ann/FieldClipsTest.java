@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.AnnotatedContainer;
+import ch.alpine.bridge.ref.ex.AnnotatedContainer;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
