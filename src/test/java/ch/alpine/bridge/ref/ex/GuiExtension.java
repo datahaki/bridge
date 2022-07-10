@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JLabel;
+
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
@@ -21,6 +24,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.ex.Container.NestedEnum;
+import ch.alpine.bridge.swing.FontParam;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -47,6 +51,7 @@ public class GuiExtension {
   @FieldLabel("Big Fuse")
   @FieldFuse("press to restart")
   public Boolean fuse = false;
+  public final FontParam fontParam = new FontParam(new JLabel().getFont());
   @FieldSelectionArray({ "{0, 3}", "{10, 11}" })
   public Clip clip = Clips.absolute(3);
   @FieldFuse
@@ -70,6 +75,7 @@ public class GuiExtension {
   @FieldFileExtension(description = "JPG-Files", extensions = "jpg")
   public File imgFile = HomeDirectory.file();
   public File anyFile = HomeDirectory.file();
+  public final FieldsEditorParam fieldsEditorParam = FieldsEditorParam.GLOBAL;
   @FieldSelectionArray({ "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");
   public final ScalarUnion[] scalarUnion = { new ScalarUnion(), new ScalarUnion() };

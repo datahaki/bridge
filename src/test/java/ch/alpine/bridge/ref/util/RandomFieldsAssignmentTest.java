@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Random;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import ch.alpine.bridge.ref.ex.ColorParam;
 import ch.alpine.bridge.ref.ex.FieldOuterParam;
 import ch.alpine.bridge.ref.ex.FieldOuterParam.NestedParam;
-import ch.alpine.bridge.swing.FontParam;
 import ch.alpine.tensor.Scalar;
 
 class RandomFieldsAssignmentTest {
@@ -31,13 +29,13 @@ class RandomFieldsAssignmentTest {
 
   @Test
   void dynamic() {
-    Holder holder = new Holder(new FontParam(new Font(Font.DIALOG, Font.BOLD, 3)), new ColorParam());
+    Holder holder = new Holder(new ColorParam(), new ColorParam());
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder, () -> {
       atomicInteger.getAndIncrement();
     });
     fieldsAssignment.forEach();
-    assertEquals(atomicInteger.get(), 90);
+    assertEquals(atomicInteger.get(), 1);
   }
 
   @Test

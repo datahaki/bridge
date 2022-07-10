@@ -19,7 +19,8 @@ class ClassFieldCheckTest {
   void testSimple() {
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
-    assertTrue(6 < classFieldCheck.getInspected().size());
+    // System.out.println(classFieldCheck.getInspected().size());
+    assertTrue(36 <= classFieldCheck.getInspected().size());
     assertTrue(classFieldCheck.getFailures().contains(FieldClipT.class));
     List<FieldValueContainer> list = classFieldCheck.invalidFields();
     assertFalse(list.isEmpty());
@@ -27,5 +28,6 @@ class ClassFieldCheckTest {
     assertTrue(fields.contains("public java.lang.String ch.alpine.bridge.ref.ex.GuiTrial.optionsFail"));
     assertTrue(fields.contains("public java.lang.String ch.alpine.bridge.ref.ex.GuiTrial.optionsMiss"));
     // fields.forEach(s -> System.out.println(s));
+    // classFieldCheck.getInspected().forEach(s -> System.out.println(s));
   }
 }

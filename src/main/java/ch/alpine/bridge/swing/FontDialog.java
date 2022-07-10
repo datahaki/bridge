@@ -29,6 +29,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 public class FontDialog extends JDialog {
   private static final String DEMO = "Abc123!";
+  // ---
   private final JComponent jComponent = new JComponent() {
     @Override
     protected void paintComponent(Graphics _g) {

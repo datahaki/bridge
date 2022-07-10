@@ -12,8 +12,6 @@ import ch.alpine.tensor.io.ResourceData;
  * 
  * {@link PanelFieldsEditor} */
 public enum CheckBoxIcon {
-  /** java */
-  DEFAULT, //
   METRO, //
   BALLIT, //
   BALLOT, //
@@ -22,8 +20,6 @@ public enum CheckBoxIcon {
 
   /** @param n pixel width and height */
   public Icon create(int n, boolean selected) {
-    if (equals(DEFAULT))
-      return null;
     String string = String.format("/ch/alpine/bridge/ref/checkbox/%s/%d.png", name().toLowerCase(), selected ? 1 : 0);
     return new ImageIcon(ImageResize.of(ResourceData.bufferedImage(string), n, n));
   }
