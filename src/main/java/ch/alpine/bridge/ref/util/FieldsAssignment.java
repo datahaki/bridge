@@ -50,6 +50,25 @@ public abstract class FieldsAssignment {
         .orElse(RealScalar.ONE);
   }
 
+  /** restore original content of given object */
+  public final void restore() {
+    ObjectProperties.part(object, string);
+  }
+
+  /** Careful: the number of combinations may be large */
+  public final void forEach() {
+    Array.forEach(list -> build(list), array);
+  }
+
+  private void build(List<Integer> list) {
+    Properties properties = new Properties();
+    AtomicInteger atomicInteger = new AtomicInteger();
+    for (String key : keys)
+      properties.put(key, map.get(key).get(list.get(atomicInteger.getAndIncrement())));
+    ObjectProperties.set(object, properties);
+    runnable.run();
+  }
+
   /** @param random
    * @param limit of number of invocations */
   public final void randomize(Random random, int limit) {
@@ -65,23 +84,6 @@ public abstract class FieldsAssignment {
     randomize(RANDOM, limit);
   }
 
-  /** restore original content of given object */
-  public final void restore() {
-    ObjectProperties.part(object, string);
-  }
-
-  /** Careful: the number of combinations may be large */
-  public final void forEach() {
-    Array.forEach(list -> build(list, RANDOM), array);
-  }
-
-  /** @param properties
-   * @param random */
-  protected abstract void insert(Properties properties, Random random);
-
-  /** @return whether enumeration is random free */
-  protected abstract boolean isGrid();
-
   private void build(List<Integer> list, Random random) {
     Properties properties = new Properties();
     AtomicInteger atomicInteger = new AtomicInteger();
@@ -91,4 +93,11 @@ public abstract class FieldsAssignment {
     ObjectProperties.set(object, properties);
     runnable.run();
   }
+
+  /** @param properties
+   * @param random */
+  protected abstract void insert(Properties properties, Random random);
+
+  /** @return whether enumeration is random free */
+  protected abstract boolean isGrid();
 }

@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
+import ch.alpine.bridge.ref.ann.FieldInteger;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.chq.FiniteScalarQ;
@@ -24,6 +26,7 @@ import ch.alpine.tensor.pdf.MixtureDistribution;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.DiracDeltaDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
+import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
 import ch.alpine.tensor.sca.Clip;
 
 /* package */ class FieldOptionsCollector extends ObjectFieldAll {
@@ -50,10 +53,13 @@ import ch.alpine.tensor.sca.Clip;
                 .toList());
           }
           if (fieldClips.isFinite()) {
-            Distribution distribution = MixtureDistribution.of(Tensors.vector(10, 1, 1), //
-                UniformDistribution.of(clip), //
-                DiracDeltaDistribution.of(clip.min()), //
-                DiracDeltaDistribution.of(clip.max()));
+            FieldInteger fieldInteger = field.getAnnotation(FieldInteger.class);
+            Distribution distribution = Objects.isNull(fieldInteger) //
+                ? MixtureDistribution.of(Tensors.vector(10, 1, 1), //
+                    UniformDistribution.of(clip), //
+                    DiracDeltaDistribution.of(clip.min()), //
+                    DiracDeltaDistribution.of(clip.max()))
+                : DiscreteUniformDistribution.of(clip.min(), clip.max().add(RealScalar.ONE));
             distributions.put(key, random -> fieldWrap.toString(RandomVariate.of(distribution, random)));
           }
         }
