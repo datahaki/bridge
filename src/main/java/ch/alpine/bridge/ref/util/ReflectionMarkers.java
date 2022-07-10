@@ -15,7 +15,7 @@ public enum ReflectionMarkers {
   private final Set<Class<?>> checked = new HashSet<>();
   private final Set<Class<?>> missing = new HashSet<>();
   private final ObjectFieldVisitor objectFieldVisitor = new ObjectFieldAll() {
-    @Override
+    @Override // from ObjectFieldVisitor
     public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
       expected(fieldWrap.getField().getDeclaringClass());
     }

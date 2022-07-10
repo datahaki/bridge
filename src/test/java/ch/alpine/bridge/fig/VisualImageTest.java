@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.stream.Stream;
 
 import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ import ch.alpine.tensor.sca.Clips;
 class VisualImageTest {
   @Test
   void testSimple() {
-    CoordinateBoundingBox coordinateBoundingBox = CoordinateBoundingBox.of(Stream.of(Clips.unit(), Clips.positive(Quantity.of(3, "m"))));
+    CoordinateBoundingBox coordinateBoundingBox = CoordinateBoundingBox.of(Clips.unit(), Clips.positive(Quantity.of(3, "m")));
     VisualImage visualImage = new VisualImage(ImageFormat.of(Array.zeros(10, 20, 4)), coordinateBoundingBox);
     visualImage.getAxisX();
   }

@@ -1,20 +1,34 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.GuiExtension;
+import ch.alpine.bridge.ref.ex.GuiExtension;
+import ch.alpine.bridge.ref.ex.OtherPackageParam;
+import ch.alpine.bridge.ref.ex.SliderFailParam;
 
 class ToolbarFieldsEditorTest {
   @Test
   void testSimple() {
     FieldsEditor fieldsEditor = ToolbarFieldsEditor.add(new GuiExtension(), new JToolBar());
     fieldsEditor.updateJComponents();
+  }
+
+  @Test
+  void testEmptyToolbar() {
+    OtherPackageParam otherPackageParam = new OtherPackageParam();
+    JToolBar jToolBar = new JToolBar();
+    FieldsEditor fieldsEditor = ToolbarFieldsEditor.add(otherPackageParam, jToolBar);
+    assertTrue(fieldsEditor.list().isEmpty());
+    assertEquals(jToolBar.getComponentCount(), 0);
   }
 
   @Test
@@ -54,5 +68,11 @@ class ToolbarFieldsEditorTest {
     jFrame.setVisible(true);
     Thread.sleep(100);
     jFrame.setVisible(false);
+  }
+
+  @Test
+  void testSliderFailToolbar() {
+    SliderFailParam sliderFailParam = new SliderFailParam();
+    assertThrows(Exception.class, () -> ToolbarFieldsEditor.add(sliderFailParam, new JToolBar()));
   }
 }

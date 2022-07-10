@@ -123,7 +123,9 @@ public class ObjectProperties {
   }
 
   // ---
-  /** Remark: API intentionally does not provide
+  /** function modifies fields of given object based on given properties
+   * 
+   * Remark: API intentionally does not provide
    * a function that creates {@link Properties} from given object
    * 
    * @param object
@@ -142,7 +144,7 @@ public class ObjectProperties {
       this.properties = properties;
     }
 
-    @Override
+    @Override // from ObjectFieldVisitor
     public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
       String string = properties.getProperty(prefix);
       if (Objects.nonNull(string))
@@ -164,7 +166,7 @@ public class ObjectProperties {
   private static class ObjectFieldList extends ObjectFieldIo {
     private final List<String> list = new LinkedList<>();
 
-    @Override
+    @Override // from ObjectFieldVisitor
     public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
       if (Objects.nonNull(value))
         list.add(line(prefix, fieldWrap.toString(value)));

@@ -25,6 +25,10 @@ import ch.alpine.tensor.sca.win.DirichletWindow;
 
 public enum SpectrogramDemo {
   ;
+  public static JFreeChart create() {
+    return create(0.32, 1.6);
+  }
+
   public static JFreeChart create(double lo, double hi) {
     ScalarUnaryOperator polynomial = Polynomial.of(Tensors.vector( //
         0, //

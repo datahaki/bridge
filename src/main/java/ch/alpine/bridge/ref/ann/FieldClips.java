@@ -8,7 +8,6 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.chq.FiniteScalarQ;
-import ch.alpine.tensor.ext.PackageTestAccess;
 import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.qty.CompatibleUnitQ;
 import ch.alpine.tensor.qty.Quantity;
@@ -23,7 +22,8 @@ public class FieldClips implements Predicate<Scalar> {
   /** @param fieldClip
    * @return
    * @throws Exception if parsing of strings to scalars fails
-   * @throws Exception if units of min and max are different */
+   * @throws Exception if units of min and max are different
+   * @throws Exception if given fieldClip is null */
   public static FieldClips wrap(FieldClip fieldClip) {
     return new FieldClips(fieldClip);
   }
@@ -39,10 +39,12 @@ public class FieldClips implements Predicate<Scalar> {
   private FieldClips(FieldClip fieldClip) {
     min = Scalars.fromString(fieldClip.min());
     max = Scalars.fromString(fieldClip.max());
-    Unit unit = QuantityUnit.of(min);
+    Unit unit = fieldClip.useMinUnit() //
+        ? QuantityUnit.of(min)
+        : QuantityUnit.of(max);
     compatible = CompatibleUnitQ.SI().with(unit);
     convert = UnitConvert.SI().to(unit);
-    clip = Clips.interval(min, convert.apply(max));
+    clip = Clips.interval(convert.apply(min), convert.apply(max));
   }
 
   public boolean isFinite() {
@@ -85,8 +87,8 @@ public class FieldClips implements Predicate<Scalar> {
         Scalars.intValueExact(clip.min()));
   }
 
-  @PackageTestAccess
-  /* package */ Clip clip() {
+  /** @return */
+  public Clip clip() {
     return clip;
   }
 }

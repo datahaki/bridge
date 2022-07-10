@@ -2,9 +2,9 @@
 package ch.alpine.bridge.lang;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import ch.alpine.tensor.ext.PackageTestAccess;
 
@@ -25,7 +25,7 @@ public enum ClassPaths {
    * @return concatenation of paths to a single class path */
   @PackageTestAccess
   static String join(String... paths) {
-    return Stream.of(paths) //
+    return Arrays.stream(paths) //
         .filter(Objects::nonNull) //
         .collect(Collectors.joining(System.getProperty("path.separator")));
   }

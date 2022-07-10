@@ -2,12 +2,12 @@
 package ch.alpine.bridge.fig;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.swing.ChartPanel;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import ch.alpine.bridge.fig.Axis.Type;
@@ -51,7 +51,7 @@ public enum ListPlot {
             visualSet.hasLegend(), // legend
             false, // tooltips
             false); // urls
-    XYPlot xyPlot = jFreeChart.getXYPlot();
+    XYPlot xyPlot = (XYPlot) jFreeChart.getPlot();
     XYItemRenderer xyItemRenderer = xyPlot.getRenderer();
     int limit = xySeriesCollection.getSeriesCount();
     for (int index = 0; index < limit; ++index) {
@@ -62,14 +62,14 @@ public enum ListPlot {
     // https://github.com/jfree/jfreechart/issues/301
     if (visualSet.getAxisX().getType().equals(Type.LOGARITHMIC)) {
       LogAxis logAxis = new LogAxis(visualSet.getAxisX().getAxisLabel());
-      jFreeChart.getXYPlot().setDomainAxis(logAxis);
+      xyPlot.setDomainAxis(logAxis);
     }
     if (visualSet.getAxisY().getType().equals(Type.LOGARITHMIC)) {
       LogAxis logAxis = new LogAxis(visualSet.getAxisY().getAxisLabel());
-      jFreeChart.getXYPlot().setRangeAxis(logAxis);
+      xyPlot.setRangeAxis(logAxis);
     }
-    StaticHelper.setRange(visualSet.getAxisX(), jFreeChart.getXYPlot().getDomainAxis());
-    StaticHelper.setRange(visualSet.getAxisY(), jFreeChart.getXYPlot().getRangeAxis());
+    StaticHelper.setRange(visualSet.getAxisX(), xyPlot.getDomainAxis());
+    StaticHelper.setRange(visualSet.getAxisY(), xyPlot.getRangeAxis());
     return jFreeChart;
   }
 

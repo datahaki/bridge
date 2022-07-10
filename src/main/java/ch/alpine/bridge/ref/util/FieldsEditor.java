@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -14,20 +15,25 @@ import javax.swing.JComponent;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldPreferredWidth;
+import ch.alpine.bridge.util.CopyOnWriteLinkedSet;
 
+/** Order of listener notification:
+ * 1) the value is updated in the object's field
+ * 2) the universal listeners are notified
+ * 3) the specific {@link FieldPanel} listeners are notified */
 public abstract class FieldsEditor {
   /** the association of FieldPanel and Object is required.
    * In a field editor instance, the object as value in the map is not necessary unique. */
-  private static class Entry {
+  private static class FieldPanelObject {
     private final FieldPanel fieldPanel;
     private final Object object;
 
-    public Entry(FieldPanel fieldPanel, Object object) {
+    public FieldPanelObject(FieldPanel fieldPanel, Object object) {
       this.fieldPanel = fieldPanel;
       this.object = object;
     }
 
-    public FieldPanel getFieldPanel() {
+    public FieldPanel fieldPanel() {
       return fieldPanel;
     }
 
@@ -44,16 +50,19 @@ public abstract class FieldsEditor {
     }
   }
 
-  private final List<Entry> list = new LinkedList<>();
+  private final List<FieldPanelObject> list = new LinkedList<>();
+  private final Set<Runnable> set = new CopyOnWriteLinkedSet<>();
 
-  /** @param fieldPanel
+  /** register listener that converts GUI update to value and assigns field
+   * register listener to notify universal listeners
+   * 
+   * @param fieldPanel
    * @param fieldWrap
-   * @param object
-   * @return given fieldPanel */
-  protected final FieldPanel register(FieldPanel fieldPanel, FieldWrap fieldWrap, Object object) {
-    list.add(new Entry(fieldPanel, object));
+   * @param object */
+  protected final void register(FieldPanel fieldPanel, FieldWrap fieldWrap, Object object) {
+    list.add(new FieldPanelObject(fieldPanel, object));
     fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
-    return fieldPanel;
+    fieldPanel.addListener(string -> notifyUniversalListeners());
   }
 
   /** the function exposes the FieldPanel instances used for the fields in the editor.
@@ -65,13 +74,7 @@ public abstract class FieldsEditor {
    * 
    * @return field panel for each field in the object that appears in the editor */
   public final List<FieldPanel> list() {
-    return list.stream().map(Entry::getFieldPanel).collect(Collectors.toList());
-  }
-
-  /** @param runnable that will be run if any value in editor was subject to change */
-  public final void addUniversalListener(Runnable runnable) {
-    Consumer<String> consumer = string -> runnable.run();
-    list.forEach(entry -> entry.getFieldPanel().addListener(consumer));
+    return list.stream().map(FieldPanelObject::fieldPanel).collect(Collectors.toList());
   }
 
   /** in case the object field values have been modified outside the gui, invoking
@@ -81,7 +84,23 @@ public abstract class FieldsEditor {
    * Naturally, this action should not be triggered while the user is actively
    * modifying the fields, but by a rare, sporadic external trigger. */
   public final void updateJComponents() {
-    list.forEach(Entry::updateJComponent);
+    list.forEach(FieldPanelObject::updateJComponent);
+  }
+
+  /** @param runnable that will be run if any value in editor was subject to change */
+  public final void addUniversalListener(Runnable runnable) {
+    set.add(runnable);
+  }
+
+  /** @param runnable to remove from set of universal listeners */
+  public final void removeUniversalListener(Runnable runnable) {
+    set.remove(runnable);
+  }
+
+  /** Hint:
+   * typically this function is not called by the application layer */
+  public final void notifyUniversalListeners() {
+    set.forEach(Runnable::run);
   }
 
   /** function applies annotations specific to field that concern layout
@@ -93,7 +112,7 @@ public abstract class FieldsEditor {
    * @param field
    * @param jComponent
    * @return given jComponent with layout modified based on annotations */
-  public static JComponent layout(Field field, JComponent jComponent) {
+  protected static JComponent setPreferredWidth(Field field, JComponent jComponent) {
     FieldPreferredWidth fieldPreferredWidth = field.getAnnotation(FieldPreferredWidth.class);
     if (Objects.nonNull(fieldPreferredWidth)) {
       Dimension dimension = jComponent.getPreferredSize();

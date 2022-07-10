@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.function.Function;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -36,13 +37,20 @@ public class SpinnerMenu<T> {
 
   /** @param list
    * @param selectedValue may be null
-   * @param font
    * @param hover */
   public SpinnerMenu(List<T> list, T selectedValue, boolean hover) {
+    this(list, selectedValue, Object::toString, hover);
+  }
+
+  /** @param list
+   * @param selectedValue may be null
+   * @param function that determines what text each value is represented on a menu item
+   * @param hover */
+  public SpinnerMenu(List<T> list, T selectedValue, Function<T, String> function, boolean hover) {
     this.selectedValue = selectedValue;
     // ---
     for (T value : list) {
-      JMenuItem jMenuItem = new JMenuItem(value.toString());
+      JMenuItem jMenuItem = new JMenuItem(function.apply(value));
       if (hover)
         jMenuItem.addMouseListener(new MouseAdapter() {
           @Override

@@ -40,6 +40,7 @@ public class LocalTimeParam {
       s = Round._9.apply(s.add(RealScalar.of(nano).divide(NANOS)));
   }
 
+  @ReflectionMarker
   public List<Scalar> sixty() {
     return Range.of(0, 12).multiply(RealScalar.of(5)).stream() //
         .map(Scalar.class::cast) //

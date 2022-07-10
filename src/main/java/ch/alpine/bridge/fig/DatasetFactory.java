@@ -25,14 +25,14 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
    * @param visualSet
    * @return
    * @see ListPlot */
-  public static XYSeriesCollection xySeriesCollection(VisualSet visualSet) {
-    XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
+  public static XYSeriesCollection<String> xySeriesCollection(VisualSet visualSet) {
+    XYSeriesCollection<String> xySeriesCollection = new XYSeriesCollection<>();
     ScalarUnaryOperator toRealsX = visualSet.getAxisX().toReals();
     ScalarUnaryOperator toRealsY = visualSet.getAxisY().toReals();
     for (VisualRow visualRow : visualSet.visualRows()) {
       String labelString = visualRow.getLabelString();
-      XYSeries xySeries = new XYSeries(labelString.isEmpty() //
-          ? xySeriesCollection.getSeriesCount()
+      XYSeries<String> xySeries = new XYSeries<>(labelString.isEmpty() //
+          ? Integer.toString(xySeriesCollection.getSeriesCount())
           : labelString, //
           visualRow.getAutoSort());
       for (Tensor point : visualRow.points()) {
@@ -53,9 +53,9 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
   /** @param visualSet
    * @param naming for instance Scalar::toString
    * @return */
-  public static CategoryDataset defaultCategoryDataset(VisualSet visualSet, Function<Scalar, String> naming) {
+  public static CategoryDataset<ComparableLabel, String> defaultCategoryDataset(VisualSet visualSet, Function<Scalar, String> naming) {
     // TODO BRIDGE may result in "unordered" domain depending on ordering of rows
-    DefaultCategoryDataset defaultCategoryDataset = new DefaultCategoryDataset();
+    DefaultCategoryDataset<ComparableLabel, String> defaultCategoryDataset = new DefaultCategoryDataset<>();
     ScalarUnaryOperator toRealsY = visualSet.getAxisY().toReals();
     for (VisualRow visualRow : visualSet.visualRows())
       for (Tensor point : visualRow.points())

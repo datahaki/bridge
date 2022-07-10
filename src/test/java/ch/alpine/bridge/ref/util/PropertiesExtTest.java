@@ -14,8 +14,6 @@ import java.util.Properties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import ch.alpine.tensor.ext.HomeDirectory;
-
 class PropertiesExtTest {
   @Test
   void testStoreLoadISO8859_1(@TempDir File folder) throws IOException {
@@ -43,7 +41,6 @@ class PropertiesExtTest {
   void testStoreLoadUTF8(@TempDir File folder) throws IOException {
     final String string = "special\u00e3tab\tnewline\nbackslash\\termination\u3000&#blub";
     File file = new File(folder, "sample.properties");
-    file = HomeDirectory.file("some.properties");
     Charset charset = StandardCharsets.UTF_8;
     {
       Properties properties = new Properties();

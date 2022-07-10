@@ -7,9 +7,9 @@ import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.ClipParam;
-import ch.alpine.bridge.ref.GuiExtension;
-import ch.alpine.bridge.ref.V011Param;
+import ch.alpine.bridge.ref.ex.ClipParam;
+import ch.alpine.bridge.ref.ex.GuiExtension;
+import ch.alpine.bridge.ref.ex.V011Param;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.Clips;

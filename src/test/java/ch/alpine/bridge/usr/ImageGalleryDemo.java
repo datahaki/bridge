@@ -9,11 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
@@ -42,14 +42,15 @@ public class ImageGalleryDemo {
     dst_image = new File(dst, "image");
     dst_thumb.mkdir();
     dst_image.mkdir();
-    Stream.of(src.listFiles()) //
+    Arrays.stream(src.listFiles()) //
         .filter(this::isMissing) //
         .forEach(this::handle);
     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(dst, "index.html")))) {
       for (String string : ResourceData.lines("/html/gallery/head.html"))
         bufferedWriter.write(string + "\n");
       // ---
-      List<File> list = Stream.of(dst_thumb.listFiles()).sorted((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified())).collect(Collectors.toList());
+      List<File> list = Arrays.stream(dst_thumb.listFiles()).sorted((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()))
+          .collect(Collectors.toList());
       for (File file : list) {
         String name = file.getName();
         bufferedWriter.write("<a href=\"image/" + name + "\"><img src=\"thumb/" + name + "\"></a>\n");

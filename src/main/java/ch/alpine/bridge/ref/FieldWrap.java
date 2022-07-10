@@ -18,7 +18,9 @@ public interface FieldWrap {
   /** @param value non-null
    * @return string expression of value
    * @throws Exception if given value is null */
-  String toString(Object value);
+  default String toString(Object value) {
+    return value.toString();
+  }
 
   /** @param value non-null that may be cast to class associated to field
    * @return whether additional constraints defined by field annotations are satisfied

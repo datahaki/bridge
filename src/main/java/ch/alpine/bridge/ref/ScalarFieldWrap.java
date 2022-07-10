@@ -5,18 +5,25 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Range;
+import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.io.StringScalar;
+import ch.alpine.tensor.sca.Clip;
 
 /* package */ final class ScalarFieldWrap extends TensorFieldWrap {
+  /** allow choosing of hours 0,1,...,23 */
+  private static final Scalar WIDTH_LIMIT = RealScalar.of(24);
+  // ---
   private final FieldInteger fieldInteger;
   private FieldClips fieldClips = null;
 
@@ -53,13 +60,22 @@ import ch.alpine.tensor.io.StringScalar;
   @Override // from FieldWrap
   public List<Object> options(Object object) {
     List<Object> list = super.options(object);
-    if (list.isEmpty())
-      if (Objects.nonNull(fieldInteger) && Objects.nonNull(fieldClips) && fieldClips.isFinite()) {
-        Scalar min = fieldClips.min();
-        Scalar max = fieldClips.max();
-        return Range.of(Scalars.longValueExact(min), Scalars.longValueExact(max) + 1).stream() //
-            .map(Scalar.class::cast).collect(Collectors.toList());
+    if (list.isEmpty() && Objects.nonNull(fieldClips)) {
+      if (Objects.nonNull(fieldInteger) && fieldClips.isFinite()) {
+        Clip clip = fieldClips.clip();
+        if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT)) {
+          return Range.of( //
+              Scalars.intValueExact(clip.min()), //
+              Scalars.intValueExact(clip.max().add(RealScalar.ONE))).stream() //
+              .map(Scalar.class::cast) //
+              .collect(Collectors.toList());
+        }
       }
+      return Stream.of(fieldClips.min(), fieldClips.max()) //
+          .filter(FiniteScalarQ::of) //
+          .map(this::toString) //
+          .collect(Collectors.toList());
+    }
     return list;
   }
 

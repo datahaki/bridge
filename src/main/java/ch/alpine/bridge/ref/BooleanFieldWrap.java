@@ -20,11 +20,6 @@ import ch.alpine.bridge.ref.ann.FieldFuse;
     return BooleanParser.orNull(string);
   }
 
-  @Override // from FieldWrap
-  public String toString(Object object) {
-    return object.toString();
-  }
-
   @Override
   public List<Object> options(Object object) {
     return List.of( //
@@ -34,8 +29,11 @@ import ch.alpine.bridge.ref.ann.FieldFuse;
 
   @Override // from FieldWrap
   public FieldPanel createFieldPanel(Object object, Object value) {
-    return Objects.isNull(fieldFuse) //
-        ? new BooleanCheckBox(this, (Boolean) value)
-        : new BooleanButton(this, fieldFuse.value());
+    if (Objects.isNull(fieldFuse))
+      return new BooleanCheckBox(this, (Boolean) value);
+    String string = fieldFuse.value();
+    return new BooleanButton(this, string.isEmpty() //
+        ? getField().getName()
+        : string);
   }
 }

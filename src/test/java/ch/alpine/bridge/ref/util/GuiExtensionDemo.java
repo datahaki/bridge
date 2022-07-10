@@ -2,7 +2,6 @@
 package ch.alpine.bridge.ref.util;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -15,11 +14,7 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.FieldsEditorKey;
-import ch.alpine.bridge.ref.FieldsEditorManager;
-import ch.alpine.bridge.ref.GuiExtension;
-import ch.alpine.bridge.swing.CheckBoxIcons;
-import ch.alpine.bridge.swing.LookAndFeels;
+import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {
@@ -51,6 +46,7 @@ public class GuiExtensionDemo {
     jPanel.add(BorderLayout.CENTER, jSplitPane);
     {
       JToolBar jToolBar = new JToolBar();
+      jToolBar.setFloatable(false);
       {
         JButton jButton = new JButton("reset fuse");
         jButton.addActionListener(l -> {
@@ -73,9 +69,9 @@ public class GuiExtensionDemo {
   }
 
   public static void main(String[] args) {
-    CheckBoxIcons.BALLIT.init(32);
-    LookAndFeels.DRACULA.updateComponentTreeUI();
-    FieldsEditorManager.set(FieldsEditorKey.FONT_TEXTFIELD, new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
+    // LookAndFeels.DRACULA.updateComponentTreeUI();
+    // ---
+    // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.BALLIT;
     // ---
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
     guiExtensionDemo.jFrame.setVisible(true);

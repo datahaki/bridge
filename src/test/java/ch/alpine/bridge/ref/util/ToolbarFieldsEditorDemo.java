@@ -10,7 +10,7 @@ import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.ref.GuiExtension;
+import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum ToolbarFieldsEditorDemo {

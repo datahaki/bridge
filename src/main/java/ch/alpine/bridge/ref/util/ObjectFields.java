@@ -93,7 +93,7 @@ public class ObjectFields {
   private static List<Object> privateList(Object object) {
     List<Object> list = new ArrayList<>();
     ObjectFields.of(object, new ObjectFieldAll() {
-      @Override
+      @Override // from ObjectFieldVisitor
       public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
         list.add(value);
       }

@@ -10,6 +10,7 @@ import java.io.IOException;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 
+import ch.alpine.bridge.usr.SpectrogramDemo;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.img.ColorDataLists;
@@ -65,6 +66,9 @@ public enum CascadeHelper {
     {
       visualSet.setPlotLabel(StackedTablePlot.class.getSimpleName());
       export(folder, StackedTablePlot.of(visualSet));
+    }
+    {
+      export(folder, SpectrogramDemo.create());
     }
   }
 

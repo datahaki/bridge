@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.AnnotatedContainer;
+import ch.alpine.bridge.ref.ex.AnnotatedContainer;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
@@ -102,10 +102,43 @@ class FieldClipsTest {
       public String max() {
         return "123[km]";
       }
+
+      @Override
+      public boolean useMinUnit() {
+        return true;
+      }
     };
     FieldClips fieldClips = FieldClips.wrap(fieldClip);
     Clip clip = fieldClips.clip();
     clip.requireInside(Quantity.of(124, "m"));
+  }
+
+  @Test
+  void testWithUnitMax() {
+    FieldClip fieldClip = new FieldClip() {
+      @Override
+      public Class<? extends Annotation> annotationType() {
+        return FieldClip.class;
+      }
+
+      @Override
+      public String min() {
+        return "123[m]";
+      }
+
+      @Override
+      public String max() {
+        return "123[km]";
+      }
+
+      @Override
+      public boolean useMinUnit() {
+        return false;
+      }
+    };
+    FieldClips fieldClips = FieldClips.wrap(fieldClip);
+    Clip clip = fieldClips.clip();
+    clip.requireInside(Quantity.of(122, "km"));
   }
 
   @Test
@@ -124,6 +157,11 @@ class FieldClipsTest {
       @Override
       public String max() {
         return "1230";
+      }
+
+      @Override
+      public boolean useMinUnit() {
+        return true;
       }
     };
     FieldClips fieldClips = FieldClips.wrap(fieldClip);
@@ -149,6 +187,11 @@ class FieldClipsTest {
       @Override
       public String max() {
         return "Infinity";
+      }
+
+      @Override
+      public boolean useMinUnit() {
+        return true;
       }
     };
     FieldClips fieldClips = FieldClips.wrap(fieldClip);
