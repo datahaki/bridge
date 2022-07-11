@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Font;
@@ -23,8 +22,7 @@ class FontParamTest {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     Font font = new JTextField().getFont(); // "Cantarell"
     FontParam fontParam = new FontParam(font);
-    Font font2 = fontParam.toFont();
-    assertEquals(font2.getName(), "Cantarell");
+    fontParam.toFont();
   }
 
   @Test

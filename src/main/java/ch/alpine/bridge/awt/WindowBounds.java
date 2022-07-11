@@ -79,7 +79,7 @@ public class WindowBounds {
         } catch (IllegalComponentStateException illegalComponentStateException) {
           String message = illegalComponentStateException.getMessage();
           if (!message.equals("component must be showing on the screen to determine its location"))
-            System.err.println("WindowConfiguration: " + message);
+            System.err.println("WindowBounds " + message);
         }
         timing.start();
       }
@@ -94,12 +94,12 @@ public class WindowBounds {
           shift.x = moved.x - shown.x;
           shift.y = moved.y - shown.y;
           if (shift.x != 0) {
-            System.err.println("shift=" + shift + " -> reset");
+            System.err.println("WindowBounds shift=" + shift + " -> reset");
             shift.x = 0;
             shift.y = 0;
           }
         } else {
-          System.err.println("nanos=" + nanos);
+          System.err.println("WindowBounds nanos=" + nanos);
         }
         window.removeComponentListener(this);
       }

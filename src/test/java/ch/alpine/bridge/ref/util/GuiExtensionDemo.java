@@ -14,7 +14,11 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ex.GuiExtension;
+import ch.alpine.bridge.swing.CheckBoxIcon;
+import ch.alpine.bridge.swing.LookAndFeels;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {
@@ -69,13 +73,11 @@ public class GuiExtensionDemo {
   }
 
   public static void main(String[] args) {
-    // LookAndFeels.DRACULA.updateComponentTreeUI();
+    LookAndFeels.LIGHT.updateComponentTreeUI();
     // ---
-    // FieldsEditorParam.GLOBAL.checkBoxIcon_override = true;
-    // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.METRO
-    //
-    // ;
-    // FieldsEditorParam.GLOBAL.checkBoxIconSize = RealScalar.of(32);
+    FieldsEditorParam.GLOBAL.checkBoxIcon_override = true;
+    FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.LEDGREEN;
+    FieldsEditorParam.GLOBAL.checkBoxIconSize = RealScalar.of(32);
     // ---
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
     guiExtensionDemo.jFrame.setVisible(true);
