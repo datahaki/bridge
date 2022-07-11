@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
-class FieldsEditorParamTest {
+class FontFieldWrapTest {
   public static FontFieldWrap getFontFieldWrap() {
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(FieldsEditorParam.GLOBAL);
     List<FieldPanel> list = panelFieldsEditor.list();
@@ -39,5 +39,7 @@ class FieldsEditorParamTest {
     assertNull(fontFieldWrap.toValue("Font[Some,,3]"));
     assertNull(fontFieldWrap.toValue("Font[,BOLD,3]"));
     assertNull(fontFieldWrap.toValue("Font[  ,BOLD,3]"));
+    assertNull(fontFieldWrap.toValue("Font[Dialog,BOLD,-1]"));
+    // new Font("Dialog", Font.PLAIN, -1);
   }
 }

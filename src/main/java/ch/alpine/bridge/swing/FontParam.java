@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
@@ -21,6 +22,7 @@ public class FontParam {
   public String name; // "Dialog"
   public FontStyle style; // PLAIN
   @FieldInteger
+  @FieldClip(min = "0", max = "Infinity")
   @FieldSelectionArray({ "12", "14", "16", "18", "20", "22", "25" })
   public Scalar size; // 12
 

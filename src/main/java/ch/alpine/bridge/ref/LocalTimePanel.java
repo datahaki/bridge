@@ -1,47 +1,20 @@
 // code by jph
 package ch.alpine.bridge.ref;
 
-import java.awt.BorderLayout;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Component;
 import java.time.LocalTime;
-import java.util.Objects;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 
-import ch.alpine.bridge.awt.WindowClosed;
 import ch.alpine.bridge.swing.LocalTimeDialog;
 
-/* package */ class LocalTimePanel extends StringPanel {
-  private final JPanel jPanel = new JPanel(new BorderLayout());
-  private final JButton jButton = new JButton(StaticHelper.BUTTON_TEXT);
-  private JDialog jDialog = null;
-
+/* package */ class LocalTimePanel extends DialogPanel {
   public LocalTimePanel(FieldWrap fieldWrap, LocalTime localTime) {
     super(fieldWrap, localTime);
-    jButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        if (Objects.isNull(jDialog)) {
-          // fallback localTime is restored when "Cancel" is pressed
-          jDialog = new LocalTimeDialog(jButton, localTime, localTime -> getJTextField().setText(fieldWrap.toString(localTime)));
-          WindowClosed.runs(jDialog, () -> jDialog = null);
-          Point point = jButton.getLocationOnScreen();
-          jDialog.setLocation(point);
-          jDialog.setVisible(true);
-        }
-      }
-    });
-    jPanel.add(BorderLayout.CENTER, getJTextField());
-    jPanel.add(BorderLayout.EAST, jButton);
   }
 
-  @Override // from FieldPanel
-  public JComponent getJComponent() {
-    return jPanel;
+  @Override // from DialogPanel
+  protected JDialog createDialog(Component component, Object value) {
+    return new LocalTimeDialog(component, (LocalTime) value, localTime -> getJTextField().setText(fieldWrap().toString(localTime)));
   }
 }
