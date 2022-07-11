@@ -16,6 +16,7 @@ public enum CheckBoxIcon {
   BALLIT, //
   BALLOT, //
   GENTLEFACE, //
+  LEDGREEN, //
   ;
 
   /** @param n pixel width and height */
