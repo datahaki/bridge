@@ -28,8 +28,8 @@ import ch.alpine.bridge.swing.FontDialog;
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         if (Objects.isNull(jDialog)) {
-          // fallback localTime is restored when "Cancel" is pressed
-          jDialog = new FontDialog(jButton, font, font -> getJTextField().setText(FontParser.toString(font)));
+          // fallback font is restored when "Cancel" is pressed
+          jDialog = new FontDialog(jButton, font, font -> getJTextField().setText(fieldWrap.toString(font)));
           WindowClosed.runs(jDialog, () -> jDialog = null);
           Point point = jButton.getLocationOnScreen();
           jDialog.setLocation(point);
