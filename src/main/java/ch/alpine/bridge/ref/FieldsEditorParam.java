@@ -13,7 +13,6 @@ import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.util.FieldsEditor;
 import ch.alpine.bridge.swing.CheckBoxIcon;
-import ch.alpine.bridge.swing.FontParam;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 
@@ -28,7 +27,7 @@ public class FieldsEditorParam {
   public Scalar toolbarHeight = RealScalar.of(28);
   // ---
   public Boolean textFieldFont_override = false;
-  public final FontParam textFieldFont = new FontParam(new Font(Font.DIALOG_INPUT, Font.PLAIN, 15));
+  public Font textFieldFont = new Font(Font.DIALOG_INPUT, Font.PLAIN, 15);
   // ---
   public Boolean checkBoxIcon_override = false;
   public CheckBoxIcon checkBoxIcon = CheckBoxIcon.METRO;
@@ -46,7 +45,7 @@ public class FieldsEditorParam {
 
   public void setFont(Component component) {
     if (textFieldFont_override)
-      component.setFont(textFieldFont.toFont());
+      component.setFont(textFieldFont);
   }
 
   public void setIcon(JCheckBox jCheckBox) {

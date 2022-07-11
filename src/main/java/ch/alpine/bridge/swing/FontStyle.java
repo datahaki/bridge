@@ -5,5 +5,6 @@ public enum FontStyle {
   PLAIN, //
   BOLD, //
   ITALIC, //
+  BOLD_ITALIC, //
   ;
 }
