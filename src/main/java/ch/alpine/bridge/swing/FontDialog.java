@@ -81,7 +81,10 @@ public class FontDialog extends JDialog {
       jToolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
       {
         JButton jButton = new JButton("Done");
-        jButton.addActionListener(actionEvent -> dispose());
+        jButton.addActionListener(actionEvent -> {
+          dispose();
+          consumer.accept(font);
+        });
         jToolBar.add(jButton);
       }
       jToolBar.addSeparator();

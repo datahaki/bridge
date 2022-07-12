@@ -71,7 +71,10 @@ public class LocalTimeDialog extends JDialog {
       jToolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
       {
         JButton jButton = new JButton("Done");
-        jButton.addActionListener(actionEvent -> dispose());
+        jButton.addActionListener(actionEvent -> {
+          dispose();
+          consumer.accept(localTime);
+        });
         jToolBar.add(jButton);
       }
       jToolBar.addSeparator();

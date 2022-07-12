@@ -25,6 +25,9 @@ public class GuiExtensionDemo {
 
   public GuiExtensionDemo() {
     guiExtension.cdg = null;
+    guiExtension.background = null;
+    guiExtension.fieldsEditorParam.textFieldFont = null;
+    guiExtension.time = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
     guiExtension.pivots = Pivots.FIRST_NON_ZERO;
     panelFieldsEditor.updateJComponents();

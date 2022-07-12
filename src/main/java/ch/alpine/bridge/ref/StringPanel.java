@@ -112,14 +112,13 @@ import ch.alpine.bridge.swing.UIManagerColor;
   }
 
   protected final void indicateGui() {
-    if (jTextField.isEditable())
-      if (isValid(jTextField.getText())) {
-        jTextField.setForeground(UIManagerColor.TextField_foreground.get());
-        jTextField.setBackground(UIManagerColor.TextField_background.get());
-      } else {
-        jTextField.setForeground(COLOR_FAIL_TEXT);
-        jTextField.setBackground(COLOR_FAIL_BGND);
-      }
+    if (isValid(jTextField.getText())) {
+      jTextField.setForeground(UIManagerColor.TextField_foreground.get());
+      jTextField.setBackground(UIManagerColor.TextField_background.get());
+    } else {
+      jTextField.setForeground(COLOR_FAIL_TEXT);
+      jTextField.setBackground(COLOR_FAIL_BGND);
+    }
   }
 
   // ---

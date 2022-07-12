@@ -1,78 +1,20 @@
 // code by jph
 package ch.alpine.bridge.ref;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Component;
 import java.util.Objects;
 
-import javax.swing.JButton;
 import javax.swing.JColorChooser;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.awt.WindowClosed;
-import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.img.ColorFormat;
-
-/* package */ final class ColorPanel extends StringPanel {
+/* package */ class ColorPanel extends DialogPanel {
   private static final Color FALLBACK = Color.WHITE;
-  // ---
-  private final JPanel jPanel = new JPanel(new BorderLayout());
-  private final JButton jButton = new JButton(StaticHelper.BUTTON_TEXT);
-  /** For each instance of {@link ColorPanel}, a single JColorChooser may be opened
-   * by the user. The jDialog field is non-null whenever the dialog is visible. */
-  private JDialog jDialog = null;
 
   public ColorPanel(FieldWrap fieldWrap, Object object) {
     super(fieldWrap, object);
-    jButton.setBackground(getColor());
-    jButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        if (Objects.isNull(jDialog)) {
-          // fallback color is restored when "Cancel" is pressed
-          Color fallback = getColor();
-          JColorChooser jColorChooser = new JColorChooser(fallback);
-          jColorChooser.getSelectionModel().addChangeListener(changeEvent -> {
-            updateJComponent(jColorChooser.getColor());
-            notifyListeners(getJTextField().getText());
-          });
-          jDialog = JColorChooser.createDialog( //
-              jButton, "color selection: " + fieldWrap.getField().getName(), //
-              false, jColorChooser, //
-              i -> jDialog.dispose(), // ok listener
-              i -> { // cancel listener
-                jDialog.dispose();
-                updateJComponent(fallback);
-                notifyListeners(getJTextField().getText());
-              });
-          jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-          WindowClosed.runs(jDialog, () -> jDialog = null);
-          jDialog.setVisible(true);
-        }
-      }
-    });
     getJTextField().setEditable(false);
-    jPanel.add(BorderLayout.CENTER, getJTextField());
-    jPanel.add(BorderLayout.EAST, jButton);
-  }
-
-  private Color getColor() {
-    try {
-      return ColorFormat.toColor(Tensors.fromString(getJTextField().getText()));
-    } catch (Exception exception) {
-      // ---
-    }
-    return FALLBACK;
-  }
-
-  @Override // from FieldPanel
-  public JComponent getJComponent() {
-    return jPanel;
   }
 
   @Override // from StringPanel
@@ -80,6 +22,26 @@ import ch.alpine.tensor.img.ColorFormat;
     super.updateJComponent(value);
     Color color = (Color) value;
     // background color modification does not work for all l&f, for instance GTK_PLUS
-    jButton.setBackground(color);
+    jButton().setBackground(color);
+  }
+
+  @Override // from DialogPanel
+  protected JDialog createDialog(Component component, Object value) {
+    Color fallback = Objects.isNull(value) ? FALLBACK : (Color) value;
+    JColorChooser jColorChooser = new JColorChooser(fallback);
+    jColorChooser.getSelectionModel().addChangeListener(changeEvent -> updateAndNotify(jColorChooser.getColor()));
+    JDialog jDialog = JColorChooser.createDialog( //
+        component, "color selection: " + fieldWrap().getField().getName(), //
+        false, jColorChooser, //
+        actionEvent -> { // ok listener
+          dispose();
+          updateAndNotify(jColorChooser.getColor());
+        }, //
+        actionEvent -> { // cancel listener
+          dispose();
+          updateAndNotify(fallback);
+        });
+    jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    return jDialog;
   }
 }
