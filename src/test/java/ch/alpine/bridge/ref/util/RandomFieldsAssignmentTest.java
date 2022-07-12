@@ -33,7 +33,7 @@ class RandomFieldsAssignmentTest {
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder);
     fieldsAssignment.stream().forEach(i -> atomicInteger.getAndIncrement());
-    assertEquals(atomicInteger.get(), 0);
+    assertEquals(atomicInteger.get(), 1);
   }
 
   @Test
@@ -42,7 +42,7 @@ class RandomFieldsAssignmentTest {
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder);
     fieldsAssignment.stream().forEach(i -> atomicInteger.getAndIncrement());
-    assertEquals(atomicInteger.get(), 0);
+    assertEquals(atomicInteger.get(), 1);
   }
 
   @Test
@@ -51,7 +51,7 @@ class RandomFieldsAssignmentTest {
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder);
     fieldsAssignment.randomize(10).forEach(i -> atomicInteger.getAndIncrement());
-    assertEquals(atomicInteger.get(), 0);
+    assertEquals(atomicInteger.get(), 1);
   }
 
   @Test
