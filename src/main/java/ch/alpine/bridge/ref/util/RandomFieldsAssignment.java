@@ -19,15 +19,15 @@ import ch.alpine.bridge.ref.ann.FieldClip;
 public class RandomFieldsAssignment extends FieldsAssignment {
   /** @param object
    * @param runnable */
-  public static FieldsAssignment of(Object object, Runnable runnable) {
-    return new RandomFieldsAssignment(object, runnable);
+  public static FieldsAssignment of(Object object) {
+    return new RandomFieldsAssignment(object);
   }
 
   // ---
   private final Map<String, Function<Random, String>> distributions;
 
-  private RandomFieldsAssignment(Object object, Runnable runnable) {
-    super(object, runnable);
+  private RandomFieldsAssignment(Object object) {
+    super(object);
     distributions = fieldOptionsCollector.distributions();
   }
 

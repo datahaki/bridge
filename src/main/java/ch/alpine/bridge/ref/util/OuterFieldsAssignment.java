@@ -20,13 +20,13 @@ public class OuterFieldsAssignment extends FieldsAssignment {
   /** @param object
    * @param runnable of given object but with fields assigned based on all possible
    * combinations suggested by the field type, and annotations */
-  public static FieldsAssignment of(Object object, Runnable runnable) {
-    return new OuterFieldsAssignment(object, runnable);
+  public static FieldsAssignment of(Object object) {
+    return new OuterFieldsAssignment(object);
   }
 
   // ---
-  private OuterFieldsAssignment(Object object, Runnable runnable) {
-    super(object, runnable);
+  private OuterFieldsAssignment(Object object) {
+    super(object);
   }
 
   @Override // from FieldsAssignment
