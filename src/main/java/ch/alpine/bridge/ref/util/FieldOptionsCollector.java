@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref.util;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.lang.reflect.Field;
 import java.time.LocalTime;
 import java.util.Collections;
@@ -60,6 +61,8 @@ import ch.alpine.tensor.sca.Clip;
       distributions.put(key, random -> fieldWrap.toString(Randoms.color(random)));
     if (cls.equals(LocalTime.class))
       distributions.put(key, random -> fieldWrap.toString(Randoms.localTime(random)));
+    if (cls.equals(Font.class))
+      distributions.put(key, random -> fieldWrap.toString(Randoms.font(random)));
   }
 
   /** @return mapping from field name to list of suggested value strings */

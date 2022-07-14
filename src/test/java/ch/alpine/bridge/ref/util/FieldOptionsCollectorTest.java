@@ -60,7 +60,7 @@ class FieldOptionsCollectorTest {
   public void testDiscreteOuter() {
     Set<Scalar> set = new HashSet<>();
     DiscreteParam discreteParam = new DiscreteParam();
-    FieldsAssignment fieldsAssignment = OuterFieldsAssignment.of(discreteParam);
+    FieldsAssignment fieldsAssignment = FieldsAssignment.of(discreteParam);
     fieldsAssignment.stream().forEach(i -> set.add(discreteParam.integer));
     assertEquals(set.size(), 2);
     assertTrue(set.contains(RealScalar.of(-10)));

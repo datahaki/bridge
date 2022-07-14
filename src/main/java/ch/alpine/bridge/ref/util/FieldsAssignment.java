@@ -13,16 +13,36 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.ext.Integers;
 
-/** The modifications occur on the given object.
+/** OuterFieldsAssignment creates a complete, or randomized set of
+ * assignments of a parameter object. The assignments are based on
+ * {@link FieldWrap#options(Object)}.
+ * 
+ * This is useful for automatic testing of functionality when subject
+ * to different assignments of a parameter object.
+ * 
+ * Remark:
+ * If given limit in {@link #randomize(int)} exceeds number of possible
+ * combinations, then a complete, systematic enumeration is performed.
+ * 
+ * The modifications occur on the given object.
  * The given object does not need to be instance of {@link Serializable}. */
-public abstract class FieldsAssignment {
+public class FieldsAssignment {
   protected static final Random RANDOM = new SecureRandom();
+
+  /** @param object
+   * @param runnable of given object but with fields assigned based on all possible
+   * combinations suggested by the field type, and annotations */
+  public static FieldsAssignment of(Object object) {
+    return new FieldsAssignment(object);
+  }
+
   // ---
   private final Object object;
   private final String string;
@@ -95,10 +115,22 @@ public abstract class FieldsAssignment {
     return ObjectProperties.set(object, properties);
   }
 
-  /** @param properties
+  /** Hint:
+   * {@link RandomFieldsAssignment} overrides this method
+   * for instance to insert random values from continuous distributions
+   * to given properties
+   * 
+   * @param properties
    * @param random */
-  protected abstract void insert(Properties properties, Random random);
+  protected void insert(Properties properties, Random random) {
+    // ---
+  }
 
-  /** @return whether enumeration is random free */
-  protected abstract boolean isGrid();
+  /** Hint:
+   * {@link RandomFieldsAssignment} overrides this method
+   * 
+   * @return whether enumeration is random free */
+  protected boolean isGrid() {
+    return true;
+  }
 }

@@ -17,13 +17,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import ch.alpine.bridge.ref.ex.FieldOuterParam;
 import ch.alpine.bridge.ref.ex.GuiExtension;
 
-class OuterFieldsAssignmentTest {
+class FieldsAssignmentTest {
   @Test
   void test() {
     Set<String> set = new HashSet<>();
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
-    FieldsAssignment fieldsAssignment = OuterFieldsAssignment.of(fieldOuterParam);
+    FieldsAssignment fieldsAssignment = FieldsAssignment.of(fieldOuterParam);
     fieldsAssignment.stream().forEach(i -> {
       atomicInteger.getAndIncrement();
       assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
@@ -39,14 +39,14 @@ class OuterFieldsAssignmentTest {
   @Test
   void testStream() {
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
-    FieldsAssignment fieldsAssignment = OuterFieldsAssignment.of(fieldOuterParam);
+    FieldsAssignment fieldsAssignment = FieldsAssignment.of(fieldOuterParam);
     Set<String> set = fieldsAssignment.stream().map(ObjectProperties::join).collect(Collectors.toSet());
     assertEquals(set.size(), 192);
   }
 
   static Stream<Arguments> objectStream() {
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
-    FieldsAssignment fieldsAssignment = OuterFieldsAssignment.of(fieldOuterParam);
+    FieldsAssignment fieldsAssignment = FieldsAssignment.of(fieldOuterParam);
     return fieldsAssignment.stream().map(Arguments::of);
   }
 
@@ -62,7 +62,7 @@ class OuterFieldsAssignmentTest {
   void testLimit() {
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
-    FieldsAssignment fieldsAssignment = OuterFieldsAssignment.of(fieldOuterParam);
+    FieldsAssignment fieldsAssignment = FieldsAssignment.of(fieldOuterParam);
     fieldsAssignment.randomize(15).forEach(i -> {
       atomicInteger.getAndIncrement();
       assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
@@ -81,7 +81,7 @@ class OuterFieldsAssignmentTest {
   void testGuiExtensions() {
     AtomicInteger atomicInteger = new AtomicInteger();
     GuiExtension guiExtension = new GuiExtension();
-    FieldsAssignment fieldsAssignment = OuterFieldsAssignment.of(guiExtension);
+    FieldsAssignment fieldsAssignment = FieldsAssignment.of(guiExtension);
     fieldsAssignment.randomize(133).forEach(i -> atomicInteger.getAndIncrement());
     assertEquals(atomicInteger.get(), 133);
     fieldsAssignment.restore();
