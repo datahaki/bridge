@@ -45,19 +45,19 @@ public class ToolbarFieldsEditor extends FieldsEditor {
       if (field.getType().isEnum()) {
         jComponent.setToolTipText(text);
       } else //
-        if (!isBoolean) {
-          JLabel jLabel = new JLabel(text + " ");
-          // Font font = jLabel.getFont();
-          // final int _style = font.getStyle();
-          // int style = _style;
-          // if (_style == Font.BOLD) // for default look and feel
-          // style = Font.PLAIN;
-          // if (_style == Font.PLAIN)
-          // style = Font.ITALIC;
-          // jLabel.setFont(font.deriveFont(style));
-          jLabel.setToolTipText(FieldToolTip.of(field));
-          jToolBar.add(jLabel);
-        }
+      if (!isBoolean) {
+        JLabel jLabel = new JLabel(text + " ");
+        // Font font = jLabel.getFont();
+        // final int _style = font.getStyle();
+        // int style = _style;
+        // if (_style == Font.BOLD) // for default look and feel
+        // style = Font.PLAIN;
+        // if (_style == Font.PLAIN)
+        // style = Font.ITALIC;
+        // jLabel.setFont(font.deriveFont(style));
+        jLabel.setToolTipText(FieldToolTip.of(field));
+        jToolBar.add(jLabel);
+      }
       jToolBar.add(jComponent);
       // some look and feels introduce a vertical line | as separator...
       // jToolBar.addSeparator();

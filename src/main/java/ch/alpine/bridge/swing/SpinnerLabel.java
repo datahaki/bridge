@@ -120,15 +120,15 @@ public abstract class SpinnerLabel<T> extends JTextField {
       if (isOverArrows(point))
         increment(point.y < dimension.height / 2 ? -1 : 1); // sign of difference
       else //
-        if (isMenuEnabled) {
-          SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(getList(), getValue(), isMenuHover);
-          spinnerMenu.setFont(getFont());
-          spinnerMenu.addSpinnerListener(type -> {
-            setValue(type);
-            reportToAll();
-          });
-          spinnerMenu.showRight(this);
-        }
+      if (isMenuEnabled) {
+        SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(getList(), getValue(), isMenuHover);
+        spinnerMenu.setFont(getFont());
+        spinnerMenu.addSpinnerListener(type -> {
+          setValue(type);
+          reportToAll();
+        });
+        spinnerMenu.showRight(this);
+      }
     }
   };
 

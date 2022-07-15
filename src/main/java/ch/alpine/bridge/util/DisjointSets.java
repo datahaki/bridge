@@ -46,13 +46,12 @@ public class DisjointSets {
       Node node_y = list.get(key_y);
       if (node_x.rank < node_y.rank)
         node_x.setParent(key_y);
-      else
-        if (node_x.rank > node_y.rank)
-          node_y.setParent(key_x);
-        else {
-          node_y.setParent(key_x);
-          ++node_x.rank;
-        }
+      else if (node_x.rank > node_y.rank)
+        node_y.setParent(key_x);
+      else {
+        node_y.setParent(key_x);
+        ++node_x.rank;
+      }
     }
   }
 
