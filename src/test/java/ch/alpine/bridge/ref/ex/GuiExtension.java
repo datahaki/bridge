@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref.ex;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,7 +25,6 @@ import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.ex.Container.NestedEnum;
-import ch.alpine.bridge.swing.FontParam;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -51,7 +51,7 @@ public class GuiExtension {
   @FieldLabel("Big Fuse")
   @FieldFuse("press to restart")
   public Boolean fuse = false;
-  public final FontParam fontParam = new FontParam(new JLabel().getFont());
+  public Font font = new JLabel().getFont();
   @FieldSelectionArray({ "{0, 3}", "{10, 11}" })
   public Clip clip = Clips.absolute(3);
   @FieldFuse

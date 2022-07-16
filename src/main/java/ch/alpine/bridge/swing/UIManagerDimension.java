@@ -7,20 +7,19 @@ import java.util.function.Supplier;
 import javax.swing.UIManager;
 
 public enum UIManagerDimension implements Supplier<Dimension> {
-  ColorChooser_swatchesRecentSwatchSize, //
-  ColorChooser_swatchesSwatchSize, //
-  OptionPane_minimumSize, //
-  ProgressBar_horizontalSize, //
-  ProgressBar_verticalSize, //
-  ScrollBar_maximumThumbSize, //
-  ScrollBar_minimumThumbSize, //
-  Slider_horizontalSize, //
-  Slider_minimumHorizontalSize, //
-  Slider_minimumVerticalSize, //
-  Slider_verticalSize, //
-  Spinner_arrowButtonSize, //
-  ToolBar_separatorSize, //
-  ;
+  ColorChooser_swatchesRecentSwatchSize,
+  ColorChooser_swatchesSwatchSize,
+  OptionPane_minimumSize,
+  ProgressBar_horizontalSize,
+  ProgressBar_verticalSize,
+  ScrollBar_maximumThumbSize,
+  ScrollBar_minimumThumbSize,
+  Slider_horizontalSize,
+  Slider_minimumHorizontalSize,
+  Slider_minimumVerticalSize,
+  Slider_verticalSize,
+  Spinner_arrowButtonSize,
+  ToolBar_separatorSize;
 
   @Override
   public Dimension get() {

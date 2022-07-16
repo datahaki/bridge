@@ -12,12 +12,11 @@ import ch.alpine.tensor.io.ResourceData;
  * 
  * {@link PanelFieldsEditor} */
 public enum CheckBoxIcon {
-  METRO, //
-  BALLIT, //
-  BALLOT, //
-  GENTLEFACE, //
-  LEDGREEN, //
-  ;
+  METRO,
+  BALLIT,
+  BALLOT,
+  GENTLEFACE,
+  LEDGREEN;
 
   /** @param n pixel width and height */
   public Icon create(int n, boolean selected) {

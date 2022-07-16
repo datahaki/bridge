@@ -10,10 +10,14 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -25,10 +29,50 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.bridge.ref.ann.FieldClip;
+import ch.alpine.bridge.ref.ann.FieldInteger;
+import ch.alpine.bridge.ref.ann.FieldSelectionArray;
+import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
+import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
 
 public class FontDialog extends JDialog {
   private static final String DEMO = "Abc123!";
+
+  @ReflectionMarker
+  public static class Param {
+    @FieldSelectionCallback("names")
+    public String name; // "Dialog"
+    public FontStyle style; // PLAIN
+    @FieldInteger
+    @FieldClip(min = "0", max = "Infinity")
+    @FieldSelectionArray({ "12", "14", "16", "18", "20", "22", "25" })
+    public Scalar size; // 12
+
+    /** @param font */
+    public Param(Font font) {
+      name = font.getName();
+      style = FontStyle.values()[font.getStyle()];
+      size = RealScalar.of(font.getSize());
+    }
+
+    @ReflectionMarker
+    public static List<String> names() {
+      GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      return Arrays.stream(graphicsEnvironment.getAvailableFontFamilyNames()).collect(Collectors.toList());
+    }
+
+    /** Experimentation has shown that a font name unknown to the graphics environment
+     * will cause a fallback to a known font
+     * 
+     * @return font as specified by this instance */
+    public Font toFont() {
+      return new Font(name, style.ordinal(), size.number().intValue());
+    }
+  }
+
   // ---
   private final JComponent jComponent = new JComponent() {
     @Override
@@ -62,7 +106,7 @@ public class FontDialog extends JDialog {
     jComponent.setPreferredSize(new Dimension(200, 60));
     jPanel.add(BorderLayout.NORTH, jComponent);
     // ---
-    FontParam fontParam = new FontParam(font);
+    Param fontParam = new Param(font);
     {
       PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(fontParam);
       panelFieldsEditor.addUniversalListener( //

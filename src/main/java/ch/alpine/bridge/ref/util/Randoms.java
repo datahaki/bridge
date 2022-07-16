@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
 
-import ch.alpine.bridge.swing.FontParam;
+import ch.alpine.bridge.swing.FontDialog;
 import ch.alpine.bridge.swing.FontStyle;
 
 /* package */ enum Randoms {
@@ -25,7 +25,7 @@ import ch.alpine.bridge.swing.FontStyle;
   }
 
   public static Font font(Random random) {
-    List<String> list = FontParam.names();
+    List<String> list = FontDialog.Param.names();
     return new Font( //
         list.get(random.nextInt(list.size())), //
         random.nextInt(FontStyle.values().length), //
