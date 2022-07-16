@@ -66,10 +66,11 @@ public class BarLegend {
     graphics.setFont(font);
     graphics.setColor(color);
     RenderQuality.setQuality(graphics);
+    int ascent = fontMetrics.getAscent();
     for (Entry<Scalar, String> entry : map.entrySet()) {
       Scalar rescale = RealScalar.ONE.subtract(clip.rescale(entry.getKey()));
-      int piy = (int) (height * rescale.number().doubleValue());
-      piy = Math.max(piy, fontMetrics.getAscent());
+      int piy = (int) (height * rescale.number().doubleValue()+ascent/2);
+      piy = Math.max(piy, ascent);
       graphics.drawString(entry.getValue(), width + space, piy);
     }
     graphics.dispose();

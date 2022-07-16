@@ -30,7 +30,6 @@ public class GuiExtensionDemo {
     guiExtension.time = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
     guiExtension.pivots = Pivots.FIRST_NON_ZERO;
-    panelFieldsEditor.updateJComponents();
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     // the code below demonstrates that individual listeners can be attached
     for (FieldPanel fieldPanel : panelFieldsEditor.list()) {

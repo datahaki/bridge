@@ -12,17 +12,24 @@ import javax.swing.WindowConstants;
 /* package */ class ColorPanel extends DialogPanel {
   private static final Color FALLBACK = Color.WHITE;
 
-  public ColorPanel(FieldWrap fieldWrap, Object object) {
-    super(fieldWrap, object);
+  public ColorPanel(FieldWrap fieldWrap, Object value) {
+    super(fieldWrap, value);
+    if (Objects.nonNull(value))
+      setBackground(value);
     getJTextField().setEditable(false);
   }
 
   @Override // from StringPanel
   public void updateJComponent(Object value) {
     super.updateJComponent(value);
+    setBackground(value);
+  }
+  
+  private void setBackground(Object value) {
     Color color = (Color) value;
     // background color modification does not work for all l&f, for instance GTK_PLUS
     jButton().setBackground(color);
+    
   }
 
   @Override // from DialogPanel
