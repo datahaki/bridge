@@ -86,7 +86,7 @@ public class SpinnerMenu<T> {
 
   public void showRight(JComponent jComponent) {
     // computation below is necessary to compute position on display
-    int delta = 2; // TODO BRIDGE ALG is this a magic constant that depends on l&f ?
+    int delta = 2; // constant was found to work well, but could depend on l&f
     if (Objects.nonNull(selectedValue) && map.containsKey(selectedValue))
       for (Entry<T, JMenuItem> entry : map.entrySet()) {
         delta += entry.getValue().getPreferredSize().height;
