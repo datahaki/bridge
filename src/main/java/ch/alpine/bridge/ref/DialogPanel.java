@@ -34,7 +34,7 @@ import ch.alpine.bridge.awt.WindowClosed;
         jDialog.setVisible(true);
       }
     });
-    jPanel.add(BorderLayout.CENTER, getJTextField());
+    jPanel.add(BorderLayout.CENTER, getTextFieldComponent());
     jPanel.add(BorderLayout.EAST, jButton);
   }
 
@@ -61,6 +61,6 @@ import ch.alpine.bridge.awt.WindowClosed;
   /** @param value that was selected by user from within dialog */
   protected final void updateAndNotify(Object value) {
     updateJComponent(value);
-    notifyListeners(getJTextField().getText());
+    notifyListeners(getText());
   }
 }

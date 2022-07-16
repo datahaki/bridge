@@ -15,21 +15,24 @@ import javax.swing.WindowConstants;
   public ColorPanel(FieldWrap fieldWrap, Object value) {
     super(fieldWrap, value);
     if (Objects.nonNull(value))
-      setBackground(value);
-    getJTextField().setEditable(false);
+      setButtonBackground(value);
   }
 
   @Override // from StringPanel
   public void updateJComponent(Object value) {
     super.updateJComponent(value);
-    setBackground(value);
+    setButtonBackground(value);
   }
-  
-  private void setBackground(Object value) {
+
+  private void setButtonBackground(Object value) {
     Color color = (Color) value;
     // background color modification does not work for all l&f, for instance GTK_PLUS
     jButton().setBackground(color);
-    
+  }
+
+  @Override // from StringPanel
+  protected boolean isEditable() {
+    return false;
   }
 
   @Override // from DialogPanel

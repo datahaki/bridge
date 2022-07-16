@@ -28,7 +28,7 @@ import javax.swing.filechooser.FileFilter;
         JFileChooser jFileChooser = new JFileChooser();
         for (FileFilter fileFilter : fileFilters)
           jFileChooser.setFileFilter(fileFilter);
-        File file = new File(getJTextField().getText());
+        File file = new File(getText());
         jFileChooser.setApproveButtonText("Done");
         jFileChooser.setApproveButtonToolTipText("Select file");
         jFileChooser.setDialogTitle("File selection");
@@ -38,13 +38,13 @@ import javax.swing.filechooser.FileFilter;
         if (openDialog == JFileChooser.APPROVE_OPTION) {
           File selectedFile = jFileChooser.getSelectedFile();
           String string = fieldWrap.toString(selectedFile);
-          getJTextField().setText(string);
+          setText(string);
           indicateGui();
           nofifyIfValid(string);
         }
       }
     });
-    jPanel.add(BorderLayout.CENTER, getJTextField());
+    jPanel.add(BorderLayout.CENTER, getTextFieldComponent());
     jPanel.add(BorderLayout.EAST, jButton);
   }
 

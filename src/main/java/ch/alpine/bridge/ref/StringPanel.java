@@ -9,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
 
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -19,7 +20,6 @@ import ch.alpine.bridge.swing.UIManagerColor;
 /* package */ abstract class StringPanel extends FieldPanel {
   private static final Color COLOR_FAIL_BGND = new Color(255, 192, 192);
   private static final Color COLOR_FAIL_TEXT = new Color(51, 51, 51);
-  // private static final int CARET_WIDTH = 2;
   private static final int MASK = InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK;
   private static final int UNDO = InputEvent.CTRL_DOWN_MASK;
   private static final int REDO = MASK;
@@ -32,6 +32,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
     jTextField = Objects.isNull(value) //
         ? new JTextField()
         : new JTextField(fallbackValue = fieldWrap.toString(value));
+    jTextField.setEditable(isEditable());
     UndoManager undoManager = new UndoManager();
     jTextField.getDocument().addUndoableEditListener(undoManager);
     FieldsEditorParam.GLOBAL.setFont(jTextField);
@@ -107,18 +108,35 @@ import ch.alpine.bridge.swing.UIManagerColor;
     addListener(string -> fallbackValue = string);
   }
 
-  protected final JTextField getJTextField() {
+  /** @return */
+  protected final JComponent getTextFieldComponent() {
     return jTextField;
   }
 
+  /** @return */
+  protected final String getText() {
+    return jTextField.getText();
+  }
+
+  /** @param string */
+  protected final void setText(String string) {
+    jTextField.setText(string);
+  }
+
+  protected boolean isEditable() {
+    return true;
+  }
+
   protected final void indicateGui() {
-    if (isValid(jTextField.getText())) {
-      jTextField.setForeground(UIManagerColor.TextField_foreground.get());
-      jTextField.setBackground(UIManagerColor.TextField_background.get());
-    } else {
-      jTextField.setForeground(COLOR_FAIL_TEXT);
-      jTextField.setBackground(COLOR_FAIL_BGND);
-    }
+    /* background of non-editable text field should not be altered */
+    if (jTextField.isEditable())
+      if (isValid(jTextField.getText())) {
+        jTextField.setForeground(UIManagerColor.TextField_foreground.get());
+        jTextField.setBackground(UIManagerColor.TextField_background.get());
+      } else {
+        jTextField.setForeground(COLOR_FAIL_TEXT);
+        jTextField.setBackground(COLOR_FAIL_BGND);
+      }
   }
 
   // ---

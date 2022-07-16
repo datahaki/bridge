@@ -69,7 +69,7 @@ public class BarLegend {
     int ascent = fontMetrics.getAscent();
     for (Entry<Scalar, String> entry : map.entrySet()) {
       Scalar rescale = RealScalar.ONE.subtract(clip.rescale(entry.getKey()));
-      int piy = (int) (height * rescale.number().doubleValue()+ascent/2);
+      int piy = (int) (height * rescale.number().doubleValue() + ascent / 2);
       piy = Math.max(piy, ascent);
       graphics.drawString(entry.getValue(), width + space, piy);
     }
