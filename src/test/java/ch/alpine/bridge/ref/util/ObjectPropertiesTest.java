@@ -37,15 +37,17 @@ import ch.alpine.tensor.sca.Clips;
 
 class ObjectPropertiesTest {
   @Test
-  void testSimple() {
+  void testSimple(@TempDir File folder) throws IOException {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[1].some = false;
     simpleParam.nestedParams[1].text = "here!";
     simpleParam.nestedParams[1].anotherParam.color = Color.BLUE;
     simpleParam.nestedParams[1].basic = false;
-    Properties properties = ObjectPropertiesExt.properties(simpleParam);
+    File file = new File(folder, "here.properties");
+    ObjectProperties.save(simpleParam, file);
     simpleParam = null;
-    SimpleParam simpleCopy = ObjectProperties.set(new SimpleParam(), properties);
+    SimpleParam simpleCopy = new SimpleParam();
+    ObjectProperties.load(simpleCopy, file);
     assertEquals(simpleCopy.nestedParams[1].anotherParam.color, Color.BLUE);
     assertFalse(simpleCopy.nestedParams[1].basic);
   }
@@ -73,16 +75,18 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  void testLaram() {
+  void testLaram(@TempDir File folder) throws IOException {
     SimpleLaram simpleLaram = new SimpleLaram();
     String string0 = ObjectProperties.join(simpleLaram);
     simpleLaram.nestedParams.get(0).some = false;
     simpleLaram.nestedParams.get(1).text = "new text";
     simpleLaram.nestedParams.get(1).scalar = RationalScalar.HALF;
     String string1 = ObjectProperties.join(simpleLaram);
-    Properties properties = ObjectPropertiesExt.properties(simpleLaram);
+    File file = new File(folder, "here2.properties");
+    ObjectProperties.save(simpleLaram, file);
     simpleLaram = null;
-    SimpleLaram simpleCopy = ObjectProperties.set(new SimpleLaram(), properties);
+    SimpleLaram simpleCopy = new SimpleLaram();
+    ObjectProperties.load(simpleCopy, file);
     String string2 = ObjectProperties.join(simpleCopy);
     assertEquals(simpleCopy.nestedParams.get(1).text, "new text");
     assertEquals(simpleCopy.nestedParams.get(1).scalar, RationalScalar.HALF);
@@ -170,6 +174,30 @@ class ObjectPropertiesTest {
     assertEquals(timeParam.dateTime.toString(), "2020-01-01T00:00");
     assertEquals(timeParam.date.toString(), "1923-12-31");
     assertEquals(timeParam.time.toString(), "23:59:33");
+  }
+
+  @Test
+  void testSimple2(@TempDir File folder) throws IOException {
+    V011Param v011Param = new V011Param(3);
+    v011Param.list.set(1, null);
+    v011Param.another.set(1, null);
+    ObjectProperties.list(v011Param);
+    ObjectProperties.join(v011Param);
+    File file = new File(folder, "here4.properties");
+    ObjectProperties.save(v011Param, file);
+    ObjectProperties.load(new V011Param(1), file);
+    ObjectProperties.load(new V011Param(2), file);
+  }
+
+  @Test
+  void testRecreate(@TempDir File folder) throws IOException {
+    ClipParam clipParam = new ClipParam();
+    clipParam.clipReal = Clips.interval(20, 21);
+    File file = new File(folder, "here3.properties");
+    ObjectProperties.save(clipParam, file);
+    ClipParam clipParam2 = new ClipParam();
+    ObjectProperties.load(clipParam2, file);
+    assertEquals(clipParam2.clipReal, Clips.interval(20, 21));
   }
 
   @Test
