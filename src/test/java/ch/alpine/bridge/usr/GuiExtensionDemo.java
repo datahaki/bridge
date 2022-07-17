@@ -74,6 +74,8 @@ public class GuiExtensionDemo {
 
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
+    // FieldsEditorParam.GLOBAL.componentMinHeight_override = true;
+    // FieldsEditorParam.GLOBAL.componentMinHeight = RealScalar.of(32);
     // ---
     // FieldsEditorParam.GLOBAL.checkBoxIcon_override = true;
     // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.LEDGREEN;

@@ -1,12 +1,12 @@
 // code by jph
 package ch.alpine.bridge.ref;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
@@ -22,30 +22,33 @@ import ch.alpine.tensor.Scalar;
 public class FieldsEditorParam {
   public static final FieldsEditorParam GLOBAL = new FieldsEditorParam();
   // ---
-  public Boolean toolbarHeight_override = false;
+  /** min height applicable to all {@link FieldPanel}s */
+  public Boolean componentMinHeight_override = false;
   @FieldSelectionArray({ "28", "30", "32" })
-  public Scalar toolbarHeight = RealScalar.of(28);
+  public Scalar componentMinHeight = RealScalar.of(28);
   // ---
+  /** font applicable to {@link StringPanel} and {@link EnumPanel} */
   public Boolean textFieldFont_override = false;
   public Font textFieldFont = new Font(Font.DIALOG_INPUT, Font.PLAIN, 15);
   // ---
+  /** icon applicable to {@link BooleanCheckBox} */
   public Boolean checkBoxIcon_override = false;
   public CheckBoxIcon checkBoxIcon = CheckBoxIcon.METRO;
   @FieldSelectionArray({ "16", "20", "24", "28", "32" })
   public Scalar checkBoxIconSize = RealScalar.of(16);
 
-  public void maxHeight(JComponent jComponent) {
-    if (toolbarHeight_override) {
-      int height = toolbarHeight.number().intValue();
+  public void minHeight(JComponent jComponent) {
+    if (componentMinHeight_override) {
+      int height = componentMinHeight.number().intValue();
       Dimension dimension = jComponent.getPreferredSize();
       dimension.height = Math.max(dimension.height, height);
       jComponent.setPreferredSize(dimension);
     }
   }
 
-  public void setFont(Component component) {
+  public void setFont(JTextField jTextField) {
     if (textFieldFont_override)
-      component.setFont(textFieldFont);
+      jTextField.setFont(textFieldFont);
   }
 
   public void setIcon(JCheckBox jCheckBox) {

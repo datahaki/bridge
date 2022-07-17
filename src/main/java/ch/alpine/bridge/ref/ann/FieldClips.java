@@ -47,6 +47,8 @@ public class FieldClips implements Predicate<Scalar> {
     clip = Clips.interval(convert.apply(min), convert.apply(max));
   }
 
+  /** @return whether the interval [min, max] has finite width
+   * @see FiniteScalarQ */
   public boolean isFinite() {
     return FiniteScalarQ.of(clip.width());
   }
