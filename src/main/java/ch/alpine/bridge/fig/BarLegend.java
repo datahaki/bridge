@@ -70,7 +70,7 @@ public class BarLegend {
     for (Entry<Scalar, String> entry : map.entrySet()) {
       Scalar rescale = RealScalar.ONE.subtract(clip.rescale(entry.getKey()));
       int piy = (int) (height * rescale.number().doubleValue() + ascent / 2);
-      piy = Math.max(piy, ascent);
+      piy = Math.min(Math.max(ascent, piy), height);
       graphics.drawString(entry.getValue(), width + space, piy);
     }
     graphics.dispose();

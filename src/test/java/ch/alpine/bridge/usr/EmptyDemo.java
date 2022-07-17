@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref;
+package ch.alpine.bridge.usr;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;

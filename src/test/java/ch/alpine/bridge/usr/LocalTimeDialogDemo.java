@@ -1,7 +1,10 @@
 // code by jph
-package ch.alpine.bridge.swing;
+package ch.alpine.bridge.usr;
 
 import java.time.LocalTime;
+
+import ch.alpine.bridge.swing.LocalTimeDialog;
+import ch.alpine.bridge.swing.LookAndFeels;
 
 enum LocalTimeDialogDemo {
   ;

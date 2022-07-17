@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref.util;
+package ch.alpine.bridge.usr;
 
 import java.awt.BorderLayout;
 
@@ -11,6 +11,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.ref.ex.GuiExtension;
+import ch.alpine.bridge.ref.util.FieldsEditor;
+import ch.alpine.bridge.ref.util.ToolbarFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum ToolbarFieldsEditorDemo {

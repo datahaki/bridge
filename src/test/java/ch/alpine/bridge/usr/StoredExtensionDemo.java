@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref.util;
+package ch.alpine.bridge.usr;
 
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.ref.ex.StoredExtension;
+import ch.alpine.bridge.ref.util.ObjectProperties;
+import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.ext.HomeDirectory;
 
 public enum StoredExtensionDemo {

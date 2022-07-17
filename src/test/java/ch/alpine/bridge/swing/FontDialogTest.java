@@ -1,10 +1,7 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.awt.Font;
-import java.util.List;
 
 import javax.swing.JTextField;
 
@@ -39,12 +36,5 @@ class FontDialogTest {
   void testUnknown() {
     Font font = new Font("asdfarefevfcsdzvfasdf", Font.PLAIN, 12);
     font.getName();
-  }
-
-  @Test
-  void testNames() {
-    List<String> list = Param.names();
-    for (FontName fontName : FontName.values())
-      assertTrue(list.contains(fontName.name()));
   }
 }
