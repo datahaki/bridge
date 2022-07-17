@@ -11,20 +11,40 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.ext.Integers;
 
-/** The modifications occur on the given object.
+/** OuterFieldsAssignment creates a complete, or randomized set of
+ * assignments of a parameter object. The assignments are based on
+ * {@link FieldWrap#options(Object)}.
+ * 
+ * This is useful for automatic testing of functionality when subject
+ * to different assignments of a parameter object.
+ * 
+ * Remark:
+ * If given limit in {@link #randomize(int)} exceeds number of possible
+ * combinations, then a complete, systematic enumeration is performed.
+ * 
+ * The modifications occur on the given object.
  * The given object does not need to be instance of {@link Serializable}. */
-public abstract class FieldsAssignment {
+public class FieldsAssignment {
   protected static final Random RANDOM = new SecureRandom();
+
+  /** @param object
+   * @param runnable of given object but with fields assigned based on all possible
+   * combinations suggested by the field type, and annotations */
+  public static FieldsAssignment of(Object object) {
+    return new FieldsAssignment(object);
+  }
+
   // ---
   private final Object object;
-  private final Runnable runnable;
   private final String string;
   protected final FieldOptionsCollector fieldOptionsCollector;
   private final Map<String, List<String>> map;
@@ -35,9 +55,8 @@ public abstract class FieldsAssignment {
   /** @param object
    * @param runnable of given object but with fields assigned based on all possible
    * combinations suggested by the field type, and annotations */
-  protected FieldsAssignment(Object object, Runnable runnable) {
+  protected FieldsAssignment(Object object) {
     this.object = object;
-    this.runnable = runnable;
     string = ObjectProperties.join(object);
     fieldOptionsCollector = new FieldOptionsCollector();
     ObjectFields.of(object, fieldOptionsCollector);
@@ -55,49 +74,63 @@ public abstract class FieldsAssignment {
     ObjectProperties.part(object, string);
   }
 
-  /** Careful: the number of combinations may be large */
-  public final void forEach() {
-    Array.forEach(list -> build(list), array);
+  /** @return stream of given object, i.e. always the same instance, but with fields
+   * assigned to all combinations determined by options per field */
+  public final Stream<Object> stream() {
+    return Array.stream(array).map(this::build);
   }
 
-  private void build(List<Integer> list) {
+  private Object build(List<Integer> list) {
     Properties properties = new Properties();
     AtomicInteger atomicInteger = new AtomicInteger();
     for (String key : keys)
       properties.put(key, map.get(key).get(list.get(atomicInteger.getAndIncrement())));
-    ObjectProperties.set(object, properties);
-    runnable.run();
+    return ObjectProperties.set(object, properties);
   }
 
   /** @param random
-   * @param limit of number of invocations */
-  public final void randomize(Random random, int limit) {
+   * @param limit of number of invocations
+   * @return stream of given object, i.e. always the same instance */
+  public final Stream<Object> randomize(Random random, int limit) {
     Integers.requirePositiveOrZero(limit);
-    if (Scalars.lessEquals(total, RealScalar.of(limit)) && isGrid())
-      forEach();
-    else
-      for (int count = 0; count < limit; ++count)
-        build(Integers.asList(Arrays.stream(array).map(random::nextInt).toArray()), random);
+    return Scalars.lessEquals(total, RealScalar.of(limit)) && isGrid() //
+        ? stream()
+        : IntStream.range(0, limit) //
+            .mapToObj(i -> Integers.asList(Arrays.stream(array).map(random::nextInt).toArray())) //
+            .map(list -> build(list, random));
   }
 
-  public final void randomize(int limit) {
-    randomize(RANDOM, limit);
+  /** @param limit
+   * @return stream of given object, i.e. always the same instance */
+  public final Stream<Object> randomize(int limit) {
+    return randomize(RANDOM, limit);
   }
 
-  private void build(List<Integer> list, Random random) {
+  private Object build(List<Integer> list, Random random) {
     Properties properties = new Properties();
     AtomicInteger atomicInteger = new AtomicInteger();
     for (String key : keys)
       properties.put(key, map.get(key).get(list.get(atomicInteger.getAndIncrement())));
     insert(properties, random);
-    ObjectProperties.set(object, properties);
-    runnable.run();
+    return ObjectProperties.set(object, properties);
   }
 
-  /** @param properties
+  /** Hint:
+   * {@link RandomFieldsAssignment} overrides this method
+   * for instance to insert random values from continuous distributions
+   * to given properties
+   * 
+   * @param properties
    * @param random */
-  protected abstract void insert(Properties properties, Random random);
+  protected void insert(Properties properties, Random random) {
+    // ---
+  }
 
-  /** @return whether enumeration is random free */
-  protected abstract boolean isGrid();
+  /** Hint:
+   * {@link RandomFieldsAssignment} overrides this method
+   * 
+   * @return whether enumeration is random free */
+  protected boolean isGrid() {
+    return true;
+  }
 }

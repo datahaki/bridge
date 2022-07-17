@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref.util;
+package ch.alpine.bridge.usr;
 
 import java.awt.BorderLayout;
 
@@ -14,11 +14,9 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ex.GuiExtension;
-import ch.alpine.bridge.swing.CheckBoxIcon;
+import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {
@@ -28,9 +26,11 @@ public class GuiExtensionDemo {
 
   public GuiExtensionDemo() {
     guiExtension.cdg = null;
+    guiExtension.background = null;
+    guiExtension.fieldsEditorParam.textFieldFont = null;
+    guiExtension.time = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
     guiExtension.pivots = Pivots.FIRST_NON_ZERO;
-    panelFieldsEditor.updateJComponents();
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     // the code below demonstrates that individual listeners can be attached
     for (FieldPanel fieldPanel : panelFieldsEditor.list()) {
@@ -47,7 +47,7 @@ public class GuiExtensionDemo {
     // ---
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, jSplitPane);
+    jPanel.add(jSplitPane, BorderLayout.CENTER);
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setFloatable(false);
@@ -74,10 +74,12 @@ public class GuiExtensionDemo {
 
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
+    // FieldsEditorParam.GLOBAL.componentMinHeight_override = true;
+    // FieldsEditorParam.GLOBAL.componentMinHeight = RealScalar.of(32);
     // ---
-    FieldsEditorParam.GLOBAL.checkBoxIcon_override = true;
-    FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.LEDGREEN;
-    FieldsEditorParam.GLOBAL.checkBoxIconSize = RealScalar.of(32);
+    // FieldsEditorParam.GLOBAL.checkBoxIcon_override = true;
+    // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.LEDGREEN;
+    // FieldsEditorParam.GLOBAL.checkBoxIconSize = RealScalar.of(32);
     // ---
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
     guiExtensionDemo.jFrame.setVisible(true);

@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ public enum FieldWraps {
     map.put(Color.class, ColorFieldWrap::new);
     map.put(File.class, FileFieldWrap::new);
     map.put(Clip.class, ClipFieldWrap::new);
+    map.put(Font.class, FontFieldWrap::new);
     // ---
     map.put(LocalDateTime.class, LocalDateTimeFieldWrap::new);
     map.put(LocalDate.class, LocalDateFieldWrap::new);

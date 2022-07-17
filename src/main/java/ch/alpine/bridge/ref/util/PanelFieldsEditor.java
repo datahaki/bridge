@@ -22,7 +22,6 @@ public class PanelFieldsEditor extends FieldsEditor {
     public void push(String key, Field field, Integer index) {
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, index));
       jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
-      // jLabel.setForeground(new Color(192,192,255)); // for DARK
       rowPanelBuilder.appendRow(jLabel);
       ++level;
     }
@@ -33,8 +32,8 @@ public class PanelFieldsEditor extends FieldsEditor {
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, null));
       jLabel.setToolTipText(FieldToolTip.of(field));
       FieldPanel fieldPanel = fieldWrap.createFieldPanel(object, value);
-      register(fieldPanel, fieldWrap, object);
-      rowPanelBuilder.appendRow(jLabel, setPreferredWidth(field, fieldPanel.getJComponent()));
+      register(fieldPanel, object);
+      rowPanelBuilder.appendRow(jLabel, fieldPanel.getJComponent());
     }
 
     @Override // from ObjectFieldVisitor

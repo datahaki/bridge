@@ -4,6 +4,7 @@ package ch.alpine.bridge.ref.ex;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
+import ch.alpine.bridge.ref.util.ObjectProperties;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.mat.re.Pivots;
@@ -25,4 +26,9 @@ public class FieldOuterParam {
   public Scalar integer = RealScalar.of(3);
   @FieldClip(min = "50[%]", max = "100[%]")
   public Scalar ratio = Quantity.of(75, "%");
+
+  @Override
+  public String toString() {
+    return ObjectProperties.join(this);
+  }
 }

@@ -1,7 +1,10 @@
 // code by jph
-package ch.alpine.bridge.swing;
+package ch.alpine.bridge.usr;
 
 import java.awt.Font;
+
+import ch.alpine.bridge.swing.FontDialog;
+import ch.alpine.bridge.swing.LookAndFeels;
 
 enum FontDialogDemo {
   ;

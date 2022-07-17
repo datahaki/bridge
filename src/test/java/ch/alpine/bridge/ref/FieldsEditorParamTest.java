@@ -1,28 +1,25 @@
-// code by jph
-package ch.alpine.bridge.swing;
+package ch.alpine.bridge.ref;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import ch.alpine.bridge.ref.util.FieldsAssignment;
 import ch.alpine.bridge.ref.util.ObjectProperties;
+import ch.alpine.bridge.ref.util.RandomFieldsAssignment;
 
-class LocalTimeParamTest {
+class FieldsEditorParamTest {
   private static final int NUMEL = 10;
   private static final Set<String> SET = new HashSet<>();
 
   static Stream<Object> stream() {
-    return FieldsAssignment.of(new LocalTimeParam(LocalTime.NOON)).randomize(new Random(3), NUMEL);
+    FieldsEditorParam fieldsEditorParam = new FieldsEditorParam();
+    return RandomFieldsAssignment.of(fieldsEditorParam).randomize(NUMEL);
   }
 
   @ParameterizedTest
@@ -34,13 +31,5 @@ class LocalTimeParamTest {
   @AfterAll
   static void afterAll() {
     assertEquals(SET.size(), NUMEL);
-  }
-
-  @Test
-  void testSimple() {
-    LocalTime localTime = LocalTime.now();
-    LocalTimeParam localTimeParam = new LocalTimeParam(localTime);
-    LocalTime comp = localTimeParam.toLocalTime();
-    assertEquals(localTime, comp);
   }
 }

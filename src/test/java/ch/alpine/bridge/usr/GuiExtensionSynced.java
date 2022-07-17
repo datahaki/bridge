@@ -1,5 +1,5 @@
 // code by jph, gjoel
-package ch.alpine.bridge.ref.util;
+package ch.alpine.bridge.usr;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.ref.ex.GuiExtension;
+import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum GuiExtensionSynced {
@@ -31,7 +32,7 @@ public enum GuiExtensionSynced {
       jGrid.add(fieldsEditor.createJScrollPane());
       jGrid.add(objectPropertiesArea.createJComponent());
       JPanel jPanel = new JPanel(new BorderLayout());
-      jPanel.add(BorderLayout.CENTER, jGrid);
+      jPanel.add(jGrid, BorderLayout.CENTER);
       {
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
         {
@@ -48,7 +49,7 @@ public enum GuiExtensionSynced {
           jButton.addActionListener(event -> objectPropertiesArea.update());
           buttonPanel.add(jButton);
         }
-        jPanel.add(BorderLayout.SOUTH, buttonPanel);
+        jPanel.add(buttonPanel, BorderLayout.SOUTH);
       }
       content.add(jPanel);
     }

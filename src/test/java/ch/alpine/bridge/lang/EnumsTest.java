@@ -16,7 +16,9 @@ import ch.alpine.tensor.mat.re.Pivots;
 
 class EnumsTest {
   private static enum NestedEnum {
-    A, B, C;
+    A,
+    B,
+    C;
   }
 
   @Test

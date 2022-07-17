@@ -2,7 +2,6 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.util.Objects;
 
 import javax.swing.JComponent;
@@ -43,13 +42,10 @@ import ch.alpine.tensor.Scalar;
     resolution = Objects.nonNull(fieldWrap.getField().getAnnotation(FieldInteger.class))//
         ? fieldClips.getIntegerResolution()
         : RESOLUTION;
-    if (Objects.isNull(value))
-      jLabel = null;
-    else {
+    jLabel = new JLabel("", SwingConstants.CENTER);
+    if (Objects.nonNull(value)) {
       Scalar scalar = (Scalar) value;
-      jLabel = fieldSlider.showValue() //
-          ? new JLabel(Unicode.valueOf(scalar), SwingConstants.CENTER)
-          : null;
+      jLabel.setText(Unicode.valueOf(scalar));
       index = fieldClips.indexOf(scalar, resolution);
     }
     jSlider = new JSlider(0, resolution, index);
@@ -68,32 +64,23 @@ import ch.alpine.tensor.Scalar;
         }
       }
     });
-    JComponent jComponent = jSlider;
-    if (fieldSlider.showRange())
-      jComponent = addRangeLabels(jComponent);
-    if (Objects.nonNull(jLabel))
-      jComponent = addValueLabel(jComponent);
-    this.jComponent = jComponent;
+    if (fieldSlider.showRange() || fieldSlider.showValue()) {
+      JPanel jPanel = new JPanel(new BorderLayout());
+      if (fieldSlider.showRange()) {
+        jPanel.add(new JLabel(Unicode.valueOf(fieldClips.min())), BorderLayout.WEST);
+        jPanel.add(new JLabel(Unicode.valueOf(fieldClips.max())), BorderLayout.EAST);
+      }
+      if (fieldSlider.showValue())
+        jPanel.add(jLabel, BorderLayout.NORTH);
+      jPanel.add(jSlider, BorderLayout.CENTER);
+      jComponent = jPanel;
+    } else
+      jComponent = jSlider;
   }
 
   @Override // from FieldPanel
   public JComponent getJComponent() {
     return jComponent;
-  }
-
-  private JPanel addRangeLabels(JComponent jComponent) {
-    JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(new JLabel(Unicode.valueOf(fieldClips.min())), BorderLayout.WEST);
-    jPanel.add(jComponent, BorderLayout.CENTER);
-    jPanel.add(new JLabel(Unicode.valueOf(fieldClips.max())), BorderLayout.EAST);
-    return jPanel;
-  }
-
-  private JPanel addValueLabel(JComponent jComponent) {
-    JPanel jPanel = new JPanel(new GridLayout(2, 1));
-    jPanel.add(jLabel);
-    jPanel.add(jComponent);
-    return jPanel;
   }
 
   @Override // from FieldPanel

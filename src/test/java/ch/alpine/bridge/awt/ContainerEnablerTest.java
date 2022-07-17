@@ -5,7 +5,7 @@ import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.util.GuiExtensionDemo;
+import ch.alpine.bridge.usr.GuiExtensionDemo;
 
 class ContainerEnablerTest {
   @Test

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.ref.util;
+package ch.alpine.bridge.usr;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.ref.ex.OtherPackageParam;
+import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum OtherPackageParamDemo {
@@ -27,7 +28,7 @@ public enum OtherPackageParamDemo {
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, jGrid);
+    jPanel.add(jGrid, BorderLayout.CENTER);
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 200, 500, 700);
     jFrame.setVisible(true);

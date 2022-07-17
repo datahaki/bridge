@@ -34,7 +34,7 @@ public interface FieldWrap {
   void setIfValid(Object object, String string);
 
   /** @param object
-   * @return list of objects that are available for this field of given object
+   * @return list of values that are available for this field of given object
    * for convenient selection by user */
   List<Object> options(Object object);
 

@@ -2,7 +2,6 @@
 package ch.alpine.bridge.ref.util;
 
 import java.awt.Dimension;
-import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +13,7 @@ import javax.swing.JComponent;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldPreferredWidth;
 import ch.alpine.bridge.util.CopyOnWriteLinkedSet;
 
@@ -56,13 +56,31 @@ public abstract class FieldsEditor {
   /** register listener that converts GUI update to value and assigns field
    * register listener to notify universal listeners
    * 
+   * function applies annotations specific to field that concern layout
+   * of corresponding {@link JComponent}.
+   * 
+   * The list of annotations regarded currently consists of:
+   * {@link FieldPreferredWidth}
+   * 
    * @param fieldPanel
-   * @param fieldWrap
    * @param object */
-  protected final void register(FieldPanel fieldPanel, FieldWrap fieldWrap, Object object) {
+  protected final void register(FieldPanel fieldPanel, Object object) {
     list.add(new FieldPanelObject(fieldPanel, object));
+    FieldWrap fieldWrap = fieldPanel.fieldWrap();
     fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
     fieldPanel.addListener(string -> notifyUniversalListeners());
+    // ---
+    JComponent jComponent = fieldPanel.getJComponent();
+    // ---
+    FieldsEditorParam.GLOBAL.minHeight(jComponent);
+    // ---
+    FieldPreferredWidth fieldPreferredWidth = fieldWrap.getField().getAnnotation(FieldPreferredWidth.class);
+    if (Objects.nonNull(fieldPreferredWidth)) {
+      Dimension dimension = jComponent.getPreferredSize();
+      // for instance, a JSlider has a default preferred width of 200
+      dimension.width = fieldPreferredWidth.value();
+      jComponent.setPreferredSize(dimension);
+    }
   }
 
   /** the function exposes the FieldPanel instances used for the fields in the editor.
@@ -101,25 +119,5 @@ public abstract class FieldsEditor {
    * typically this function is not called by the application layer */
   public final void notifyUniversalListeners() {
     set.forEach(Runnable::run);
-  }
-
-  /** function applies annotations specific to field that concern layout
-   * of corresponding {@link JComponent}.
-   * 
-   * The list of annotations regarded currently consists of:
-   * {@link FieldPreferredWidth}
-   * 
-   * @param field
-   * @param jComponent
-   * @return given jComponent with layout modified based on annotations */
-  protected static JComponent setPreferredWidth(Field field, JComponent jComponent) {
-    FieldPreferredWidth fieldPreferredWidth = field.getAnnotation(FieldPreferredWidth.class);
-    if (Objects.nonNull(fieldPreferredWidth)) {
-      Dimension dimension = jComponent.getPreferredSize();
-      // for instance, a JSlider has a default preferred width of 200
-      dimension.width = fieldPreferredWidth.value();
-      jComponent.setPreferredSize(dimension);
-    }
-    return jComponent;
   }
 }

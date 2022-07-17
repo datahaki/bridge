@@ -10,7 +10,6 @@ import javax.swing.JToolBar;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
@@ -39,25 +38,16 @@ public class ToolbarFieldsEditor extends FieldsEditor {
       FieldPanel fieldPanel = isBoolean && !isFuse //
           ? new TogglePanel(fieldWrap, text, (Boolean) value)
           : fieldWrap.createFieldPanel(object, value);
-      register(fieldPanel, fieldWrap, object);
-      JComponent jComponent = setPreferredWidth(field, fieldPanel.getJComponent());
-      FieldsEditorParam.GLOBAL.maxHeight(jComponent);
+      register(fieldPanel, object);
+      JComponent jComponent = fieldPanel.getJComponent();
       if (field.getType().isEnum()) {
         jComponent.setToolTipText(text);
       } else //
-        if (!isBoolean) {
-          JLabel jLabel = new JLabel(text + " ");
-          // Font font = jLabel.getFont();
-          // final int _style = font.getStyle();
-          // int style = _style;
-          // if (_style == Font.BOLD) // for default look and feel
-          // style = Font.PLAIN;
-          // if (_style == Font.PLAIN)
-          // style = Font.ITALIC;
-          // jLabel.setFont(font.deriveFont(style));
-          jLabel.setToolTipText(FieldToolTip.of(field));
-          jToolBar.add(jLabel);
-        }
+      if (!isBoolean) {
+        JLabel jLabel = new JLabel(text + " ");
+        jLabel.setToolTipText(FieldToolTip.of(field));
+        jToolBar.add(jLabel);
+      }
       jToolBar.add(jComponent);
       // some look and feels introduce a vertical line | as separator...
       // jToolBar.addSeparator();

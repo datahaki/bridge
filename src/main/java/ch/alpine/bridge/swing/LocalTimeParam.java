@@ -56,4 +56,9 @@ public class LocalTimeParam {
         fs.number().intValue(), //
         n.number().intValue());
   }
+
+  @Override
+  public String toString() {
+    return toLocalTime().toString();
+  }
 }

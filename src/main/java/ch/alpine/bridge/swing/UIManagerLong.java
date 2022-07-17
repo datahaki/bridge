@@ -6,10 +6,9 @@ import java.util.function.LongSupplier;
 import javax.swing.UIManager;
 
 public enum UIManagerLong implements LongSupplier {
-  ComboBox_timeFactor, //
-  List_timeFactor, //
-  Tree_timeFactor, //
-  ;
+  ComboBox_timeFactor,
+  List_timeFactor,
+  Tree_timeFactor;
 
   @Override
   public long getAsLong() {

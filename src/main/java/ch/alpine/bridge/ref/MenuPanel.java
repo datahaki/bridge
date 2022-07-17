@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import ch.alpine.bridge.swing.SpinnerMenu;
 
@@ -26,20 +25,20 @@ import ch.alpine.bridge.swing.SpinnerMenu;
     jButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
-        JTextField jTextField = getJTextField();
-        SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>(supplier.get(), jTextField.getText(), fieldWrap::toString, false);
+        JComponent jTextField = getTextFieldComponent();
+        SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>(supplier.get(), getText(), fieldWrap::toString, false);
         spinnerMenu.setFont(jTextField.getFont());
         spinnerMenu.addSpinnerListener(value -> {
           String string = fieldWrap.toString(value);
-          jTextField.setText(string);
+          setText(string);
           indicateGui();
           nofifyIfValid(string);
         });
         spinnerMenu.showRight(jButton);
       }
     });
-    jPanel.add(BorderLayout.CENTER, getJTextField());
-    jPanel.add(BorderLayout.EAST, jButton);
+    jPanel.add(getTextFieldComponent(), BorderLayout.CENTER);
+    jPanel.add(jButton, BorderLayout.EAST);
   }
 
   @Override // from FieldPanel

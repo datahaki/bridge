@@ -28,18 +28,17 @@ import ch.alpine.tensor.ext.PackageTestAccess;
  * program not terminating at all! */
 public enum LookAndFeels {
   /** java swing default */
-  DEFAULT(new MetalLookAndFeel()), //
-  DARK(new FlatDarkLaf()), //
-  LIGHT(new FlatLightLaf()), //
+  DEFAULT(new MetalLookAndFeel()),
+  DARK(new FlatDarkLaf()),
+  LIGHT(new FlatLightLaf()),
   // does not allow LookAndFeel#getDefaults()
-  CDE_MOTIF("com.sun.java.swing.plaf.motif.MotifLookAndFeel"), //
-  DRACULA(new FlatDarculaLaf()), //
-  INTELLI_J(new FlatIntelliJLaf()), //
+  CDE_MOTIF("com.sun.java.swing.plaf.motif.MotifLookAndFeel"),
+  DRACULA(new FlatDarculaLaf()),
+  INTELLI_J(new FlatIntelliJLaf()),
   /** synth gives trouble on linux: dash pc, jan's pc ... */
-  // SYNTH(new SynthLookAndFeel()), //
-  NIMBUS(new NimbusLookAndFeel()), //
-  GTK_PLUS("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"), //
-  ;
+  // SYNTH(new SynthLookAndFeel()),
+  NIMBUS(new NimbusLookAndFeel()),
+  GTK_PLUS("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 
   private final String className;
 

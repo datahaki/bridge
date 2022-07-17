@@ -1,5 +1,5 @@
 // code by jph, gjoel
-package ch.alpine.bridge.ref.util;
+package ch.alpine.bridge.usr;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.ref.ex.GuiExtension;
+import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 /** this demo periodically invokes updateJComponents
@@ -43,14 +44,14 @@ public enum PartialDemo {
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
     jGrid.add(panelFieldsEditor.createJScrollPane());
     jGrid.add(objectPropertiesArea.createJComponent());
-    jPanel.add(BorderLayout.CENTER, jGrid);
+    jPanel.add(jGrid, BorderLayout.CENTER);
     {
       JButton jButton = new JButton("reset fuse");
       jButton.addActionListener(l -> {
         guiExtension.fuse = false;
         objectPropertiesArea.update();
       });
-      jPanel.add(BorderLayout.SOUTH, jButton);
+      jPanel.add(jButton, BorderLayout.SOUTH);
     }
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 200, 500, 700);

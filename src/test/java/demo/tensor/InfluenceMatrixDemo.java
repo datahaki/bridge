@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.usr;
+package demo.tensor;
 
 import java.awt.Color;
 import java.io.IOException;

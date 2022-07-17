@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
-import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.time.LocalTime;
 
@@ -16,6 +15,7 @@ import ch.alpine.bridge.awt.RenderQuality;
 public enum LocalTimeDisplay {
   INSTANCE;
 
+  private final double _2pi = Math.PI + Math.PI;
   private final int wid = 52;
   private final int hourRad = 32;
   private final int hourRadIn = 7;
@@ -38,13 +38,12 @@ public enum LocalTimeDisplay {
     int hms_m = localTime.getMinute();
     int hms_s = localTime.getSecond();
     int hms_n = localTime.getNano();
-    final double h = ((hms_h + hms_m / 60.0) / 12.0) * 2 * Math.PI;
-    final double m = ((hms_m + hms_s / 60.0) / 60.0) * 2 * Math.PI;
-    final double s = (hms_s + hms_n * 1E-9) / 60.0 * 2 * Math.PI;
+    final double h = ((hms_h + hms_m / 60.0) / 12.0) * _2pi;
+    final double m = ((hms_m + hms_s / 60.0) / 60.0) * _2pi;
+    final double s = (hms_s + hms_n * 1E-9) / 60.0 * _2pi;
     // Draw the hands of the clock
     // graphics2d.drawLine(c.x, c.y, c.x + Math.cos(m) * minutesRadius, cy + sin(m) * minutesRadius);
     graphics.setColor(Color.BLACK); // new Color(128, 128, 128, 255)
-    Stroke stroke = graphics.getStroke();
     graphics.setStroke(new BasicStroke(4));
     {
       double dx = +Math.sin(h);
@@ -54,7 +53,8 @@ public enum LocalTimeDisplay {
       Shape shape = new Line2D.Double(center.x - hourRadIn * dx, center.y - hourRadIn * dy, cx, cy);
       graphics.draw(shape);
     }
-    graphics.setStroke(new BasicStroke(3));
+    BasicStroke stroke3 = new BasicStroke(3);
+    graphics.setStroke(stroke3);
     {
       double dx = +Math.sin(m);
       double dy = -Math.cos(m);
@@ -64,13 +64,14 @@ public enum LocalTimeDisplay {
       graphics.draw(shape);
     }
     // Draw the minute ticks
-    graphics.setStroke(new BasicStroke(2));
+    BasicStroke stroke2 = new BasicStroke(2);
     for (int a = 0; a < 360; a += 6)
-      secAt(graphics, center, a);
-    graphics.setStroke(new BasicStroke(3));
-    for (int a = 0; a < 360; a += 6 * 5)
-      dotAt(graphics, center, a);
-    graphics.setColor(new Color(64, 64, 192));
+      if (a % 30 == 0) {
+        graphics.setStroke(stroke3);
+        dotAt(graphics, center, a);
+        graphics.setStroke(stroke2);
+      } else
+        secAt(graphics, center, a);
     graphics.setColor(Color.RED);
     graphics.setStroke(new BasicStroke(1.5f));
     {
@@ -82,11 +83,10 @@ public enum LocalTimeDisplay {
       graphics.draw(shape);
       graphics.fillArc((int) cx - secCirc / 2, (int) cy - secCirc / 2, secCirc, secCirc, 0, 360);
     }
-    graphics.setStroke(stroke);
   }
 
   private void dotAt(Graphics2D graphics, Point c, int a) {
-    double angle = a * Math.PI / 180;
+    double angle = Math.toRadians(a);
     double x1 = c.x + Math.cos(angle) * minRadOut;
     double y1 = c.y + Math.sin(angle) * minRadOut;
     double x2 = c.x + Math.cos(angle) * minRadIn;
@@ -96,7 +96,7 @@ public enum LocalTimeDisplay {
   }
 
   private void secAt(Graphics2D graphics, Point c, int a) {
-    double angle = a * Math.PI / 180;
+    double angle = Math.toRadians(a);
     double x1 = c.x + Math.cos(angle) * minRadOut;
     double y1 = c.y + Math.sin(angle) * minRadOut;
     double x2 = c.x + Math.cos(angle) * (minRadOut - 1);

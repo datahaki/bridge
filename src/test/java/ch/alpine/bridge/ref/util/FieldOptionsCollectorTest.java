@@ -30,10 +30,8 @@ class FieldOptionsCollectorTest {
   void testSimple() {
     Param param = new Param();
     List<NameString> list = new LinkedList<>();
-    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(param, () -> {
-      list.add(param.nameString);
-    });
-    fieldsAssignment.forEach();
+    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(param);
+    fieldsAssignment.stream().forEach(i -> list.add(param.nameString));
     assertEquals(list.size(), 3);
     assertEquals(list.stream().distinct().count(), 3);
   }
@@ -49,14 +47,12 @@ class FieldOptionsCollectorTest {
   public void testDiscreteRandom() {
     Set<Scalar> set = new HashSet<>();
     DiscreteParam discreteParam = new DiscreteParam();
-    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(discreteParam, () -> {
-      set.add(discreteParam.integer);
-    });
-    fieldsAssignment.forEach();
+    FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(discreteParam);
+    fieldsAssignment.stream().forEach(i -> set.add(discreteParam.integer));
     assertEquals(set.size(), 2);
     assertTrue(set.contains(RealScalar.of(-10)));
     assertTrue(set.contains(RealScalar.of(100)));
-    fieldsAssignment.randomize(20);
+    fieldsAssignment.randomize(20).forEach(i -> set.add(discreteParam.integer));
     assertTrue(10 < set.size());
   }
 
@@ -64,10 +60,8 @@ class FieldOptionsCollectorTest {
   public void testDiscreteOuter() {
     Set<Scalar> set = new HashSet<>();
     DiscreteParam discreteParam = new DiscreteParam();
-    FieldsAssignment fieldsAssignment = OuterFieldsAssignment.of(discreteParam, () -> {
-      set.add(discreteParam.integer);
-    });
-    fieldsAssignment.forEach();
+    FieldsAssignment fieldsAssignment = FieldsAssignment.of(discreteParam);
+    fieldsAssignment.stream().forEach(i -> set.add(discreteParam.integer));
     assertEquals(set.size(), 2);
     assertTrue(set.contains(RealScalar.of(-10)));
     assertTrue(set.contains(RealScalar.of(100)));

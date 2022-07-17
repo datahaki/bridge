@@ -21,9 +21,9 @@ public abstract class ObjectFieldBase implements ObjectFieldVisitor {
     if (FieldWraps.INSTANCE.elemental(class_field)) {
       if (isLeaf.test(field))
         return Type.LEAF;
-    } else
-      if (isNode.test(field))
-        return Type.NODE;
+    } else //
+    if (isNode.test(field))
+      return Type.NODE;
     return Type.SKIP;
   }
 }

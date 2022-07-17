@@ -23,10 +23,9 @@ import ch.alpine.tensor.red.Times;
  * https://en.wikipedia.org/wiki/CIELAB_color_space */
 public enum Cielab {
   /** Standard Illuminant D65 */
-  D65(0.950489, 1, 1.088840), //
+  D65(0.950489, 1, 1.088840),
   /** Illuminant D50 (used in the printing industry) */
-  D50(0.964212, 1, 0.825188), //
-  ;
+  D50(0.964212, 1, 0.825188);
 
   private static final ColorSpace COLOR_SPACE = ColorSpace.getInstance(ColorSpace.CS_CIEXYZ);
   private static final Scalar _016 = RealScalar.of(0.16);
