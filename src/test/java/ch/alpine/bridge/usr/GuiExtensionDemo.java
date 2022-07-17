@@ -47,7 +47,7 @@ public class GuiExtensionDemo {
     // ---
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, jSplitPane);
+    jPanel.add(jSplitPane, BorderLayout.CENTER);
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setFloatable(false);

@@ -28,7 +28,7 @@ public enum OtherPackageParamDemo {
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, jGrid);
+    jPanel.add(jGrid, BorderLayout.CENTER);
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 200, 500, 700);
     jFrame.setVisible(true);

@@ -51,7 +51,7 @@ public class LocalTimeDialog extends JDialog {
     // ---
     localTime = localTime_fallback;
     jComponent.setPreferredSize(new Dimension(130, 130));
-    jPanel.add(BorderLayout.WEST, jComponent);
+    jPanel.add(jComponent, BorderLayout.WEST);
     // ---
     LocalTimeParam localTimeParam = new LocalTimeParam(localTime);
     {
@@ -62,9 +62,9 @@ public class LocalTimeDialog extends JDialog {
             jComponent.repaint();
             consumer.accept(localTime);
           });
-      jPanel.add(BorderLayout.CENTER, panelFieldsEditor.getJPanel());
+      jPanel.add(panelFieldsEditor.getJPanel(), BorderLayout.CENTER);
     }
-    jPanel.add(BorderLayout.EAST, new JLabel("\u3000"));
+    jPanel.add(new JLabel("\u3000"), BorderLayout.EAST);
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setFloatable(false);

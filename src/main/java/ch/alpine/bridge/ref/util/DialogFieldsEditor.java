@@ -60,7 +60,7 @@ public class DialogFieldsEditor extends JDialog {
     });
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(BorderLayout.CENTER, panelFieldsEditor.createJScrollPane());
+    jPanel.add(panelFieldsEditor.createJScrollPane(), BorderLayout.CENTER);
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setFloatable(false);

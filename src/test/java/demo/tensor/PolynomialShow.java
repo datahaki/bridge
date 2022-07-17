@@ -17,7 +17,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
 
-/* package */ enum FitShow {
+/* package */ enum PolynomialShow {
   ;
   public static void main(String[] args) throws IOException {
     for (int degree = 0; degree <= 4; ++degree) {

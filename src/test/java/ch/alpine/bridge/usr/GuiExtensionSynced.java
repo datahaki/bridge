@@ -32,7 +32,7 @@ public enum GuiExtensionSynced {
       jGrid.add(fieldsEditor.createJScrollPane());
       jGrid.add(objectPropertiesArea.createJComponent());
       JPanel jPanel = new JPanel(new BorderLayout());
-      jPanel.add(BorderLayout.CENTER, jGrid);
+      jPanel.add(jGrid, BorderLayout.CENTER);
       {
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
         {
@@ -49,7 +49,7 @@ public enum GuiExtensionSynced {
           jButton.addActionListener(event -> objectPropertiesArea.update());
           buttonPanel.add(jButton);
         }
-        jPanel.add(BorderLayout.SOUTH, buttonPanel);
+        jPanel.add(buttonPanel, BorderLayout.SOUTH);
       }
       content.add(jPanel);
     }

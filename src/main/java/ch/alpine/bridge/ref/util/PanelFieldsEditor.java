@@ -22,7 +22,6 @@ public class PanelFieldsEditor extends FieldsEditor {
     public void push(String key, Field field, Integer index) {
       JLabel jLabel = createJLabel(FieldLabels.of(key, field, index));
       jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
-      // jLabel.setForeground(new Color(192,192,255)); // for DARK
       rowPanelBuilder.appendRow(jLabel);
       ++level;
     }

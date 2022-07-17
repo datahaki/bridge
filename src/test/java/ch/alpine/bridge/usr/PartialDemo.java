@@ -44,14 +44,14 @@ public enum PartialDemo {
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
     jGrid.add(panelFieldsEditor.createJScrollPane());
     jGrid.add(objectPropertiesArea.createJComponent());
-    jPanel.add(BorderLayout.CENTER, jGrid);
+    jPanel.add(jGrid, BorderLayout.CENTER);
     {
       JButton jButton = new JButton("reset fuse");
       jButton.addActionListener(l -> {
         guiExtension.fuse = false;
         objectPropertiesArea.update();
       });
-      jPanel.add(BorderLayout.SOUTH, jButton);
+      jPanel.add(jButton, BorderLayout.SOUTH);
     }
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 200, 500, 700);

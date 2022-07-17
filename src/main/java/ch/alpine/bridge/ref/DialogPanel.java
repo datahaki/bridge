@@ -34,8 +34,8 @@ import ch.alpine.bridge.awt.WindowClosed;
         jDialog.setVisible(true);
       }
     });
-    jPanel.add(BorderLayout.CENTER, getTextFieldComponent());
-    jPanel.add(BorderLayout.EAST, jButton);
+    jPanel.add(getTextFieldComponent(), BorderLayout.CENTER);
+    jPanel.add(jButton, BorderLayout.EAST);
   }
 
   @Override // from FieldPanel

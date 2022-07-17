@@ -104,7 +104,7 @@ public class FontDialog extends JDialog {
     // ---
     font = font_fallback;
     jComponent.setPreferredSize(new Dimension(200, 60));
-    jPanel.add(BorderLayout.NORTH, jComponent);
+    jPanel.add(jComponent, BorderLayout.NORTH);
     // ---
     Param fontParam = new Param(font);
     {
@@ -115,10 +115,10 @@ public class FontDialog extends JDialog {
             jComponent.repaint();
             consumer.accept(font);
           });
-      jPanel.add(BorderLayout.CENTER, panelFieldsEditor.getJPanel());
+      jPanel.add(panelFieldsEditor.getJPanel(), BorderLayout.CENTER);
     }
-    jPanel.add(BorderLayout.WEST, new JLabel("\u3000"));
-    jPanel.add(BorderLayout.EAST, new JLabel("\u3000"));
+    jPanel.add(new JLabel("\u3000"), BorderLayout.WEST);
+    jPanel.add(new JLabel("\u3000"), BorderLayout.EAST);
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setFloatable(false);
@@ -140,7 +140,7 @@ public class FontDialog extends JDialog {
         });
         jToolBar.add(jButton);
       }
-      jPanel.add(BorderLayout.SOUTH, jToolBar);
+      jPanel.add(jToolBar, BorderLayout.SOUTH);
     }
     setContentPane(jPanel);
     addWindowListener(new WindowAdapter() {

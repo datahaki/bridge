@@ -2,14 +2,13 @@
 package ch.alpine.bridge.usr;
 
 import java.awt.GridLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.WindowClosed;
 import ch.alpine.bridge.ref.ex.StoredExtension;
 import ch.alpine.bridge.ref.util.ObjectProperties;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
@@ -32,12 +31,7 @@ public enum StoredExtensionDemo {
     jGrid.add(objectPropertiesArea.createJComponent());
     jFrame.setContentPane(jGrid);
     jFrame.setBounds(500, 200, 500, 700);
-    jFrame.addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosed(WindowEvent windowEvent) {
-        ObjectProperties.trySave(INSTANCE, FILE);
-      }
-    });
+    WindowClosed.runs(jFrame, () -> ObjectProperties.trySave(INSTANCE, FILE));
     jFrame.setVisible(true);
   }
 }

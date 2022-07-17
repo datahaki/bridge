@@ -37,8 +37,8 @@ import ch.alpine.bridge.swing.SpinnerMenu;
         spinnerMenu.showRight(jButton);
       }
     });
-    jPanel.add(BorderLayout.CENTER, getTextFieldComponent());
-    jPanel.add(BorderLayout.EAST, jButton);
+    jPanel.add(getTextFieldComponent(), BorderLayout.CENTER);
+    jPanel.add(jButton, BorderLayout.EAST);
   }
 
   @Override // from FieldPanel

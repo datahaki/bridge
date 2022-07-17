@@ -44,8 +44,8 @@ import javax.swing.filechooser.FileFilter;
         }
       }
     });
-    jPanel.add(BorderLayout.CENTER, getTextFieldComponent());
-    jPanel.add(BorderLayout.EAST, jButton);
+    jPanel.add(getTextFieldComponent(), BorderLayout.CENTER);
+    jPanel.add(jButton, BorderLayout.EAST);
   }
 
   @Override // from FieldPanel

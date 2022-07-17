@@ -1,22 +1,14 @@
 // code by jph
 package ch.alpine.bridge.usr;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
 import ch.alpine.bridge.ref.ex.MyConfig;
-import ch.alpine.bridge.ref.util.PanelFieldsEditor;
+import ch.alpine.bridge.ref.util.DialogFieldsEditor;
+import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum FieldsEditorDemo {
   ;
   public static void main(String[] args) {
-    MyConfig myConfig = new MyConfig();
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(myConfig);
-    panelFieldsEditor.addUniversalListener(() -> System.out.println("my config changed"));
-    JFrame jFrame = new JFrame();
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setContentPane(panelFieldsEditor.createJScrollPane());
-    jFrame.setBounds(100, 100, 320, 200);
-    jFrame.setVisible(true);
+    LookAndFeels.LIGHT.updateComponentTreeUI();
+    DialogFieldsEditor.show(null, "here", new MyConfig());
   }
 }
