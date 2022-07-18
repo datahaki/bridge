@@ -17,7 +17,6 @@ import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
-import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.ext.Integers;
 
 /** OuterFieldsAssignment creates a complete, or randomized set of
@@ -77,7 +76,7 @@ public class FieldsAssignment {
   /** @return stream of given object, i.e. always the same instance, but with fields
    * assigned to all combinations determined by options per field */
   public final Stream<Object> stream() {
-    return Array.stream(array).map(this::build);
+    return TodoRemove.stream(array).map(this::build);
   }
 
   private Object build(List<Integer> list) {
