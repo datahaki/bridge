@@ -29,8 +29,6 @@ class FieldsAssignmentTest {
       assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
       assertEquals(fieldOuterParam.nestedParam[1].text, "abc");
       set.add(ObjectProperties.join(fieldOuterParam));
-      // System.out.println("===");
-      // System.out.println(ObjectProperties.join(fieldOuterParam));
     });
     assertEquals(atomicInteger.get(), 2 * 96);
     assertEquals(set.size(), 2 * 96);
@@ -55,7 +53,6 @@ class FieldsAssignmentTest {
   void isBlank(FieldOuterParam fieldOuterParam) {
     String string = ObjectProperties.join(fieldOuterParam);
     string.length();
-    // System.out.println();
   }
 
   @Test
