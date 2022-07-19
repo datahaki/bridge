@@ -3,12 +3,10 @@ package ch.alpine.bridge.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.function.Consumer;
 
 import javax.swing.JButton;
@@ -22,7 +20,6 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 public class LocalDateDialog extends JDialog {
- 
   private LocalDate localDate;
 
   /** @param component
@@ -38,7 +35,6 @@ public class LocalDateDialog extends JDialog {
     JPanel jPanel = new JPanel(new BorderLayout());
     // ---
     localDate = localDate_fallback;
-    
     // ---
     LocalDateParam localDateParam = new LocalDateParam(localDate);
     {

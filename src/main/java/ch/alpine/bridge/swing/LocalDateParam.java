@@ -28,7 +28,7 @@ public class LocalDateParam {
 
   public LocalDateParam(LocalDate localDate) {
     year = RealScalar.of(localDate.getYear());
-    month =localDate.getMonth() ;
+    month = localDate.getMonth();
     day = RealScalar.of(localDate.getDayOfMonth());
   }
 
@@ -43,9 +43,9 @@ public class LocalDateParam {
   public String toString() {
     return toLocalDate().toString();
   }
-  public List<Scalar> days(){
+
+  public List<Scalar> days() {
     int length = month.length(LocalDate.of(year.number().intValue(), 1, 1).isLeapYear());
-    return IntStream.range(1, length+1).mapToObj(RealScalar::of).collect(Collectors.toList());
-   
-  } 
+    return IntStream.range(1, length + 1).mapToObj(RealScalar::of).collect(Collectors.toList());
+  }
 }
