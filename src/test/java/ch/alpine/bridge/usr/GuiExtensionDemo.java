@@ -14,11 +14,9 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.mat.re.Pivots;
 
 public class GuiExtensionDemo {
@@ -29,7 +27,6 @@ public class GuiExtensionDemo {
   public GuiExtensionDemo() {
     guiExtension.cdg = null;
     guiExtension.background = null;
-    guiExtension.fieldsEditorParam.textFieldFont = null;
     guiExtension.date = null;
     guiExtension.time = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
@@ -77,8 +74,11 @@ public class GuiExtensionDemo {
 
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
-    FieldsEditorParam.GLOBAL.componentMinHeight_override = true;
-    FieldsEditorParam.GLOBAL.componentMinHeight = RealScalar.of(32);
+    // FieldsEditorParam.GLOBAL.componentMinHeight_override = true;
+    // FieldsEditorParam.GLOBAL.componentMinHeight = RealScalar.of(32);
+    // ---
+    // FieldsEditorParam.GLOBAL.textFieldFont_override = true;
+    // FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 40);
     // ---
     // FieldsEditorParam.GLOBAL.checkBoxIcon_override = true;
     // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.LEDGREEN;

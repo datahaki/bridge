@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
@@ -26,7 +25,6 @@ public class LocalDateDialog extends JDialog {
   public LocalDateDialog(Component component, final LocalDate localDate_fallback, Consumer<LocalDate> consumer) {
     super(JOptionPane.getFrameForComponent(component));
     setTitle("LocalDate selection");
-    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
     // ---
@@ -61,9 +59,7 @@ public class LocalDateDialog extends JDialog {
       }
       jPanel.add(BorderLayout.SOUTH, jToolBar);
     }
-    setContentPane(jPanel);
-    setSize(220, StaticHelper.WINDOW_MARGIN + jPanel.getPreferredSize().height);
-    setResizable(false);
+    StaticHelper.configure(this, jPanel);
     addWindowListener(new WindowAdapter() {
       /** function is called when [x] is pressed by user */
       @Override

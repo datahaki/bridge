@@ -20,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.gfx.LocalTimeDisplay;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
@@ -45,7 +44,6 @@ public class LocalTimeDialog extends JDialog {
   public LocalTimeDialog(Component component, final LocalTime localTime_fallback, Consumer<LocalTime> consumer) {
     super(JOptionPane.getFrameForComponent(component));
     setTitle("LocalTime selection");
-    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
     jComponent.setPreferredSize(new Dimension(120, 100));
@@ -95,9 +93,7 @@ public class LocalTimeDialog extends JDialog {
       }
       jPanel.add(BorderLayout.SOUTH, jToolBar);
     }
-    setContentPane(jPanel);
-    setSize(320, StaticHelper.WINDOW_MARGIN + jPanel.getPreferredSize().height);
-    setResizable(false);
+    StaticHelper.configure(this, jPanel);
     addWindowListener(new WindowAdapter() {
       /** function is called when [x] is pressed by user */
       @Override
