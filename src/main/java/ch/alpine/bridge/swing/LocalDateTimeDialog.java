@@ -20,8 +20,6 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 public class LocalDateTimeDialog extends JDialog {
-  private LocalDateTime localDateTime;
-
   /** @param component
    * @param localDate_fallback
    * @param consumer */
@@ -34,16 +32,10 @@ public class LocalDateTimeDialog extends JDialog {
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
     // ---
-    localDateTime = localDateTime_fallback;
-    // ---
-    LocalDateTimeParam localDateTimeParam = new LocalDateTimeParam(localDateTime);
+    LocalDateTimeParam localDateTimeParam = new LocalDateTimeParam(localDateTime_fallback);
     {
       PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(localDateTimeParam);
-      panelFieldsEditor.addUniversalListener( //
-          () -> {
-            localDateTime = localDateTimeParam.toLocalDateTime();
-            consumer.accept(localDateTime);
-          });
+      panelFieldsEditor.addUniversalListener(() -> consumer.accept(localDateTimeParam.toLocalDateTime()));
       jPanel.add(panelFieldsEditor.getJPanel(), BorderLayout.CENTER);
     }
     jPanel.add(new JLabel("\u3000"), BorderLayout.EAST);
@@ -56,7 +48,7 @@ public class LocalDateTimeDialog extends JDialog {
         JButton jButton = new JButton("Done");
         jButton.addActionListener(actionEvent -> {
           dispose();
-          consumer.accept(localDateTime);
+          consumer.accept(localDateTimeParam.toLocalDateTime());
         });
         jToolBar.add(jButton);
       }
@@ -64,8 +56,8 @@ public class LocalDateTimeDialog extends JDialog {
       {
         JButton jButton = new JButton("Cancel");
         jButton.addActionListener(actionEvent -> {
-          consumer.accept(localDateTime_fallback);
           dispose();
+          consumer.accept(localDateTime_fallback);
         });
         jToolBar.add(jButton);
       }

@@ -20,8 +20,6 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 public class LocalDateDialog extends JDialog {
-  private LocalDate localDate;
-
   /** @param component
    * @param localDate_fallback
    * @param consumer */
@@ -32,16 +30,10 @@ public class LocalDateDialog extends JDialog {
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
     // ---
-    localDate = localDate_fallback;
-    // ---
-    LocalDateParam localDateParam = new LocalDateParam(localDate);
+    LocalDateParam localDateParam = new LocalDateParam(localDate_fallback);
     {
       PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(localDateParam);
-      panelFieldsEditor.addUniversalListener( //
-          () -> {
-            localDate = localDateParam.toLocalDate();
-            consumer.accept(localDate);
-          });
+      panelFieldsEditor.addUniversalListener(() -> consumer.accept(localDateParam.toLocalDate()));
       jPanel.add(panelFieldsEditor.getJPanel(), BorderLayout.CENTER);
     }
     jPanel.add(new JLabel("\u3000"), BorderLayout.EAST);
@@ -54,7 +46,7 @@ public class LocalDateDialog extends JDialog {
         JButton jButton = new JButton("Done");
         jButton.addActionListener(actionEvent -> {
           dispose();
-          consumer.accept(localDate);
+          consumer.accept(localDateParam.toLocalDate());
         });
         jToolBar.add(jButton);
       }
@@ -62,8 +54,8 @@ public class LocalDateDialog extends JDialog {
       {
         JButton jButton = new JButton("Cancel");
         jButton.addActionListener(actionEvent -> {
-          consumer.accept(localDate_fallback);
           dispose();
+          consumer.accept(localDate_fallback);
         });
         jToolBar.add(jButton);
       }

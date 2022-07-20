@@ -15,8 +15,13 @@ public class LocalDateTimeParam {
     time = new LocalTimeParam(localDateTime.toLocalTime());
   }
 
+  public void set(LocalDateTime localDateTime) {
+    date.set(localDateTime.toLocalDate());
+    time.set(localDateTime.toLocalTime());
+  }
+
   public LocalDateTime toLocalDateTime() {
-    return LocalDateTime.of(this.date.toLocalDate(), this.time.toLocalTime()); //
+    return LocalDateTime.of(date.toLocalDate(), time.toLocalTime()); //
   }
 
   @Override

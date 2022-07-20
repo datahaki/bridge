@@ -32,10 +32,12 @@ public class LocalTimeDialog extends JDialog {
       Dimension dimension = getSize();
       Point point = new Point(dimension.width / 2, dimension.height / 2);
       Graphics2D graphics = (Graphics2D) _g;
-      LocalTimeDisplay.INSTANCE.draw(graphics, localTime, point);
+      // graphics.setColor(Color.WHITE);
+      // graphics.fillRect(0, 0, dimension.width, dimension.height);
+      LocalTimeDisplay.INSTANCE.draw(graphics, localTimeParam.toLocalTime(), point);
     }
   };
-  private LocalTime localTime;
+  private final LocalTimeParam localTimeParam;
 
   /** @param component
    * @param localTime_fallback
@@ -46,19 +48,16 @@ public class LocalTimeDialog extends JDialog {
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
-    // ---
-    localTime = localTime_fallback;
-    jComponent.setPreferredSize(new Dimension(130, 130));
+    jComponent.setPreferredSize(new Dimension(120, 100));
     jPanel.add(jComponent, BorderLayout.WEST);
     // ---
-    LocalTimeParam localTimeParam = new LocalTimeParam(localTime);
+    localTimeParam = new LocalTimeParam(localTime_fallback);
+    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(localTimeParam);
     {
-      PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(localTimeParam);
       panelFieldsEditor.addUniversalListener( //
           () -> {
-            localTime = localTimeParam.toLocalTime();
             jComponent.repaint();
-            consumer.accept(localTime);
+            consumer.accept(localTimeParam.toLocalTime());
           });
       jPanel.add(panelFieldsEditor.getJPanel(), BorderLayout.CENTER);
     }
@@ -68,10 +67,20 @@ public class LocalTimeDialog extends JDialog {
       jToolBar.setFloatable(false);
       jToolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
       {
+        JButton jButton = new JButton("Now");
+        jButton.addActionListener(actionEvent -> {
+          localTimeParam.set(LocalTime.now());
+          panelFieldsEditor.updateJComponents();
+          panelFieldsEditor.notifyUniversalListeners();
+        });
+        jToolBar.add(jButton);
+      }
+      jToolBar.addSeparator();
+      {
         JButton jButton = new JButton("Done");
         jButton.addActionListener(actionEvent -> {
           dispose();
-          consumer.accept(localTime);
+          consumer.accept(localTimeParam.toLocalTime());
         });
         jToolBar.add(jButton);
       }
@@ -79,8 +88,8 @@ public class LocalTimeDialog extends JDialog {
       {
         JButton jButton = new JButton("Cancel");
         jButton.addActionListener(actionEvent -> {
-          consumer.accept(localTime_fallback);
           dispose();
+          consumer.accept(localTime_fallback);
         });
         jToolBar.add(jButton);
       }
