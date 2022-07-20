@@ -43,8 +43,6 @@ public class LocalTimeDialog extends JDialog {
   public LocalTimeDialog(Component component, final LocalTime localTime_fallback, Consumer<LocalTime> consumer) {
     super(JOptionPane.getFrameForComponent(component));
     setTitle("LocalTime selection");
-    setSize(320, 200);
-    setResizable(false);
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
@@ -89,6 +87,8 @@ public class LocalTimeDialog extends JDialog {
       jPanel.add(BorderLayout.SOUTH, jToolBar);
     }
     setContentPane(jPanel);
+    setSize(320, StaticHelper.WINDOW_MARGIN + jPanel.getPreferredSize().height);
+    setResizable(false);
     addWindowListener(new WindowAdapter() {
       /** function is called when [x] is pressed by user */
       @Override

@@ -28,8 +28,6 @@ public class LocalDateDialog extends JDialog {
   public LocalDateDialog(Component component, final LocalDate localDate_fallback, Consumer<LocalDate> consumer) {
     super(JOptionPane.getFrameForComponent(component));
     setTitle("LocalDate selection");
-    setSize(220, 170);
-    setResizable(false);
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
@@ -72,6 +70,8 @@ public class LocalDateDialog extends JDialog {
       jPanel.add(BorderLayout.SOUTH, jToolBar);
     }
     setContentPane(jPanel);
+    setSize(220, StaticHelper.WINDOW_MARGIN + jPanel.getPreferredSize().height);
+    setResizable(false);
     addWindowListener(new WindowAdapter() {
       /** function is called when [x] is pressed by user */
       @Override

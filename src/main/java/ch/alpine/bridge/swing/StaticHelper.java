@@ -5,6 +5,8 @@ import java.awt.Color;
 
 /* package */ enum StaticHelper {
   ;
+  public static final int WINDOW_MARGIN = 60;
+
   public static Color alpha064(Color color) {
     return new Color(color.getRed(), color.getGreen(), color.getBlue(), 64);
   }

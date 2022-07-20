@@ -1,4 +1,4 @@
-// code by jph
+// code by omk
 package ch.alpine.bridge.usr;
 
 import java.time.LocalDate;
