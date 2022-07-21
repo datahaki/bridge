@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 import ch.alpine.bridge.swing.RowPanelBuilder;
 
@@ -42,7 +43,7 @@ public class PanelFieldsEditor extends FieldsEditor {
     }
 
     private JLabel createJLabel(String text) {
-      return new JLabel("\u3000".repeat(level) + text);
+      return FieldsEditorParam.GLOBAL.createLabel("\u3000".repeat(level) + text);
     }
   }
 

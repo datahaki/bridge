@@ -80,6 +80,9 @@ public class GuiExtensionDemo {
     // FieldsEditorParam.GLOBAL.textFieldFont_override = true;
     // FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 40);
     // ---
+    // FieldsEditorParam.GLOBAL.labelFont_override = true;
+    // FieldsEditorParam.GLOBAL.labelFont = new Font(Font.SERIF, Font.PLAIN, 13);
+    // ---
     // FieldsEditorParam.GLOBAL.checkBoxIcon_override = true;
     // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.LEDGREEN;
     // FieldsEditorParam.GLOBAL.checkBoxIconSize = RealScalar.of(32);
