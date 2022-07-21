@@ -17,7 +17,7 @@ public class ShortStackTrace {
       String className = stackTraceElement.getClassName();
       Optional<String> optional = Arrays.stream(prefix).filter(className::startsWith).findAny();
       if (optional.isPresent())
-        System.err.println(" " + stackTraceElement.toString());
+        System.err.println(" " + stackTraceElement);
     }
   }
 }

@@ -36,13 +36,12 @@ public abstract class SpinnerLabel<T> extends JTextField {
   /** @param supplier
    * @return */
   public static <T> SpinnerLabel<T> of(Supplier<List<T>> supplier) {
-    SpinnerLabel<T> spinnerLabel = new SpinnerLabel<>() {
+    return new SpinnerLabel<>() {
       @Override
       public List<T> getList() {
         return supplier.get();
       }
     };
-    return spinnerLabel;
   }
 
   /** Careful: any outside modification of given list is reflected in gui
@@ -113,25 +112,6 @@ public abstract class SpinnerLabel<T> extends JTextField {
     }
   }
 
-  private final LazyMouseListener lazyMouseListener = mouseEvent -> {
-    if (mouseEvent.getButton() == MouseEvent.BUTTON1 && isEnabled()) {
-      Dimension dimension = getSize();
-      Point point = mouseEvent.getPoint();
-      if (isOverArrows(point))
-        increment(point.y < dimension.height / 2 ? -1 : 1); // sign of difference
-      else //
-      if (isMenuEnabled) {
-        SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(getList(), getValue(), isMenuHover);
-        spinnerMenu.setFont(getFont());
-        spinnerMenu.addSpinnerListener(type -> {
-          setValue(type);
-          reportToAll();
-        });
-        spinnerMenu.showRight(this);
-      }
-    }
-  };
-
   private SpinnerLabel() {
     setEditable(false);
     addMouseWheelListener(mouseWheelEvent -> {
@@ -160,6 +140,26 @@ public abstract class SpinnerLabel<T> extends JTextField {
     };
     addMouseListener(mouseAdapter);
     addMouseMotionListener(mouseAdapter);
+    // sign of difference
+    //
+    LazyMouseListener lazyMouseListener = mouseEvent -> {
+      if (mouseEvent.getButton() == MouseEvent.BUTTON1 && isEnabled()) {
+        Dimension dimension = getSize();
+        Point point = mouseEvent.getPoint();
+        if (isOverArrows(point))
+          increment(point.y < dimension.height / 2 ? -1 : 1); // sign of difference
+        else //
+        if (isMenuEnabled) {
+          SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(getList(), getValue(), isMenuHover);
+          spinnerMenu.setFont(getFont());
+          spinnerMenu.addSpinnerListener(type -> {
+            setValue(type);
+            reportToAll();
+          });
+          spinnerMenu.showRight(this);
+        }
+      }
+    };
     new LazyMouse(lazyMouseListener).addListenersTo(this);
     addKeyListener(new KeyAdapter() {
       @Override

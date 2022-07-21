@@ -40,8 +40,6 @@ public class ClassDiscovery {
         if (fname.contains("."))
           continue;
         // Modified by Jan in order to enable nested packages
-        // visitDirectory(visitor, cldr, classpath_entry, f, fname +
-        // ".");
         String vc = visiting_classpath.isEmpty() ? fname : visiting_classpath + "." + fname;
         visitDirectory(cldr, classpath_entry, file, vc);
       } else //
@@ -49,8 +47,6 @@ public class ClassDiscovery {
         // found a .class file. Construct its full classname and pass
         // it to the class visitor
         // Modified by Jan in order to enable nested packages
-        // String cn = visiting_classpath + fname.substring(0,
-        // fname.length()-6);
         String className = visiting_classpath + "." + fname.substring(0, fname.length() - 6);
         try {
           Class<?> cls = cldr.loadClass(className);
@@ -85,8 +81,6 @@ public class ClassDiscovery {
               JarEntry jarEntry = enumeration.nextElement();
               String name = jarEntry.getName();
               // skip private classes?
-              // if (n.contains("$"))
-              // continue;
               if (name.endsWith(".class")) {
                 // convert the path into a class name
                 String className = name.substring(0, name.length() - 6);
@@ -99,9 +93,6 @@ public class ClassDiscovery {
                     continue;
                   classVisitor.accept(item, cls);
                 } catch (Throwable throwable) {
-                  // System.out.println("ClassDiscoverer: "+ex);
-                  // System.out.println(" jar: "+item);
-                  // System.out.println(" class: "+n);
                 }
               }
             }

@@ -37,8 +37,8 @@ public class DialogFieldsEditor extends JDialog {
   // ---
   private final Object object;
   private final PanelFieldsEditor panelFieldsEditor;
+  private final String fallback;
   private boolean status = false;
-  private String fallback;
 
   /** @param parentComponent may be null
    * @param title of dialog window

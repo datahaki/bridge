@@ -28,7 +28,7 @@ public class BoundedPriorityQueue<T> extends PriorityQueue<T> {
   }
 
   // ---
-  private int capacity;
+  private final int capacity;
 
   private BoundedPriorityQueue(int capacity, Comparator<? super T> comparator) {
     super(capacity, Objects.requireNonNull(comparator));

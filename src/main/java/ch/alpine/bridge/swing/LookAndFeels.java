@@ -42,11 +42,11 @@ public enum LookAndFeels {
 
   private final String className;
 
-  private LookAndFeels(LookAndFeel lookAndFeel) {
+  LookAndFeels(LookAndFeel lookAndFeel) {
     this(lookAndFeel.getClass().getName());
   }
 
-  private LookAndFeels(String className) {
+  LookAndFeels(String className) {
     this.className = className;
   }
 

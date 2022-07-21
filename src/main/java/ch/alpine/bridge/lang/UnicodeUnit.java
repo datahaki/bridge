@@ -30,7 +30,7 @@ import ch.alpine.tensor.sca.Sign;
   private final Map<String, String> exponents = new HashMap<>();
   private final Map<String, String> micros = new HashMap<>();
 
-  private UnicodeUnit() {
+  UnicodeUnit() {
     terminators.put("degC", "\u2103"); // unicode oC
     terminators.put("K", "\u212a"); // unicode K
     for (String unit : UnitSystem.SI().map().keySet())
