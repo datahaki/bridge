@@ -19,6 +19,7 @@ import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
+import ch.alpine.bridge.ref.ann.FieldSkipInvalidCheck;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.Scalar;
@@ -96,10 +97,14 @@ public class InvalidFieldDetection extends ObjectFieldIo {
           valid = false;
         }
     }
-    try {
-      valid &= Objects.nonNull(value) && fieldWrap.isValidValue(value);
-    } catch (Exception exception) {
-      valid = false;
+    {
+      FieldSkipInvalidCheck fieldSkipInvalidCheck = field.getAnnotation(FieldSkipInvalidCheck.class);
+      if (Objects.isNull(fieldSkipInvalidCheck))
+        try {
+          valid &= Objects.nonNull(value) && fieldWrap.isValidValue(value);
+        } catch (Exception exception) {
+          valid = false;
+        }
     }
     if (!valid)
       list.add(new FieldValueContainer(key, fieldWrap, object, value));
