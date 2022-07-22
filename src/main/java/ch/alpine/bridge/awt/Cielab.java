@@ -36,7 +36,7 @@ public enum Cielab {
   private final Tensor xyzn;
   private final Tensor xyzi;
 
-  private Cielab(double x, double y, double z) {
+  Cielab(double x, double y, double z) {
     xyzn = Tensors.vectorDouble(x, y, z);
     xyzi = this.xyzn.map(Scalar::reciprocal);
   }

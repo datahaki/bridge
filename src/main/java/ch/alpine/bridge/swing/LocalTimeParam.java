@@ -32,6 +32,10 @@ public class LocalTimeParam {
   public Scalar s;
 
   public LocalTimeParam(LocalTime localTime) {
+    set(localTime);
+  }
+
+  public void set(LocalTime localTime) {
     h = RealScalar.of(localTime.getHour());
     m = RealScalar.of(localTime.getMinute());
     s = RealScalar.of(localTime.getSecond());

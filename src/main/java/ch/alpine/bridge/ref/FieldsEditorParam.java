@@ -6,6 +6,7 @@ import java.awt.Font;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
@@ -26,6 +27,10 @@ public class FieldsEditorParam {
   public Boolean componentMinHeight_override = false;
   @FieldSelectionArray({ "28", "30", "32" })
   public Scalar componentMinHeight = RealScalar.of(28);
+  // ---
+  /** font applicable to {@link StringPanel} and {@link EnumPanel} */
+  public Boolean labelFont_override = false;
+  public Font labelFont = new Font(Font.DIALOG_INPUT, Font.PLAIN, 15);
   // ---
   /** font applicable to {@link StringPanel} and {@link EnumPanel} */
   public Boolean textFieldFont_override = false;
@@ -57,5 +62,12 @@ public class FieldsEditorParam {
       jCheckBox.setIcon(checkBoxIcon.create(n, false));
       jCheckBox.setSelectedIcon(checkBoxIcon.create(n, true));
     }
+  }
+
+  public JLabel createLabel(String text) {
+    JLabel jLabel = new JLabel(text);
+    if (labelFont_override)
+      jLabel.setFont(labelFont);
+    return jLabel;
   }
 }

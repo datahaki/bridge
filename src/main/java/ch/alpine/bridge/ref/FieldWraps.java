@@ -22,7 +22,7 @@ public enum FieldWraps {
 
   private final Map<Class<?>, Function<Field, FieldWrap>> map = new HashMap<>();
 
-  private FieldWraps() {
+  FieldWraps() {
     map.put(String.class, StringFieldWrap::new);
     map.put(Boolean.class, BooleanFieldWrap::new);
     map.put(Tensor.class, TensorFieldWrap::new);

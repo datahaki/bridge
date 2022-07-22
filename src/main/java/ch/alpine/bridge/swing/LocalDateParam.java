@@ -27,6 +27,10 @@ public class LocalDateParam {
   public Scalar day;
 
   public LocalDateParam(LocalDate localDate) {
+    set(localDate);
+  }
+
+  public void set(LocalDate localDate) {
     year = RealScalar.of(localDate.getYear());
     month = localDate.getMonth();
     day = RealScalar.of(localDate.getDayOfMonth());

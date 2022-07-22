@@ -1,16 +1,16 @@
 // code by omk
 package ch.alpine.bridge.usr;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import ch.alpine.bridge.swing.LocalDateDialog;
+import ch.alpine.bridge.swing.LocalDateTimeDialog;
 import ch.alpine.bridge.swing.LookAndFeels;
 
-enum LocalDateDialogDemo {
+enum LocalDateTimeDialogDemo {
   ;
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
-    LocalDateDialog fontDialog = new LocalDateDialog(null, LocalDate.now(), lt -> {
+    LocalDateTimeDialog fontDialog = new LocalDateTimeDialog(null, LocalDateTime.now(), lt -> {
       // ---
     });
     fontDialog.setLocation(100, 200);

@@ -10,6 +10,7 @@ import javax.swing.JToolBar;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
@@ -44,7 +45,7 @@ public class ToolbarFieldsEditor extends FieldsEditor {
         jComponent.setToolTipText(text);
       } else //
       if (!isBoolean) {
-        JLabel jLabel = new JLabel(text + " ");
+        JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(text + " ");
         jLabel.setToolTipText(FieldToolTip.of(field));
         jToolBar.add(jLabel);
       }

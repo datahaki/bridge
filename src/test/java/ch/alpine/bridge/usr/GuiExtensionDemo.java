@@ -27,7 +27,7 @@ public class GuiExtensionDemo {
   public GuiExtensionDemo() {
     guiExtension.cdg = null;
     guiExtension.background = null;
-    guiExtension.fieldsEditorParam.textFieldFont = null;
+    guiExtension.date = null;
     guiExtension.time = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
     guiExtension.pivots = Pivots.FIRST_NON_ZERO;
@@ -76,6 +76,12 @@ public class GuiExtensionDemo {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     // FieldsEditorParam.GLOBAL.componentMinHeight_override = true;
     // FieldsEditorParam.GLOBAL.componentMinHeight = RealScalar.of(32);
+    // ---
+    // FieldsEditorParam.GLOBAL.textFieldFont_override = true;
+    // FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 40);
+    // ---
+    // FieldsEditorParam.GLOBAL.labelFont_override = true;
+    // FieldsEditorParam.GLOBAL.labelFont = new Font(Font.SERIF, Font.PLAIN, 13);
     // ---
     // FieldsEditorParam.GLOBAL.checkBoxIcon_override = true;
     // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.LEDGREEN;

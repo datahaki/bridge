@@ -22,7 +22,7 @@ public enum ReflectionMarkers {
   };
   private boolean debugPrint = false;
 
-  private ReflectionMarkers() {
+  ReflectionMarkers() {
     checked.add(Object.class);
   }
 
@@ -39,7 +39,7 @@ public enum ReflectionMarkers {
    * 
    * @param object non-null */
   public void register(Object object) {
-    Class<? extends Object> cls = object.getClass();
+    Class<?> cls = object.getClass();
     if (!checked.contains(cls))
       synchronized (this) {
         ClassHierarchy.of(cls).forEach(this::expected);

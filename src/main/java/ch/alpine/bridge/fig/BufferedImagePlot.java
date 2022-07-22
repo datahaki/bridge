@@ -75,11 +75,11 @@ import ch.alpine.tensor.sca.Clip;
   /** The domain axis / axes (used for the x-values). */
   private final NumberAxis domainAxis;
   /** The domain axis locations. */
-  private Map<Integer, AxisLocation> domainAxisLocations;
+  private final Map<Integer, AxisLocation> domainAxisLocations;
   /** The range axis (used for the y-values). */
   private final NumberAxis rangeAxis;
   /** The range axis location. */
-  private Map<Integer, AxisLocation> rangeAxisLocations;
+  private final Map<Integer, AxisLocation> rangeAxisLocations;
   /** Storage for the datasets. */
   private final XYDataset xyDataset;
   /** Storage for the renderers. */
@@ -90,14 +90,14 @@ import ch.alpine.tensor.sca.Clip;
    * objects (corresponding to the axis indices). If the map contains no
    * entry for a dataset, it is assumed to map to the primary domain axis
    * (index = 0). */
-  private Map<Integer, List<Integer>> datasetToDomainAxesMap;
+  private final Map<Integer, List<Integer>> datasetToDomainAxesMap;
   /** Storage for the mapping between datasets/renderers and range axes. The
    * keys in the map are Integer objects, corresponding to the dataset
    * index. The values in the map are List objects containing Integer
    * objects (corresponding to the axis indices). If the map contains no
    * entry for a dataset, it is assumed to map to the primary domain axis
    * (index = 0). */
-  private Map<Integer, List<Integer>> datasetToRangeAxesMap;
+  private final Map<Integer, List<Integer>> datasetToRangeAxesMap;
   /** A flag that controls whether the domain grid-lines are visible. */
   private boolean domainGridlinesVisible;
   /** The stroke used to draw the domain grid-lines. */
