@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.awt;
+package ch.alpine.bridge.col;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

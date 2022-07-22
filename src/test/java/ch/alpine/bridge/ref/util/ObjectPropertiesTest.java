@@ -75,6 +75,12 @@ class ObjectPropertiesTest {
   }
 
   @Test
+  void testTrySaveFail() {
+    SimpleParam simpleParam = new SimpleParam();
+    assertFalse(ObjectProperties.trySave(simpleParam, new File("/should not be possible/to save/here")));
+  }
+
+  @Test
   void testLaram(@TempDir File folder) throws IOException {
     SimpleLaram simpleLaram = new SimpleLaram();
     String string0 = ObjectProperties.join(simpleLaram);

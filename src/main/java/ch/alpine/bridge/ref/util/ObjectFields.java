@@ -39,19 +39,19 @@ public class ObjectFields {
         case NODE -> {
           Class<?> class_field = field.getType();
           if (class_field.isArray())
-            iterate(prefix, field, List.of((Object[]) get(field, object)));
+            iterate(prefix, field, List.of((Object[]) StaticHelper.get(field, object)));
           else {
             if (field.getType().equals(List.class))
-              iterate(prefix, field, (List<?>) get(field, object));
+              iterate(prefix, field, (List<?>) StaticHelper.get(field, object));
             else {
               objectFieldVisitor.push(prefix, field, null);
-              visit(prefix + ".", get(field, object));
+              visit(prefix + ".", StaticHelper.get(field, object));
               objectFieldVisitor.pop();
             }
           }
         }
         case LEAF -> {
-          objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, get(field, object));
+          objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, StaticHelper.get(field, object));
         }
         default -> {
           // skip
@@ -66,17 +66,6 @@ public class ObjectFields {
       objectFieldVisitor.push(string, field, index);
       visit(string + ".", list.get(index));
       objectFieldVisitor.pop();
-    }
-  }
-
-  /** @param field
-   * @param object
-   * @return {@link Field#get(Object)} */
-  private static Object get(Field field, Object object) {
-    try {
-      return field.get(object);
-    } catch (Exception exception) {
-      throw new RuntimeException(exception);
     }
   }
 

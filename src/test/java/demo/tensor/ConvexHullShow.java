@@ -16,7 +16,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.io.Export;
 import ch.alpine.tensor.io.ImageFormat;
-import ch.alpine.tensor.lie.r2.ConvexHull2D;
+import ch.alpine.tensor.lie.r2.CirclePoints;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.sca.Clips;
@@ -27,7 +27,8 @@ import ch.alpine.tensor.sca.Clips;
   private static Tensor image(int seed) {
     Random random = new Random(seed);
     Tensor points = RandomVariate.of(NormalDistribution.of(0.5, .28), random, 30, 2).map(Clips.unit());
-    Tensor hull = ConvexHull2D.of(points);
+    Tensor hull = CirclePoints.of(17); // TODO SOPHUS demo is placed incorrectly
+    // ConvexHull2D.of(points);
     GeometricLayer geometricLayer = new GeometricLayer(StaticHelper.SE2);
     BufferedImage bufferedImage = StaticHelper.createWhite();
     Graphics2D graphics = bufferedImage.createGraphics();

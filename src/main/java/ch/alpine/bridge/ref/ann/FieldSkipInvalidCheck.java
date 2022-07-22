@@ -9,7 +9,9 @@ import java.lang.annotation.Target;
 
 import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 
-/** @see InvalidFieldDetection */
+/** marks a fields to be ignored in the invalid field detection test
+ * 
+ * @see InvalidFieldDetection */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.awt;
+package ch.alpine.bridge.col;
 
 import org.junit.jupiter.api.Test;
 
