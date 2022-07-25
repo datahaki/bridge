@@ -45,11 +45,12 @@ public class LocalTimeDialog extends JDialog {
     super(JOptionPane.getFrameForComponent(component));
     setTitle("LocalTime selection");
     // ---
+    localTimeParam = new LocalTimeParam(localTime_fallback);
+    // ---
     JPanel jPanel = new JPanel(new BorderLayout());
     jComponent.setPreferredSize(new Dimension(120, 100));
     jPanel.add(jComponent, BorderLayout.WEST);
     // ---
-    localTimeParam = new LocalTimeParam(localTime_fallback);
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(localTimeParam);
     {
       panelFieldsEditor.addUniversalListener( //

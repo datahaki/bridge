@@ -25,7 +25,7 @@ import ch.alpine.bridge.swing.FontStyle;
   }
 
   public static Font font(Random random) {
-    List<String> list = FontDialog.Param.names();
+    List<String> list = FontDialog.FontParam.names();
     return new Font( //
         list.get(random.nextInt(list.size())), //
         random.nextInt(FontStyle.values().length), //

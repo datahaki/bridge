@@ -26,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -42,7 +41,7 @@ public class FontDialog extends JDialog {
   private static final String DEMO = "Abc123!";
 
   @ReflectionMarker
-  public static class Param {
+  public static class FontParam {
     @FieldSelectionCallback("names")
     public String name; // "Dialog"
     public FontStyle style; // PLAIN
@@ -52,7 +51,7 @@ public class FontDialog extends JDialog {
     public Scalar size; // 12
 
     /** @param font */
-    public Param(Font font) {
+    public FontParam(Font font) {
       name = font.getName();
       style = FontStyle.values()[font.getStyle()];
       size = RealScalar.of(font.getSize());
@@ -83,7 +82,7 @@ public class FontDialog extends JDialog {
       graphics.setColor(Color.WHITE);
       graphics.fillRect(0, 0, dimension.width, dimension.height);
       RenderQuality.setQuality(graphics);
-      graphics.setFont(font);
+      graphics.setFont(fontParam.toFont());
       FontMetrics fontMetrics = graphics.getFontMetrics();
       int ascent = fontMetrics.getAscent();
       int stringWidth = fontMetrics.stringWidth(DEMO);
@@ -91,29 +90,23 @@ public class FontDialog extends JDialog {
       graphics.drawString(DEMO, point.x - stringWidth / 2, point.y + ascent / 2);
     }
   };
-  private Font font;
+  private final FontParam fontParam;
 
   public FontDialog(Component component, final Font font_fallback, Consumer<Font> consumer) {
     super(JOptionPane.getFrameForComponent(component));
     setTitle("Font selection");
-    setSize(300, 220);
-    setResizable(false);
-    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    fontParam = new FontParam(font_fallback);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
-    // ---
-    font = font_fallback;
     jComponent.setPreferredSize(new Dimension(200, 60));
     jPanel.add(jComponent, BorderLayout.NORTH);
     // ---
-    Param fontParam = new Param(font);
     {
       PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(fontParam);
       panelFieldsEditor.addUniversalListener( //
           () -> {
-            font = fontParam.toFont();
             jComponent.repaint();
-            consumer.accept(font);
+            consumer.accept(fontParam.toFont());
           });
       jPanel.add(panelFieldsEditor.getJPanel(), BorderLayout.CENTER);
     }
@@ -127,7 +120,7 @@ public class FontDialog extends JDialog {
         JButton jButton = new JButton("Done");
         jButton.addActionListener(actionEvent -> {
           dispose();
-          consumer.accept(font);
+          consumer.accept(fontParam.toFont());
         });
         jToolBar.add(jButton);
       }
@@ -142,7 +135,7 @@ public class FontDialog extends JDialog {
       }
       jPanel.add(jToolBar, BorderLayout.SOUTH);
     }
-    setContentPane(jPanel);
+    StaticHelper.configure(this, jPanel);
     addWindowListener(new WindowAdapter() {
       /** function is called when [x] is pressed by user */
       @Override

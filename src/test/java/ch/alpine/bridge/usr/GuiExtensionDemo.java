@@ -2,6 +2,7 @@
 package ch.alpine.bridge.usr;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -14,6 +15,7 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
@@ -78,8 +80,8 @@ public class GuiExtensionDemo {
     // FieldsEditorParam.GLOBAL.componentMinHeight_override = true;
     // FieldsEditorParam.GLOBAL.componentMinHeight = RealScalar.of(32);
     // ---
-    // FieldsEditorParam.GLOBAL.textFieldFont_override = true;
-    // FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 40);
+    FieldsEditorParam.GLOBAL.textFieldFont_override = true;
+    FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 22);
     // ---
     // FieldsEditorParam.GLOBAL.labelFont_override = true;
     // FieldsEditorParam.GLOBAL.labelFont = new Font(Font.SERIF, Font.PLAIN, 13);

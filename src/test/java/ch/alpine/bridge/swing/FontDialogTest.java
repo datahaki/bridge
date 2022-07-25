@@ -7,7 +7,7 @@ import javax.swing.JTextField;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.swing.FontDialog.Param;
+import ch.alpine.bridge.swing.FontDialog.FontParam;
 
 class FontDialogTest {
   @Test
@@ -20,7 +20,7 @@ class FontDialogTest {
 
   @Test
   void test2() {
-    Param fontParam = new Param(new Font(Font.DIALOG_INPUT, Font.ITALIC, 22));
+    FontParam fontParam = new FontParam(new Font(Font.DIALOG_INPUT, Font.ITALIC, 22));
     fontParam.toFont();
   }
 
@@ -28,7 +28,7 @@ class FontDialogTest {
   void testSimple() {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     Font font = new JTextField().getFont(); // "Cantarell"
-    Param fontParam = new Param(font);
+    FontParam fontParam = new FontParam(font);
     fontParam.toFont();
   }
 
