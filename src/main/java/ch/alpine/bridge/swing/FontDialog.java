@@ -3,27 +3,19 @@ package ch.alpine.bridge.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
@@ -37,7 +29,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 
-public class FontDialog extends JDialog {
+public abstract class FontDialog implements DialogBuilder<Font> {
   private static final String DEMO = "Abc123!";
 
   @ReflectionMarker
@@ -90,59 +82,59 @@ public class FontDialog extends JDialog {
       graphics.drawString(DEMO, point.x - stringWidth / 2, point.y + ascent / 2);
     }
   };
+  private final Font font_fallback;
   private final FontParam fontParam;
+  private final PanelFieldsEditor panelFieldsEditor;
 
-  public FontDialog(Component component, final Font font_fallback, Consumer<Font> consumer) {
-    super(JOptionPane.getFrameForComponent(component));
-    setTitle("Font selection");
+  public FontDialog(final Font font_fallback) {
+    this.font_fallback = font_fallback;
+    // setTitle();
     fontParam = new FontParam(font_fallback);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
     jComponent.setPreferredSize(new Dimension(200, 60));
     jPanel.add(jComponent, BorderLayout.NORTH);
     // ---
-    {
-      PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(fontParam);
-      panelFieldsEditor.addUniversalListener( //
-          () -> {
-            jComponent.repaint();
-            consumer.accept(fontParam.toFont());
-          });
-      jPanel.add(panelFieldsEditor.getJPanel(), BorderLayout.CENTER);
-    }
-    jPanel.add(new JLabel("\u3000"), BorderLayout.WEST);
-    jPanel.add(new JLabel("\u3000"), BorderLayout.EAST);
-    {
-      JToolBar jToolBar = new JToolBar();
-      jToolBar.setFloatable(false);
-      jToolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
-      {
-        JButton jButton = new JButton("Done");
-        jButton.addActionListener(actionEvent -> {
-          dispose();
-          consumer.accept(fontParam.toFont());
+    panelFieldsEditor = new PanelFieldsEditor(fontParam);
+    panelFieldsEditor.addUniversalListener( //
+        () -> {
+          jComponent.repaint();
+          selection(fontParam.toFont());
         });
-        jToolBar.add(jButton);
-      }
-      jToolBar.addSeparator();
-      {
-        JButton jButton = new JButton("Cancel");
-        jButton.addActionListener(actionEvent -> {
-          consumer.accept(font_fallback);
-          dispose();
-        });
-        jToolBar.add(jButton);
-      }
-      jPanel.add(jToolBar, BorderLayout.SOUTH);
-    }
-    StaticHelper.configure(this, jPanel);
-    addWindowListener(new WindowAdapter() {
-      /** function is called when [x] is pressed by user */
-      @Override
-      public void windowClosing(WindowEvent windowEvent) {
-        // propagate fallback value
-        consumer.accept(font_fallback);
-      }
-    });
+  }
+
+  @Override
+  public String getTitle() {
+    return "Font selection";
+  }
+
+  @Override
+  public Optional<JComponent> getComponentWest() {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<JComponent> getComponentNorth() {
+    return Optional.of(jComponent);
+  }
+
+  @Override
+  public PanelFieldsEditor panelFieldsEditor() {
+    return panelFieldsEditor;
+  }
+
+  @Override
+  public void decorate(JToolBar jToolBar) {
+    // ---
+  }
+
+  @Override
+  public Font fallback() {
+    return font_fallback;
+  }
+
+  @Override
+  public Font current() {
+    return fontParam.toFont();
   }
 }

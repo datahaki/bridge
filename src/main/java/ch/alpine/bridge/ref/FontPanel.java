@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import javax.swing.JDialog;
 
+import ch.alpine.bridge.swing.DialogBuilder;
 import ch.alpine.bridge.swing.FontDialog;
 
 /* package */ class FontPanel extends DialogPanel {
@@ -19,6 +20,12 @@ import ch.alpine.bridge.swing.FontDialog;
   @Override // from DialogPanel
   protected JDialog createDialog(Component component, Object value) {
     Font fallback = Objects.isNull(value) ? FALLBACK : (Font) value;
-    return new FontDialog(component, fallback, this::updateAndNotify);
+    FontDialog fontDialog = new FontDialog(fallback) {
+      @Override
+      public void selection(Font current) {
+        updateAndNotify(current);
+      }
+    };
+    return DialogBuilder.create(component, fontDialog);
   }
 }

@@ -12,9 +12,12 @@ import ch.alpine.bridge.swing.FontDialog.FontParam;
 class FontDialogTest {
   @Test
   void test() {
-    FontDialog fontDialog = new FontDialog(null, new Font(Font.DIALOG, Font.BOLD, 4), e -> {
-      // ---
-    });
+    FontDialog fontDialog = new FontDialog(new Font(Font.DIALOG, Font.BOLD, 4)) {
+      @Override
+      public void selection(Font current) {
+        // ---
+      }
+    };
     fontDialog.getTitle();
   }
 

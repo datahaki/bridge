@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import javax.swing.JDialog;
 
+import ch.alpine.bridge.swing.DialogBuilder;
 import ch.alpine.bridge.swing.LocalTimeDialog;
 
 /* package */ class LocalTimePanel extends DialogPanel {
@@ -17,6 +18,12 @@ import ch.alpine.bridge.swing.LocalTimeDialog;
   @Override // from DialogPanel
   protected JDialog createDialog(Component component, Object value) {
     LocalTime fallback = Objects.isNull(value) ? LocalTime.now() : (LocalTime) value;
-    return new LocalTimeDialog(component, fallback, this::updateAndNotify);
+    LocalTimeDialog localTimeDialog = new LocalTimeDialog(fallback) {
+      @Override
+      public void selection(LocalTime current) {
+        updateAndNotify(current);
+      }
+    };
+    return DialogBuilder.create(component, localTimeDialog);
   }
 }

@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import javax.swing.JDialog;
 
+import ch.alpine.bridge.swing.DialogBuilder;
 import ch.alpine.bridge.swing.LocalDateDialog;
 
 /* package */ class LocalDatePanel extends DialogPanel {
@@ -17,6 +18,12 @@ import ch.alpine.bridge.swing.LocalDateDialog;
   @Override // from DialogPanel
   protected JDialog createDialog(Component component, Object value) {
     LocalDate fallback = Objects.isNull(value) ? LocalDate.now() : (LocalDate) value;
-    return new LocalDateDialog(component, fallback, this::updateAndNotify);
+    LocalDateDialog localDateDialog = new LocalDateDialog(fallback) {
+      @Override
+      public void selection(LocalDate current) {
+        updateAndNotify(current);
+      }
+    };
+    return DialogBuilder.create(component, localDateDialog);
   }
 }
