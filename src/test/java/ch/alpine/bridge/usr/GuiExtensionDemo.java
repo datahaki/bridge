@@ -27,6 +27,7 @@ public class GuiExtensionDemo {
   public GuiExtensionDemo() {
     guiExtension.cdg = null;
     guiExtension.background = null;
+    guiExtension.font = null;
     guiExtension.date = null;
     guiExtension.time = null;
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);

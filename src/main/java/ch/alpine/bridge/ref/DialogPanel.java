@@ -27,7 +27,7 @@ import ch.alpine.bridge.awt.WindowClosed;
     jButton.addActionListener(actionEvent -> {
       if (Objects.isNull(jDialog)) {
         // fallback font is restored when "Cancel" is pressed
-        jDialog = createDialog(jButton, value);
+        jDialog = createDialog(jButton, fieldWrap().toValue(getText()));
         WindowClosed.runs(jDialog, () -> jDialog = null);
         Point point = jButton.getLocationOnScreen();
         jDialog.setLocation(point);
