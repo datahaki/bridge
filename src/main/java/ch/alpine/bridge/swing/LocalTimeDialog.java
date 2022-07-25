@@ -1,106 +1,92 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.time.LocalTime;
-import java.util.function.Consumer;
+import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import ch.alpine.bridge.gfx.LocalTimeDisplay;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
-public class LocalTimeDialog extends JDialog {
+public abstract class LocalTimeDialog implements DialogBuilder<LocalTime> {
   private final JComponent jComponent = new JComponent() {
     @Override
     protected void paintComponent(Graphics _g) {
       Dimension dimension = getSize();
       Point point = new Point(dimension.width / 2, dimension.height / 2);
       Graphics2D graphics = (Graphics2D) _g;
-      // graphics.setColor(Color.WHITE);
-      // graphics.fillRect(0, 0, dimension.width, dimension.height);
       LocalTimeDisplay.INSTANCE.draw(graphics, localTimeParam.toLocalTime(), point);
     }
   };
+  private final LocalTime localTime_fallback;
   private final LocalTimeParam localTimeParam;
+  private final PanelFieldsEditor panelFieldsEditor;
 
   /** @param component
    * @param localTime_fallback
    * @param consumer */
-  public LocalTimeDialog(Component component, final LocalTime localTime_fallback, Consumer<LocalTime> consumer) {
-    super(JOptionPane.getFrameForComponent(component));
-    setTitle("LocalTime selection");
-    // ---
-    JPanel jPanel = new JPanel(new BorderLayout());
-    jComponent.setPreferredSize(new Dimension(120, 100));
-    jPanel.add(jComponent, BorderLayout.WEST);
-    // ---
+  public LocalTimeDialog(final LocalTime localTime_fallback) {
+    this.localTime_fallback = localTime_fallback;
     localTimeParam = new LocalTimeParam(localTime_fallback);
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(localTimeParam);
+    // ---
+    jComponent.setPreferredSize(new Dimension(120, 100));
+    // ---
+    panelFieldsEditor = new PanelFieldsEditor(localTimeParam);
     {
       panelFieldsEditor.addUniversalListener( //
           () -> {
             jComponent.repaint();
-            consumer.accept(localTimeParam.toLocalTime());
+            selection(localTimeParam.toLocalTime());
           });
-      jPanel.add(panelFieldsEditor.getJPanel(), BorderLayout.CENTER);
     }
-    jPanel.add(new JLabel("\u3000"), BorderLayout.EAST);
-    {
-      JToolBar jToolBar = new JToolBar();
-      jToolBar.setFloatable(false);
-      jToolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
-      {
-        JButton jButton = new JButton("Now");
-        jButton.addActionListener(actionEvent -> {
-          localTimeParam.set(LocalTime.now());
-          panelFieldsEditor.updateJComponents();
-          panelFieldsEditor.notifyUniversalListeners();
-        });
-        jToolBar.add(jButton);
-      }
-      jToolBar.addSeparator();
-      {
-        JButton jButton = new JButton("Done");
-        jButton.addActionListener(actionEvent -> {
-          dispose();
-          consumer.accept(localTimeParam.toLocalTime());
-        });
-        jToolBar.add(jButton);
-      }
-      jToolBar.addSeparator();
-      {
-        JButton jButton = new JButton("Cancel");
-        jButton.addActionListener(actionEvent -> {
-          dispose();
-          consumer.accept(localTime_fallback);
-        });
-        jToolBar.add(jButton);
-      }
-      jPanel.add(BorderLayout.SOUTH, jToolBar);
-    }
-    StaticHelper.configure(this, jPanel);
-    addWindowListener(new WindowAdapter() {
-      /** function is called when [x] is pressed by user */
-      @Override
-      public void windowClosing(WindowEvent windowEvent) {
-        // propagate fallback value
-        consumer.accept(localTime_fallback);
-      }
+  }
+
+  @Override
+  public String getTitle() {
+    return "LocalTime selection";
+  }
+
+  @Override
+  public Optional<JComponent> getComponentWest() {
+    return Optional.of(jComponent);
+  }
+
+  @Override
+  public PanelFieldsEditor panelFieldsEditor() {
+    return panelFieldsEditor;
+  }
+
+  @Override
+  public void decorate(JToolBar jToolBar) {
+    JButton jButton = new JButton("Now");
+    jButton.addActionListener(actionEvent -> {
+      localTimeParam.set(LocalTime.now());
+      panelFieldsEditor.updateJComponents();
+      panelFieldsEditor.notifyUniversalListeners();
     });
+    jToolBar.add(jButton);
+    jToolBar.addSeparator();
+  }
+
+  @Override
+  public LocalTime fallback() {
+    return localTime_fallback;
+  }
+
+  @Override
+  public LocalTime current() {
+    return localTimeParam.toLocalTime();
+  }
+
+  @Override
+  public Optional<JComponent> getComponentNorth() {
+    return Optional.empty();
   }
 }

@@ -18,6 +18,7 @@ import ch.alpine.tensor.Scalar;
 public class LocalDateParam {
   @FieldInteger
   @FieldClip(min = "1900", max = "3000")
+  @FieldSelectionCallback("years")
   public Scalar year;
   // ---
   public Month month;
@@ -41,6 +42,11 @@ public class LocalDateParam {
         year.number().intValue(), //
         month, //
         Math.min(day.number().intValue(), maxDays()));//
+  }
+
+  @ReflectionMarker
+  public List<Scalar> years() {
+    return IntStream.rangeClosed(-3, 3).mapToObj(RealScalar::of).map(year::add).collect(Collectors.toList());
   }
 
   @ReflectionMarker

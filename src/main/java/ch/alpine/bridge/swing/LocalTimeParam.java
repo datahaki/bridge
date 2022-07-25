@@ -25,7 +25,7 @@ public class LocalTimeParam {
   @FieldInteger
   @FieldClip(min = "0", max = "59")
   @FieldSelectionCallback("sixty")
-  public Scalar m;
+  public Scalar min;
   // ---
   @FieldClip(min = "0", max = "59.999999999")
   @FieldSelectionCallback("sixty")
@@ -37,7 +37,7 @@ public class LocalTimeParam {
 
   public void set(LocalTime localTime) {
     h = RealScalar.of(localTime.getHour());
-    m = RealScalar.of(localTime.getMinute());
+    min = RealScalar.of(localTime.getMinute());
     s = RealScalar.of(localTime.getSecond());
     int nano = localTime.getNano();
     if (nano != 0)
@@ -56,7 +56,7 @@ public class LocalTimeParam {
     Scalar n = s.subtract(fs).multiply(NANOS);
     return LocalTime.of( //
         h.number().intValue(), //
-        m.number().intValue(), //
+        min.number().intValue(), //
         fs.number().intValue(), //
         n.number().intValue());
   }

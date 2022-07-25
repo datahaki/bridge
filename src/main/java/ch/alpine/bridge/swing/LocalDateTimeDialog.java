@@ -1,72 +1,61 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.time.LocalDateTime;
-import java.util.function.Consumer;
+import java.util.Optional;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
-public class LocalDateTimeDialog extends JDialog {
+public abstract class LocalDateTimeDialog implements DialogBuilder<LocalDateTime> {
+  private final LocalDateTime localDateTime_fallback;
+  private final LocalDateTimeParam localDateTimeParam;
+  private final PanelFieldsEditor panelFieldsEditor;
+
   /** @param component
    * @param localDate_fallback
    * @param consumer */
-  public LocalDateTimeDialog(Component component, final LocalDateTime localDateTime_fallback, Consumer<LocalDateTime> consumer) {
-    super(JOptionPane.getFrameForComponent(component));
-    setTitle("LocalDateTime selection");
+  public LocalDateTimeDialog(LocalDateTime localDateTime_fallback) {
+    this.localDateTime_fallback = localDateTime_fallback;
+    localDateTimeParam = new LocalDateTimeParam(localDateTime_fallback);
+    panelFieldsEditor = new PanelFieldsEditor(localDateTimeParam);
+    panelFieldsEditor.addUniversalListener(() -> selection(localDateTimeParam.toLocalDateTime()));
+  }
+
+  @Override
+  public String getTitle() {
+    return "LocalDateTime selection";
+  }
+
+  @Override
+  public Optional<JComponent> getComponentWest() {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<JComponent> getComponentNorth() {
+    return Optional.empty();
+  }
+
+  @Override
+  public PanelFieldsEditor panelFieldsEditor() {
+    return panelFieldsEditor;
+  }
+
+  @Override
+  public void decorate(JToolBar jToolBar) {
     // ---
-    JPanel jPanel = new JPanel(new BorderLayout());
-    // ---
-    LocalDateTimeParam localDateTimeParam = new LocalDateTimeParam(localDateTime_fallback);
-    {
-      PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(localDateTimeParam);
-      panelFieldsEditor.addUniversalListener(() -> consumer.accept(localDateTimeParam.toLocalDateTime()));
-      jPanel.add(panelFieldsEditor.getJPanel(), BorderLayout.CENTER);
-    }
-    jPanel.add(new JLabel("\u3000"), BorderLayout.EAST);
-    jPanel.add(new JLabel("\u3000"), BorderLayout.WEST);
-    {
-      JToolBar jToolBar = new JToolBar();
-      jToolBar.setFloatable(false);
-      jToolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
-      {
-        JButton jButton = new JButton("Done");
-        jButton.addActionListener(actionEvent -> {
-          dispose();
-          consumer.accept(localDateTimeParam.toLocalDateTime());
-        });
-        jToolBar.add(jButton);
-      }
-      jToolBar.addSeparator();
-      {
-        JButton jButton = new JButton("Cancel");
-        jButton.addActionListener(actionEvent -> {
-          dispose();
-          consumer.accept(localDateTime_fallback);
-        });
-        jToolBar.add(jButton);
-      }
-      jPanel.add(BorderLayout.SOUTH, jToolBar);
-    }
-    StaticHelper.configure(this, jPanel);
-    addWindowListener(new WindowAdapter() {
-      /** function is called when [x] is pressed by user */
-      @Override
-      public void windowClosing(WindowEvent windowEvent) {
-        // propagate fallback value
-        consumer.accept(localDateTime_fallback);
-      }
-    });
+  }
+
+  @Override
+  public LocalDateTime fallback() {
+    return localDateTime_fallback;
+  }
+
+  @Override
+  public LocalDateTime current() {
+    return localDateTimeParam.toLocalDateTime();
   }
 }
