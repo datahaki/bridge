@@ -3,7 +3,6 @@ package ch.alpine.bridge.swing;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.time.LocalTime;
 import java.util.Optional;
@@ -15,37 +14,30 @@ import javax.swing.JToolBar;
 import ch.alpine.bridge.gfx.LocalTimeDisplay;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
-public abstract class LocalTimeDialog implements DialogBuilder<LocalTime> {
+public abstract class LocalTimeDialog extends DialogBase<LocalTime> {
   private final JComponent jComponent = new JComponent() {
     @Override
-    protected void paintComponent(Graphics _g) {
+    protected void paintComponent(Graphics graphics) {
       Dimension dimension = getSize();
       Point point = new Point(dimension.width / 2, dimension.height / 2);
-      Graphics2D graphics = (Graphics2D) _g;
-      LocalTimeDisplay.INSTANCE.draw(graphics, localTimeParam.toLocalTime(), point);
+      LocalTimeDisplay.INSTANCE.draw(graphics, current(), point);
     }
   };
-  private final LocalTime localTime_fallback;
   private final LocalTimeParam localTimeParam;
   private final PanelFieldsEditor panelFieldsEditor;
 
-  /** @param component
-   * @param localTime_fallback
-   * @param consumer */
-  public LocalTimeDialog(final LocalTime localTime_fallback) {
-    this.localTime_fallback = localTime_fallback;
-    localTimeParam = new LocalTimeParam(localTime_fallback);
+  /** @param localTime fallback */
+  public LocalTimeDialog(LocalTime localTime) {
+    super(localTime);
+    localTimeParam = new LocalTimeParam(localTime);
     // ---
     jComponent.setPreferredSize(new Dimension(120, 100));
     // ---
     panelFieldsEditor = new PanelFieldsEditor(localTimeParam);
-    {
-      panelFieldsEditor.addUniversalListener( //
-          () -> {
-            jComponent.repaint();
-            selection(localTimeParam.toLocalTime());
-          });
-    }
+    panelFieldsEditor.addUniversalListener(() -> {
+      jComponent.repaint();
+      selection(current());
+    });
   }
 
   @Override
@@ -56,6 +48,11 @@ public abstract class LocalTimeDialog implements DialogBuilder<LocalTime> {
   @Override
   public Optional<JComponent> getComponentWest() {
     return Optional.of(jComponent);
+  }
+
+  @Override
+  public Optional<JComponent> getComponentNorth() {
+    return Optional.empty();
   }
 
   @Override
@@ -76,17 +73,7 @@ public abstract class LocalTimeDialog implements DialogBuilder<LocalTime> {
   }
 
   @Override
-  public LocalTime fallback() {
-    return localTime_fallback;
-  }
-
-  @Override
   public LocalTime current() {
     return localTimeParam.toLocalTime();
-  }
-
-  @Override
-  public Optional<JComponent> getComponentNorth() {
-    return Optional.empty();
   }
 }

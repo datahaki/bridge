@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -16,7 +15,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import ch.alpine.bridge.awt.RenderQuality;
@@ -29,7 +27,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 
-public abstract class FontDialog implements DialogBuilder<Font> {
+public abstract class FontDialog extends DialogBase<Font> {
   private static final String DEMO = "Abc123!";
 
   @ReflectionMarker
@@ -82,25 +80,20 @@ public abstract class FontDialog implements DialogBuilder<Font> {
       graphics.drawString(DEMO, point.x - stringWidth / 2, point.y + ascent / 2);
     }
   };
-  private final Font font_fallback;
   private final FontParam fontParam;
   private final PanelFieldsEditor panelFieldsEditor;
 
-  public FontDialog(final Font font_fallback) {
-    this.font_fallback = font_fallback;
-    // setTitle();
-    fontParam = new FontParam(font_fallback);
+  public FontDialog(Font font) {
+    super(font);
+    fontParam = new FontParam(font);
     // ---
-    JPanel jPanel = new JPanel(new BorderLayout());
     jComponent.setPreferredSize(new Dimension(200, 60));
-    jPanel.add(jComponent, BorderLayout.NORTH);
     // ---
     panelFieldsEditor = new PanelFieldsEditor(fontParam);
-    panelFieldsEditor.addUniversalListener( //
-        () -> {
-          jComponent.repaint();
-          selection(fontParam.toFont());
-        });
+    panelFieldsEditor.addUniversalListener(() -> {
+      jComponent.repaint();
+      selection(current());
+    });
   }
 
   @Override
@@ -126,11 +119,6 @@ public abstract class FontDialog implements DialogBuilder<Font> {
   @Override
   public void decorate(JToolBar jToolBar) {
     // ---
-  }
-
-  @Override
-  public Font fallback() {
-    return font_fallback;
   }
 
   @Override
