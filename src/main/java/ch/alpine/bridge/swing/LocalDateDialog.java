@@ -9,19 +9,16 @@ import javax.swing.JToolBar;
 
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
-public abstract class LocalDateDialog implements DialogBuilder<LocalDate> {
-  private final LocalDate localDate_fallback;
+public abstract class LocalDateDialog extends DialogBase<LocalDate> {
   private final LocalDateParam localDateParam;
   private final PanelFieldsEditor panelFieldsEditor;
 
-  /** @param component
-   * @param localDate_fallback
-   * @param consumer */
-  public LocalDateDialog(final LocalDate localDate_fallback) {
-    this.localDate_fallback = localDate_fallback;
-    localDateParam = new LocalDateParam(localDate_fallback);
+  /** @param localDate fallback */
+  public LocalDateDialog(LocalDate localDate) {
+    super(localDate);
+    localDateParam = new LocalDateParam(localDate);
     panelFieldsEditor = new PanelFieldsEditor(localDateParam);
-    panelFieldsEditor.addUniversalListener(() -> selection(localDateParam.toLocalDate()));
+    panelFieldsEditor.addUniversalListener(() -> selection(current()));
   }
 
   @Override
@@ -31,6 +28,11 @@ public abstract class LocalDateDialog implements DialogBuilder<LocalDate> {
 
   @Override
   public Optional<JComponent> getComponentWest() {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<JComponent> getComponentNorth() {
     return Optional.empty();
   }
 
@@ -45,17 +47,7 @@ public abstract class LocalDateDialog implements DialogBuilder<LocalDate> {
   }
 
   @Override
-  public LocalDate fallback() {
-    return localDate_fallback;
-  }
-
-  @Override
   public LocalDate current() {
     return localDateParam.toLocalDate();
-  }
-
-  @Override
-  public Optional<JComponent> getComponentNorth() {
-    return Optional.empty();
   }
 }

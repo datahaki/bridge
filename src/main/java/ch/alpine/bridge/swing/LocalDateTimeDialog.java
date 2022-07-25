@@ -4,24 +4,22 @@ package ch.alpine.bridge.swing;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
-public abstract class LocalDateTimeDialog implements DialogBuilder<LocalDateTime> {
-  private final LocalDateTime localDateTime_fallback;
+public abstract class LocalDateTimeDialog extends DialogBase<LocalDateTime> {
   private final LocalDateTimeParam localDateTimeParam;
   private final PanelFieldsEditor panelFieldsEditor;
 
-  /** @param component
-   * @param localDate_fallback
-   * @param consumer */
-  public LocalDateTimeDialog(LocalDateTime localDateTime_fallback) {
-    this.localDateTime_fallback = localDateTime_fallback;
-    localDateTimeParam = new LocalDateTimeParam(localDateTime_fallback);
+  /** @param localDateTime fallback */
+  public LocalDateTimeDialog(LocalDateTime localDateTime) {
+    super(localDateTime);
+    localDateTimeParam = new LocalDateTimeParam(localDateTime);
     panelFieldsEditor = new PanelFieldsEditor(localDateTimeParam);
-    panelFieldsEditor.addUniversalListener(() -> selection(localDateTimeParam.toLocalDateTime()));
+    panelFieldsEditor.addUniversalListener(() -> selection(current()));
   }
 
   @Override
@@ -46,12 +44,14 @@ public abstract class LocalDateTimeDialog implements DialogBuilder<LocalDateTime
 
   @Override
   public void decorate(JToolBar jToolBar) {
-    // ---
-  }
-
-  @Override
-  public LocalDateTime fallback() {
-    return localDateTime_fallback;
+    JButton jButton = new JButton("Now");
+    jButton.addActionListener(actionEvent -> {
+      localDateTimeParam.set(LocalDateTime.now());
+      panelFieldsEditor.updateJComponents();
+      panelFieldsEditor.notifyUniversalListeners();
+    });
+    jToolBar.add(jButton);
+    jToolBar.addSeparator();
   }
 
   @Override

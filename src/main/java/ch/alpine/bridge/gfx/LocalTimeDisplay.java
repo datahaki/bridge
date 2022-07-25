@@ -4,6 +4,7 @@ package ch.alpine.bridge.gfx;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
@@ -30,7 +31,8 @@ public enum LocalTimeDisplay {
   /** @param graphics
    * @param localTime
    * @param center */
-  public void draw(Graphics2D graphics, LocalTime localTime, Point center) {
+  public void draw(Graphics _g, LocalTime localTime, Point center) {
+    Graphics2D graphics = (Graphics2D) _g.create();
     RenderQuality.setQuality(graphics);
     graphics.setColor(Color.WHITE);
     graphics.fillArc(center.x - wid, center.y - wid, 2 * wid, 2 * wid, 0, 360);
@@ -83,6 +85,7 @@ public enum LocalTimeDisplay {
       graphics.draw(shape);
       graphics.fillArc((int) cx - secCirc / 2, (int) cy - secCirc / 2, secCirc, secCirc, 0, 360);
     }
+    graphics.dispose();
   }
 
   private void dotAt(Graphics2D graphics, Point c, int a) {

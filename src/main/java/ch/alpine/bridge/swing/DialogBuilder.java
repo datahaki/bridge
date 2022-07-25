@@ -72,6 +72,8 @@ public interface DialogBuilder<T> {
 
   Optional<JComponent> getComponentWest();
 
+  Optional<JComponent> getComponentNorth();
+
   PanelFieldsEditor panelFieldsEditor();
 
   void decorate(JToolBar jToolBar);
@@ -81,6 +83,4 @@ public interface DialogBuilder<T> {
   T current();
 
   void selection(T current);
-
-  Optional<JComponent> getComponentNorth();
 }
