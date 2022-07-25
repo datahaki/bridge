@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.awt;
+package ch.alpine.bridge.col;
 
 import java.awt.Color;
 import java.io.IOException;

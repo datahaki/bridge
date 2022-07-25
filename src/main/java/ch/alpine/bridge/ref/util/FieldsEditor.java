@@ -38,12 +38,7 @@ public abstract class FieldsEditor {
     }
 
     public void updateJComponent() {
-      Object value = null;
-      try {
-        value = fieldPanel.fieldWrap().getField().get(object);
-      } catch (IllegalAccessException illegalAccessException) {
-        throw new RuntimeException(illegalAccessException);
-      }
+      Object value = StaticHelper.get(fieldPanel.fieldWrap().getField(), object);
       if (Objects.nonNull(value))
         // any exception caused by implementation based on presented value is deliberately not caught
         fieldPanel.updateJComponent(value);

@@ -47,7 +47,6 @@ public class DialogFieldsEditor extends JDialog {
   public DialogFieldsEditor(Component parentComponent, String title, Object object) {
     super(JOptionPane.getFrameForComponent(parentComponent));
     setTitle(title);
-    // , title, Dialog.DEFAULT_MODALITY_TYPE
     this.object = Objects.requireNonNull(object);
     panelFieldsEditor = new PanelFieldsEditor(object);
     fallback = ObjectProperties.join(object);

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.awt;
+package ch.alpine.bridge.col;
 
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
