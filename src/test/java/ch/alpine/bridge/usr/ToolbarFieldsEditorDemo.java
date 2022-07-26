@@ -18,7 +18,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
 /** the components' height are elevated probably because of the slider */
 public enum ToolbarFieldsEditorDemo {
   ;
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     GuiExtension guiExtension = new GuiExtension();
     JToolBar jToolBar = new JToolBar();

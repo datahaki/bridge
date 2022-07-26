@@ -216,7 +216,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
   @Override
   public void scrollByUnit(int direction) {
     synchronized (slider) {
-      int delta = 1 * ((direction > 0) ? POSITIVE_SCROLL : NEGATIVE_SCROLL);
+      int delta = ((direction > 0) ? POSITIVE_SCROLL : NEGATIVE_SCROLL);
       if (upperThumbSelected) {
         int oldValue = ((RangeSlider) slider).getUpperValue();
         ((RangeSlider) slider).setUpperValue(oldValue + delta);
@@ -429,7 +429,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
         slider.setExtent(valueForXPosition(thumbMiddle) - slider.getValue());
         break;
       default:
-        return;
+        break;
       }
     }
   }

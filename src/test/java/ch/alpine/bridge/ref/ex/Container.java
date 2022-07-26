@@ -5,6 +5,6 @@ public class Container {
   public enum NestedEnum {
     FIRST,
     SECOND,
-    THIRD;
+    THIRD
   }
 }

@@ -16,7 +16,7 @@ public enum GfxMatrix {
   ;
   /** maps a vector from the group SE2 to a matrix in SE2
    * 
-   * @param g = {px, py, angle}
+   * @param xya = {px, py, angle}
    * @return matrix with dimensions 3x3
    * <pre>
    * [+Ca -Sa px]
@@ -45,7 +45,7 @@ public enum GfxMatrix {
         ArcTan.of(matrix.Get(0, 0), matrix.Get(1, 0))); // arc tan is numerically stable
   }
 
-  /** @param vector of the form {px, py, ...}
+  /** @param xy of the form {px, py, ...}
    * @return
    * <pre>
    * [1 0 px]

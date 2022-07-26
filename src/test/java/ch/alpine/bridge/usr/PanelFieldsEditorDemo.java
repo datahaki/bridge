@@ -13,7 +13,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum PanelFieldsEditorDemo {
   ;
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.lookAndFeels = LookAndFeels.LIGHT;
     simpleParam.lookAndFeels.updateComponentTreeUI();

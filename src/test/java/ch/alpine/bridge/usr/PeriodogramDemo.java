@@ -29,12 +29,7 @@ public enum PeriodogramDemo {
   public static JFreeChart create() {
     Scalar f0 = Pi.TWO.multiply(RealScalar.of(697));
     Scalar f1 = Pi.TWO.multiply(RealScalar.of(1209));
-    ScalarUnaryOperator suo = new ScalarUnaryOperator() {
-      @Override
-      public Scalar apply(Scalar t) {
-        return Sin.FUNCTION.apply(f0.multiply(t)).add(Sin.FUNCTION.apply(f1.multiply(t)));
-      }
-    };
+    ScalarUnaryOperator suo = t -> Sin.FUNCTION.apply(f0.multiply(t)).add(Sin.FUNCTION.apply(f1.multiply(t)));
     Tensor domain = Subdivide.of(0.0, 0.3, 2400);
     Tensor signal = domain.map(suo);
     VisualSet visualSet = new VisualSet();

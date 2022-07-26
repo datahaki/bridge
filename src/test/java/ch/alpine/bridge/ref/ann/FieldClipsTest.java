@@ -38,8 +38,6 @@ class FieldClipsTest {
     Field field = AnnotatedContainer.class.getField("quantityClipped");
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     Clip clip = FieldClips.wrap(fieldClip).clip();
-    // assertEquals(clip.min(), Quantity.of(2000, "kg*m^2*s^-3"));
-    // assertEquals(clip.max(), Quantity.of(6000, "kg*m^2*s^-3"));
     assertEquals(clip.min(), Quantity.of(2, "kW"));
     assertEquals(clip.max(), Quantity.of(6, "kW"));
   }
@@ -57,8 +55,6 @@ class FieldClipsTest {
     assertTrue(clip.isInside(suo.apply(Quantity.of(20, "L*min^-1"))));
     Scalar max = suo.apply(Quantity.of(20.0, "L*min^-1"));
     max.zero();
-    // System.out.println(max);
-    // assertTrue(clip.isInside(max));
   }
 
   @Test

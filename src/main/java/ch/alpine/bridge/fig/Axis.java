@@ -39,7 +39,7 @@ public class Axis implements Serializable {
     setClip(clip);
   }
 
-  /** @param label of axis */
+  /** @param string of axis */
   public void setLabel(String string) {
     label = string;
   }

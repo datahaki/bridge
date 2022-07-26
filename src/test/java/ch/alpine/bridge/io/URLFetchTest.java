@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -21,7 +20,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 
 class URLFetchTest {
   @Test
-  void testSimple(@TempDir File tempDir) throws MalformedURLException, IOException {
+  void testSimple(@TempDir File tempDir) throws IOException {
     if (TestHelper.IS_ONLINE) {
       File file = new File(tempDir, "file.ico");
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/favicon.ico"))) {
@@ -48,7 +47,7 @@ class URLFetchTest {
   }
 
   @Test
-  void testInputStream() throws MalformedURLException, IOException {
+  void testInputStream() throws IOException {
     BufferedImage bufferedImage = null;
     if (TestHelper.IS_ONLINE)
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/_images/icon.bik.png"))) {

@@ -19,8 +19,6 @@ class ReflectionMarkerTest {
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
     {
       List<Class<?>> list = classFieldCheck.getInspected();
-      // for (Class<?> cls : list)
-      // System.out.println(cls);
       assertTrue(5 < list.size()); // the exact value doesn't matter
     }
     {

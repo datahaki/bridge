@@ -17,8 +17,7 @@ import ch.alpine.bridge.ref.ann.FieldClip;
  * This is useful for automatic testing of functionality when subject
  * to different assignments of a parameter object. */
 public class RandomFieldsAssignment extends FieldsAssignment {
-  /** @param object
-   * @param runnable */
+  /** @param object */
   public static FieldsAssignment of(Object object) {
     return new RandomFieldsAssignment(object);
   }

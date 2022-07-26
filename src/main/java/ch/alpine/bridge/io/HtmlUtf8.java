@@ -44,10 +44,10 @@ public abstract class HtmlUtf8 implements Closeable {
       StringBuilder stringBuilder = new StringBuilder();
       stringBuilder.append("<html>\n");
       if (Objects.nonNull(title) && !title.isEmpty())
-        stringBuilder.append("<head><title>" + title + "</title></head>\n");
-      stringBuilder.append("<frameset " + split + ">\n");
-      stringBuilder.append("<frame src=\"" + fileStringL + "\" name=\"" + nameStringL + "\">\n");
-      stringBuilder.append("<frame src=\"" + fileStringR + "\" name=\"" + nameStringR + "\">\n");
+        stringBuilder.append("<head><title>").append(title).append("</title></head>\n");
+      stringBuilder.append("<frameset ").append(split).append(">\n");
+      stringBuilder.append("<frame src=\"").append(fileStringL).append("\" name=\"").append(nameStringL).append("\">\n");
+      stringBuilder.append("<frame src=\"").append(fileStringR).append("\" name=\"").append(nameStringR).append("\">\n");
       stringBuilder.append("</frameset>\n</html>\n");
       try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), CHARSET)) {
         outputStreamWriter.write(stringBuilder.toString());

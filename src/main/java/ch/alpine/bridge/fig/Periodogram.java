@@ -36,8 +36,8 @@ public enum Periodogram {
     windowLength = Math.min(points.length(), windowLength);
     {
       Tensor domain = points.get(Tensor.ALL, 0);
+      //
       NavigableSet<Tensor> navigableSet = Differences.of(domain).stream() //
-          .distinct() //
           .collect(Collectors.toCollection(TreeSet::new));
       Tolerance.CHOP.requireClose(navigableSet.first(), navigableSet.last());
     }

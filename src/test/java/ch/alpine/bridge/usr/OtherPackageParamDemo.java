@@ -14,7 +14,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
 
 public enum OtherPackageParamDemo {
   ;
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     // ---
     OtherPackageParam otherPackageParam = new OtherPackageParam();

@@ -14,10 +14,6 @@ public class TemplateEnumParam {
   public Object _object2 = FontStyle.BOLD;
 
   public static void main(String[] args) {
-    // Class<? extends Enum<?>> cls = (Class<? extends Enum<?>>) Pivots.ARGMAX_ABS.getClass();
-    // System.out.println(cls);
-    // System.out.println(cls.getDeclaringClass());
-    // System.out.println(cls.getEnclosingClass().isEnum());
     TemplateEnumParam templateEnumParam = new TemplateEnumParam();
     DialogFieldsEditor.show(null, "title", templateEnumParam);
   }

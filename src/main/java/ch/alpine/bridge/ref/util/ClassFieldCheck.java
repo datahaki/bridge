@@ -49,8 +49,7 @@ public class ClassFieldCheck implements ClassVisitor {
 
   /** @return invalid fields */
   public List<FieldValueContainer> invalidFields() {
-    List<FieldValueContainer> list = new ArrayList<>();
-    list.addAll(invalidFieldDetection.list());
+    List<FieldValueContainer> list = new ArrayList<>(invalidFieldDetection.list());
     return list;
   }
 }

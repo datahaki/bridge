@@ -2,8 +2,6 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,24 +20,21 @@ import ch.alpine.bridge.swing.SpinnerMenu;
    * @param supplier invoked when menu button "?" is pressed */
   public MenuPanel(FieldWrap fieldWrap, Object value, Supplier<List<Object>> supplier) {
     super(fieldWrap, value);
-    jButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        JComponent jTextField = getTextFieldComponent();
-        SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>( //
-            supplier.get(), // options
-            fieldWrap().toValue(getText()), // selected value
-            fieldWrap::toString, // object to string function
-            false); // no hover
-        spinnerMenu.setFont(jTextField.getFont());
-        spinnerMenu.addSpinnerListener(value -> {
-          String string = fieldWrap.toString(value);
-          setText(string);
-          indicateGui();
-          nofifyIfValid(string);
-        });
-        spinnerMenu.showRight(jButton);
-      }
+    jButton.addActionListener(actionEvent -> {
+      JComponent jTextField = getTextFieldComponent();
+      SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>( //
+          supplier.get(), // options
+          fieldWrap().toValue(getText()), // selected value
+          fieldWrap::toString, // object to string function
+          false); // no hover
+      spinnerMenu.setFont(jTextField.getFont());
+      spinnerMenu.addSpinnerListener(value1 -> {
+        String string = fieldWrap.toString(value1);
+        setText(string);
+        indicateGui();
+        nofifyIfValid(string);
+      });
+      spinnerMenu.showRight(jButton);
     });
     jPanel.add(getTextFieldComponent(), BorderLayout.CENTER);
     jPanel.add(jButton, BorderLayout.EAST);

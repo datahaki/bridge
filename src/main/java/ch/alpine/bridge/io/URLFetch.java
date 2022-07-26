@@ -84,7 +84,7 @@ public class URLFetch implements AutoCloseable {
   }
 
   @Override // from AutoCloseable
-  public void close() throws IOException {
+  public void close() {
     httpURLConnection.disconnect();
   }
 }

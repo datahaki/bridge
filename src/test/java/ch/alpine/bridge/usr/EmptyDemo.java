@@ -9,7 +9,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 public enum EmptyDemo {
   ;
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     EmptyParam emptyParam = new EmptyParam();
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(emptyParam);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));

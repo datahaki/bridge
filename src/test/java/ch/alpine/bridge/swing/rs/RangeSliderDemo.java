@@ -11,8 +11,6 @@ import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /* package */ class RangeSliderDemo extends JPanel {
   private final JLabel rangeSliderValueH1 = new JLabel();
@@ -36,21 +34,15 @@ import javax.swing.event.ChangeListener;
     rangeSliderH.setMinimum(0);
     rangeSliderH.setMaximum(10);
     // Add listener to update display.
-    rangeSliderH.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        RangeSlider slider = (RangeSlider) e.getSource();
-        rangeSliderValueH1.setText(String.valueOf(slider.getValue()));
-        rangeSliderValueH2.setText(String.valueOf(slider.getUpperValue()));
-      }
+    rangeSliderH.addChangeListener(e -> {
+      RangeSlider slider = (RangeSlider) e.getSource();
+      rangeSliderValueH1.setText(String.valueOf(slider.getValue()));
+      rangeSliderValueH2.setText(String.valueOf(slider.getUpperValue()));
     });
-    rangeSliderV.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        RangeSlider slider = (RangeSlider) e.getSource();
-        rangeSliderValueV1.setText(String.valueOf(slider.getValue()));
-        rangeSliderValueV2.setText(String.valueOf(slider.getUpperValue()));
-      }
+    rangeSliderV.addChangeListener(e -> {
+      RangeSlider slider = (RangeSlider) e.getSource();
+      rangeSliderValueV1.setText(String.valueOf(slider.getValue()));
+      rangeSliderValueV2.setText(String.valueOf(slider.getUpperValue()));
     });
     {
       JToolBar jToolBar = new JToolBar();

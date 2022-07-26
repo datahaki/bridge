@@ -11,12 +11,12 @@ class RangeSliderTest {
   @Test
   void test() throws ClassNotFoundException, InstantiationException, //
       IllegalAccessException, UnsupportedLookAndFeelException, InterruptedException {
-    /** look and feel */
+    /* look and feel */
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    /** start range slider */
+    /* start range slider */
     RangeSliderDemo rangeSliderDemo = new RangeSliderDemo();
     JFrame jFrame = rangeSliderDemo.display();
-    /** allow time to play */
+    /* allow time to play */
     Thread.sleep(5 * 1000);
     jFrame.dispose();
   }

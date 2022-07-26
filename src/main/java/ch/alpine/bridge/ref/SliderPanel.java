@@ -9,8 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import ch.alpine.bridge.lang.Unicode;
 import ch.alpine.bridge.ref.ann.FieldClips;
@@ -52,16 +50,13 @@ import ch.alpine.tensor.Scalar;
     jSlider.setOpaque(false); // for use in toolbar
     jSlider.setPaintTicks(resolution <= TICKS_MAX);
     jSlider.setMinorTickSpacing(1);
-    jSlider.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent changeEvent) {
-        int value = jSlider.getValue();
-        if (index != value) { // prevent notifications if slider value hasn't changed
-          Scalar scalar = fieldClips.interp(RationalScalar.of(index = value, resolution));
-          if (Objects.nonNull(jLabel))
-            jLabel.setText(Unicode.valueOf(scalar));
-          notifyListeners(scalar.toString());
-        }
+    jSlider.addChangeListener(changeEvent -> {
+      int value1 = jSlider.getValue();
+      if (index != value1) { // prevent notifications if slider value hasn't changed
+        Scalar scalar = fieldClips.interp(RationalScalar.of(index = value1, resolution));
+        if (Objects.nonNull(jLabel))
+          jLabel.setText(Unicode.valueOf(scalar));
+        notifyListeners(scalar.toString());
       }
     });
     if (fieldSlider.showRange() || fieldSlider.showValue()) {

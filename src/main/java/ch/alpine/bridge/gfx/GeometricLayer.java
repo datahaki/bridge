@@ -17,8 +17,7 @@ import ch.alpine.tensor.Tensors;
 public class GeometricLayer {
   private final Deque<AffineFrame2D> deque = new ArrayDeque<>();
 
-  /** @param model2pixel matrix of dimension 3x3 that becomes first element on matrix stack
-   * @param mouseSe2CState typically a vector of length 3 */
+  /** @param model2pixel matrix of dimension 3x3 that becomes first element on matrix stack */
   public GeometricLayer(Tensor model2pixel) {
     deque.push(new AffineFrame2D(model2pixel.copy()));
   }

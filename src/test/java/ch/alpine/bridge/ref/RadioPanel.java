@@ -3,7 +3,6 @@ package ch.alpine.bridge.ref;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,14 +31,11 @@ import javax.swing.ScrollPaneConstants;
       JRadioButton jRadioButton = new JRadioButton(value.toString());
       jRadioButton.setSelected(value.equals(object));
       buttonGroup.add(jRadioButton);
-      ActionListener actionListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-          if (jRadioButton.isSelected()) {
-            String string = fieldWrap.toString(value);
-            if (!string.equals(previous))
-              notifyListeners(previous = string);
-          }
+      ActionListener actionListener = actionEvent -> {
+        if (jRadioButton.isSelected()) {
+          String string = fieldWrap.toString(value);
+          if (!string.equals(previous))
+            notifyListeners(previous = string);
         }
       };
       jRadioButton.addActionListener(actionListener);

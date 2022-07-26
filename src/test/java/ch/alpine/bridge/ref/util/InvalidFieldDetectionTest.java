@@ -1,11 +1,16 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.ref.ex.ClipParam;
 import ch.alpine.bridge.ref.ex.ExampleBadClip;
 import ch.alpine.bridge.ref.ex.ExampleBadDirectory;
 import ch.alpine.bridge.ref.ex.ExampleBadFieldClip;
@@ -16,8 +21,20 @@ import ch.alpine.bridge.ref.ex.ExampleBadMethod;
 import ch.alpine.bridge.ref.ex.ExampleBadReturn;
 import ch.alpine.bridge.ref.ex.ExampleBadScalar;
 import ch.alpine.bridge.ref.ex.ExampleNullValue;
+import ch.alpine.bridge.ref.ex.GuiExtension;
 
 class InvalidFieldDetectionTest {
+  @Test
+  void testClipParam() {
+    assertTrue(InvalidFieldDetection.isEmpty(new ClipParam()));
+  }
+
+  @Test
+  void testGuiExtension() {
+    List<FieldValueContainer> list = InvalidFieldDetection.of(new GuiExtension());
+    assertEquals(list.size(), 2);
+  }
+
   @Test
   void testFieldClip() {
     assertFalse(InvalidFieldDetection.isEmpty(new ExampleBadFieldClip()));
@@ -61,6 +78,6 @@ class InvalidFieldDetectionTest {
 
   @Test
   void testNull() {
-    assertFalse(InvalidFieldDetection.isEmpty(new ExampleNullValue()));
+    assertTrue(InvalidFieldDetection.isEmpty(new ExampleNullValue()));
   }
 }

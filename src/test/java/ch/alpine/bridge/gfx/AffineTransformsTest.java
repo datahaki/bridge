@@ -15,7 +15,7 @@ class AffineTransformsTest {
   @Test
   void testSimple() {
     AffineTransform affineTransform = AffineTransforms.of(Array.zeros(3, 3));
-    assertThrows(Exception.class, () -> affineTransform.createInverse());
+    assertThrows(Exception.class, affineTransform::createInverse);
   }
 
   @Test

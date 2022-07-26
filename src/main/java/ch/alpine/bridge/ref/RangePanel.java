@@ -8,8 +8,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import ch.alpine.bridge.lang.Unicode;
 import ch.alpine.bridge.ref.ann.FieldClips;
@@ -61,19 +59,16 @@ import ch.alpine.tensor.sca.Clips;
     rangeSlider.setOpaque(false); // for use in toolbar
     rangeSlider.setPaintTicks(resolution <= TICKS_MAX);
     rangeSlider.setMinorTickSpacing(1);
-    rangeSlider.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent changeEvent) {
-        int value_min = rangeSlider.getValue();
-        int value_max = rangeSlider.getUpperValue();
-        if (value_min != index_min || value_max != index_max) {
-          // prevent notifications if slider value hasn't changed
-          Scalar min = fieldClips.interp(RationalScalar.of(index_min = value_min, resolution));
-          Scalar max = fieldClips.interp(RationalScalar.of(index_max = value_max, resolution));
-          Clip clip = Clips.interval(min, max);
-          setLabel(clip);
-          notifyListeners(fieldWrap.toString(clip));
-        }
+    rangeSlider.addChangeListener(changeEvent -> {
+      int value_min = rangeSlider.getValue();
+      int value_max = rangeSlider.getUpperValue();
+      if (value_min != index_min || value_max != index_max) {
+        // prevent notifications if slider value hasn't changed
+        Scalar min = fieldClips.interp(RationalScalar.of(index_min = value_min, resolution));
+        Scalar max = fieldClips.interp(RationalScalar.of(index_max = value_max, resolution));
+        Clip clip = Clips.interval(min, max);
+        setLabel(clip);
+        notifyListeners(fieldWrap.toString(clip));
       }
     });
     if (fieldSlider.showRange() || fieldSlider.showValue()) {

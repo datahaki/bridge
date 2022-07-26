@@ -15,7 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.FieldWraps;
@@ -176,7 +175,7 @@ public class ObjectProperties {
   /** @param object
    * @return single string expression that encodes the content of given object */
   public static String join(Object object) {
-    return list(object).stream().collect(Collectors.joining("\n"));
+    return String.join("\n", list(object));
   }
 
   /** function assigns the fields in given object based on the content

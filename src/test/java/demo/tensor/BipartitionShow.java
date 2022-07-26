@@ -36,7 +36,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
     BipartiteMatching hungarianAlgorithm = BipartiteMatching.of(matrix);
     GeometricLayer geometricLayer = new GeometricLayer(StaticHelper.SE2_2);
     RenderQuality.setQuality(graphics);
-    graphics.setColor(new Color(128 * 0, 128 * 0, 255));
+    graphics.setColor(new Color(0, 0, 255));
     if (lines) {
       int[] m = hungarianAlgorithm.matching();
       for (int index = 0; index < m.length; ++index) {

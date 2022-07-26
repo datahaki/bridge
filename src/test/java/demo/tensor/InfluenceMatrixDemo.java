@@ -34,16 +34,12 @@ public enum InfluenceMatrixDemo {
       {
         Timing timing1 = Timing.started();
         InfluenceMatrix influenceMatrix = new Mahalanobis(design);
-        // c1 = influenceMatrix.kernel(influenceMatrix.leverages_sqrt());
-        // c1 = influenceMatrix.kernel(vector);
         c1 = influenceMatrix.matrix();
         t1.append(Tensors.vector(n, timing1.seconds()));
       }
       {
         Timing timing2 = Timing.started();
         InfluenceMatrix influenceMatrix = InfluenceMatrix.of(design);
-        // c2 = influenceMatrix.kernel(influenceMatrix.leverages_sqrt());
-        // c2 = influenceMatrix.kernel(vector);
         c2 = influenceMatrix.matrix();
         t2.append(Tensors.vector(n, timing2.seconds()));
       }

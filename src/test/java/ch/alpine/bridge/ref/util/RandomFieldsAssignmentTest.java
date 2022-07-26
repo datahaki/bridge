@@ -13,12 +13,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.ex.ColorParam;
 import ch.alpine.bridge.ref.ex.FieldOuterParam;
 import ch.alpine.bridge.ref.ex.FieldOuterParam.NestedParam;
 import ch.alpine.tensor.Scalar;
 
 class RandomFieldsAssignmentTest {
+  @ReflectionMarker
   public static class Holder {
     public final Object[] objects;
 
