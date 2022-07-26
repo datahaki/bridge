@@ -6,6 +6,8 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
+import ch.alpine.tensor.ext.Integers;
+
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ScreenRectangle.html">ScreenRectangle</a> */
 public class ScreenRectangle {
@@ -19,8 +21,8 @@ public class ScreenRectangle {
   }
 
   public Rectangle allVisible(int x, int y, int width, int height) {
-    x = Math.max(0, Math.min(x, screen.width - width));
-    y = Math.max(0, Math.min(y, screen.height - height));
+    x = Integers.clip(0, screen.width - width).applyAsInt(x);
+    y = Integers.clip(0, screen.height - height).applyAsInt(y);
     return new Rectangle(x, y, width, height);
   }
 

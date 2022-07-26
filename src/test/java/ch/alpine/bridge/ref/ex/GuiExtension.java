@@ -20,6 +20,7 @@ import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
 import ch.alpine.bridge.ref.ann.FieldFileExtension;
 import ch.alpine.bridge.ref.ann.FieldFuse;
+import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldLabel;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
@@ -55,9 +56,13 @@ public class GuiExtension {
   public Font font = new JLabel().getFont();
   @FieldSelectionArray({ "{0, 3}", "{10, 11}" })
   public Clip clip = Clips.absolute(3);
-  @FieldSlider
+  @FieldSlider(showRange = true, showValue = true)
   @FieldClip(min = "0", max = "5")
   public Clip clipSlider = Clips.positive(3);
+  @FieldInteger
+  @FieldSlider(showRange = true, showValue = true)
+  @FieldClip(min = "-2", max = "5")
+  public Clip clipInteger = Clips.positive(3);
   @FieldFuse
   public Boolean defaultFuse = false;
   public Pivots pivots = Pivots.ARGMAX_ABS;

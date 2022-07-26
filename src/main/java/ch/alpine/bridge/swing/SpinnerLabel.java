@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 
 import ch.alpine.bridge.awt.LazyMouse;
 import ch.alpine.bridge.awt.LazyMouseListener;
+import ch.alpine.tensor.ext.Integers;
 
 /** selector in gui for easy scrolling through a list with mouse-wheel
  * and menu to the side upon mouse-click
@@ -83,7 +84,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
     final boolean insideActive = mouseInside && enabled;
     Graphics2D graphics = (Graphics2D) _graphics;
     Dimension dimension = getSize(); // myJLabel.
-    border_width = Math.min(Math.max(BORDER_WIDTH_MIN, BORDER_WIDTH_MIN - 2 + dimension.width / 10), BORDER_WIDTH_MAX);
+    border_width = Integers.clip(BORDER_WIDTH_MIN, BORDER_WIDTH_MAX).applyAsInt(BORDER_WIDTH_MIN - 2 + dimension.width / 10);
     // ---
     if (isOverArrows(lastMouse) && enabled) {
       graphics.setColor(Color.WHITE);
@@ -214,7 +215,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
       return;
     int index = cyclic //
         ? Math.floorMod(prev + delta, list.size())
-        : Math.min(Math.max(0, prev + delta), list.size() - 1);
+        : Integers.clip(0, list.size() - 1).applyAsInt(prev + delta);
     if (index != prev) {
       setValue(list.get(index));
       reportToAll();

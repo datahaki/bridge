@@ -21,6 +21,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarTensorFunction;
+import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
@@ -70,7 +71,8 @@ public class BarLegend {
     for (Entry<Scalar, String> entry : map.entrySet()) {
       Scalar rescale = RealScalar.ONE.subtract(clip.rescale(entry.getKey()));
       int piy = (int) (height * rescale.number().doubleValue() + ascent / 2);
-      piy = Math.min(Math.max(ascent, piy), height);
+      piy = Integers.clip(ascent, height).applyAsInt(piy);
+      // piy = Math.min(Math.max(ascent, piy), height);
       graphics.drawString(entry.getValue(), width + space, piy);
     }
     graphics.dispose();

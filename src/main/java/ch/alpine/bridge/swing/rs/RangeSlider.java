@@ -6,6 +6,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JSlider;
 
+import ch.alpine.tensor.ext.Integers;
+
 public class RangeSlider extends JSlider {
   private boolean isPressed = false;
   public RangeSliderUI rangeSliderUI;
@@ -26,8 +28,8 @@ public class RangeSlider extends JSlider {
         try {
           mouseReleaseUpdate.run();
           isPressed = false;
-        } catch (Exception ex) {
-          ex.printStackTrace();
+        } catch (Exception exception) {
+          exception.printStackTrace();
         }
       }
 
@@ -65,7 +67,7 @@ public class RangeSlider extends JSlider {
     }
     // Compute new value and extent to maintain upper value.
     int oldExtent = getExtent();
-    int newValue = StaticHelper.clip(getMinimum(), oldValue + oldExtent).applyAsInt(value);
+    int newValue = Integers.clip(getMinimum(), oldValue + oldExtent).applyAsInt(value);
     int newExtent = oldExtent + oldValue - newValue;
     // Set new value and extent, and fire a single change event.
     getModel().setRangeProperties(newValue, newExtent, getMinimum(), getMaximum(), getValueIsAdjusting());
@@ -75,7 +77,7 @@ public class RangeSlider extends JSlider {
   public void setUpperValue(int value) {
     // Compute new extent.
     int lowerValue = getValue();
-    int newExtent = StaticHelper.clip(0, getMaximum() - lowerValue).applyAsInt(value - lowerValue);
+    int newExtent = Integers.clip(0, getMaximum() - lowerValue).applyAsInt(value - lowerValue);
     // Set extent to set upper value.
     setExtent(newExtent);
   }

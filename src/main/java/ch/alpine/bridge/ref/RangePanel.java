@@ -19,6 +19,7 @@ import ch.alpine.bridge.swing.rs.RangeSlider;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Clips;
 
 // TODO BRIDGE implement properly
 /* package */ class RangePanel extends FieldPanel {
@@ -30,7 +31,8 @@ import ch.alpine.tensor.sca.Clip;
   private final JLabel jLabel;
   private final RangeSlider rangeSlider;
   private final JComponent jComponent;
-  private int index;
+  private int index_min;
+  private int index_max;
 
   /** @param fieldWrap
    * @param fieldClips
@@ -46,25 +48,32 @@ import ch.alpine.tensor.sca.Clip;
         : RESOLUTION;
     jLabel = new JLabel("", SwingConstants.CENTER);
     if (Objects.nonNull(value)) {
-      Clip scalar = (Clip) value;
-      // jLabel.setText(Unicode.valueOf(scalar));
-      // index = fieldClips.indexOf(scalar, resolution);
+      Clip clip = (Clip) value;
+      setLabel(clip);
+      index_min = fieldClips.indexOf(clip.min(), resolution);
+      index_max = fieldClips.indexOf(clip.max(), resolution);
     }
     rangeSlider = new RangeSlider(0, resolution, () -> {
       // System.out.println("here");
     });
+    rangeSlider.setValue(index_min);
+    rangeSlider.setUpperValue(index_max);
     rangeSlider.setOpaque(false); // for use in toolbar
     rangeSlider.setPaintTicks(resolution <= TICKS_MAX);
     rangeSlider.setMinorTickSpacing(1);
     rangeSlider.addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent changeEvent) {
-        int value = rangeSlider.getValue();
-        // prevent notifications if slider value hasn't changed
-        Scalar scalar = fieldClips.interp(RationalScalar.of(index = value, resolution));
-        if (Objects.nonNull(jLabel))
-          jLabel.setText(Unicode.valueOf(scalar));
-        notifyListeners(scalar.toString());
+        int value_min = rangeSlider.getValue();
+        int value_max = rangeSlider.getUpperValue();
+        if (value_min != index_min || value_max != index_max) {
+          // prevent notifications if slider value hasn't changed
+          Scalar min = fieldClips.interp(RationalScalar.of(index_min = value_min, resolution));
+          Scalar max = fieldClips.interp(RationalScalar.of(index_max = value_max, resolution));
+          Clip clip = Clips.interval(min, max);
+          setLabel(clip);
+          notifyListeners(fieldWrap.toString(clip));
+        }
       }
     });
     if (fieldSlider.showRange() || fieldSlider.showValue()) {
@@ -81,6 +90,10 @@ import ch.alpine.tensor.sca.Clip;
       jComponent = rangeSlider;
   }
 
+  private void setLabel(Clip clip) {
+    jLabel.setText(Unicode.valueOf(clip.min()) + " \u2026 " + Unicode.valueOf(clip.max()));
+  }
+
   @Override // from FieldPanel
   public JComponent getJComponent() {
     return jComponent;
@@ -88,11 +101,14 @@ import ch.alpine.tensor.sca.Clip;
 
   @Override // from FieldPanel
   public void updateJComponent(Object value) {
-    index = fieldClips.indexOf((Scalar) value, resolution);
+    Clip clip = (Clip) value;
+    index_min = fieldClips.indexOf(clip.min(), resolution);
+    index_max = fieldClips.indexOf(clip.max(), resolution);
     /* Quote from JSlider:
      * "If the new value is different from the previous value, all change listeners are notified."
      * In case the value is not different from the previous value the function returns immediately
      * and no change listeners are notified. */
-    rangeSlider.setValue(index);
+    rangeSlider.setValue(index_min);
+    rangeSlider.setUpperValue(index_max);
   }
 }
