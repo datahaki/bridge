@@ -198,12 +198,12 @@ class ObjectPropertiesTest {
   @Test
   void testRecreate(@TempDir File folder) throws IOException {
     ClipParam clipParam = new ClipParam();
-    clipParam.clipReal = Clips.interval(20, 21);
+    clipParam.clipReal = Clips.interval(9, 10);
     File file = new File(folder, "here3.properties");
     ObjectProperties.save(clipParam, file);
     ClipParam clipParam2 = new ClipParam();
     ObjectProperties.load(clipParam2, file);
-    assertEquals(clipParam2.clipReal, Clips.interval(20, 21));
+    assertEquals(clipParam2.clipReal, Clips.interval(9, 10));
   }
 
   @Test
