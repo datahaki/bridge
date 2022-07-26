@@ -37,7 +37,7 @@ public abstract class FontDialog extends DialogBase<Font> {
     public FontStyle style; // PLAIN
     @FieldInteger
     @FieldClip(min = "0", max = "Infinity")
-    @FieldSelectionArray({ "12", "14", "16", "18", "20", "22", "25" })
+    @FieldSelectionArray({ "10", "11", "12", "13", "14", "15", "16", "17", "18", "20", "22", "25" })
     public Scalar size; // 12
 
     /** @param font */

@@ -16,6 +16,7 @@ enum FontDialogDemo {
     FontDialog fontDialog = new FontDialog(new Font(Font.DIALOG_INPUT, Font.BOLD, 34)) {
       @Override
       public void selection(Font current) {
+        // ---
       }
     };
     JDialog jDialog = DialogBuilder.create(null, fontDialog);
