@@ -51,10 +51,10 @@ public class Unicode {
     StringBuilder stringBuilder = new StringBuilder();
     if (bigInteger.signum() < 0)
       stringBuilder.append('-');
-    stringBuilder.append(string.substring(0, offset));
+    stringBuilder.append(string, 0, offset);
     for (int index = offset; index < string.length(); index += 3) {
       stringBuilder.append(NARROW);
-      stringBuilder.append(string.substring(index, index + 3));
+      stringBuilder.append(string, index, index + 3);
     }
     return stringBuilder.toString();
   }

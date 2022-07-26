@@ -11,9 +11,11 @@ import org.junit.jupiter.api.io.TempDir;
 class WindowBoundsTest {
   @Test
   void test(@TempDir File folder) {
-    JFrame jFrame = new JFrame();
-    WindowBounds.persistent(jFrame, new File(folder, "window.properties"));
-    jFrame.setVisible(true);
-    jFrame.dispose();
+    if (!System.getProperty("os.name").contains("Windows")) {
+      JFrame jFrame = new JFrame();
+      WindowBounds.persistent(jFrame, new File(folder, "window.properties"));
+      jFrame.setVisible(true);
+      jFrame.dispose();
+    }
   }
 }

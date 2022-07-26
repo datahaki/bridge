@@ -25,7 +25,7 @@ import ch.alpine.tensor.sca.Clip;
   private static final Scalar WIDTH_LIMIT = RealScalar.of(24);
   // ---
   private final FieldInteger fieldInteger;
-  private FieldClips fieldClips = null;
+  private final FieldClips fieldClips;
 
   /** @param field
    * @throws Exception if annotations are corrupt */
@@ -33,8 +33,9 @@ import ch.alpine.tensor.sca.Clip;
     super(field);
     fieldInteger = field.getAnnotation(FieldInteger.class);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
-    if (Objects.nonNull(fieldClip))
-      fieldClips = FieldClips.wrap(fieldClip);
+    fieldClips = Objects.nonNull(fieldClip) //
+        ? FieldClips.wrap(fieldClip)
+        : null;
   }
 
   @Override // from FieldWrap
