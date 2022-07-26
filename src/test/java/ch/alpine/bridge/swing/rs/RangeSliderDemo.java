@@ -17,10 +17,14 @@ import javax.swing.event.ChangeListener;
 /* package */ class RangeSliderDemo extends JPanel {
   private final JLabel rangeSliderValueH1 = new JLabel();
   private final JLabel rangeSliderValueH2 = new JLabel();
-  private final RangeSlider rangeSliderH = new RangeSlider(0, 100, LazyTestCallable.INSTANCE);
+  private final RangeSlider rangeSliderH = new RangeSlider(0, 100, () -> {
+    // ---
+  });
   private final JLabel rangeSliderValueV1 = new JLabel();
   private final JLabel rangeSliderValueV2 = new JLabel();
-  private final RangeSlider rangeSliderV = new RangeSlider(0, 100, LazyTestCallable.INSTANCE);
+  private final RangeSlider rangeSliderV = new RangeSlider(0, 100, () -> {
+    // ---
+  });
 
   public RangeSliderDemo() {
     setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));

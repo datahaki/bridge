@@ -23,6 +23,7 @@ import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldLabel;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
+import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.ex.Container.NestedEnum;
 import ch.alpine.tensor.RealScalar;
@@ -54,6 +55,9 @@ public class GuiExtension {
   public Font font = new JLabel().getFont();
   @FieldSelectionArray({ "{0, 3}", "{10, 11}" })
   public Clip clip = Clips.absolute(3);
+  @FieldSlider
+  @FieldClip(min = "0", max = "5")
+  public Clip clipSlider = Clips.positive(3);
   @FieldFuse
   public Boolean defaultFuse = false;
   public Pivots pivots = Pivots.ARGMAX_ABS;

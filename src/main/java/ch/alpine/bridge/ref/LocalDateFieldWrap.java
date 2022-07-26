@@ -31,7 +31,6 @@ import java.util.Objects;
 
   @Override
   public FieldPanel createFieldPanel(Object object, Object value) {
-    // TODO Auto-generated method stub
     return new LocalDatePanel(this, (LocalDate) value);
   }
 }
