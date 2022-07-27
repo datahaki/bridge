@@ -65,7 +65,7 @@ import ch.alpine.tensor.sca.Sign;
   private String build(Unit unit) {
     Map<String, Scalar> map = unit.map();
     List<Entry<String, Scalar>> list = map.entrySet().stream() //
-        .filter(entry -> Sign.isNegative(entry.getValue())).toList();
+        .filter(entry -> Sign.isNegative(entry.getValue())).collect(Collectors.toList());
     if (list.size() == 1 && 1 < map.size()) {
       Entry<String, Scalar> entry = list.iterator().next();
       Unit den = Unit.of(entry.getKey() + Unit.POWER_DELIMITER + entry.getValue().negate());
