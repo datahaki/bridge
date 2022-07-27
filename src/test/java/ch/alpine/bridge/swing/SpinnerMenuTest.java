@@ -15,7 +15,7 @@ import ch.alpine.tensor.mat.re.Pivots;
 class SpinnerMenuTest {
   @Test
   void testSimple() throws InterruptedException {
-    SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), Pivots.ARGMAX_ABS, false);
+    SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), Pivots.ARGMAX_ABS, Object::toString, false);
     spinnerMenu.addSpinnerListener(System.out::println);
     JFrame jFrame = new JFrame();
     JButton jButton = new JButton();
@@ -28,7 +28,7 @@ class SpinnerMenuTest {
 
   @Test
   void testNull() throws InterruptedException {
-    SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), null, false);
+    SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), null, Object::toString, false);
     spinnerMenu.addSpinnerListener(Objects::requireNonNull);
     spinnerMenu.spinnerListeners_spun(Pivots.ARGMAX_ABS);
     JFrame jFrame = new JFrame();
@@ -42,8 +42,9 @@ class SpinnerMenuTest {
 
   @Test
   void testNonContains() throws InterruptedException {
-    SpinnerMenu<ColorDataGradients> spinnerMenu = new SpinnerMenu<>(Arrays.asList(ColorDataGradients.ALPINE), ColorDataGradients.CLASSIC, false);
-    spinnerMenu.addSpinnerListener(type -> System.out.println(type));
+    SpinnerMenu<ColorDataGradients> spinnerMenu = new SpinnerMenu<>(Arrays.asList(ColorDataGradients.ALPINE), ColorDataGradients.CLASSIC, Object::toString,
+        false);
+    spinnerMenu.addSpinnerListener(System.out::println);
     JFrame jFrame = new JFrame();
     JButton jButton = new JButton();
     jFrame.setContentPane(jButton);

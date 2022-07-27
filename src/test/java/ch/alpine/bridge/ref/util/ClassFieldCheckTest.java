@@ -27,7 +27,5 @@ class ClassFieldCheckTest {
     List<String> fields = list.stream().map(FieldValueContainer::field).map(Field::toString).collect(Collectors.toList());
     assertTrue(fields.contains("public java.lang.String ch.alpine.bridge.ref.ex.GuiTrial.optionsFail"));
     assertTrue(fields.contains("public java.lang.String ch.alpine.bridge.ref.ex.GuiTrial.optionsMiss"));
-    // fields.forEach(s -> System.out.println(s));
-    // classFieldCheck.getInspected().forEach(s -> System.out.println(s));
   }
 }

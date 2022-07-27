@@ -44,7 +44,7 @@ class GeometricLayerTest {
   @Test
   void testPopFail() {
     GeometricLayer geometricLayer = new GeometricLayer(GfxMatrix.translation(Tensors.vector(0, 0)));
-    assertThrows(Exception.class, () -> geometricLayer.popMatrix());
+    assertThrows(Exception.class, geometricLayer::popMatrix);
   }
 
   @Test
@@ -73,7 +73,7 @@ class GeometricLayerTest {
     assertEquals(geometricLayer.getMatrix(), model2pixel);
     geometricLayer.popMatrix();
     // assertEquals(mouseSe2State, geometricLayer.getMouseSe2State());
-    assertThrows(Exception.class, () -> geometricLayer.popMatrix());
+    assertThrows(Exception.class, geometricLayer::popMatrix);
   }
 
   @Test
@@ -92,7 +92,7 @@ class GeometricLayerTest {
   @Test
   void testStackFail() {
     GeometricLayer geometricLayer = new GeometricLayer(IdentityMatrix.of(3));
-    assertThrows(Exception.class, () -> geometricLayer.popMatrix());
+    assertThrows(Exception.class, geometricLayer::popMatrix);
   }
 
   @Test

@@ -149,7 +149,9 @@ public enum Hsluv {
 
   /** conventional main entry point
    * 
-   * @param tuple consisting of hue [0, 360], saturation [0, 100], lightness [0, 100]
+   * @param H hue [0, 360]
+   * @param S saturation [0, 100]
+   * @param L lightness [0, 100]
    * @return */
   private static double[] hsluvToRgb(double H, double S, double L) {
     return lchToRgb(hsluvToLch(H, S, L));

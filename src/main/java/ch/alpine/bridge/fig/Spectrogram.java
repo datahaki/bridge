@@ -28,7 +28,7 @@ public enum Spectrogram {
    * 
    * @param visualSet with single {@link VisualRow} containing domain and signal
    * @param window for instance {@link HannWindow#FUNCTION}
-   * @param function for instance {@link ColorDataGradients#VISIBLESPECTRUM}
+   * @param function for instance {@link ColorDataGradients#VISIBLE_SPECTRUM}
    * @return */
   public static JFreeChart of(VisualSet visualSet, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
     Integers.requireEquals(visualSet.visualRows().size(), 1);
@@ -60,7 +60,7 @@ public enum Spectrogram {
    * 
    * @param vector
    * @param window for instance {@link HannWindow#FUNCTION}
-   * @param function for instance {@link ColorDataGradients#VISIBLESPECTRUM}
+   * @param function for instance {@link ColorDataGradients#VISIBLE_SPECTRUM}
    * @return array plot of the spectrogram of given vector with colors specified by given function
    * @throws Exception if input is not a vector */
   public static Tensor of(Tensor vector, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
@@ -75,14 +75,14 @@ public enum Spectrogram {
    * @param visualSet with single {@link VisualRow} containing domain and signal
    * @param window for instance {@link HannWindow#FUNCTION}
    * @return spectrogram chart of signal specified in given visual set generated using
-   * given window function and {@link ColorDataGradients#VISIBLESPECTRUM} */
+   * given window function and {@link ColorDataGradients#VISIBLE_SPECTRUM} */
   public static JFreeChart of(VisualSet visualSet, ScalarUnaryOperator window) {
     return of(visualSet, window, ColorDataGradients.SUNSET_REVERSED);
   }
 
   /** @param visualSet with single {@link VisualRow} containing domain and signal
    * @return spectrogram chart of signal specified in given visual set generated using
-   * {@link DirichletWindow} and {@link ColorDataGradients#VISIBLESPECTRUM} */
+   * {@link DirichletWindow} and {@link ColorDataGradients#VISIBLE_SPECTRUM} */
   public static JFreeChart of(VisualSet visualSet) {
     return of(visualSet, DirichletWindow.FUNCTION);
   }

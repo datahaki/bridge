@@ -24,19 +24,7 @@ import ch.alpine.bridge.util.CopyOnWriteLinkedSet;
 public abstract class FieldsEditor {
   /** the association of FieldPanel and Object is required.
    * In a field editor instance, the object as value in the map is not necessary unique. */
-  private static class FieldPanelObject {
-    private final FieldPanel fieldPanel;
-    private final Object object;
-
-    public FieldPanelObject(FieldPanel fieldPanel, Object object) {
-      this.fieldPanel = fieldPanel;
-      this.object = object;
-    }
-
-    public FieldPanel fieldPanel() {
-      return fieldPanel;
-    }
-
+  private record FieldPanelObject(FieldPanel fieldPanel, Object object) {
     public void updateJComponent() {
       Object value = StaticHelper.get(fieldPanel.fieldWrap().getField(), object);
       if (Objects.nonNull(value))

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -19,10 +20,10 @@ import ch.alpine.bridge.ref.ann.FieldFuse;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
-import ch.alpine.bridge.ref.ann.FieldSkipInvalidCheck;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.sca.Clip;
 
 /** Remark:
  * field with the modifier `transient` are excluded from inspection */
@@ -48,10 +49,10 @@ public class InvalidFieldDetection extends ObjectFieldIo {
    * @param annotationClass
    * @param cls
    * @return whether annotationClass can be combined with field */
-  private static <T extends Annotation> boolean require(Field field, Class<T> annotationClass, Class<?> cls) {
+  private static <T extends Annotation> boolean require(Field field, Class<T> annotationClass, Class<?>... cls) {
     Class<?> class_field = field.getType();
     T annotation = field.getAnnotation(annotationClass);
-    return Objects.isNull(annotation) || class_field.equals(cls);
+    return Objects.isNull(annotation) || Set.of(cls).contains(class_field);
   }
 
   @Override // from ObjectFieldVisitor
@@ -59,10 +60,10 @@ public class InvalidFieldDetection extends ObjectFieldIo {
     Field field = fieldWrap.getField();
     boolean valid = true;
     {
-      valid &= require(field, FieldClip.class, Scalar.class);
+      valid &= require(field, FieldClip.class, Scalar.class, Clip.class);
+      valid &= require(field, FieldInteger.class, Scalar.class, Clip.class);
+      valid &= require(field, FieldSlider.class, Scalar.class, Clip.class);
       valid &= require(field, FieldFuse.class, Boolean.class);
-      valid &= require(field, FieldInteger.class, Scalar.class);
-      valid &= require(field, FieldSlider.class, Scalar.class);
       valid &= require(field, FieldExistingDirectory.class, File.class);
       valid &= require(field, FieldExistingFile.class, File.class);
       valid &= require(field, FieldFileExtension.class, File.class);
@@ -97,14 +98,12 @@ public class InvalidFieldDetection extends ObjectFieldIo {
           valid = false;
         }
     }
-    {
-      FieldSkipInvalidCheck fieldSkipInvalidCheck = field.getAnnotation(FieldSkipInvalidCheck.class);
-      if (Objects.isNull(fieldSkipInvalidCheck))
-        try {
-          valid &= Objects.nonNull(value) && fieldWrap.isValidValue(value);
-        } catch (Exception exception) {
-          valid = false;
-        }
+    if (!field.getType().equals(File.class)) {
+      try {
+        valid &= Objects.nonNull(value) && fieldWrap.isValidValue(value);
+      } catch (Exception exception) {
+        valid = false;
+      }
     }
     if (!valid)
       list.add(new FieldValueContainer(key, fieldWrap, object, value));

@@ -53,7 +53,7 @@ public class FieldClips implements Predicate<Scalar> {
     return FiniteScalarQ.of(clip.width());
   }
 
-  @Override
+  @Override // from Predicate
   public boolean test(Scalar scalar) {
     return scalar.equals(scalar) // reject if NaN
         && compatible.test(scalar) //

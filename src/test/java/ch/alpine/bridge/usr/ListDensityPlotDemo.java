@@ -27,8 +27,6 @@ public enum ListDensityPlotDemo {
       Interpolation interpolation = BSplineInterpolation.of(degree, matrix);
       Tensor x = Subdivide.of(0, 5, 50);
       Tensor y = Reverse.of(x);
-      // Tensor eval = Tensors.matrix((i, j) -> interpolation.get( //
-      // Tensors.of(x.Get(i), Round.FUNCTION.apply(x.Get(j)))), x.length(), x.length());
       Tensor eval = Tensors.matrix((i, j) -> interpolation.get( //
           Tensors.of(y.Get(i), x.Get(j))), x.length(), x.length());
       Tensor tensor = Rescale.of(eval).map(ColorDataGradients.CLASSIC);

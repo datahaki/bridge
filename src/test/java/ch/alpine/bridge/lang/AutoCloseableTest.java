@@ -14,7 +14,7 @@ class Inner implements AutoCloseable {
   }
 
   @Override
-  public void close() throws Exception {
+  public void close() {
     ++call_close;
     fail();
   }

@@ -10,8 +10,10 @@ import java.lang.annotation.Target;
 import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.sca.Clip;
 
-/** denotes that a field of type {@link Scalar} should satisfy {@link IntegerQ}
+/** denotes that a field of type {@link Scalar}, and {@link Clip}
+ * should satisfy {@link IntegerQ}
  * 
  * @see InvalidFieldDetection */
 @Documented

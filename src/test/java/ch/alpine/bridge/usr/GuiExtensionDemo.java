@@ -37,9 +37,7 @@ public class GuiExtensionDemo {
     for (FieldPanel fieldPanel : panelFieldsEditor.list()) {
       FieldWrap fieldWrap = fieldPanel.fieldWrap();
       if (fieldWrap.getField().getName().startsWith("s")) {
-        fieldPanel.addListener(s -> {
-          System.out.println(fieldWrap.getField().getName() + " = " + s);
-        });
+        fieldPanel.addListener(s -> System.out.println(fieldWrap.getField().getName() + " = " + s));
       }
     }
     jSplitPane.add(panelFieldsEditor.createJScrollPane());

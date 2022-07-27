@@ -4,6 +4,7 @@ package ch.alpine.bridge.swing;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
@@ -43,7 +44,14 @@ public abstract class LocalDateDialog extends DialogBase<LocalDate> {
 
   @Override
   public void decorate(JToolBar jToolBar) {
-    // ---
+    JButton jButton = new JButton("Now");
+    jButton.addActionListener(actionEvent -> {
+      localDateParam.set(LocalDate.now());
+      panelFieldsEditor.updateJComponents();
+      panelFieldsEditor.notifyUniversalListeners();
+    });
+    jToolBar.add(jButton);
+    jToolBar.addSeparator();
   }
 
   @Override

@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -23,7 +22,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 class ZipDirectoryTest {
   @Test
-  void testSimple(@TempDir File tempDir) throws FileNotFoundException, IOException {
+  void testSimple(@TempDir File tempDir) throws IOException {
     File folder = new File(tempDir, "folder");
     assertFalse(folder.exists());
     folder.mkdirs();
@@ -41,7 +40,7 @@ class ZipDirectoryTest {
   }
 
   @Test
-  void testBinary(@TempDir File tempDir) throws FileNotFoundException, IOException {
+  void testBinary(@TempDir File tempDir) throws IOException {
     File file = new File(tempDir, "file");
     assertFalse(file.exists());
     {

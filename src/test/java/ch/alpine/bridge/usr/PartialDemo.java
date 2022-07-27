@@ -23,7 +23,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
  * elements. */
 public enum PartialDemo {
   ;
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     LookAndFeels.INTELLI_J.updateComponentTreeUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);

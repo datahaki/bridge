@@ -19,7 +19,7 @@ class ObjectFieldsTest {
   @Test
   void testFields() {
     List<Field> list = ObjectFields.list(SimpleParam.class);
-    List<String> collect = list.stream().map(f -> f.getName()).collect(Collectors.toList());
+    List<String> collect = list.stream().map(Field::getName).collect(Collectors.toList());
     // System.out.println(collect);
     assertEquals(collect.get(0), "basic");
     assertEquals(collect.get(2), "lookAndFeels");

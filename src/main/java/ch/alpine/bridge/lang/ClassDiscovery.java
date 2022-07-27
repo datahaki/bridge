@@ -93,6 +93,7 @@ public class ClassDiscovery {
                     continue;
                   classVisitor.accept(item, cls);
                 } catch (Throwable throwable) {
+                  // ---
                 }
               }
             }

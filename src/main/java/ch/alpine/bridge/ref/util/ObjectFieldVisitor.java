@@ -18,7 +18,7 @@ public interface ObjectFieldVisitor {
      * @see FieldWraps#elemental(Class) */
     LEAF,
     /** ignore field */
-    SKIP;
+    SKIP
   }
 
   /** @param field

@@ -35,9 +35,7 @@ import ch.alpine.tensor.ext.Integers;
 public class FieldsAssignment {
   protected static final Random RANDOM = new SecureRandom();
 
-  /** @param object
-   * @param runnable of given object but with fields assigned based on all possible
-   * combinations suggested by the field type, and annotations */
+  /** @param object */
   public static FieldsAssignment of(Object object) {
     return new FieldsAssignment(object);
   }
@@ -51,9 +49,7 @@ public class FieldsAssignment {
   protected final int[] array;
   protected final Scalar total;
 
-  /** @param object
-   * @param runnable of given object but with fields assigned based on all possible
-   * combinations suggested by the field type, and annotations */
+  /** @param object */
   protected FieldsAssignment(Object object) {
     this.object = object;
     string = ObjectProperties.join(object);

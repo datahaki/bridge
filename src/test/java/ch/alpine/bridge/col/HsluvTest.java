@@ -18,6 +18,6 @@ class HsluvTest {
 
   @Test
   void testFail() {
-    assertThrows(Exception.class, () -> Hsluv.of(1 / 0.0, 1, 1, 1));
+    assertThrows(Exception.class, () -> Hsluv.of(Double.POSITIVE_INFINITY, 1, 1, 1));
   }
 }

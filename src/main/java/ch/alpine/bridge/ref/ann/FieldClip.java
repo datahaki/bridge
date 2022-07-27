@@ -11,8 +11,10 @@ import ch.alpine.bridge.ref.util.InvalidFieldDetection;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
+import ch.alpine.tensor.sca.Clip;
 
 /** annotation to defined the limits for a field of type {@link Scalar}
+ * and {@link Clip}
  * 
  * if the {@link Unit} of min and max are not identical
  * then {@link UnitConvert#SI()} is used for unification.

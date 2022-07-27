@@ -28,7 +28,7 @@ public enum LocalTimeDisplay {
   private final int secRadIn = 15;
   private final int secCirc = 10;
 
-  /** @param graphics
+  /** @param _g
    * @param localTime
    * @param center */
   public void draw(Graphics _g, LocalTime localTime, Point center) {

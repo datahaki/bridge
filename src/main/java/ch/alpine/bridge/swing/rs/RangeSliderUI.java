@@ -9,17 +9,19 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicSliderUI;
 
+import ch.alpine.bridge.swing.UIManagerColor;
+
 /** UI delegate for the RangeSlider component. RangeSliderUI paints two thumbs,
  * one for the lower value and one for the upper value. */
 // TODO UTIL 20201221 clruch: remove duplicate code in this class, thorough refactoring...
 /* package */ class RangeSliderUI extends BasicSliderUI {
+  private final RangeSlider rangeSlider;
   /** Location and size of thumb for upper value. */
   private Rectangle upperThumbRect;
   /** Indicator that determines whether upper thumb is selected. */
@@ -37,6 +39,7 @@ import javax.swing.plaf.basic.BasicSliderUI;
    * @param rangeSlider RangeSlider */
   public RangeSliderUI(RangeSlider rangeSlider) {
     super(rangeSlider);
+    this.rangeSlider = rangeSlider;
   }
 
   /** Installs this UI delegate on the specified component. */
@@ -146,7 +149,9 @@ import javax.swing.plaf.basic.BasicSliderUI;
     // Draw track
     super.paintTrack(_g);
     Graphics graphics = _g.create();
-    Color rangeColor = new JTextField().getSelectionColor();
+    Color rangeColor = rangeSlider.isEnabled() //
+        ? UIManagerColor.TextField_selectionBackground.get()
+        : UIManagerColor.TextField_shadow.get();
     if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
       // Determine position of selected range by moving from the middle
       // of one thumb to the other.
@@ -211,7 +216,7 @@ import javax.swing.plaf.basic.BasicSliderUI;
   @Override
   public void scrollByUnit(int direction) {
     synchronized (slider) {
-      int delta = 1 * ((direction > 0) ? POSITIVE_SCROLL : NEGATIVE_SCROLL);
+      int delta = ((direction > 0) ? POSITIVE_SCROLL : NEGATIVE_SCROLL);
       if (upperThumbSelected) {
         int oldValue = ((RangeSlider) slider).getUpperValue();
         ((RangeSlider) slider).setUpperValue(oldValue + delta);
@@ -424,7 +429,7 @@ import javax.swing.plaf.basic.BasicSliderUI;
         slider.setExtent(valueForXPosition(thumbMiddle) - slider.getValue());
         break;
       default:
-        return;
+        break;
       }
     }
   }
