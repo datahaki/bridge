@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +49,6 @@ public class ClassFieldCheck implements ClassVisitor {
 
   /** @return invalid fields */
   public List<FieldValueContainer> invalidFields() {
-    List<FieldValueContainer> list = new ArrayList<>(invalidFieldDetection.list());
-    return list;
+    return Collections.unmodifiableList(invalidFieldDetection.list());
   }
 }

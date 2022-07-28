@@ -62,9 +62,8 @@ public class RangeSlider extends JSlider {
   @Override
   public void setValue(int value) {
     int oldValue = getValue();
-    if (oldValue == value) {
+    if (oldValue == value)
       return;
-    }
     // Compute new value and extent to maintain upper value.
     int oldExtent = getExtent();
     int newValue = Integers.clip(getMinimum(), oldValue + oldExtent).applyAsInt(value);

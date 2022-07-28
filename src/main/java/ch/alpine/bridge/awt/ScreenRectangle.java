@@ -21,8 +21,8 @@ public class ScreenRectangle {
   }
 
   public Rectangle allVisible(int x, int y, int width, int height) {
-    x = Integers.clip(0, screen.width - width).applyAsInt(x);
-    y = Integers.clip(0, screen.height - height).applyAsInt(y);
+    x = Integers.clip(0, Math.max(0, screen.width - width)).applyAsInt(x);
+    y = Integers.clip(0, Math.max(0, screen.height - height)).applyAsInt(y);
     return new Rectangle(x, y, width, height);
   }
 
