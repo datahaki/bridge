@@ -25,6 +25,7 @@ public enum FieldWraps {
   FieldWraps() {
     map.put(String.class, StringFieldWrap::new);
     map.put(Boolean.class, BooleanFieldWrap::new);
+    map.put(Integer.class, IntegerFieldWrap::new);
     map.put(Tensor.class, TensorFieldWrap::new);
     map.put(Scalar.class, ScalarFieldWrap::new);
     map.put(Color.class, ColorFieldWrap::new);

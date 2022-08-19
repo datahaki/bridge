@@ -59,6 +59,19 @@ public class GuiExtension {
   @FieldSlider(showRange = true, showValue = true)
   @FieldClip(min = "0", max = "5")
   public Clip clipSlider = Clips.positive(3);
+  public Integer integer = 4;
+  @FieldSelectionArray({ "3", "7" })
+  public Integer integer1 = 4;
+  @FieldSelectionCallback("ints")
+  public Integer integer2 = 4;
+
+  @ReflectionMarker
+  public static List<Integer> ints() {
+    return List.of(42, 5, 67);
+  }
+
+  @FieldClip(min = "3", max = "8")
+  public Integer integer3 = 4;
   @FieldInteger
   @FieldSlider(showRange = true, showValue = true)
   @FieldClip(min = "-2", max = "5")

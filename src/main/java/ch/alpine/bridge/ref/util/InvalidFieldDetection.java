@@ -60,7 +60,7 @@ public class InvalidFieldDetection extends ObjectFieldIo {
     Field field = fieldWrap.getField();
     boolean valid = true;
     {
-      valid &= require(field, FieldClip.class, Scalar.class, Clip.class);
+      valid &= require(field, FieldClip.class, Scalar.class, Clip.class, Integer.class);
       valid &= require(field, FieldInteger.class, Scalar.class, Clip.class);
       valid &= require(field, FieldSlider.class, Scalar.class, Clip.class);
       valid &= require(field, FieldFuse.class, Boolean.class);
