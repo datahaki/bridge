@@ -57,6 +57,17 @@ import ch.alpine.tensor.sca.Clip;
         }
       }
     }
+    if (cls.equals(Integer.class)) {
+      FieldClip fieldClip = field.getAnnotation(FieldClip.class);
+      if (Objects.nonNull(fieldClip)) {
+        FieldClips fieldClips = FieldClips.wrap(fieldClip);
+        if (fieldClips.isFinite()) {
+          Clip clip = fieldClips.clip();
+          Distribution distribution = DiscreteUniformDistribution.of(clip.min(), clip.max().add(RealScalar.ONE));
+          distributions.put(key, random -> fieldWrap.toString(RandomVariate.of(distribution, random)));
+        }
+      }
+    }
     if (cls.equals(Color.class))
       distributions.put(key, random -> fieldWrap.toString(Randoms.color(random)));
     if (cls.equals(LocalTime.class))

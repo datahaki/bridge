@@ -57,8 +57,7 @@ class FieldWrapTest {
   void testAnnotationInteger() throws NoSuchFieldException, SecurityException {
     Field field = AnnotatedContainer.class.getField("integer");
     FieldWrap fieldWrap = FieldWraps.INSTANCE.wrap(field);
-    assertFalse(fieldWrap.isValidValue(Pi.VALUE));
-    assertTrue(fieldWrap.isValidValue(RealScalar.of(123)));
+    assertTrue(fieldWrap.isValidValue(123));
   }
 
   @Test

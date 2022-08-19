@@ -58,6 +58,10 @@ public class Unicode {
     }
     return stringBuilder.toString();
   }
+
+  public static String valueOf(Integer integer) {
+    return valueOf(BigInteger.valueOf(integer));
+  }
   // ---
 
   /** "m*s^-1" -> "m/s"

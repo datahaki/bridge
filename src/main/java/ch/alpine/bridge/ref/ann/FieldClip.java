@@ -38,4 +38,5 @@ public @interface FieldClip {
    * 
    * @return */
   boolean useMinUnit() default true;
+  // boolean integer() default false;
 }

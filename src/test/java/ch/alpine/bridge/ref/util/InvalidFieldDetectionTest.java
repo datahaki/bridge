@@ -32,7 +32,8 @@ class InvalidFieldDetectionTest {
   @Test
   void testGuiExtension() {
     List<FieldValueContainer> list = InvalidFieldDetection.of(new GuiExtension());
-    assertEquals(list.size(), 2);
+    list.forEach(System.out::println);
+    assertEquals(list.size(), 1);
   }
 
   @Test

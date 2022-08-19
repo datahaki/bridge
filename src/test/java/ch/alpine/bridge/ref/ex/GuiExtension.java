@@ -72,6 +72,9 @@ public class GuiExtension {
 
   @FieldClip(min = "3", max = "8")
   public Integer integer3 = 4;
+  @FieldSlider
+  @FieldClip(min = "3", max = "8")
+  public Integer integer4 = 4;
   @FieldInteger
   @FieldSlider(showRange = true, showValue = true)
   @FieldClip(min = "-2", max = "5")

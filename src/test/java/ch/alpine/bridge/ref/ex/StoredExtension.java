@@ -7,10 +7,8 @@ import java.io.File;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldLabel;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -34,9 +32,8 @@ public class StoredExtension {
   public Scalar scalar = Quantity.of(3, "m*s^-1");
   @FieldClip(min = "1000[W]", max = "10000[W]")
   public Scalar quantity = Quantity.of(3, "kW");
-  @FieldInteger
   @FieldClip(min = "10", max = "20")
-  public Scalar integer = RealScalar.of(12);
+  public Integer integer = 12;
   public Color color = Color.RED;
   public NameString nameString = NameString.SECOND;
   // ---

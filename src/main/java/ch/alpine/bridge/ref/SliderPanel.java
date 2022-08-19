@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
+import java.lang.reflect.Field;
 import java.util.Objects;
 
 import javax.swing.JComponent;
@@ -15,6 +16,7 @@ import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 
 /* package */ class SliderPanel extends FieldPanel {
@@ -37,12 +39,13 @@ import ch.alpine.tensor.Scalar;
     super(fieldWrap);
     this.fieldClips = fieldClips;
     // determine resolution
-    resolution = Objects.nonNull(fieldWrap.getField().getAnnotation(FieldInteger.class))//
+    Field field = fieldWrap.getField();
+    resolution = field.getType().equals(Integer.class) || Objects.nonNull(fieldWrap.getField().getAnnotation(FieldInteger.class))//
         ? fieldClips.getIntegerResolution()
         : RESOLUTION;
     jLabel = new JLabel("", SwingConstants.CENTER);
     if (Objects.nonNull(value)) {
-      Scalar scalar = (Scalar) value;
+      Scalar scalar = convert(value);
       jLabel.setText(Unicode.valueOf(scalar));
       index = fieldClips.indexOf(scalar, resolution);
     }
@@ -78,9 +81,15 @@ import ch.alpine.tensor.Scalar;
     return jComponent;
   }
 
+  protected Scalar convert(Object value) {
+    return value instanceof Scalar //
+        ? (Scalar) value
+        : RealScalar.of((Integer) value);
+  }
+
   @Override // from FieldPanel
   public void updateJComponent(Object value) {
-    index = fieldClips.indexOf((Scalar) value, resolution);
+    index = fieldClips.indexOf(convert(value), resolution);
     /* Quote from JSlider:
      * "If the new value is different from the previous value, all change listeners are notified."
      * In case the value is not different from the previous value the function returns immediately
