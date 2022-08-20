@@ -16,11 +16,11 @@ import javax.swing.JLabel;
 
 import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldClip;
+import ch.alpine.bridge.ref.ann.FieldClipInteger;
 import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
 import ch.alpine.bridge.ref.ann.FieldFileExtension;
 import ch.alpine.bridge.ref.ann.FieldFuse;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldLabel;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
@@ -75,7 +75,7 @@ public class GuiExtension {
   @FieldSlider
   @FieldClip(min = "3", max = "8")
   public Integer integer4 = 4;
-  @FieldInteger
+  @FieldClipInteger
   @FieldSlider(showRange = true, showValue = true)
   @FieldClip(min = "-2", max = "5")
   public Clip clipInteger = Clips.positive(3);

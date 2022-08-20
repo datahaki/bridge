@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import ch.alpine.bridge.lang.Unicode;
+import ch.alpine.bridge.ref.ann.FieldClipInteger;
 import ch.alpine.bridge.ref.ann.FieldClips;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.bridge.swing.rs.RangeSlider;
 import ch.alpine.tensor.RationalScalar;
@@ -41,7 +41,7 @@ import ch.alpine.tensor.sca.Clips;
     super(fieldWrap);
     this.fieldClips = fieldClips;
     // determine resolution
-    resolution = Objects.nonNull(fieldWrap.getField().getAnnotation(FieldInteger.class))//
+    resolution = Objects.nonNull(fieldWrap.getField().getAnnotation(FieldClipInteger.class))//
         ? fieldClips.getIntegerResolution()
         : RESOLUTION;
     jLabel = new JLabel("", SwingConstants.CENTER);

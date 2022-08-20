@@ -42,8 +42,8 @@ class SpinnerMenuTest {
 
   @Test
   void testNonContains() throws InterruptedException {
-    SpinnerMenu<ColorDataGradients> spinnerMenu = new SpinnerMenu<>(Arrays.asList(ColorDataGradients.ALPINE), ColorDataGradients.CLASSIC, Object::toString,
-        false);
+    SpinnerMenu<ColorDataGradients> spinnerMenu = //
+        new SpinnerMenu<>(Arrays.asList(ColorDataGradients.ALPINE), ColorDataGradients.CLASSIC, Object::toString, false);
     spinnerMenu.addSpinnerListener(System.out::println);
     JFrame jFrame = new JFrame();
     JButton jButton = new JButton();

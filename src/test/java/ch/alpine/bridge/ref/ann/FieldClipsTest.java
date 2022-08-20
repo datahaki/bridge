@@ -103,6 +103,11 @@ class FieldClipsTest {
       public boolean useMinUnit() {
         return true;
       }
+
+      @Override
+      public boolean integer() {
+        return false;
+      }
     };
     FieldClips fieldClips = FieldClips.wrap(fieldClip);
     Clip clip = fieldClips.clip();
@@ -129,6 +134,11 @@ class FieldClipsTest {
 
       @Override
       public boolean useMinUnit() {
+        return false;
+      }
+
+      @Override
+      public boolean integer() {
         return false;
       }
     };
@@ -159,6 +169,11 @@ class FieldClipsTest {
       public boolean useMinUnit() {
         return true;
       }
+
+      @Override
+      public boolean integer() {
+        return false;
+      }
     };
     FieldClips fieldClips = FieldClips.wrap(fieldClip);
     assertFalse(fieldClips.test(DoubleScalar.INDETERMINATE));
@@ -188,6 +203,11 @@ class FieldClipsTest {
       @Override
       public boolean useMinUnit() {
         return true;
+      }
+
+      @Override
+      public boolean integer() {
+        return false;
       }
     };
     FieldClips fieldClips = FieldClips.wrap(fieldClip);

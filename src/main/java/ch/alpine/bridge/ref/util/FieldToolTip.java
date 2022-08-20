@@ -8,18 +8,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 
 public enum FieldToolTip {
   ;
   public static String of(Field field) {
     List<String> list = new LinkedList<>();
-    {
-      FieldInteger fieldIntegerQ = field.getAnnotation(FieldInteger.class);
-      if (Objects.nonNull(fieldIntegerQ)) {
-        list.add("integer");
-      }
-    }
     {
       FieldClip fieldClip = field.getAnnotation(FieldClip.class);
       if (Objects.nonNull(fieldClip)) {

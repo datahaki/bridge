@@ -19,6 +19,6 @@ import ch.alpine.tensor.sca.Clip;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldInteger {
+public @interface FieldClipInteger {
   // ---
 }

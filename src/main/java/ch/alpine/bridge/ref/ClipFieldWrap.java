@@ -5,8 +5,8 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
+import ch.alpine.bridge.ref.ann.FieldClipInteger;
 import ch.alpine.bridge.ref.ann.FieldClips;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.Scalar;
@@ -18,12 +18,12 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
 /* package */ class ClipFieldWrap extends SelectableFieldWrap {
-  private final FieldInteger fieldInteger;
+  private final FieldClipInteger fieldInteger;
   private final FieldClips fieldClips;
 
   public ClipFieldWrap(Field field) {
     super(field);
-    fieldInteger = field.getAnnotation(FieldInteger.class);
+    fieldInteger = field.getAnnotation(FieldClipInteger.class);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     fieldClips = Objects.nonNull(fieldClip) //
         ? FieldClips.wrap(fieldClip)
