@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldSlider;
-import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -56,11 +55,10 @@ import ch.alpine.tensor.sca.Clip;
   public List<Object> options(Object object) {
     List<Object> list = super.options(object);
     if (list.isEmpty() && Objects.nonNull(fieldClips)) {
-      if (fieldClips.isFinite()) {
+      if (fieldClips.isFinite() && fieldClips.isInteger()) {
         Clip clip = fieldClips.clip();
-        Scalar width = clip.width();
-        if (IntegerQ.of(width) && Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
-          return Range.of(clip).stream().map(Scalar.class::cast).collect(Collectors.toList());
+        if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
+          return Range.closed(clip).stream().map(Scalar.class::cast).collect(Collectors.toList());
       }
       return Stream.of(fieldClips.min(), fieldClips.max()) //
           .filter(FiniteScalarQ::of) //
