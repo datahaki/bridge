@@ -34,7 +34,7 @@ Features include
 
 ## Reflection
 
-For non-final fields of type `String`, `Boolean`, `File`, `Color`, etc. of a class
+For non-final fields of type `String`, `Boolean`, `Integer`, `File`, `Font`, `Color`, `LocalDate`, etc. of a class
 
 ```java
 public class MyConfig {

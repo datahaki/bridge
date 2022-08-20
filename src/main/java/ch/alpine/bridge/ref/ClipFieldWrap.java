@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldClipInteger;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.IntegerQ;
@@ -18,12 +17,10 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
 /* package */ class ClipFieldWrap extends SelectableFieldWrap {
-  private final FieldClipInteger fieldInteger;
   private final FieldClips fieldClips;
 
   public ClipFieldWrap(Field field) {
     super(field);
-    fieldInteger = field.getAnnotation(FieldClipInteger.class);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     fieldClips = Objects.nonNull(fieldClip) //
         ? FieldClips.wrap(fieldClip)
@@ -50,11 +47,11 @@ import ch.alpine.tensor.sca.Clips;
   public boolean isValidValue(Object value) {
     Clip clip = (Clip) Objects.requireNonNull(value);
     boolean valid = true;
-    if (Objects.nonNull(fieldInteger))
-      valid &= IntegerQ.of(clip.min()) && IntegerQ.of(clip.max());
     if (Objects.nonNull(fieldClips)) {
       valid &= fieldClips.test(clip.min());
       valid &= fieldClips.test(clip.max());
+      if (fieldClips.isInteger())
+        valid &= IntegerQ.of(clip.min()) && IntegerQ.of(clip.max());
     }
     return valid;
   }

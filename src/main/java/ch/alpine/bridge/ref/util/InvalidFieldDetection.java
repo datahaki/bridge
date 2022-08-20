@@ -13,7 +13,6 @@ import java.util.Set;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldClipInteger;
 import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
 import ch.alpine.bridge.ref.ann.FieldFileExtension;
@@ -61,7 +60,6 @@ public class InvalidFieldDetection extends ObjectFieldIo {
     boolean valid = true;
     {
       valid &= require(field, FieldClip.class, Scalar.class, Clip.class, Integer.class);
-      valid &= require(field, FieldClipInteger.class, Clip.class);
       valid &= require(field, FieldSlider.class, Scalar.class, Clip.class);
       valid &= require(field, FieldFuse.class, Boolean.class);
       valid &= require(field, FieldExistingDirectory.class, File.class);

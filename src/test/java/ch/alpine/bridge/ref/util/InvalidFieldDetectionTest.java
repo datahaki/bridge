@@ -14,7 +14,6 @@ import ch.alpine.bridge.ref.ex.ClipParam;
 import ch.alpine.bridge.ref.ex.ExampleBadClip;
 import ch.alpine.bridge.ref.ex.ExampleBadDirectory;
 import ch.alpine.bridge.ref.ex.ExampleBadFieldClip;
-import ch.alpine.bridge.ref.ex.ExampleBadFieldIntegerValue;
 import ch.alpine.bridge.ref.ex.ExampleBadFile;
 import ch.alpine.bridge.ref.ex.ExampleBadFuse;
 import ch.alpine.bridge.ref.ex.ExampleBadMethod;
@@ -49,11 +48,6 @@ class InvalidFieldDetectionTest {
   @Test
   void testClip() {
     assertThrows(Exception.class, () -> InvalidFieldDetection.of(new ExampleBadClip()));
-  }
-
-  @Test
-  void testFieldInteger() {
-    assertFalse(InvalidFieldDetection.isEmpty(new ExampleBadFieldIntegerValue()));
   }
 
   @Test
