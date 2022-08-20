@@ -19,13 +19,10 @@ import javax.swing.JToolBar;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
-import ch.alpine.tensor.RealScalar;
-import ch.alpine.tensor.Scalar;
 
 public abstract class FontDialog extends DialogBase<Font> {
   private static final String DEMO = "Abc123!";
@@ -35,16 +32,15 @@ public abstract class FontDialog extends DialogBase<Font> {
     @FieldSelectionCallback("names")
     public String name; // "Dialog"
     public FontStyle style; // PLAIN
-    @FieldInteger
     @FieldClip(min = "0", max = "Infinity")
     @FieldSelectionArray({ "10", "11", "12", "13", "14", "15", "16", "17", "18", "20", "22", "25" })
-    public Scalar size; // 12
+    public Integer size; // 12
 
     /** @param font */
     public FontParam(Font font) {
       name = font.getName();
       style = FontStyle.values()[font.getStyle()];
-      size = RealScalar.of(font.getSize());
+      size = font.getSize();
     }
 
     @ReflectionMarker
@@ -58,7 +54,7 @@ public abstract class FontDialog extends DialogBase<Font> {
      * 
      * @return font as specified by this instance */
     public Font toFont() {
-      return new Font(name, style.ordinal(), size.number().intValue());
+      return new Font(name, style.ordinal(), size);
     }
   }
 

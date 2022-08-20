@@ -31,6 +31,7 @@ public class FieldClips implements Predicate<Scalar> {
   // ---
   private final Scalar min;
   private final Scalar max;
+  private final boolean isInteger;
   private final Clip clip;
   private final Predicate<Scalar> compatible;
   /** operator maps a scalar to a {@link Quantity} with unit as clip.min and clip.max */
@@ -39,6 +40,7 @@ public class FieldClips implements Predicate<Scalar> {
   private FieldClips(FieldClip fieldClip) {
     min = Scalars.fromString(fieldClip.min());
     max = Scalars.fromString(fieldClip.max());
+    isInteger = fieldClip.integer();
     Unit unit = fieldClip.useMinUnit() //
         ? QuantityUnit.of(min)
         : QuantityUnit.of(max);
@@ -92,5 +94,9 @@ public class FieldClips implements Predicate<Scalar> {
   /** @return */
   public Clip clip() {
     return clip;
+  }
+
+  public boolean isInteger() {
+    return isInteger;
   }
 }

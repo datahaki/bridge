@@ -2,12 +2,10 @@
 package ch.alpine.bridge.ref.ex;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldPreferredWidth;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.Quantity;
 
@@ -21,7 +19,6 @@ public class ScalarUnion {
   @FieldClip(min = "0[%]", max = "1")
   public Scalar percent = Quantity.of(10, "%");
   @FieldSlider
-  @FieldInteger
   @FieldClip(min = "1", max = "10")
   public Scalar scalarInt = Quantity.of(8.9, "");
   public Scalar scalar1 = Quantity.of(3, "m*s^-1");
@@ -33,7 +30,6 @@ public class ScalarUnion {
   @FieldClip(min = "0", max = "20")
   @FieldSelectionArray({ "1[W]", "2[%]", "3[]" })
   public Scalar subdiv = Quantity.of(3, "");
-  @FieldInteger
   @FieldClip(min = "10", max = "20")
-  public Scalar integer = RealScalar.of(12);
+  public Integer integer = 12;
 }

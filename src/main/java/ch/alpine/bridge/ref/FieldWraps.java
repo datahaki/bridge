@@ -25,16 +25,17 @@ public enum FieldWraps {
   FieldWraps() {
     map.put(String.class, StringFieldWrap::new);
     map.put(Boolean.class, BooleanFieldWrap::new);
-    map.put(Tensor.class, TensorFieldWrap::new);
-    map.put(Scalar.class, ScalarFieldWrap::new);
-    map.put(Color.class, ColorFieldWrap::new);
+    map.put(Integer.class, IntegerFieldWrap::new);
     map.put(File.class, FileFieldWrap::new);
-    map.put(Clip.class, ClipFieldWrap::new);
+    map.put(Color.class, ColorFieldWrap::new);
     map.put(Font.class, FontFieldWrap::new);
-    // ---
-    map.put(LocalDateTime.class, LocalDateTimeFieldWrap::new);
     map.put(LocalDate.class, LocalDateFieldWrap::new);
     map.put(LocalTime.class, LocalTimeFieldWrap::new);
+    map.put(LocalDateTime.class, LocalDateTimeFieldWrap::new);
+    // ---
+    map.put(Tensor.class, TensorFieldWrap::new);
+    map.put(Scalar.class, ScalarFieldWrap::new);
+    map.put(Clip.class, ClipFieldWrap::new);
   }
 
   /** @param cls

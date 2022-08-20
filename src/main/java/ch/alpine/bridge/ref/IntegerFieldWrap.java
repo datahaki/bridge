@@ -10,16 +10,14 @@ import java.util.stream.Stream;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldSlider;
-import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.chq.FiniteScalarQ;
-import ch.alpine.tensor.io.StringScalar;
 import ch.alpine.tensor.sca.Clip;
 
-/* package */ final class ScalarFieldWrap extends TensorFieldWrap {
+/* package */ final class IntegerFieldWrap extends SelectableFieldWrap {
   /** allow choosing of hours 0,1,...,23 */
   private static final Scalar WIDTH_LIMIT = RealScalar.of(24);
   // ---
@@ -27,7 +25,7 @@ import ch.alpine.tensor.sca.Clip;
 
   /** @param field
    * @throws Exception if annotations are corrupt */
-  public ScalarFieldWrap(Field field) {
+  public IntegerFieldWrap(Field field) {
     super(field);
     FieldClip fieldClip = field.getAnnotation(FieldClip.class);
     fieldClips = Objects.nonNull(fieldClip) //
@@ -37,16 +35,20 @@ import ch.alpine.tensor.sca.Clip;
 
   @Override // from FieldWrap
   public Object toValue(String string) {
-    return Scalars.fromString(string);
+    Objects.requireNonNull(string);
+    try {
+      return Integer.parseInt(string);
+    } catch (Exception exception) {
+      // ---
+    }
+    return null;
   }
 
   @Override // from FieldWrap
   public boolean isValidValue(Object value) {
-    Scalar scalar = (Scalar) Objects.requireNonNull(value);
-    if (scalar instanceof StringScalar)
-      return false;
+    Integer scalar = (Integer) Objects.requireNonNull(value);
     // ---
-    if (Objects.nonNull(fieldClips) && !fieldClips.test(scalar))
+    if (Objects.nonNull(fieldClips) && !fieldClips.test(RealScalar.of(scalar)))
       return false;
     // ---
     return true;
@@ -58,8 +60,7 @@ import ch.alpine.tensor.sca.Clip;
     if (list.isEmpty() && Objects.nonNull(fieldClips)) {
       if (fieldClips.isFinite()) {
         Clip clip = fieldClips.clip();
-        Scalar width = clip.width();
-        if (IntegerQ.of(width) && Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
+        if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
           return Range.of(clip).stream().map(Scalar.class::cast).collect(Collectors.toList());
       }
       return Stream.of(fieldClips.min(), fieldClips.max()) //

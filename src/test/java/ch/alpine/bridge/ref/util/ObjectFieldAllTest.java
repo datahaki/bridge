@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldFuse;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldPreferredWidth;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
@@ -23,8 +22,7 @@ class ObjectFieldAllTest {
     @FieldPreferredWidth(250)
     public Scalar alpha = RealScalar.of(2);
     @FieldPreferredWidth(150)
-    @FieldInteger
-    public Scalar length = RealScalar.of(300);
+    public Integer length = 300;
     @FieldFuse("generate")
     public transient Boolean generate = true;
   }

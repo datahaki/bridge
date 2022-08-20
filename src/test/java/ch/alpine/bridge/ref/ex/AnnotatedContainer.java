@@ -2,7 +2,6 @@
 package ch.alpine.bridge.ref.ex;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -22,8 +21,7 @@ public class AnnotatedContainer {
   public String text;
   @FieldClip(min = "2", max = "6")
   public Scalar clipped;
-  @FieldInteger
-  public Scalar integer = RealScalar.of(3);
+  public Integer integer = 3;
   @FieldClip(min = "2[kW]", max = "6[kW]")
   public Scalar quantityClipped;
 }

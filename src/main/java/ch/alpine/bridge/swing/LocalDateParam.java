@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
@@ -16,37 +15,36 @@ import ch.alpine.tensor.Scalar;
 
 @ReflectionMarker
 public class LocalDateParam {
-  @FieldInteger
   @FieldClip(min = "1900", max = "3000")
   @FieldSelectionCallback("years")
-  public Scalar year;
+  public Integer year;
   // ---
   public Month month;
   // ---
   @FieldClip(min = "1", max = "31")
   @FieldSelectionCallback("days")
-  public Scalar day;
+  public Integer day;
 
   public LocalDateParam(LocalDate localDate) {
     set(localDate);
   }
 
   public void set(LocalDate localDate) {
-    year = RealScalar.of(localDate.getYear());
+    year = localDate.getYear();
     month = localDate.getMonth();
-    day = RealScalar.of(localDate.getDayOfMonth());
+    day = localDate.getDayOfMonth();
   }
 
   public LocalDate toLocalDate() {
     return LocalDate.of( //
-        year.number().intValue(), //
+        year, //
         month, //
-        Math.min(day.number().intValue(), maxDays()));//
+        Math.min(day, maxDays()));//
   }
 
   @ReflectionMarker
-  public List<Scalar> years() {
-    return IntStream.rangeClosed(-3, 3).mapToObj(RealScalar::of).map(year::add).collect(Collectors.toList());
+  public List<Integer> years() {
+    return IntStream.rangeClosed(-3, 3).map(i -> year + i).boxed().collect(Collectors.toList());
   }
 
   @ReflectionMarker
@@ -56,7 +54,7 @@ public class LocalDateParam {
 
   /** @return maximum number of days in given month and year */
   private int maxDays() {
-    return month.length(LocalDate.of(year.number().intValue(), 1, 1).isLeapYear());
+    return month.length(LocalDate.of(year, 1, 1).isLeapYear());
   }
 
   @Override

@@ -20,7 +20,7 @@ class ClassFieldCheckTest {
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
     // System.out.println(classFieldCheck.getInspected().size());
-    assertTrue(36 <= classFieldCheck.getInspected().size());
+    assertTrue(34 <= classFieldCheck.getInspected().size());
     assertTrue(classFieldCheck.getFailures().contains(FieldClipT.class));
     List<FieldValueContainer> list = classFieldCheck.invalidFields();
     assertFalse(list.isEmpty());

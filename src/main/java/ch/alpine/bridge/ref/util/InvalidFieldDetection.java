@@ -17,7 +17,6 @@ import ch.alpine.bridge.ref.ann.FieldExistingDirectory;
 import ch.alpine.bridge.ref.ann.FieldExistingFile;
 import ch.alpine.bridge.ref.ann.FieldFileExtension;
 import ch.alpine.bridge.ref.ann.FieldFuse;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.FieldSlider;
@@ -60,8 +59,7 @@ public class InvalidFieldDetection extends ObjectFieldIo {
     Field field = fieldWrap.getField();
     boolean valid = true;
     {
-      valid &= require(field, FieldClip.class, Scalar.class, Clip.class);
-      valid &= require(field, FieldInteger.class, Scalar.class, Clip.class);
+      valid &= require(field, FieldClip.class, Scalar.class, Clip.class, Integer.class);
       valid &= require(field, FieldSlider.class, Scalar.class, Clip.class);
       valid &= require(field, FieldFuse.class, Boolean.class);
       valid &= require(field, FieldExistingDirectory.class, File.class);

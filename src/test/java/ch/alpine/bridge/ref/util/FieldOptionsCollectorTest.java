@@ -14,7 +14,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
-import ch.alpine.bridge.ref.ann.FieldInteger;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.ex.NameString;
 import ch.alpine.tensor.RealScalar;
@@ -38,9 +37,12 @@ class FieldOptionsCollectorTest {
 
   @ReflectionMarker
   public static class DiscreteParam {
-    @FieldInteger
     @FieldClip(min = "-10", max = "100")
-    public Scalar integer;
+    public Integer integer;
+
+    public Scalar integer() {
+      return RealScalar.of(integer);
+    }
   }
 
   @Test
@@ -48,11 +50,11 @@ class FieldOptionsCollectorTest {
     Set<Scalar> set = new HashSet<>();
     DiscreteParam discreteParam = new DiscreteParam();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(discreteParam);
-    fieldsAssignment.stream().forEach(i -> set.add(discreteParam.integer));
+    fieldsAssignment.stream().forEach(i -> set.add(discreteParam.integer()));
     assertEquals(set.size(), 2);
     assertTrue(set.contains(RealScalar.of(-10)));
     assertTrue(set.contains(RealScalar.of(100)));
-    fieldsAssignment.randomize(20).forEach(i -> set.add(discreteParam.integer));
+    fieldsAssignment.randomize(20).forEach(i -> set.add(discreteParam.integer()));
     assertTrue(10 < set.size());
   }
 
@@ -61,7 +63,7 @@ class FieldOptionsCollectorTest {
     Set<Scalar> set = new HashSet<>();
     DiscreteParam discreteParam = new DiscreteParam();
     FieldsAssignment fieldsAssignment = FieldsAssignment.of(discreteParam);
-    fieldsAssignment.stream().forEach(i -> set.add(discreteParam.integer));
+    fieldsAssignment.stream().forEach(i -> set.add(discreteParam.integer()));
     assertEquals(set.size(), 2);
     assertTrue(set.contains(RealScalar.of(-10)));
     assertTrue(set.contains(RealScalar.of(100)));
