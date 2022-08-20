@@ -39,5 +39,14 @@ public @interface FieldClip {
    * @return */
   boolean useMinUnit() default true;
 
+  /** useful only when annotating a field of type {@link Clip}
+   * to specify that the min max values are restricted to
+   * integer values.
+   * 
+   * In particular, the method is not used when annotating
+   * fields of type {@link Scalar}, or {@link Integer}.
+   * 
+   * @return whether min max of clip are restricted to
+   * integer values */
   boolean integer() default false;
 }
