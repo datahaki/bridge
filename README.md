@@ -88,7 +88,7 @@ From time to time, a version is deployed and made available for maven integratio
 </repositories>
 ```
 
-For Java 11, for `version` use `0.5.0-jdk-11`.
+For Java 11, for `version` use `0.5.1-jdk-11`.
 
 The source code is attached to every release.
 
