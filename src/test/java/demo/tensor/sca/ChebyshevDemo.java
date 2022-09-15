@@ -19,14 +19,28 @@ import ch.alpine.tensor.sca.bes.ChebyshevClenshaw;
 public enum ChebyshevDemo {
   ;
   public static void main(String[] args) throws IOException {
-    Tensor domain = Subdivide.of(-1., 1., 30);
-    VisualSet visualSet = new VisualSet();
-    for (int d = 0; d < 4; ++d) {
-      ScalarUnaryOperator suo = ChebyshevClenshaw.of(UnitVector.of(d + 1, 0));
-      visualSet.add(domain, domain.map(suo));
+    int max = 6;
+    {
+      Tensor domain = Subdivide.of(-2., 2., 30);
+      VisualSet visualSet = new VisualSet();
+      for (int d = 0; d < max; ++d) {
+        ScalarUnaryOperator suo = ChebyshevClenshaw.of(UnitVector.of(d + 1, 0));
+        visualSet.add(domain, domain.map(suo));
+      }
+      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      jFreeChart.setBackgroundPaint(Color.WHITE);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevDemo.class.getSimpleName() + ".png"), jFreeChart, 600, 400);
     }
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-    jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevDemo.class.getSimpleName() + ".png"), jFreeChart, 600, 400);
+    {
+      Tensor domain = Subdivide.of(-1., 1., 30);
+      VisualSet visualSet = new VisualSet();
+      for (int d = 0; d < max; ++d) {
+        ScalarUnaryOperator suo = Chebyshev.of(d);
+        visualSet.add(domain, domain.map(suo));
+      }
+      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      jFreeChart.setBackgroundPaint(Color.WHITE);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + ".png"), jFreeChart, 600, 400);
+    }
   }
 }
