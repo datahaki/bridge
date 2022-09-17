@@ -14,8 +14,8 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.HomeDirectory;
-import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.sca.ply.Polynomial;
 
 /* package */ enum PolynomialShow {
   ;
