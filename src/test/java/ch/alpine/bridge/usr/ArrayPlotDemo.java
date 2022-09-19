@@ -24,10 +24,25 @@ import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
+import ch.alpine.tensor.sca.ply.ChebyshevNodes;
 
 public enum ArrayPlotDemo {
   ;
-  public static JFreeChart create() {
+  public static JFreeChart create0a() {
+    Tensor matrix = ChebyshevNodes._1.matrix(64);
+    VisualImage visualImage = VisualImage.of(matrix);
+    visualImage.setPlotLabel("ArrayPlot");
+    return ArrayPlot.of(visualImage);
+  }
+
+  public static JFreeChart create0() {
+    Tensor matrix = ChebyshevNodes._1.matrix(64);
+    JFreeChart jFreeChart = ArrayPlot.of(matrix);
+    jFreeChart.setTitle("ArrayPlot");
+    return jFreeChart;
+  }
+
+  public static JFreeChart create1() {
     int n = 200;
     Clip clipX = Clips.interval(Quantity.of(10, "m"), Quantity.of(20, "m"));
     Tensor domain = Subdivide.increasing(clipX, n - 1);
@@ -59,9 +74,15 @@ public enum ArrayPlotDemo {
 
   public static void main(String[] args) throws IOException {
     {
-      JFreeChart jFreeChart = create();
+      JFreeChart jFreeChart = create0();
       jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + ".png"), jFreeChart, 600, 200);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "0.png"), jFreeChart, //
+          DemoHelper.DEMO_W, DemoHelper.DEMO_H);
+    }
+    {
+      JFreeChart jFreeChart = create1();
+      jFreeChart.setBackgroundPaint(Color.WHITE);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "1.png"), jFreeChart, 600, 200);
     }
     {
       JFreeChart jFreeChart = create2();

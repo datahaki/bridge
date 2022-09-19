@@ -20,7 +20,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 class ArrayPlotTest {
   @Test
   void testSimple() {
-    CascadeHelper.draw(ArrayPlotDemo.create());
+    CascadeHelper.draw(ArrayPlotDemo.create0());
   }
 
   @Test

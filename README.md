@@ -26,6 +26,8 @@ Features include
 
 ![Histogram](https://user-images.githubusercontent.com/4012178/174354957-3134ea12-34a8-4a72-a680-f0ec38e8bce9.png)
 
+![ArrayPlot](https://user-images.githubusercontent.com/4012178/190851366-e9bd09f0-8e78-46d2-8606-6e1b739b56dd.png)
+
 ## Dialogs
 
 ![LocalTime selection](https://user-images.githubusercontent.com/4012178/178134198-8b94131f-6163-408b-9b26-2bfb344d0da3.png)

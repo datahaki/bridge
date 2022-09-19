@@ -11,6 +11,19 @@ import ch.alpine.tensor.img.ColorDataGradient;
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 public enum ArrayPlot {
   ;
+  /** function emulates ArrayPlot[matrix] in Mathematica
+   * 
+   * Other that in Mathematica, the axes are drawn with ticks.
+   * 
+   * Hint:
+   * use {@link JFreeChart#setTitle(String)} to define plot label
+   * 
+   * @param matrix
+   * @return */
+  public static JFreeChart of(Tensor matrix) {
+    return of(VisualImage.of(matrix));
+  }
+
   /** @param visualImage
    * @return */
   public static JFreeChart of(VisualImage visualImage) {
@@ -21,15 +34,6 @@ public enum ArrayPlot {
         false); // no legend
     ChartFactory.getChartTheme().apply(jFreeChart);
     return jFreeChart;
-  }
-
-  /** function exists to emulate
-   * ArrayPlot[matrix] in Mathematica
-   * 
-   * @param matrix
-   * @return */
-  public static JFreeChart of(Tensor matrix) {
-    return of(VisualImage.of(matrix));
   }
 
   public static JFreeChart of(Tensor matrix, ColorDataGradient colorDataGradient) {
