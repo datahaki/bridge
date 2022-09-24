@@ -36,6 +36,7 @@ public class FieldClips implements Predicate<Scalar> {
   private final Predicate<Scalar> compatible;
   /** operator maps a scalar to a {@link Quantity} with unit as clip.min and clip.max */
   private final ScalarUnaryOperator convert;
+  private final ScalarUnaryOperator interp;
 
   private FieldClips(FieldClip fieldClip) {
     min = Scalars.fromString(fieldClip.min());
@@ -47,6 +48,7 @@ public class FieldClips implements Predicate<Scalar> {
     compatible = CompatibleUnitQ.SI().with(unit);
     convert = UnitConvert.SI().to(unit);
     clip = Clips.interval(convert.apply(min), convert.apply(max));
+    interp = LinearInterpolation.of(clip);
   }
 
   /** @return whether the interval [min, max] has finite width
@@ -75,7 +77,7 @@ public class FieldClips implements Predicate<Scalar> {
   /** @param ratio in the unit interval
    * @return */
   public Scalar interp(Scalar ratio) {
-    return LinearInterpolation.of(clip).At(ratio);
+    return interp.apply(ratio);
   }
 
   public int indexOf(Scalar scalar, int resolution) {
