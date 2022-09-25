@@ -60,7 +60,7 @@ public class GuiExtension {
   @FieldClip(min = "0", max = "5")
   public Clip clipSlider = Clips.positive(3);
   @FieldSlider(showRange = true, showValue = true)
-  @FieldClip(min = "2020-12-20T04:30", max = "2023-12-20T04:30:12")
+  @FieldClip(min = "2022-01-01T12:00", max = "2023-01-01T12:00")
   public Scalar dateSlider = DateObject.now();
   public Integer integer = 4;
   @FieldSelectionArray({ "3", "7" })

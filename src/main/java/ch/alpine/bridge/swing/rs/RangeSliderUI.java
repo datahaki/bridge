@@ -19,7 +19,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
 
 /** UI delegate for the RangeSlider component. RangeSliderUI paints two thumbs,
  * one for the lower value and one for the upper value. */
-// TODO UTIL 20201221 clruch: remove duplicate code in this class, thorough refactoring...
+// TODO BRIDGE 20201221 remove duplicate code in this class, thorough refactoring...
 /* package */ class RangeSliderUI extends BasicSliderUI {
   private final RangeSlider rangeSlider;
   /** Location and size of thumb for upper value. */
