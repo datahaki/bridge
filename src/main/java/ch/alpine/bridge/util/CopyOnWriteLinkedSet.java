@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.util;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
@@ -25,7 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 
  * @implSpec
  * The implementation of the collection is backed by {@link CopyOnWriteArrayList} */
-public class CopyOnWriteLinkedSet<E> extends AbstractSet<E> {
+public class CopyOnWriteLinkedSet<E> extends AbstractSet<E> implements Serializable {
   private final CopyOnWriteArrayList<E> list = new CopyOnWriteArrayList<>();
 
   @Override

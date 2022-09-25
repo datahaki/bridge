@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -16,11 +17,12 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.OrderedQ;
+import ch.alpine.tensor.ext.Serialization;
 
 class CopyOnWriteLinkedSetTest {
   @Test
-  void testString() {
-    Set<String> set = new CopyOnWriteLinkedSet<>();
+  void testString() throws ClassNotFoundException, IOException {
+    Set<String> set = Serialization.copy(new CopyOnWriteLinkedSet<>());
     assertThrows(NullPointerException.class, () -> set.add(null));
     assertTrue(set.add("asd"));
     assertThrows(Exception.class, () -> set.add("asd"));

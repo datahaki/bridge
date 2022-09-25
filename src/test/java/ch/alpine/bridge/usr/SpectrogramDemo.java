@@ -18,8 +18,8 @@ import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.img.ColorDataGradient;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.num.Pi;
-import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.sca.ply.Polynomial;
 import ch.alpine.tensor.sca.tri.Cos;
 import ch.alpine.tensor.sca.win.DirichletWindow;
 

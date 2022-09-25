@@ -10,9 +10,9 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.num.Pi;
-import ch.alpine.tensor.num.Polynomial;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
+import ch.alpine.tensor.sca.ply.Polynomial;
 import ch.alpine.tensor.sca.tri.Cos;
 
 class SpectrogramTest {

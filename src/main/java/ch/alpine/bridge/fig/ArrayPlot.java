@@ -4,10 +4,26 @@ package ch.alpine.bridge.fig;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 
+import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.img.ColorDataGradient;
+
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 public enum ArrayPlot {
   ;
+  /** function emulates ArrayPlot[matrix] in Mathematica
+   * 
+   * Other that in Mathematica, the axes are drawn with ticks.
+   * 
+   * Hint:
+   * use {@link JFreeChart#setTitle(String)} to define plot label
+   * 
+   * @param matrix
+   * @return */
+  public static JFreeChart of(Tensor matrix) {
+    return of(VisualImage.of(matrix));
+  }
+
   /** @param visualImage
    * @return */
   public static JFreeChart of(VisualImage visualImage) {
@@ -18,5 +34,9 @@ public enum ArrayPlot {
         false); // no legend
     ChartFactory.getChartTheme().apply(jFreeChart);
     return jFreeChart;
+  }
+
+  public static JFreeChart of(Tensor matrix, ColorDataGradient colorDataGradient) {
+    return of(VisualImage.of(matrix, colorDataGradient));
   }
 }
