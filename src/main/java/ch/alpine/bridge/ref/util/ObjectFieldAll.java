@@ -25,7 +25,7 @@ public abstract class ObjectFieldAll extends ObjectFieldBase {
       NODE_DEMAND, //
       NODE_REJECT);
 
-  public ObjectFieldAll() {
+  protected ObjectFieldAll() {
     super(IS_LEAF, IS_NODE);
   }
 }

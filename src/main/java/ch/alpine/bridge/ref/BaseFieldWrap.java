@@ -9,7 +9,7 @@ import java.util.Objects;
   private final Field field;
 
   /** @param field non-null */
-  public BaseFieldWrap(Field field) {
+  protected BaseFieldWrap(Field field) {
     this.field = Objects.requireNonNull(field);
   }
 

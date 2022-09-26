@@ -27,7 +27,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
   private final JTextField jTextField;
   private String fallbackValue = null;
 
-  public StringPanel(FieldWrap fieldWrap, Object value) {
+  protected StringPanel(FieldWrap fieldWrap, Object value) {
     super(fieldWrap);
     jTextField = Objects.isNull(value) //
         ? new JTextField()

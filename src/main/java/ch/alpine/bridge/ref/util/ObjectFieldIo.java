@@ -18,7 +18,7 @@ public abstract class ObjectFieldIo extends ObjectFieldBase {
       ObjectFieldAll.NODE_REJECT //
           | Modifier.TRANSIENT);
 
-  public ObjectFieldIo() {
+  protected ObjectFieldIo() {
     super(IS_LEAF, IS_NODE);
   }
 }

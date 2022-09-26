@@ -27,7 +27,7 @@ public abstract class LocalTimeDialog extends DialogBase<LocalTime> {
   private final PanelFieldsEditor panelFieldsEditor;
 
   /** @param localTime fallback */
-  public LocalTimeDialog(LocalTime localTime) {
+  protected LocalTimeDialog(LocalTime localTime) {
     super(localTime);
     localTimeParam = new LocalTimeParam(localTime);
     // ---

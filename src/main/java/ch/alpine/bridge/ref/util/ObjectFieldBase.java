@@ -10,7 +10,7 @@ public abstract class ObjectFieldBase implements ObjectFieldVisitor {
   private final Predicate<Field> isLeaf;
   private final Predicate<Field> isNode;
 
-  public ObjectFieldBase(Predicate<Field> isLeaf, Predicate<Field> isNode) {
+  protected ObjectFieldBase(Predicate<Field> isLeaf, Predicate<Field> isNode) {
     this.isLeaf = isLeaf;
     this.isNode = isNode;
   }

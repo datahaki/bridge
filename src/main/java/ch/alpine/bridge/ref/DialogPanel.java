@@ -22,7 +22,7 @@ import ch.alpine.bridge.awt.WindowClosed;
 
   /** @param fieldWrap
    * @param value initial and fallback */
-  public DialogPanel(FieldWrap fieldWrap, Object value) {
+  protected DialogPanel(FieldWrap fieldWrap, Object value) {
     super(fieldWrap, value);
     jButton.addActionListener(actionEvent -> {
       if (Objects.isNull(jDialog)) {
