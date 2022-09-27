@@ -32,7 +32,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.img.ColorDataGradients;
-import ch.alpine.tensor.jet.DateObject;
+import ch.alpine.tensor.jet.DateTime;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
@@ -61,7 +61,7 @@ public class GuiExtension {
   public Clip clipSlider = Clips.positive(3);
   @FieldSlider(showRange = true, showValue = true)
   @FieldClip(min = "2022-01-01T12:00", max = "2023-01-01T12:00")
-  public Scalar dateSlider = DateObject.now();
+  public Scalar dateSlider = DateTime.now();
   public Integer integer = 4;
   @FieldSelectionArray({ "3", "7" })
   public Integer integer1 = 4;
