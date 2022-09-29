@@ -13,13 +13,13 @@ enum LocalDateTimeDialogDemo {
   ;
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
-    LocalDateTimeDialog fontDialog = new LocalDateTimeDialog(LocalDateTime.now()) {
+    LocalDateTimeDialog localDateTimeDialog = new LocalDateTimeDialog(LocalDateTime.now()) {
       @Override
       public void selection(LocalDateTime current) {
         // ---
       }
     };
-    JDialog jDialog = DialogBuilder.create(null, fontDialog);
+    JDialog jDialog = DialogBuilder.create(null, localDateTimeDialog);
     jDialog.setLocation(100, 200);
     jDialog.setVisible(true);
   }
