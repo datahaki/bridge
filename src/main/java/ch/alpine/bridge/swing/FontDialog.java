@@ -37,7 +37,7 @@ public abstract class FontDialog extends DialogBase<Font> {
     public Integer size; // 12
 
     /** @param font */
-    public FontParam(Font font) {
+    protected FontParam(Font font) {
       name = font.getName();
       style = FontStyle.values()[font.getStyle()];
       size = font.getSize();

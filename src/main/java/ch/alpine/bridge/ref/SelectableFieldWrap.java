@@ -15,7 +15,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
   private final FieldSelectionArray fieldSelectionArray;
   private final FieldSelectionCallback fieldSelectionCallback;
 
-  public SelectableFieldWrap(Field field) {
+  protected SelectableFieldWrap(Field field) {
     super(field);
     fieldSelectionArray = field.getAnnotation(FieldSelectionArray.class);
     fieldSelectionCallback = field.getAnnotation(FieldSelectionCallback.class);
