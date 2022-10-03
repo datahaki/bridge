@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -64,6 +65,6 @@ public class VisualSet extends VisualBase {
   public boolean hasLegend() {
     return visualRows.stream() //
         .map(VisualRow::getLabelString) //
-        .anyMatch(string -> !string.isEmpty());
+        .anyMatch(Predicate.not(String::isEmpty));
   }
 }
