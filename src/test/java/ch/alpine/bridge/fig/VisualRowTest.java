@@ -2,6 +2,7 @@
 package ch.alpine.bridge.fig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.BasicStroke;
@@ -12,8 +13,13 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
+import ch.alpine.tensor.pdf.Distribution;
 import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
+import ch.alpine.tensor.qty.DateTime;
+import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.qty.Unit;
 
 class VisualRowTest {
   @Test
@@ -30,6 +36,18 @@ class VisualRowTest {
     row1.setStroke(new BasicStroke(2f));
     row1.getStroke();
     row1.setAutoSort(false);
+  }
+
+  @Test
+  void testDateTime() {
+    VisualSet visualSet = new VisualSet();
+    Distribution distribution = NormalDistribution.of(DateTime.now(), Quantity.of(3, "h"));
+    Tensor points = RandomVariate.of(distribution, 10, 2);
+    VisualRow visualRow = visualSet.add(points);
+    Axis axisX = visualSet.getAxisX();
+    assertEquals(axisX.getUnit(), Unit.ONE);
+    assertEquals(axisX.getUnitString(), "");
+    assertFalse(visualRow.getAutoSort());
   }
 
   @Test
