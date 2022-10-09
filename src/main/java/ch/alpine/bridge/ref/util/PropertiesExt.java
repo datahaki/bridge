@@ -1,7 +1,6 @@
 // code adapted by jph
 package ch.alpine.bridge.ref.util;
 
-import java.util.HexFormat;
 import java.util.Properties;
 
 /* package */ enum PropertiesExt {
@@ -19,7 +18,6 @@ import java.util.Properties;
       bufLen = Integer.MAX_VALUE;
     }
     StringBuilder outBuffer = new StringBuilder(bufLen);
-    HexFormat hex = HexFormat.of().withUpperCase(); // Java 17 specific
     for (int x = 0; x < len; x++) {
       char aChar = theString.charAt(x);
       // Handle common case first, selecting largest block that
@@ -65,7 +63,8 @@ import java.util.Properties;
       default:
         if (((aChar < 0x0020) || (aChar > 0x007e)) & escapeUnicode) {
           outBuffer.append("\\u");
-          outBuffer.append(hex.toHexDigits(aChar));
+          // down
+          outBuffer.append(String.format("%04X", aChar & 0xffff));
         } else {
           outBuffer.append(aChar);
         }

@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
@@ -24,7 +25,10 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
   @SuppressWarnings("unchecked")
   public List<Object> options(Object object) {
     if (Objects.nonNull(fieldSelectionArray))
-      return Arrays.stream(fieldSelectionArray.value()).map(this::toValue).toList();
+      return Arrays.stream(fieldSelectionArray.value()) //
+          .map(this::toValue) //
+          .map(Objects::requireNonNull) //
+          .collect(Collectors.toList());
     if (Objects.nonNull(fieldSelectionCallback))
       try {
         Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());

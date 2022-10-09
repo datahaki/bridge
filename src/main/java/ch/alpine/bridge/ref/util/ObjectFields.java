@@ -36,7 +36,7 @@ public class ObjectFields {
       for (Field field : list(object.getClass())) {
         String prefix = _prefix + field.getName();
         switch (objectFieldVisitor.classify(field)) {
-        case NODE -> {
+        case NODE: {
           Class<?> class_field = field.getType();
           if (class_field.isArray())
             iterate(prefix, field, List.of((Object[]) StaticHelper.get(field, object)));
@@ -49,13 +49,13 @@ public class ObjectFields {
               objectFieldVisitor.pop();
             }
           }
+          break;
         }
-        case LEAF -> {
+        case LEAF: {
           objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, StaticHelper.get(field, object));
         }
-        default -> {
+        default:
           // skip
-        }
         }
       }
   }

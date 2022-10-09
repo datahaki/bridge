@@ -27,11 +27,15 @@ public class Unicode {
     Optional<BigInteger> optional = Scalars.optionalBigInteger(scalar);
     if (optional.isPresent())
       return valueOf(optional.orElseThrow());
-    if (scalar instanceof RationalScalar rationalScalar)
+    if (scalar instanceof RationalScalar) {
+      RationalScalar rationalScalar = (RationalScalar) scalar;
       return valueOf(rationalScalar.numerator()) + OVER + valueOf(rationalScalar.denominator());
-    if (scalar instanceof Quantity quantity)
+    }
+    if (scalar instanceof Quantity) {
+      Quantity quantity = (Quantity) scalar;
       return valueOf(quantity.value()) + SPACE + valueOf(quantity.unit());
-    if (scalar instanceof DoubleScalar doubleScalar) {
+    }
+    if (scalar instanceof DoubleScalar) {
       String string = scalar.toString();
       int index = string.indexOf('.');
       return 0 <= index //

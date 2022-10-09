@@ -51,6 +51,21 @@ public class BoundedSortedQueue<K, V> implements Serializable {
     return queue.stream().map(Entry::value);
   }
 
-  private record Entry<K, V> (K key, V value) implements Serializable {
+  private static class Entry<K, V> implements Serializable {
+    private final K key;
+    private final V value;
+
+    private Entry(K key, V value) {
+      this.key = key;
+      this.value = value;
+    }
+
+    private K key() {
+      return key;
+    }
+
+    private V value() {
+      return value;
+    }
   }
 }

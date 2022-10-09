@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -35,7 +36,7 @@ import ch.alpine.tensor.sca.Clip;
   public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
     List<Object> list = fieldWrap.options(object);
     if (1 < list.size())
-      map.put(key, list.stream().map(fieldWrap::toString).toList());
+      map.put(key, list.stream().map(fieldWrap::toString).collect(Collectors.toList()));
     // ---
     Field field = fieldWrap.getField();
     Class<?> cls = field.getType();

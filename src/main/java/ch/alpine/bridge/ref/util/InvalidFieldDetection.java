@@ -90,7 +90,8 @@ public class InvalidFieldDetection extends ObjectFieldIo {
               valid = false;
             }
           }
-          valid &= method.invoke(object) instanceof List<?> list && list.stream().allMatch(Objects::nonNull);
+          Object invoke = method.invoke(object);
+          valid &= invoke instanceof List<?> && ((List<?>) list).stream().allMatch(Objects::nonNull);
         } catch (Exception exception) {
           valid = false;
         }

@@ -4,10 +4,9 @@
 
 Library for Java
 
-![](https://github.com/datahaki/bridge/actions/workflows/mvn_test.yml/badge.svg)
+![](https://github.com/datahaki/bridge/actions/workflows/mvn_test_11.yml/badge.svg)
 
 Features include 
-
 * data plotting API inspired by Mathematica: `ListPlot`, `Spectrogram`, ...
 * reflection-based serialization to properties-files, and gui generation
 * data structures `BoundedPriorityQueue`, `DisjointSets`, ...
@@ -74,7 +73,7 @@ From time to time, a version is deployed and made available for maven integratio
   <dependency>
     <groupId>ch.alpine</groupId>
     <artifactId>bridge</artifactId>
-    <version>0.3.6</version>
+    <version>0.5.4-jdk-11</version>
   </dependency>
 </dependencies>
 
@@ -91,7 +90,7 @@ From time to time, a version is deployed and made available for maven integratio
 </repositories>
 ```
 
-For Java 11, for `version` use `0.4.1-jdk-11`.
+For Java 11, for `version` use `0.5.4-jdk-11`.
 
 The source code is attached to every release.
 

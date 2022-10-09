@@ -29,7 +29,7 @@ public enum ListDensityPlotDemo {
       Tensor y = Reverse.of(x);
       Tensor eval = Tensors.matrix((i, j) -> interpolation.get( //
           Tensors.of(y.Get(i), x.Get(j))), x.length(), x.length());
-      Tensor tensor = Rescale.of(eval).map(ColorDataGradients.SOUTH_WEST);
+      Tensor tensor = Rescale.of(eval).map(ColorDataGradients.CLASSIC);
       Export.of(HomeDirectory.Pictures(ListDensityPlotDemo.class.getSimpleName() + degree + ".png"), tensor);
     }
   }
