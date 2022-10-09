@@ -73,7 +73,7 @@ From time to time, a version is deployed and made available for maven integratio
   <dependency>
     <groupId>ch.alpine</groupId>
     <artifactId>bridge</artifactId>
-    <version>0.5.0-jdk-11</version>
+    <version>0.5.4-jdk-11</version>
   </dependency>
 </dependencies>
 
@@ -90,7 +90,7 @@ From time to time, a version is deployed and made available for maven integratio
 </repositories>
 ```
 
-For Java 11, for `version` use `0.5.2-jdk-11`.
+For Java 11, for `version` use `0.5.4-jdk-11`.
 
 The source code is attached to every release.
 
