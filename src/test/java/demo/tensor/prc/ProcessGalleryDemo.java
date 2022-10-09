@@ -29,7 +29,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
   ;
   private static void export(RandomProcess randomProcess) throws IOException {
     RandomFunction randomFunction = RandomFunction.of(randomProcess);
-    randomFunction.eval(RealScalar.of(20));
+    randomFunction.evaluate(RealScalar.of(20));
     VisualSet visualSet = new VisualSet();
     visualSet.add(randomFunction.timeSeries());
     JFreeChart jFreeChart = ListPlot.of(visualSet);
@@ -46,7 +46,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     RandomFunction randomFunction = RandomFunction.of(randomProcess);
     RandomVariate.of(UniformDistribution.of(Clips.positive(Quantity.of(10, "s"))), 1000).stream() //
         .map(Scalar.class::cast) //
-        .forEach(randomFunction::eval);
+        .forEach(randomFunction::evaluate);
     {
       VisualSet visualSet = new VisualSet();
       VisualRow visualRow = visualSet.add(randomFunction.timeSeries());

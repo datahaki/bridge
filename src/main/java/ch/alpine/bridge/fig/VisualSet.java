@@ -51,7 +51,7 @@ public class VisualSet extends VisualBase {
    * @param function mapping a {@link Tensor} value to a {@link Scalar} along the y-axis
    * @return */
   public VisualRow add(TimeSeries timeSeries, TensorScalarFunction function) {
-    return _add(Tensor.of(timeSeries.stream(timeSeries.domain(), true) //
+    return _add(Tensor.of(timeSeries.stream() //
         .map(entry -> Tensors.of(entry.key(), function.apply(entry.value())))));
   }
 
