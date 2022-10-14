@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import ch.alpine.tensor.Scalar;
@@ -16,6 +17,8 @@ import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.qty.QuantityUnit;
+import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.tmp.TimeSeries;
 
 public class VisualSet extends VisualBase {
@@ -73,6 +76,12 @@ public class VisualSet extends VisualBase {
     visualRow.setColor(colorDataIndexed.getColor(index));
     visualRows.add(visualRow);
     return visualRow;
+  }
+
+  Optional<Clip> suggestClip(int index) {
+    return visualRows.stream() //
+        .flatMap(rw -> rw.pointsClip(index).stream()) //
+        .reduce(Clips::cover);
   }
 
   public List<VisualRow> visualRows() {

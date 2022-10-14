@@ -1,4 +1,4 @@
-// code by jph
+// code by legion
 package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
+import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
@@ -50,13 +51,13 @@ public class GridDrawer {
   private final Rectangle rectangle;
   private final Clip xRange;
   private final Clip yRange;
-  private final DateTimeFocus dtfi;
+  private final DateTimeFocus dateTimeFocus;
 
-  public GridDrawer(Rectangle rectangle, CoordinateBoundingBox cbb, DateTimeFocus dtfi) {
-    this.rectangle = Objects.requireNonNull(rectangle);
+  public GridDrawer(Rectangle rectangle, CoordinateBoundingBox cbb, DateTimeFocus dateTimeFocus) {
+    this.rectangle = new Rectangle(rectangle.x, rectangle.y, rectangle.width - 1, rectangle.height - 1);
     xRange = cbb.getClip(0);
     yRange = cbb.getClip(1);
-    this.dtfi = Objects.requireNonNull(dtfi);
+    this.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
   }
 
   public GridDrawer(Rectangle rectangle, CoordinateBoundingBox cbb) {
@@ -82,6 +83,7 @@ public class GridDrawer {
       graphics.setColor(COLOR_FONT);
       String unit0 = Unicode.valueOf(QuantityUnit.of(xRange));
       String unit1 = Unicode.valueOf(QuantityUnit.of(yRange));
+      RenderQuality.setQuality(graphics);
       if (!unit0.isEmpty() || !unit1.isEmpty()) {
         if (unit0.isEmpty())
           unit0 = "[]";
@@ -110,7 +112,7 @@ public class GridDrawer {
       DateTime dateTime = xRange.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
-      dateTimeFormatter = dtfi.focus(dateTimeInterval.getSmallestDefined());
+      dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (xRange.isInside(dateTime)) {
         graphics.setColor(COLOR_FONT);
         int pix = rectangle.x + xRange.rescale(dateTime).multiply(RealScalar.of(rectangle.width)).number().intValue();
@@ -140,14 +142,17 @@ public class GridDrawer {
         graphics.drawLine(pix, y_height + GAP, pix, y_height + GAP + 2);
     }
     {
-      graphics.setClip(rectangle.x, y_height, rectangle.width, 40); // magic const
-      graphics.setColor(COLOR_FONT);
+      Graphics2D graphics2 = (Graphics2D) graphics.create();
+      graphics2.setClip(rectangle.x, y_height, rectangle.width, 40); // magic const
+      graphics2.setColor(COLOR_FONT);
+      RenderQuality.setQuality(graphics2);
       for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
         Scalar value = entry.getValue();
         String xLabel = Objects.isNull(dateTimeFormatter) ? format(value) : ((DateTime) value).format(dateTimeFormatter);
-        graphics.drawString(xLabel, entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, y_height + GAP + fontMetrics.getHeight());
+        graphics2.drawString(xLabel, entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, y_height + GAP + fontMetrics.getHeight());
       }
-      graphics.setClip(null);
+      graphics2.dispose();
+      // graphics.setClip(null);
     }
   }
 
@@ -177,15 +182,17 @@ public class GridDrawer {
         graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width, piy);
     }
     {
-      
+      Graphics2D graphics2 = (Graphics2D) graphics.create();
       // TODO UTIL 20221013 align dot's of numbers
-      graphics.setColor(COLOR_FONT);
+      graphics2.setColor(COLOR_FONT);
+      RenderQuality.setQuality(graphics2);
       for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
         int piy = entry.getKey();
         Scalar yValue = entry.getValue();
         String string = format(yValue);
-        graphics.drawString(string, rectangle.x - fontMetrics.stringWidth(string) - GAP - 5, piy + fontSize / 2 - 1);
+        graphics2.drawString(string, rectangle.x - fontMetrics.stringWidth(string) - GAP - 5, piy + fontSize / 2 - 1);
       }
+      graphics2.dispose();
     }
   }
 

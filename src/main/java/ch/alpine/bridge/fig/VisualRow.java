@@ -6,9 +6,12 @@ import java.awt.Color;
 import java.awt.Stroke;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.chq.ScalarQ;
+import ch.alpine.tensor.red.MinMax;
+import ch.alpine.tensor.sca.Clip;
 
 public class VisualRow implements Serializable {
   private static final Stroke STROKE_DEFAULT = new BasicStroke(1f);
@@ -34,6 +37,12 @@ public class VisualRow implements Serializable {
   /** @return points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}} */
   public Tensor points() {
     return points.unmodifiable();
+  }
+
+  Optional<Clip> pointsClip(int index) {
+    return Optional.ofNullable(points.stream() //
+        .map(xy -> xy.Get(index)) //
+        .collect(MinMax.toClip()));
   }
 
   // ---
