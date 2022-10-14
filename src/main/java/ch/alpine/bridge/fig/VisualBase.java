@@ -1,16 +1,7 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
-import org.jfree.chart.ChartFactory;
-
 public class VisualBase {
-  static {
-    // design is bad but instigated by the jfree library
-    ChartFactory.setChartTheme(DefaultChartTheme.STANDARD);
-    // BarRenderer.setDefaultBarPainter(new StandardBarPainter());
-    // BarRenderer.setDefaultShadowsVisible(false);
-  }
-  // ---
   private final Axis axisX = new Axis();
   private final Axis axisY = new Axis();
   private String plotLabel = "";
