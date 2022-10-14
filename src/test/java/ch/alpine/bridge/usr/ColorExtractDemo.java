@@ -1,12 +1,11 @@
 // code by jph
 package ch.alpine.bridge.usr;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.RealScalar;
@@ -48,8 +47,7 @@ enum ColorExtractDemo {
       }
       visualSet.add(sample, max);
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("temp" + i + ".png"), jFreeChart, 640, 480);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("temp" + i + ".png"), jFreeChart, new Dimension(640, 480));
     }
     for (int j = 0; j < sample.length(); ++j)
       result.set(RealScalar.of(255), j, 3);

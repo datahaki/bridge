@@ -6,11 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -70,7 +69,7 @@ class VisualSetTest {
     JFreeChart jFreeChart = ListPlot.of(visualSet, true);
     File file = new File(tempDir, "file.png");
     assertFalse(file.exists());
-    ChartUtils.saveChartAsPNG(file, jFreeChart, 100, 100);
+    ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(100, 100));
     assertTrue(file.isFile());
     assertTrue(file.canWrite());
   }

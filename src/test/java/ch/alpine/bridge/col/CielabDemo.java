@@ -1,12 +1,11 @@
 // code by jph
 package ch.alpine.bridge.col;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.Tensor;
@@ -21,7 +20,6 @@ public enum CielabDemo {
     visualSet.add(domain.map(Cielabf::forward), domain);
     visualSet.add(domain, domain.map(Cielabf::inverse));
     JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-    jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("cielab.png"), jFreeChart, 400, 400);
+    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("cielab.png"), jFreeChart, new Dimension(400, 400));
   }
 }

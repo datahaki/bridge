@@ -2,12 +2,12 @@
 package demo.tensor.pdf;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
 import ch.alpine.bridge.fig.Histogram;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
@@ -34,13 +34,12 @@ public enum TruncatedDiscreteDemo {
       visualSet.add(domain, domain.map(cdf::p_lessEquals));
       visualSet.add(domain, domain.map(pdf_o::at));
     }
-    JFreeChart jFreeChart = Histogram.of(visualSet);
-    jFreeChart.setBackgroundPaint(Color.WHITE);
-    return jFreeChart;
+    return Histogram.of(visualSet);
   }
 
   public static void main(String[] args) throws IOException {
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures( //
-        TruncatedDiscreteDemo.class.getSimpleName() + ".png"), generate(), 640, 480);
+        TruncatedDiscreteDemo.class.getSimpleName() + ".png"), generate(), //
+        new Dimension(640, 480));
   }
 }

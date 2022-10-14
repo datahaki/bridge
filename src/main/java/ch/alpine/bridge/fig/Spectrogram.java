@@ -3,9 +3,6 @@ package ch.alpine.bridge.fig;
 
 import java.util.function.Function;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.OrderedQ;
@@ -42,15 +39,10 @@ public enum Spectrogram {
     Scalar yhi = domain.Get(2).subtract(domain.Get(0)).reciprocal();
     if (!CompatibleUnitQ.SI().with(unit).test(yhi))
       visualSet.getAxisY().setUnit(visualSet.getAxisX().getUnit().negate());
-    JFreeChart jFreeChart = new JFreeChart( //
-        visualSet.getPlotLabel(), //
-        JFreeChart.DEFAULT_TITLE_FONT, //
-        new BufferedImagePlot(StaticHelper.create( //
-            ImageFormat.of(Raster.of(SpectrogramArray.half_abs(signal, window), function)), //
-            visualSet, domain, yhi)),
-        false);
-    ChartFactory.getChartTheme().apply(jFreeChart);
-    return jFreeChart;
+    StaticHelper.create( //
+        ImageFormat.of(Raster.of(SpectrogramArray.half_abs(signal, window), function)), //
+        visualSet, domain, yhi);
+    return null;
   }
 
   /** Example:

@@ -1,12 +1,11 @@
 // code by jph
 package demo.tensor.pdf;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.RealScalar;
@@ -32,8 +31,8 @@ public enum HistogramDistributionDemo {
       visualSet.add(domain, domain.map(distribution::p_lessEquals));
       visualSet.add(domain, domain.map(dist::at));
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("hd.png"), jFreeChart, 640, 480);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("hd.png"), jFreeChart, //
+          new Dimension(640, 480));
     }
     {
       Tensor domain = Subdivide.of(0, 1, 300);
@@ -43,8 +42,8 @@ public enum HistogramDistributionDemo {
       visualSet.add(domain, domain.map(inv1::quantile));
       visualSet.add(domain, domain.map(inv2::quantile));
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("hd_inv.png"), jFreeChart, 640, 480);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("hd_inv.png"), jFreeChart, //
+          new Dimension(640, 480));
     }
   }
 }

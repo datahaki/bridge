@@ -1,12 +1,11 @@
 // code by jph
 package demo.tensor.sca;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.Tensor;
@@ -38,16 +37,14 @@ public enum ChebyshevInterpDemo {
       visualSet.add(domain, domain.map(suo2)).setLabel("alt");
       visualSet.add(domain, domain.map(suo3)).setLabel("inpol");
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevInterpDemo.class.getSimpleName() + ".png"), jFreeChart, 600, 400);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevInterpDemo.class.getSimpleName() + ".png"), jFreeChart, new Dimension(600, 400));
     }
     {
       VisualSet visualSet = new VisualSet();
       Tensor error = domain.map(suo1).subtract(domain.map(suo2));
       visualSet.add(domain, error);
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevInterpDemo.class.getSimpleName() + "_error.png"), jFreeChart, 600, 400);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevInterpDemo.class.getSimpleName() + "_error.png"), jFreeChart, new Dimension(600, 400));
     }
   }
 }

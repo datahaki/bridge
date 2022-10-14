@@ -1,12 +1,11 @@
 // code by jph
 package demo.tensor.prc;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualRow;
 import ch.alpine.bridge.fig.VisualSet;
@@ -33,10 +32,9 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     VisualSet visualSet = new VisualSet();
     visualSet.add(randomFunction.timeSeries());
     JFreeChart jFreeChart = ListPlot.of(visualSet);
-    jFreeChart.setBackgroundPaint(Color.WHITE);
     ChartUtils.saveChartAsPNG( //
         HomeDirectory.Pictures(randomProcess.getClass().getSimpleName() + ".png"), //
-        jFreeChart, 640, 480);
+        jFreeChart, new Dimension(640, 480));
   }
 
   private static void exportChaotic() throws IOException {
@@ -52,10 +50,9 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       VisualRow visualRow = visualSet.add(randomFunction.timeSeries());
       visualRow.setLabel("wiener process");
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
       ChartUtils.saveChartAsPNG( //
           HomeDirectory.Pictures(randomProcess.getClass().getSimpleName() + ".png"), //
-          jFreeChart, 640, 480);
+          jFreeChart, new Dimension(640, 480));
     }
     {
       TimeSeries integral = TimeSeriesIntegrate.of(randomFunction.timeSeries());
@@ -63,10 +60,9 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       VisualRow visualRow = visualSet.add(integral);
       visualRow.setLabel("wiener process");
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
       ChartUtils.saveChartAsPNG( //
           HomeDirectory.Pictures(randomProcess.getClass().getSimpleName() + "_i.png"), //
-          jFreeChart, 640, 480);
+          jFreeChart, new Dimension(640, 480));
     }
   }
 

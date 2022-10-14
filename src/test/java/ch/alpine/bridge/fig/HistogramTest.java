@@ -1,11 +1,10 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -31,7 +30,7 @@ class HistogramTest {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.fromString("{{2[m],3[s]}, {4[m],5[s]}, {5[m],1[s]}}"));
     JFreeChart jFreeChart = Histogram.of(visualSet);
-    ChartUtils.saveChartAsPNG(new File(folder, "histunit.png"), jFreeChart, 640, 480);
+    ChartUtils.saveChartAsPNG(new File(folder, "histunit.png"), jFreeChart, new Dimension(640, 480));
     CascadeHelper.draw(jFreeChart);
     // ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("histunit.png"), jFreeChart, 640, 480);
   }
@@ -39,6 +38,6 @@ class HistogramTest {
   @Test
   void testTruncated(@TempDir File folder) throws IOException {
     JFreeChart jFreeChart = TruncatedDiscreteDemo.generate();
-    ChartUtils.saveChartAsPNG(new File(folder, "truncated.png"), jFreeChart, 640, 480);
+    ChartUtils.saveChartAsPNG(new File(folder, "truncated.png"), jFreeChart, new Dimension(640, 480));
   }
 }

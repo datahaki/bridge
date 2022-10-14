@@ -1,14 +1,13 @@
 // code by jph
 package ch.alpine.bridge.usr;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
 import ch.alpine.bridge.fig.ArrayPlot;
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.VisualImage;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -37,9 +36,7 @@ public enum ArrayPlotDemo {
 
   public static JFreeChart create0() {
     Tensor matrix = ChebyshevNodes._1.matrix(64);
-    JFreeChart jFreeChart = ArrayPlot.of(matrix);
-    jFreeChart.setTitle("ArrayPlot");
-    return jFreeChart;
+    return ArrayPlot.of(matrix);
   }
 
   public static JFreeChart create1() {
@@ -75,19 +72,18 @@ public enum ArrayPlotDemo {
   public static void main(String[] args) throws IOException {
     {
       JFreeChart jFreeChart = create0();
-      jFreeChart.setBackgroundPaint(Color.WHITE);
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "0.png"), jFreeChart, //
-          DemoHelper.DEMO_W, DemoHelper.DEMO_H);
+          new Dimension(DemoHelper.DEMO_W, DemoHelper.DEMO_H));
     }
     {
       JFreeChart jFreeChart = create1();
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "1.png"), jFreeChart, 600, 200);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "1.png"), jFreeChart, //
+          new Dimension(600, 200));
     }
     {
       JFreeChart jFreeChart = create2();
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "2.png"), jFreeChart, 600, 300);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "2.png"), jFreeChart, //
+          new Dimension(600, 300));
     }
   }
 }

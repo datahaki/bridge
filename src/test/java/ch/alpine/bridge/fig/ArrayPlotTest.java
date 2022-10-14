@@ -1,12 +1,11 @@
 // code by GRZ Technologies SA, jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -31,6 +30,6 @@ class ArrayPlotTest {
     BufferedImage bufferedImage = ImageFormat.of(raw.map(ColorDataGradients.TEMPERATURE_WEATHER));
     VisualImage visualImage = new VisualImage(bufferedImage);
     JFreeChart jFreeChart = ArrayPlot.of(visualImage);
-    ChartUtils.saveChartAsPNG(new File(tempDir, "file.png"), jFreeChart, 1000, 300);
+    ChartUtils.saveChartAsPNG(new File(tempDir, "file.png"), jFreeChart, new Dimension(1000, 300));
   }
 }

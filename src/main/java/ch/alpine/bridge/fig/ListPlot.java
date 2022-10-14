@@ -1,17 +1,6 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.LogAxis;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.swing.ChartPanel;
-import org.jfree.data.xy.XYSeriesCollection;
-
-import ch.alpine.bridge.fig.Axis.Type;
-
 /** Hint:
  * to render list plot in a custom graphics use
  * jFreeChart.draw(graphics2d, rectangle2D)
@@ -33,44 +22,16 @@ public enum ListPlot {
    * @param joined for lines between coordinates, otherwise scattered points
    * @return */
   public static JFreeChart of(VisualSet visualSet, boolean joined) {
-    XYSeriesCollection xySeriesCollection = DatasetFactory.xySeriesCollection(visualSet);
-    JFreeChart jFreeChart = joined //
-        ? ChartFactory.createXYLineChart( //
-            visualSet.getPlotLabel(), //
-            visualSet.getAxisX().getAxisLabel(), //
-            visualSet.getAxisY().getAxisLabel(), //
-            xySeriesCollection, PlotOrientation.VERTICAL, //
-            visualSet.hasLegend(), // legend
-            false, // tooltips
-            false) // urls
-        : ChartFactory.createScatterPlot( //
-            visualSet.getPlotLabel(), //
-            visualSet.getAxisX().getAxisLabel(), //
-            visualSet.getAxisY().getAxisLabel(), //
-            xySeriesCollection, PlotOrientation.VERTICAL, //
-            visualSet.hasLegend(), // legend
-            false, // tooltips
-            false); // urls
-    XYPlot xyPlot = (XYPlot) jFreeChart.getPlot();
-    XYItemRenderer xyItemRenderer = xyPlot.getRenderer();
-    int limit = xySeriesCollection.getSeriesCount();
-    for (int index = 0; index < limit; ++index) {
-      VisualRow visualRow = visualSet.getVisualRow(index);
-      xyItemRenderer.setSeriesPaint(index, visualRow.getColor());
-      xyItemRenderer.setSeriesStroke(index, visualRow.getStroke());
-    }
+    // int limit = xySeriesCollection.getSeriesCount();
+    // for (int index = 0; index < limit; ++index) {
+    // VisualRow visualRow = visualSet.getVisualRow(index);
+    // xyItemRenderer.setSeriesPaint(index, visualRow.getColor());
+    // xyItemRenderer.setSeriesStroke(index, visualRow.getStroke());
+    // }
     // https://github.com/jfree/jfreechart/issues/301
-    if (visualSet.getAxisX().getType().equals(Type.LOGARITHMIC)) {
-      LogAxis logAxis = new LogAxis(visualSet.getAxisX().getAxisLabel());
-      xyPlot.setDomainAxis(logAxis);
-    }
-    if (visualSet.getAxisY().getType().equals(Type.LOGARITHMIC)) {
-      LogAxis logAxis = new LogAxis(visualSet.getAxisY().getAxisLabel());
-      xyPlot.setRangeAxis(logAxis);
-    }
-    StaticHelper.setRange(visualSet.getAxisX(), xyPlot.getDomainAxis());
-    StaticHelper.setRange(visualSet.getAxisY(), xyPlot.getRangeAxis());
-    return jFreeChart;
+    // StaticHelper.setRange(visualSet.getAxisX(), xyPlot.getDomainAxis());
+    // StaticHelper.setRange(visualSet.getAxisY(), xyPlot.getRangeAxis());
+    return null;
   }
 
   /** Mathematica's default is to draw data points as separate dots,

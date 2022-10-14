@@ -1,12 +1,11 @@
 // code by jph
 package demo.tensor;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.Tensor;
@@ -33,8 +32,8 @@ import ch.alpine.tensor.sca.ply.Polynomial;
       visualSet.add(samples_x, samples_x.map(x_to_y));
       visualSet.add(samples_y.map(y_to_x), samples_y);
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("here" + degree + ".png"), jFreeChart, 400, 300);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("here" + degree + ".png"), jFreeChart, //
+          new Dimension(400, 300));
     }
   }
 }

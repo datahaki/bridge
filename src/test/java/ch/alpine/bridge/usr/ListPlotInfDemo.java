@@ -1,13 +1,12 @@
 // code by jph
 package ch.alpine.bridge.usr;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualRow;
 import ch.alpine.bridge.fig.VisualSet;
@@ -30,9 +29,8 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
     visualRow1.setLabel("first");
     {
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
       File file = HomeDirectory.Pictures(ListPlotInfDemo.class.getSimpleName() + ".png");
-      ChartUtils.saveChartAsPNG(file, jFreeChart, 500, 300);
+      ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(500, 300));
     }
   }
 }

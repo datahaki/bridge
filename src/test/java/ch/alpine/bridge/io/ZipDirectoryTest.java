@@ -4,15 +4,16 @@ package ch.alpine.bridge.io;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.ext.DeleteDirectory;
@@ -30,7 +31,7 @@ class ZipDirectoryTest {
       VisualSet visualSet = new VisualSet();
       visualSet.add(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2));
       JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsJPEG(new File(folder, "image.jpg"), jFreeChart, 300, 200);
+      ChartUtils.saveChartAsPNG(new File(folder, "image.png"), jFreeChart, new Dimension(300, 200));
     }
     File zipFile = new File(tempDir, "file.zip");
     assertFalse(zipFile.exists());

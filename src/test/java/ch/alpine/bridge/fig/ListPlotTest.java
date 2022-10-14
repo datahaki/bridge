@@ -2,12 +2,11 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -95,7 +94,7 @@ class ListPlotTest {
   @Test
   void testDistribution(@TempDir File folder) throws IOException {
     JFreeChart jFreeChart = TrapezoidalDistributionDemo.generate();
-    ChartUtils.saveChartAsPNG(new File(folder, "trap_distr.png"), jFreeChart, 640, 480);
+    ChartUtils.saveChartAsPNG(new File(folder, "trap_distr.png"), jFreeChart, new Dimension(640, 480));
   }
 
   @Test
@@ -119,9 +118,8 @@ class ListPlotTest {
     visualSet.add(domain4.map(suoX), domain4.map(suoY));
     // ChartFactory.setChartTheme(ChartTheme.STANDARD);
     JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-    jFreeChart.setBackgroundPaint(Color.WHITE);
     File file = new File(folder, ListPlot.class.getSimpleName() + ".png");
-    ChartUtils.saveChartAsPNG(file, jFreeChart, 500, 300);
+    ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(500, 300));
   }
 
   @Test
@@ -136,8 +134,7 @@ class ListPlotTest {
       visualSet.add(domain, domain.map(distribution::p_lessEquals));
       visualSet.add(domain, domain.map(dist::at));
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(new File(folder, "hd.png"), jFreeChart, 640, 480);
+      ChartUtils.saveChartAsPNG(new File(folder, "hd.png"), jFreeChart, new Dimension(640, 480));
     }
   }
 
@@ -154,8 +151,7 @@ class ListPlotTest {
       visualSet.add(domain, domain.map(inv1::quantile));
       visualSet.add(domain, domain.map(inv2::quantile));
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(new File(folder, "hd_inv.png"), jFreeChart, 640, 480);
+      ChartUtils.saveChartAsPNG(new File(folder, "hd_inv.png"), jFreeChart, new Dimension(640, 480));
     }
   }
 }

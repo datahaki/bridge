@@ -1,13 +1,12 @@
 // code by jph
 package demo.tensor.sca;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
 import ch.alpine.bridge.fig.ArrayPlot;
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.Tensor;
@@ -31,14 +30,14 @@ public enum ChebyshevApprox {
     {
       Tensor matrix = ChebyshevNodes._0.matrix(n);
       JFreeChart jFreeChart = ArrayPlot.of(matrix, ColorDataGradients.DENSITY);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevNodes.class.getSimpleName() + ".png"), jFreeChart, 600, 400);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevNodes.class.getSimpleName() + ".png"), jFreeChart, //
+          new Dimension(600, 400));
     }
     {
       Tensor matrix = ChebyshevNodes._0.matrix(n);
       JFreeChart jFreeChart = ArrayPlot.of(Inverse.of(matrix), ColorDataGradients.DENSITY);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevNodes.class.getSimpleName() + "_inverse.png"), jFreeChart, 600, 400);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevNodes.class.getSimpleName() + "_inverse.png"), jFreeChart, //
+          new Dimension(600, 400));
     }
     Tensor domain = Subdivide.of(-1, 1, 100);
     VisualSet visualSet = new VisualSet();
@@ -49,7 +48,7 @@ public enum ChebyshevApprox {
       visualSet.add(domain, error);
     }
     JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-    jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevApprox.class.getSimpleName() + ".png"), jFreeChart, 600, 400);
+    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevApprox.class.getSimpleName() + ".png"), jFreeChart, //
+        new Dimension(600, 400));
   }
 }

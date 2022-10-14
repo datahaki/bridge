@@ -1,13 +1,12 @@
 // code by jph
 package ch.alpine.bridge.usr;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
 import ch.alpine.bridge.fig.Histogram;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -20,11 +19,10 @@ public enum HistogramDemo {
     visualSet.add(Tensors.fromString("{{3[m],2[s]}, {4[m],2.5[s]}, {5[m],2[s]}}")).setLabel("second");
     visualSet.setPlotLabel(Histogram.class.getSimpleName());
     JFreeChart jFreeChart = Histogram.of(visualSet);
-    jFreeChart.setBackgroundPaint(Color.WHITE);
     ChartUtils.saveChartAsPNG( //
         HomeDirectory.Pictures(Histogram.class.getSimpleName() + ".png"), //
         jFreeChart, //
-        DemoHelper.DEMO_W, //
-        DemoHelper.DEMO_H);
+        new Dimension(DemoHelper.DEMO_W, //
+            DemoHelper.DEMO_H));
   }
 }

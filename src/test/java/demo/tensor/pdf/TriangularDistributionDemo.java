@@ -1,12 +1,11 @@
 // code by jph
 package demo.tensor.pdf;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
+import ch.alpine.bridge.fig.ChartUtils;
+import ch.alpine.bridge.fig.JFreeChart;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualSet;
 import ch.alpine.tensor.Tensor;
@@ -30,8 +29,7 @@ public enum TriangularDistributionDemo {
       visualSet.add(domain, domain.map(pdf1::at));
       visualSet.add(domain, domain.map(pdf2::at));
       JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("triangular.png"), jFreeChart, 640, 480);
+      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("triangular.png"), jFreeChart, new Dimension(640, 480));
     }
   }
 }

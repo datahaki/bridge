@@ -5,8 +5,6 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import org.jfree.chart.JFreeChart;
-
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
