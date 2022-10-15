@@ -4,7 +4,6 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -13,7 +12,7 @@ import ch.alpine.tensor.chq.ScalarQ;
 import ch.alpine.tensor.red.MinMax;
 import ch.alpine.tensor.sca.Clip;
 
-public class VisualRow implements Serializable {
+public class VisualRow {
   private static final Stroke STROKE_DEFAULT = new BasicStroke(1f);
   // ---
   private final Tensor points;
@@ -90,5 +89,4 @@ public class VisualRow implements Serializable {
   public boolean getJoined() {
     return joined;
   }
-
 }

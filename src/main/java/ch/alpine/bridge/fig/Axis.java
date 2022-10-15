@@ -19,8 +19,8 @@ import ch.alpine.tensor.sca.Clips;
  * <a href="https://reference.wolfram.com/language/ref/Axis.html">Axis</a> */
 public class Axis implements Serializable {
   public enum Type {
-    LINEAR, //
-    LOGARITHMIC, //
+    LINEAR,
+    LOGARITHMIC,
   }
 
   private String label = "";

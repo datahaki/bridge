@@ -37,27 +37,6 @@ public class ScalarFigure {
     y_factor = RealScalar.of(rectangle.height).divide(yRange.width());
   }
 
-  public void render(Graphics2D _g, Color color, Stroke stroke, Tensor points) {
-    if (0 < points.length()) {
-      Graphics2D graphics = (Graphics2D) _g.create();
-      graphics.setClip(rectangle.x, rectangle.y, rectangle.width + 1, rectangle.height + 1);
-      graphics.setStroke(stroke);
-      graphics.setColor(color);
-      RenderQuality.setQuality(graphics);
-      Path2D.Double path = new Path2D.Double();
-      {
-        Point2D.Double point2d = toPoint2D(points.get(0));
-        path.moveTo(point2d.x, point2d.y);
-      }
-      points.stream().skip(1).forEach(row -> {
-        Point2D.Double point2d = toPoint2D(row);
-        path.lineTo(point2d.x, point2d.y);
-      });
-      graphics.draw(path);
-      graphics.dispose();
-    }
-  }
-
   public void render(Graphics2D _g, Color color, Stroke stroke, //
       ScalarUnaryOperator suo, int segmentsPerPixel) {
     // --
@@ -84,6 +63,27 @@ public class ScalarFigure {
       graphics.draw(path);
     }
     graphics.dispose();
+  }
+
+  public void render(Graphics2D _g, Color color, Stroke stroke, Tensor points) {
+    if (0 < points.length()) {
+      Graphics2D graphics = (Graphics2D) _g.create();
+      graphics.setClip(rectangle.x, rectangle.y, rectangle.width + 1, rectangle.height + 1);
+      graphics.setStroke(stroke);
+      graphics.setColor(color);
+      RenderQuality.setQuality(graphics);
+      Path2D.Double path = new Path2D.Double();
+      {
+        Point2D.Double point2d = toPoint2D(points.get(0));
+        path.moveTo(point2d.x, point2d.y);
+      }
+      points.stream().skip(1).forEach(row -> {
+        Point2D.Double point2d = toPoint2D(row);
+        path.lineTo(point2d.x, point2d.y);
+      });
+      graphics.draw(path);
+      graphics.dispose();
+    }
   }
 
   private Point2D.Double toPoint2D(Tensor vector) {
