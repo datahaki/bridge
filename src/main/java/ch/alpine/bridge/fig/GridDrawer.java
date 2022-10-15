@@ -143,7 +143,7 @@ public class GridDrawer {
     }
     {
       Graphics2D graphics2 = (Graphics2D) graphics.create();
-      graphics2.setClip(rectangle.x, y_height, rectangle.width, 40); // magic const
+      graphics2.setClip(rectangle.x - GAP, y_height, rectangle.width + GAP+ GAP, 40); // magic const
       graphics2.setColor(COLOR_FONT);
       RenderQuality.setQuality(graphics2);
       for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {

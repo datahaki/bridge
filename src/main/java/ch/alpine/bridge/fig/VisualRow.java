@@ -17,7 +17,7 @@ public class VisualRow implements Serializable {
   private static final Stroke STROKE_DEFAULT = new BasicStroke(1f);
   // ---
   private final Tensor points;
-  private final ComparableLabel comparableLabel;
+  private String label;
   private Color color = Color.BLUE;
   private boolean joined = false;
   /** not serializable */
@@ -31,7 +31,6 @@ public class VisualRow implements Serializable {
   /* package */ VisualRow(Tensor points, int index) {
     ScalarQ.thenThrow(points);
     this.points = points;
-    this.comparableLabel = new ComparableLabel(index);
   }
 
   /** @return points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}} */
@@ -72,12 +71,12 @@ public class VisualRow implements Serializable {
   // ---
   /** @param string */
   public void setLabel(String string) {
-    comparableLabel.setString(string);
+    label = string;
   }
 
   /** @return */
   public String getLabelString() {
-    return getLabel().toString();
+    return label;
   }
 
   // ---
@@ -92,8 +91,4 @@ public class VisualRow implements Serializable {
     return joined;
   }
 
-  // ---
-  /* package */ ComparableLabel getLabel() {
-    return comparableLabel;
-  }
 }
