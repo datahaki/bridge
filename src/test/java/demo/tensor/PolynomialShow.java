@@ -31,7 +31,7 @@ import ch.alpine.tensor.sca.ply.Polynomial;
       VisualSet visualSet = new VisualSet();
       visualSet.add(samples_x, samples_x.map(x_to_y));
       visualSet.add(samples_y.map(y_to_x), samples_y);
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("here" + degree + ".png"), jFreeChart, //
           new Dimension(400, 300));
     }

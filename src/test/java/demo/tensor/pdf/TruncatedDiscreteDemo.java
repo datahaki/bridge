@@ -1,7 +1,6 @@
 // code by jph
 package demo.tensor.pdf;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
 

@@ -8,7 +8,7 @@ public enum ChartUtils {
   ;
   public static void saveChartAsPNG(File file, JFreeChart jFreeChart, Dimension dimension, Insets insets) {
   }
+
   public static void saveChartAsPNG(File file, JFreeChart jFreeChart, Dimension dimension) {
   }
-  
 }

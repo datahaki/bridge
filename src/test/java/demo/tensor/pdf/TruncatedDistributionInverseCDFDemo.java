@@ -28,7 +28,7 @@ public enum TruncatedDistributionInverseCDFDemo {
       Tensor domain = Subdivide.of(0, 1, 100);
       visualSet.add(domain, domain.map(inverseCDF::quantile));
     }
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet);
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("truncated_inversecdf.png"), jFreeChart, new Dimension(640, 480));
   }
 }

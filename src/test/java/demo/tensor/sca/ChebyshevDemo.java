@@ -28,7 +28,7 @@ public enum ChebyshevDemo {
         ScalarUnaryOperator su2 = Chebyshev.T.of(d);
         visualSet.add(domain, domain.map(suo).subtract(domain.map(su2)));
       }
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevDemo.class.getSimpleName() + ".png"), jFreeChart, new Dimension(600, 400));
     }
     {
@@ -39,7 +39,7 @@ public enum ChebyshevDemo {
         visualSet.add(domain, domain.map(suo));
       }
       visualSet.setPlotLabel("Chebyshev Polynomials");
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "T.png"), jFreeChart, new Dimension(600, 400));
     }
     {
@@ -50,7 +50,7 @@ public enum ChebyshevDemo {
         visualSet.add(domain, domain.map(suo));
       }
       visualSet.setPlotLabel("Chebyshev Polynomials");
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "U.png"), jFreeChart, new Dimension(600, 400));
     }
   }

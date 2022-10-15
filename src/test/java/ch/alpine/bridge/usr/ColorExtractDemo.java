@@ -46,7 +46,7 @@ enum ColorExtractDemo {
         result.set(win, j, i);
       }
       visualSet.add(sample, max);
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("temp" + i + ".png"), jFreeChart, new Dimension(640, 480));
     }
     for (int j = 0; j < sample.length(); ++j)

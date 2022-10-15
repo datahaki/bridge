@@ -30,7 +30,7 @@ public enum HistogramDistributionDemo {
       visualSet.add(domain, domain.map(distribution::at));
       visualSet.add(domain, domain.map(distribution::p_lessEquals));
       visualSet.add(domain, domain.map(dist::at));
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("hd.png"), jFreeChart, //
           new Dimension(640, 480));
     }
@@ -41,7 +41,7 @@ public enum HistogramDistributionDemo {
       VisualSet visualSet = new VisualSet();
       visualSet.add(domain, domain.map(inv1::quantile));
       visualSet.add(domain, domain.map(inv2::quantile));
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("hd_inv.png"), jFreeChart, //
           new Dimension(640, 480));
     }

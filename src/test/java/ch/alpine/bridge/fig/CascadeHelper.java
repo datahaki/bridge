@@ -45,7 +45,7 @@ public enum CascadeHelper {
     }
     {
       visualSet.setPlotLabel(ListPlot.class.getSimpleName());
-      export(folder, ListPlot.of(visualSet, true));
+      export(folder, ListPlot.of(visualSet.setJoined(true)));
     }
     {
       export(folder, SpectrogramDemo.create());

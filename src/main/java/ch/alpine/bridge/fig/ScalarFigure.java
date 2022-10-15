@@ -37,40 +37,10 @@ public class ScalarFigure {
     y_factor = RealScalar.of(rectangle.height).divide(yRange.width());
   }
 
-  public void render(Graphics2D _g, Color color, Stroke stroke, //
-      ScalarUnaryOperator suo, int segmentsPerPixel) {
-    // --
-    Graphics2D graphics = (Graphics2D) _g.create();
-    graphics.clipRect(rectangle.x, rectangle.y, rectangle.width+1, rectangle.height+1);
-    graphics.setStroke(stroke);
-    graphics.setColor(color);
-    graphics.draw(path(suo, segmentsPerPixel));
-    graphics.dispose();
-  }
-
-  public Path2D.Double path(ScalarUnaryOperator suo, int segmentsPerPixel) {
-    double ofsx = rectangle.x;
-    Path2D.Double path = new Path2D.Double();
-    {
-      Scalar eval = suo.apply(xRange.min());
-      path.moveTo(ofsx, y_height - eval.subtract(yRange.min()).multiply(y_factor).number().doubleValue());
-    }
-    ScalarUnaryOperator interpX = LinearInterpolation.of(xRange);
-    final int size = rectangle.width * segmentsPerPixel;
-    final double dx = 1.0 / segmentsPerPixel;
-    for (int i = 1; i <= size; ++i) {
-      ofsx += dx;
-      // compute the xValue and yValue of the function at xPix
-      Scalar y_eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
-      path.lineTo(ofsx, y_height - y_eval.subtract(yRange.min()).multiply(y_factor).number().doubleValue());
-    }
-    return path;
-  }
-
   public void render(Graphics2D _g, Color color, Stroke stroke, Tensor points) {
     if (0 < points.length()) {
       Graphics2D graphics = (Graphics2D) _g.create();
-      graphics.clipRect(rectangle.x, rectangle.y, rectangle.width+1, rectangle.height+1);
+      graphics.setClip(rectangle.x, rectangle.y, rectangle.width + 1, rectangle.height + 1);
       graphics.setStroke(stroke);
       graphics.setColor(color);
       RenderQuality.setQuality(graphics);
@@ -86,6 +56,34 @@ public class ScalarFigure {
       graphics.draw(path);
       graphics.dispose();
     }
+  }
+
+  public void render(Graphics2D _g, Color color, Stroke stroke, //
+      ScalarUnaryOperator suo, int segmentsPerPixel) {
+    // --
+    Graphics2D graphics = (Graphics2D) _g.create();
+    graphics.setClip(rectangle.x, rectangle.y, rectangle.width + 1, rectangle.height + 1);
+    graphics.setStroke(stroke);
+    graphics.setColor(color);
+    {
+      double ofsx = rectangle.x;
+      Path2D.Double path = new Path2D.Double();
+      {
+        Scalar eval = suo.apply(xRange.min());
+        path.moveTo(ofsx, y_height - eval.subtract(yRange.min()).multiply(y_factor).number().doubleValue());
+      }
+      ScalarUnaryOperator interpX = LinearInterpolation.of(xRange);
+      final int size = rectangle.width * segmentsPerPixel;
+      final double dx = 1.0 / segmentsPerPixel;
+      for (int i = 1; i <= size; ++i) {
+        ofsx += dx;
+        // compute the xValue and yValue of the function at xPix
+        Scalar y_eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
+        path.lineTo(ofsx, y_height - y_eval.subtract(yRange.min()).multiply(y_factor).number().doubleValue());
+      }
+      graphics.draw(path);
+    }
+    graphics.dispose();
   }
 
   private Point2D.Double toPoint2D(Tensor vector) {

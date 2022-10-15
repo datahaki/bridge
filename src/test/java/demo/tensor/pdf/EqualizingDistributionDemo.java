@@ -29,7 +29,7 @@ public enum EqualizingDistributionDemo {
       visualSet.add(domain, domain.map(dist1::at));
       // visualSet.add(domain, domain.map(dist1::p_lessEquals));
       visualSet.add(domain, domain.map(dist2::at));
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("ed.png"), jFreeChart, new Dimension(640, 480));
     }
     {
@@ -39,7 +39,7 @@ public enum EqualizingDistributionDemo {
       VisualSet visualSet = new VisualSet();
       visualSet.add(domain, domain.map(inv1::quantile));
       visualSet.add(domain, domain.map(inv2::quantile));
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("ed_inv.png"), jFreeChart, new Dimension(640, 480));
     }
   }

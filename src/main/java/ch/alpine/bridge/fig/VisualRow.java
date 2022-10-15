@@ -19,7 +19,7 @@ public class VisualRow implements Serializable {
   private final Tensor points;
   private final ComparableLabel comparableLabel;
   private Color color = Color.BLUE;
-  private boolean autoSort = false;
+  private boolean joined = false;
   /** not serializable */
   private transient Stroke stroke;
 
@@ -82,13 +82,14 @@ public class VisualRow implements Serializable {
 
   // ---
   /** @param autoSort */
-  public void setAutoSort(boolean autoSort) {
-    this.autoSort = autoSort;
+  public VisualRow setJoined(boolean joined) {
+    this.joined = joined;
+    return this;
   }
 
   /** @return */
-  public boolean getAutoSort() {
-    return autoSort;
+  public boolean getJoined() {
+    return joined;
   }
 
   // ---

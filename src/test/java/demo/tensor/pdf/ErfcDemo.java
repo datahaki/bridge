@@ -19,7 +19,7 @@ public enum ErfcDemo {
     Tensor domain = Subdivide.of(-5, 5, 300);
     VisualSet visualSet = new VisualSet();
     visualSet.add(domain, domain.map(Erfc.FUNCTION));
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet);
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(Erfc.class.getSimpleName() + ".png"), jFreeChart, //
         new Dimension(640, 480));
   }

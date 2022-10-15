@@ -2,7 +2,6 @@
 package ch.alpine.bridge.fig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.BasicStroke;
@@ -35,7 +34,6 @@ class VisualRowTest {
     assertEquals(visualSet.visualRows().size(), 2);
     row1.setStroke(new BasicStroke(2f));
     row1.getStroke();
-    row1.setAutoSort(false);
   }
 
   @Test
@@ -47,7 +45,6 @@ class VisualRowTest {
     Axis axisX = visualSet.getAxisX();
     assertEquals(axisX.getUnit(), Unit.ONE);
     assertEquals(axisX.getUnitString(), "");
-    assertFalse(visualRow.getAutoSort());
   }
 
   @Test

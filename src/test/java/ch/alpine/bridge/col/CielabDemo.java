@@ -19,7 +19,7 @@ public enum CielabDemo {
     VisualSet visualSet = new VisualSet();
     visualSet.add(domain.map(Cielabf::forward), domain);
     visualSet.add(domain, domain.map(Cielabf::inverse));
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("cielab.png"), jFreeChart, new Dimension(400, 400));
   }
 }

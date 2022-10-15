@@ -14,7 +14,6 @@ import ch.alpine.tensor.sca.Clips;
 
 /* package */ enum StaticHelper {
   ;
-
   /** @param bufferedImage
    * @param visualSet
    * @param domain

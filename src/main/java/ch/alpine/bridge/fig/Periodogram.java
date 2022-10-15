@@ -48,7 +48,7 @@ public enum Periodogram {
     _visualRow.setColor(visualRow.getColor());
     _visualRow.setLabel(visualRow.getLabelString());
     _visualRow.setStroke(visualRow.getStroke());
-    return ListPlot.of(_visualSet, true);
+    return ListPlot.of(_visualSet);
   }
 
   /** uses the parameters

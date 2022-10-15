@@ -37,7 +37,7 @@ public enum TrapezoidalDistributionDemo {
       ScalarTensorFunction suo = BSplineFunctionString.of(2, sequence);
       visualSet.add(domain, domain.map(suo));
     }
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet);
     return jFreeChart;
   }
 

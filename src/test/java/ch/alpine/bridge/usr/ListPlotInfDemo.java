@@ -28,7 +28,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
     VisualRow visualRow1 = visualSet.add(valuesX, valuesY);
     visualRow1.setLabel("first");
     {
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       File file = HomeDirectory.Pictures(ListPlotInfDemo.class.getSimpleName() + ".png");
       ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(500, 300));
     }

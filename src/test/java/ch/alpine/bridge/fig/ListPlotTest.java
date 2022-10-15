@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +28,7 @@ class ListPlotTest {
   @Test
   void testEmpty() {
     VisualSet visualSet = new VisualSet();
-    ListPlot.of(visualSet, true);
+    ListPlot.of(visualSet.setJoined(true));
   }
 
   @Test
@@ -38,8 +37,8 @@ class ListPlotTest {
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
     visualSet.add(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6));
-    CascadeHelper.draw(ListPlot.of(visualSet, true));
-    CascadeHelper.draw(ListPlot.of(visualSet, false));
+    CascadeHelper.draw(ListPlot.of(visualSet.setJoined(true)));
+    CascadeHelper.draw(ListPlot.of(visualSet.setJoined(false)));
   }
 
   private static final ScalarUnaryOperator suoX = s -> Quantity.of(s, "s");
@@ -55,7 +54,7 @@ class ListPlotTest {
     visualSet.add(Tensors.empty());
     visualSet.add(Tensors.vector(0, 2, 5).map(suoX), Tensors.vector(1, 2, 1.6));
     visualSet.add(Tensors.empty());
-    CascadeHelper.draw(ListPlot.of(visualSet, true));
+    CascadeHelper.draw(ListPlot.of(visualSet));
   }
 
   @Test
@@ -67,7 +66,7 @@ class ListPlotTest {
     visualSet.add(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).map(suoY));
     visualSet.add(Tensors.empty());
     visualSet.add(Tensors.vector(3, 5), Tensors.vector(1, 2.6).map(suoY));
-    CascadeHelper.draw(ListPlot.of(visualSet, true));
+    CascadeHelper.draw(ListPlot.of(visualSet));
   }
 
   @Test
@@ -111,13 +110,12 @@ class ListPlotTest {
     visualRow1.setLabel("first");
     Tensor domain2 = RandomVariate.of(UniformDistribution.unit(), values2.length());
     VisualRow visualRow2 = visualSet.add(domain2.map(suoX), values2.map(suoY));
-    visualRow2.setAutoSort(true);
     Tensor domain3 = RandomVariate.of(UniformDistribution.unit(), values3.length());
     visualSet.add(domain3.map(suoX), values3.map(suoY));
     Tensor domain4 = Tensors.vector(1, 3, 2, 5, 4).multiply(RealScalar.of(0.2));
     visualSet.add(domain4.map(suoX), domain4.map(suoY));
     // ChartFactory.setChartTheme(ChartTheme.STANDARD);
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
     File file = new File(folder, ListPlot.class.getSimpleName() + ".png");
     ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(500, 300));
   }
@@ -133,7 +131,7 @@ class ListPlotTest {
       visualSet.add(domain, domain.map(distribution::at));
       visualSet.add(domain, domain.map(distribution::p_lessEquals));
       visualSet.add(domain, domain.map(dist::at));
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
       ChartUtils.saveChartAsPNG(new File(folder, "hd.png"), jFreeChart, new Dimension(640, 480));
     }
   }
@@ -150,7 +148,7 @@ class ListPlotTest {
       VisualSet visualSet = new VisualSet();
       visualSet.add(domain, domain.map(inv1::quantile));
       visualSet.add(domain, domain.map(inv2::quantile));
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
       ChartUtils.saveChartAsPNG(new File(folder, "hd_inv.png"), jFreeChart, new Dimension(640, 480));
     }
   }

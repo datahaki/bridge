@@ -25,25 +25,16 @@ public class ListPlot implements JFreeChart {
    * We would like to make joined property of VisualRow, but JFreeChart does not support
    * this granularity.
    * 
-   * @param visualSet
-   * @param joined for lines between coordinates, otherwise scattered points
-   * @return */
-  @Deprecated
-  public static JFreeChart of(VisualSet visualSet, boolean joined) {
-    return new ListPlot(visualSet);
-  }
-
-  /** Mathematica's default is to draw data points as separate dots,
-   * i.e. "Joined->False".
-   * 
    * Tested with up to 10 million points - a little slow but possible.
    * 
    * @param visualSet
+   * @param joined for lines between coordinates, otherwise scattered points
    * @return */
   public static JFreeChart of(VisualSet visualSet) {
     return new ListPlot(visualSet);
   }
 
+  // ---
   private final VisualSet visualSet;
 
   private ListPlot(VisualSet visualSet) {

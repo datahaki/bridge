@@ -1,7 +1,6 @@
 // code by jph
 package demo.tensor;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
 
@@ -49,7 +48,7 @@ public enum InfluenceMatrixDemo {
     VisualSet visualSet = new VisualSet();
     visualSet.add(t1).setLabel("mahs");
     visualSet.add(t2).setLabel("inf");
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet);
     ChartUtils.saveChartAsPNG(HomeDirectory.file("matrix_rect2.png"), jFreeChart, new Dimension(500, 300));
   }
 }

@@ -30,7 +30,7 @@ public enum BinomialDistributionDemo {
       visualSet.add(domain, domain.map(pdf::at));
       visualSet.add(domain, domain.map(cdf::p_lessEquals));
     }
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("binomial_distr.png"), jFreeChart, new Dimension(640, 480));
   }
 }

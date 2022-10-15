@@ -33,7 +33,7 @@ public enum TruncatedDistributionDemo {
       visualSet.add(domain, domain.map(cdf::p_lessEquals));
       visualSet.add(domain, domain.map(pdf_o::at));
     }
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet);
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("truncated.png"), jFreeChart, new Dimension(640, 480));
   }
 }

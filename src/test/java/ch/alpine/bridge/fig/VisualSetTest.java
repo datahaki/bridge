@@ -66,7 +66,7 @@ class VisualSetTest {
   void testEmptyPass(@TempDir File tempDir) throws IOException {
     VisualSet visualSet = new VisualSet();
     visualSet.add(Tensors.empty());
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet);
     File file = new File(tempDir, "file.png");
     assertFalse(file.exists());
     ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(100, 100));

@@ -47,7 +47,7 @@ public enum ChebyshevApprox {
       Tensor error = domain.map(ClenshawChebyshev.of(coeffs)).subtract(domain.map(suo));
       visualSet.add(domain, error);
     }
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevApprox.class.getSimpleName() + ".png"), jFreeChart, //
         new Dimension(600, 400));
   }

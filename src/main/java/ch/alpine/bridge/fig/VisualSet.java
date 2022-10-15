@@ -97,4 +97,10 @@ public class VisualSet extends VisualBase {
         .map(VisualRow::getLabelString) //
         .anyMatch(Predicate.not(String::isEmpty));
   }
+
+  public VisualSet setJoined(boolean joined) {
+    for (VisualRow visualRow : visualRows)
+      visualRow.setJoined(joined);
+    return this;
+  }
 }

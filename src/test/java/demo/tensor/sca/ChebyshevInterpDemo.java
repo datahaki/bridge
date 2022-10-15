@@ -36,14 +36,14 @@ public enum ChebyshevInterpDemo {
       visualSet.add(domain, domain.map(suo1)).setLabel("interp");
       visualSet.add(domain, domain.map(suo2)).setLabel("alt");
       visualSet.add(domain, domain.map(suo3)).setLabel("inpol");
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevInterpDemo.class.getSimpleName() + ".png"), jFreeChart, new Dimension(600, 400));
     }
     {
       VisualSet visualSet = new VisualSet();
       Tensor error = domain.map(suo1).subtract(domain.map(suo2));
       visualSet.add(domain, error);
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevInterpDemo.class.getSimpleName() + "_error.png"), jFreeChart, new Dimension(600, 400));
     }
   }

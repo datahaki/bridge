@@ -23,7 +23,7 @@ public enum ScreePlotDemo {
     VisualSet visualSet = new VisualSet();
     Tensor values = SingularValueList.of(matrix);
     visualSet.add(Range.of(0, values.length()), values.map(Log10.FUNCTION));
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+    JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
     ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ScreePlotDemo.class.getSimpleName() + ".png"), jFreeChart, //
         new Dimension(640, 480));
   }

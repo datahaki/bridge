@@ -49,7 +49,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       VisualSet visualSet = new VisualSet();
       VisualRow visualRow = visualSet.add(randomFunction.timeSeries());
       visualRow.setLabel("wiener process");
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       ChartUtils.saveChartAsPNG( //
           HomeDirectory.Pictures(randomProcess.getClass().getSimpleName() + ".png"), //
           jFreeChart, new Dimension(640, 480));
@@ -59,7 +59,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       VisualSet visualSet = new VisualSet();
       VisualRow visualRow = visualSet.add(integral);
       visualRow.setLabel("wiener process");
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       ChartUtils.saveChartAsPNG( //
           HomeDirectory.Pictures(randomProcess.getClass().getSimpleName() + "_i.png"), //
           jFreeChart, new Dimension(640, 480));

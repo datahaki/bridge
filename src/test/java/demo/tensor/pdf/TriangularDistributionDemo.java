@@ -28,7 +28,7 @@ public enum TriangularDistributionDemo {
       PDF pdf2 = PDF.of(dist2);
       visualSet.add(domain, domain.map(pdf1::at));
       visualSet.add(domain, domain.map(pdf2::at));
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
+      JFreeChart jFreeChart = ListPlot.of(visualSet);
       ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("triangular.png"), jFreeChart, new Dimension(640, 480));
     }
   }
