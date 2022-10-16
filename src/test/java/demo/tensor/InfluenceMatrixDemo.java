@@ -4,10 +4,9 @@ package demo.tensor;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -45,10 +44,10 @@ public enum InfluenceMatrixDemo {
       if (!Chop._04.isClose(c1, c2))
         System.err.println("warning");
     }
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     visualSet.add(t1).setLabel("mahs");
     visualSet.add(t2).setLabel("inf");
-    JFreeChart jFreeChart = ListPlot.of(visualSet);
-    ChartUtils.saveChartAsPNG(HomeDirectory.file("matrix_rect2.png"), jFreeChart, new Dimension(500, 300));
+    Showable jFreeChart = ListPlot.of(visualSet);
+    Show.export(HomeDirectory.file("matrix_rect2.png"), jFreeChart, new Dimension(500, 300));
   }
 }

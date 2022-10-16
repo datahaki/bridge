@@ -27,7 +27,7 @@ public enum Periodogram {
    * @param windowLength for instance 512
    * @param offset for instance 128
    * @return */
-  public static JFreeChart of(VisualSet visualSet, ScalarUnaryOperator scaling, int windowLength, int offset) {
+  public static Showable of(Show visualSet, ScalarUnaryOperator scaling, int windowLength, int offset) {
     Integers.requireEquals(visualSet.visualRows().size(), 1);
     VisualRow visualRow = visualSet.visualRows().get(0);
     Tensor points = visualRow.points();
@@ -41,7 +41,7 @@ public enum Periodogram {
     }
     Tensor signal = points.get(Tensor.ALL, 1);
     Tensor values = PeriodogramArray.of(windowLength, offset).apply(signal).map(scaling);
-    VisualSet _visualSet = new VisualSet();
+    Show _visualSet = new Show();
     _visualSet.setPlotLabel(visualSet.getPlotLabel());
     int h = values.length() / 2;
     VisualRow _visualRow = _visualSet.add(Subdivide.of(0, 0.5, h - 1), values.extract(0, h));
@@ -57,7 +57,7 @@ public enum Periodogram {
    * 
    * @param visualSet
    * @return */
-  public static JFreeChart of(VisualSet visualSet) {
+  public static Showable of(Show visualSet) {
     return of(visualSet, Log.base(_10).andThen(_10::multiply), 512, 128);
   }
 }

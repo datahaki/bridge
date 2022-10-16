@@ -1,12 +1,22 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
+
+import javax.imageio.ImageIO;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -21,16 +31,17 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.tmp.TimeSeries;
 
-public class VisualSet extends VisualBase {
+public class Show extends VisualBase {
+  private static final Insets INSETS = new Insets(5, 70, 25, 5);
   private final List<VisualRow> visualRows = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
 
-  public VisualSet(ColorDataIndexed colorDataIndexed) {
+  public Show(ColorDataIndexed colorDataIndexed) {
     this.colorDataIndexed = Objects.requireNonNull(colorDataIndexed);
   }
 
   /** uses Mathematica default color scheme */
-  public VisualSet() {
+  public Show() {
     this(ColorDataLists._097.cyclic());
   }
 
@@ -98,9 +109,23 @@ public class VisualSet extends VisualBase {
         .anyMatch(Predicate.not(String::isEmpty));
   }
 
-  public VisualSet setJoined(boolean joined) {
+  public Show setJoined(boolean joined) {
     for (VisualRow visualRow : visualRows)
       visualRow.setJoined(joined);
     return this;
+  }
+
+  public static void export(File file, Showable jFreeChart, Dimension dimension) throws IOException {
+    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D graphics = bufferedImage.createGraphics();
+    graphics.setColor(Color.WHITE);
+    graphics.fillRect(0, 0, dimension.width, dimension.height);
+    Rectangle rectangle = new Rectangle( //
+        INSETS.left, //
+        INSETS.top, //
+        dimension.width - INSETS.left - INSETS.right, //
+        dimension.height - INSETS.bottom);
+    jFreeChart.draw(graphics, rectangle);
+    ImageIO.write(bufferedImage, "png", file);
   }
 }

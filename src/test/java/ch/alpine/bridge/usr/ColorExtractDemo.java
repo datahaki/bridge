@@ -4,10 +4,9 @@ package ch.alpine.bridge.usr;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -33,7 +32,7 @@ enum ColorExtractDemo {
     System.out.println(sample.length());
     Tensor result = Array.zeros(42, 4);
     for (int i = 0; i < 3; ++i) {
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       Tensor intense = rgba.get(Tensor.ALL, i);
       visualSet.add(domain, intense);
       Tensor max = Tensors.empty();
@@ -46,8 +45,8 @@ enum ColorExtractDemo {
         result.set(win, j, i);
       }
       visualSet.add(sample, max);
-      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("temp" + i + ".png"), jFreeChart, new Dimension(640, 480));
+      Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
+      Show.export(HomeDirectory.Pictures("temp" + i + ".png"), jFreeChart, new Dimension(640, 480));
     }
     for (int j = 0; j < sample.length(); ++j)
       result.set(RealScalar.of(255), j, 3);

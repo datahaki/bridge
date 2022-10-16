@@ -4,10 +4,9 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
 import ch.alpine.bridge.fig.Histogram;
-import ch.alpine.bridge.fig.JFreeChart;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -20,13 +19,13 @@ import ch.alpine.tensor.sca.Clips;
 
 public enum TruncatedDiscreteDemo {
   ;
-  public static JFreeChart generate() {
+  public static Showable generate() {
     Distribution original = PoissonDistribution.of(7);
     Distribution distribution = TruncatedDistribution.of(original, Clips.interval(5, 10));
     PDF pdf = PDF.of(distribution);
     CDF cdf = CDF.of(distribution);
     PDF pdf_o = PDF.of(original);
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     {
       Tensor domain = Range.of(0, 12);
       visualSet.add(domain, domain.map(pdf::at));
@@ -37,7 +36,7 @@ public enum TruncatedDiscreteDemo {
   }
 
   public static void main(String[] args) throws IOException {
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures( //
+    Show.export(HomeDirectory.Pictures( //
         TruncatedDiscreteDemo.class.getSimpleName() + ".png"), generate(), //
         new Dimension(640, 480));
   }

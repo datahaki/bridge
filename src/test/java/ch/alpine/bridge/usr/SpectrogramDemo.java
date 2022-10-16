@@ -4,10 +4,9 @@ package ch.alpine.bridge.usr;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.Spectrogram;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -24,18 +23,18 @@ import ch.alpine.tensor.sca.win.DirichletWindow;
 
 public enum SpectrogramDemo {
   ;
-  public static JFreeChart create() {
+  public static Showable create() {
     return create(0.32, 1.6);
   }
 
-  public static JFreeChart create(double lo, double hi) {
+  public static Showable create(double lo, double hi) {
     ScalarUnaryOperator polynomial = Polynomial.of(Tensors.vector( //
         0, //
         800, //
         2800).multiply(Pi.VALUE));
     Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
     Tensor signal = domain.map(polynomial).map(Cos.FUNCTION).map(s -> Quantity.of(s, "m"));
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     visualSet.setPlotLabel("Spectrogram");
     visualSet.add(domain.map(s -> Quantity.of(s, "s")), signal);
     visualSet.getAxisX().setLabel("time");
@@ -45,8 +44,8 @@ public enum SpectrogramDemo {
   }
 
   public static void main(String[] args) throws IOException {
-    JFreeChart jFreeChart = create(0.0, 1.65);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(Spectrogram.class.getSimpleName() + ".png"), //
+    Showable jFreeChart = create(0.0, 1.65);
+    Show.export(HomeDirectory.Pictures(Spectrogram.class.getSimpleName() + ".png"), //
         jFreeChart, //
         new Dimension(DemoHelper.DEMO_W, DemoHelper.DEMO_H));
   }

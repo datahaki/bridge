@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
-public interface JFreeChart {
+public interface Showable {
   void draw(Graphics2D graphics, Rectangle rectangle);
 
   void draw(Graphics2D graphics, Rectangle rectangle, CoordinateBoundingBox cbb);

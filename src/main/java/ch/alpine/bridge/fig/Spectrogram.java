@@ -27,7 +27,7 @@ public enum Spectrogram {
    * @param window for instance {@link HannWindow#FUNCTION}
    * @param function for instance {@link ColorDataGradients#VISIBLE_SPECTRUM}
    * @return */
-  public static JFreeChart of(VisualSet visualSet, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
+  public static Showable of(Show visualSet, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
     Integers.requireEquals(visualSet.visualRows().size(), 1);
     VisualRow visualRow = visualSet.getVisualRow(0);
     String string = visualRow.getLabelString();
@@ -68,14 +68,14 @@ public enum Spectrogram {
    * @param window for instance {@link HannWindow#FUNCTION}
    * @return spectrogram chart of signal specified in given visual set generated using
    * given window function and {@link ColorDataGradients#VISIBLE_SPECTRUM} */
-  public static JFreeChart of(VisualSet visualSet, ScalarUnaryOperator window) {
+  public static Showable of(Show visualSet, ScalarUnaryOperator window) {
     return of(visualSet, window, ColorDataGradients.SUNSET_REVERSED);
   }
 
   /** @param visualSet with single {@link VisualRow} containing domain and signal
    * @return spectrogram chart of signal specified in given visual set generated using
    * {@link DirichletWindow} and {@link ColorDataGradients#VISIBLE_SPECTRUM} */
-  public static JFreeChart of(VisualSet visualSet) {
+  public static Showable of(Show visualSet) {
     return of(visualSet, DirichletWindow.FUNCTION);
   }
 }

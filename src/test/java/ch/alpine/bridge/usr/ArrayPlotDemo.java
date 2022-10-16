@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import ch.alpine.bridge.fig.ArrayPlot;
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.VisualImage;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -27,19 +27,19 @@ import ch.alpine.tensor.sca.ply.ChebyshevNodes;
 
 public enum ArrayPlotDemo {
   ;
-  public static JFreeChart create0a() {
+  public static Showable create0a() {
     Tensor matrix = ChebyshevNodes._1.matrix(64);
     VisualImage visualImage = VisualImage.of(matrix);
     visualImage.setPlotLabel("ArrayPlot");
     return ArrayPlot.of(visualImage);
   }
 
-  public static JFreeChart create0() {
+  public static Showable create0() {
     Tensor matrix = ChebyshevNodes._1.matrix(64);
     return ArrayPlot.of(matrix);
   }
 
-  public static JFreeChart create1() {
+  public static Showable create1() {
     int n = 200;
     Clip clipX = Clips.interval(Quantity.of(10, "m"), Quantity.of(20, "m"));
     Tensor domain = Subdivide.increasing(clipX, n - 1);
@@ -52,7 +52,7 @@ public enum ArrayPlotDemo {
     return ArrayPlot.of(visualImage);
   }
 
-  public static JFreeChart create2() {
+  public static Showable create2() {
     int n = 1000;
     Tensor domain = Subdivide.of(0, 50, n - 1);
     Tensor values = domain.map(Scalar::zero);
@@ -71,18 +71,18 @@ public enum ArrayPlotDemo {
 
   public static void main(String[] args) throws IOException {
     {
-      JFreeChart jFreeChart = create0();
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "0.png"), jFreeChart, //
+      Showable jFreeChart = create0();
+      Show.export(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "0.png"), jFreeChart, //
           new Dimension(DemoHelper.DEMO_W, DemoHelper.DEMO_H));
     }
     {
-      JFreeChart jFreeChart = create1();
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "1.png"), jFreeChart, //
+      Showable jFreeChart = create1();
+      Show.export(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "1.png"), jFreeChart, //
           new Dimension(600, 200));
     }
     {
-      JFreeChart jFreeChart = create2();
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "2.png"), jFreeChart, //
+      Showable jFreeChart = create2();
+      Show.export(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "2.png"), jFreeChart, //
           new Dimension(600, 300));
     }
   }

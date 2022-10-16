@@ -26,7 +26,7 @@ class VisualRowTest {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor points = Transpose.of(Tensors.of(domain, values));
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     VisualRow row1 = visualSet.add(points);
     row1.getStroke();
     VisualRow row2 = visualSet.add(domain, values);
@@ -38,7 +38,7 @@ class VisualRowTest {
 
   @Test
   void testDateTime() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     Distribution distribution = NormalDistribution.of(DateTime.now(), Quantity.of(3, "h"));
     Tensor points = RandomVariate.of(distribution, 10, 2);
     VisualRow visualRow = visualSet.add(points);
@@ -49,12 +49,12 @@ class VisualRowTest {
 
   @Test
   void testFailNull() {
-    assertThrows(Exception.class, () -> new VisualSet(null));
+    assertThrows(Exception.class, () -> new Show(null));
   }
 
   @Test
   void testPointNonMatrix() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     assertThrows(Exception.class, () -> visualSet.add(Tensors.vector(1, 2, 3, 4)));
     assertThrows(Exception.class, () -> visualSet.add(RealScalar.ZERO));
   }

@@ -4,10 +4,9 @@ package demo.tensor;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
@@ -28,11 +27,11 @@ import ch.alpine.tensor.sca.ply.Polynomial;
       Tensor samples_y = Subdivide.of(Quantity.of(10, "bar"), Quantity.of(26, "bar"), 50);
       samples_x.map(x_to_y);
       samples_y.map(y_to_x);
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       visualSet.add(samples_x, samples_x.map(x_to_y));
       visualSet.add(samples_y.map(y_to_x), samples_y);
-      JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("here" + degree + ".png"), jFreeChart, //
+      Showable jFreeChart = ListPlot.of(visualSet);
+      Show.export(HomeDirectory.Pictures("here" + degree + ".png"), jFreeChart, //
           new Dimension(400, 300));
     }
   }

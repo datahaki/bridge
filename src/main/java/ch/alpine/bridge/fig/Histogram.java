@@ -11,7 +11,7 @@ public enum Histogram {
   ;
   /** @param visualSet
    * @return */
-  public static JFreeChart of(VisualSet visualSet) {
+  public static Showable of(Show visualSet) {
     return of(visualSet, false);
   }
 
@@ -19,7 +19,7 @@ public enum Histogram {
    * @param stacked
    * @return
    * @see StackedHistogram */
-  /* package */ static JFreeChart of(VisualSet visualSet, boolean stacked) {
+  /* package */ static Showable of(Show visualSet, boolean stacked) {
     // return JFreeChartFactory.barChart(visualSet, stacked, Unicode::valueOf);
     return null;
   }
@@ -28,7 +28,7 @@ public enum Histogram {
    * @param stacked
    * @param naming for coordinates on x-axis
    * @return */
-  public static JFreeChart of(VisualSet visualSet, boolean stacked, Function<Scalar, String> naming) {
+  public static Showable of(Show visualSet, boolean stacked, Function<Scalar, String> naming) {
     return null; // JFreeChartFactory.barChart(visualSet, stacked, naming);
   }
 }

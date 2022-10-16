@@ -4,10 +4,9 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
@@ -21,11 +20,11 @@ import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 
 public enum TrapezoidalDistributionDemo {
   ;
-  public static JFreeChart generate() {
+  public static Showable generate() {
     Distribution distribution = TrapezoidalDistribution.of(0.5, 1.5, 1.5, 2.5);
     PDF pdf = PDF.of(distribution);
     CDF cdf = CDF.of(distribution);
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     {
       Tensor domain = Subdivide.of(0, 4, 100);
       visualSet.add(domain, domain.map(pdf::at));
@@ -37,12 +36,12 @@ public enum TrapezoidalDistributionDemo {
       ScalarTensorFunction suo = BSplineFunctionString.of(2, sequence);
       visualSet.add(domain, domain.map(suo));
     }
-    JFreeChart jFreeChart = ListPlot.of(visualSet);
+    Showable jFreeChart = ListPlot.of(visualSet);
     return jFreeChart;
   }
 
   public static void main(String[] args) throws IOException {
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("trap_distr.png"), generate(), //
+    Show.export(HomeDirectory.Pictures("trap_distr.png"), generate(), //
         new Dimension(640, 480));
   }
 }

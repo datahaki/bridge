@@ -29,7 +29,7 @@ class ArrayPlotTest {
     Tensor raw = RandomVariate.of(UniformDistribution.unit(), 2, 70000);
     BufferedImage bufferedImage = ImageFormat.of(raw.map(ColorDataGradients.TEMPERATURE_WEATHER));
     VisualImage visualImage = new VisualImage(bufferedImage);
-    JFreeChart jFreeChart = ArrayPlot.of(visualImage);
-    ChartUtils.saveChartAsPNG(new File(tempDir, "file.png"), jFreeChart, new Dimension(1000, 300));
+    Showable jFreeChart = ArrayPlot.of(visualImage);
+    Show.export(new File(tempDir, "file.png"), jFreeChart, new Dimension(1000, 300));
   }
 }

@@ -19,7 +19,7 @@ import ch.alpine.tensor.sca.Clips;
    * @param domain
    * @param yhi with unit of domain negated
    * @return */
-  public static VisualImage create(BufferedImage bufferedImage, VisualSet visualSet, Tensor domain, Scalar yhi) {
+  public static VisualImage create(BufferedImage bufferedImage, Show visualSet, Tensor domain, Scalar yhi) {
     Unit unitX = visualSet.getAxisX().getUnit();
     ScalarUnaryOperator suoX = UnitConvert.SI().to(unitX);
     Clip clipX = Clips.interval(suoX.apply(domain.Get(0)), suoX.apply(Last.of(domain)));

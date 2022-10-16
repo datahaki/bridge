@@ -4,10 +4,9 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -20,11 +19,11 @@ public enum ScreePlotDemo {
   ;
   public static void main(String[] args) throws IOException {
     Tensor matrix = HilbertMatrix.of(40);
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     Tensor values = SingularValueList.of(matrix);
     visualSet.add(Range.of(0, values.length()), values.map(Log10.FUNCTION));
-    JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ScreePlotDemo.class.getSimpleName() + ".png"), jFreeChart, //
+    Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
+    Show.export(HomeDirectory.Pictures(ScreePlotDemo.class.getSimpleName() + ".png"), jFreeChart, //
         new Dimension(640, 480));
   }
 }

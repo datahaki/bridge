@@ -13,21 +13,21 @@ public enum ArrayPlot {
    * Other that in Mathematica, the axes are drawn with ticks.
    * 
    * Hint:
-   * use {@link JFreeChart#setTitle(String)} to define plot label
+   * use {@link Showable#setTitle(String)} to define plot label
    * 
    * @param matrix
    * @return */
-  public static JFreeChart of(Tensor matrix) {
+  public static Showable of(Tensor matrix) {
     return of(VisualImage.of(matrix));
   }
 
   /** @param visualImage
    * @return */
-  public static JFreeChart of(VisualImage visualImage) {
+  public static Showable of(VisualImage visualImage) {
     return null;
   }
 
-  public static JFreeChart of(Tensor matrix, ColorDataGradient colorDataGradient) {
+  public static Showable of(Tensor matrix, ColorDataGradient colorDataGradient) {
     return of(VisualImage.of(matrix, colorDataGradient));
   }
 }

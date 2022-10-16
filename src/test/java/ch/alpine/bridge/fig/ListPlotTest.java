@@ -27,13 +27,13 @@ import demo.tensor.pdf.TrapezoidalDistributionDemo;
 class ListPlotTest {
   @Test
   void testEmpty() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     ListPlot.of(visualSet.setJoined(true));
   }
 
   @Test
   void testEmptyRow() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
     visualSet.add(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6));
@@ -46,7 +46,7 @@ class ListPlotTest {
 
   @Test
   void testUnitsX() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
     visualSet.add(Tensors.empty());
@@ -59,7 +59,7 @@ class ListPlotTest {
 
   @Test
   void testUnitsY() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
     visualRow.setLabel("empty");
     visualSet.add(Tensors.empty());
@@ -71,7 +71,7 @@ class ListPlotTest {
 
   @Test
   void testAlreadyLarge() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     int n = 100_000; // tested for up to 10 million
     Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
     visualSet.add(points);
@@ -81,7 +81,7 @@ class ListPlotTest {
   @Test
   void testAlreadyLargeNaN() {
     Random random = new Random();
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     int n = 100_000; // tested for up to 10 million
     Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
     for (int count = 0; count < 10000; ++count)
@@ -92,8 +92,8 @@ class ListPlotTest {
 
   @Test
   void testDistribution(@TempDir File folder) throws IOException {
-    JFreeChart jFreeChart = TrapezoidalDistributionDemo.generate();
-    ChartUtils.saveChartAsPNG(new File(folder, "trap_distr.png"), jFreeChart, new Dimension(640, 480));
+    Showable jFreeChart = TrapezoidalDistributionDemo.generate();
+    Show.export(new File(folder, "trap_distr.png"), jFreeChart, new Dimension(640, 480));
   }
 
   @Test
@@ -101,7 +101,7 @@ class ListPlotTest {
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
     Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     visualSet.setPlotLabel("List Plot Demo");
     Tensor domain1 = RandomVariate.of(UniformDistribution.unit(), values1.length());
     ScalarUnaryOperator suoX = s -> Quantity.of(s.add(RealScalar.of(100)), "s");
@@ -115,9 +115,9 @@ class ListPlotTest {
     Tensor domain4 = Tensors.vector(1, 3, 2, 5, 4).multiply(RealScalar.of(0.2));
     visualSet.add(domain4.map(suoX), domain4.map(suoY));
     // ChartFactory.setChartTheme(ChartTheme.STANDARD);
-    JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
+    Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
     File file = new File(folder, ListPlot.class.getSimpleName() + ".png");
-    ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(500, 300));
+    Show.export(file, jFreeChart, new Dimension(500, 300));
   }
 
   @Test
@@ -127,12 +127,12 @@ class ListPlotTest {
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
     {
       Tensor domain = Subdivide.of(-5, 8, 300);
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       visualSet.add(domain, domain.map(distribution::at));
       visualSet.add(domain, domain.map(distribution::p_lessEquals));
       visualSet.add(domain, domain.map(dist::at));
-      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
-      ChartUtils.saveChartAsPNG(new File(folder, "hd.png"), jFreeChart, new Dimension(640, 480));
+      Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
+      Show.export(new File(folder, "hd.png"), jFreeChart, new Dimension(640, 480));
     }
   }
 
@@ -145,11 +145,11 @@ class ListPlotTest {
       Tensor domain = Subdivide.of(0, 1, 300);
       InverseCDF inv1 = InverseCDF.of(distribution);
       InverseCDF inv2 = InverseCDF.of(dist);
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       visualSet.add(domain, domain.map(inv1::quantile));
       visualSet.add(domain, domain.map(inv2::quantile));
-      JFreeChart jFreeChart = ListPlot.of(visualSet.setJoined(true));
-      ChartUtils.saveChartAsPNG(new File(folder, "hd_inv.png"), jFreeChart, new Dimension(640, 480));
+      Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
+      Show.export(new File(folder, "hd_inv.png"), jFreeChart, new Dimension(640, 480));
     }
   }
 }

@@ -4,11 +4,10 @@ package demo.tensor.prc;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.VisualRow;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -29,10 +28,10 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
   private static void export(RandomProcess randomProcess) throws IOException {
     RandomFunction randomFunction = RandomFunction.of(randomProcess);
     randomFunction.evaluate(RealScalar.of(20));
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     visualSet.add(randomFunction.timeSeries());
-    JFreeChart jFreeChart = ListPlot.of(visualSet);
-    ChartUtils.saveChartAsPNG( //
+    Showable jFreeChart = ListPlot.of(visualSet);
+    Show.export( //
         HomeDirectory.Pictures(randomProcess.getClass().getSimpleName() + ".png"), //
         jFreeChart, new Dimension(640, 480));
   }
@@ -46,21 +45,21 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
         .map(Scalar.class::cast) //
         .forEach(randomFunction::evaluate);
     {
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       VisualRow visualRow = visualSet.add(randomFunction.timeSeries());
       visualRow.setLabel("wiener process");
-      JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsPNG( //
+      Showable jFreeChart = ListPlot.of(visualSet);
+      Show.export( //
           HomeDirectory.Pictures(randomProcess.getClass().getSimpleName() + ".png"), //
           jFreeChart, new Dimension(640, 480));
     }
     {
       TimeSeries integral = TimeSeriesIntegrate.of(randomFunction.timeSeries());
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       VisualRow visualRow = visualSet.add(integral);
       visualRow.setLabel("wiener process");
-      JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsPNG( //
+      Showable jFreeChart = ListPlot.of(visualSet);
+      Show.export( //
           HomeDirectory.Pictures(randomProcess.getClass().getSimpleName() + "_i.png"), //
           jFreeChart, new Dimension(640, 480));
     }

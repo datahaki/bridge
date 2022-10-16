@@ -18,7 +18,7 @@ import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 
-public class ScalarFigure {
+public class Plot {
   private final Rectangle rectangle;
   private final Clip xRange;
   private final Clip yRange;
@@ -28,7 +28,7 @@ public class ScalarFigure {
 
   /** @param rectangle
    * @param cbb with positive area */
-  public ScalarFigure(Rectangle rectangle, CoordinateBoundingBox cbb) {
+  public Plot(Rectangle rectangle, CoordinateBoundingBox cbb) {
     this.rectangle = new Rectangle(rectangle.x, rectangle.y, rectangle.width - 1, rectangle.height - 1);
     this.xRange = cbb.getClip(0);
     this.yRange = cbb.getClip(1);

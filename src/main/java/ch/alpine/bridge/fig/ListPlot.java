@@ -20,7 +20,7 @@ import ch.alpine.tensor.sca.Sign;
  * 
  * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ListPlot.html">ListPlot</a> */
-public class ListPlot implements JFreeChart {
+public class ListPlot implements Showable {
   /** Remark:
    * We would like to make joined property of VisualRow, but JFreeChart does not support
    * this granularity.
@@ -30,14 +30,14 @@ public class ListPlot implements JFreeChart {
    * @param visualSet
    * @param joined for lines between coordinates, otherwise scattered points
    * @return */
-  public static JFreeChart of(VisualSet visualSet) {
+  public static Showable of(Show visualSet) {
     return new ListPlot(visualSet);
   }
 
   // ---
-  private final VisualSet visualSet;
+  private final Show visualSet;
 
-  private ListPlot(VisualSet visualSet) {
+  private ListPlot(Show visualSet) {
     this.visualSet = visualSet;
   }
 
@@ -65,7 +65,7 @@ public class ListPlot implements JFreeChart {
     GridDrawer gridDrawer = new GridDrawer(rectangle, cbb);
     gridDrawer.render(graphics);
     // ---
-    ScalarFigure scalarFigure = new ScalarFigure(rectangle, cbb);
+    Plot scalarFigure = new Plot(rectangle, cbb);
     for (VisualRow visualRow : visualSet.visualRows()) {
       scalarFigure.render(graphics, //
           visualRow.getColor(), visualRow.getStroke(), //

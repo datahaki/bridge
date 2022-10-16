@@ -35,7 +35,7 @@ class VisualImageTest {
     VisualImage visualImage = new VisualImage(bufferedImage);
     assertEquals(visualImage.getAxisX().getOptionalClip().orElseThrow(), Clips.positive(bufferedImage.getWidth()));
     assertEquals(visualImage.getAxisY().getOptionalClip().orElseThrow(), Clips.positive(bufferedImage.getHeight()));
-    JFreeChart jFreeChart = ArrayPlot.of(visualImage);
+    Showable jFreeChart = ArrayPlot.of(visualImage);
     jFreeChart.draw(bufferedImage.createGraphics(), new Rectangle(0, 0, 200, 200));
   }
 }

@@ -27,13 +27,13 @@ class VisualSetTest {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor points = Transpose.of(Tensors.of(domain, values));
-    VisualSet set2 = new VisualSet();
+    Show set2 = new Show();
     VisualRow row2 = set2.add(domain, values);
     row2.setLabel("row2");
     VisualRow row3 = set2.add(points);
     row3.setLabel("row3");
     assertEquals(set2.visualRows().size(), 2);
-    VisualSet set1 = new VisualSet();
+    Show set1 = new Show();
     assertEquals(set1.visualRows().size(), 0);
   }
 
@@ -42,7 +42,7 @@ class VisualSetTest {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 5);
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     VisualRow row1 = visualSet.add(domain, values1);
     VisualRow row2 = visualSet.add(domain, values2);
     assertEquals(Dimensions.of(row1.points()), Dimensions.of(row2.points()));
@@ -53,7 +53,7 @@ class VisualSetTest {
     Tensor domain = Tensors.fromString("{1, 2, 3, 4, 5}");
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 5);
-    VisualSet set = new VisualSet();
+    Show set = new Show();
     VisualRow row1 = set.add(domain, values1);
     VisualRow row2 = set.add(domain, values2);
     row1.setLabel("row 1");
@@ -64,31 +64,31 @@ class VisualSetTest {
 
   @Test
   void testEmptyPass(@TempDir File tempDir) throws IOException {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     visualSet.add(Tensors.empty());
-    JFreeChart jFreeChart = ListPlot.of(visualSet);
+    Showable jFreeChart = ListPlot.of(visualSet);
     File file = new File(tempDir, "file.png");
     assertFalse(file.exists());
-    ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(100, 100));
+    Show.export(file, jFreeChart, new Dimension(100, 100));
     assertTrue(file.isFile());
     assertTrue(file.canWrite());
   }
 
   @Test
   void testFailScalar() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     assertThrows(Exception.class, () -> visualSet.add(RealScalar.ZERO, RealScalar.ONE));
   }
 
   @Test
   void testFailVector() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     assertThrows(Exception.class, () -> visualSet.add(Tensors.vector(1, 2, 3, 4), Tensors.vector(1, 2, 3, 4, 5)));
   }
 
   @Test
   void testFailUnstructured() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     assertThrows(Exception.class, () -> visualSet.add(Tensors.fromString("{{1, 2}, {3, 4}, {5, 6}, {3}}")));
     assertThrows(Exception.class, () -> visualSet.add(Tensors.fromString("{{1, 2}, {3, 4}, {5, 6}, 4}")));
     assertThrows(Exception.class, () -> visualSet.add(Tensors.fromString("{{1, 2, 3}, {3, 4, 2}, {5, 6, 3}, {3, 5, 3}}")));

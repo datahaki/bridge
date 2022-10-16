@@ -4,10 +4,9 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Subdivide;
@@ -26,23 +25,23 @@ public enum HistogramDistributionDemo {
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
     {
       Tensor domain = Subdivide.of(-5, 8, 300);
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       visualSet.add(domain, domain.map(distribution::at));
       visualSet.add(domain, domain.map(distribution::p_lessEquals));
       visualSet.add(domain, domain.map(dist::at));
-      JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("hd.png"), jFreeChart, //
+      Showable jFreeChart = ListPlot.of(visualSet);
+      Show.export(HomeDirectory.Pictures("hd.png"), jFreeChart, //
           new Dimension(640, 480));
     }
     {
       Tensor domain = Subdivide.of(0, 1, 300);
       InverseCDF inv1 = InverseCDF.of(distribution);
       InverseCDF inv2 = InverseCDF.of(dist);
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       visualSet.add(domain, domain.map(inv1::quantile));
       visualSet.add(domain, domain.map(inv2::quantile));
-      JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("hd_inv.png"), jFreeChart, //
+      Showable jFreeChart = ListPlot.of(visualSet);
+      Show.export(HomeDirectory.Pictures("hd_inv.png"), jFreeChart, //
           new Dimension(640, 480));
     }
   }

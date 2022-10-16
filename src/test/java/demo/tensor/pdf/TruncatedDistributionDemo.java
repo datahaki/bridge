@@ -4,10 +4,9 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -26,14 +25,14 @@ public enum TruncatedDistributionDemo {
     PDF pdf = PDF.of(distribution);
     CDF cdf = CDF.of(distribution);
     PDF pdf_o = PDF.of(original);
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     {
       Tensor domain = Subdivide.of(-3, 3, 100);
       visualSet.add(domain, domain.map(pdf::at));
       visualSet.add(domain, domain.map(cdf::p_lessEquals));
       visualSet.add(domain, domain.map(pdf_o::at));
     }
-    JFreeChart jFreeChart = ListPlot.of(visualSet);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("truncated.png"), jFreeChart, new Dimension(640, 480));
+    Showable jFreeChart = ListPlot.of(visualSet);
+    Show.export(HomeDirectory.Pictures("truncated.png"), jFreeChart, new Dimension(640, 480));
   }
 }

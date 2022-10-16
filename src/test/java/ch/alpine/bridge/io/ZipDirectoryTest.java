@@ -12,10 +12,9 @@ import java.nio.file.Files;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.ext.DeleteDirectory;
 import ch.alpine.tensor.io.Primitives;
 import ch.alpine.tensor.pdf.RandomVariate;
@@ -28,10 +27,10 @@ class ZipDirectoryTest {
     assertFalse(folder.exists());
     folder.mkdirs();
     {
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       visualSet.add(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2));
-      JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsPNG(new File(folder, "image.png"), jFreeChart, new Dimension(300, 200));
+      Showable jFreeChart = ListPlot.of(visualSet);
+      Show.export(new File(folder, "image.png"), jFreeChart, new Dimension(300, 200));
     }
     File zipFile = new File(tempDir, "file.zip");
     assertFalse(zipFile.exists());

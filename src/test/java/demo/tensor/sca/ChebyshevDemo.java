@@ -4,10 +4,9 @@ package demo.tensor.sca;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ChartUtils;
-import ch.alpine.bridge.fig.JFreeChart;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.alg.UnitVector;
@@ -22,36 +21,36 @@ public enum ChebyshevDemo {
     int max = 6;
     {
       Tensor domain = Subdivide.of(-1., 1., 30);
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = ClenshawChebyshev.of(UnitVector.of(d + 1, d));
         ScalarUnaryOperator su2 = Chebyshev.T.of(d);
         visualSet.add(domain, domain.map(suo).subtract(domain.map(su2)));
       }
-      JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(ChebyshevDemo.class.getSimpleName() + ".png"), jFreeChart, new Dimension(600, 400));
+      Showable jFreeChart = ListPlot.of(visualSet);
+      Show.export(HomeDirectory.Pictures(ChebyshevDemo.class.getSimpleName() + ".png"), jFreeChart, new Dimension(600, 400));
     }
     {
       Tensor domain = Subdivide.of(-1., 1., 30);
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = Chebyshev.T.of(d);
         visualSet.add(domain, domain.map(suo));
       }
       visualSet.setPlotLabel("Chebyshev Polynomials");
-      JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "T.png"), jFreeChart, new Dimension(600, 400));
+      Showable jFreeChart = ListPlot.of(visualSet);
+      Show.export(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "T.png"), jFreeChart, new Dimension(600, 400));
     }
     {
       Tensor domain = Subdivide.of(-1., 1., 30);
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = Chebyshev.U.of(d);
         visualSet.add(domain, domain.map(suo));
       }
       visualSet.setPlotLabel("Chebyshev Polynomials");
-      JFreeChart jFreeChart = ListPlot.of(visualSet);
-      ChartUtils.saveChartAsPNG(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "U.png"), jFreeChart, new Dimension(600, 400));
+      Showable jFreeChart = ListPlot.of(visualSet);
+      Show.export(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "U.png"), jFreeChart, new Dimension(600, 400));
     }
   }
 }

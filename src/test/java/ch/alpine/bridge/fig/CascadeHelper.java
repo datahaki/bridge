@@ -15,7 +15,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 public enum CascadeHelper {
   ;
-  public static void draw(JFreeChart jFreeChart) {
+  public static void draw(Showable jFreeChart) {
     BufferedImage bufferedImage = new BufferedImage(400, 200, BufferedImage.TYPE_INT_ARGB);
     jFreeChart.draw(bufferedImage.createGraphics(), new Rectangle(0, 0, 400, 200));
   }
@@ -25,7 +25,7 @@ public enum CascadeHelper {
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
     Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
-    VisualSet visualSet = new VisualSet(ColorDataLists._250.cyclic());
+    Show visualSet = new Show(ColorDataLists._250.cyclic());
     VisualRow row0 = visualSet.add(Range.of(0, values1.length()), values1);
     visualSet.add(Range.of(0, values2.length()), values2);
     VisualRow row2 = visualSet.add(Range.of(3, 3 + values3.length()), values3);
@@ -52,7 +52,7 @@ public enum CascadeHelper {
     }
   }
 
-  private static void export(File folder, JFreeChart jFreeChart) throws IOException {
+  private static void export(File folder, Showable jFreeChart) throws IOException {
     // File file = new File(folder, jFreeChart.getTitle().getText() + ".png");
     // ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(500, 300));
   }
