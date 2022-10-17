@@ -1,12 +1,13 @@
+// code by legion
 package ch.alpine.bridge.fig;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
-import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import java.awt.Color;
+import java.awt.Graphics;
 
 public interface Showable {
-  void draw(Graphics2D graphics, Rectangle rectangle);
+  void render(ShowableConfig showableConfig, Graphics _g);
 
-  void draw(Graphics2D graphics, Rectangle rectangle, CoordinateBoundingBox cbb);
+  void setLabel(String string);
+
+  void setColor(Color color);
 }

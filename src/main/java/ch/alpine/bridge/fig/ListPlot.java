@@ -1,13 +1,19 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.Optional;
+import java.awt.Stroke;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 
+import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
-import ch.alpine.tensor.sca.Clip;
-import ch.alpine.tensor.sca.Sign;
 
 /** Hint:
  * to render list plot in a custom graphics use
@@ -30,46 +36,54 @@ public class ListPlot implements Showable {
    * @param visualSet
    * @param joined for lines between coordinates, otherwise scattered points
    * @return */
-  public static Showable of(Show visualSet) {
-    return new ListPlot(visualSet);
+  public static Show of(Tensor points) {
+    Show show = new Show();
+    show.add(new ListPlot(points));
+    return show;
   }
 
   // ---
-  private final Show visualSet;
+  private final Tensor points;
 
-  private ListPlot(Show visualSet) {
-    this.visualSet = visualSet;
+  private ListPlot(Tensor points) {
+    this.points = points;
+  }
+ 
+  public ListPlot(Tensor domain, Tensor tensor) {
+    this(Transpose.of(Tensors.of(domain, tensor)));
   }
 
   @Override
-  public void draw(Graphics2D graphics, Rectangle rectangle) {
-    Optional<Clip> optionalX = visualSet.getAxisX().getOptionalClip();
-    if (optionalX.isEmpty())
-      optionalX = visualSet.suggestClip(0);
-    Optional<Clip> optionalY = visualSet.getAxisY().getOptionalClip();
-    if (optionalY.isEmpty())
-      optionalY = visualSet.suggestClip(1);
-    if (optionalX.isPresent() && optionalY.isPresent()) {
-      Clip clipX = optionalX.orElseThrow();
-      Clip clipY = optionalY.orElseThrow();
-      if (Sign.isPositive(clipX.width()) && // TODO handle differently by extending clip artificially!
-          Sign.isPositive(clipY.width())) {
-        CoordinateBoundingBox cbb = CoordinateBoundingBox.of(clipX, clipY);
-        draw(graphics, rectangle, cbb);
+  public void render(ShowableConfig showableConfig, Graphics _g) {
+    if (0 < points.length()) {
+      Graphics2D graphics = (Graphics2D) _g.create();
+//      graphics.setClip(rectangle.x, rectangle.y, rectangle.width + 1, rectangle.height + 1);
+//      graphics.setStroke(stroke);
+      graphics.setColor(color);
+      RenderQuality.setQuality(graphics);
+      Path2D.Double path = new Path2D.Double();
+      {
+        
+        Point2D.Double point2d = showableConfig.toPoint2D(points.get(0));
+        path.moveTo(point2d.x, point2d.y);
       }
+      points.stream().skip(1).forEach(row -> {
+        Point2D.Double point2d = showableConfig.toPoint2D(row);
+        path.lineTo(point2d.x, point2d.y);
+      });
+      graphics.draw(path);
+      graphics.dispose();
     }
   }
 
   @Override
-  public void draw(Graphics2D graphics, Rectangle rectangle, CoordinateBoundingBox cbb) {
-    GridDrawer gridDrawer = new GridDrawer(rectangle, cbb);
-    gridDrawer.render(graphics);
-    // ---
-    Plot scalarFigure = new Plot(rectangle, cbb);
-    for (VisualRow visualRow : visualSet.visualRows()) {
-      scalarFigure.render(graphics, //
-          visualRow.getColor(), visualRow.getStroke(), //
-          visualRow.points());
-    }
+  public void setLabel(String string) {
+    // TODO Auto-generated method stub
+    
+  }
+  Color color;
+  @Override
+  public void setColor(Color color) {
+    this.color=color;
   }
 }

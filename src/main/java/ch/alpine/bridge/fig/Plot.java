@@ -2,93 +2,71 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
+import java.util.Optional;
 
-import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.RationalScalar;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.itp.LinearInterpolation;
-import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Clips;
 
-public class Plot {
-  private final Rectangle rectangle;
-  private final Clip xRange;
-  private final Clip yRange;
-  private final double y_height; // TODO misnomer
-  private final Scalar x_factor;
-  private final Scalar y_factor;
+public class Plot implements Showable {
+  private final ScalarUnaryOperator suo;
+  private final Clip x_domain;
+  public Color color;
+  public Stroke stroke;
 
-  /** @param rectangle
-   * @param cbb with positive area */
-  public Plot(Rectangle rectangle, CoordinateBoundingBox cbb) {
-    this.rectangle = new Rectangle(rectangle.x, rectangle.y, rectangle.width - 1, rectangle.height - 1);
-    this.xRange = cbb.getClip(0);
-    this.yRange = cbb.getClip(1);
-    y_height = rectangle.y + rectangle.height;
-    x_factor = RealScalar.of(rectangle.width).divide(xRange.width());
-    y_factor = RealScalar.of(rectangle.height).divide(yRange.width());
+  public Plot(ScalarUnaryOperator suo, Clip x_domain) {
+    this.suo = suo;
+    this.x_domain = x_domain;
   }
 
-  public void render(Graphics2D _g, Color color, Stroke stroke, //
-      ScalarUnaryOperator suo, int segmentsPerPixel) {
-    // --
-    Graphics2D graphics = (Graphics2D) _g.create();
-    graphics.setClip(rectangle.x, rectangle.y, rectangle.width + 1, rectangle.height + 1);
-    graphics.setStroke(stroke);
-    graphics.setColor(color);
-    {
-      double ofsx = rectangle.x;
-      Path2D.Double path = new Path2D.Double();
-      {
-        Scalar eval = suo.apply(xRange.min());
-        path.moveTo(ofsx, y_height - eval.subtract(yRange.min()).multiply(y_factor).number().doubleValue());
-      }
-      ScalarUnaryOperator interpX = LinearInterpolation.of(xRange);
-      final int size = rectangle.width * segmentsPerPixel;
-      final double dx = 1.0 / segmentsPerPixel;
-      for (int i = 1; i <= size; ++i) {
-        ofsx += dx;
-        // compute the xValue and yValue of the function at xPix
-        Scalar y_eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
-        path.lineTo(ofsx, y_height - y_eval.subtract(yRange.min()).multiply(y_factor).number().doubleValue());
-      }
-      graphics.draw(path);
-    }
-    graphics.dispose();
-  }
-
-  public void render(Graphics2D _g, Color color, Stroke stroke, Tensor points) {
-    if (0 < points.length()) {
+  @Override
+  public void render(ShowableConfig showableConfig, Graphics _g) {
+    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.xRange, x_domain);
+    if (optional.isPresent()) {
+      int segmentsPerPixel = 1;
+      Clip x_clip = optional.orElseThrow();
+      // --
       Graphics2D graphics = (Graphics2D) _g.create();
-      graphics.setClip(rectangle.x, rectangle.y, rectangle.width + 1, rectangle.height + 1);
-      graphics.setStroke(stroke);
       graphics.setColor(color);
-      RenderQuality.setQuality(graphics);
-      Path2D.Double path = new Path2D.Double();
       {
-        Point2D.Double point2d = toPoint2D(points.get(0));
-        path.moveTo(point2d.x, point2d.y);
+        double x0 = showableConfig.x_pos(x_clip.min());
+        double x1 = showableConfig.x_pos(x_clip.max());
+        Path2D.Double path = new Path2D.Double();
+        {
+          Scalar eval = suo.apply(x_clip.min());
+          path.moveTo(x0, showableConfig.y_pos(eval));
+        }
+        ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
+        final int size = (int) ((x1 - x0) * segmentsPerPixel);
+        final double dx = 1.0 / segmentsPerPixel;
+        for (int i = 1; i <= size; ++i) {
+          x0 += dx;
+          // compute the xValue and yValue of the function at xPix
+          Scalar y_eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
+          path.lineTo(x0, showableConfig.y_pos(y_eval));
+        }
+        graphics.draw(path);
       }
-      points.stream().skip(1).forEach(row -> {
-        Point2D.Double point2d = toPoint2D(row);
-        path.lineTo(point2d.x, point2d.y);
-      });
-      graphics.draw(path);
       graphics.dispose();
     }
   }
 
-  private Point2D.Double toPoint2D(Tensor vector) {
-    return new Point2D.Double( //
-        rectangle.x + vector.Get(0).subtract(xRange.min()).multiply(x_factor).number().doubleValue(), //
-        y_height - vector.Get(1).subtract(yRange.min()).multiply(y_factor).number().doubleValue());
+  @Override
+  public void setLabel(String string) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void setColor(Color color) {
+this.color = color;
+    
   }
 }
