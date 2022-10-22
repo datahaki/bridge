@@ -19,8 +19,8 @@ public class ShowableConfig {
   private final Scalar x_factor;
   private final Scalar y_factor;
 
-  public ShowableConfig(Rectangle r, CoordinateBoundingBox cbb) {
-    this.rectangle = new Rectangle(r.x, r.y, r.width - 1, r.height - 1);
+  public ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    this.rectangle = rectangle;
     this.cbb = cbb;
     this.xRange = cbb.getClip(0);
     this.yRange = cbb.getClip(1);

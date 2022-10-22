@@ -46,7 +46,7 @@ public class GridDrawer {
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
   private static final Color COLOR_FONT = Color.DARK_GRAY;
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
-  private static final int GAP = 4;
+  private static final int GAP = 5;
   // ---
   private final Rectangle rectangle;
   private final Clip xRange;
@@ -54,7 +54,7 @@ public class GridDrawer {
   private final DateTimeFocus dateTimeFocus;
 
   public GridDrawer(Rectangle rectangle, CoordinateBoundingBox cbb, DateTimeFocus dateTimeFocus) {
-    this.rectangle = new Rectangle(rectangle.x, rectangle.y, rectangle.width - 1, rectangle.height - 1);
+    this.rectangle = rectangle;
     xRange = cbb.getClip(0);
     yRange = cbb.getClip(1);
     this.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
@@ -68,17 +68,22 @@ public class GridDrawer {
     if (rectangle.height <= 0)
       return;
     Graphics2D graphics = (Graphics2D) _g.create();
+    {
+      graphics.setStroke(STROKE_SOLID);
+      graphics.setColor(COLOR_FRAME);
+       graphics.drawRect(rectangle.x-1, rectangle.y-1, rectangle.width+1, rectangle.height+1);
+    }
+    {
+      graphics.setStroke(STROKE_SOLID);
+      graphics.setColor(new Color(255, 224, 224));
+//      graphics.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
     // ---
     if (!Scalars.isZero(xRange.width()))
       drawXLines(graphics);
     if (!Scalars.isZero(yRange.width()))
       drawYLines(graphics);
     // ---
-    {
-      graphics.setStroke(STROKE_SOLID);
-      graphics.setColor(COLOR_FRAME);
-      graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    }
     {
       graphics.setColor(COLOR_FONT);
       String unit0 = Unicode.valueOf(QuantityUnit.of(xRange));
@@ -101,10 +106,11 @@ public class GridDrawer {
   }
 
   private void drawXLines(Graphics2D graphics) {
-    final int y_height = rectangle.y + rectangle.height;
+    final int y_height = rectangle.y + rectangle.height - 1;
     final FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
+    final Scalar plotWidth = RealScalar.of(rectangle.width-1);
     if (xRange.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(xRange.width().multiply(RationalScalar.of(100, rectangle.width)));
@@ -115,20 +121,20 @@ public class GridDrawer {
       dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (xRange.isInside(dateTime)) {
         graphics.setColor(COLOR_FONT);
-        int pix = rectangle.x + xRange.rescale(dateTime).multiply(RealScalar.of(rectangle.width)).number().intValue();
+        int pix = rectangle.x + xRange.rescale(dateTime).multiply(plotWidth).number().intValue();
         navigableMap.put(pix, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
       // TODO UTIL determine reserve
-      Scalar plotWidth = RealScalar.of(rectangle.width);
+      
       Scalar dX = getDecimalStep(xRange.width().divide(RealScalar.of(rectangle.width)), RealScalar.of(50));
       for (Scalar xValue = Ceiling.toMultipleOf(dX).apply(xRange.min()); Scalars.lessEquals(xValue, xRange.max()); xValue = xValue.add(dX)) {
         int pix = rectangle.x + xRange.rescale(xValue).multiply(plotWidth).number().intValue();
         navigableMap.put(pix, xValue);
       }
     }
-    {
+    { // grid lines |
       graphics.setColor(COLOR_GRIDLINES);
       graphics.setStroke(STROKE_GRIDLINES);
       for (int pix : navigableMap.keySet())
@@ -137,13 +143,13 @@ public class GridDrawer {
     {
       graphics.setStroke(STROKE_SOLID);
       graphics.setColor(COLOR_HELPER);
-      graphics.drawLine(rectangle.x, y_height + GAP, rectangle.x + rectangle.width, y_height + GAP);
+      graphics.drawLine(rectangle.x, y_height + GAP, rectangle.x + rectangle.width-1, y_height + GAP);
       for (int pix : navigableMap.keySet())
         graphics.drawLine(pix, y_height + GAP, pix, y_height + GAP + 2);
     }
     {
       Graphics2D graphics2 = (Graphics2D) graphics.create();
-      graphics2.setClip(rectangle.x - GAP, y_height, rectangle.width + GAP+ GAP, 40); // magic const
+      graphics2.setClip(rectangle.x - GAP, y_height, rectangle.width + GAP + GAP, 40); // magic const
       graphics2.setColor(COLOR_FONT);
       RenderQuality.setQuality(graphics2);
       for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
@@ -158,19 +164,19 @@ public class GridDrawer {
 
   /** draw lines and numbers like this: _________________ */
   private void drawYLines(Graphics2D graphics) {
-    Scalar plotHeight = RealScalar.of(rectangle.height);
+    Scalar plotHeight = RealScalar.of(rectangle.height-1);
     FontMetrics fontMetrics = graphics.getFontMetrics();
     int fontSize = fontMetrics.getHeight();
     Scalar dY = getDecimalStep(yRange.width().divide(plotHeight), RealScalar.of(fontSize * 2));
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     for (Scalar yValue = Ceiling.toMultipleOf(dY).apply(yRange.min()); Scalars.lessEquals(yValue, yRange.max()); yValue = yValue.add(dY))
       navigableMap.put( //
-          rectangle.y + rectangle.height - yRange.rescale(yValue).multiply(plotHeight).number().intValue(), //
+          rectangle.y + rectangle.height-1 - yRange.rescale(yValue).multiply(plotHeight).number().intValue(), //
           yValue);
     {
       graphics.setStroke(STROKE_SOLID);
       graphics.setColor(COLOR_HELPER);
-      graphics.drawLine(rectangle.x - GAP, rectangle.y, rectangle.x - GAP, rectangle.y + rectangle.height);
+      graphics.drawLine(rectangle.x - GAP, rectangle.y, rectangle.x - GAP, rectangle.y + rectangle.height-1);
       for (int piy : navigableMap.keySet()) {
         graphics.drawLine(rectangle.x - GAP - 2, piy, rectangle.x - GAP, piy);
       }
@@ -179,7 +185,7 @@ public class GridDrawer {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
       for (int piy : navigableMap.keySet())
-        graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width, piy);
+        graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width-1, piy);
     }
     {
       Graphics2D graphics2 = (Graphics2D) graphics.create();

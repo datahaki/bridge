@@ -47,7 +47,7 @@ public class Show extends VisualBase {
     gridDrawer.render(graphics);
     ShowableConfig showableConfig = new ShowableConfig(rectangle, cbb);
     Graphics2D showarea = (Graphics2D) graphics.create();
-    showarea.setClip(rectangle.x, rectangle.y, rectangle.width + 1, rectangle.height + 1);
+    showarea.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     for (Showable showable : showables)
       showable.render(showableConfig, showarea);
     showarea.dispose();

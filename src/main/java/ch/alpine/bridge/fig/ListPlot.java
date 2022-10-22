@@ -4,8 +4,6 @@ package ch.alpine.bridge.fig;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
@@ -13,7 +11,6 @@ import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
-import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** Hint:
  * to render list plot in a custom graphics use
