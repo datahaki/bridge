@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.usr;
 
 import java.awt.Color;
@@ -8,54 +9,43 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
-import ch.alpine.tensor.RealScalar;
-import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.alg.Subdivide;
-import ch.alpine.tensor.img.ColorDataGradients;
-import ch.alpine.tensor.img.ColorDataLists;
-import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
-import ch.alpine.tensor.sca.Clips;
-import ch.alpine.tensor.sca.tri.Cos;
 
 public class ShowDemo {
-  private static final int _WIDTH = 201;
-  private static final int _HEIGHT = 101;
+  final int _WIDTH = 301;
+  final int _HEIGHT = 131;
+  final int width = _WIDTH + 80;
+  final int height = _HEIGHT + 30;
+  final int mag = 3;
+  // ---
   private final JFrame jFrame = new JFrame();
-  private final Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
   private final JComponent jComponent = new JComponent() {
     @Override
     protected void paintComponent(Graphics graphics) {
       {
         Dimension dimension = jComponent.getSize();
         graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, dimension.width, dimension.height);
+         graphics.fillRect(0, 0, dimension.width, dimension.height);
       }
-      // show.render(new Rectangle(70, 10, _WIDTH, _HEIGHT), graphics);
-      {
-        int width = _WIDTH + 100;
-        int height = _HEIGHT + 100;
+      int ofs = 0;
+      for (ShowDemos showDemos : ShowDemos.values()) {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Show show = showDemos.create();
         show.render(new Rectangle(70, 10, _WIDTH, _HEIGHT), bufferedImage.getGraphics());
-        graphics.drawImage(bufferedImage, 0, 0, width * 4, height * 4, null);
+        graphics.drawImage(bufferedImage, 0, ofs, width * mag, height * mag, null);
+        ofs+=height * mag;
       }
     }
   };
 
   public ShowDemo() {
-    Tensor domain = Subdivide.increasing(Clips.unit(), 50);
-    Tensor rgba = domain.map(ColorDataGradients.CLASSIC);
-//    show.setCbb ( CoordinateBoundingBox.of(Clips.unit(), Clips.interval(-2, 2)));
-    show.setPlotLabel(ListPlot.class.getSimpleName());
-    show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
-    show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
-    show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
-    show.add(new Plot(s -> Cos.FUNCTION.apply(s.add(s)).multiply(RealScalar.of(100)), Clips.positive(0.5))).setLabel("sine");
-    jFrame.setContentPane(jComponent);
+    jComponent.setPreferredSize(new Dimension(width, ShowDemos.values().length * height * mag));
+    JScrollPane jScrollPane = new JScrollPane(jComponent, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    jFrame.setContentPane(jScrollPane);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setBounds(100, 100, 1400, 900);
     jFrame.setVisible(true);

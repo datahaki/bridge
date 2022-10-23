@@ -8,6 +8,7 @@ import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.util.Optional;
 
+import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.alg.Subdivide;
@@ -38,6 +39,7 @@ public class Plot implements Showable {
       Clip x_clip = optional.orElseThrow();
       // --
       Graphics2D graphics = (Graphics2D) _g.create();
+      RenderQuality.setQuality(graphics);
       graphics.setColor(color);
       {
         double x0 = showableConfig.x_pos(x_clip.min());

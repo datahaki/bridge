@@ -107,7 +107,7 @@ public class GridDrawer {
         FontMetrics fontMetrics = graphics.getFontMetrics();
         graphics.drawString(xLabel, //
             rectangle.x - fontMetrics.stringWidth(xLabel) - 3 * GAP, //
-            rectangle.y + rectangle.height + GAP + fontMetrics.getHeight());
+            rectangle.y + rectangle.height -1 + GAP + fontMetrics.getHeight());
       }
     }
     // ---
@@ -163,8 +163,12 @@ public class GridDrawer {
         RenderQuality.setQuality(graphics2);
         for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
           Scalar value = entry.getValue();
-          String xLabel = Objects.isNull(dateTimeFormatter) ? format(value) : ((DateTime) value).format(dateTimeFormatter);
-          graphics2.drawString(xLabel, entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, y_height + GAP + fontMetrics.getHeight());
+          String xLabel = Objects.isNull(dateTimeFormatter) //
+              ? format(value)
+              : ((DateTime) value).format(dateTimeFormatter);
+          graphics2.drawString(xLabel, // 
+              entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, // 
+              y_height + GAP + fontMetrics.getHeight());
         }
         graphics2.dispose();
         // graphics.setClip(null);
