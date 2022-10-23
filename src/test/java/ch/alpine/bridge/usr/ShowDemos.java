@@ -1,12 +1,14 @@
 // code by jph
 package ch.alpine.bridge.usr;
 
+import ch.alpine.bridge.fig.ArrayPlot;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.img.ColorDataGradients;
@@ -97,7 +99,15 @@ public enum ShowDemos {
     Show create() {
       return new Show();
     }
-  }
+  },
+  ARRAY_PLOT0 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.add(new ArrayPlot(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
+      return show;
+    }
+  },
   //
   ;
 

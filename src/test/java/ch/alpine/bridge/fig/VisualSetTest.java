@@ -38,8 +38,8 @@ class VisualSetTest {
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 5);
     Show visualSet = new Show();
-    Showable row1 = visualSet.add(new ListPlot(domain, values1));
-    Showable row2 = visualSet.add(new ListPlot(domain, values2));
+    visualSet.add(new ListPlot(domain, values1));
+    visualSet.add(new ListPlot(domain, values2));
     // assertEquals(Dimensions.of(row1.points()), Dimensions.of(row2.points()));
   }
 

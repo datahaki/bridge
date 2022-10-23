@@ -12,15 +12,17 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.swing.LookAndFeels;
 
 public class ShowDemo {
-  final int _WIDTH = 301;
-  final int _HEIGHT = 131;
+  final int _WIDTH = 300;
+  final int _HEIGHT = 130;
   final int width = _WIDTH + 90;
   final int height = _HEIGHT + 30;
   final int mag = 2;
@@ -60,13 +62,16 @@ public class ShowDemo {
     Collections.reverse(list);
     jComponent.setPreferredSize(new Dimension(width, ShowDemos.values().length * height * mag));
     JScrollPane jScrollPane = new JScrollPane(jComponent, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollBar jScrollBar = jScrollPane.getVerticalScrollBar();
+    jScrollBar.setPreferredSize(new Dimension(30, 30));
     jFrame.setContentPane(jScrollPane);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setBounds(100, 100, 1400, 900);
+    jFrame.setBounds(100, 100, 1000, 900);
     jFrame.setVisible(true);
   }
 
   public static void main(String[] args) {
+    LookAndFeels.LIGHT.updateComponentTreeUI();
     ShowDemo showDemo = new ShowDemo();
   }
 }
