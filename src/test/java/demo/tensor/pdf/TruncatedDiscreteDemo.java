@@ -1,15 +1,14 @@
 // code by jph
 package demo.tensor.pdf;
 
-import java.awt.Dimension;
 import java.io.IOException;
 
 import ch.alpine.bridge.fig.Histogram;
-import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
-import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.pdf.CDF;
 import ch.alpine.tensor.pdf.Distribution;
 import ch.alpine.tensor.pdf.PDF;
@@ -28,16 +27,16 @@ public enum TruncatedDiscreteDemo {
     Show visualSet = new Show();
     {
       Tensor domain = Range.of(0, 12);
-      visualSet.add(domain, domain.map(pdf::at));
-      visualSet.add(domain, domain.map(cdf::p_lessEquals));
-      visualSet.add(domain, domain.map(pdf_o::at));
+      visualSet.add(new ListPlot(domain, domain.map(pdf::at)));
+      visualSet.add(new ListPlot(domain, domain.map(cdf::p_lessEquals)));
+      visualSet.add(new ListPlot(domain, domain.map(pdf_o::at)));
     }
     return Histogram.of(visualSet);
   }
 
   public static void main(String[] args) throws IOException {
-    Show.export(HomeDirectory.Pictures( //
-        TruncatedDiscreteDemo.class.getSimpleName() + ".png"), generate(), //
-        new Dimension(640, 480));
+    // show.export(HomeDirectory.Pictures( //
+    // TruncatedDiscreteDemo.class.getSimpleName() + ".png"), generate(), //
+    // new Dimension(640, 480));
   }
 }

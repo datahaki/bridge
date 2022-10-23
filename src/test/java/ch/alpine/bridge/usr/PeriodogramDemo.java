@@ -1,13 +1,12 @@
 // code by jph
 package ch.alpine.bridge.usr;
 
-import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Periodogram;
 import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -15,7 +14,6 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
@@ -30,9 +28,9 @@ public enum PeriodogramDemo {
     ScalarUnaryOperator suo = t -> Sin.FUNCTION.apply(f0.multiply(t)).add(Sin.FUNCTION.apply(f1.multiply(t)));
     Tensor domain = Subdivide.of(0.0, 0.3, 2400);
     Tensor signal = domain.map(suo);
-    Show visualSet = new Show();
-    visualSet.add(domain, signal);
-    return Periodogram.of(visualSet);
+    Show show = new Show();
+    show.add(new ListPlot(domain, signal));
+    return Periodogram.of(show);
   }
 
   private static Scalar _f(Scalar n) {
@@ -46,16 +44,16 @@ public enum PeriodogramDemo {
     Tensor noised = RandomVariate.of(UniformDistribution.of(-1, 1), n);
     Tensor domain = Range.of(0, n);
     Tensor signal = Tensors.vector(i -> _f(RealScalar.of(i)), n).add(noised);
-    Show visualSet = new Show();
-    visualSet.setPlotLabel(Periodogram.class.getSimpleName());
-    visualSet.add(domain, signal);
-    return Periodogram.of(visualSet);
+    Show show = new Show();
+    show.setPlotLabel(Periodogram.class.getSimpleName());
+    show.add(new ListPlot(domain, signal));
+    return Periodogram.of(show);
   }
 
   public static void main(String[] args) throws IOException {
-    Showable jFreeChart = PeriodogramDemo.create2();
-    File file = HomeDirectory.Pictures(Periodogram.class.getSimpleName() + ".png");
-    Show.export(file, jFreeChart, //
-        new Dimension(DemoHelper.DEMO_W, DemoHelper.DEMO_H));
+    // Showable jFreeChart = PeriodogramDemo.create2();
+    // File file = HomeDirectory.Pictures(Periodogram.class.getSimpleName() + ".png");
+    // Show.export(file, jFreeChart, //
+    // new Dimension(DemoHelper.DEMO_W, DemoHelper.DEMO_H));
   }
 }

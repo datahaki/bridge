@@ -18,6 +18,8 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
+/** inspired by
+ * <a href="https://reference.wolfram.com/language/ref/Plot.html">Plot</a> */
 public class Plot implements Showable {
   private static final int RESOLUTION = 20;
   // ---

@@ -22,23 +22,22 @@ import ch.alpine.tensor.pdf.c.HistogramDistribution;
 import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.qty.Quantity;
-import demo.tensor.pdf.TrapezoidalDistributionDemo;
 
 class ListPlotTest {
   @Test
   void testEmpty() {
     Show visualSet = new Show();
-    ListPlot.of(visualSet.setJoined(true));
+    // ListPlot.of(visualSet.setJoined(true));
   }
 
   @Test
   void testEmptyRow() {
-    Show visualSet = new Show();
-    VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
+    Show show = new Show();
+    Showable visualRow = show.add(new ListPlot(Tensors.empty(), Tensors.empty()));
     visualRow.setLabel("empty");
-    visualSet.add(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6));
-    CascadeHelper.draw(ListPlot.of(visualSet.setJoined(true)));
-    CascadeHelper.draw(ListPlot.of(visualSet.setJoined(false)));
+    show.add(new ListPlot(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6)));
+    // CascadeHelper.draw(ListPlot.of(show.setJoined(true)));
+    // CascadeHelper.draw(ListPlot.of(show.setJoined(false)));
   }
 
   private static final ScalarUnaryOperator suoX = s -> Quantity.of(s, "s");
@@ -46,27 +45,27 @@ class ListPlotTest {
 
   @Test
   void testUnitsX() {
-    Show visualSet = new Show();
-    VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
+    Show show = new Show();
+    Showable visualRow = show.add(new ListPlot(Tensors.empty(), Tensors.empty()));
     visualRow.setLabel("empty");
-    visualSet.add(Tensors.empty());
-    visualSet.add(Tensors.vector(1, 2, 5).map(suoX), Tensors.vector(2, 2.2, -1.6));
-    visualSet.add(Tensors.empty());
-    visualSet.add(Tensors.vector(0, 2, 5).map(suoX), Tensors.vector(1, 2, 1.6));
-    visualSet.add(Tensors.empty());
-    CascadeHelper.draw(ListPlot.of(visualSet));
+    show.add(new ListPlot(Tensors.empty()));
+    show.add(new ListPlot(Tensors.vector(1, 2, 5).map(suoX), Tensors.vector(2, 2.2, -1.6)));
+    show.add(new ListPlot(Tensors.empty()));
+    show.add(new ListPlot(Tensors.vector(0, 2, 5).map(suoX), Tensors.vector(1, 2, 1.6)));
+    show.add(new ListPlot(Tensors.empty()));
+    // CascadeHelper.draw(ListPlot.of(show));
   }
 
   @Test
   void testUnitsY() {
-    Show visualSet = new Show();
-    VisualRow visualRow = visualSet.add(Tensors.empty(), Tensors.empty());
+    Show show = new Show();
+    Showable visualRow = show.add(new ListPlot(Tensors.empty(), Tensors.empty()));
     visualRow.setLabel("empty");
-    visualSet.add(Tensors.empty());
-    visualSet.add(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).map(suoY));
-    visualSet.add(Tensors.empty());
-    visualSet.add(Tensors.vector(3, 5), Tensors.vector(1, 2.6).map(suoY));
-    CascadeHelper.draw(ListPlot.of(visualSet));
+    show.add(new ListPlot(Tensors.empty()));
+    show.add(new ListPlot(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).map(suoY)));
+    show.add(new ListPlot(Tensors.empty()));
+    show.add(new ListPlot(Tensors.vector(3, 5), Tensors.vector(1, 2.6).map(suoY)));
+    // CascadeHelper.draw(ListPlot.of(show));
   }
 
   @Test
@@ -74,8 +73,7 @@ class ListPlotTest {
     Show visualSet = new Show();
     int n = 100_000; // tested for up to 10 million
     Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
-    visualSet.add(points);
-    ListPlot.of(visualSet);
+    visualSet.add(new ListPlot(points));
   }
 
   @Test
@@ -86,14 +84,13 @@ class ListPlotTest {
     Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
     for (int count = 0; count < 10000; ++count)
       points.set(Quantity.of(DoubleScalar.INDETERMINATE, "m"), random.nextInt(n), random.nextInt(2));
-    visualSet.add(points);
-    ListPlot.of(visualSet);
+    visualSet.add(new ListPlot(points));
   }
 
   @Test
   void testDistribution(@TempDir File folder) throws IOException {
-    Showable jFreeChart = TrapezoidalDistributionDemo.generate();
-    Show.export(new File(folder, "trap_distr.png"), jFreeChart, new Dimension(640, 480));
+    // Showable jFreeChart = TrapezoidalDistributionDemo.generate();
+    // Show.export(new File(folder, "trap_distr.png"), jFreeChart, new Dimension(640, 480));
   }
 
   @Test
@@ -101,23 +98,22 @@ class ListPlotTest {
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
     Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
-    Show visualSet = new Show();
-    visualSet.setPlotLabel("List Plot Demo");
+    Show show = new Show();
+    show.setPlotLabel("List Plot Demo");
     Tensor domain1 = RandomVariate.of(UniformDistribution.unit(), values1.length());
     ScalarUnaryOperator suoX = s -> Quantity.of(s.add(RealScalar.of(100)), "s");
     ScalarUnaryOperator suoY = s -> Quantity.of(s.add(RealScalar.of(300)), "m");
-    VisualRow visualRow1 = visualSet.add(domain1.map(suoX), values1.map(suoY));
+    Showable visualRow1 = show.add(new ListPlot(domain1.map(suoX), values1.map(suoY)));
     visualRow1.setLabel("first");
     Tensor domain2 = RandomVariate.of(UniformDistribution.unit(), values2.length());
-    VisualRow visualRow2 = visualSet.add(domain2.map(suoX), values2.map(suoY));
+    Showable visualRow2 = show.add(new ListPlot(domain2.map(suoX), values2.map(suoY)));
     Tensor domain3 = RandomVariate.of(UniformDistribution.unit(), values3.length());
-    visualSet.add(domain3.map(suoX), values3.map(suoY));
+    show.add(new ListPlot(domain3.map(suoX), values3.map(suoY)));
     Tensor domain4 = Tensors.vector(1, 3, 2, 5, 4).multiply(RealScalar.of(0.2));
-    visualSet.add(domain4.map(suoX), domain4.map(suoY));
+    show.add(new ListPlot(domain4.map(suoX), domain4.map(suoY)));
     // ChartFactory.setChartTheme(ChartTheme.STANDARD);
-    Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
     File file = new File(folder, ListPlot.class.getSimpleName() + ".png");
-    Show.export(file, jFreeChart, new Dimension(500, 300));
+    show.export(file, new Dimension(500, 300));
   }
 
   @Test
@@ -127,12 +123,11 @@ class ListPlotTest {
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
     {
       Tensor domain = Subdivide.of(-5, 8, 300);
-      Show visualSet = new Show();
-      visualSet.add(domain, domain.map(distribution::at));
-      visualSet.add(domain, domain.map(distribution::p_lessEquals));
-      visualSet.add(domain, domain.map(dist::at));
-      Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
-      Show.export(new File(folder, "hd.png"), jFreeChart, new Dimension(640, 480));
+      Show show = new Show();
+      show.add(new ListPlot(domain, domain.map(distribution::at)));
+      show.add(new ListPlot(domain, domain.map(distribution::p_lessEquals)));
+      show.add(new ListPlot(domain, domain.map(dist::at)));
+      show.export(new File(folder, "hd.png"), new Dimension(640, 480));
     }
   }
 
@@ -145,11 +140,10 @@ class ListPlotTest {
       Tensor domain = Subdivide.of(0, 1, 300);
       InverseCDF inv1 = InverseCDF.of(distribution);
       InverseCDF inv2 = InverseCDF.of(dist);
-      Show visualSet = new Show();
-      visualSet.add(domain, domain.map(inv1::quantile));
-      visualSet.add(domain, domain.map(inv2::quantile));
-      Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
-      Show.export(new File(folder, "hd_inv.png"), jFreeChart, new Dimension(640, 480));
+      Show show = new Show();
+      show.add(new ListPlot(domain, domain.map(inv1::quantile)));
+      show.add(new ListPlot(domain, domain.map(inv2::quantile)));
+      show.export(new File(folder, "hd_inv.png"), new Dimension(640, 480));
     }
   }
 }

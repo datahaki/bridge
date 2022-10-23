@@ -4,7 +4,6 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
@@ -22,13 +21,13 @@ public enum TrapezoidalSigmaDistributionDemo {
     Distribution dist2 = TrapezoidalDistribution.with(2, 1.2, 2.4);
     {
       Tensor domain = Subdivide.of(-3 + 2, 3 + 2, 6 * 10);
-      Show visualSet = new Show();
+      Show show = new Show();
       PDF pdf1 = PDF.of(dist1);
       PDF pdf2 = PDF.of(dist2);
-      visualSet.add(domain, domain.map(pdf1::at));
-      visualSet.add(domain, domain.map(pdf2::at));
-      Showable jFreeChart = ListPlot.of(visualSet);
-      Show.export(HomeDirectory.Pictures("trapzsigma.png"), jFreeChart, new Dimension(640, 480));
+      show.add(new ListPlot(domain, domain.map(pdf1::at)));
+      show.add(new ListPlot(domain, domain.map(pdf2::at)));
+      // Showable jFreeChart = ListPlot.of(show);
+      show.export(HomeDirectory.Pictures("trapzsigma.png"), new Dimension(640, 480));
     }
   }
 }

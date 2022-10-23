@@ -4,8 +4,6 @@ package ch.alpine.bridge.fig;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.awt.BasicStroke;
-
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.RealScalar;
@@ -27,13 +25,13 @@ class VisualRowTest {
     Tensor values = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor points = Transpose.of(Tensors.of(domain, values));
     Show visualSet = new Show();
-    VisualRow row1 = visualSet.add(points);
-    row1.getStroke();
-    VisualRow row2 = visualSet.add(domain, values);
-    assertEquals(row1.points(), row2.points());
-    assertEquals(visualSet.visualRows().size(), 2);
-    row1.setStroke(new BasicStroke(2f));
-    row1.getStroke();
+    Showable row1 = visualSet.add(new ListPlot(points));
+    // row1.getStroke();
+    Showable row2 = visualSet.add(new ListPlot(domain, values));
+    // assertEquals(row1.points(), row2.points());
+    // assertEquals(visualSet.visualRows().size(), 2);
+    // row1.setStroke(new BasicStroke(2f));
+    // row1.getStroke();
   }
 
   @Test
@@ -41,7 +39,7 @@ class VisualRowTest {
     Show visualSet = new Show();
     Distribution distribution = NormalDistribution.of(DateTime.now(), Quantity.of(3, "h"));
     Tensor points = RandomVariate.of(distribution, 10, 2);
-    VisualRow visualRow = visualSet.add(points);
+    Showable visualRow = visualSet.add(new ListPlot(points));
     Axis axisX = visualSet.getAxisX();
     assertEquals(axisX.getUnit(), Unit.ONE);
     assertEquals(axisX.getUnitString(), "");
@@ -54,8 +52,7 @@ class VisualRowTest {
 
   @Test
   void testPointNonMatrix() {
-    Show visualSet = new Show();
-    assertThrows(Exception.class, () -> visualSet.add(Tensors.vector(1, 2, 3, 4)));
-    assertThrows(Exception.class, () -> visualSet.add(RealScalar.ZERO));
+    assertThrows(Exception.class, () -> new ListPlot(Tensors.vector(1, 2, 3, 4)));
+    assertThrows(Exception.class, () -> new ListPlot(RealScalar.ZERO));
   }
 }

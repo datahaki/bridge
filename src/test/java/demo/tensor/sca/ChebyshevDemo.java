@@ -4,7 +4,6 @@ package demo.tensor.sca;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
@@ -21,36 +20,33 @@ public enum ChebyshevDemo {
     int max = 6;
     {
       Tensor domain = Subdivide.of(-1., 1., 30);
-      Show visualSet = new Show();
+      Show show = new Show();
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = ClenshawChebyshev.of(UnitVector.of(d + 1, d));
         ScalarUnaryOperator su2 = Chebyshev.T.of(d);
-        visualSet.add(domain, domain.map(suo).subtract(domain.map(su2)));
+        show.add(new ListPlot(domain, domain.map(suo).subtract(domain.map(su2))));
       }
-      Showable jFreeChart = ListPlot.of(visualSet);
-      Show.export(HomeDirectory.Pictures(ChebyshevDemo.class.getSimpleName() + ".png"), jFreeChart, new Dimension(600, 400));
+      show.export(HomeDirectory.Pictures(ChebyshevDemo.class.getSimpleName() + ".png"), new Dimension(600, 400));
     }
     {
       Tensor domain = Subdivide.of(-1., 1., 30);
-      Show visualSet = new Show();
+      Show show = new Show();
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = Chebyshev.T.of(d);
-        visualSet.add(domain, domain.map(suo));
+        show.add(new ListPlot(domain, domain.map(suo)));
       }
-      visualSet.setPlotLabel("Chebyshev Polynomials");
-      Showable jFreeChart = ListPlot.of(visualSet);
-      Show.export(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "T.png"), jFreeChart, new Dimension(600, 400));
+      show.setPlotLabel("Chebyshev Polynomials");
+      show.export(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "T.png"), new Dimension(600, 400));
     }
     {
       Tensor domain = Subdivide.of(-1., 1., 30);
-      Show visualSet = new Show();
+      Show show = new Show();
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = Chebyshev.U.of(d);
-        visualSet.add(domain, domain.map(suo));
+        show.add(new ListPlot(domain, domain.map(suo)));
       }
-      visualSet.setPlotLabel("Chebyshev Polynomials");
-      Showable jFreeChart = ListPlot.of(visualSet);
-      Show.export(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "U.png"), jFreeChart, new Dimension(600, 400));
+      show.setPlotLabel("Chebyshev Polynomials");
+      show.export(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "U.png"), new Dimension(600, 400));
     }
   }
 }

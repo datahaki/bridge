@@ -35,7 +35,7 @@ import ch.alpine.tensor.sca.Clips;
     visualImage.getAxisY().setLabel(visualSet.getAxisY().getLabel());
     return visualImage;
   }
-  
+
   public static Clip minMax(Tensor vector) {
     return vector.stream() //
         .map(Scalar.class::cast) //

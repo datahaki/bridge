@@ -23,7 +23,7 @@ import ch.alpine.tensor.sca.tri.Cos;
     Tensor domain = Subdivide.increasing(Clips.unit(), 50);
     Tensor rgba = domain.map(ColorDataGradients.CLASSIC);
     Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
-    show.setCbb ( CoordinateBoundingBox.of(Clips.unit(), Clips.interval(-2, 2)));
+    show.setCbb(CoordinateBoundingBox.of(Clips.unit(), Clips.interval(-2, 2)));
     show.setPlotLabel(ListPlot.class.getSimpleName());
     show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
     show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");

@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -46,7 +47,6 @@ public class ArrayPlot implements Showable {
     Point2D.Double dr = showableConfig.toPoint2D(Tensors.of( //
         cbb.getClip(0).max(), //
         cbb.getClip(1).min()));
-    
     int width = (int) Math.round(dr.getX() - ul.getX());
     int height = (int) Math.round(dr.getY() - ul.getY());
     Image image = bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING);
@@ -64,5 +64,11 @@ public class ArrayPlot implements Showable {
   @Override
   public void setColor(Color color) {
     // TODO Auto-generated method stub
+  }
+
+  @Override
+  public Optional<CoordinateBoundingBox> fullPlotRange() {
+    // TODO Auto-generated method stub
+    return Optional.empty();
   }
 }

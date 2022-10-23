@@ -4,7 +4,6 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RationalScalar;
@@ -23,13 +22,12 @@ public enum BinomialDistributionDemo {
     Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
     PDF pdf = PDF.of(distribution);
     CDF cdf = CDF.of(distribution);
-    Show visualSet = new Show();
+    Show show = new Show();
     {
       Tensor domain = Range.of(0, n + 1);
-      visualSet.add(domain, domain.map(pdf::at));
-      visualSet.add(domain, domain.map(cdf::p_lessEquals));
+      show.add(new ListPlot(domain, domain.map(pdf::at)));
+      show.add(new ListPlot(domain, domain.map(cdf::p_lessEquals)));
     }
-    Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
-    Show.export(HomeDirectory.Pictures("binomial_distr.png"), jFreeChart, new Dimension(640, 480));
+    show.export(HomeDirectory.Pictures("binomial_distr.png"), new Dimension(640, 480));
   }
 }

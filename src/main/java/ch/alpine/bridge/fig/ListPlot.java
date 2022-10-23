@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Optional;
@@ -26,6 +27,8 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ListPlot.html">ListPlot</a> */
 public class ListPlot implements Showable {
+  private static final double RADIUS = 2.5;
+
   /** Remark:
    * We would like to make joined property of VisualRow, but JFreeChart does not support
    * this granularity.
@@ -43,9 +46,15 @@ public class ListPlot implements Showable {
 
   // ---
   private final Tensor points;
+  private final boolean joined;
 
-  private ListPlot(Tensor points) {
+  public ListPlot(Tensor points) {
+    this(points, true);
+  }
+
+  public ListPlot(Tensor points, boolean joined) {
     this.points = points;
+    this.joined = joined;
   }
 
   public ListPlot(Tensor domain, Tensor tensor) {
@@ -58,16 +67,30 @@ public class ListPlot implements Showable {
       Graphics2D graphics = (Graphics2D) _g.create();
       RenderQuality.setQuality(graphics);
       graphics.setColor(color);
-      Path2D.Double path = new Path2D.Double();
-      {
-        Point2D.Double point2d = showableConfig.toPoint2D(points.get(0));
-        path.moveTo(point2d.x, point2d.y);
+      if (joined) {
+        Path2D.Double path = new Path2D.Double();
+        {
+          Point2D.Double point2d = showableConfig.toPoint2D(points.get(0));
+          path.moveTo(point2d.x, point2d.y);
+        }
+        points.stream().skip(1).forEach(row -> {
+          Point2D.Double point2d = showableConfig.toPoint2D(row);
+          path.lineTo(point2d.x, point2d.y);
+        });
+        graphics.draw(path);
+      } else {
+        for (Tensor row : points) {
+          Point2D.Double point2d = showableConfig.toPoint2D(row);
+          graphics.fill(new Ellipse2D.Double(point2d.x - RADIUS, point2d.y - RADIUS, 2 * RADIUS, 2 * RADIUS));
+          // below: diamond <>
+          // Path2D.Double path = new Path2D.Double();
+          // path.moveTo(point2d.x + rad, point2d.y);
+          // path.lineTo(point2d.x, point2d.y + rad);
+          // path.lineTo(point2d.x - rad, point2d.y);
+          // path.lineTo(point2d.x, point2d.y - rad);
+          // graphics.fill(path);
+        }
       }
-      points.stream().skip(1).forEach(row -> {
-        Point2D.Double point2d = showableConfig.toPoint2D(row);
-        path.lineTo(point2d.x, point2d.y);
-      });
-      graphics.draw(path);
       graphics.dispose();
     }
   }

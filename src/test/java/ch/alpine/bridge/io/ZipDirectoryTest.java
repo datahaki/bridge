@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.ext.DeleteDirectory;
@@ -27,10 +26,9 @@ class ZipDirectoryTest {
     assertFalse(folder.exists());
     folder.mkdirs();
     {
-      Show visualSet = new Show();
-      visualSet.add(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2));
-      Showable jFreeChart = ListPlot.of(visualSet);
-      Show.export(new File(folder, "image.png"), jFreeChart, new Dimension(300, 200));
+      Show show = new Show();
+      show.add(new ListPlot(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2)));
+      show.export(new File(folder, "image.png"), new Dimension(300, 200));
     }
     File zipFile = new File(tempDir, "file.zip");
     assertFalse(zipFile.exists());

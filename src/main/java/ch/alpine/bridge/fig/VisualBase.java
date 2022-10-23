@@ -1,6 +1,7 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
+@Deprecated
 public class VisualBase {
   private final Axis axisX = new Axis();
   private final Axis axisY = new Axis();

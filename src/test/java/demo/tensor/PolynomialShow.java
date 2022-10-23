@@ -4,7 +4,6 @@ package demo.tensor;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
@@ -27,12 +26,10 @@ import ch.alpine.tensor.sca.ply.Polynomial;
       Tensor samples_y = Subdivide.of(Quantity.of(10, "bar"), Quantity.of(26, "bar"), 50);
       samples_x.map(x_to_y);
       samples_y.map(y_to_x);
-      Show visualSet = new Show();
-      visualSet.add(samples_x, samples_x.map(x_to_y));
-      visualSet.add(samples_y.map(y_to_x), samples_y);
-      Showable jFreeChart = ListPlot.of(visualSet);
-      Show.export(HomeDirectory.Pictures("here" + degree + ".png"), jFreeChart, //
-          new Dimension(400, 300));
+      Show show = new Show();
+      show.add(new ListPlot(samples_x, samples_x.map(x_to_y)));
+      show.add(new ListPlot(samples_y.map(y_to_x), samples_y));
+      show.export(HomeDirectory.Pictures("here" + degree + ".png"), new Dimension(400, 300));
     }
   }
 }

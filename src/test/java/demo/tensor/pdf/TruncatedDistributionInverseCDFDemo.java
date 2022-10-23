@@ -4,7 +4,6 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
@@ -22,12 +21,11 @@ public enum TruncatedDistributionInverseCDFDemo {
     Distribution original = NormalDistribution.standard();
     Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 2.5));
     InverseCDF inverseCDF = InverseCDF.of(distribution);
-    Show visualSet = new Show();
+    Show show = new Show();
     {
       Tensor domain = Subdivide.of(0, 1, 100);
-      visualSet.add(domain, domain.map(inverseCDF::quantile));
+      show.add(new ListPlot(domain, domain.map(inverseCDF::quantile)));
     }
-    Showable jFreeChart = ListPlot.of(visualSet);
-    Show.export(HomeDirectory.Pictures("truncated_inversecdf.png"), jFreeChart, new Dimension(640, 480));
+    show.export(HomeDirectory.Pictures("truncated_inversecdf.png"), new Dimension(640, 480));
   }
 }

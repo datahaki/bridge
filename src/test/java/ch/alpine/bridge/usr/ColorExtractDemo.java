@@ -4,7 +4,6 @@ package ch.alpine.bridge.usr;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
@@ -32,9 +31,9 @@ enum ColorExtractDemo {
     System.out.println(sample.length());
     Tensor result = Array.zeros(42, 4);
     for (int i = 0; i < 3; ++i) {
-      Show visualSet = new Show();
+      Show show = new Show();
       Tensor intense = rgba.get(Tensor.ALL, i);
-      visualSet.add(domain, intense);
+      show.add(new ListPlot(domain, intense));
       Tensor max = Tensors.empty();
       for (int j = 0; j < sample.length(); ++j) {
         Tensor col = Tensors.empty();
@@ -44,9 +43,8 @@ enum ColorExtractDemo {
         max.append(win);
         result.set(win, j, i);
       }
-      visualSet.add(sample, max);
-      Showable jFreeChart = ListPlot.of(visualSet.setJoined(true));
-      Show.export(HomeDirectory.Pictures("temp" + i + ".png"), jFreeChart, new Dimension(640, 480));
+      show.add(new ListPlot(sample, max));
+      show.export(HomeDirectory.Pictures("temp" + i + ".png"), new Dimension(640, 480));
     }
     for (int j = 0; j < sample.length(); ++j)
       result.set(RealScalar.of(255), j, 3);

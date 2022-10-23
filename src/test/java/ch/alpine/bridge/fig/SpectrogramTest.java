@@ -34,7 +34,7 @@ class SpectrogramTest {
       Tensor signal = domain.map(polynomial).map(Cos.FUNCTION);
       Show visualSet = new Show();
       visualSet.setPlotLabel("Spectrogram");
-      visualSet.add(domain.map(s -> Quantity.of(s, "s")), signal);
+      visualSet.add(new ListPlot(domain.map(s -> Quantity.of(s, "s")), signal));
       visualSet.getAxisX().setUnit(Unit.of("ms"));
       visualSet.getAxisX().setLabel("time");
       visualSet.getAxisY().setLabel("user defined");

@@ -3,7 +3,6 @@ package ch.alpine.bridge.fig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,7 @@ class VisualImageTest {
     VisualImage visualImage = new VisualImage(bufferedImage);
     assertEquals(visualImage.getAxisX().getOptionalClip().orElseThrow(), Clips.positive(bufferedImage.getWidth()));
     assertEquals(visualImage.getAxisY().getOptionalClip().orElseThrow(), Clips.positive(bufferedImage.getHeight()));
-    Showable jFreeChart = ArrayPlot.of(visualImage);
-    jFreeChart.draw(bufferedImage.createGraphics(), new Rectangle(0, 0, 200, 200));
+    // Showable jFreeChart = ArrayPlot.of(visualImage);
+    // jFreeChart.draw(bufferedImage.createGraphics(), new Rectangle(0, 0, 200, 200));
   }
 }
