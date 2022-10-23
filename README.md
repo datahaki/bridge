@@ -15,7 +15,6 @@ Features include
 
 3rd party dependencies are
 
-* `JFreeChart`
 * `FlatLaf`
 
 ## Plots

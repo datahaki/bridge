@@ -32,9 +32,9 @@ class SpectrogramTest {
       double hi = 1.6;
       Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
       Tensor signal = domain.map(polynomial).map(Cos.FUNCTION);
-      VisualSet visualSet = new VisualSet();
+      Show visualSet = new Show();
       visualSet.setPlotLabel("Spectrogram");
-      visualSet.add(domain.map(s -> Quantity.of(s, "s")), signal);
+      visualSet.add(new ListPlot(domain.map(s -> Quantity.of(s, "s")), signal));
       visualSet.getAxisX().setUnit(Unit.of("ms"));
       visualSet.getAxisX().setLabel("time");
       visualSet.getAxisY().setLabel("user defined");

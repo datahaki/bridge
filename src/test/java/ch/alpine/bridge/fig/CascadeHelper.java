@@ -1,14 +1,8 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
 
 import ch.alpine.bridge.usr.SpectrogramDemo;
 import ch.alpine.tensor.Tensor;
@@ -19,9 +13,9 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 public enum CascadeHelper {
   ;
-  public static void draw(JFreeChart jFreeChart) {
-    BufferedImage bufferedImage = new BufferedImage(400, 200, BufferedImage.TYPE_INT_ARGB);
-    jFreeChart.draw(bufferedImage.createGraphics(), new Rectangle2D.Double(0, 0, 400, 200));
+  public static void draw(Showable jFreeChart) {
+    // BufferedImage bufferedImage = new BufferedImage(400, 200, BufferedImage.TYPE_INT_ARGB);
+    // jFreeChart.draw(bufferedImage.createGraphics(), new Rectangle(0, 0, 400, 200));
   }
 
   public static void cascade(File folder, boolean labels) throws IOException {
@@ -29,52 +23,35 @@ public enum CascadeHelper {
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
     Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
-    VisualSet visualSet = new VisualSet(ColorDataLists._250.cyclic());
-    VisualRow row0 = visualSet.add(Range.of(0, values1.length()), values1);
-    visualSet.add(Range.of(0, values2.length()), values2);
-    VisualRow row2 = visualSet.add(Range.of(3, 3 + values3.length()), values3);
+    Show show = new Show(ColorDataLists._250.cyclic());
+    Showable row0 = show.add(new ListPlot(Range.of(0, values1.length()), values1));
+    show.add(new ListPlot(Range.of(0, values2.length()), values2));
+    Showable row2 = show.add(new ListPlot(Range.of(3, 3 + values3.length()), values3));
     if (labels) {
       row0.setLabel("row 0");
       row2.setLabel("row 2");
-      visualSet.getAxisX().setLabel("x axis");
-      visualSet.getAxisY().setLabel("y axis");
+      show.getAxisX().setLabel("x axis");
+      show.getAxisY().setLabel("y axis");
     }
     {
-      visualSet.setPlotLabel(StackedHistogram.class.getSimpleName());
-      export(folder, StackedHistogram.of(visualSet));
+      show.setPlotLabel(Histogram.class.getSimpleName());
+      export(folder, Histogram.of(show));
     }
     {
-      visualSet.setPlotLabel(Histogram.class.getSimpleName());
-      export(folder, Histogram.of(visualSet));
+      show.setPlotLabel(Histogram.class.getSimpleName() + "Function");
+      export(folder, Histogram.of(show, false, scalar -> "[" + scalar.toString() + "]"));
     }
     {
-      visualSet.setPlotLabel(Histogram.class.getSimpleName() + "Function");
-      export(folder, Histogram.of(visualSet, false, scalar -> "[" + scalar.toString() + "]"));
-    }
-    {
-      visualSet.setPlotLabel(TimeChart.class.getSimpleName());
-      export(folder, TimeChart.of(visualSet));
-    }
-    {
-      visualSet.setPlotLabel(StackedTimeChart.class.getSimpleName());
-      export(folder, StackedTimeChart.of(visualSet));
-    }
-    {
-      visualSet.setPlotLabel(ListPlot.class.getSimpleName());
-      export(folder, ListPlot.of(visualSet, true));
-    }
-    {
-      visualSet.setPlotLabel(StackedTablePlot.class.getSimpleName());
-      export(folder, StackedTablePlot.of(visualSet));
+      show.setPlotLabel(ListPlot.class.getSimpleName());
+      // export(folder, ListPlot.of(show.setJoined(true)));
     }
     {
       export(folder, SpectrogramDemo.create());
     }
   }
 
-  private static void export(File folder, JFreeChart jFreeChart) throws IOException {
-    File file = new File(folder, jFreeChart.getTitle().getText() + ".png");
-    jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(file, jFreeChart, 500, 300);
+  private static void export(File folder, Showable jFreeChart) throws IOException {
+    // File file = new File(folder, jFreeChart.getTitle().getText() + ".png");
+    // ChartUtils.saveChartAsPNG(file, jFreeChart, new Dimension(500, 300));
   }
 }

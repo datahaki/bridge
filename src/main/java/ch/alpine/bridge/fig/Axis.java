@@ -6,12 +6,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ch.alpine.bridge.lang.Unicode;
-import ch.alpine.tensor.RealScalar;
-import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.PackageTestAccess;
-import ch.alpine.tensor.qty.QuantityMagnitude;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
@@ -22,8 +19,8 @@ import ch.alpine.tensor.sca.Clips;
  * <a href="https://reference.wolfram.com/language/ref/Axis.html">Axis</a> */
 public class Axis implements Serializable {
   public enum Type {
-    LINEAR, //
-    LOGARITHMIC, //
+    LINEAR,
+    LOGARITHMIC,
   }
 
   private String label = "";
@@ -107,15 +104,6 @@ public class Axis implements Serializable {
 
   /* package */ boolean hasUnit() {
     return Objects.nonNull(unit);
-  }
-
-  /** <p>inspired by
-   * <a href="https://reference.wolfram.com/language/ref/Reals.html">Reals</a>
-   * 
-   * @return operator that maps a scalar value to instance of {@link RealScalar}
-   * so that {@link Scalar#number()} can be invoked. */
-  /* package */ ScalarUnaryOperator toReals() {
-    return QuantityMagnitude.SI().in(getAxisUnit());
   }
 
   /* package */ String getUnitString() {

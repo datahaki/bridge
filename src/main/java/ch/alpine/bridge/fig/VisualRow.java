@@ -4,19 +4,21 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
-import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.chq.ScalarQ;
+import ch.alpine.tensor.red.MinMax;
+import ch.alpine.tensor.sca.Clip;
 
-public class VisualRow implements Serializable {
+public class VisualRow {
   private static final Stroke STROKE_DEFAULT = new BasicStroke(1f);
   // ---
   private final Tensor points;
-  private final ComparableLabel comparableLabel;
+  private String label;
   private Color color = Color.BLUE;
-  private boolean autoSort = false;
+  private boolean joined = false;
   /** not serializable */
   private transient Stroke stroke;
 
@@ -28,12 +30,17 @@ public class VisualRow implements Serializable {
   /* package */ VisualRow(Tensor points, int index) {
     ScalarQ.thenThrow(points);
     this.points = points;
-    this.comparableLabel = new ComparableLabel(index);
   }
 
   /** @return points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}} */
   public Tensor points() {
     return points.unmodifiable();
+  }
+
+  Optional<Clip> pointsClip(int index) {
+    return Optional.ofNullable(points.stream() //
+        .map(xy -> xy.Get(index)) //
+        .collect(MinMax.toClip()));
   }
 
   // ---
@@ -63,27 +70,23 @@ public class VisualRow implements Serializable {
   // ---
   /** @param string */
   public void setLabel(String string) {
-    comparableLabel.setString(string);
+    label = string;
   }
 
   /** @return */
   public String getLabelString() {
-    return getLabel().toString();
+    return label;
   }
 
   // ---
   /** @param autoSort */
-  public void setAutoSort(boolean autoSort) {
-    this.autoSort = autoSort;
+  public VisualRow setJoined(boolean joined) {
+    this.joined = joined;
+    return this;
   }
 
   /** @return */
-  public boolean getAutoSort() {
-    return autoSort;
-  }
-
-  // ---
-  /* package */ ComparableLabel getLabel() {
-    return comparableLabel;
+  public boolean getJoined() {
+    return joined;
   }
 }

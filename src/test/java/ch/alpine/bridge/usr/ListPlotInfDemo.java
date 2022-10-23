@@ -1,16 +1,13 @@
 // code by jph
 package ch.alpine.bridge.usr;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualRow;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
@@ -24,15 +21,13 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
     Tensor valuesX = Range.of(0, 10);
     Tensor valuesY = RandomVariate.of(UniformDistribution.unit(), 10);
     valuesY.set(DoubleScalar.POSITIVE_INFINITY, 3);
-    VisualSet visualSet = new VisualSet();
-    visualSet.setPlotLabel("List Plot Demo");
-    VisualRow visualRow1 = visualSet.add(valuesX, valuesY);
+    Show show = new Show();
+    show.setPlotLabel("List Plot Demo");
+    Showable visualRow1 = show.add(new ListPlot(valuesX, valuesY));
     visualRow1.setLabel("first");
     {
-      JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-      jFreeChart.setBackgroundPaint(Color.WHITE);
       File file = HomeDirectory.Pictures(ListPlotInfDemo.class.getSimpleName() + ".png");
-      ChartUtils.saveChartAsPNG(file, jFreeChart, 500, 300);
+      show.export(file, new Dimension(500, 300));
     }
   }
 }

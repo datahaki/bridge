@@ -1,16 +1,20 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.LogAxis;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.swing.ChartPanel;
-import org.jfree.data.xy.XYSeriesCollection;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.util.Optional;
 
-import ch.alpine.bridge.fig.Axis.Type;
+import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Transpose;
+import ch.alpine.tensor.alg.VectorQ;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** Hint:
  * to render list plot in a custom graphics use
@@ -23,64 +27,94 @@ import ch.alpine.bridge.fig.Axis.Type;
  * 
  * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ListPlot.html">ListPlot</a> */
-public enum ListPlot {
-  ;
+public class ListPlot implements Showable {
+  private static final double RADIUS = 2.5;
+
   /** Remark:
    * We would like to make joined property of VisualRow, but JFreeChart does not support
    * this granularity.
    * 
-   * @param visualSet
-   * @param joined for lines between coordinates, otherwise scattered points
-   * @return */
-  public static JFreeChart of(VisualSet visualSet, boolean joined) {
-    XYSeriesCollection xySeriesCollection = DatasetFactory.xySeriesCollection(visualSet);
-    JFreeChart jFreeChart = joined //
-        ? ChartFactory.createXYLineChart( //
-            visualSet.getPlotLabel(), //
-            visualSet.getAxisX().getAxisLabel(), //
-            visualSet.getAxisY().getAxisLabel(), //
-            xySeriesCollection, PlotOrientation.VERTICAL, //
-            visualSet.hasLegend(), // legend
-            false, // tooltips
-            false) // urls
-        : ChartFactory.createScatterPlot( //
-            visualSet.getPlotLabel(), //
-            visualSet.getAxisX().getAxisLabel(), //
-            visualSet.getAxisY().getAxisLabel(), //
-            xySeriesCollection, PlotOrientation.VERTICAL, //
-            visualSet.hasLegend(), // legend
-            false, // tooltips
-            false); // urls
-    XYPlot xyPlot = (XYPlot) jFreeChart.getPlot();
-    XYItemRenderer xyItemRenderer = xyPlot.getRenderer();
-    int limit = xySeriesCollection.getSeriesCount();
-    for (int index = 0; index < limit; ++index) {
-      VisualRow visualRow = visualSet.getVisualRow(index);
-      xyItemRenderer.setSeriesPaint(index, visualRow.getColor());
-      xyItemRenderer.setSeriesStroke(index, visualRow.getStroke());
-    }
-    // https://github.com/jfree/jfreechart/issues/301
-    if (visualSet.getAxisX().getType().equals(Type.LOGARITHMIC)) {
-      LogAxis logAxis = new LogAxis(visualSet.getAxisX().getAxisLabel());
-      xyPlot.setDomainAxis(logAxis);
-    }
-    if (visualSet.getAxisY().getType().equals(Type.LOGARITHMIC)) {
-      LogAxis logAxis = new LogAxis(visualSet.getAxisY().getAxisLabel());
-      xyPlot.setRangeAxis(logAxis);
-    }
-    StaticHelper.setRange(visualSet.getAxisX(), xyPlot.getDomainAxis());
-    StaticHelper.setRange(visualSet.getAxisY(), xyPlot.getRangeAxis());
-    return jFreeChart;
-  }
-
-  /** Mathematica's default is to draw data points as separate dots,
-   * i.e. "Joined->False".
-   * 
    * Tested with up to 10 million points - a little slow but possible.
    * 
    * @param visualSet
+   * @param joined for lines between coordinates, otherwise scattered points
    * @return */
-  public static JFreeChart of(VisualSet visualSet) {
-    return of(visualSet, false);
+  public static Show of(Tensor points) {
+    Show show = new Show();
+    show.add(new ListPlot(points));
+    return show;
+  }
+
+  // ---
+  private final Tensor points;
+  private final boolean joined;
+
+  public ListPlot(Tensor points) {
+    this(points, true);
+  }
+
+  public ListPlot(Tensor points, boolean joined) {
+    points.stream().forEach(row -> VectorQ.requireLength(row, 2));
+    this.points = points;
+    this.joined = joined;
+  }
+
+  public ListPlot(Tensor domain, Tensor tensor) {
+    this(Transpose.of(Tensors.of(domain, tensor)));
+  }
+
+  @Override
+  public void render(ShowableConfig showableConfig, Graphics _g) {
+    if (0 < points.length()) {
+      Graphics2D graphics = (Graphics2D) _g.create();
+      RenderQuality.setQuality(graphics);
+      graphics.setColor(color);
+      if (joined) {
+        Path2D.Double path = new Path2D.Double();
+        {
+          Point2D.Double point2d = showableConfig.toPoint2D(points.get(0));
+          path.moveTo(point2d.x, point2d.y);
+        }
+        points.stream().skip(1).forEach(row -> {
+          Point2D.Double point2d = showableConfig.toPoint2D(row);
+          path.lineTo(point2d.x, point2d.y);
+        });
+        graphics.draw(path);
+      } else {
+        for (Tensor row : points) {
+          Point2D.Double point2d = showableConfig.toPoint2D(row);
+          graphics.fill(new Ellipse2D.Double(point2d.x - RADIUS, point2d.y - RADIUS, 2 * RADIUS, 2 * RADIUS));
+          // below: diamond <>
+          // Path2D.Double path = new Path2D.Double();
+          // path.moveTo(point2d.x + rad, point2d.y);
+          // path.lineTo(point2d.x, point2d.y + rad);
+          // path.lineTo(point2d.x - rad, point2d.y);
+          // path.lineTo(point2d.x, point2d.y - rad);
+          // graphics.fill(path);
+        }
+      }
+      graphics.dispose();
+    }
+  }
+
+  @Override
+  public Optional<CoordinateBoundingBox> fullPlotRange() {
+    return Tensors.isEmpty(points) //
+        ? Optional.empty()
+        : Optional.of(CoordinateBoundingBox.of( //
+            StaticHelper.minMax(points.get(Tensor.ALL, 0)), //
+            StaticHelper.minMax(points.get(Tensor.ALL, 1))));
+  }
+
+  @Override
+  public void setLabel(String string) {
+    // TODO Auto-generated method stub
+  }
+
+  Color color;
+
+  @Override
+  public void setColor(Color color) {
+    this.color = color;
   }
 }

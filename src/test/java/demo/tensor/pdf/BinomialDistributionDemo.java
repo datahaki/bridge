@@ -1,14 +1,11 @@
 // code by jph
 package demo.tensor.pdf;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-
 import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.VisualSet;
+import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
@@ -25,14 +22,12 @@ public enum BinomialDistributionDemo {
     Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
     PDF pdf = PDF.of(distribution);
     CDF cdf = CDF.of(distribution);
-    VisualSet visualSet = new VisualSet();
+    Show show = new Show();
     {
       Tensor domain = Range.of(0, n + 1);
-      visualSet.add(domain, domain.map(pdf::at));
-      visualSet.add(domain, domain.map(cdf::p_lessEquals));
+      show.add(new ListPlot(domain, domain.map(pdf::at)));
+      show.add(new ListPlot(domain, domain.map(cdf::p_lessEquals)));
     }
-    JFreeChart jFreeChart = ListPlot.of(visualSet, true);
-    jFreeChart.setBackgroundPaint(Color.WHITE);
-    ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("binomial_distr.png"), jFreeChart, 640, 480);
+    show.export(HomeDirectory.Pictures("binomial_distr.png"), new Dimension(640, 480));
   }
 }

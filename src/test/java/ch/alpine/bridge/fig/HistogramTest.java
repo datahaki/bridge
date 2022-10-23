@@ -1,44 +1,42 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.Tensors;
-import demo.tensor.pdf.TruncatedDiscreteDemo;
 
 class HistogramTest {
   @Test
   void testEmpty() {
-    VisualSet visualSet = new VisualSet();
+    Show visualSet = new Show();
     CascadeHelper.draw(Histogram.of(visualSet));
   }
 
   @Test
   void testEmptyRow() {
-    VisualSet visualSet = new VisualSet();
-    visualSet.add(Tensors.empty());
-    CascadeHelper.draw(Histogram.of(visualSet));
+    Show show = new Show();
+    show.add(new ListPlot(Tensors.empty()));
+    CascadeHelper.draw(Histogram.of(show));
   }
 
   @Test
   void testQuantity(@TempDir File folder) throws IOException {
-    VisualSet visualSet = new VisualSet();
-    visualSet.add(Tensors.fromString("{{2[m],3[s]}, {4[m],5[s]}, {5[m],1[s]}}"));
-    JFreeChart jFreeChart = Histogram.of(visualSet);
-    ChartUtils.saveChartAsPNG(new File(folder, "histunit.png"), jFreeChart, 640, 480);
+    Show show = new Show();
+    show.add(new ListPlot(Tensors.fromString("{{2[m],3[s]}, {4[m],5[s]}, {5[m],1[s]}}")));
+    Showable jFreeChart = Histogram.of(show);
+    show.export(new File(folder, "histunit.png"), new Dimension(640, 480));
     CascadeHelper.draw(jFreeChart);
     // ChartUtils.saveChartAsPNG(HomeDirectory.Pictures("histunit.png"), jFreeChart, 640, 480);
   }
 
   @Test
   void testTruncated(@TempDir File folder) throws IOException {
-    JFreeChart jFreeChart = TruncatedDiscreteDemo.generate();
-    ChartUtils.saveChartAsPNG(new File(folder, "truncated.png"), jFreeChart, 640, 480);
+    // Showable jFreeChart = TruncatedDiscreteDemo.generate();
+    // Show.export(new File(folder, "truncated.png"), jFreeChart, new Dimension(640, 480));
   }
 }

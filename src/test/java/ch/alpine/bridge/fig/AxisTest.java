@@ -2,7 +2,6 @@
 package ch.alpine.bridge.fig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,15 +18,6 @@ class AxisTest {
     Axis axis = new Axis();
     axis.setUnit(Unit.ONE);
     assertEquals(axis.getUnitString(), "");
-  }
-
-  @Test
-  void testUnit() {
-    Axis axis = new Axis();
-    axis.setUnit(Unit.of("m"));
-    assertEquals(axis.getUnitString(), "[m]");
-    axis.toReals().apply(Quantity.of(1, "km"));
-    assertThrows(Exception.class, () -> axis.toReals().apply(Quantity.of(1, "A")));
   }
 
   @Test
