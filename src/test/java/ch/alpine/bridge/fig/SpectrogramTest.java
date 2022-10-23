@@ -11,7 +11,6 @@ import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
-import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.ply.Polynomial;
 import ch.alpine.tensor.sca.tri.Cos;
 
@@ -32,15 +31,15 @@ class SpectrogramTest {
       double hi = 1.6;
       Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
       Tensor signal = domain.map(polynomial).map(Cos.FUNCTION);
-      Show visualSet = new Show();
-      visualSet.setPlotLabel("Spectrogram");
-      visualSet.add(new ListPlot(domain.map(s -> Quantity.of(s, "s")), signal));
-      visualSet.getAxisX().setUnit(Unit.of("ms"));
-      visualSet.getAxisX().setLabel("time");
-      visualSet.getAxisY().setLabel("user defined");
-      if (count == 0)
-        visualSet.getAxisY().setUnit(Unit.of("s^-1"));
-      CascadeHelper.draw(Spectrogram.of(visualSet));
+      Show show = new Show();
+      show.setPlotLabel("Spectrogram");
+      show.add(new ListPlot(domain.map(s -> Quantity.of(s, "s")), signal));
+      // show.getAxisX().setUnit(Unit.of("ms"));
+      // show.getAxisX().setLabel("time");
+      // show.getAxisY().setLabel("user defined");
+      // if (count == 0)
+      // show.getAxisY().setUnit(Unit.of("s^-1"));
+      CascadeHelper.draw(Spectrogram.of(show));
     }
   }
 }

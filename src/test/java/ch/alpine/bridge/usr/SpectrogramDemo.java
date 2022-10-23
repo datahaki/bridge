@@ -36,8 +36,8 @@ public enum SpectrogramDemo {
     Show show = new Show();
     show.setPlotLabel("Spectrogram");
     show.add(new ListPlot(domain.map(s -> Quantity.of(s, "s")), signal));
-    show.getAxisX().setLabel("time");
-    show.getAxisY().setLabel("frequency");
+    // show.getAxisX().setLabel("time");
+    // show.getAxisY().setLabel("frequency");
     ColorDataGradient colorDataGradient = ColorDataGradients.SUNSET_REVERSED;
     return Spectrogram.of(show, DirichletWindow.FUNCTION, colorDataGradient);
   }

@@ -49,6 +49,10 @@ public class ListPlot implements Showable {
   private final Tensor points;
   private final boolean joined;
 
+  /** @param points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}}.
+   * The special case when points == {} is also allowed.
+   * @return instance of the visual row, that was added to this visual set
+   * @throws Exception if not all entries in points are vectors of length 2 */
   public ListPlot(Tensor points) {
     this(points, true);
   }
@@ -59,6 +63,9 @@ public class ListPlot implements Showable {
     this.joined = joined;
   }
 
+  /** @param domain {x1, x2, ..., xn}
+   * @param values {y1, y2, ..., yn}
+   * @return */
   public ListPlot(Tensor domain, Tensor tensor) {
     this(Transpose.of(Tensors.of(domain, tensor)));
   }

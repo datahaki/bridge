@@ -52,5 +52,6 @@ public class BoundedSortedQueue<K, V> implements Serializable {
   }
 
   private record Entry<K, V> (K key, V value) implements Serializable {
+    // ---
   }
 }

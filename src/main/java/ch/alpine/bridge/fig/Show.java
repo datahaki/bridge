@@ -26,7 +26,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
-public class Show extends VisualBase {
+public class Show {
   private static final Insets INSETS = new Insets(5, 70, 25, 5);
   private final List<Showable> showables = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
@@ -40,6 +40,18 @@ public class Show extends VisualBase {
   /** uses Mathematica default color scheme */
   public Show() {
     this(ColorDataLists._097.cyclic());
+  }
+
+  private String plotLabel = "";
+
+  /** @param string to appear above plot */
+  public final void setPlotLabel(String string) {
+    plotLabel = string;
+  }
+
+  /** @return */
+  public final String getPlotLabel() {
+    return plotLabel;
   }
 
   public Showable add(Showable showable) {
@@ -83,21 +95,6 @@ public class Show extends VisualBase {
     }
     showarea.dispose();
   }
-  // /** @param points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}}.
-  // * The special case when points == {} is also allowed.
-  // * @return instance of the visual row, that was added to this visual set
-  // * @throws Exception if not all entries in points are vectors of length 2 */
-  // public VisualRow add(Tensor points) {
-  // points.stream().forEach(row -> VectorQ.requireLength(row, 2));
-  // return _add(points);
-  // }
-  //
-  // /** @param domain {x1, x2, ..., xn}
-  // * @param values {y1, y2, ..., yn}
-  // * @return */
-  // public VisualRow add(Tensor domain, Tensor values) {
-  // return add(Transpose.of(Tensors.of(domain, values)));
-  // }
   // /** @param timeSeries
   // * @param function mapping a {@link Tensor} value to a {@link Scalar} along the y-axis
   // * @return */
@@ -112,45 +109,15 @@ public class Show extends VisualBase {
   // return add(timeSeries, Scalar.class::cast);
   // }
   //
-  // private VisualRow _add(Tensor points) {
-  // if (Tensors.nonEmpty(points)) {
-  // if (!getAxisX().hasUnit())
-  // getAxisX().setUnit(QuantityUnit.of(points.Get(0, 0)));
-  // if (!getAxisY().hasUnit())
-  // getAxisY().setUnit(QuantityUnit.of(points.Get(0, 1)));
-  // }
-  // final int index = visualRows.size();
-  // VisualRow visualRow = new VisualRow(points, index);
-  // visualRow.setColor(colorDataIndexed.getColor(index));
-  // visualRows.add(visualRow);
-  // return visualRow;
-  // }
-  // Optional<Clip> suggestClip(int index) {
-  // return visualRows.stream() //
-  // .flatMap(rw -> rw.pointsClip(index).stream()) //
-  // .reduce(Clips::cover);
-  // }
-  //
-  // public List<VisualRow> visualRows() {
-  // return Collections.unmodifiableList(visualRows);
-  // }
-  //
-  // public VisualRow getVisualRow(int index) {
-  // return visualRows.get(index);
-  // }
-  //
   // public boolean hasLegend() {
   // return visualRows.stream() //
   // .map(VisualRow::getLabelString) //
   // .anyMatch(Predicate.not(String::isEmpty));
   // }
-  //
-  // public Show setJoined(boolean joined) {
-  // for (VisualRow visualRow : visualRows)
-  // visualRow.setJoined(joined);
-  // return this;
-  // }
 
+  /** @param file
+   * @param dimension of image
+   * @throws IOException */
   public void export(File file, Dimension dimension) throws IOException {
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bufferedImage.createGraphics();

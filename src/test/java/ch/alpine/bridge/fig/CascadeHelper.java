@@ -30,8 +30,8 @@ public enum CascadeHelper {
     if (labels) {
       row0.setLabel("row 0");
       row2.setLabel("row 2");
-      show.getAxisX().setLabel("x axis");
-      show.getAxisY().setLabel("y axis");
+      // show.getAxisX().setLabel("x axis");
+      // show.getAxisY().setLabel("y axis");
     }
     {
       show.setPlotLabel(Histogram.class.getSimpleName());
