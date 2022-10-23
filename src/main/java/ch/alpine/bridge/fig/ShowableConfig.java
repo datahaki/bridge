@@ -24,9 +24,9 @@ public class ShowableConfig {
     this.cbb = cbb;
     this.xRange = cbb.getClip(0);
     this.yRange = cbb.getClip(1);
-    y_height = rectangle.y + rectangle.height;
-    x_factor = RealScalar.of(rectangle.width).divide(xRange.width());
-    y_factor = RealScalar.of(rectangle.height).divide(yRange.width());
+    y_height = rectangle.y + rectangle.height - 1;
+    x_factor = RealScalar.of(rectangle.width-1).divide(xRange.width());
+    y_factor = RealScalar.of(rectangle.height-1).divide(yRange.width());
   }
 
   public double x_pos(Scalar x) {

@@ -77,7 +77,7 @@ public enum ArrayPlotDemo {
     {
 //      Showable jFreeChart = ;
       Show show = new Show();
-      show.cbb = CoordinateBoundingBox.of(Clips.positive(3), Clips.positive(2));
+      show.setCbb (CoordinateBoundingBox.of(Clips.positive(3), Clips.positive(2)));
       show.add(create0a());
       show.export(HomeDirectory.Pictures(ArrayPlotDemo.class.getSimpleName() + "0.png"), 
           new Dimension(DemoHelper.DEMO_W, DemoHelper.DEMO_H));

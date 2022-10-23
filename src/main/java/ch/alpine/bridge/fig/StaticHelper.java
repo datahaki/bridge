@@ -7,8 +7,10 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Last;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
+import ch.alpine.tensor.red.MinMax;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
@@ -32,5 +34,12 @@ import ch.alpine.tensor.sca.Clips;
     visualImage.getAxisX().setLabel(visualSet.getAxisX().getLabel());
     visualImage.getAxisY().setLabel(visualSet.getAxisY().getLabel());
     return visualImage;
+  }
+  
+  public static Clip minMax(Tensor vector) {
+    return vector.stream() //
+        .map(Scalar.class::cast) //
+        .filter(FiniteScalarQ::of) //
+        .collect(MinMax.toClip());
   }
 }

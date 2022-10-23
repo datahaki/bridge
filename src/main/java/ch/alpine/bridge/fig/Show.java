@@ -19,12 +19,13 @@ import javax.imageio.ImageIO;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 public class Show extends VisualBase {
   private static final Insets INSETS = new Insets(5, 70, 25, 5);
   private final List<Showable> showables = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
-  public CoordinateBoundingBox cbb = null;
+  private CoordinateBoundingBox cbb = null;
 
   public Show(ColorDataIndexed colorDataIndexed) {
     this.colorDataIndexed = Objects.requireNonNull(colorDataIndexed);
@@ -43,9 +44,14 @@ public class Show extends VisualBase {
   }
 
   public void render(Rectangle rectangle, Graphics graphics) {
-    GridDrawer gridDrawer = new GridDrawer(rectangle, cbb);
+    
+    CoordinateBoundingBox _cbb = Objects.isNull(cbb) //
+        ? showables.stream().flatMap(s -> s.fullPlotRange().stream()).reduce(CoordinateBounds::cover).orElseThrow()
+        : cbb;
+    
+    GridDrawer gridDrawer = new GridDrawer(rectangle, _cbb);
     gridDrawer.render(graphics);
-    ShowableConfig showableConfig = new ShowableConfig(rectangle, cbb);
+    ShowableConfig showableConfig = new ShowableConfig(rectangle, _cbb);
     Graphics2D showarea = (Graphics2D) graphics.create();
     showarea.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     for (Showable showable : showables)
@@ -132,5 +138,10 @@ public class Show extends VisualBase {
         dimension.height - INSETS.bottom);
     render(rectangle, graphics);
     ImageIO.write(bufferedImage, "png", file);
+  }
+
+  public void setCbb(CoordinateBoundingBox cbb) {
+    this.cbb = cbb;
+    
   }
 }

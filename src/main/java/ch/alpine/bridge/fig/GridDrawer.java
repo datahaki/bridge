@@ -52,6 +52,15 @@ public class GridDrawer {
   private final Clip xRange;
   private final Clip yRange;
   private final DateTimeFocus dateTimeFocus;
+  boolean axesX = true;
+  boolean axesY = true;
+  boolean gridLinesX = true;
+  boolean gridLinesY = true;
+  boolean ticksX = true;
+  boolean ticksY = true;
+  String axesLabelX = "";
+  // ---
+  boolean frame = true;
 
   public GridDrawer(Rectangle rectangle, CoordinateBoundingBox cbb, DateTimeFocus dateTimeFocus) {
     this.rectangle = rectangle;
@@ -65,23 +74,23 @@ public class GridDrawer {
   }
 
   public void render(Graphics _g) {
-    if (rectangle.height <= 0)
+    if (rectangle.height <= 1)
       return;
     Graphics2D graphics = (Graphics2D) _g.create();
-    {
+    if (frame) {
       graphics.setStroke(STROKE_SOLID);
       graphics.setColor(COLOR_FRAME);
-       graphics.drawRect(rectangle.x-1, rectangle.y-1, rectangle.width+1, rectangle.height+1);
+      graphics.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
     }
     {
-      graphics.setStroke(STROKE_SOLID);
-      graphics.setColor(new Color(255, 224, 224));
-//      graphics.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+      // graphics.setStroke(STROKE_SOLID);
+      // graphics.setColor(new Color(255, 224, 224));
+      // graphics.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
     // ---
-    if (!Scalars.isZero(xRange.width()))
+    if (axesX && !Scalars.isZero(xRange.width()))
       drawXLines(graphics);
-    if (!Scalars.isZero(yRange.width()))
+    if (axesY && !Scalars.isZero(yRange.width()))
       drawYLines(graphics);
     // ---
     {
@@ -110,7 +119,7 @@ public class GridDrawer {
     final FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
-    final Scalar plotWidth = RealScalar.of(rectangle.width-1);
+    final Scalar plotWidth = RealScalar.of(rectangle.width - 1);
     if (xRange.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(xRange.width().multiply(RationalScalar.of(100, rectangle.width)));
@@ -127,78 +136,81 @@ public class GridDrawer {
       }
     } else {
       // TODO UTIL determine reserve
-      
       Scalar dX = getDecimalStep(xRange.width().divide(RealScalar.of(rectangle.width)), RealScalar.of(50));
       for (Scalar xValue = Ceiling.toMultipleOf(dX).apply(xRange.min()); Scalars.lessEquals(xValue, xRange.max()); xValue = xValue.add(dX)) {
         int pix = rectangle.x + xRange.rescale(xValue).multiply(plotWidth).number().intValue();
         navigableMap.put(pix, xValue);
       }
     }
-    { // grid lines |
+    if (gridLinesX) { // grid lines |
       graphics.setColor(COLOR_GRIDLINES);
       graphics.setStroke(STROKE_GRIDLINES);
       for (int pix : navigableMap.keySet())
         graphics.drawLine(pix, rectangle.y, pix, y_height);
     }
-    {
-      graphics.setStroke(STROKE_SOLID);
-      graphics.setColor(COLOR_HELPER);
-      graphics.drawLine(rectangle.x, y_height + GAP, rectangle.x + rectangle.width-1, y_height + GAP);
-      for (int pix : navigableMap.keySet())
-        graphics.drawLine(pix, y_height + GAP, pix, y_height + GAP + 2);
-    }
-    {
-      Graphics2D graphics2 = (Graphics2D) graphics.create();
-      graphics2.setClip(rectangle.x - GAP, y_height, rectangle.width + GAP + GAP, 40); // magic const
-      graphics2.setColor(COLOR_FONT);
-      RenderQuality.setQuality(graphics2);
-      for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
-        Scalar value = entry.getValue();
-        String xLabel = Objects.isNull(dateTimeFormatter) ? format(value) : ((DateTime) value).format(dateTimeFormatter);
-        graphics2.drawString(xLabel, entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, y_height + GAP + fontMetrics.getHeight());
+    if (ticksX) {
+      {
+        graphics.setStroke(STROKE_SOLID);
+        graphics.setColor(COLOR_HELPER);
+        graphics.drawLine(rectangle.x, y_height + GAP, rectangle.x + rectangle.width - 1, y_height + GAP);
+        for (int pix : navigableMap.keySet())
+          graphics.drawLine(pix, y_height + GAP + 1, pix, y_height + GAP + 2);
       }
-      graphics2.dispose();
-      // graphics.setClip(null);
+      {
+        Graphics2D graphics2 = (Graphics2D) graphics.create();
+        graphics2.setClip(rectangle.x - GAP, y_height, rectangle.width + GAP + GAP, 40); // magic const
+        graphics2.setColor(COLOR_FONT);
+        RenderQuality.setQuality(graphics2);
+        for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
+          Scalar value = entry.getValue();
+          String xLabel = Objects.isNull(dateTimeFormatter) ? format(value) : ((DateTime) value).format(dateTimeFormatter);
+          graphics2.drawString(xLabel, entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, y_height + GAP + fontMetrics.getHeight());
+        }
+        graphics2.dispose();
+        // graphics.setClip(null);
+      }
     }
   }
 
   /** draw lines and numbers like this: _________________ */
   private void drawYLines(Graphics2D graphics) {
-    Scalar plotHeight = RealScalar.of(rectangle.height-1);
+    Scalar plotHeight = RealScalar.of(rectangle.height - 1);
     FontMetrics fontMetrics = graphics.getFontMetrics();
     int fontSize = fontMetrics.getHeight();
     Scalar dY = getDecimalStep(yRange.width().divide(plotHeight), RealScalar.of(fontSize * 2));
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     for (Scalar yValue = Ceiling.toMultipleOf(dY).apply(yRange.min()); Scalars.lessEquals(yValue, yRange.max()); yValue = yValue.add(dY))
       navigableMap.put( //
-          rectangle.y + rectangle.height-1 - yRange.rescale(yValue).multiply(plotHeight).number().intValue(), //
+          rectangle.y + rectangle.height - 1 - yRange.rescale(yValue).multiply(plotHeight).number().intValue(), //
           yValue);
-    {
-      graphics.setStroke(STROKE_SOLID);
-      graphics.setColor(COLOR_HELPER);
-      graphics.drawLine(rectangle.x - GAP, rectangle.y, rectangle.x - GAP, rectangle.y + rectangle.height-1);
-      for (int piy : navigableMap.keySet()) {
-        graphics.drawLine(rectangle.x - GAP - 2, piy, rectangle.x - GAP, piy);
-      }
-    }
-    {
+    if (gridLinesY) {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
       for (int piy : navigableMap.keySet())
-        graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width-1, piy);
+        graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width - 1, piy);
     }
-    {
-      Graphics2D graphics2 = (Graphics2D) graphics.create();
-      // TODO UTIL 20221013 align dot's of numbers
-      graphics2.setColor(COLOR_FONT);
-      RenderQuality.setQuality(graphics2);
-      for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
-        int piy = entry.getKey();
-        Scalar yValue = entry.getValue();
-        String string = format(yValue);
-        graphics2.drawString(string, rectangle.x - fontMetrics.stringWidth(string) - GAP - 5, piy + fontSize / 2 - 1);
+    if (ticksY) {
+      {
+        graphics.setStroke(STROKE_SOLID);
+        graphics.setColor(COLOR_HELPER);
+        graphics.drawLine(rectangle.x - GAP, rectangle.y, rectangle.x - GAP, rectangle.y + rectangle.height - 1);
+        for (int piy : navigableMap.keySet()) {
+          graphics.drawLine(rectangle.x - GAP - 2, piy, rectangle.x - GAP - 1, piy);
+        }
       }
-      graphics2.dispose();
+      {
+        Graphics2D graphics2 = (Graphics2D) graphics.create();
+        // TODO UTIL 20221013 align dot's of numbers
+        graphics2.setColor(COLOR_FONT);
+        RenderQuality.setQuality(graphics2);
+        for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
+          int piy = entry.getKey();
+          Scalar yValue = entry.getValue();
+          String string = format(yValue);
+          graphics2.drawString(string, rectangle.x - fontMetrics.stringWidth(string) - GAP - 5, piy + fontSize / 2 - 1);
+        }
+        graphics2.dispose();
+      }
     }
   }
 

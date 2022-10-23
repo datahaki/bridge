@@ -10,12 +10,16 @@ import java.util.Optional;
 
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.itp.LinearInterpolation;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
 public class Plot implements Showable {
+  private static final int RESOLUTION = 20;
+  // ---
   private final ScalarUnaryOperator suo;
   private final Clip x_domain;
   public Color color;
@@ -59,14 +63,19 @@ public class Plot implements Showable {
   }
 
   @Override
+  public Optional<CoordinateBoundingBox> fullPlotRange() {
+    return Optional.of(CoordinateBoundingBox.of( //
+        x_domain, //
+        StaticHelper.minMax(Subdivide.increasing(x_domain, RESOLUTION).map(suo))));
+  }
+
+  @Override
   public void setLabel(String string) {
     // TODO Auto-generated method stub
-    
   }
 
   @Override
   public void setColor(Color color) {
-this.color = color;
-    
+    this.color = color;
   }
 }

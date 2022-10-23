@@ -6,11 +6,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.util.Optional;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** Hint:
  * to render list plot in a custom graphics use
@@ -45,7 +47,7 @@ public class ListPlot implements Showable {
   private ListPlot(Tensor points) {
     this.points = points;
   }
- 
+
   public ListPlot(Tensor domain, Tensor tensor) {
     this(Transpose.of(Tensors.of(domain, tensor)));
   }
@@ -54,13 +56,10 @@ public class ListPlot implements Showable {
   public void render(ShowableConfig showableConfig, Graphics _g) {
     if (0 < points.length()) {
       Graphics2D graphics = (Graphics2D) _g.create();
-//      graphics.setClip(rectangle.x, rectangle.y, rectangle.width + 1, rectangle.height + 1);
-//      graphics.setStroke(stroke);
-      graphics.setColor(color);
       RenderQuality.setQuality(graphics);
+      graphics.setColor(color);
       Path2D.Double path = new Path2D.Double();
       {
-        
         Point2D.Double point2d = showableConfig.toPoint2D(points.get(0));
         path.moveTo(point2d.x, point2d.y);
       }
@@ -74,13 +73,23 @@ public class ListPlot implements Showable {
   }
 
   @Override
+  public Optional<CoordinateBoundingBox> fullPlotRange() {
+    return Tensors.isEmpty(points) //
+        ? Optional.empty()
+        : Optional.of(CoordinateBoundingBox.of( //
+            StaticHelper.minMax(points.get(Tensor.ALL, 0)), //
+            StaticHelper.minMax(points.get(Tensor.ALL, 1))));
+  }
+
+  @Override
   public void setLabel(String string) {
     // TODO Auto-generated method stub
-    
   }
+
   Color color;
+
   @Override
   public void setColor(Color color) {
-    this.color=color;
+    this.color = color;
   }
 }
