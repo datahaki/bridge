@@ -42,8 +42,8 @@ public class GridDrawer {
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
   private static final Color COLOR_GRIDLINES = new Color(224, 224, 224);
   // ---
-  private static final Stroke STROKE_SOLID = new BasicStroke();
-  private static final Color COLOR_FRAME = new Color(160, 160, 160);
+  static final Stroke STROKE_SOLID = new BasicStroke();
+  static final Color COLOR_FRAME = new Color(160, 160, 160);
   private static final Color COLOR_FONT = Color.DARK_GRAY;
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
   private static final int GAP = 5;
@@ -59,8 +59,6 @@ public class GridDrawer {
   boolean ticksX = true;
   boolean ticksY = true;
   String axesLabelX = "";
-  // ---
-  boolean frame = true;
 
   public GridDrawer(Rectangle rectangle, CoordinateBoundingBox cbb, DateTimeFocus dateTimeFocus) {
     this.rectangle = rectangle;
@@ -77,11 +75,6 @@ public class GridDrawer {
     if (rectangle.height <= 1)
       return;
     Graphics2D graphics = (Graphics2D) _g.create();
-    if (frame) {
-      graphics.setStroke(STROKE_SOLID);
-      graphics.setColor(COLOR_FRAME);
-      graphics.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
-    }
     {
       // graphics.setStroke(STROKE_SOLID);
       // graphics.setColor(new Color(255, 224, 224));

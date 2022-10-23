@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -13,9 +14,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -28,6 +31,7 @@ public class Show extends VisualBase {
   private final List<Showable> showables = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
   private CoordinateBoundingBox cbb = null;
+  boolean frame = true;
 
   public Show(ColorDataIndexed colorDataIndexed) {
     this.colorDataIndexed = Objects.requireNonNull(colorDataIndexed);
@@ -46,16 +50,37 @@ public class Show extends VisualBase {
   }
 
   public void render(Rectangle rectangle, Graphics graphics) {
-    CoordinateBoundingBox _cbb = Objects.isNull(cbb) //
-        ? showables.stream().flatMap(s -> s.fullPlotRange().stream()).reduce(CoordinateBounds::cover).orElseThrow()
-        : cbb;
-    GridDrawer gridDrawer = new GridDrawer(rectangle, _cbb);
-    gridDrawer.render(graphics);
-    ShowableConfig showableConfig = new ShowableConfig(rectangle, _cbb);
+    CoordinateBoundingBox _cbb = cbb;
+    if (Objects.isNull(_cbb)) {
+      Optional<CoordinateBoundingBox> optional = showables.stream() //
+          .flatMap(s -> s.fullPlotRange().stream()) //
+          .reduce(CoordinateBounds::cover);
+      if (optional.isPresent()) {
+        _cbb = optional.orElseThrow();
+      }
+    }
     Graphics2D showarea = (Graphics2D) graphics.create();
+    if (frame) {
+      showarea.setStroke(GridDrawer.STROKE_SOLID);
+      showarea.setColor(GridDrawer.COLOR_FRAME);
+      showarea.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
+    }
     showarea.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    for (Showable showable : showables)
-      showable.render(showableConfig, showarea);
+    if (Objects.isNull(_cbb)) {
+      showarea.setColor(Color.DARK_GRAY);
+      RenderQuality.setQuality(showarea);
+      FontMetrics fontMetrics = showarea.getFontMetrics();
+      String string = "no data";
+      showarea.drawString(string, //
+          rectangle.x + (rectangle.width - fontMetrics.stringWidth(string)) / 2, //
+          rectangle.y + (rectangle.height + fontMetrics.getHeight()) / 2);
+    } else {
+      GridDrawer gridDrawer = new GridDrawer(rectangle, _cbb);
+      gridDrawer.render(graphics);
+      ShowableConfig showableConfig = new ShowableConfig(rectangle, _cbb);
+      for (Showable showable : showables)
+        showable.render(showableConfig, showarea);
+    }
     showarea.dispose();
   }
   // /** @param points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}}.

@@ -13,6 +13,7 @@ import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
+import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** Hint:
@@ -53,6 +54,7 @@ public class ListPlot implements Showable {
   }
 
   public ListPlot(Tensor points, boolean joined) {
+    points.stream().forEach(row -> VectorQ.requireLength(row, 2));
     this.points = points;
     this.joined = joined;
   }

@@ -91,7 +91,15 @@ public enum ShowDemos {
       show.add(new ListPlot(RandomVariate.of(UniformDistribution.unit(), 4, 2), true)).setLabel("timeSeries");
       return show;
     }
-  };
+  },
+  EMPTY {
+    @Override
+    Show create() {
+      return new Show();
+    }
+  }
+  //
+  ;
 
   abstract Show create();
 }

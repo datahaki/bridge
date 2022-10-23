@@ -23,7 +23,7 @@ public class ShowDemo {
   final int _HEIGHT = 131;
   final int width = _WIDTH + 90;
   final int height = _HEIGHT + 30;
-  final int mag = 1;
+  final int mag = 2;
   // ---
   private final JFrame jFrame = new JFrame();
   private final List<Show> list = new ArrayList<>();
@@ -41,7 +41,13 @@ public class ShowDemo {
         Graphics graphics2 = bufferedImage.getGraphics();
         graphics2.setColor(Color.PINK);
         graphics2.drawRect(0, 0, width - 1, height - 1);
-        show.render(new Rectangle(70, 5, _WIDTH, _HEIGHT), graphics2);
+        try {
+          show.render(new Rectangle(70, 5, _WIDTH, _HEIGHT), graphics2);
+        } catch (Exception exception) {
+          graphics2.setColor(Color.RED);
+          graphics2.drawString("" + exception.getMessage(), 0, 30);
+          exception.printStackTrace();
+        }
         graphics.drawImage(bufferedImage, 0, ofs, width * mag, height * mag, null);
         ofs += height * mag;
       }
