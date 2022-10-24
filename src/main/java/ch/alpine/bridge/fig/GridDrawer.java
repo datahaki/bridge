@@ -26,7 +26,6 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Unprotect;
-import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityUnit;
@@ -48,9 +47,7 @@ public class GridDrawer {
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
   private static final int GAP = 5;
   // ---
-  private final Rectangle rectangle;
-  private final Clip xRange;
-  private final Clip yRange;
+  private final ShowableConfig showableConfig;
   private final DateTimeFocus dateTimeFocus;
   boolean axesX = true;
   boolean axesY = true;
@@ -60,26 +57,22 @@ public class GridDrawer {
   boolean ticksY = true;
   String axesLabelX = "";
 
-  public GridDrawer(Rectangle rectangle, CoordinateBoundingBox cbb, DateTimeFocus dateTimeFocus) {
-    this.rectangle = rectangle;
-    xRange = cbb.getClip(0);
-    yRange = cbb.getClip(1);
+  public GridDrawer(ShowableConfig showableConfig, DateTimeFocus dateTimeFocus) {
+    this.showableConfig = showableConfig;
     this.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
   }
 
-  public GridDrawer(Rectangle rectangle, CoordinateBoundingBox cbb) {
-    this(rectangle, cbb, ISO8601DateTimeFocus.INSTANCE);
+  public GridDrawer(ShowableConfig showableConfig) {
+    this(showableConfig, ISO8601DateTimeFocus.INSTANCE);
   }
 
   public void render(Graphics _g) {
+    Rectangle rectangle = showableConfig.rectangle;
+    Clip xRange = showableConfig.cbb.getClip(0);
+    Clip yRange = showableConfig.cbb.getClip(1);
     if (rectangle.height <= 1)
       return;
     Graphics2D graphics = (Graphics2D) _g.create();
-    {
-      // graphics.setStroke(STROKE_SOLID);
-      // graphics.setColor(new Color(255, 224, 224));
-      // graphics.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    }
     // ---
     if (axesX && !Scalars.isZero(xRange.width()))
       drawXLines(graphics);
@@ -108,11 +101,12 @@ public class GridDrawer {
   }
 
   private void drawXLines(Graphics2D graphics) {
+    Rectangle rectangle = showableConfig.rectangle;
+    Clip xRange = showableConfig.cbb.getClip(0);
     final int y_height = rectangle.y + rectangle.height - 1;
     final FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
-    final Scalar plotWidth = RealScalar.of(rectangle.width - 1);
     if (xRange.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(xRange.width().multiply(RationalScalar.of(100, rectangle.width)));
@@ -122,17 +116,16 @@ public class GridDrawer {
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (xRange.isInside(dateTime)) {
-        graphics.setColor(COLOR_FONT);
-        int pix = rectangle.x + xRange.rescale(dateTime).multiply(plotWidth).number().intValue();
-        navigableMap.put(pix, dateTime);
+        int x_pos = (int) showableConfig.x_pos(dateTime);
+        navigableMap.put(x_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
       // TODO UTIL determine reserve
       Scalar dX = getDecimalStep(xRange.width().divide(RealScalar.of(rectangle.width)), RealScalar.of(50));
       for (Scalar xValue = Ceiling.toMultipleOf(dX).apply(xRange.min()); Scalars.lessEquals(xValue, xRange.max()); xValue = xValue.add(dX)) {
-        int pix = rectangle.x + xRange.rescale(xValue).multiply(plotWidth).number().intValue();
-        navigableMap.put(pix, xValue);
+        int x_pos = (int) showableConfig.x_pos(xValue);
+        navigableMap.put(x_pos, xValue);
       }
     }
     if (gridLinesX) { // grid lines |
@@ -164,22 +157,23 @@ public class GridDrawer {
               y_height + GAP + fontMetrics.getHeight());
         }
         graphics2.dispose();
-        // graphics.setClip(null);
       }
     }
   }
 
   /** draw lines and numbers like this: _________________ */
   private void drawYLines(Graphics2D graphics) {
+    Rectangle rectangle = showableConfig.rectangle;
+    Clip yRange = showableConfig.cbb.getClip(1);
     Scalar plotHeight = RealScalar.of(rectangle.height - 1);
     FontMetrics fontMetrics = graphics.getFontMetrics();
     int fontSize = fontMetrics.getHeight();
     Scalar dY = getDecimalStep(yRange.width().divide(plotHeight), RealScalar.of(fontSize * 2));
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
-    for (Scalar yValue = Ceiling.toMultipleOf(dY).apply(yRange.min()); Scalars.lessEquals(yValue, yRange.max()); yValue = yValue.add(dY))
-      navigableMap.put( //
-          rectangle.y + rectangle.height - 1 - yRange.rescale(yValue).multiply(plotHeight).number().intValue(), //
-          yValue);
+    for (Scalar yValue = Ceiling.toMultipleOf(dY).apply(yRange.min()); Scalars.lessEquals(yValue, yRange.max()); yValue = yValue.add(dY)) {
+      int y_pos = (int) showableConfig.y_pos(yValue);
+      navigableMap.put(y_pos, yValue);
+    }
     if (gridLinesY) {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
@@ -191,9 +185,8 @@ public class GridDrawer {
         graphics.setStroke(STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
         graphics.drawLine(rectangle.x - GAP, rectangle.y, rectangle.x - GAP, rectangle.y + rectangle.height - 1);
-        for (int piy : navigableMap.keySet()) {
+        for (int piy : navigableMap.keySet())
           graphics.drawLine(rectangle.x - GAP - 2, piy, rectangle.x - GAP - 1, piy);
-        }
       }
       {
         Graphics2D graphics2 = (Graphics2D) graphics.create();
@@ -213,7 +206,10 @@ public class GridDrawer {
 
   private static String format(Scalar value) {
     Scalar display = Unprotect.withoutUnit(value);
-    return (IntegerQ.of(display) ? display : N.DOUBLE.apply(display)).toString();
+    Scalar scalar = IntegerQ.of(display) //
+        ? display
+        : N.DOUBLE.apply(display);
+    return scalar.toString();
   }
 
   private static final Scalar[] RATIOS = { RationalScalar.of(1, 5), RationalScalar.of(1, 2) };

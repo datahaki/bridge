@@ -87,9 +87,9 @@ public class Show {
           rectangle.x + (rectangle.width - fontMetrics.stringWidth(string)) / 2, //
           rectangle.y + (rectangle.height + fontMetrics.getHeight()) / 2);
     } else {
-      GridDrawer gridDrawer = new GridDrawer(rectangle, _cbb);
-      gridDrawer.render(graphics);
       ShowableConfig showableConfig = new ShowableConfig(rectangle, _cbb);
+      GridDrawer gridDrawer = new GridDrawer(showableConfig);
+      gridDrawer.render(graphics);
       for (Showable showable : showables)
         showable.render(showableConfig, showarea);
     }

@@ -67,11 +67,11 @@ public class ShowDemo {
     jFrame.setContentPane(jScrollPane);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setBounds(100, 100, 1000, 900);
-    jFrame.setVisible(true);
   }
 
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     ShowDemo showDemo = new ShowDemo();
+    showDemo.jFrame.setVisible(true);
   }
 }
