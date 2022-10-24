@@ -17,7 +17,7 @@ public enum ErfcDemo {
     Clip clip = Clips.absolute(5);
     // Tensor domain = Subdivide.of(-5, 5, 300);
     Show show = new Show();
-    show.add(new Plot(Erfc.FUNCTION, clip));
+    show.add(Plot.of(Erfc.FUNCTION, clip));
     show.export(HomeDirectory.Pictures(Erfc.class.getSimpleName() + ".png"), new Dimension(640, 480));
   }
 }

@@ -20,7 +20,7 @@ public enum TruncatedDistributionInverseCDFDemo {
     Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 2.5));
     InverseCDF inverseCDF = InverseCDF.of(distribution);
     Show show = new Show();
-    show.add(new Plot(inverseCDF::quantile, Clips.unit()));
+    show.add(Plot.of(inverseCDF::quantile, Clips.unit()));
     show.export(HomeDirectory.Pictures("truncated_inversecdf.png"), new Dimension(640, 480));
   }
 }

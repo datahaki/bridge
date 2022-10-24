@@ -26,9 +26,9 @@ public enum TruncatedDistributionDemo {
     Show show = new Show();
     {
       Clip clip = Clips.interval(-3, 3);
-      show.add(new Plot(pdf::at, clip));
-      show.add(new Plot(cdf::p_lessEquals, clip));
-      show.add(new Plot(pdf_o::at, clip));
+      show.add(Plot.of(pdf::at, clip));
+      show.add(Plot.of(cdf::p_lessEquals, clip));
+      show.add(Plot.of(pdf_o::at, clip));
     }
     show.export(HomeDirectory.Pictures("truncated.png"), new Dimension(640, 480));
   }

@@ -36,7 +36,7 @@ import ch.alpine.tensor.tmp.TimeSeries;
       show.add(ListPlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
       show.add(ListPlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
       show.add(ListPlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
-      show.add(new Plot(s -> Cos.FUNCTION.apply(s.add(s)).multiply(RealScalar.of(100)), Clips.positive(0.5))).setLabel("sine");
+      show.add(Plot.of(s -> Cos.FUNCTION.apply(s.add(s)).multiply(RealScalar.of(100)), Clips.positive(0.5))).setLabel("sine");
       return show;
     }
   },
@@ -45,7 +45,7 @@ import ch.alpine.tensor.tmp.TimeSeries;
     Show create() {
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
       show.setPlotLabel("Sine");
-      show.add(new Plot(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2))).setLabel("sine");
+      show.add(Plot.of(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2))).setLabel("sine");
       return show;
     }
   },
@@ -55,7 +55,7 @@ import ch.alpine.tensor.tmp.TimeSeries;
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
       show.setPlotLabel("Cosine");
       ScalarUnaryOperator suo = QuantityMagnitude.SI().in("rad");
-      show.add(new Plot(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Quantity.of(180, "deg")))).setLabel("cosine");
+      show.add(Plot.of(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Quantity.of(180, "deg")))).setLabel("cosine");
       return show;
     }
   },
@@ -68,7 +68,7 @@ import ch.alpine.tensor.tmp.TimeSeries;
       timeSeries.insert(DateTime.of(2022, 11, 3, 10, 45), Quantity.of(4, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 3, 20, 35), Quantity.of(2, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 4, 8, 15), Quantity.of(1, "kW"));
-      show.add(new Plot(timeSeries)).setLabel("timeSeries");
+      show.add(Plot.of(timeSeries)).setLabel("timeSeries");
       return show;
     }
   },
@@ -78,7 +78,7 @@ import ch.alpine.tensor.tmp.TimeSeries;
       Show show = new Show(ColorDataLists._058.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process");
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.standard());
-      show.add(new Plot(randomFunction::evaluate, Clips.unit())).setLabel("timeSeries");
+      show.add(Plot.of(randomFunction::evaluate, Clips.unit())).setLabel("timeSeries");
       return show;
     }
   },

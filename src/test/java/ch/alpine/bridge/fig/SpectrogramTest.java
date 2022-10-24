@@ -3,7 +3,6 @@ package ch.alpine.bridge.fig;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.usr.SpectrogramDemo;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -16,11 +15,6 @@ import ch.alpine.tensor.sca.ply.Polynomial;
 import ch.alpine.tensor.sca.tri.Cos;
 
 class SpectrogramTest {
-  @Test
-  void testSimple() {
-    CascadeHelper.draw(SpectrogramDemo.create(0.4, 1.7));
-  }
-
   @Test
   void testMore() {
     for (int count = 0; count < 2; ++count) {
@@ -41,7 +35,7 @@ class SpectrogramTest {
       // show.getAxisY().setLabel("user defined");
       // if (count == 0)
       // show.getAxisY().setUnit(Unit.of("s^-1"));
-      CascadeHelper.draw(Spectrogram.of(points));
+      Spectrogram.of(points);
     }
   }
 }

@@ -34,7 +34,7 @@ public enum ChebyshevDemo {
       Show show = new Show();
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = Chebyshev.T.of(d);
-        show.add(new Plot(suo, Clips.absolute(1)));
+        show.add(Plot.of(suo, Clips.absolute(1)));
       }
       show.setPlotLabel("Chebyshev Polynomials");
       show.export(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "T.png"), new Dimension(600, 400));
@@ -43,7 +43,7 @@ public enum ChebyshevDemo {
       Show show = new Show();
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = Chebyshev.U.of(d);
-        show.add(new Plot(suo, Clips.absolute(1)));
+        show.add(Plot.of(suo, Clips.absolute(1)));
       }
       show.setPlotLabel("Chebyshev Polynomials");
       show.export(HomeDirectory.Pictures(Chebyshev.class.getSimpleName() + "U.png"), new Dimension(600, 400));

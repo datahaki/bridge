@@ -25,9 +25,9 @@ public enum EqualizingDistributionDemo {
     {
       Clip clip = Clips.positive(20);
       Show show = new Show();
-      show.add(new Plot(dist1::at, clip));
+      show.add(Plot.of(dist1::at, clip));
       // visualSet.add(domain, domain.map(dist1::p_lessEquals));
-      show.add(new Plot(dist2::at, clip));
+      show.add(Plot.of(dist2::at, clip));
       show.export(HomeDirectory.Pictures("ed.png"), new Dimension(640, 480));
     }
     {
@@ -35,8 +35,8 @@ public enum EqualizingDistributionDemo {
       InverseCDF inv1 = InverseCDF.of(dist1);
       InverseCDF inv2 = InverseCDF.of(dist2);
       Show show = new Show();
-      show.add(new Plot(inv1::quantile, clip));
-      show.add(new Plot(inv2::quantile, clip));
+      show.add(Plot.of(inv1::quantile, clip));
+      show.add(Plot.of(inv2::quantile, clip));
       show.export(HomeDirectory.Pictures("ed_inv.png"), new Dimension(640, 480));
     }
   }

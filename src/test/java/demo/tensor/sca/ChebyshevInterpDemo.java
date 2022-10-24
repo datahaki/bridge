@@ -31,15 +31,15 @@ public enum ChebyshevInterpDemo {
     ScalarUnaryOperator suo3 = ip.scalarUnaryOperator(knots.map(suo0));
     {
       Show show = new Show();
-      show.add(new Plot(suo0, clip)).setLabel("f");
-      show.add(new Plot(suo1, clip)).setLabel("interp");
-      show.add(new Plot(suo2, clip)).setLabel("alt");
-      show.add(new Plot(suo3, clip)).setLabel("inpol");
+      show.add(Plot.of(suo0, clip)).setLabel("f");
+      show.add(Plot.of(suo1, clip)).setLabel("interp");
+      show.add(Plot.of(suo2, clip)).setLabel("alt");
+      show.add(Plot.of(suo3, clip)).setLabel("inpol");
       show.export(HomeDirectory.Pictures(ChebyshevInterpDemo.class.getSimpleName() + ".png"), new Dimension(600, 400));
     }
     {
       Show show = new Show();
-      show.add(new Plot(s -> suo1.apply(s).subtract(suo2.apply(s)), clip));
+      show.add(Plot.of(s -> suo1.apply(s).subtract(suo2.apply(s)), clip));
       show.export(HomeDirectory.Pictures(ChebyshevInterpDemo.class.getSimpleName() + "_error.png"), new Dimension(600, 400));
     }
   }

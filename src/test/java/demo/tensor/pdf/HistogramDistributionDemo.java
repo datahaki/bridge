@@ -25,9 +25,9 @@ public enum HistogramDistributionDemo {
     {
       Clip clip = Clips.interval(-5, 8);
       Show show = new Show();
-      show.add(new Plot(distribution::at, clip));
-      show.add(new Plot(distribution::p_lessEquals, clip));
-      show.add(new Plot(dist::at, clip));
+      show.add(Plot.of(distribution::at, clip));
+      show.add(Plot.of(distribution::p_lessEquals, clip));
+      show.add(Plot.of(dist::at, clip));
       show.export(HomeDirectory.Pictures("hd.png"), new Dimension(640, 480));
     }
     {
@@ -35,8 +35,8 @@ public enum HistogramDistributionDemo {
       InverseCDF inv1 = InverseCDF.of(distribution);
       InverseCDF inv2 = InverseCDF.of(dist);
       Show show = new Show();
-      show.add(new Plot(inv1::quantile, clip));
-      show.add(new Plot(inv2::quantile, clip));
+      show.add(Plot.of(inv1::quantile, clip));
+      show.add(Plot.of(inv2::quantile, clip));
       show.export(HomeDirectory.Pictures("hd_inv.png"), new Dimension(640, 480));
     }
   }

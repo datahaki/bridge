@@ -30,15 +30,15 @@ public enum TrapezoidalDistributionDemo {
     Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
     {
       Clip clip = Clips.interval(0, 4);
-      show.add(new Plot(pdf::at, clip));
-      show.add(new Plot(cdf::p_lessEquals, clip));
+      show.add(Plot.of(pdf::at, clip));
+      show.add(Plot.of(cdf::p_lessEquals, clip));
     }
     {
       Tensor sequence = Tensors.vector(0, 0, 1, 1);
       // Tensor domain = Subdivide.of(0, sequence.length() - 1, 100);
       ScalarTensorFunction sto = BSplineFunctionString.of(2, sequence);
       ScalarUnaryOperator suo = s -> (Scalar) sto.apply(s);
-      show.add(new Plot(suo, Clips.interval(0, 3)));
+      show.add(Plot.of(suo, Clips.interval(0, 3)));
     }
     return show;
   }

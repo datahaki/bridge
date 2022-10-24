@@ -20,7 +20,7 @@ public enum CielabDemo {
     Tensor domain = Subdivide.increasing(clip, 50);
     Show show = new Show();
     show.add(ListPlot.of(domain.map(Cielabf::forward), domain));
-    show.add(new Plot(Cielabf::inverse, clip));
+    show.add(Plot.of(Cielabf::inverse, clip));
     show.export(HomeDirectory.Pictures("cielab.png"), new Dimension(400, 400));
   }
 }
