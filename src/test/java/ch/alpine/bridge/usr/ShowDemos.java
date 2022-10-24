@@ -33,6 +33,7 @@ public enum ShowDemos {
       Tensor domain = Subdivide.increasing(Clips.unit(), 50);
       Tensor rgba = domain.map(ColorDataGradients.CLASSIC);
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
+      show.setPlotLabel("Color Data Gradient");
       show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
       show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
       show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
@@ -44,7 +45,7 @@ public enum ShowDemos {
     @Override
     Show create() {
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
-      show.setPlotLabel(ListPlot.class.getSimpleName());
+      show.setPlotLabel("Sine");
       show.add(new Plot(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2))).setLabel("sine");
       return show;
     }
@@ -53,7 +54,7 @@ public enum ShowDemos {
     @Override
     Show create() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
-      show.setPlotLabel(ListPlot.class.getSimpleName());
+      show.setPlotLabel("Cosine");
       ScalarUnaryOperator suo = QuantityMagnitude.SI().in("rad");
       show.add(new Plot(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Quantity.of(180, "deg")))).setLabel("cosine");
       return show;
@@ -63,7 +64,7 @@ public enum ShowDemos {
     @Override
     Show create() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
-      show.setPlotLabel(ListPlot.class.getSimpleName());
+      show.setPlotLabel("Time Series");
       TimeSeries timeSeries = TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT);
       timeSeries.insert(DateTime.of(2022, 11, 3, 10, 45), Quantity.of(4, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 3, 20, 35), Quantity.of(2, "kW"));
@@ -77,7 +78,7 @@ public enum ShowDemos {
     @Override
     Show create() {
       Show show = new Show(ColorDataLists._058.strict().deriveWithAlpha(192));
-      show.setPlotLabel(ListPlot.class.getSimpleName());
+      show.setPlotLabel("Wiener Process");
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.standard());
       show.add(new Plot(randomFunction::evaluate, Clips.unit())).setLabel("timeSeries");
       return show;
@@ -97,17 +98,29 @@ public enum ShowDemos {
   EMPTY {
     @Override
     Show create() {
-      return new Show();
+      Show show = new Show();
+      show.setPlotLabel("Unnamed");
+      return show;
     }
   },
   ARRAY_PLOT0 {
     @Override
     Show create() {
       Show show = new Show();
+      show.setPlotLabel("Array Plot");
       show.add(new ArrayPlot(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
       return show;
     }
   },
+  SPECTROGRAM0 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Spectrogram");
+      show.add(SpectrogramDemo.create(0.32, 1.6));
+      return show;
+    }
+  }
   //
   ;
 

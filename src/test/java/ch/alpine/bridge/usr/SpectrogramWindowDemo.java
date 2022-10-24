@@ -27,7 +27,7 @@ import ch.alpine.tensor.sca.win.WindowFunctions;
     folder.mkdir();
     for (WindowFunctions windowFunctions : WindowFunctions.values()) {
       ScalarUnaryOperator scalarUnaryOperator = windowFunctions.get();
-      Tensor image = Spectrogram.of(tensor, scalarUnaryOperator, ColorDataGradients.VISIBLE_SPECTRUM);
+      Tensor image = Spectrogram.vector(tensor, scalarUnaryOperator, ColorDataGradients.VISIBLE_SPECTRUM);
       Export.of(new File(folder, windowFunctions.name() + ".png"), ImageResize.nearest(image, 4));
     }
   }

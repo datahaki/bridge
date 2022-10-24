@@ -24,7 +24,7 @@ public class ShowDemo {
   final int _WIDTH = 300;
   final int _HEIGHT = 130;
   final int width = _WIDTH + 90;
-  final int height = _HEIGHT + 30;
+  final int height = _HEIGHT + 45;
   final int mag = 2;
   // ---
   private final JFrame jFrame = new JFrame();
@@ -44,7 +44,7 @@ public class ShowDemo {
         graphics2.setColor(Color.PINK);
         graphics2.drawRect(0, 0, width - 1, height - 1);
         try {
-          show.render(new Rectangle(70, 5, _WIDTH, _HEIGHT), graphics2);
+          show.render(new Rectangle(70, 20, _WIDTH, _HEIGHT), graphics2);
         } catch (Exception exception) {
           graphics2.setColor(Color.RED);
           graphics2.drawString("" + exception.getMessage(), 0, 30);

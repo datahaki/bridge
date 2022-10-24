@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -76,6 +77,15 @@ public class Show {
       showarea.setStroke(GridDrawer.STROKE_SOLID);
       showarea.setColor(GridDrawer.COLOR_FRAME);
       showarea.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
+    }
+    {
+      Graphics2D showarea2 = (Graphics2D) graphics.create();
+      Font font = showarea2.getFont().deriveFont(Font.BOLD);
+      showarea2.setFont(font);
+      RenderQuality.setQuality(showarea2);
+      showarea2.setColor(GridDrawer.COLOR_FONT);
+      showarea2.drawString(plotLabel, rectangle.x, rectangle.y - GridDrawer.GAP);
+      showarea2.dispose();
     }
     showarea.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     if (Objects.isNull(_cbb)) {

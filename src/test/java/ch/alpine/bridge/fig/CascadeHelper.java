@@ -4,7 +4,6 @@ package ch.alpine.bridge.fig;
 import java.io.File;
 import java.io.IOException;
 
-import ch.alpine.bridge.usr.SpectrogramDemo;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.img.ColorDataLists;
@@ -45,9 +44,10 @@ public enum CascadeHelper {
       show.setPlotLabel(ListPlot.class.getSimpleName());
       // export(folder, ListPlot.of(show.setJoined(true)));
     }
-    {
-      export(folder, SpectrogramDemo.create());
-    }
+    // {
+    // ShowDemos.SPECTROGRAM0.create();
+    // export(folder, SpectrogramDemo.create());
+    // }
   }
 
   private static void export(File folder, Showable jFreeChart) throws IOException {

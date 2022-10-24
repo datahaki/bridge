@@ -43,9 +43,9 @@ public class GridDrawer {
   // ---
   static final Stroke STROKE_SOLID = new BasicStroke();
   static final Color COLOR_FRAME = new Color(160, 160, 160);
-  private static final Color COLOR_FONT = Color.DARK_GRAY;
+  static final Color COLOR_FONT = Color.DARK_GRAY;
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
-  private static final int GAP = 5;
+  static final int GAP = 5;
   // ---
   private final ShowableConfig showableConfig;
   private final DateTimeFocus dateTimeFocus;
