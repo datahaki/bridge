@@ -29,23 +29,6 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * <a href="https://reference.wolfram.com/language/ref/ListPlot.html">ListPlot</a> */
 public class ListPlot implements Showable {
   private static final double RADIUS = 2.5;
-
-  /** Remark:
-   * We would like to make joined property of VisualRow, but JFreeChart does not support
-   * this granularity.
-   * 
-   * Tested with up to 10 million points - a little slow but possible.
-   * 
-   * @param visualSet
-   * @param joined for lines between coordinates, otherwise scattered points
-   * @return */
-  public static Show of(Tensor points) {
-    Show show = new Show();
-    show.add(new ListPlot(points));
-    return show;
-  }
-
-  // ---
   private final Tensor points;
   private final boolean joined;
 

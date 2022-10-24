@@ -17,6 +17,7 @@ import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
+import ch.alpine.tensor.tmp.TimeSeries;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Plot.html">Plot</a> */
@@ -31,6 +32,10 @@ public class Plot implements Showable {
   public Plot(ScalarUnaryOperator suo, Clip x_domain) {
     this.suo = suo;
     this.x_domain = x_domain;
+  }
+
+  public Plot(TimeSeries timeSeries) {
+    this(scalar -> (Scalar) timeSeries.evaluate(scalar), timeSeries.domain());
   }
 
   @Override

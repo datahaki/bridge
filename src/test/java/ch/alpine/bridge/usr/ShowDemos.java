@@ -6,7 +6,6 @@ import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
-import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
@@ -26,7 +25,7 @@ import ch.alpine.tensor.sca.tri.Sin;
 import ch.alpine.tensor.tmp.ResamplingMethods;
 import ch.alpine.tensor.tmp.TimeSeries;
 
-public enum ShowDemos {
+/* package */ enum ShowDemos {
   DEMO1 {
     @Override
     Show create() {
@@ -69,8 +68,7 @@ public enum ShowDemos {
       timeSeries.insert(DateTime.of(2022, 11, 3, 10, 45), Quantity.of(4, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 3, 20, 35), Quantity.of(2, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 4, 8, 15), Quantity.of(1, "kW"));
-      ScalarUnaryOperator suo = s -> (Scalar) timeSeries.evaluate(s);
-      show.add(new Plot(suo, timeSeries.domain())).setLabel("timeSeries");
+      show.add(new Plot(timeSeries)).setLabel("timeSeries");
       return show;
     }
   },

@@ -62,7 +62,7 @@ public class Show {
     return showable;
   }
 
-  public void render(Rectangle rectangle, Graphics graphics) {
+  public void render(Graphics graphics, Rectangle rectangle) {
     CoordinateBoundingBox _cbb = cbb;
     if (Objects.isNull(_cbb)) {
       Optional<CoordinateBoundingBox> optional = showables.stream() //
@@ -138,7 +138,7 @@ public class Show {
         INSETS.top, //
         dimension.width - INSETS.left - INSETS.right, //
         dimension.height - INSETS.bottom);
-    render(rectangle, graphics);
+    render(graphics, rectangle);
     String string = file.toString();
     int index = string.lastIndexOf('.');
     ImageIO.write(bufferedImage, string.substring(index + 1), file);
@@ -146,5 +146,9 @@ public class Show {
 
   public void setCbb(CoordinateBoundingBox cbb) {
     this.cbb = cbb;
+  }
+
+  public boolean isEmpty() {
+    return showables.isEmpty();
   }
 }
