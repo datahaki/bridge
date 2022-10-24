@@ -20,14 +20,14 @@ class HistogramTest {
   @Test
   void testEmptyRow() {
     Show show = new Show();
-    show.add(new ListPlot(Tensors.empty()));
+    show.add(ListPlot.of(Tensors.empty()));
     CascadeHelper.draw(Histogram.of(show));
   }
 
   @Test
   void testQuantity(@TempDir File folder) throws IOException {
     Show show = new Show();
-    show.add(new ListPlot(Tensors.fromString("{{2[m],3[s]}, {4[m],5[s]}, {5[m],1[s]}}")));
+    show.add(ListPlot.of(Tensors.fromString("{{2[m],3[s]}, {4[m],5[s]}, {5[m],1[s]}}")));
     Showable jFreeChart = Histogram.of(show);
     show.export(new File(folder, "histunit.png"), new Dimension(640, 480));
     CascadeHelper.draw(jFreeChart);

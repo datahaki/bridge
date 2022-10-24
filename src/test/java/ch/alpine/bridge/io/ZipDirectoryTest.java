@@ -27,7 +27,7 @@ class ZipDirectoryTest {
     folder.mkdirs();
     {
       Show show = new Show();
-      show.add(new ListPlot(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2)));
+      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2)));
       show.export(new File(folder, "image.png"), new Dimension(300, 200));
     }
     File zipFile = new File(tempDir, "file.zip");

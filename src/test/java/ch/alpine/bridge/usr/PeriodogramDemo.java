@@ -29,7 +29,7 @@ public enum PeriodogramDemo {
     Tensor domain = Subdivide.of(0.0, 0.3, 2400);
     Tensor signal = domain.map(suo);
     Show show = new Show();
-    show.add(new ListPlot(domain, signal));
+    show.add(ListPlot.of(domain, signal));
     return Periodogram.of(show);
   }
 
@@ -46,7 +46,7 @@ public enum PeriodogramDemo {
     Tensor signal = Tensors.vector(i -> _f(RealScalar.of(i)), n).add(noised);
     Show show = new Show();
     show.setPlotLabel(Periodogram.class.getSimpleName());
-    show.add(new ListPlot(domain, signal));
+    show.add(ListPlot.of(domain, signal));
     return Periodogram.of(show);
   }
 

@@ -4,11 +4,9 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.pdf.InverseCDF;
 import ch.alpine.tensor.pdf.RandomVariate;
@@ -26,9 +24,8 @@ public enum EqualizingDistributionDemo {
     EqualizingDistribution dist2 = (EqualizingDistribution) EqualizingDistribution.fromUnscaledPDF(unscaledPDF);
     {
       Clip clip = Clips.positive(20);
-      Tensor domain = Subdivide.of(0, 20, 20 * 10);
       Show show = new Show();
-      show.add(new ListPlot(domain, domain.map(dist1::at)));
+      show.add(new Plot(dist1::at, clip));
       // visualSet.add(domain, domain.map(dist1::p_lessEquals));
       show.add(new Plot(dist2::at, clip));
       show.export(HomeDirectory.Pictures("ed.png"), new Dimension(640, 480));

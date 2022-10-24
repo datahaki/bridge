@@ -32,7 +32,7 @@ import ch.alpine.tensor.sca.ply.Polynomial;
       samples_y.map(y_to_x);
       Show show = new Show();
       show.add(new Plot(x_to_y, domain_x));
-      show.add(new ListPlot(samples_y.map(y_to_x), samples_y));
+      show.add(ListPlot.of(samples_y.map(y_to_x), samples_y));
       show.export(HomeDirectory.Pictures("here" + degree + ".png"), new Dimension(400, 300));
     }
   }

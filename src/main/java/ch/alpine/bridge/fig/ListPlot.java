@@ -36,21 +36,28 @@ public class ListPlot implements Showable {
    * The special case when points == {} is also allowed.
    * @return instance of the visual row, that was added to this visual set
    * @throws Exception if not all entries in points are vectors of length 2 */
-  public ListPlot(Tensor points) {
-    this(points, true);
+  public static Showable of(Tensor points) {
+    return of(points, true);
   }
 
-  public ListPlot(Tensor points, boolean joined) {
-    points.stream().forEach(row -> VectorQ.requireLength(row, 2));
-    this.points = points;
-    this.joined = joined;
+  /** @param points
+   * @param joined
+   * @return */
+  public static Showable of(Tensor points, boolean joined) {
+    return new ListPlot(points, joined);
   }
 
   /** @param domain {x1, x2, ..., xn}
    * @param values {y1, y2, ..., yn}
    * @return */
-  public ListPlot(Tensor domain, Tensor tensor) {
-    this(Transpose.of(Tensors.of(domain, tensor)));
+  public static Showable of(Tensor domain, Tensor tensor) {
+    return of(Transpose.of(Tensors.of(domain, tensor)));
+  }
+
+  private ListPlot(Tensor points, boolean joined) {
+    points.stream().forEach(row -> VectorQ.requireLength(row, 2));
+    this.points = points;
+    this.joined = joined;
   }
 
   @Override

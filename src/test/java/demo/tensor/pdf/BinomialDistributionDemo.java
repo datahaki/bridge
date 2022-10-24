@@ -25,8 +25,8 @@ public enum BinomialDistributionDemo {
     Show show = new Show();
     {
       Tensor domain = Range.of(0, n + 1);
-      show.add(new ListPlot(domain, domain.map(pdf::at)));
-      show.add(new ListPlot(domain, domain.map(cdf::p_lessEquals)));
+      show.add(ListPlot.of(domain, domain.map(pdf::at)));
+      show.add(ListPlot.of(domain, domain.map(cdf::p_lessEquals)));
     }
     show.export(HomeDirectory.Pictures("binomial_distr.png"), new Dimension(640, 480));
   }

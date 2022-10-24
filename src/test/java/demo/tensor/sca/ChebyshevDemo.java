@@ -26,7 +26,7 @@ public enum ChebyshevDemo {
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = ClenshawChebyshev.of(UnitVector.of(d + 1, d));
         ScalarUnaryOperator su2 = Chebyshev.T.of(d);
-        show.add(new ListPlot(domain, domain.map(suo).subtract(domain.map(su2))));
+        show.add(ListPlot.of(domain, domain.map(suo).subtract(domain.map(su2))));
       }
       show.export(HomeDirectory.Pictures(ChebyshevDemo.class.getSimpleName() + ".png"), new Dimension(600, 400));
     }

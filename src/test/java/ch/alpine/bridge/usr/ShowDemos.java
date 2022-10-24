@@ -33,9 +33,9 @@ import ch.alpine.tensor.tmp.TimeSeries;
       Tensor rgba = domain.map(ColorDataGradients.CLASSIC);
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
       show.setPlotLabel("Color Data Gradient");
-      show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
-      show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
-      show.add(new ListPlot(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
+      show.add(ListPlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
+      show.add(ListPlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
+      show.add(ListPlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
       show.add(new Plot(s -> Cos.FUNCTION.apply(s.add(s)).multiply(RealScalar.of(100)), Clips.positive(0.5))).setLabel("sine");
       return show;
     }
@@ -87,9 +87,9 @@ import ch.alpine.tensor.tmp.TimeSeries;
     Show create() {
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
       show.setPlotLabel(ListPlot.class.getSimpleName());
-      show.add(new ListPlot(RandomVariate.of(UniformDistribution.unit(), 10, 2), false)).setLabel("timeSeries");
-      show.add(new ListPlot(RandomVariate.of(UniformDistribution.unit(), 20, 2), false)).setLabel("timeSeries");
-      show.add(new ListPlot(RandomVariate.of(UniformDistribution.unit(), 4, 2), true)).setLabel("timeSeries");
+      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 10, 2), false)).setLabel("timeSeries");
+      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 20, 2), false)).setLabel("timeSeries");
+      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 4, 2), true)).setLabel("timeSeries");
       return show;
     }
   },

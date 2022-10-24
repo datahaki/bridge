@@ -44,8 +44,8 @@ public enum InfluenceMatrixDemo {
         System.err.println("warning");
     }
     Show show = new Show();
-    show.add(new ListPlot(t1)).setLabel("mahs");
-    show.add(new ListPlot(t2)).setLabel("inf");
+    show.add(ListPlot.of(t1)).setLabel("mahs");
+    show.add(ListPlot.of(t2)).setLabel("inf");
     show.export(HomeDirectory.file("matrix_rect2.png"), new Dimension(500, 300));
   }
 }

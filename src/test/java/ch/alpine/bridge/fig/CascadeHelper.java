@@ -23,9 +23,9 @@ public enum CascadeHelper {
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
     Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
     Show show = new Show(ColorDataLists._250.cyclic());
-    Showable row0 = show.add(new ListPlot(Range.of(0, values1.length()), values1));
-    show.add(new ListPlot(Range.of(0, values2.length()), values2));
-    Showable row2 = show.add(new ListPlot(Range.of(3, 3 + values3.length()), values3));
+    Showable row0 = show.add(ListPlot.of(Range.of(0, values1.length()), values1));
+    show.add(ListPlot.of(Range.of(0, values2.length()), values2));
+    Showable row2 = show.add(ListPlot.of(Range.of(3, 3 + values3.length()), values3));
     if (labels) {
       row0.setLabel("row 0");
       row2.setLabel("row 2");

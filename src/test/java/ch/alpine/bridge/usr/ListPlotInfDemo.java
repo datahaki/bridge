@@ -23,7 +23,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
     valuesY.set(DoubleScalar.POSITIVE_INFINITY, 3);
     Show show = new Show();
     show.setPlotLabel("List Plot Demo");
-    Showable visualRow1 = show.add(new ListPlot(valuesX, valuesY));
+    Showable visualRow1 = show.add(ListPlot.of(valuesX, valuesY));
     visualRow1.setLabel("first");
     {
       File file = HomeDirectory.Pictures(ListPlotInfDemo.class.getSimpleName() + ".png");

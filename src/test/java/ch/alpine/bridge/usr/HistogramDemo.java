@@ -14,8 +14,8 @@ public enum HistogramDemo {
   ;
   public static void main(String[] args) throws IOException {
     Show show = new Show();
-    show.add(new ListPlot(Tensors.fromString("{{2[m],3[s]}, {3[m],0[s]}, {4[m],3[s]}, {5[m],1[s]}}"))).setLabel("first");
-    show.add(new ListPlot(Tensors.fromString("{{3[m],2[s]}, {4[m],2.5[s]}, {5[m],2[s]}}"))).setLabel("second");
+    show.add(ListPlot.of(Tensors.fromString("{{2[m],3[s]}, {3[m],0[s]}, {4[m],3[s]}, {5[m],1[s]}}"))).setLabel("first");
+    show.add(ListPlot.of(Tensors.fromString("{{3[m],2[s]}, {4[m],2.5[s]}, {5[m],2[s]}}"))).setLabel("second");
     show.setPlotLabel(Histogram.class.getSimpleName());
     show.export( //
         HomeDirectory.Pictures(Histogram.class.getSimpleName() + ".png"), //

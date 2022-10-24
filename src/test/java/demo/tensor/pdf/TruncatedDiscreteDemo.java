@@ -27,9 +27,9 @@ public enum TruncatedDiscreteDemo {
     Show visualSet = new Show();
     {
       Tensor domain = Range.of(0, 12);
-      visualSet.add(new ListPlot(domain, domain.map(pdf::at)));
-      visualSet.add(new ListPlot(domain, domain.map(cdf::p_lessEquals)));
-      visualSet.add(new ListPlot(domain, domain.map(pdf_o::at)));
+      visualSet.add(ListPlot.of(domain, domain.map(pdf::at)));
+      visualSet.add(ListPlot.of(domain, domain.map(cdf::p_lessEquals)));
+      visualSet.add(ListPlot.of(domain, domain.map(pdf_o::at)));
     }
     return Histogram.of(visualSet);
   }

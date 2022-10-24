@@ -40,7 +40,7 @@ public enum ChebyshevApprox {
       Tensor coeffs = LinearSolve.of(chebyshevNodes.matrix(n), chebyshevNodes.of(n).map(suo));
       System.out.println(Pretty.of(coeffs.map(Round._3)));
       Tensor error = domain.map(ClenshawChebyshev.of(coeffs)).subtract(domain.map(suo));
-      show.add(new ListPlot(domain, error));
+      show.add(ListPlot.of(domain, error));
     }
     show.export(HomeDirectory.Pictures(ChebyshevApprox.class.getSimpleName() + ".png"), new Dimension(600, 400));
   }

@@ -20,7 +20,7 @@ public enum ScreePlotDemo {
     Tensor matrix = HilbertMatrix.of(40);
     Show show = new Show();
     Tensor values = SingularValueList.of(matrix);
-    show.add(new ListPlot(Range.of(0, values.length()), values.map(Log10.FUNCTION)));
+    show.add(ListPlot.of(Range.of(0, values.length()), values.map(Log10.FUNCTION)));
     show.export(HomeDirectory.Pictures(ScreePlotDemo.class.getSimpleName() + ".png"), //
         new Dimension(640, 480));
   }
