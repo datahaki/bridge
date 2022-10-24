@@ -1,12 +1,8 @@
 // code by jph
 package demo.tensor.pdf;
 
-import java.io.IOException;
-
-import ch.alpine.bridge.fig.Histogram;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
-import ch.alpine.bridge.fig.Showable;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.pdf.CDF;
@@ -18,23 +14,23 @@ import ch.alpine.tensor.sca.Clips;
 
 public enum TruncatedDiscreteDemo {
   ;
-  public static Showable generate() {
+  public static Show generate() {
     Distribution original = PoissonDistribution.of(7);
     Distribution distribution = TruncatedDistribution.of(original, Clips.interval(5, 10));
     PDF pdf = PDF.of(distribution);
     CDF cdf = CDF.of(distribution);
     PDF pdf_o = PDF.of(original);
-    Show visualSet = new Show();
+    Show show = new Show();
     {
       Tensor domain = Range.of(0, 12);
-      visualSet.add(ListPlot.of(domain, domain.map(pdf::at)));
-      visualSet.add(ListPlot.of(domain, domain.map(cdf::p_lessEquals)));
-      visualSet.add(ListPlot.of(domain, domain.map(pdf_o::at)));
+      show.add(ListPlot.of(domain, domain.map(pdf::at)));
+      show.add(ListPlot.of(domain, domain.map(cdf::p_lessEquals)));
+      show.add(ListPlot.of(domain, domain.map(pdf_o::at)));
     }
-    return Histogram.of(visualSet);
+    return show;
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
     // show.export(HomeDirectory.Pictures( //
     // TruncatedDiscreteDemo.class.getSimpleName() + ".png"), generate(), //
     // new Dimension(640, 480));

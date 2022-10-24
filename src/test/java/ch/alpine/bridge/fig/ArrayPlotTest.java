@@ -30,7 +30,7 @@ class ArrayPlotTest {
     Tensor raw = RandomVariate.of(UniformDistribution.unit(), 2, 70000);
     BufferedImage bufferedImage = ImageFormat.of(raw.map(ColorDataGradients.TEMPERATURE_WEATHER));
     Show show = new Show();
-    show.add(new ArrayPlot(bufferedImage, CoordinateBoundingBox.of(Clips.unit(), Clips.unit())));
+    show.add(ArrayPlot.of(bufferedImage, CoordinateBoundingBox.of(Clips.unit(), Clips.unit())));
     show.export(new File(tempDir, "file.png"), new Dimension(1000, 300));
   }
 }

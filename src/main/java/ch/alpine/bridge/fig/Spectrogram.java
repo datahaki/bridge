@@ -36,7 +36,7 @@ public enum Spectrogram {
     Clip clipX = Clips.interval(domain.Get(0), Last.of(domain));
     Scalar yhi = domain.Get(2).subtract(domain.Get(0)).reciprocal();
     Clip clipY = Clips.interval(yhi.zero(), yhi);
-    return new ArrayPlot(bufferedImage, CoordinateBoundingBox.of(clipX, clipY));
+    return ArrayPlot.of(bufferedImage, CoordinateBoundingBox.of(clipX, clipY));
   }
 
   /** Example:

@@ -68,6 +68,7 @@ public class ListPlot extends BaseShowable {
       RenderQuality.setQuality(graphics);
       graphics.setColor(getColor());
       if (joined) {
+        graphics.setStroke(getStroke());
         Path2D.Double path = new Path2D.Double();
         {
           Point2D.Double point2d = showableConfig.toPoint2D(points.get(0));

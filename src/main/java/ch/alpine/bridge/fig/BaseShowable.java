@@ -8,7 +8,7 @@ import java.awt.Stroke;
 public abstract class BaseShowable implements Showable {
   private String string = "";
   private Color color = Color.BLACK;
-  private Stroke stroke = new BasicStroke();
+  private Stroke stroke = new BasicStroke(1.5f);
 
   @Override
   public final void setLabel(String string) {

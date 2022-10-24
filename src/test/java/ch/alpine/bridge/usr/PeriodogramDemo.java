@@ -1,9 +1,6 @@
 // code by jph
 package ch.alpine.bridge.usr;
 
-import java.io.IOException;
-
-import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Periodogram;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
@@ -13,6 +10,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.alg.Subdivide;
+import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.pdf.RandomVariate;
@@ -28,9 +26,8 @@ public enum PeriodogramDemo {
     ScalarUnaryOperator suo = t -> Sin.FUNCTION.apply(f0.multiply(t)).add(Sin.FUNCTION.apply(f1.multiply(t)));
     Tensor domain = Subdivide.of(0.0, 0.3, 2400);
     Tensor signal = domain.map(suo);
-    Show show = new Show();
-    show.add(ListPlot.of(domain, signal));
-    return Periodogram.of(show);
+    Tensor points = Transpose.of(Tensors.of(domain, signal));
+    return Periodogram.of(points);
   }
 
   private static Scalar _f(Scalar n) {
@@ -39,21 +36,15 @@ public enum PeriodogramDemo {
     return x1.add(x1).add(x2);
   }
 
-  public static Showable create2() {
+  public static Show create2() {
     int n = 128;
     Tensor noised = RandomVariate.of(UniformDistribution.of(-1, 1), n);
     Tensor domain = Range.of(0, n);
     Tensor signal = Tensors.vector(i -> _f(RealScalar.of(i)), n).add(noised);
     Show show = new Show();
     show.setPlotLabel(Periodogram.class.getSimpleName());
-    show.add(ListPlot.of(domain, signal));
-    return Periodogram.of(show);
-  }
-
-  public static void main(String[] args) throws IOException {
-    // Showable jFreeChart = PeriodogramDemo.create2();
-    // File file = HomeDirectory.Pictures(Periodogram.class.getSimpleName() + ".png");
-    // Show.export(file, jFreeChart, //
-    // new Dimension(DemoHelper.DEMO_W, DemoHelper.DEMO_H));
+    Tensor points = Transpose.of(Tensors.of(domain, signal));
+    show.add(Periodogram.of(points));
+    return show;
   }
 }

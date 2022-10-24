@@ -32,12 +32,6 @@ import ch.alpine.tensor.qty.Quantity;
 
 class ListPlotTest {
   @Test
-  void testEmpty() {
-    Show visualSet = new Show();
-    // ListPlot.of(visualSet.setJoined(true));
-  }
-
-  @Test
   void testEmptyRow() {
     Show show = new Show();
     Showable visualRow = show.add(ListPlot.of(Tensors.empty(), Tensors.empty()));
@@ -95,12 +89,6 @@ class ListPlotTest {
   }
 
   @Test
-  void testDistribution(@TempDir File folder) throws IOException {
-    // Showable jFreeChart = TrapezoidalDistributionDemo.generate();
-    // Show.export(new File(folder, "trap_distr.png"), jFreeChart, new Dimension(640, 480));
-  }
-
-  @Test
   void testSome(@TempDir File folder) throws IOException {
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
@@ -113,7 +101,7 @@ class ListPlotTest {
     Showable visualRow1 = show.add(ListPlot.of(domain1.map(suoX), values1.map(suoY)));
     visualRow1.setLabel("first");
     Tensor domain2 = RandomVariate.of(UniformDistribution.unit(), values2.length());
-    Showable visualRow2 = show.add(ListPlot.of(domain2.map(suoX), values2.map(suoY)));
+    show.add(ListPlot.of(domain2.map(suoX), values2.map(suoY)));
     Tensor domain3 = RandomVariate.of(UniformDistribution.unit(), values3.length());
     show.add(ListPlot.of(domain3.map(suoX), values3.map(suoY)));
     Tensor domain4 = Tensors.vector(1, 3, 2, 5, 4).multiply(RealScalar.of(0.2));

@@ -20,18 +20,24 @@ import ch.alpine.tensor.sca.Clips;
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 public class ArrayPlot extends BaseShowable {
   private static final ScalarUnaryOperator MATHEMATICA = s -> RealScalar.ONE.subtract(s).multiply(RealScalar.of(255));
+
+  public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
+    return new ArrayPlot(bufferedImage, cbb);
+  }
+
+  public static Showable of(Tensor matrix) {
+    return of(ImageFormat.of(Rescale.of(matrix).map(MATHEMATICA)), //
+        CoordinateBoundingBox.of( //
+            Clips.interval(0, 1), Clips.interval(0, 1)));
+  }
+
+  // ---
   /** @param visualImage
    * @return */
   private final BufferedImage bufferedImage;
   private final CoordinateBoundingBox cbb;
 
-  public ArrayPlot(Tensor matrix) {
-    this(ImageFormat.of(Rescale.of(matrix).map(MATHEMATICA)), //
-        CoordinateBoundingBox.of( //
-            Clips.interval(0, 1), Clips.interval(0, 1)));
-  }
-
-  public ArrayPlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
+  private ArrayPlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
     this.bufferedImage = bufferedImage;
     this.cbb = cbb;
   }
