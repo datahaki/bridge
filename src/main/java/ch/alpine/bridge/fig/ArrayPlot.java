@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.geom.Point2D;
@@ -19,7 +18,7 @@ import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
-public class ArrayPlot implements Showable {
+public class ArrayPlot extends BaseShowable {
   private static final ScalarUnaryOperator MATHEMATICA = s -> RealScalar.ONE.subtract(s).multiply(RealScalar.of(255));
   /** @param visualImage
    * @return */
@@ -50,16 +49,6 @@ public class ArrayPlot implements Showable {
     _g.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
         (int) ul.getX(), //
         (int) ul.getY(), null);
-  }
-
-  @Override
-  public void setLabel(String string) {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void setColor(Color color) {
-    // TODO Auto-generated method stub
   }
 
   @Override

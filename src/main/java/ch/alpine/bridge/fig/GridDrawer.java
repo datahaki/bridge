@@ -40,12 +40,7 @@ public class GridDrawer {
   private static final Stroke STROKE_GRIDLINES = //
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
   private static final Color COLOR_GRIDLINES = new Color(224, 224, 224);
-  // ---
-  static final Stroke STROKE_SOLID = new BasicStroke();
-  static final Color COLOR_FRAME = new Color(160, 160, 160);
-  static final Color COLOR_FONT = Color.DARK_GRAY;
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
-  static final int GAP = 5;
   // ---
   private final ShowableConfig showableConfig;
   private final DateTimeFocus dateTimeFocus;
@@ -80,7 +75,7 @@ public class GridDrawer {
       drawYLines(graphics);
     // ---
     {
-      graphics.setColor(COLOR_FONT);
+      graphics.setColor(StaticHelper.COLOR_FONT);
       String unit0 = Unicode.valueOf(QuantityUnit.of(xRange));
       String unit1 = Unicode.valueOf(QuantityUnit.of(yRange));
       RenderQuality.setQuality(graphics);
@@ -92,8 +87,8 @@ public class GridDrawer {
         String xLabel = unit0 + "\u2192" + unit1;
         FontMetrics fontMetrics = graphics.getFontMetrics();
         graphics.drawString(xLabel, //
-            rectangle.x - fontMetrics.stringWidth(xLabel) - 3 * GAP, //
-            rectangle.y + rectangle.height - 1 + GAP + fontMetrics.getHeight());
+            rectangle.x - fontMetrics.stringWidth(xLabel) - 3 * StaticHelper.GAP, //
+            rectangle.y + rectangle.height - 1 + StaticHelper.GAP + fontMetrics.getHeight());
       }
     }
     // ---
@@ -136,16 +131,16 @@ public class GridDrawer {
     }
     if (ticksX) {
       {
-        graphics.setStroke(STROKE_SOLID);
+        graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
-        graphics.drawLine(rectangle.x, y_height + GAP, rectangle.x + rectangle.width - 1, y_height + GAP);
+        graphics.drawLine(rectangle.x, y_height + StaticHelper.GAP, rectangle.x + rectangle.width - 1, y_height + StaticHelper.GAP);
         for (int pix : navigableMap.keySet())
-          graphics.drawLine(pix, y_height + GAP + 1, pix, y_height + GAP + 2);
+          graphics.drawLine(pix, y_height + StaticHelper.GAP + 1, pix, y_height + StaticHelper.GAP + 2);
       }
       {
         Graphics2D graphics2 = (Graphics2D) graphics.create();
-        graphics2.setClip(rectangle.x - GAP, y_height, rectangle.width + GAP + GAP, 40); // magic const
-        graphics2.setColor(COLOR_FONT);
+        graphics2.setClip(rectangle.x - StaticHelper.GAP, y_height, rectangle.width + StaticHelper.GAP + StaticHelper.GAP, 40); // magic const
+        graphics2.setColor(StaticHelper.COLOR_FONT);
         RenderQuality.setQuality(graphics2);
         for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
           Scalar value = entry.getValue();
@@ -154,7 +149,7 @@ public class GridDrawer {
               : ((DateTime) value).format(dateTimeFormatter);
           graphics2.drawString(xLabel, //
               entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //
-              y_height + GAP + fontMetrics.getHeight());
+              y_height + StaticHelper.GAP + fontMetrics.getHeight());
         }
         graphics2.dispose();
       }
@@ -182,22 +177,22 @@ public class GridDrawer {
     }
     if (ticksY) {
       {
-        graphics.setStroke(STROKE_SOLID);
+        graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
-        graphics.drawLine(rectangle.x - GAP, rectangle.y, rectangle.x - GAP, rectangle.y + rectangle.height - 1);
+        graphics.drawLine(rectangle.x - StaticHelper.GAP, rectangle.y, rectangle.x - StaticHelper.GAP, rectangle.y + rectangle.height - 1);
         for (int piy : navigableMap.keySet())
-          graphics.drawLine(rectangle.x - GAP - 2, piy, rectangle.x - GAP - 1, piy);
+          graphics.drawLine(rectangle.x - StaticHelper.GAP - 2, piy, rectangle.x - StaticHelper.GAP - 1, piy);
       }
       {
         Graphics2D graphics2 = (Graphics2D) graphics.create();
         // TODO UTIL 20221013 align dot's of numbers
-        graphics2.setColor(COLOR_FONT);
+        graphics2.setColor(StaticHelper.COLOR_FONT);
         RenderQuality.setQuality(graphics2);
         for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
           int piy = entry.getKey();
           Scalar yValue = entry.getValue();
           String string = format(yValue);
-          graphics2.drawString(string, rectangle.x - fontMetrics.stringWidth(string) - GAP - 5, piy + fontSize / 2 - 1);
+          graphics2.drawString(string, rectangle.x - fontMetrics.stringWidth(string) - StaticHelper.GAP - 5, piy + fontSize / 2 - 1);
         }
         graphics2.dispose();
       }

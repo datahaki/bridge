@@ -1,10 +1,8 @@
 // code by legion
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.util.Optional;
 
@@ -21,13 +19,11 @@ import ch.alpine.tensor.tmp.TimeSeries;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Plot.html">Plot</a> */
-public class Plot implements Showable {
+public class Plot extends BaseShowable {
   private static final int RESOLUTION = 20;
   // ---
   private final ScalarUnaryOperator suo;
   private final Clip x_domain;
-  public Color color;
-  public Stroke stroke;
 
   public Plot(ScalarUnaryOperator suo, Clip x_domain) {
     this.suo = suo;
@@ -47,7 +43,8 @@ public class Plot implements Showable {
       // --
       Graphics2D graphics = (Graphics2D) _g.create();
       RenderQuality.setQuality(graphics);
-      graphics.setColor(color);
+      graphics.setColor(getColor());
+      graphics.setStroke(getStroke());
       {
         double x0 = showableConfig.x_pos(x_clip.min());
         double x1 = showableConfig.x_pos(x_clip.max());
@@ -76,15 +73,5 @@ public class Plot implements Showable {
     return Optional.of(CoordinateBoundingBox.of( //
         x_domain, //
         StaticHelper.minMax(Subdivide.increasing(x_domain, RESOLUTION).map(suo))));
-  }
-
-  @Override
-  public void setLabel(String string) {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void setColor(Color color) {
-    this.color = color;
   }
 }

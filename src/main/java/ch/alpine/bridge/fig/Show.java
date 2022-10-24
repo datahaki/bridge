@@ -28,7 +28,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBounds;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
 public class Show {
-  private static final Insets INSETS = new Insets(5, 70, 25, 5);
+  private static final Insets INSETS = new Insets(15, 70, 25, 5);
   private final List<Showable> showables = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
   private CoordinateBoundingBox cbb = null;
@@ -44,6 +44,7 @@ public class Show {
   }
 
   private String plotLabel = "";
+  static final Color COLOR_FRAME = new Color(160, 160, 160);
 
   /** @param string to appear above plot */
   public final void setPlotLabel(String string) {
@@ -74,8 +75,8 @@ public class Show {
     }
     Graphics2D showarea = (Graphics2D) graphics.create();
     if (frame) {
-      showarea.setStroke(GridDrawer.STROKE_SOLID);
-      showarea.setColor(GridDrawer.COLOR_FRAME);
+      showarea.setStroke(StaticHelper.STROKE_SOLID);
+      showarea.setColor(Show.COLOR_FRAME);
       showarea.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
     }
     {
@@ -83,8 +84,8 @@ public class Show {
       Font font = showarea2.getFont().deriveFont(Font.BOLD);
       showarea2.setFont(font);
       RenderQuality.setQuality(showarea2);
-      showarea2.setColor(GridDrawer.COLOR_FONT);
-      showarea2.drawString(plotLabel, rectangle.x, rectangle.y - GridDrawer.GAP);
+      showarea2.setColor(StaticHelper.COLOR_FONT);
+      showarea2.drawString(plotLabel, rectangle.x, rectangle.y - StaticHelper.GAP);
       showarea2.dispose();
     }
     showarea.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
@@ -105,25 +106,6 @@ public class Show {
     }
     showarea.dispose();
   }
-  // /** @param timeSeries
-  // * @param function mapping a {@link Tensor} value to a {@link Scalar} along the y-axis
-  // * @return */
-  // public VisualRow add(TimeSeries timeSeries, TensorScalarFunction function) {
-  // return _add(Tensor.of(timeSeries.stream() //
-  // .map(entry -> Tensors.of(entry.key(), function.apply(entry.value())))));
-  // }
-  //
-  // /** @param timeSeries with {@link Scalar} as values
-  // * @return */
-  // public VisualRow add(TimeSeries timeSeries) {
-  // return add(timeSeries, Scalar.class::cast);
-  // }
-  //
-  // public boolean hasLegend() {
-  // return visualRows.stream() //
-  // .map(VisualRow::getLabelString) //
-  // .anyMatch(Predicate.not(String::isEmpty));
-  // }
 
   /** @param file
    * @param dimension of image

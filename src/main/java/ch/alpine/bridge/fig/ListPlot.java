@@ -1,7 +1,6 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
@@ -27,10 +26,8 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * 
  * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ListPlot.html">ListPlot</a> */
-public class ListPlot implements Showable {
+public class ListPlot extends BaseShowable {
   private static final double RADIUS = 2.5;
-  private final Tensor points;
-  private final boolean joined;
 
   /** @param points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}}.
    * The special case when points == {} is also allowed.
@@ -54,6 +51,10 @@ public class ListPlot implements Showable {
     return of(Transpose.of(Tensors.of(domain, tensor)));
   }
 
+  // ---
+  private final Tensor points;
+  private final boolean joined;
+
   private ListPlot(Tensor points, boolean joined) {
     points.stream().forEach(row -> VectorQ.requireLength(row, 2));
     this.points = points;
@@ -65,7 +66,7 @@ public class ListPlot implements Showable {
     if (0 < points.length()) {
       Graphics2D graphics = (Graphics2D) _g.create();
       RenderQuality.setQuality(graphics);
-      graphics.setColor(color);
+      graphics.setColor(getColor());
       if (joined) {
         Path2D.Double path = new Path2D.Double();
         {
@@ -101,17 +102,5 @@ public class ListPlot implements Showable {
         : Optional.of(CoordinateBoundingBox.of( //
             StaticHelper.minMax(points.get(Tensor.ALL, 0)), //
             StaticHelper.minMax(points.get(Tensor.ALL, 1))));
-  }
-
-  @Override
-  public void setLabel(String string) {
-    // TODO Auto-generated method stub
-  }
-
-  Color color;
-
-  @Override
-  public void setColor(Color color) {
-    this.color = color;
   }
 }
