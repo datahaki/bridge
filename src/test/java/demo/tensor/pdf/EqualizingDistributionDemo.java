@@ -4,9 +4,11 @@ package demo.tensor.pdf;
 import java.awt.Dimension;
 import java.io.IOException;
 
+import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.pdf.InverseCDF;
 import ch.alpine.tensor.pdf.RandomVariate;
@@ -25,7 +27,7 @@ public enum EqualizingDistributionDemo {
     {
       Clip clip = Clips.positive(20);
       Show show = new Show();
-      show.add(Plot.of(dist1::at, clip));
+      show.add(ListPlot.of(dist1::at, Range.of(0, 20)));
       // visualSet.add(domain, domain.map(dist1::p_lessEquals));
       show.add(Plot.of(dist2::at, clip));
       show.export(HomeDirectory.Pictures("ed.png"), new Dimension(640, 480));

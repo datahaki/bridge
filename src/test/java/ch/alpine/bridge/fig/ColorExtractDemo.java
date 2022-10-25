@@ -1,11 +1,9 @@
 // code by jph
-package ch.alpine.bridge.usr;
+package ch.alpine.bridge.fig;
 
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ListLinePlot;
-import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;

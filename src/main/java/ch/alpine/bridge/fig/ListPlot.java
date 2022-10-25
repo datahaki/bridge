@@ -8,10 +8,12 @@ import java.awt.geom.Point2D;
 import java.util.Optional;
 
 import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.alg.VectorQ;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** <p>inspired by
@@ -30,6 +32,12 @@ public class ListPlot extends BaseShowable {
    * @return */
   public static Showable of(Tensor domain, Tensor tensor) {
     return of(Transpose.of(Tensors.of(domain, tensor)));
+  }
+
+  public static Showable of(ScalarUnaryOperator suo, Tensor vector) {
+    return of(Tensor.of(vector.stream() //
+        .map(Scalar.class::cast) //
+        .map(scalar -> Tensors.of(scalar, suo.apply(scalar)))));
   }
 
   // ---

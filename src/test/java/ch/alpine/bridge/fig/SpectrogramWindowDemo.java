@@ -1,10 +1,9 @@
 // code by jph
-package ch.alpine.bridge.usr;
+package ch.alpine.bridge.fig;
 
 import java.io.File;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.Spectrogram;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;

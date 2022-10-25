@@ -98,7 +98,7 @@ public class Show implements Serializable {
       showarea2.setFont(font);
       RenderQuality.setQuality(showarea2);
       showarea2.setColor(StaticHelper.COLOR_FONT);
-      showarea2.drawString(plotLabel, rectangle.x, rectangle.y - StaticHelper.GAP);
+      showarea2.drawString(getPlotLabel(), rectangle.x, rectangle.y - StaticHelper.GAP);
       showarea2.dispose();
     }
     showarea.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);

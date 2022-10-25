@@ -3,28 +3,35 @@ package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
 
-import ch.alpine.bridge.fig.ArrayPlot;
-import ch.alpine.bridge.fig.ListLinePlot;
-import ch.alpine.bridge.fig.ListPlot;
-import ch.alpine.bridge.fig.Periodogram;
-import ch.alpine.bridge.fig.Plot;
-import ch.alpine.bridge.fig.Show;
-import ch.alpine.bridge.fig.Showable;
+import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.alg.Transpose;
+import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.io.ImageFormat;
+import ch.alpine.tensor.itp.BSplineFunctionString;
+import ch.alpine.tensor.mat.HilbertMatrix;
+import ch.alpine.tensor.mat.sv.SingularValueList;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.pdf.CDF;
+import ch.alpine.tensor.pdf.Distribution;
+import ch.alpine.tensor.pdf.PDF;
 import ch.alpine.tensor.pdf.RandomVariate;
+import ch.alpine.tensor.pdf.TruncatedDistribution;
+import ch.alpine.tensor.pdf.c.NormalDistribution;
+import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
+import ch.alpine.tensor.pdf.d.BinomialDistribution;
+import ch.alpine.tensor.pdf.d.PoissonDistribution;
 import ch.alpine.tensor.prc.PoissonProcess;
 import ch.alpine.tensor.prc.RandomFunction;
 import ch.alpine.tensor.prc.RandomProcess;
@@ -32,7 +39,10 @@ import ch.alpine.tensor.prc.WienerProcess;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityMagnitude;
+import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
+import ch.alpine.tensor.sca.erf.Erfc;
+import ch.alpine.tensor.sca.exp.Log10;
 import ch.alpine.tensor.sca.ply.ChebyshevNodes;
 import ch.alpine.tensor.sca.tri.Cos;
 import ch.alpine.tensor.sca.tri.Sin;
@@ -53,6 +63,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
       show.add(Plot.of(s -> Cos.FUNCTION.apply(s.add(s)).multiply(RealScalar.of(100)), Clips.positive(0.5))).setLabel("sine");
+      show.add(ListLinePlot.of(Tensors.empty())).setLabel("empty");
       return show;
     }
   },
@@ -101,6 +112,88 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
         Showable showable = show.add(Plot.of(windowFunctions.get(), Clips.absolute(0.5)));
         showable.setLabel(windowFunctions.name());
       }
+      Tensor points = Tensors.fromString("{{0,0}, {0.2, Infinity}, {0.3, 0.3}}");
+      show.add(ListPlot.of(points));
+      show.add(ListLinePlot.of(points));
+      return show;
+    }
+  },
+  SVD0 {
+    @Override
+    Show create() {
+      Tensor matrix = HilbertMatrix.of(40);
+      Show show = new Show();
+      Tensor values = SingularValueList.of(matrix);
+      show.add(ListPlot.of(Range.of(0, values.length()), values.map(Log10.FUNCTION))).setLabel("singular values");
+      Clip clip = Clips.absolute(5);
+      show.add(Plot.of(Erfc.FUNCTION, clip)).setLabel("Erfc");
+      return show;
+    }
+  },
+  DISTR0 {
+    @Override
+    Show create() {
+      int n = 50;
+      Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
+      PDF pdf = PDF.of(distribution);
+      CDF cdf = CDF.of(distribution);
+      Show show = new Show();
+      show.setPlotLabel(distribution.toString());
+      Tensor domain = Range.of(0, n + 1);
+      show.add(ListPlot.of(domain, domain.map(pdf::at))).setLabel("PDF");
+      show.add(ListPlot.of(domain, domain.map(cdf::p_lessEquals))).setLabel("CDF");
+      return show;
+    }
+  },
+  DISTR1 {
+    @Override
+    Show create() {
+      Distribution distribution = TrapezoidalDistribution.of(0.5, 1.5, 1.5, 2.5);
+      PDF pdf = PDF.of(distribution);
+      CDF cdf = CDF.of(distribution);
+      Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
+      Clip clip = Clips.interval(0, 4);
+      show.add(Plot.of(pdf::at, clip));
+      show.add(Plot.of(cdf::p_lessEquals, clip));
+      Tensor sequence = Tensors.vector(0, 0, 1, 1);
+      // Tensor domain = Subdivide.of(0, sequence.length() - 1, 100);
+      ScalarTensorFunction sto = BSplineFunctionString.of(2, sequence);
+      ScalarUnaryOperator suo = s -> (Scalar) sto.apply(s);
+      show.add(Plot.of(suo, Clips.interval(0, 3)));
+      return show;
+    }
+  },
+  DISTR2 {
+    @Override
+    Show create() {
+      Distribution original = PoissonDistribution.of(7);
+      Distribution distribution = TruncatedDistribution.of(original, Clips.interval(5, 10));
+      PDF pdf = PDF.of(distribution);
+      CDF cdf = CDF.of(distribution);
+      PDF pdf_o = PDF.of(original);
+      Show show = new Show();
+      show.setPlotLabel("Truncated Poisson Distribution[7]");
+      Tensor domain = Range.of(0, 12);
+      show.add(ListPlot.of(pdf::at, domain));
+      show.add(ListPlot.of(cdf::p_lessEquals, domain));
+      show.add(ListPlot.of(pdf_o::at, domain));
+      return show;
+    }
+  },
+  DISTR3 {
+    @Override
+    Show create() {
+      Distribution original = NormalDistribution.standard();
+      Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 2.5));
+      PDF pdf = PDF.of(distribution);
+      CDF cdf = CDF.of(distribution);
+      PDF pdf_o = PDF.of(original);
+      Show show = new Show();
+      show.setPlotLabel("Truncated Distribution");
+      Clip clip = Clips.interval(-3, 3);
+      show.add(Plot.of(pdf::at, clip));
+      show.add(Plot.of(cdf::p_lessEquals, clip));
+      show.add(Plot.of(pdf_o::at, clip));
       return show;
     }
   },
@@ -144,6 +237,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process with Drift");
       show.add(Plot.of(randomFunction::evaluate, Clips.positive(Quantity.of(5, "s")))).setLabel("timeSeries");
+      show.add(Plot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
       return show;
     }
   },
@@ -163,9 +257,13 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
       show.setPlotLabel(ListPlot.class.getSimpleName());
-      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 10, 2))).setLabel("timeSeries");
-      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 20, 2))).setLabel("timeSeries");
-      show.add(ListLinePlot.of(RandomVariate.of(UniformDistribution.unit(), 4, 2))).setLabel("timeSeries");
+      Distribution distribution = UniformDistribution.unit();
+      show.add(ListPlot.of( //
+          RandomVariate.of(distribution, 10), //
+          RandomVariate.of(distribution, 10))).setLabel("random 10");
+      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 20, 2))).setLabel("random 20");
+      show.add(ListLinePlot.of(RandomVariate.of(UniformDistribution.unit(), 4, 2))).setLabel("random 4");
+      show.add(ListPlot.of(Tensors.empty())).setLabel("empty");
       return show;
     }
   },

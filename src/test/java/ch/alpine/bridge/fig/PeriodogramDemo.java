@@ -1,8 +1,6 @@
 // code by jph
-package ch.alpine.bridge.usr;
+package ch.alpine.bridge.fig;
 
-import ch.alpine.bridge.fig.Periodogram;
-import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;

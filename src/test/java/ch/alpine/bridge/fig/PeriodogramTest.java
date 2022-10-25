@@ -3,8 +3,6 @@ package ch.alpine.bridge.fig;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.usr.PeriodogramDemo;
-
 class PeriodogramTest {
   @Test
   void testSimple2() {
