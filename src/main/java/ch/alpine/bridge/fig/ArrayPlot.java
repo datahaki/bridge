@@ -13,6 +13,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.io.ImageFormat;
+import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clips;
 
@@ -26,14 +27,13 @@ public class ArrayPlot extends BaseShowable {
   }
 
   public static Showable of(Tensor matrix) {
+    MatrixQ.require(matrix);
     return of(ImageFormat.of(Rescale.of(matrix).map(MATHEMATICA)), //
         CoordinateBoundingBox.of( //
             Clips.interval(0, 1), Clips.interval(0, 1)));
   }
 
   // ---
-  /** @param visualImage
-   * @return */
   private final BufferedImage bufferedImage;
   private final CoordinateBoundingBox cbb;
 
@@ -42,7 +42,7 @@ public class ArrayPlot extends BaseShowable {
     this.cbb = cbb;
   }
 
-  @Override
+  @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics _g) {
     Point2D.Double ul = showableConfig.toPoint2D(Tensors.of( //
         cbb.getClip(0).min(), //
@@ -57,7 +57,7 @@ public class ArrayPlot extends BaseShowable {
         (int) ul.getY(), null);
   }
 
-  @Override
+  @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
     return Optional.of(cbb);
   }

@@ -4,8 +4,9 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
+import java.io.Serializable;
 
-public abstract class BaseShowable implements Showable {
+public abstract class BaseShowable implements Showable, Serializable {
   private String string = "";
   private Color color = Color.BLACK;
   private Stroke stroke = new BasicStroke(1.5f);

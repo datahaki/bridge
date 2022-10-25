@@ -4,7 +4,7 @@ package demo.tensor;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ListPlot;
+import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -44,8 +44,8 @@ public enum InfluenceMatrixDemo {
         System.err.println("warning");
     }
     Show show = new Show();
-    show.add(ListPlot.of(t1)).setLabel("mahs");
-    show.add(ListPlot.of(t2)).setLabel("inf");
+    show.add(ListLinePlot.of(t1)).setLabel("mahs");
+    show.add(ListLinePlot.of(t2)).setLabel("inf");
     show.export(HomeDirectory.file("matrix_rect2.png"), new Dimension(500, 300));
   }
 }

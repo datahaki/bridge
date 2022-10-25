@@ -12,6 +12,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,8 +28,11 @@ import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
-public class Show {
-  private static final Insets INSETS = new Insets(15, 70, 25, 5);
+public class Show implements Serializable {
+  public static Insets defaultInsets() {
+    return new Insets(15, 70, 25, 5);
+  }
+
   private final List<Showable> showables = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
   private CoordinateBoundingBox cbb = null;
@@ -111,15 +115,16 @@ public class Show {
    * @param dimension of image
    * @throws IOException */
   public void export(File file, Dimension dimension) throws IOException {
+    Insets insets = defaultInsets();
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bufferedImage.createGraphics();
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
     Rectangle rectangle = new Rectangle( //
-        INSETS.left, //
-        INSETS.top, //
-        dimension.width - INSETS.left - INSETS.right, //
-        dimension.height - INSETS.bottom);
+        insets.left, //
+        insets.top, //
+        dimension.width - insets.left - insets.right, //
+        dimension.height - insets.bottom);
     render(graphics, rectangle);
     String string = file.toString();
     int index = string.lastIndexOf('.');

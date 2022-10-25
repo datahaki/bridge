@@ -29,7 +29,7 @@ class SpectrogramTest {
       Tensor points = Transpose.of(Tensors.of(domain, signal));
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
-      show.add(ListPlot.of(domain.map(s -> Quantity.of(s, "s")), signal));
+      show.add(ListLinePlot.of(domain.map(s -> Quantity.of(s, "s")), signal));
       // show.getAxisX().setUnit(Unit.of("ms"));
       // show.getAxisX().setLabel("time");
       // show.getAxisY().setLabel("user defined");

@@ -4,7 +4,7 @@ package demo.tensor;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ListPlot;
+import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
@@ -32,7 +32,7 @@ import ch.alpine.tensor.sca.ply.Polynomial;
       samples_y.map(y_to_x);
       Show show = new Show();
       show.add(Plot.of(x_to_y, domain_x));
-      show.add(ListPlot.of(samples_y.map(y_to_x), samples_y));
+      show.add(ListLinePlot.of(samples_y.map(y_to_x), samples_y));
       show.export(HomeDirectory.Pictures("here" + degree + ".png"), new Dimension(400, 300));
     }
   }

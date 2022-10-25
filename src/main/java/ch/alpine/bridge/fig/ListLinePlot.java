@@ -1,9 +1,9 @@
-// code by gjoel, jph
+// code by jph
 package ch.alpine.bridge.fig;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Optional;
 
@@ -15,14 +15,14 @@ import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** <p>inspired by
- * <a href="https://reference.wolfram.com/language/ref/ListPlot.html">ListPlot</a> */
-public class ListPlot extends BaseShowable {
-  private static final double RADIUS = 2.5;
-
+ * <a href="https://reference.wolfram.com/language/ref/ListLinePlot.html">ListLinePlot</a> */
+public class ListLinePlot extends BaseShowable {
   /** @param points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}}
-   * @return */
+   * The special case when points == {} is also allowed.
+   * @return instance of the visual row, that was added to this visual set
+   * @throws Exception if not all entries in points are vectors of length 2 */
   public static Showable of(Tensor points) {
-    return new ListPlot(points);
+    return new ListLinePlot(points);
   }
 
   /** @param domain {x1, x2, ..., xn}
@@ -35,7 +35,7 @@ public class ListPlot extends BaseShowable {
   // ---
   private final Tensor points;
 
-  private ListPlot(Tensor points) {
+  private ListLinePlot(Tensor points) {
     points.stream().forEach(row -> VectorQ.requireLength(row, 2));
     this.points = points;
   }
@@ -46,17 +46,17 @@ public class ListPlot extends BaseShowable {
       Graphics2D graphics = (Graphics2D) _g.create();
       RenderQuality.setQuality(graphics);
       graphics.setColor(getColor());
-      for (Tensor row : points) {
-        Point2D.Double point2d = showableConfig.toPoint2D(row);
-        graphics.fill(new Ellipse2D.Double(point2d.x - RADIUS, point2d.y - RADIUS, 2 * RADIUS, 2 * RADIUS));
-        // below: diamond <>
-        // Path2D.Double path = new Path2D.Double();
-        // path.moveTo(point2d.x + rad, point2d.y);
-        // path.lineTo(point2d.x, point2d.y + rad);
-        // path.lineTo(point2d.x - rad, point2d.y);
-        // path.lineTo(point2d.x, point2d.y - rad);
-        // graphics.fill(path);
+      graphics.setStroke(getStroke());
+      Path2D.Double path = new Path2D.Double();
+      {
+        Point2D.Double point2d = showableConfig.toPoint2D(points.get(0));
+        path.moveTo(point2d.x, point2d.y);
       }
+      points.stream().skip(1).forEach(row -> {
+        Point2D.Double point2d = showableConfig.toPoint2D(row);
+        path.lineTo(point2d.x, point2d.y);
+      });
+      graphics.draw(path);
       graphics.dispose();
     }
   }

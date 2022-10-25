@@ -27,7 +27,6 @@ public enum TriangularDistributionDemo {
       PDF pdf2 = PDF.of(dist2);
       show.add(Plot.of(pdf1::at, clip));
       show.add(Plot.of(pdf2::at, clip));
-      // Showable jFreeChart = ListPlot.of(show);
       show.export(HomeDirectory.Pictures("triangular.png"), new Dimension(640, 480));
     }
   }

@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import ch.alpine.bridge.fig.ListPlot;
+import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.ext.DeleteDirectory;
 import ch.alpine.tensor.io.Primitives;
@@ -27,7 +27,7 @@ class ZipDirectoryTest {
     folder.mkdirs();
     {
       Show show = new Show();
-      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2)));
+      show.add(ListLinePlot.of(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2)));
       show.export(new File(folder, "image.png"), new Dimension(300, 200));
     }
     File zipFile = new File(tempDir, "file.zip");

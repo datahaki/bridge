@@ -37,7 +37,7 @@ public enum Periodogram {
     Tensor signal = points.get(Tensor.ALL, 1);
     Tensor values = PeriodogramArray.of(windowLength, offset).apply(signal).map(scaling);
     int h = values.length() / 2;
-    return ListPlot.of(Subdivide.of(0, 0.5, h - 1), values.extract(0, h));
+    return ListLinePlot.of(Subdivide.of(0, 0.5, h - 1), values.extract(0, h));
   }
 
   /** uses the parameters

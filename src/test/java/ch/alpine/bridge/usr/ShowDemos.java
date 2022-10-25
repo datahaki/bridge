@@ -4,6 +4,7 @@ package ch.alpine.bridge.usr;
 import java.awt.BasicStroke;
 
 import ch.alpine.bridge.fig.ArrayPlot;
+import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Periodogram;
 import ch.alpine.bridge.fig.Plot;
@@ -47,9 +48,9 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Tensor rgba = domain.map(ColorDataGradients.CLASSIC);
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
       show.setPlotLabel("Color Data Gradient");
-      show.add(ListPlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
-      show.add(ListPlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
-      show.add(ListPlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
+      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
+      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
+      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
       show.add(Plot.of(s -> Cos.FUNCTION.apply(s.add(s)).multiply(RealScalar.of(100)), Clips.positive(0.5))).setLabel("sine");
       return show;
     }
@@ -134,9 +135,9 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
       show.setPlotLabel(ListPlot.class.getSimpleName());
-      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 10, 2), false)).setLabel("timeSeries");
-      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 20, 2), false)).setLabel("timeSeries");
-      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 4, 2), true)).setLabel("timeSeries");
+      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 10, 2))).setLabel("timeSeries");
+      show.add(ListPlot.of(RandomVariate.of(UniformDistribution.unit(), 20, 2))).setLabel("timeSeries");
+      show.add(ListLinePlot.of(RandomVariate.of(UniformDistribution.unit(), 4, 2))).setLabel("timeSeries");
       return show;
     }
   },

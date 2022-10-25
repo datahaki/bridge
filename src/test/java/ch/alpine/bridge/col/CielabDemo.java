@@ -4,7 +4,7 @@ package ch.alpine.bridge.col;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import ch.alpine.bridge.fig.ListPlot;
+import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
@@ -19,7 +19,7 @@ public enum CielabDemo {
     Clip clip = Clips.unit();
     Tensor domain = Subdivide.increasing(clip, 50);
     Show show = new Show();
-    show.add(ListPlot.of(domain.map(Cielabf::forward), domain));
+    show.add(ListLinePlot.of(domain.map(Cielabf::forward), domain));
     show.add(Plot.of(Cielabf::inverse, clip));
     show.export(HomeDirectory.Pictures("cielab.png"), new Dimension(400, 400));
   }

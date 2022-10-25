@@ -1,7 +1,7 @@
 // code by jph
 package demo.tensor.pdf;
 
-import ch.alpine.bridge.fig.ListPlot;
+import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
@@ -23,9 +23,9 @@ public enum TruncatedDiscreteDemo {
     Show show = new Show();
     {
       Tensor domain = Range.of(0, 12);
-      show.add(ListPlot.of(domain, domain.map(pdf::at)));
-      show.add(ListPlot.of(domain, domain.map(cdf::p_lessEquals)));
-      show.add(ListPlot.of(domain, domain.map(pdf_o::at)));
+      show.add(ListLinePlot.of(domain, domain.map(pdf::at)));
+      show.add(ListLinePlot.of(domain, domain.map(cdf::p_lessEquals)));
+      show.add(ListLinePlot.of(domain, domain.map(pdf_o::at)));
     }
     return show;
   }
