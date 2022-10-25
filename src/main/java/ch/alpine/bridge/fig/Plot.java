@@ -17,6 +17,7 @@ import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
+import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.tmp.TimeSeries;
 
 /** inspired by
@@ -54,48 +55,50 @@ public class Plot extends BaseShowable {
     this.domain = domain;
   }
 
-  @Override
+  @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics _g) {
     if (Objects.nonNull(domain)) {
       Optional<Clip> optional = Clips.optionalIntersection(showableConfig.xRange, domain);
       if (optional.isPresent()) {
         int segmentsPerPixel = 1;
         Clip x_clip = optional.orElseThrow();
-        // --
-        Graphics2D graphics = (Graphics2D) _g.create();
-        RenderQuality.setQuality(graphics);
-        graphics.setColor(getColor());
-        graphics.setStroke(getStroke());
-        {
-          double x0 = showableConfig.x_pos(x_clip.min());
-          double x1 = showableConfig.x_pos(x_clip.max());
-          Path2D.Double path = new Path2D.Double();
+        if (Sign.isPositive(x_clip.width())) {
+          Graphics2D graphics = (Graphics2D) _g.create();
+          RenderQuality.setQuality(graphics);
+          graphics.setColor(getColor());
+          graphics.setStroke(getStroke());
           {
-            Scalar eval = suo.apply(x_clip.min());
-            path.moveTo(x0, showableConfig.y_pos(eval));
+            double x0 = showableConfig.x_pos(x_clip.min());
+            double x1 = showableConfig.x_pos(x_clip.max());
+            Path2D.Double path = new Path2D.Double();
+            {
+              Scalar eval = suo.apply(x_clip.min());
+              path.moveTo(x0, showableConfig.y_pos(eval));
+            }
+            ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
+            final int size = (int) ((x1 - x0) * segmentsPerPixel);
+            final double dx = 1.0 / segmentsPerPixel;
+            for (int i = 1; i <= size; ++i) {
+              x0 += dx;
+              // compute the xValue and yValue of the function at xPix
+              Scalar y_eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
+              path.lineTo(x0, showableConfig.y_pos(y_eval));
+            }
+            graphics.draw(path);
           }
-          ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
-          final int size = (int) ((x1 - x0) * segmentsPerPixel);
-          final double dx = 1.0 / segmentsPerPixel;
-          for (int i = 1; i <= size; ++i) {
-            x0 += dx;
-            // compute the xValue and yValue of the function at xPix
-            Scalar y_eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
-            path.lineTo(x0, showableConfig.y_pos(y_eval));
-          }
-          graphics.draw(path);
+          graphics.dispose();
         }
-        graphics.dispose();
       }
     }
   }
 
-  @Override
+  @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Objects.isNull(domain) //
-        ? Optional.empty()
-        : Optional.of(CoordinateBoundingBox.of( //
-            domain, //
-            StaticHelper.minMax(Subdivide.increasing(domain, RESOLUTION).map(suo))));
+    if (Objects.nonNull(domain) && Sign.isPositive(domain.width())) {
+      Clip clip = StaticHelper.minMax(Subdivide.increasing(domain, RESOLUTION).map(suo));
+      if (Objects.nonNull(clip))
+        return Optional.of(CoordinateBoundingBox.of(domain, clip));
+    }
+    return Optional.empty();
   }
 }

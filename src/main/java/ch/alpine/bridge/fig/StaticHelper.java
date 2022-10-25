@@ -13,6 +13,8 @@ import ch.alpine.tensor.sca.Clip;
 
 /* package */ enum StaticHelper {
   ;
+  /** @param vector
+   * @return null if given vector does not contain finite scalars */
   public static Clip minMax(Tensor vector) {
     return vector.stream() //
         .map(Scalar.class::cast) //

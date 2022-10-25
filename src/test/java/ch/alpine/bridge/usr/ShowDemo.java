@@ -4,6 +4,7 @@ package ch.alpine.bridge.usr;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -21,10 +22,8 @@ import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public class ShowDemo {
-  final int _WIDTH = 300;
-  final int _HEIGHT = 130;
-  final int width = _WIDTH + 90;
-  final int height = _HEIGHT + 45;
+  final int width = 400;
+  final int height = 200;
   final int mag = 2;
   // ---
   private final JFrame jFrame = new JFrame();
@@ -44,7 +43,11 @@ public class ShowDemo {
         graphics2.setColor(Color.PINK);
         graphics2.drawRect(0, 0, width - 1, height - 1);
         try {
-          show.render(graphics2, new Rectangle(70, 20, _WIDTH, _HEIGHT));
+          Insets insets = Show.defaultInsets();
+          show.render(graphics2, new Rectangle( //
+              insets.left, insets.top, //
+              width - insets.left - insets.right, //
+              height - insets.top - insets.bottom));
         } catch (Exception exception) {
           graphics2.setColor(Color.RED);
           graphics2.drawString("" + exception.getMessage(), 0, 30);

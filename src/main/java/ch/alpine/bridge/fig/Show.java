@@ -29,14 +29,16 @@ import ch.alpine.tensor.opt.nd.CoordinateBounds;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
 public class Show implements Serializable {
+  private static final Color COLOR_FRAME = new Color(160, 160, 160);
+
   public static Insets defaultInsets() {
-    return new Insets(15, 70, 25, 5);
+    return new Insets(16, 70, 22, 10);
   }
 
   private final List<Showable> showables = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
   private CoordinateBoundingBox cbb = null;
-  boolean frame = true;
+  private boolean frame = true;
 
   public Show(ColorDataIndexed colorDataIndexed) {
     this.colorDataIndexed = Objects.requireNonNull(colorDataIndexed);
@@ -48,7 +50,6 @@ public class Show implements Serializable {
   }
 
   private String plotLabel = "";
-  static final Color COLOR_FRAME = new Color(160, 160, 160);
 
   /** @param string to appear above plot */
   public final void setPlotLabel(String string) {
