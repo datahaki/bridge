@@ -80,7 +80,7 @@ public class Show implements Serializable {
     CoordinateBoundingBox _cbb = cbb;
     if (Objects.isNull(_cbb)) {
       Optional<CoordinateBoundingBox> optional = showables.stream() //
-          .flatMap(s -> s.fullPlotRange().stream()) //
+          .flatMap(showable -> showable.fullPlotRange().stream()) //
           .reduce(CoordinateBounds::cover);
       if (optional.isPresent()) {
         _cbb = optional.orElseThrow();
@@ -93,13 +93,16 @@ public class Show implements Serializable {
       showarea.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
     }
     {
-      Graphics2D showarea2 = (Graphics2D) graphics.create();
-      Font font = showarea2.getFont().deriveFont(Font.BOLD);
-      showarea2.setFont(font);
-      RenderQuality.setQuality(showarea2);
-      showarea2.setColor(StaticHelper.COLOR_FONT);
-      showarea2.drawString(getPlotLabel(), rectangle.x, rectangle.y - StaticHelper.GAP);
-      showarea2.dispose();
+      String string = getPlotLabel();
+      if (!string.isEmpty()) {
+        Graphics2D titleArea = (Graphics2D) graphics.create();
+        Font font = titleArea.getFont().deriveFont(Font.BOLD);
+        titleArea.setFont(font);
+        RenderQuality.setQuality(titleArea);
+        titleArea.setColor(StaticHelper.COLOR_FONT);
+        titleArea.drawString(string, rectangle.x, rectangle.y - StaticHelper.GAP);
+        titleArea.dispose();
+      }
     }
     showarea.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     if (Objects.isNull(_cbb)) {
@@ -116,6 +119,34 @@ public class Show implements Serializable {
       gridDrawer.render(graphics);
       for (Showable showable : showables)
         showable.render(showableConfig, showarea);
+    }
+    {
+      Graphics2D legend = (Graphics2D) showarea.create();
+      RenderQuality.setQuality(legend);
+      FontMetrics fontMetrics = showarea.getFontMetrics();
+      int size = fontMetrics.getHeight();
+      int pix = rectangle.x + StaticHelper.GAP;
+      int piy = rectangle.y + 2;
+      legend.setColor(new Color(255, 255, 255, 192));
+      for (Showable showable : showables) {
+        String string = showable.getLabel();
+        if (!string.isEmpty()) {
+          legend.fillRect(pix, piy, fontMetrics.stringWidth(string), size);
+          // showarea.setColor(Color.RED);
+          // showarea.drawRect(pix, piy, fontMetrics.stringWidth(string), size);
+          piy += size;
+        }
+      }
+      piy = rectangle.y + 2;
+      for (Showable showable : showables) {
+        String string = showable.getLabel();
+        if (!string.isEmpty()) {
+          piy += size;
+          legend.setColor(showable.getColor());
+          legend.drawString(string, pix, piy - 3);
+        }
+      }
+      legend.dispose();
     }
     showarea.dispose();
   }

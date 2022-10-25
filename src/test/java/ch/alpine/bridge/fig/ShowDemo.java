@@ -1,8 +1,10 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -11,17 +13,25 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.ref.ann.FieldClip;
+import ch.alpine.bridge.ref.ann.ReflectionMarker;
+import ch.alpine.bridge.ref.util.FieldsEditor;
+import ch.alpine.bridge.ref.util.ToolbarFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
 
+@ReflectionMarker
 public class ShowDemo {
   final int width = 400;
   final int height = 200;
-  final int mag = 2;
+  @FieldClip(min = "1", max = "5")
+  public Integer mag = 2;
   // ---
   private final JFrame jFrame = new JFrame();
   private final List<BufferedImage> list = new ArrayList<>();
@@ -44,12 +54,13 @@ public class ShowDemo {
     }
   };
 
-  public ShowDemo() {
+  private ShowDemo() {
     // = show.image();
     for (ShowDemos showDemos : ShowDemos.values()) {
       try {
         list.add(showDemos.create().image(new Dimension(width, height)));
       } catch (Exception exception) {
+        System.err.println(showDemos);
         exception.printStackTrace();
       }
     }
@@ -58,7 +69,19 @@ public class ShowDemo {
     JScrollPane jScrollPane = new JScrollPane(jComponent, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     JScrollBar jScrollBar = jScrollPane.getVerticalScrollBar();
     jScrollBar.setPreferredSize(new Dimension(30, 30));
-    jFrame.setContentPane(jScrollPane);
+    JPanel jPanel = new JPanel(new BorderLayout());
+    {
+      JToolBar jToolBar = new JToolBar();
+      jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
+      FieldsEditor fieldsEditor = ToolbarFieldsEditor.add(this, jToolBar);
+      fieldsEditor.addUniversalListener(() -> {
+        jComponent.setPreferredSize(new Dimension(width, ShowDemos.values().length * height * mag));
+        jComponent.repaint();
+      });
+      jPanel.add(BorderLayout.NORTH, jToolBar);
+    }
+    jPanel.add(BorderLayout.CENTER, jScrollPane);
+    jFrame.setContentPane(jPanel);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setBounds(100, 100, 1000, 900);
   }

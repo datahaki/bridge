@@ -50,7 +50,6 @@ public class GridDrawer {
   boolean gridLinesY = true;
   boolean ticksX = true;
   boolean ticksY = true;
-  String axesLabelX = "";
 
   public GridDrawer(ShowableConfig showableConfig, DateTimeFocus dateTimeFocus) {
     this.showableConfig = showableConfig;

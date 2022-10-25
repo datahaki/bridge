@@ -158,6 +158,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       PDF pdf = PDF.of(distribution);
       CDF cdf = CDF.of(distribution);
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
+      show.setPlotLabel("Trapezoidal Distribution");
       Clip clip = Clips.interval(0, 4);
       show.add(Plot.of(pdf::at, clip));
       show.add(Plot.of(cdf::p_lessEquals, clip));
@@ -210,6 +211,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 2.5));
       InverseCDF inverseCDF = InverseCDF.of(distribution);
       Show show = new Show();
+      show.setPlotLabel("Truncated Normal Distribution");
       show.add(Plot.of(inverseCDF::quantile, Clips.unit()));
       return show;
     }
@@ -235,6 +237,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Distribution dist2 = TrapezoidalDistribution.with(2, 1.2, 2.4);
       Clip clip = Clips.interval(-3 + 2, 3 + 2);
       Show show = new Show();
+      show.setPlotLabel("Here");
       PDF pdf1 = PDF.of(dist1);
       PDF pdf2 = PDF.of(dist2);
       show.add(Plot.of(pdf1::at, clip));
@@ -306,7 +309,8 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = ClenshawChebyshev.of(UnitVector.of(d + 1, d));
         ScalarUnaryOperator su2 = Chebyshev.T.of(d);
-        show.add(ListLinePlot.of(domain, domain.map(suo).subtract(domain.map(su2))));
+        show.add(ListLinePlot.of(domain, domain.map(suo).subtract(domain.map(su2)))).setLabel("" + d);
+        // show.add(Plot.of(s->suo.apply(s).subtract(su2.apply(s)), Clips.absoluteOne())).setLabel(""+d);
       }
       return show;
     }
@@ -316,9 +320,9 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       int max = 6;
       Show show = new Show();
-      for (int d = 0; d < max; ++d)
-        show.add(Plot.of(Chebyshev.T.of(d), Clips.absolute(1)));
       show.setPlotLabel("Chebyshev Polynomials T");
+      for (int d = 0; d < max; ++d)
+        show.add(Plot.of(Chebyshev.T.of(d), Clips.absolute(1))).setLabel("" + d);
       return show;
     }
   },
@@ -327,9 +331,9 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       int max = 6;
       Show show = new Show();
-      for (int d = 0; d < max; ++d)
-        show.add(Plot.of(Chebyshev.U.of(d), Clips.absolute(1)));
       show.setPlotLabel("Chebyshev Polynomials U");
+      for (int d = 0; d < max; ++d)
+        show.add(Plot.of(Chebyshev.U.of(d), Clips.absolute(1))).setLabel("" + d);
       return show;
     }
   },
@@ -416,7 +420,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
-      show.add(SpectrogramDemo.create(0.32, 1.6));
+      show.add(SpectrogramDemo.create(0.32, 1.6)).setLabel("Chirp");
       return show;
     }
   }
