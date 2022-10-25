@@ -25,8 +25,8 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 // 4 22 35
 /* package */ class BipartitionShow {
-  BufferedImage bufferedImage = StaticHelper.createWhite(192 * 2);
-  Graphics2D graphics = bufferedImage.createGraphics();
+  final BufferedImage bufferedImage = StaticHelper.createWhite(192 * 2);
+  final Graphics2D graphics = bufferedImage.createGraphics();
 
   public BipartitionShow(int seed, boolean lines) {
     Random random = new Random(seed);

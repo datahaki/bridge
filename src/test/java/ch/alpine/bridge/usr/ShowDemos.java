@@ -76,6 +76,15 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
+  DEMO4 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.add(ListLinePlot.of(Tensors.fromString("{{2[m],3[s]}, {3[m],0[s]}, {4[m],3[s]}, {5[m],1[s]}}"))).setLabel("first");
+      show.add(ListLinePlot.of(Tensors.fromString("{{3[m],2[s]}, {4[m],2.5[s]}, {5[m],2[s]}}"))).setLabel("second");
+      return show;
+    }
+  },
   TS_DT {
     @Override
     Show create() {

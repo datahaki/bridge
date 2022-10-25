@@ -25,7 +25,7 @@ public enum Spectrogram {
   ;
   /** Remark: the unit of the signal is in the color not the axis
    * 
-   * @param visualSet with single {@link VisualRow} containing domain and signal
+   * @param points
    * @param window for instance {@link HannWindow#FUNCTION}
    * @param function for instance {@link ColorDataGradients#VISIBLE_SPECTRUM}
    * @return */
@@ -58,7 +58,7 @@ public enum Spectrogram {
    * Spectrogram.of(vector, HannWindow.FUNCTION);
    * </pre>
    * 
-   * @param visualSet with single {@link VisualRow} containing domain and signal
+   * @param points
    * @param window for instance {@link HannWindow#FUNCTION}
    * @return spectrogram chart of signal specified in given visual set generated using
    * given window function and {@link ColorDataGradients#VISIBLE_SPECTRUM} */
@@ -66,7 +66,7 @@ public enum Spectrogram {
     return of(points, window, ColorDataGradients.SUNSET_REVERSED);
   }
 
-  /** @param visualSet with single {@link VisualRow} containing domain and signal
+  /** @param points
    * @return spectrogram chart of signal specified in given visual set generated using
    * {@link DirichletWindow} and {@link ColorDataGradients#VISIBLE_SPECTRUM} */
   public static Showable of(Tensor points) {

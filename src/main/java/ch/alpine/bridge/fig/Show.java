@@ -68,6 +68,14 @@ public class Show implements Serializable {
     return showable;
   }
 
+  public void setCbb(CoordinateBoundingBox cbb) {
+    this.cbb = cbb;
+  }
+
+  public boolean isEmpty() {
+    return showables.isEmpty();
+  }
+
   public void render(Graphics graphics, Rectangle rectangle) {
     CoordinateBoundingBox _cbb = cbb;
     if (Objects.isNull(_cbb)) {
@@ -112,31 +120,29 @@ public class Show implements Serializable {
     showarea.dispose();
   }
 
-  /** @param file
-   * @param dimension of image
-   * @throws IOException */
-  public void export(File file, Dimension dimension) throws IOException {
-    Insets insets = defaultInsets();
+  /** @param dimension
+   * @return */
+  public BufferedImage image(Dimension dimension) {
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bufferedImage.createGraphics();
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
+    Insets insets = defaultInsets();
     Rectangle rectangle = new Rectangle( //
         insets.left, //
         insets.top, //
         dimension.width - insets.left - insets.right, //
-        dimension.height - insets.bottom);
+        dimension.height - insets.top - insets.bottom);
     render(graphics, rectangle);
+    return bufferedImage;
+  }
+
+  /** @param file
+   * @param dimension of image
+   * @throws IOException */
+  public void export(File file, Dimension dimension) throws IOException {
     String string = file.toString();
     int index = string.lastIndexOf('.');
-    ImageIO.write(bufferedImage, string.substring(index + 1), file);
-  }
-
-  public void setCbb(CoordinateBoundingBox cbb) {
-    this.cbb = cbb;
-  }
-
-  public boolean isEmpty() {
-    return showables.isEmpty();
+    ImageIO.write(image(dimension), string.substring(index + 1), file);
   }
 }

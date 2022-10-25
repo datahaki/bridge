@@ -35,6 +35,6 @@ public enum SpectrogramDemo {
   public static void main(String[] args) throws IOException {
     Show show = ShowDemos.SPECTROGRAM0.create();
     show.export(HomeDirectory.Pictures(Spectrogram.class.getSimpleName() + ".png"), //
-        new Dimension(DemoHelper.DEMO_W, DemoHelper.DEMO_H));
+        new Dimension(512, 288));
   }
 }
