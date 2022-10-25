@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.usr;
+package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
 
@@ -36,6 +36,7 @@ import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.ply.ChebyshevNodes;
 import ch.alpine.tensor.sca.tri.Cos;
 import ch.alpine.tensor.sca.tri.Sin;
+import ch.alpine.tensor.sca.win.WindowFunctions;
 import ch.alpine.tensor.tmp.ResamplingMethods;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
@@ -82,6 +83,24 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.add(ListLinePlot.of(Tensors.fromString("{{2[m],3[s]}, {3[m],0[s]}, {4[m],3[s]}, {5[m],1[s]}}"))).setLabel("first");
       show.add(ListLinePlot.of(Tensors.fromString("{{3[m],2[s]}, {4[m],2.5[s]}, {5[m],2[s]}}"))).setLabel("second");
+      return show;
+    }
+  },
+  DEMO5 {
+    @Override
+    Show create() {
+      WindowFunctions[] smoothingKernels = new WindowFunctions[] { //
+          WindowFunctions.GAUSSIAN, //
+          WindowFunctions.HAMMING, //
+          WindowFunctions.BLACKMAN, //
+          WindowFunctions.NUTTALL, //
+      };
+      Show show = new Show();
+      show.setPlotLabel("Window Functions");
+      for (WindowFunctions windowFunctions : smoothingKernels) {
+        Showable showable = show.add(Plot.of(windowFunctions.get(), Clips.absolute(0.5)));
+        showable.setLabel(windowFunctions.name());
+      }
       return show;
     }
   },

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.usr;
+package ch.alpine.bridge.fig;
 
 import java.awt.Dimension;
 import java.io.IOException;
