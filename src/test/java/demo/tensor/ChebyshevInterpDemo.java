@@ -1,5 +1,5 @@
 // code by jph
-package demo.tensor.sca;
+package demo.tensor;
 
 import java.awt.Dimension;
 import java.io.IOException;

@@ -12,6 +12,7 @@ import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.alg.Transpose;
+import ch.alpine.tensor.alg.UnitVector;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.img.ColorDataGradients;
@@ -19,16 +20,19 @@ import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.itp.BSplineFunctionString;
 import ch.alpine.tensor.mat.HilbertMatrix;
+import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.mat.sv.SingularValueList;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.pdf.CDF;
 import ch.alpine.tensor.pdf.Distribution;
+import ch.alpine.tensor.pdf.InverseCDF;
 import ch.alpine.tensor.pdf.PDF;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.TruncatedDistribution;
 import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
+import ch.alpine.tensor.pdf.c.TriangularDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.pdf.d.BinomialDistribution;
 import ch.alpine.tensor.pdf.d.PoissonDistribution;
@@ -43,7 +47,9 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.erf.Erfc;
 import ch.alpine.tensor.sca.exp.Log10;
+import ch.alpine.tensor.sca.ply.Chebyshev;
 import ch.alpine.tensor.sca.ply.ChebyshevNodes;
+import ch.alpine.tensor.sca.ply.ClenshawChebyshev;
 import ch.alpine.tensor.sca.tri.Cos;
 import ch.alpine.tensor.sca.tri.Sin;
 import ch.alpine.tensor.sca.win.WindowFunctions;
@@ -197,6 +203,45 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
+  DISTR4 {
+    @Override
+    Show create() {
+      Distribution original = NormalDistribution.standard();
+      Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 2.5));
+      InverseCDF inverseCDF = InverseCDF.of(distribution);
+      Show show = new Show();
+      show.add(Plot.of(inverseCDF::quantile, Clips.unit()));
+      return show;
+    }
+  },
+  DISTR5 {
+    @Override
+    Show create() {
+      Distribution dist1 = NormalDistribution.of(2, 0.5);
+      Distribution dist2 = TriangularDistribution.with(2, 0.5);
+      Clip clip = Clips.interval(-3 + 2, 3 + 2);
+      Show show = new Show();
+      PDF pdf1 = PDF.of(dist1);
+      PDF pdf2 = PDF.of(dist2);
+      show.add(Plot.of(pdf1::at, clip));
+      show.add(Plot.of(pdf2::at, clip));
+      return show;
+    }
+  },
+  DISTR6 {
+    @Override
+    Show create() {
+      Distribution dist1 = NormalDistribution.of(2, 1.2);
+      Distribution dist2 = TrapezoidalDistribution.with(2, 1.2, 2.4);
+      Clip clip = Clips.interval(-3 + 2, 3 + 2);
+      Show show = new Show();
+      PDF pdf1 = PDF.of(dist1);
+      PDF pdf2 = PDF.of(dist2);
+      show.add(Plot.of(pdf1::at, clip));
+      show.add(Plot.of(pdf2::at, clip));
+      return show;
+    }
+  },
   TS_DT {
     @Override
     Show create() {
@@ -249,6 +294,60 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show(ColorDataLists._003.strict().deriveWithAlpha(192));
       show.setPlotLabel("Poisson Process");
       show.add(Plot.of(randomFunction::evaluate, Clips.positive(Quantity.of(10, "s")))).setLabel("timeSeries");
+      return show;
+    }
+  },
+  POLY0 {
+    @Override
+    Show create() {
+      int max = 6;
+      Tensor domain = Subdivide.of(-1., 1., 30);
+      Show show = new Show();
+      for (int d = 0; d < max; ++d) {
+        ScalarUnaryOperator suo = ClenshawChebyshev.of(UnitVector.of(d + 1, d));
+        ScalarUnaryOperator su2 = Chebyshev.T.of(d);
+        show.add(ListLinePlot.of(domain, domain.map(suo).subtract(domain.map(su2))));
+      }
+      return show;
+    }
+  },
+  POLY1 {
+    @Override
+    Show create() {
+      int max = 6;
+      Show show = new Show();
+      for (int d = 0; d < max; ++d)
+        show.add(Plot.of(Chebyshev.T.of(d), Clips.absolute(1)));
+      show.setPlotLabel("Chebyshev Polynomials T");
+      return show;
+    }
+  },
+  POLY2 {
+    @Override
+    Show create() {
+      int max = 6;
+      Show show = new Show();
+      for (int d = 0; d < max; ++d)
+        show.add(Plot.of(Chebyshev.U.of(d), Clips.absolute(1)));
+      show.setPlotLabel("Chebyshev Polynomials U");
+      return show;
+    }
+  },
+  POLY3 {
+    @Override
+    Show create() {
+      int n = 7 + 7;
+      ScalarUnaryOperator suo = x -> Sin.FUNCTION.apply(x.multiply(x).negate().add(x));
+      Tensor domain = Subdivide.of(-1, 1, 100);
+      Show show = new Show();
+      show.setPlotLabel("Clenshaw Chebyshev");
+      for (ChebyshevNodes chebyshevNodes : ChebyshevNodes.values()) {
+        Tensor coeffs = LinearSolve.of(chebyshevNodes.matrix(n), chebyshevNodes.of(n).map(suo));
+        // System.out.println(Pretty.of(coeffs.map(Round._3)));
+        Tensor error = domain.map(ClenshawChebyshev.of(coeffs)).subtract(domain.map(suo));
+        Showable showable = show.add(ListLinePlot.of(domain, error));
+        showable.setLabel(chebyshevNodes.name());
+      }
       return show;
     }
   },
