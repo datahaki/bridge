@@ -67,6 +67,7 @@ public class GridDrawer {
     if (rectangle.height <= 1)
       return;
     Graphics2D graphics = (Graphics2D) _g.create();
+    // graphics.setFont(StaticHelper.FONT);
     // ---
     if (axesX && !Scalars.isZero(xRange.width()))
       drawXLines(graphics);

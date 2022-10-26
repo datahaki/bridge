@@ -22,8 +22,8 @@ import ch.alpine.tensor.sca.Clip;
         .collect(MinMax.toClip());
   }
 
-  static final Color COLOR_FONT = Color.DARK_GRAY;
+  public static final Color COLOR_FONT = Color.DARK_GRAY;
   // ---
-  static final Stroke STROKE_SOLID = new BasicStroke();
-  static final int GAP = 5;
+  public static final Stroke STROKE_SOLID = new BasicStroke();
+  public static final int GAP = 5;
 }

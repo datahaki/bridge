@@ -52,9 +52,10 @@ public class ArrayPlot extends BaseShowable {
         cbb.getClip(1).min()));
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
-    _g.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
-        (int) ul.getX(), //
-        (int) ul.getY(), null);
+    if (0 < width && 0 < height)
+      _g.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
+          (int) ul.getX(), //
+          (int) ul.getY(), null);
   }
 
   @Override // from Showable

@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
@@ -27,57 +29,59 @@ import ch.alpine.bridge.ref.util.ToolbarFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 @ReflectionMarker
-public class ShowDemo {
-  final int width = 400;
-  final int height = 200;
+public class ShowDemo implements Runnable {
+  public Integer width = 400;
+  public Integer height = 200;
   @FieldClip(min = "1", max = "5")
   public Integer mag = 2;
   // ---
   private final JFrame jFrame = new JFrame();
-  private final List<BufferedImage> list = new ArrayList<>();
   private final JComponent jComponent = new JComponent() {
     @Override
     protected void paintComponent(Graphics graphics) {
-      {
-        Dimension dimension = jComponent.getSize();
-        graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, dimension.width, dimension.height);
-      }
       int ofs = 0;
       for (BufferedImage bufferedImage : list) {
-        Graphics graphics2 = bufferedImage.getGraphics();
-        graphics2.setColor(Color.PINK);
-        graphics2.drawRect(0, 0, width - 1, height - 1);
         graphics.drawImage(bufferedImage, 0, ofs, width * mag, height * mag, null);
         ofs += height * mag;
       }
     }
   };
+  private final JScrollPane jScrollPane = new JScrollPane(jComponent, //
+      ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, //
+      ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+  private List<BufferedImage> list = new ArrayList<>();
 
-  private ShowDemo() {
-    // = show.image();
+  private List<BufferedImage> recomp() {
+    List<BufferedImage> list = new ArrayList<>();
     for (ShowDemos showDemos : ShowDemos.values()) {
       try {
-        list.add(showDemos.create().image(new Dimension(width, height)));
+        BufferedImage bufferedImage = showDemos.create().image(new Dimension(width, height));
+        Graphics graphics = bufferedImage.getGraphics();
+        // java.awt.Font[family=Dialog,name=Dialog,style=plain,size=12]
+        graphics.setColor(Color.PINK);
+        graphics.drawRect(0, 0, width - 1, height - 1);
+        graphics.setColor(Color.LIGHT_GRAY);
+        graphics.drawString(showDemos.name(), 0, 10);
+        list.add(bufferedImage);
       } catch (Exception exception) {
         System.err.println(showDemos);
         exception.printStackTrace();
       }
     }
     Collections.reverse(list);
-    jComponent.setPreferredSize(new Dimension(width, ShowDemos.values().length * height * mag));
-    JScrollPane jScrollPane = new JScrollPane(jComponent, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    return list;
+  }
+
+  private ShowDemo() {
     JScrollBar jScrollBar = jScrollPane.getVerticalScrollBar();
     jScrollBar.setPreferredSize(new Dimension(30, 30));
+    run();
     JPanel jPanel = new JPanel(new BorderLayout());
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
       FieldsEditor fieldsEditor = ToolbarFieldsEditor.add(this, jToolBar);
-      fieldsEditor.addUniversalListener(() -> {
-        jComponent.setPreferredSize(new Dimension(width, ShowDemos.values().length * height * mag));
-        jComponent.repaint();
-      });
+      fieldsEditor.addUniversalListener(this);
       jPanel.add(BorderLayout.NORTH, jToolBar);
     }
     jPanel.add(BorderLayout.CENTER, jScrollPane);
@@ -90,5 +94,16 @@ public class ShowDemo {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     ShowDemo showDemo = new ShowDemo();
     showDemo.jFrame.setVisible(true);
+  }
+
+  @Override
+  public void run() {
+    list = recomp();
+    int piy = ShowDemos.values().length * height * mag;
+    jComponent.setPreferredSize(new Dimension(width, piy));
+    jComponent.repaint();
+    JViewport viewport = jScrollPane.getViewport();
+    viewport.setViewPosition(new Point(0, piy - 1));
+    viewport.setViewPosition(new Point(0, 0));
   }
 }

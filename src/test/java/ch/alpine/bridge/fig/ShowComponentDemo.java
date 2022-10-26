@@ -10,8 +10,8 @@ public class ShowComponentDemo {
   private final JFrame jFrame = new JFrame();
 
   public ShowComponentDemo() {
-    ShowComponent chartComponent = new ShowComponent(ShowDemos.DEMO1.create());
-    jFrame.setContentPane(chartComponent);
+    ShowComponent showComponent = new ShowComponent(ShowDemos.DEMO1.create());
+    jFrame.setContentPane(showComponent);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setBounds(100, 100, 1000, 900);
   }

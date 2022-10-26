@@ -3,13 +3,13 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Rectangle;
 
 import javax.swing.JComponent;
 
 public class ShowComponent extends JComponent {
+  public static final Font FONT = new Font(Font.DIALOG, Font.PLAIN, 12);
   private final Show show;
 
   public ShowComponent(Show show) {
@@ -18,15 +18,11 @@ public class ShowComponent extends JComponent {
 
   @Override
   protected void paintComponent(Graphics graphics) {
+    // graphics.setFont(FONT);
     Dimension dimension = getSize();
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
-    Insets insets = Show.defaultInsets();
-    Rectangle rectangle = new Rectangle( //
-        insets.left, //
-        insets.top, //
-        dimension.width - insets.left - insets.right, //
-        dimension.height - insets.top - insets.bottom);
-    show.render(graphics, rectangle);
+    // TODO consider font when computing rectangle
+    show.render(graphics, Show.defaultInsets(dimension));
   }
 }

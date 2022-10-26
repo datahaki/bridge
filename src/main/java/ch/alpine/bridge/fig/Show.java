@@ -35,6 +35,15 @@ public class Show implements Serializable {
     return new Insets(16, 70, 22, 10);
   }
 
+  public static Rectangle defaultInsets(Dimension dimension) {
+    Insets insets = defaultInsets();
+    return new Rectangle( //
+        insets.left, //
+        insets.top, //
+        dimension.width - insets.left - insets.right, //
+        dimension.height - insets.top - insets.bottom);
+  }
+
   private final List<Showable> showables = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
   private CoordinateBoundingBox cbb = null;
@@ -158,13 +167,7 @@ public class Show implements Serializable {
     Graphics2D graphics = bufferedImage.createGraphics();
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
-    Insets insets = defaultInsets();
-    Rectangle rectangle = new Rectangle( //
-        insets.left, //
-        insets.top, //
-        dimension.width - insets.left - insets.right, //
-        dimension.height - insets.top - insets.bottom);
-    render(graphics, rectangle);
+    render(graphics, defaultInsets(dimension));
     return bufferedImage;
   }
 
