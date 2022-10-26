@@ -43,6 +43,7 @@ public class Show implements Serializable {
         dimension.height - insets.top - insets.bottom);
   }
 
+  // ---
   private final List<Showable> showables = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
   private CoordinateBoundingBox cbb = null;
@@ -90,6 +91,8 @@ public class Show implements Serializable {
   }
 
   public ShowableConfig render(Graphics graphics, Rectangle rectangle) {
+    if (rectangle.width <= 1 || rectangle.height <= 1)
+      return null;
     final ShowableConfig showableConfig;
     {
       CoordinateBoundingBox _cbb = getCbb();

@@ -39,7 +39,6 @@ public class ShowComponentDemo implements Runnable {
     }
     jPanel.add(BorderLayout.CENTER, showComponent);
     jFrame.setContentPane(jPanel);
-    // jFrame.setContentPane();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setBounds(100, 100, 1000, 900);
   }

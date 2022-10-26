@@ -67,25 +67,23 @@ public class Plot extends BaseShowable {
           RenderQuality.setQuality(graphics);
           graphics.setColor(getColor());
           graphics.setStroke(getStroke());
+          double x0 = showableConfig.x_pos(x_clip.min());
+          double x1 = showableConfig.x_pos(x_clip.max());
+          Path2D.Double path = new Path2D.Double();
           {
-            double x0 = showableConfig.x_pos(x_clip.min());
-            double x1 = showableConfig.x_pos(x_clip.max());
-            Path2D.Double path = new Path2D.Double();
-            {
-              Scalar eval = suo.apply(x_clip.min());
-              path.moveTo(x0, showableConfig.y_pos(eval));
-            }
-            ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
-            final int size = (int) ((x1 - x0) * segmentsPerPixel);
-            final double dx = 1.0 / segmentsPerPixel;
-            for (int i = 1; i <= size; ++i) {
-              x0 += dx;
-              // compute the xValue and yValue of the function at xPix
-              Scalar y_eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
-              path.lineTo(x0, showableConfig.y_pos(y_eval));
-            }
-            graphics.draw(path);
+            Scalar eval = suo.apply(x_clip.min());
+            path.moveTo(x0, showableConfig.y_pos(eval));
           }
+          ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
+          final int size = (int) ((x1 - x0) * segmentsPerPixel);
+          final double dx = 1.0 / segmentsPerPixel;
+          for (int i = 1; i <= size; ++i) {
+            x0 += dx;
+            // compute the xValue and yValue of the function at xPix
+            Scalar y_eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
+            path.lineTo(x0, showableConfig.y_pos(y_eval));
+          }
+          graphics.draw(path);
           graphics.dispose();
         }
       }

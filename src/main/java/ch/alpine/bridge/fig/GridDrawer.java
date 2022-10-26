@@ -32,6 +32,7 @@ import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.N;
+import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.sca.exp.Log10;
 import ch.alpine.tensor.sca.pow.Power;
 
@@ -64,7 +65,7 @@ public class GridDrawer {
     Rectangle rectangle = showableConfig.rectangle;
     Clip xRange = showableConfig.getClip(0);
     Clip yRange = showableConfig.getClip(1);
-    if (rectangle.height <= 1)
+    if (rectangle.width <= 1 || rectangle.height <= 1)
       return;
     Graphics2D graphics = (Graphics2D) _g.create();
     // graphics.setFont(StaticHelper.FONT);
@@ -117,7 +118,7 @@ public class GridDrawer {
       }
     } else {
       // TODO UTIL determine reserve
-      Scalar dX = getDecimalStep(xRange.width().divide(RealScalar.of(rectangle.width)), RealScalar.of(50));
+      Scalar dX = getDecimalStep(xRange.width().divide(RealScalar.of(rectangle.width)).multiply(RealScalar.of(50)));
       for (Scalar xValue = Ceiling.toMultipleOf(dX).apply(xRange.min()); Scalars.lessEquals(xValue, xRange.max()); xValue = xValue.add(dX)) {
         int x_pos = (int) showableConfig.x_pos(xValue);
         navigableMap.put(x_pos, xValue);
@@ -166,7 +167,7 @@ public class GridDrawer {
     Scalar plotHeight = RealScalar.of(rectangle.height - 1);
     FontMetrics fontMetrics = graphics.getFontMetrics();
     int fontSize = fontMetrics.getAscent();
-    Scalar dY = getDecimalStep(yRange.width().divide(plotHeight), RealScalar.of(fontSize * 2));
+    Scalar dY = getDecimalStep(yRange.width().divide(plotHeight).multiply(RealScalar.of(fontSize * 2)));
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     for (Scalar yValue = Ceiling.toMultipleOf(dY).apply(yRange.min()); Scalars.lessEquals(yValue, yRange.max()); yValue = yValue.add(dY)) {
       int y_pos = (int) showableConfig.y_pos(yValue);
@@ -212,11 +213,10 @@ public class GridDrawer {
 
   private static final Scalar[] RATIOS = { RationalScalar.of(1, 5), RationalScalar.of(1, 2) };
 
-  /** @param widthPerPixel == valueRange.width().divide(plotHeight);
-   * @param pixelMin
+  /** @param quantity
    * @return */
-  public static Scalar getDecimalStep(Scalar widthPerPixel, Scalar pixelMin) {
-    Scalar quantity = widthPerPixel.multiply(pixelMin);
+  public static Scalar getDecimalStep(Scalar quantity) {
+    Sign.requirePositive(quantity);
     Scalar decStep = Quantity.of( //
         Power.of(10, Ceiling.FUNCTION.apply(Log10.FUNCTION.apply(Unprotect.withoutUnit(quantity)))), //
         QuantityUnit.of(quantity));

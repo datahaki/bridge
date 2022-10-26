@@ -12,6 +12,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Sign;
 
 public class ShowableConfig {
   final Rectangle rectangle;
@@ -19,8 +20,10 @@ public class ShowableConfig {
   private final Clip xRange;
   private final Clip yRange;
   private final double y_height; // TODO misnomer
-  private final Scalar x_factor;
-  private final Scalar y_factor;
+  private final Scalar x2pixel;
+  private final Scalar y2pixel;
+  private final Scalar pixel2x;
+  private final Scalar pixel2y;
 
   public ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb) {
     this.rectangle = rectangle;
@@ -28,17 +31,20 @@ public class ShowableConfig {
     this.xRange = cbb.getClip(0);
     this.yRange = cbb.getClip(1);
     y_height = rectangle.y + rectangle.height - 1;
-    // FIXME check if x/y Range width == 0
-    x_factor = RealScalar.of(rectangle.width - 1).divide(xRange.width());
-    y_factor = RealScalar.of(rectangle.height - 1).divide(yRange.width());
+    x2pixel = RealScalar.of(rectangle.width - 1).divide(xRange.width());
+    y2pixel = RealScalar.of(rectangle.height - 1).divide(yRange.width());
+    Sign.requirePositive(x2pixel);
+    Sign.requirePositive(y2pixel);
+    pixel2x = xRange.width().divide(RealScalar.of(rectangle.width - 1));
+    pixel2y = yRange.width().divide(RealScalar.of(rectangle.height - 1));
   }
 
   public double x_pos(Scalar x) {
-    return rectangle.x + x.subtract(xRange.min()).multiply(x_factor).number().doubleValue();
+    return rectangle.x + x.subtract(xRange.min()).multiply(x2pixel).number().doubleValue();
   }
 
   public double y_pos(Scalar y) {
-    return y_height - y.subtract(yRange.min()).multiply(y_factor).number().doubleValue();
+    return y_height - y.subtract(yRange.min()).multiply(y2pixel).number().doubleValue();
   }
 
   public Point2D.Double toPoint2D(Tensor vector) {
@@ -50,18 +56,18 @@ public class ShowableConfig {
   public Optional<Tensor> toValue(Point point) {
     return rectangle.contains(point) //
         ? Optional.of(Tensors.of( //
-            xRange.min().add(RealScalar.of(point.x - rectangle.x).divide(x_factor)), //
-            yRange.min().add(RealScalar.of(y_height - point.y).divide(y_factor)) //
+            xRange.min().add(RealScalar.of(point.x - rectangle.x).multiply(pixel2x)), //
+            yRange.min().add(RealScalar.of(y_height - point.y).multiply(pixel2y)) //
         ))
         : Optional.empty();
   }
 
   public Scalar dx(Scalar dx) {
-    return dx.divide(x_factor);
+    return dx.multiply(pixel2x);
   }
 
   public Scalar dy(Scalar dy) {
-    return dy.divide(y_factor);
+    return dy.multiply(pixel2y);
   }
 
   public Clip getClip(int index) {
