@@ -62,8 +62,8 @@ public class GridDrawer {
 
   public void render(Graphics _g) {
     Rectangle rectangle = showableConfig.rectangle;
-    Clip xRange = showableConfig.cbb.getClip(0);
-    Clip yRange = showableConfig.cbb.getClip(1);
+    Clip xRange = showableConfig.getClip(0);
+    Clip yRange = showableConfig.getClip(1);
     if (rectangle.height <= 1)
       return;
     Graphics2D graphics = (Graphics2D) _g.create();
@@ -97,7 +97,7 @@ public class GridDrawer {
 
   private void drawXLines(Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle;
-    Clip xRange = showableConfig.cbb.getClip(0);
+    Clip xRange = showableConfig.getClip(0);
     final int y_height = rectangle.y + rectangle.height - 1;
     final FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
@@ -133,7 +133,11 @@ public class GridDrawer {
       {
         graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
-        graphics.drawLine(rectangle.x, y_height + StaticHelper.GAP, rectangle.x + rectangle.width - 1, y_height + StaticHelper.GAP);
+        graphics.drawLine( //
+            rectangle.x, //
+            y_height + StaticHelper.GAP, //
+            rectangle.x + rectangle.width - 1, //
+            y_height + StaticHelper.GAP);
         for (int pix : navigableMap.keySet())
           graphics.drawLine(pix, y_height + StaticHelper.GAP + 1, pix, y_height + StaticHelper.GAP + 2);
       }
@@ -148,7 +152,7 @@ public class GridDrawer {
               : ((DateTime) value).format(dateTimeFormatter);
           graphics2.drawString(xLabel, //
               entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //
-              y_height + StaticHelper.GAP + fontMetrics.getHeight());
+              y_height + StaticHelper.GAP + 3 + fontMetrics.getAscent());
         }
         graphics2.dispose();
       }
@@ -158,10 +162,10 @@ public class GridDrawer {
   /** draw lines and numbers like this: _________________ */
   private void drawYLines(Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle;
-    Clip yRange = showableConfig.cbb.getClip(1);
+    Clip yRange = showableConfig.getClip(1);
     Scalar plotHeight = RealScalar.of(rectangle.height - 1);
     FontMetrics fontMetrics = graphics.getFontMetrics();
-    int fontSize = fontMetrics.getHeight();
+    int fontSize = fontMetrics.getAscent();
     Scalar dY = getDecimalStep(yRange.width().divide(plotHeight), RealScalar.of(fontSize * 2));
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     for (Scalar yValue = Ceiling.toMultipleOf(dY).apply(yRange.min()); Scalars.lessEquals(yValue, yRange.max()); yValue = yValue.add(dY)) {

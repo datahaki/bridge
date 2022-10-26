@@ -64,7 +64,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Tensor domain = Subdivide.increasing(Clips.unit(), 50);
       Tensor rgba = domain.map(ColorDataGradients.CLASSIC);
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Color Data Gradient");
+      show.setPlotLabel("Color Data Gradient 097");
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");

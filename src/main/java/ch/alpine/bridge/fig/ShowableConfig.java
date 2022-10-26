@@ -1,19 +1,22 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+import java.util.Optional;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 
 public class ShowableConfig {
   final Rectangle rectangle;
-  final CoordinateBoundingBox cbb;
-  final Clip xRange;
+  private final CoordinateBoundingBox cbb;
+  private final Clip xRange;
   private final Clip yRange;
   private final double y_height; // TODO misnomer
   private final Scalar x_factor;
@@ -42,5 +45,31 @@ public class ShowableConfig {
     return new Point2D.Double( //
         x_pos(vector.Get(0)), //
         y_pos(vector.Get(1)));
+  }
+
+  public Optional<Tensor> toValue(Point point) {
+    return rectangle.contains(point) //
+        ? Optional.of(Tensors.of( //
+            RealScalar.of(point.x - rectangle.x).divide(x_factor), //
+            RealScalar.of(y_height - point.y).divide(y_factor) //
+        ))
+        : Optional.empty();
+  }
+
+  public Scalar dx(Scalar dx) {
+    return dx.divide(x_factor);
+  }
+
+  public Scalar dy(Scalar dy) {
+    return dy.divide(y_factor);
+  }
+
+  public Clip getClip(int index) {
+    return cbb.getClip(index);
+  }
+
+  /** @return may be null */
+  public CoordinateBoundingBox getCbb() {
+    return cbb;
   }
 }

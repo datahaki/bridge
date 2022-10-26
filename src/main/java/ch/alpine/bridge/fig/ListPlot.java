@@ -42,10 +42,15 @@ public class ListPlot extends BaseShowable {
 
   // ---
   private final Tensor points;
+  private double radius = RADIUS;
 
   private ListPlot(Tensor points) {
     points.stream().forEach(row -> VectorQ.requireLength(row, 2));
     this.points = points;
+  }
+
+  public void setPointsize(double radius) {
+    this.radius = radius;
   }
 
   @Override // from Showable
@@ -56,7 +61,7 @@ public class ListPlot extends BaseShowable {
       graphics.setColor(getColor());
       for (Tensor row : points) {
         Point2D.Double point2d = showableConfig.toPoint2D(row);
-        graphics.fill(new Ellipse2D.Double(point2d.x - RADIUS, point2d.y - RADIUS, 2 * RADIUS, 2 * RADIUS));
+        graphics.fill(new Ellipse2D.Double(point2d.x - radius, point2d.y - radius, 2 * radius, 2 * radius));
         // below: diamond <>
         // Path2D.Double path = new Path2D.Double();
         // path.moveTo(point2d.x + rad, point2d.y);

@@ -58,7 +58,7 @@ public class Plot extends BaseShowable {
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics _g) {
     if (Objects.nonNull(domain)) {
-      Optional<Clip> optional = Clips.optionalIntersection(showableConfig.xRange, domain);
+      Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), domain);
       if (optional.isPresent()) {
         int segmentsPerPixel = 1;
         Clip x_clip = optional.orElseThrow();

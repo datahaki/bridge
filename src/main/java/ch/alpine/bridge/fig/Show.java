@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
@@ -31,12 +30,12 @@ import ch.alpine.tensor.opt.nd.CoordinateBounds;
 public class Show implements Serializable {
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
 
-  public static Insets defaultInsets() {
-    return new Insets(16, 70, 22, 10);
+  public static Insets defaultInsets(int fontSize) {
+    return new Insets(4 + fontSize, 70, 10 + fontSize, 10);
   }
 
-  public static Rectangle defaultInsets(Dimension dimension) {
-    Insets insets = defaultInsets();
+  public static Rectangle defaultInsets(Dimension dimension, int fontSize) {
+    Insets insets = defaultInsets(fontSize);
     return new Rectangle( //
         insets.left, //
         insets.top, //
@@ -81,20 +80,25 @@ public class Show implements Serializable {
     this.cbb = cbb;
   }
 
+  /** @return may be null */
+  public CoordinateBoundingBox getCbb() {
+    return cbb;
+  }
+
   public boolean isEmpty() {
     return showables.isEmpty();
   }
 
-  public void render(Graphics graphics, Rectangle rectangle) {
-    CoordinateBoundingBox _cbb = cbb;
-    if (Objects.isNull(_cbb)) {
-      Optional<CoordinateBoundingBox> optional = showables.stream() //
-          .flatMap(showable -> showable.fullPlotRange().stream()) //
-          .reduce(CoordinateBounds::cover);
-      if (optional.isPresent()) {
-        _cbb = optional.orElseThrow();
-      }
+  public ShowableConfig render(Graphics graphics, Rectangle rectangle) {
+    final ShowableConfig showableConfig;
+    {
+      CoordinateBoundingBox _cbb = getCbb();
+      if (Objects.isNull(_cbb))
+        showables.stream() //
+            .flatMap(showable -> showable.fullPlotRange().stream()) //
+            .reduce(CoordinateBounds::cover).ifPresent(this::setCbb);
     }
+    CoordinateBoundingBox _cbb = getCbb();
     Graphics2D showarea = (Graphics2D) graphics.create();
     if (frame) {
       showarea.setStroke(StaticHelper.STROKE_SOLID);
@@ -105,7 +109,7 @@ public class Show implements Serializable {
       String string = getPlotLabel();
       if (!string.isEmpty()) {
         Graphics2D titleArea = (Graphics2D) graphics.create();
-        Font font = titleArea.getFont().deriveFont(Font.BOLD);
+        Font font = graphics.getFont().deriveFont(Font.BOLD);
         titleArea.setFont(font);
         RenderQuality.setQuality(titleArea);
         titleArea.setColor(StaticHelper.COLOR_FONT);
@@ -115,6 +119,7 @@ public class Show implements Serializable {
     }
     showarea.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     if (Objects.isNull(_cbb)) {
+      showableConfig = null;
       showarea.setColor(Color.DARK_GRAY);
       RenderQuality.setQuality(showarea);
       FontMetrics fontMetrics = showarea.getFontMetrics();
@@ -123,7 +128,7 @@ public class Show implements Serializable {
           rectangle.x + (rectangle.width - fontMetrics.stringWidth(string)) / 2, //
           rectangle.y + (rectangle.height + fontMetrics.getHeight()) / 2);
     } else {
-      ShowableConfig showableConfig = new ShowableConfig(rectangle, _cbb);
+      showableConfig = new ShowableConfig(rectangle, _cbb);
       GridDrawer gridDrawer = new GridDrawer(showableConfig);
       gridDrawer.render(graphics);
       for (Showable showable : showables)
@@ -135,29 +140,35 @@ public class Show implements Serializable {
       FontMetrics fontMetrics = showarea.getFontMetrics();
       int size = fontMetrics.getHeight();
       int pix = rectangle.x + StaticHelper.GAP;
-      int piy = rectangle.y + 2;
-      legend.setColor(new Color(255, 255, 255, 192));
-      for (Showable showable : showables) {
-        String string = showable.getLabel();
-        if (!string.isEmpty()) {
-          legend.fillRect(pix, piy, fontMetrics.stringWidth(string), size);
-          // showarea.setColor(Color.RED);
-          // showarea.drawRect(pix, piy, fontMetrics.stringWidth(string), size);
-          piy += size;
+      final int ystart = rectangle.y + 2 - fontMetrics.getDescent();
+      {
+        int piy = ystart;
+        legend.setColor(new Color(255, 255, 255, 192));
+        for (Showable showable : showables) {
+          String string = showable.getLabel();
+          if (!string.isEmpty()) {
+            legend.fillRect(pix, piy, fontMetrics.stringWidth(string), size);
+            // showarea.setColor(Color.RED);
+            // showarea.drawRect(pix, piy, fontMetrics.stringWidth(string), size);
+            piy += size;
+          }
         }
       }
-      piy = rectangle.y + 2;
-      for (Showable showable : showables) {
-        String string = showable.getLabel();
-        if (!string.isEmpty()) {
-          piy += size;
-          legend.setColor(showable.getColor());
-          legend.drawString(string, pix, piy - 3);
+      {
+        int piy = ystart;
+        for (Showable showable : showables) {
+          String string = showable.getLabel();
+          if (!string.isEmpty()) {
+            piy += size;
+            legend.setColor(showable.getColor());
+            legend.drawString(string, pix, piy - 3);
+          }
         }
       }
       legend.dispose();
     }
     showarea.dispose();
+    return showableConfig;
   }
 
   /** @param dimension
@@ -167,7 +178,7 @@ public class Show implements Serializable {
     Graphics2D graphics = bufferedImage.createGraphics();
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
-    render(graphics, defaultInsets(dimension));
+    render(graphics, defaultInsets(dimension, graphics.getFont().getSize()));
     return bufferedImage;
   }
 
