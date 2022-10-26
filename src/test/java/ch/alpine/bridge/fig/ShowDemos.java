@@ -263,7 +263,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       Show show = new Show(ColorDataLists._058.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process with Integral");
-      RandomFunction randomFunction = RandomFunction.of(WienerProcess.standard());
+      RandomFunction randomFunction = RandomFunction.of(WienerProcess.of(3, 1));
       Tensor samples = RandomVariate.of(UniformDistribution.of(Clips.unit()), 100);
       samples.map(randomFunction::evaluate); // for integral
       show.add(Plot.of(randomFunction::evaluate, Clips.unit())).setLabel("timeSeries");
@@ -285,6 +285,22 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process with Drift");
       show.add(Plot.of(randomFunction::evaluate, Clips.positive(Quantity.of(5, "s")))).setLabel("timeSeries");
+      show.add(Plot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
+      return show;
+    }
+  },
+  TS_WP3 {
+    @Override
+    Show create() {
+      Scalar mu = Quantity.of(1, "m*s^-1");
+      Scalar sigma = Quantity.of(1, "m*s^-1/2");
+      Scalar t_zero = DateTime.of(2020, 3, 4, 22, 15);
+      Scalar t_fine = DateTime.of(2020, 3, 4, 22, 16);
+      RandomProcess randomProcess = WienerProcess.of(mu, sigma, t_zero, Quantity.of(-3, "m"));
+      RandomFunction randomFunction = RandomFunction.of(randomProcess);
+      Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
+      show.setPlotLabel("Wiener Process with Offset");
+      show.add(Plot.of(randomFunction::evaluate, Clips.interval(t_zero, t_fine))).setLabel("timeSeries");
       show.add(Plot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
       return show;
     }
@@ -423,7 +439,43 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.add(SpectrogramDemo.create(0.32, 1.6)).setLabel("Chirp");
       return show;
     }
-  }
+  },
+  LP_ZERO_HEIGHT {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("FlatlineX");
+      show.add(ListPlot.of(Tensors.fromString("{{0,1}, {10,1}}")));
+      return show;
+    }
+  },
+  LP_ZERO_WIDTH {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("FlatlineY");
+      show.add(ListPlot.of(Tensors.fromString("{{0,1}, {0,10}}")));
+      return show;
+    }
+  },
+  LP_ZERO_HEIGHT_UNIT {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("FlatlineX Quantity");
+      show.add(ListPlot.of(Tensors.fromString("{{0[m],1[s]}, {10[m],1[s]}}")));
+      return show;
+    }
+  },
+  LP_ZERO_WIDTH_UNIT {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("FlatlineY Quantity");
+      show.add(ListPlot.of(Tensors.fromString("{{0[m],1[s]}, {0[m],10[s]}}")));
+      return show;
+    }
+  },
   //
   ;
 

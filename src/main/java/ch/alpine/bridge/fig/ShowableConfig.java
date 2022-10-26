@@ -50,8 +50,8 @@ public class ShowableConfig {
   public Optional<Tensor> toValue(Point point) {
     return rectangle.contains(point) //
         ? Optional.of(Tensors.of( //
-            RealScalar.of(point.x - rectangle.x).divide(x_factor), //
-            RealScalar.of(y_height - point.y).divide(y_factor) //
+            xRange.min().add(RealScalar.of(point.x - rectangle.x).divide(x_factor)), //
+            yRange.min().add(RealScalar.of(y_height - point.y).divide(y_factor)) //
         ))
         : Optional.empty();
   }

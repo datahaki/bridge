@@ -93,10 +93,13 @@ public class Show implements Serializable {
     final ShowableConfig showableConfig;
     {
       CoordinateBoundingBox _cbb = getCbb();
-      if (Objects.isNull(_cbb))
+      if (Objects.isNull(_cbb)) {
         showables.stream() //
             .flatMap(showable -> showable.fullPlotRange().stream()) //
-            .reduce(CoordinateBounds::cover).ifPresent(this::setCbb);
+            .reduce(CoordinateBounds::cover) //
+            .map(StaticHelper::nonZero) //
+            .ifPresent(this::setCbb);
+      }
     }
     CoordinateBoundingBox _cbb = getCbb();
     Graphics2D showarea = (Graphics2D) graphics.create();
