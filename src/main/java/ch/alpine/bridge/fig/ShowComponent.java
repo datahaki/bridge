@@ -66,6 +66,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
     addMouseWheelListener(this);
   }
 
+  /** @param show may be null */
   public synchronized void setShow(Show show) {
     this.show = show;
     showableConfig = null;

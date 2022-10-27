@@ -86,7 +86,9 @@ public class Show implements Serializable {
   /** @param cbb null is permitted in which case the function
    * {@link #render(Graphics, Rectangle)} determines the coordinate bounds */
   public void setCbb(CoordinateBoundingBox cbb) {
-    this.cbb = cbb;
+    this.cbb = Objects.isNull(cbb) //
+        ? cbb
+        : StaticHelper.nonZero(cbb);
   }
 
   /** @return may be null */
@@ -99,7 +101,6 @@ public class Show implements Serializable {
       showables.stream() //
           .flatMap(showable -> showable.fullPlotRange().stream()) //
           .reduce(CoordinateBounds::cover) //
-          .map(StaticHelper::nonZero) //
           .ifPresent(this::setCbb);
     return getCbb();
   }

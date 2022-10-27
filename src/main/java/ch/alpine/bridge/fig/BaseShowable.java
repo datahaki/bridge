@@ -5,11 +5,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 import java.io.Serializable;
+import java.util.Objects;
 
 public abstract class BaseShowable implements Showable, Serializable {
   private String string = "";
   private Color color = Color.BLACK;
-  private Stroke stroke = new BasicStroke(1.5f);
+  private transient Stroke stroke = new BasicStroke(1.5f);
 
   @Override
   public final void setLabel(String string) {
@@ -38,6 +39,8 @@ public abstract class BaseShowable implements Showable, Serializable {
 
   @Override
   public final Stroke getStroke() {
-    return stroke;
+    return Objects.isNull(stroke) //
+        ? new BasicStroke(1.5f)
+        : stroke;
   }
 }

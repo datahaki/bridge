@@ -4,8 +4,10 @@ package ch.alpine.bridge.fig;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.RationalScalar;
@@ -28,35 +30,38 @@ public class Plot extends BaseShowable {
   /** @param suo
    * @param domain
    * @return */
+  @SuppressWarnings("unchecked")
   public static Showable of(ScalarUnaryOperator suo, Clip domain) {
-    return new Plot(suo, domain);
+    return new Plot(suo, (Supplier<Clip> & Serializable) () -> domain);
   }
 
   public static Showable of(TimeSeries timeSeries) {
     return of(timeSeries, Scalar.class::cast);
   }
 
+  @SuppressWarnings("unchecked")
   public static Showable of(TimeSeries timeSeries, TensorScalarFunction tsf) {
     return new Plot(scalar -> tsf.apply(timeSeries.evaluate(scalar)), //
-        timeSeries.isEmpty() //
+        (Supplier<Clip> & Serializable) () -> timeSeries.isEmpty() //
             ? null
             : timeSeries.domain());
   }
 
   // ---
   private final ScalarUnaryOperator suo;
-  private final Clip domain;
+  private final Supplier<Clip> supplier;
 
   // ---
   /** @param suo
    * @param domain may be null, in which case the plot is empty */
-  private Plot(ScalarUnaryOperator suo, Clip domain) {
+  private Plot(ScalarUnaryOperator suo, Supplier<Clip> supplier) {
     this.suo = suo;
-    this.domain = domain;
+    this.supplier = supplier;
   }
 
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics _g) {
+    Clip domain = supplier.get();
     if (Objects.nonNull(domain)) {
       Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), domain);
       if (optional.isPresent()) {
@@ -92,6 +97,7 @@ public class Plot extends BaseShowable {
 
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
+    Clip domain = supplier.get();
     if (Objects.nonNull(domain) && Sign.isPositive(domain.width())) {
       Clip clip = StaticHelper.minMax(Subdivide.increasing(domain, RESOLUTION).map(suo));
       if (Objects.nonNull(clip))
