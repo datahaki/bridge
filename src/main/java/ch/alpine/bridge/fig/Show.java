@@ -75,7 +75,7 @@ public class Show implements Serializable {
 
   /** @param string to appear above plot */
   public final void setPlotLabel(String string) {
-    plotLabel = string;
+    plotLabel = Objects.requireNonNull(string);
   }
 
   /** @return */
@@ -83,6 +83,8 @@ public class Show implements Serializable {
     return plotLabel;
   }
 
+  /** @param cbb null is permitted in which case the function
+   * {@link #render(Graphics, Rectangle)} determines the coordinate bounds */
   public void setCbb(CoordinateBoundingBox cbb) {
     this.cbb = cbb;
   }
@@ -90,6 +92,16 @@ public class Show implements Serializable {
   /** @return may be null */
   public CoordinateBoundingBox getCbb() {
     return cbb;
+  }
+
+  private CoordinateBoundingBox deriveCbb() {
+    if (Objects.isNull(getCbb()))
+      showables.stream() //
+          .flatMap(showable -> showable.fullPlotRange().stream()) //
+          .reduce(CoordinateBounds::cover) //
+          .map(StaticHelper::nonZero) //
+          .ifPresent(this::setCbb);
+    return getCbb();
   }
 
   public void setDateTimeFocus(DateTimeFocus dateTimeFocus) {
@@ -104,90 +116,88 @@ public class Show implements Serializable {
     return showables.isEmpty();
   }
 
-  public ShowableConfig render(Graphics graphics, Rectangle rectangle) {
-    if (rectangle.width <= 1 || rectangle.height <= 1)
-      return null;
-    final ShowableConfig showableConfig;
-    {
-      CoordinateBoundingBox _cbb = getCbb();
-      if (Objects.isNull(_cbb)) {
-        showables.stream() //
-            .flatMap(showable -> showable.fullPlotRange().stream()) //
-            .reduce(CoordinateBounds::cover) //
-            .map(StaticHelper::nonZero) //
-            .ifPresent(this::setCbb);
-      }
-    }
-    CoordinateBoundingBox _cbb = getCbb();
-    Graphics2D showarea = (Graphics2D) graphics.create();
+  private void renderFrameTitle(Graphics _g, Rectangle rectangle) {
+    Graphics2D graphics = (Graphics2D) _g.create();
     if (frame) {
-      showarea.setStroke(StaticHelper.STROKE_SOLID);
-      showarea.setColor(Show.COLOR_FRAME);
-      showarea.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
+      graphics.setStroke(StaticHelper.STROKE_SOLID);
+      graphics.setColor(Show.COLOR_FRAME);
+      graphics.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
     }
     {
       String string = getPlotLabel();
       if (!string.isEmpty()) {
-        Graphics2D titleArea = (Graphics2D) graphics.create();
-        Font font = graphics.getFont().deriveFont(Font.BOLD);
-        titleArea.setFont(font);
-        RenderQuality.setQuality(titleArea);
-        titleArea.setColor(StaticHelper.COLOR_FONT);
-        titleArea.drawString(string, rectangle.x, rectangle.y - StaticHelper.GAP);
-        titleArea.dispose();
+        Font font = _g.getFont().deriveFont(Font.BOLD);
+        graphics.setFont(font);
+        RenderQuality.setQuality(graphics);
+        graphics.setColor(StaticHelper.COLOR_FONT);
+        graphics.drawString(string, rectangle.x, rectangle.y - StaticHelper.GAP);
       }
     }
-    showarea.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    graphics.dispose();
+  }
+
+  private ShowableConfig renderShowables(Graphics _g, Graphics2D graphics, Rectangle rectangle) {
+    final ShowableConfig showableConfig;
+    CoordinateBoundingBox _cbb = deriveCbb();
     if (Objects.isNull(_cbb)) {
       showableConfig = null;
-      showarea.setColor(Color.DARK_GRAY);
-      RenderQuality.setQuality(showarea);
-      FontMetrics fontMetrics = showarea.getFontMetrics();
+      graphics.setColor(Color.DARK_GRAY);
+      FontMetrics fontMetrics = graphics.getFontMetrics();
       String string = "no data";
-      showarea.drawString(string, //
+      graphics.drawString(string, //
           rectangle.x + (rectangle.width - fontMetrics.stringWidth(string)) / 2, //
           rectangle.y + (rectangle.height + fontMetrics.getHeight()) / 2);
     } else {
       showableConfig = new ShowableConfig(rectangle, _cbb);
       GridDrawer gridDrawer = new GridDrawer(dateTimeFocus);
-      gridDrawer.render(showableConfig, graphics);
+      gridDrawer.render(showableConfig, _g);
       for (Showable showable : showables)
-        showable.render(showableConfig, showarea);
+        showable.render(showableConfig, graphics);
+    }
+    return showableConfig;
+  }
+
+  private void renderLegend(Graphics2D graphics, Rectangle rectangle) {
+    FontMetrics fontMetrics = graphics.getFontMetrics();
+    int size = fontMetrics.getHeight();
+    int pix = rectangle.x + StaticHelper.GAP;
+    final int ystart = rectangle.y + 2 - fontMetrics.getDescent();
+    {
+      int piy = ystart;
+      graphics.setColor(new Color(255, 255, 255, 192));
+      for (Showable showable : showables) {
+        String string = showable.getLabel();
+        if (!string.isEmpty()) {
+          graphics.fillRect(pix, piy, fontMetrics.stringWidth(string), size);
+          // showarea.setColor(Color.RED);
+          // showarea.drawRect(pix, piy, fontMetrics.stringWidth(string), size);
+          piy += size;
+        }
+      }
     }
     {
-      Graphics2D legend = (Graphics2D) showarea.create();
-      RenderQuality.setQuality(legend);
-      FontMetrics fontMetrics = showarea.getFontMetrics();
-      int size = fontMetrics.getHeight();
-      int pix = rectangle.x + StaticHelper.GAP;
-      final int ystart = rectangle.y + 2 - fontMetrics.getDescent();
-      {
-        int piy = ystart;
-        legend.setColor(new Color(255, 255, 255, 192));
-        for (Showable showable : showables) {
-          String string = showable.getLabel();
-          if (!string.isEmpty()) {
-            legend.fillRect(pix, piy, fontMetrics.stringWidth(string), size);
-            // showarea.setColor(Color.RED);
-            // showarea.drawRect(pix, piy, fontMetrics.stringWidth(string), size);
-            piy += size;
-          }
+      int piy = ystart;
+      for (Showable showable : showables) {
+        String string = showable.getLabel();
+        if (!string.isEmpty()) {
+          piy += size;
+          graphics.setColor(showable.getColor());
+          graphics.drawString(string, pix, piy - 3);
         }
       }
-      {
-        int piy = ystart;
-        for (Showable showable : showables) {
-          String string = showable.getLabel();
-          if (!string.isEmpty()) {
-            piy += size;
-            legend.setColor(showable.getColor());
-            legend.drawString(string, pix, piy - 3);
-          }
-        }
-      }
-      legend.dispose();
     }
-    showarea.dispose();
+  }
+
+  public ShowableConfig render(Graphics _g, Rectangle rectangle) {
+    if (rectangle.width <= 1 || rectangle.height <= 1)
+      return null;
+    renderFrameTitle(_g, rectangle);
+    Graphics2D graphics = (Graphics2D) _g.create();
+    graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    RenderQuality.setQuality(graphics);
+    ShowableConfig showableConfig = renderShowables(_g, graphics, rectangle);
+    renderLegend(graphics, rectangle);
+    graphics.dispose();
     return showableConfig;
   }
 

@@ -198,9 +198,9 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.setPlotLabel("Truncated Distribution");
       Clip clip = Clips.interval(-3, 3);
-      show.add(Plot.of(pdf::at, clip));
-      show.add(Plot.of(cdf::p_lessEquals, clip));
-      show.add(Plot.of(pdf_o::at, clip));
+      show.add(Plot.of(pdf_o::at, clip)).setLabel("PDF");
+      show.add(Plot.of(pdf::at, clip)).setLabel("trunc. PDF");
+      show.add(Plot.of(cdf::p_lessEquals, clip)).setLabel("trunc. CDF");
       return show;
     }
   },
