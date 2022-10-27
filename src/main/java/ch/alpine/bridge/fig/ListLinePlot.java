@@ -1,13 +1,11 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Optional;
 
-import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
@@ -41,10 +39,8 @@ public class ListLinePlot extends BaseShowable {
   }
 
   @Override // from Showable
-  public void render(ShowableConfig showableConfig, Graphics _g) {
+  public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     if (0 < points.length()) {
-      Graphics2D graphics = (Graphics2D) _g.create();
-      RenderQuality.setQuality(graphics);
       graphics.setColor(getColor());
       graphics.setStroke(getStroke());
       Path2D.Double path = new Path2D.Double();
@@ -57,7 +53,6 @@ public class ListLinePlot extends BaseShowable {
         path.lineTo(point2d.x, point2d.y);
       });
       graphics.draw(path);
-      graphics.dispose();
     }
   }
 

@@ -152,8 +152,10 @@ public class Show implements Serializable {
       showableConfig = new ShowableConfig(rectangle, _cbb);
       GridDrawer gridDrawer = new GridDrawer(dateTimeFocus);
       gridDrawer.render(showableConfig, _g);
-      for (Showable showable : showables)
+      for (Showable showable : showables) {
         showable.render(showableConfig, graphics);
+        showable.decorate(showableConfig, _g);
+      }
     }
     return showableConfig;
   }

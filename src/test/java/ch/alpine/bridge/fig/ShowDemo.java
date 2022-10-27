@@ -90,12 +90,6 @@ public class ShowDemo implements Runnable {
     jFrame.setBounds(100, 100, 1000, 900);
   }
 
-  public static void main(String[] args) {
-    LookAndFeels.LIGHT.updateComponentTreeUI();
-    ShowDemo showDemo = new ShowDemo();
-    showDemo.jFrame.setVisible(true);
-  }
-
   @Override
   public void run() {
     list = recomp();
@@ -105,5 +99,11 @@ public class ShowDemo implements Runnable {
     JViewport viewport = jScrollPane.getViewport();
     viewport.setViewPosition(new Point(0, piy - 1));
     viewport.setViewPosition(new Point(0, 0));
+  }
+
+  public static void main(String[] args) {
+    LookAndFeels.LIGHT.updateComponentTreeUI();
+    ShowDemo showDemo = new ShowDemo();
+    showDemo.jFrame.setVisible(true);
   }
 }

@@ -1,13 +1,11 @@
 // code by legion
 package ch.alpine.bridge.fig;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.alg.Subdivide;
@@ -44,15 +42,13 @@ public class Plot extends BaseShowable {
   }
 
   @Override // from Showable
-  public void render(ShowableConfig showableConfig, Graphics _g) {
+  public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     if (Objects.nonNull(domain)) {
       Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), domain);
       if (optional.isPresent()) {
         int segmentsPerPixel = 1;
         Clip x_clip = optional.orElseThrow();
         if (Sign.isPositive(x_clip.width())) {
-          Graphics2D graphics = (Graphics2D) _g.create();
-          RenderQuality.setQuality(graphics);
           graphics.setColor(getColor());
           graphics.setStroke(getStroke());
           double x0 = showableConfig.x_pos(x_clip.min());
@@ -72,7 +68,6 @@ public class Plot extends BaseShowable {
             path.lineTo(x0, showableConfig.y_pos(y_eval));
           }
           graphics.draw(path);
-          graphics.dispose();
         }
       }
     }

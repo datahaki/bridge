@@ -1,13 +1,11 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.Optional;
 
-import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -54,10 +52,8 @@ public class ListPlot extends BaseShowable {
   }
 
   @Override // from Showable
-  public void render(ShowableConfig showableConfig, Graphics _g) {
+  public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     if (0 < points.length()) {
-      Graphics2D graphics = (Graphics2D) _g.create();
-      RenderQuality.setQuality(graphics);
       graphics.setColor(getColor());
       for (Tensor row : points) {
         Point2D.Double point2d = showableConfig.toPoint2D(row);
@@ -70,7 +66,6 @@ public class ListPlot extends BaseShowable {
         // path.lineTo(point2d.x, point2d.y - rad);
         // graphics.fill(path);
       }
-      graphics.dispose();
     }
   }
 

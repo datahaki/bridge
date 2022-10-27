@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.util.Optional;
 
@@ -11,7 +12,9 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 public interface Showable {
   /** @param showableConfig
    * @param graphics */
-  void render(ShowableConfig showableConfig, Graphics graphics);
+  void render(ShowableConfig showableConfig, Graphics2D graphics);
+
+  void decorate(ShowableConfig showableConfig, Graphics graphics);
 
   /** @return */
   Optional<CoordinateBoundingBox> fullPlotRange();

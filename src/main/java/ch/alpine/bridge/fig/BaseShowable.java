@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Stroke;
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,6 +12,11 @@ public abstract class BaseShowable implements Showable, Serializable {
   private String string = "";
   private Color color = Color.BLACK;
   private transient Stroke stroke = new BasicStroke(1.5f);
+
+  @Override
+  public void decorate(ShowableConfig showableConfig, Graphics graphics) {
+    // ---
+  }
 
   @Override
   public final void setLabel(String string) {

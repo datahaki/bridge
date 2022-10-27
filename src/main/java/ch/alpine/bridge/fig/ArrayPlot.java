@@ -2,6 +2,7 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -52,7 +53,7 @@ public class ArrayPlot extends BaseShowable {
   }
 
   @Override // from Showable
-  public void render(ShowableConfig showableConfig, Graphics _g) {
+  public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Point2D.Double ul = showableConfig.toPoint2D(Tensors.of( //
         cbb.getClip(0).min(), //
         cbb.getClip(1).max()));
@@ -62,9 +63,14 @@ public class ArrayPlot extends BaseShowable {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
-      _g.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
+      graphics.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
+  }
+
+  @Override
+  public void decorate(ShowableConfig showableConfig, Graphics graphics) {
+    // ---
   }
 
   @Override // from Showable
