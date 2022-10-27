@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Objects;
 
@@ -29,9 +30,15 @@ public class GridDrawer {
     Clip yRange = showableConfig.getClip(1);
     // ---
     if (axesX && !Scalars.isZero(xRange.width()))
-      new AxisX(dateTimeFocus).render(showableConfig, _g, showableConfig.getClip(0));
+      new AxisX(dateTimeFocus).render( //
+          showableConfig, //
+          new Point(rectangle.x, rectangle.y + rectangle.height - 1 + StaticHelper.GAP), //
+          rectangle.width, _g, showableConfig.getClip(0));
     if (axesY && !Scalars.isZero(yRange.width()))
-      new AxisY(dateTimeFocus).render(showableConfig, _g, showableConfig.getClip(1));
+      new AxisY(dateTimeFocus).render( //
+          showableConfig, //
+          new Point(rectangle.x - StaticHelper.GAP, rectangle.y), //
+          rectangle.height, _g, showableConfig.getClip(1));
     // ---
     {
       String unit0 = Unicode.valueOf(QuantityUnit.of(xRange));

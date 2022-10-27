@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.time.format.DateTimeFormatter;
 import java.util.Map.Entry;
@@ -27,7 +28,7 @@ class AxisX extends Axis {
   }
 
   @Override
-  void protected_render(ShowableConfig showableConfig, Graphics2D graphics, Clip clip) {
+  void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
     Rectangle rectangle = showableConfig.rectangle;
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
@@ -57,24 +58,23 @@ class AxisX extends Axis {
         navigableMap.put(x_pos, xValue);
       }
     }
-    final int y_height = rectangle.y + rectangle.height - 1;
     if (gridLines) { // grid lines |
       graphics.setColor(COLOR_GRIDLINES);
       graphics.setStroke(STROKE_GRIDLINES);
       for (int pix : navigableMap.keySet())
-        graphics.drawLine(pix, rectangle.y, pix, y_height);
+        graphics.drawLine(pix, rectangle.y, pix, rectangle.y + rectangle.height);
     }
     if (ticks) {
       {
         graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
         graphics.drawLine( //
-            rectangle.x, //
-            y_height + StaticHelper.GAP, //
-            rectangle.x + rectangle.width - 1, //
-            y_height + StaticHelper.GAP);
+            point.x, //
+            point.y, //
+            point.x + length - 1, //
+            point.y);
         for (int pix : navigableMap.keySet())
-          graphics.drawLine(pix, y_height + StaticHelper.GAP + 1, pix, y_height + StaticHelper.GAP + 2);
+          graphics.drawLine(pix, point.y + 1, pix, point.y + 2);
       }
       {
         graphics.setColor(StaticHelper.COLOR_FONT);
@@ -86,7 +86,7 @@ class AxisX extends Axis {
               : ((DateTime) value).format(dateTimeFormatter);
           graphics.drawString(xLabel, //
               entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //
-              y_height + StaticHelper.GAP + 3 + fontMetrics.getAscent());
+              point.y + 3 + fontMetrics.getAscent());
         }
       }
     }

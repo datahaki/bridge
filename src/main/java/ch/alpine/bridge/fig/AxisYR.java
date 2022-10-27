@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
@@ -16,14 +17,14 @@ import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
-/** draw lines and numbers like this: _________________ */
 class AxisYR extends Axis {
   public AxisYR(DateTimeFocus dateTimeFocus) {
     super(dateTimeFocus);
   }
 
+  /** draw lines and numbers like this: _________________ */
   @Override
-  void protected_render(ShowableConfig showableConfig, Graphics2D graphics, Clip clip) {
+  void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
     Rectangle rectangle = showableConfig.rectangle;
     FontMetrics fontMetrics = graphics.getFontMetrics();
     Scalar plotHeight = RealScalar.of(rectangle.height - 1);
@@ -41,9 +42,9 @@ class AxisYR extends Axis {
       {
         graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
-        graphics.drawLine(rectangle.x + StaticHelper.GAP, rectangle.y, rectangle.x + StaticHelper.GAP, rectangle.y + rectangle.height - 1);
+        graphics.drawLine(point.x, point.y, point.x, point.y + length - 1);
         for (int piy : navigableMap.keySet())
-          graphics.drawLine(rectangle.x + StaticHelper.GAP + 1, piy, rectangle.x + StaticHelper.GAP + 2, piy);
+          graphics.drawLine(point.x + 1, piy, point.x + 2, piy);
       }
       {
         graphics.setColor(StaticHelper.COLOR_FONT);
@@ -52,7 +53,7 @@ class AxisYR extends Axis {
           int piy = entry.getKey();
           Scalar yValue = entry.getValue();
           String string = StaticHelper.format(yValue);
-          graphics.drawString(string, rectangle.x - fontMetrics.stringWidth(string) - StaticHelper.GAP - 5, piy + fontSize / 2 - 1);
+          graphics.drawString(string, point.x + 5, piy + fontSize / 2 - 1);
         }
       }
     }

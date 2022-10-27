@@ -5,6 +5,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Stroke;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
@@ -25,11 +26,11 @@ abstract class Axis {
     this.dateTimeFocus = dateTimeFocus;
   }
 
-  final void render(ShowableConfig showableConfig, Graphics _g, Clip clip) {
+  final void render(ShowableConfig showableConfig, Point point, int length, Graphics _g, Clip clip) {
     Graphics2D graphics = (Graphics2D) _g.create();
-    protected_render(showableConfig, graphics, clip);
+    protected_render(showableConfig, point, length, graphics, clip);
     graphics.dispose();
   }
 
-  abstract void protected_render(ShowableConfig showableConfig, Graphics2D graphics, Clip clip);
+  abstract void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip);
 }
