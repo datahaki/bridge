@@ -30,11 +30,11 @@ class AxisX extends Axis {
   void protected_render(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle;
     Clip xRange = showableConfig.getClip(0);
-    final int y_height = rectangle.y + rectangle.height - 1;
-    final FontMetrics fontMetrics = graphics.getFontMetrics();
+    FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
     if (xRange.min() instanceof DateTime) {
+      // TODO BRIDGE 100 is a magic constant that should depend on font, and date formatter
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(xRange.width().multiply(RationalScalar.of(100, rectangle.width)));
       DateTime startAttempt = dateTimeInterval.floor(xRange.min());
@@ -55,6 +55,7 @@ class AxisX extends Axis {
         navigableMap.put(x_pos, xValue);
       }
     }
+    final int y_height = rectangle.y + rectangle.height - 1;
     if (gridLines) { // grid lines |
       graphics.setColor(COLOR_GRIDLINES);
       graphics.setStroke(STROKE_GRIDLINES);

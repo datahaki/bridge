@@ -6,21 +6,27 @@ import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 
+import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 public class ArrayPlot extends BaseShowable {
-  private static final ScalarUnaryOperator MATHEMATICA = s -> RealScalar.ONE.subtract(s).multiply(RealScalar.of(255));
+  private static final ScalarUnaryOperator MATHEMATICA = //
+      s -> RealScalar.ONE.subtract(s).multiply(RealScalar.of(255));
+  private static final UnaryOperator<Clip> TRANSLATION = Clips.translation(RationalScalar.HALF.negate());
 
   public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
     return new ArrayPlot(bufferedImage, cbb);
@@ -28,9 +34,12 @@ public class ArrayPlot extends BaseShowable {
 
   public static Showable of(Tensor matrix) {
     MatrixQ.require(matrix);
-    return of(ImageFormat.of(Rescale.of(matrix).map(MATHEMATICA)), //
+    Rescale rescale = new Rescale(matrix);
+    rescale.clip();
+    return of(ImageFormat.of(rescale.result().map(MATHEMATICA)), //
         CoordinateBoundingBox.of( //
-            Clips.interval(0, 1), Clips.interval(0, 1)));
+            TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
+            TRANSLATION.apply(Clips.positive(matrix.length()))));
   }
 
   // ---

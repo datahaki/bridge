@@ -26,8 +26,8 @@ class AxisY extends Axis {
   void protected_render(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle;
     Clip yRange = showableConfig.getClip(1);
-    Scalar plotHeight = RealScalar.of(rectangle.height - 1);
     FontMetrics fontMetrics = graphics.getFontMetrics();
+    Scalar plotHeight = RealScalar.of(rectangle.height - 1);
     int fontSize = fontMetrics.getAscent();
     Scalar dY = StaticHelper.getDecimalStep(yRange.width().divide(plotHeight).multiply(RealScalar.of(fontSize * 2)));
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
