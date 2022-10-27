@@ -20,6 +20,8 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.bridge.cal.DateTimeFocus;
+import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -46,9 +48,14 @@ public class Show implements Serializable {
   // ---
   private final List<Showable> showables = new ArrayList<>();
   private final ColorDataIndexed colorDataIndexed;
+  // ---
   private CoordinateBoundingBox cbb = null;
+  private DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
   private boolean frame = true;
+  private String plotLabel = "";
 
+  /** @param colorDataIndexed to assign a default color to a showable when
+   * passed via {@link #add(Showable)} */
   public Show(ColorDataIndexed colorDataIndexed) {
     this.colorDataIndexed = Objects.requireNonNull(colorDataIndexed);
   }
@@ -58,7 +65,13 @@ public class Show implements Serializable {
     this(ColorDataLists._097.cyclic());
   }
 
-  private String plotLabel = "";
+  /** @param showable
+   * @return given showable */
+  public final Showable add(Showable showable) {
+    showable.setColor(colorDataIndexed.getColor(showables.size()));
+    showables.add(showable);
+    return showable;
+  }
 
   /** @param string to appear above plot */
   public final void setPlotLabel(String string) {
@@ -70,13 +83,6 @@ public class Show implements Serializable {
     return plotLabel;
   }
 
-  public Showable add(Showable showable) {
-    Color color = colorDataIndexed.getColor(showables.size());
-    showable.setColor(color);
-    showables.add(showable);
-    return showable;
-  }
-
   public void setCbb(CoordinateBoundingBox cbb) {
     this.cbb = cbb;
   }
@@ -84,6 +90,14 @@ public class Show implements Serializable {
   /** @return may be null */
   public CoordinateBoundingBox getCbb() {
     return cbb;
+  }
+
+  public void setDateTimeFocus(DateTimeFocus dateTimeFocus) {
+    this.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
+  }
+
+  public DateTimeFocus getDateTimeFocus() {
+    return dateTimeFocus;
   }
 
   public boolean isEmpty() {
@@ -135,8 +149,8 @@ public class Show implements Serializable {
           rectangle.y + (rectangle.height + fontMetrics.getHeight()) / 2);
     } else {
       showableConfig = new ShowableConfig(rectangle, _cbb);
-      GridDrawer gridDrawer = new GridDrawer(showableConfig);
-      gridDrawer.render(graphics);
+      GridDrawer gridDrawer = new GridDrawer(dateTimeFocus);
+      gridDrawer.render(showableConfig, graphics);
       for (Showable showable : showables)
         showable.render(showableConfig, showarea);
     }

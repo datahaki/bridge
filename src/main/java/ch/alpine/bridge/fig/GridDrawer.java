@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
-import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.bridge.lang.Unicode;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.RationalScalar;
@@ -43,7 +42,6 @@ public class GridDrawer {
   private static final Color COLOR_GRIDLINES = new Color(224, 224, 224);
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
   // ---
-  private final ShowableConfig showableConfig;
   private final DateTimeFocus dateTimeFocus;
   boolean axesX = true;
   boolean axesY = true;
@@ -52,28 +50,23 @@ public class GridDrawer {
   boolean ticksX = true;
   boolean ticksY = true;
 
-  public GridDrawer(ShowableConfig showableConfig, DateTimeFocus dateTimeFocus) {
-    this.showableConfig = showableConfig;
+  public GridDrawer(DateTimeFocus dateTimeFocus) {
     this.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
   }
 
-  public GridDrawer(ShowableConfig showableConfig) {
-    this(showableConfig, ISO8601DateTimeFocus.INSTANCE);
-  }
-
-  public void render(Graphics _g) {
+  public void render(ShowableConfig showableConfig, Graphics _g) {
     Rectangle rectangle = showableConfig.rectangle;
+    // if (rectangle.width <= 1 || rectangle.height <= 1)
+    // return;
     Clip xRange = showableConfig.getClip(0);
     Clip yRange = showableConfig.getClip(1);
-    if (rectangle.width <= 1 || rectangle.height <= 1)
-      return;
     Graphics2D graphics = (Graphics2D) _g.create();
     // graphics.setFont(StaticHelper.FONT);
     // ---
     if (axesX && !Scalars.isZero(xRange.width()))
-      drawXLines(graphics);
+      drawXLines(showableConfig, graphics);
     if (axesY && !Scalars.isZero(yRange.width()))
-      drawYLines(graphics);
+      drawYLines(showableConfig, graphics);
     // ---
     {
       graphics.setColor(StaticHelper.COLOR_FONT);
@@ -96,7 +89,7 @@ public class GridDrawer {
     graphics.dispose();
   }
 
-  private void drawXLines(Graphics2D graphics) {
+  private void drawXLines(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle;
     Clip xRange = showableConfig.getClip(0);
     final int y_height = rectangle.y + rectangle.height - 1;
@@ -161,7 +154,7 @@ public class GridDrawer {
   }
 
   /** draw lines and numbers like this: _________________ */
-  private void drawYLines(Graphics2D graphics) {
+  private void drawYLines(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle;
     Clip yRange = showableConfig.getClip(1);
     Scalar plotHeight = RealScalar.of(rectangle.height - 1);
@@ -213,7 +206,7 @@ public class GridDrawer {
 
   private static final Scalar[] RATIOS = { RationalScalar.of(1, 5), RationalScalar.of(1, 2) };
 
-  /** @param quantity
+  /** @param quantity positive
    * @return */
   public static Scalar getDecimalStep(Scalar quantity) {
     Sign.requirePositive(quantity);

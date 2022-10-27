@@ -386,11 +386,22 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  EMPTY {
+  EMPTY_NO_DATA {
     @Override
     Show create() {
       Show show = new Show();
       show.setPlotLabel("Unnamed");
+      return show;
+    }
+  },
+  EMPTY_WITH_VIEW {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Unnamed");
+      show.setCbb(CoordinateBoundingBox.of( //
+          Clips.absolute(Quantity.of(4, "m*kg")), //
+          Clips.absolute(Quantity.of(2, "s*A^-1"))));
       return show;
     }
   },
