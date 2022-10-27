@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +56,10 @@ public class ShowDemo implements Runnable {
     List<BufferedImage> list = new ArrayList<>();
     for (ShowDemos showDemos : ShowDemos.values()) {
       try {
-        BufferedImage bufferedImage = showDemos.create().image(new Dimension(width, height));
+        Rectangle rectangle = Show.defaultInsets(new Dimension(width, height), 12);
+        if (showDemos.extra)
+          rectangle.width -= 100;
+        BufferedImage bufferedImage = showDemos.create().image(new Dimension(width, height), rectangle);
         Graphics graphics = bufferedImage.getGraphics();
         // java.awt.Font[family=Dialog,name=Dialog,style=plain,size=12]
         graphics.setColor(Color.PINK);

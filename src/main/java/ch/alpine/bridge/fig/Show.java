@@ -154,7 +154,7 @@ public class Show implements Serializable {
       gridDrawer.render(showableConfig, _g);
       for (Showable showable : showables) {
         showable.render(showableConfig, graphics);
-        showable.decorate(showableConfig, _g);
+        showable.tender(showableConfig, _g);
       }
     }
     return showableConfig;
@@ -212,6 +212,17 @@ public class Show implements Serializable {
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
     render(graphics, defaultInsets(dimension, graphics.getFont().getSize()));
+    return bufferedImage;
+  }
+
+  /** @param dimension
+   * @return */
+  public BufferedImage image(Dimension dimension, Rectangle rectangle) {
+    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D graphics = bufferedImage.createGraphics();
+    graphics.setColor(Color.WHITE);
+    graphics.fillRect(0, 0, dimension.width, dimension.height);
+    render(graphics, rectangle);
     return bufferedImage;
   }
 

@@ -14,7 +14,7 @@ public abstract class BaseShowable implements Showable, Serializable {
   private transient Stroke stroke = new BasicStroke(1.5f);
 
   @Override
-  public void decorate(ShowableConfig showableConfig, Graphics graphics) {
+  public void tender(ShowableConfig showableConfig, Graphics graphics) {
     // ---
   }
 

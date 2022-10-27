@@ -29,9 +29,9 @@ public class GridDrawer {
     Clip yRange = showableConfig.getClip(1);
     // ---
     if (axesX && !Scalars.isZero(xRange.width()))
-      new AxisX(dateTimeFocus).render(showableConfig, _g);
+      new AxisX(dateTimeFocus).render(showableConfig, _g, showableConfig.getClip(0));
     if (axesY && !Scalars.isZero(yRange.width()))
-      new AxisY(dateTimeFocus).render(showableConfig, _g);
+      new AxisY(dateTimeFocus).render(showableConfig, _g, showableConfig.getClip(1));
     // ---
     {
       String unit0 = Unicode.valueOf(QuantityUnit.of(xRange));

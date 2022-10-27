@@ -27,30 +27,32 @@ class AxisX extends Axis {
   }
 
   @Override
-  void protected_render(ShowableConfig showableConfig, Graphics2D graphics) {
+  void protected_render(ShowableConfig showableConfig, Graphics2D graphics, Clip clip) {
     Rectangle rectangle = showableConfig.rectangle;
-    Clip xRange = showableConfig.getClip(0);
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
-    if (xRange.min() instanceof DateTime) {
+    if (clip.min() instanceof DateTime) {
       // TODO BRIDGE 100 is a magic constant that should depend on font, and date formatter
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(xRange.width().multiply(RationalScalar.of(100, rectangle.width)));
-      DateTime startAttempt = dateTimeInterval.floor(xRange.min());
-      DateTime dateTime = xRange.isInside(startAttempt) //
+          DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(100, rectangle.width)));
+      DateTime startAttempt = dateTimeInterval.floor(clip.min());
+      DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
-      while (xRange.isInside(dateTime)) {
+      while (clip.isInside(dateTime)) {
         int x_pos = (int) showableConfig.x_pos(dateTime);
         navigableMap.put(x_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
       // TODO BRIDGE determine reserve, instead of 50 hardcode
-      Scalar dX = StaticHelper.getDecimalStep(xRange.width().divide(RealScalar.of(rectangle.width)).multiply(RealScalar.of(50)));
-      for (Scalar xValue = Ceiling.toMultipleOf(dX).apply(xRange.min()); Scalars.lessEquals(xValue, xRange.max()); xValue = xValue.add(dX)) {
+      Scalar dX = StaticHelper.getDecimalStep(clip.width().divide(RealScalar.of(rectangle.width)).multiply(RealScalar.of(50)));
+      for ( //
+          Scalar xValue = Ceiling.toMultipleOf(dX).apply(clip.min()); //
+          Scalars.lessEquals(xValue, clip.max()); //
+          xValue = xValue.add(dX)) {
         int x_pos = (int) showableConfig.x_pos(xValue);
         navigableMap.put(x_pos, xValue);
       }

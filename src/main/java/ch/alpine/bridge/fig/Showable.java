@@ -7,14 +7,18 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.util.Optional;
 
+import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 public interface Showable {
   /** @param showableConfig
-   * @param graphics */
+   * @param graphics with high quality and clip to plot area
+   * @see RenderQuality */
   void render(ShowableConfig showableConfig, Graphics2D graphics);
 
-  void decorate(ShowableConfig showableConfig, Graphics graphics);
+  /** @param showableConfig
+   * @param _g */
+  void tender(ShowableConfig showableConfig, Graphics _g);
 
   /** @return */
   Optional<CoordinateBoundingBox> fullPlotRange();

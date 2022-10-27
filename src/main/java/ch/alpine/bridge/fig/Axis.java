@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
+import ch.alpine.tensor.sca.Clip;
 
 abstract class Axis {
   static final Stroke STROKE_GRIDLINES = //
@@ -24,11 +25,11 @@ abstract class Axis {
     this.dateTimeFocus = dateTimeFocus;
   }
 
-  final void render(ShowableConfig showableConfig, Graphics _g) {
+  final void render(ShowableConfig showableConfig, Graphics _g, Clip clip) {
     Graphics2D graphics = (Graphics2D) _g.create();
-    protected_render(showableConfig, graphics);
+    protected_render(showableConfig, graphics, clip);
     graphics.dispose();
   }
 
-  abstract void protected_render(ShowableConfig showableConfig, Graphics2D graphics);
+  abstract void protected_render(ShowableConfig showableConfig, Graphics2D graphics, Clip clip);
 }

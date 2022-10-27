@@ -420,7 +420,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  ARRAY_PLOT0 {
+  ARRAY_PLOT0(true) {
     @Override
     Show create() {
       Show show = new Show();
@@ -438,7 +438,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       // VisualImage visualImage = new VisualImage(matrix);
       // visualImage.setPlotLabel("ArrayPlot");
       Tensor tensor = Rescale.of(matrix).map(ColorDataGradients.ALPINE);
-      show.add(ArrayPlot.of(ImageFormat.of(tensor), CoordinateBoundingBox.of(Clips.unit(), Clips.unit())));
+      show.add(ImagePlot.of(ImageFormat.of(tensor), CoordinateBoundingBox.of(Clips.unit(), Clips.unit())));
       return show;
     }
   },
@@ -489,6 +489,16 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
   },
   //
   ;
+
+  public final boolean extra;
+
+  private ShowDemos() {
+    this(false);
+  }
+
+  private ShowDemos(boolean extra) {
+    this.extra = extra;
+  }
 
   abstract Show create();
 }

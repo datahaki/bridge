@@ -16,12 +16,12 @@ import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
-class AxisY extends Axis {
-  public AxisY(DateTimeFocus dateTimeFocus) {
+/** draw lines and numbers like this: _________________ */
+class AxisYR extends Axis {
+  public AxisYR(DateTimeFocus dateTimeFocus) {
     super(dateTimeFocus);
   }
 
-  /** draw lines and numbers like this: _________________ */
   @Override
   void protected_render(ShowableConfig showableConfig, Graphics2D graphics, Clip clip) {
     Rectangle rectangle = showableConfig.rectangle;
@@ -37,19 +37,13 @@ class AxisY extends Axis {
       int y_pos = (int) showableConfig.y_pos(yValue);
       navigableMap.put(y_pos, yValue);
     }
-    if (gridLines) {
-      graphics.setStroke(STROKE_GRIDLINES);
-      graphics.setColor(COLOR_GRIDLINES);
-      for (int piy : navigableMap.keySet())
-        graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width - 1, piy);
-    }
     if (ticks) {
       {
         graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
-        graphics.drawLine(rectangle.x - StaticHelper.GAP, rectangle.y, rectangle.x - StaticHelper.GAP, rectangle.y + rectangle.height - 1);
+        graphics.drawLine(rectangle.x + StaticHelper.GAP, rectangle.y, rectangle.x + StaticHelper.GAP, rectangle.y + rectangle.height - 1);
         for (int piy : navigableMap.keySet())
-          graphics.drawLine(rectangle.x - StaticHelper.GAP - 2, piy, rectangle.x - StaticHelper.GAP - 1, piy);
+          graphics.drawLine(rectangle.x + StaticHelper.GAP + 1, piy, rectangle.x + StaticHelper.GAP + 2, piy);
       }
       {
         graphics.setColor(StaticHelper.COLOR_FONT);
