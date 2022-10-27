@@ -4,23 +4,19 @@ package ch.alpine.bridge.fig;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.Sign;
-import ch.alpine.tensor.tmp.TimeSeries;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Plot.html">Plot</a> */
@@ -32,36 +28,23 @@ public class Plot extends BaseShowable {
    * @return */
   @SuppressWarnings("unchecked")
   public static Showable of(ScalarUnaryOperator suo, Clip domain) {
-    return new Plot(suo, (Supplier<Clip> & Serializable) () -> domain);
-  }
-
-  public static Showable of(TimeSeries timeSeries) {
-    return of(timeSeries, Scalar.class::cast);
-  }
-
-  @SuppressWarnings("unchecked")
-  public static Showable of(TimeSeries timeSeries, TensorScalarFunction tsf) {
-    return new Plot(scalar -> tsf.apply(timeSeries.evaluate(scalar)), //
-        (Supplier<Clip> & Serializable) () -> timeSeries.isEmpty() //
-            ? null
-            : timeSeries.domain());
+    return new Plot(suo, domain);
   }
 
   // ---
   private final ScalarUnaryOperator suo;
-  private final Supplier<Clip> supplier;
+  private final Clip domain;
 
   // ---
   /** @param suo
    * @param domain may be null, in which case the plot is empty */
-  private Plot(ScalarUnaryOperator suo, Supplier<Clip> supplier) {
+  private Plot(ScalarUnaryOperator suo, Clip domain) {
     this.suo = suo;
-    this.supplier = supplier;
+    this.domain = domain;
   }
 
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics _g) {
-    Clip domain = supplier.get();
     if (Objects.nonNull(domain)) {
       Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), domain);
       if (optional.isPresent()) {
@@ -97,7 +80,6 @@ public class Plot extends BaseShowable {
 
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
-    Clip domain = supplier.get();
     if (Objects.nonNull(domain) && Sign.isPositive(domain.width())) {
       Clip clip = StaticHelper.minMax(Subdivide.increasing(domain, RESOLUTION).map(suo));
       if (Objects.nonNull(clip))

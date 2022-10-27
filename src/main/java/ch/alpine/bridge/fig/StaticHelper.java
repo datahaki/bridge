@@ -63,8 +63,8 @@ import ch.alpine.tensor.sca.pow.Power;
     return scalar.toString();
   }
 
-  private static final Scalar[] RATIOS = { // 
-      RationalScalar.of(1, 5), // 
+  private static final Scalar[] RATIOS = { //
+      RationalScalar.of(1, 5), //
       RationalScalar.of(1, 2) };
 
   /** @param scalar positive

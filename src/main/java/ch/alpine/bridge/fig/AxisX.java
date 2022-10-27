@@ -1,3 +1,4 @@
+// code by legion
 package ch.alpine.bridge.fig;
 
 import java.awt.FontMetrics;
@@ -26,7 +27,7 @@ class AxisX extends Axis {
   }
 
   @Override
-  void render(ShowableConfig showableConfig, Graphics2D graphics) {
+  void protected_render(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle;
     Clip xRange = showableConfig.getClip(0);
     final int y_height = rectangle.y + rectangle.height - 1;
@@ -47,7 +48,7 @@ class AxisX extends Axis {
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
-      // TODO UTIL determine reserve
+      // TODO BRIDGE determine reserve, instead of 50 hardcode
       Scalar dX = StaticHelper.getDecimalStep(xRange.width().divide(RealScalar.of(rectangle.width)).multiply(RealScalar.of(50)));
       for (Scalar xValue = Ceiling.toMultipleOf(dX).apply(xRange.min()); Scalars.lessEquals(xValue, xRange.max()); xValue = xValue.add(dX)) {
         int x_pos = (int) showableConfig.x_pos(xValue);
@@ -73,19 +74,17 @@ class AxisX extends Axis {
           graphics.drawLine(pix, y_height + StaticHelper.GAP + 1, pix, y_height + StaticHelper.GAP + 2);
       }
       {
-        Graphics2D graphics2 = (Graphics2D) graphics.create();
-        graphics2.setColor(StaticHelper.COLOR_FONT);
-        RenderQuality.setQuality(graphics2);
+        graphics.setColor(StaticHelper.COLOR_FONT);
+        RenderQuality.setQuality(graphics);
         for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
           Scalar value = entry.getValue();
           String xLabel = Objects.isNull(dateTimeFormatter) //
               ? StaticHelper.format(value)
               : ((DateTime) value).format(dateTimeFormatter);
-          graphics2.drawString(xLabel, //
+          graphics.drawString(xLabel, //
               entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //
               y_height + StaticHelper.GAP + 3 + fontMetrics.getAscent());
         }
-        graphics2.dispose();
       }
     }
   }

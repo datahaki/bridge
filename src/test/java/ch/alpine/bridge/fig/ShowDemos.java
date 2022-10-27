@@ -254,7 +254,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       timeSeries.insert(DateTime.of(2022, 11, 3, 10, 45), Quantity.of(4, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 3, 20, 35), Quantity.of(2, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 4, 8, 15), Quantity.of(1, "kW"));
-      show.add(Plot.of(timeSeries)).setLabel("timeSeries");
+      show.add(TsPlot.of(timeSeries)).setLabel("timeSeries");
       return show;
     }
   },
@@ -269,7 +269,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.add(Plot.of(randomFunction::evaluate, Clips.unit())).setLabel("timeSeries");
       TimeSeries timeSeries = randomFunction.timeSeries();
       TimeSeries integral = TimeSeriesIntegrate.of(timeSeries);
-      Showable showable = show.add(Plot.of(integral));
+      Showable showable = show.add(TsPlot.of(integral));
       showable.setStroke(new BasicStroke(0.6f));
       showable.setLabel("integral");
       return show;
@@ -285,7 +285,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process with Drift");
       show.add(Plot.of(randomFunction::evaluate, Clips.positive(Quantity.of(5, "s")))).setLabel("timeSeries");
-      show.add(Plot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
+      show.add(TsPlot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
       return show;
     }
   },
@@ -301,7 +301,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process with Offset");
       show.add(Plot.of(randomFunction::evaluate, Clips.interval(t_zero, t_fine))).setLabel("timeSeries");
-      show.add(Plot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
+      show.add(TsPlot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
       return show;
     }
   },

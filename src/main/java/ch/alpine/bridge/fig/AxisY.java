@@ -23,7 +23,7 @@ class AxisY extends Axis {
 
   /** draw lines and numbers like this: _________________ */
   @Override
-  void render(ShowableConfig showableConfig, Graphics2D graphics) {
+  void protected_render(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle;
     Clip yRange = showableConfig.getClip(1);
     Scalar plotHeight = RealScalar.of(rectangle.height - 1);
@@ -50,17 +50,14 @@ class AxisY extends Axis {
           graphics.drawLine(rectangle.x - StaticHelper.GAP - 2, piy, rectangle.x - StaticHelper.GAP - 1, piy);
       }
       {
-        Graphics2D graphics2 = (Graphics2D) graphics.create();
-        // TODO UTIL 20221013 align dot's of numbers
-        graphics2.setColor(StaticHelper.COLOR_FONT);
-        RenderQuality.setQuality(graphics2);
+        graphics.setColor(StaticHelper.COLOR_FONT);
+        RenderQuality.setQuality(graphics);
         for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
           int piy = entry.getKey();
           Scalar yValue = entry.getValue();
           String string = StaticHelper.format(yValue);
-          graphics2.drawString(string, rectangle.x - fontMetrics.stringWidth(string) - StaticHelper.GAP - 5, piy + fontSize / 2 - 1);
+          graphics.drawString(string, rectangle.x - fontMetrics.stringWidth(string) - StaticHelper.GAP - 5, piy + fontSize / 2 - 1);
         }
-        graphics2.dispose();
       }
     }
   }

@@ -39,7 +39,7 @@ public class ShowLiveDemo implements Runnable {
   public Boolean yPan = true;
 
   public ShowLiveDemo() {
-    show.add(Plot.of(timeSeries)).setLabel("time series");
+    show.add(TsPlot.of(timeSeries)).setLabel("time series");
     showComponent.setShow(show);
     JPanel jPanel = new JPanel(new BorderLayout());
     {

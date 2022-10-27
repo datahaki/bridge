@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
@@ -16,7 +17,6 @@ abstract class Axis {
   static final Color COLOR_HELPER = new Color(192, 192, 192);
   // ---
   final DateTimeFocus dateTimeFocus;
-  boolean axes = true;
   boolean gridLines = true;
   boolean ticks = true;
 
@@ -24,5 +24,11 @@ abstract class Axis {
     this.dateTimeFocus = dateTimeFocus;
   }
 
-  abstract void render(ShowableConfig showableConfig, Graphics2D graphics);
+  final void render(ShowableConfig showableConfig, Graphics _g) {
+    Graphics2D graphics = (Graphics2D) _g.create();
+    protected_render(showableConfig, graphics);
+    graphics.dispose();
+  }
+
+  abstract void protected_render(ShowableConfig showableConfig, Graphics2D graphics);
 }
