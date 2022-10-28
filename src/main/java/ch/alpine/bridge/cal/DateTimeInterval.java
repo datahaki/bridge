@@ -198,6 +198,18 @@ public enum DateTimeInterval {
       return localDateTime.plusYears(1);
     }
   },
+  _2_YR(LocalDates._2_YR) {
+    @Override
+    public LocalDateTime plus(LocalDateTime localDateTime) {
+      return localDateTime.plusYears(2);
+    }
+  },
+  _5_YR(LocalDates._5_YR) {
+    @Override
+    public LocalDateTime plus(LocalDateTime localDateTime) {
+      return localDateTime.plusYears(5);
+    }
+  },
   _10_YR(LocalDates._10_YR) {
     @Override
     public LocalDateTime plus(LocalDateTime localDateTime) {

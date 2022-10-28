@@ -1,7 +1,6 @@
 // code by legion
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.util.Objects;
@@ -80,8 +79,7 @@ public class Plot extends BaseShowable {
           if (fill) {
             path.lineTo(x1, showableConfig.y_pos(suo.apply(x_clip.max()).zero()));
             path.lineTo(x0, showableConfig.y_pos(suo.apply(x_clip.min()).zero()));
-            Color color = getColor();
-            graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ALPHA));
+            graphics.setColor(StaticHelper.withAlpha(getColor(), ALPHA));
             graphics.fill(path);
           }
         }

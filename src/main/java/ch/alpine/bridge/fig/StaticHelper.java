@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import ch.alpine.bridge.lang.Unicode;
@@ -13,6 +14,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.Quantity;
@@ -25,6 +27,8 @@ import ch.alpine.tensor.sca.N;
 import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.sca.exp.Log10;
 import ch.alpine.tensor.sca.pow.Power;
+import ch.alpine.tensor.tmp.TimeSeries;
+import ch.alpine.tensor.tmp.TsEntry;
 
 /* package */ enum StaticHelper {
   ;
@@ -80,5 +84,17 @@ import ch.alpine.tensor.sca.pow.Power;
         .filter(value -> Scalars.lessEquals(scalar, value)) //
         .findFirst() //
         .orElse(decStep);
+  }
+
+  public static Optional<CoordinateBoundingBox> fullPlotRange(TimeSeries timeSeries, TensorScalarFunction tsf) {
+    return timeSeries.isEmpty() //
+        ? Optional.empty()
+        : Optional.of(CoordinateBoundingBox.of( //
+            timeSeries.domain(), //
+            timeSeries.stream().map(TsEntry::value).map(tsf).collect(MinMax.toClip())));
+  }
+
+  public static Color withAlpha(Color color, int alpha) {
+    return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
   }
 }

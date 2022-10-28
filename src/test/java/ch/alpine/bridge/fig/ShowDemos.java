@@ -283,22 +283,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  TS_WP3 {
-    @Override
-    Show create() {
-      Scalar mu = Quantity.of(1, "m*s^-1");
-      Scalar sigma = Quantity.of(1, "m*s^-1/2");
-      Scalar t_zero = DateTime.of(2020, 3, 4, 22, 15);
-      Scalar t_fine = DateTime.of(2020, 3, 4, 22, 16);
-      RandomProcess randomProcess = WienerProcess.of(mu, sigma, t_zero, Quantity.of(-3, "m"));
-      RandomFunction randomFunction = RandomFunction.of(randomProcess);
-      Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Wiener Process with Offset");
-      show.add(Plot.of(randomFunction::evaluate, Clips.interval(t_zero, t_fine))).setLabel("timeSeries");
-      show.add(TsPlot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
-      return show;
-    }
-  },
   TS_PP0 {
     @Override
     Show create() {
@@ -511,7 +495,43 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  //
+  TS_WP3 {
+    @Override
+    Show create() {
+      Scalar mu = Quantity.of(0.3, "m*s^-1");
+      Scalar sigma = Quantity.of(1, "m*s^-1/2");
+      Scalar t_zero = DateTime.of(2020, 3, 4, 22, 15);
+      Scalar t_fine = DateTime.of(2020, 3, 4, 22, 16);
+      RandomProcess randomProcess = WienerProcess.of(mu, sigma, t_zero, Quantity.of(-3, "m"));
+      RandomFunction randomFunction = RandomFunction.of(randomProcess);
+      Distribution distribution = UniformDistribution.of(t_zero, t_fine);
+      RandomVariate.of(distribution, 1000).map(randomFunction::evaluate);
+      Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
+      show.setPlotLabel("Wiener Process with Offset");
+      show.add(TsPlot.of(randomFunction.timeSeries())).setLabel("timeSeries");
+      show.add(TsPlot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
+      return show;
+    }
+  },
+  CANDLESTICK {
+    @Override
+    Show create() {
+      Scalar mu = Quantity.of(-0.3e-10, "m*s^-1");
+      Scalar sigma = Quantity.of(1e-3, "m*s^-1/2");
+      Scalar t_zero = DateTime.of(2000, 3, 4, 22, 15);
+      Scalar t_fine = DateTime.of(2020, 3, 4, 22, 16);
+      RandomProcess randomProcess = WienerProcess.of(mu, sigma, t_zero, Quantity.of(-3, "m"));
+      RandomFunction randomFunction = RandomFunction.of(randomProcess);
+      Distribution distribution = UniformDistribution.of(t_zero, t_fine);
+      RandomVariate.of(distribution, 1000).map(randomFunction::evaluate);
+      Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
+      show.setPlotLabel("Candlestick Chart");
+      TimeSeries timeSeries = randomFunction.timeSeries();
+      show.add(CandlestickChart.of(timeSeries)).setLabel("candles");
+      show.add(TsPlot.of(timeSeries)).setLabel("timeSeries");
+      return show;
+    }
+  }, //
   ;
 
   public final boolean extra;

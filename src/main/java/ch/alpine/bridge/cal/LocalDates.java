@@ -51,6 +51,20 @@ import java.time.temporal.ChronoUnit;
       return LocalDate.of(localDate.getYear(), 1, 1);
     }
   },
+  _2_YR(ChronoUnit.YEARS) {
+    @Override
+    public LocalDate floor(LocalDate localDate) {
+      int year = localDate.getYear();
+      return LocalDate.of(year - Math.floorMod(year, 2), 1, 1);
+    }
+  },
+  _5_YR(ChronoUnit.YEARS) {
+    @Override
+    public LocalDate floor(LocalDate localDate) {
+      int year = localDate.getYear();
+      return LocalDate.of(year - Math.floorMod(year, 5), 1, 1);
+    }
+  },
   _10_YR(ChronoUnit.YEARS) {
     @Override
     public LocalDate floor(LocalDate localDate) {
