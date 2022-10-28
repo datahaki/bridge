@@ -9,6 +9,7 @@ import ch.alpine.tensor.ComplexScalar;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
 
 class UnicodeTest {
@@ -47,6 +48,12 @@ class UnicodeTest {
   @Test
   void testRational() {
     assertEquals(Unicode.valueOf(RationalScalar.of(1234, 233567)), "1\u2009234 / 233\u2009567");
+  }
+
+  @Test
+  void testDateTime() {
+    DateTime dateTime = DateTime.of(2022, 1, 2, 3, 4, 5);
+    assertEquals(Unicode.valueOf(dateTime), "2022-01-02T03:04:05");
   }
 
   @Test

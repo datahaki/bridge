@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Stroke;
 import java.util.stream.Stream;
 
+import ch.alpine.bridge.lang.Unicode;
 import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
@@ -60,7 +61,7 @@ import ch.alpine.tensor.sca.pow.Power;
     Scalar scalar = IntegerQ.of(display) //
         ? display
         : N.DOUBLE.apply(display);
-    return scalar.toString();
+    return Unicode.valueOf(scalar);
   }
 
   private static final Scalar[] RATIOS = { //

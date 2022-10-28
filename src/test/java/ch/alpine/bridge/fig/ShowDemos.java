@@ -30,6 +30,7 @@ import ch.alpine.tensor.pdf.InverseCDF;
 import ch.alpine.tensor.pdf.PDF;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.TruncatedDistribution;
+import ch.alpine.tensor.pdf.c.GammaDistribution;
 import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 import ch.alpine.tensor.pdf.c.TriangularDistribution;
@@ -70,15 +71,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
       show.add(Plot.of(s -> Cos.FUNCTION.apply(s.add(s)).multiply(RealScalar.of(100)), Clips.positive(0.5))).setLabel("sine");
       show.add(ListLinePlot.of(Tensors.empty())).setLabel("empty");
-      return show;
-    }
-  },
-  DEMO2 {
-    @Override
-    Show create() {
-      Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Sine");
-      show.add(Plot.of(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2))).setLabel("sine");
       return show;
     }
   },
@@ -484,6 +476,26 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.setPlotLabel("Array Plot");
       show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
+      return show;
+    }
+  },
+  FILLING {
+    @Override
+    Show create() {
+      Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
+      show.setPlotLabel("Sine");
+      show.add(Plot.filling(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2))).setLabel("sine");
+      return show;
+    }
+  },
+  FILLINGS {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Gamma Distributions");
+      show.add(Plot.filling(PDF.of(GammaDistribution.of(1, 2))::at, Clips.positive(20))).setLabel("alpha = 1");
+      show.add(Plot.filling(PDF.of(GammaDistribution.of(4, 2))::at, Clips.positive(20))).setLabel("alpha = 4");
+      show.add(Plot.filling(PDF.of(GammaDistribution.of(6, 2))::at, Clips.positive(20))).setLabel("alpha = 6");
       return show;
     }
   },

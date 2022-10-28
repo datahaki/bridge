@@ -18,7 +18,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.alg.Subdivide;
-import ch.alpine.tensor.img.ColorDataGradient;
+import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
@@ -31,11 +31,17 @@ import ch.alpine.tensor.sca.Clips;
 public class ArrayPlot extends BaseShowable {
   private static final UnaryOperator<Clip> TRANSLATION = Clips.translation(RationalScalar.HALF.negate());
 
+  public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient, CoordinateBoundingBox cbb) {
+    return new ArrayPlot(matrix, colorDataGradient, cbb);
+  }
+
   /** @param matrix
    * @param colorDataGradient
    * @return */
-  public static Showable of(Tensor matrix, ColorDataGradient colorDataGradient) {
-    return new ArrayPlot(matrix, colorDataGradient);
+  public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient) {
+    return of(matrix, colorDataGradient, CoordinateBoundingBox.of( //
+        TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
+        TRANSLATION.apply(Clips.positive(matrix.length()))));
   }
 
   /** @param matrix
@@ -46,18 +52,16 @@ public class ArrayPlot extends BaseShowable {
 
   // ---
   private final BufferedImage bufferedImage;
-  private final ColorDataGradient colorDataGradient;
+  private final ScalarTensorFunction colorDataGradient;
   private final CoordinateBoundingBox cbb;
   private final Clip clip;
 
-  private ArrayPlot(Tensor matrix, ColorDataGradient colorDataGradient) {
+  private ArrayPlot(Tensor matrix, ScalarTensorFunction colorDataGradient, CoordinateBoundingBox cbb) {
     MatrixQ.require(matrix);
     Rescale rescale = new Rescale(matrix);
     this.bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
     this.colorDataGradient = colorDataGradient;
-    this.cbb = CoordinateBoundingBox.of( //
-        TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
-        TRANSLATION.apply(Clips.positive(matrix.length())));
+    this.cbb = cbb;
     this.clip = rescale.clip();
   }
 

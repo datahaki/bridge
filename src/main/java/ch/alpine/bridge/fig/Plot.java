@@ -1,13 +1,13 @@
 // code by legion
 package ch.alpine.bridge.fig;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.util.Objects;
 import java.util.Optional;
 
 import ch.alpine.tensor.RationalScalar;
-import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.itp.LinearInterpolation;
@@ -20,25 +20,37 @@ import ch.alpine.tensor.sca.Sign;
  * <a href="https://reference.wolfram.com/language/ref/Plot.html">Plot</a> */
 public class Plot extends BaseShowable {
   private static final int RESOLUTION = 20;
+  private static final int ALPHA = 64;
 
   /** @param suo
    * @param domain
    * @return */
-  @SuppressWarnings("unchecked")
   public static Showable of(ScalarUnaryOperator suo, Clip domain) {
-    return new Plot(suo, domain);
+    return new Plot(suo, domain, false);
+  }
+
+  /** used for plotting distributions
+   * 
+   * @param suo
+   * @param domain
+   * @return */
+  public static Showable filling(ScalarUnaryOperator suo, Clip domain) {
+    return new Plot(suo, domain, true);
   }
 
   // ---
   private final ScalarUnaryOperator suo;
   private final Clip domain;
+  private final boolean fill;
 
   // ---
   /** @param suo
-   * @param domain may be null, in which case the plot is empty */
-  private Plot(ScalarUnaryOperator suo, Clip domain) {
+   * @param domain may be null, in which case the plot is empty
+   * @param whether area between function and axis is shaded */
+  private Plot(ScalarUnaryOperator suo, Clip domain, boolean fill) {
     this.suo = suo;
     this.domain = domain;
+    this.fill = fill;
   }
 
   @Override // from Showable
@@ -51,23 +63,27 @@ public class Plot extends BaseShowable {
         if (Sign.isPositive(x_clip.width())) {
           graphics.setColor(getColor());
           graphics.setStroke(getStroke());
-          double x0 = showableConfig.x_pos(x_clip.min());
-          double x1 = showableConfig.x_pos(x_clip.max());
+          final double x0 = showableConfig.x_pos(x_clip.min());
+          final double x1 = showableConfig.x_pos(x_clip.max());
           Path2D.Double path = new Path2D.Double();
-          {
-            Scalar eval = suo.apply(x_clip.min());
-            path.moveTo(x0, showableConfig.y_pos(eval));
-          }
+          path.moveTo(x0, showableConfig.y_pos(suo.apply(x_clip.min())));
           ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
           final int size = (int) ((x1 - x0) * segmentsPerPixel);
           final double dx = 1.0 / segmentsPerPixel;
+          double xc = x0;
           for (int i = 1; i <= size; ++i) {
-            x0 += dx;
+            xc += dx;
             // compute the xValue and yValue of the function at xPix
-            Scalar y_eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
-            path.lineTo(x0, showableConfig.y_pos(y_eval));
+            path.lineTo(xc, showableConfig.y_pos(suo.apply(interpX.apply(RationalScalar.of(i, size)))));
           }
           graphics.draw(path);
+          if (fill) {
+            path.lineTo(x1, showableConfig.y_pos(suo.apply(x_clip.max()).zero()));
+            path.lineTo(x0, showableConfig.y_pos(suo.apply(x_clip.min()).zero()));
+            Color color = getColor();
+            graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), ALPHA));
+            graphics.fill(path);
+          }
         }
       }
     }
