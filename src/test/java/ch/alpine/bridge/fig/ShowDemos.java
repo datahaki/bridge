@@ -13,6 +13,7 @@ import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.alg.UnitVector;
+import ch.alpine.tensor.api.ScalarBinaryOperator;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.img.ColorDataGradients;
@@ -257,7 +258,8 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("Wiener Process with Integral");
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.of(3, 1));
       Tensor samples = RandomVariate.of(UniformDistribution.of(Clips.unit()), 100);
-      samples.map(randomFunction::evaluate); // for integral
+      samples.map(randomFunction::evaluate); // for
+                                             // integral
       show.add(Plot.of(randomFunction::evaluate, Clips.unit())).setLabel("timeSeries");
       TimeSeries timeSeries = randomFunction.timeSeries();
       TimeSeries integral = TimeSeriesIntegrate.of(timeSeries);
@@ -496,6 +498,16 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.add(Plot.filling(PDF.of(GammaDistribution.of(1, 2))::at, Clips.positive(20))).setLabel("alpha = 1");
       show.add(Plot.filling(PDF.of(GammaDistribution.of(4, 2))::at, Clips.positive(20))).setLabel("alpha = 4");
       show.add(Plot.filling(PDF.of(GammaDistribution.of(6, 2))::at, Clips.positive(20))).setLabel("alpha = 6");
+      return show;
+    }
+  },
+  DENSITY(true) {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Density Plot");
+      ScalarBinaryOperator sbo = (x, y) -> x.multiply(y);
+      show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.positive(1), Clips.positive(2))));
       return show;
     }
   },
