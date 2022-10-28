@@ -420,15 +420,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  ARRAY_PLOT0(true) {
-    @Override
-    Show create() {
-      Show show = new Show();
-      show.setPlotLabel("Array Plot");
-      show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
-      return show;
-    }
-  },
   ARRAY_PLOT1 {
     @Override
     Show create() {
@@ -484,6 +475,15 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.setPlotLabel("FlatlineY Quantity");
       show.add(ListPlot.of(Tensors.fromString("{{0[m],1[s]}, {0[m],10[s]}}")));
+      return show;
+    }
+  },
+  ARRAY_PLOT0(true) {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Array Plot");
+      show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
       return show;
     }
   },

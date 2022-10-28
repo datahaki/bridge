@@ -48,9 +48,9 @@ class AxisY extends Axis {
       {
         graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
-        graphics.drawLine(point.x , point.y, point.x , point.y + length - 1);
+        graphics.drawLine(point.x, point.y, point.x, point.y + length - 1);
         for (int piy : navigableMap.keySet())
-          graphics.drawLine(point.x  - 2, piy, point.x - 1, piy);
+          graphics.drawLine(point.x - 2, piy, point.x - 1, piy);
       }
       {
         graphics.setColor(StaticHelper.COLOR_FONT);

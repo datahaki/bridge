@@ -26,16 +26,18 @@ class AxisYR extends Axis {
   @Override
   void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
     Rectangle rectangle = showableConfig.rectangle;
+    double y_height = rectangle.y + rectangle.height - 1;
     FontMetrics fontMetrics = graphics.getFontMetrics();
     Scalar plotHeight = RealScalar.of(rectangle.height - 1);
     int fontSize = fontMetrics.getAscent();
     Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize * 2)));
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
+    Scalar y2pixel = RealScalar.of(rectangle.height - 1).divide(clip.width());
     for ( //
         Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
         Scalars.lessEquals(yValue, clip.max()); //
         yValue = yValue.add(dY)) {
-      int y_pos = (int) showableConfig.y_pos(yValue);
+      int y_pos = (int) (y_height - yValue.subtract(clip.min()).multiply(y2pixel).number().doubleValue());
       navigableMap.put(y_pos, yValue);
     }
     if (ticks) {
@@ -58,4 +60,7 @@ class AxisYR extends Axis {
       }
     }
   }
+  // public double y_pos(Scalar y) {
+  // return
+  // }
 }
