@@ -78,7 +78,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
     Dimension dimension = getSize();
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
-    // TODO consider font when computing rectangle
+    // TODO BRIDGE consider font when computing rectangle
     if (Objects.nonNull(show))
       showableConfig = show.render(graphics, Show.defaultInsets(dimension, graphics.getFont().getSize()));
   }

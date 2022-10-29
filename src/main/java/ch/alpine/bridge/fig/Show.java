@@ -32,10 +32,15 @@ import ch.alpine.tensor.opt.nd.CoordinateBounds;
 public class Show implements Serializable {
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
 
+  /** @param fontSize for instance graphics.getFont().getSize()
+   * @return */
   public static Insets defaultInsets(int fontSize) {
     return new Insets(4 + fontSize, 70, 10 + fontSize, 10);
   }
 
+  /** @param dimension
+   * @param fontSize for instance graphics.getFont().getSize()
+   * @return */
   public static Rectangle defaultInsets(Dimension dimension, int fontSize) {
     Insets insets = defaultInsets(fontSize);
     return new Rectangle( //
@@ -216,6 +221,7 @@ public class Show implements Serializable {
   }
 
   /** @param dimension
+   * @param rectangle
    * @return */
   public BufferedImage image(Dimension dimension, Rectangle rectangle) {
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
