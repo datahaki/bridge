@@ -12,11 +12,10 @@ import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.tensor.sca.Clip;
 
 abstract class Axis {
-  static final Stroke STROKE_GRIDLINES = //
+  public static final Stroke STROKE_GRIDLINES = //
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
-  static final Color COLOR_GRIDLINES = new Color(224, 224, 224);
-  /** ..... */
-  static final Color COLOR_HELPER = new Color(192, 192, 192);
+  public static final Color COLOR_GRIDLINES = new Color(224, 224, 224);
+  public static final Color COLOR_HELPER = new Color(192, 192, 192);
   // ---
   final DateTimeFocus dateTimeFocus;
   boolean gridLines = true;

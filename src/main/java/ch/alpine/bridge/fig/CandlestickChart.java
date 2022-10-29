@@ -24,9 +24,10 @@ import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TsEntry;
 
+/** <p>inspired by
+ * <a href="https://reference.wolfram.com/language/ref/CandlestickChart.html">CandlestickChart</a> */
 public class CandlestickChart extends BaseShowable {
-  private static final int ALPHA = 64;
-  private static final int MIN_SPACE = 10;
+  private static final int MIN_SPACE = 3;
 
   public static Showable of(TimeSeries timeSeries, TensorScalarFunction tsf) {
     return new CandlestickChart(timeSeries, tsf);
@@ -59,7 +60,8 @@ public class CandlestickChart extends BaseShowable {
         // .forEach(tsEntry -> tsf.apply(tsEntry.value()));
         NavigableSet<Scalar> navigableSet = asd(x_clip, showableConfig.rectangle.width);
         if (1 < navigableSet.size()) {
-          graphics.setColor(StaticHelper.withAlpha(getColor(), ALPHA));
+          // graphics.setColor(StaticHelper.withAlpha(getColor(), ALPHA));
+          graphics.setColor(getColor());
           graphics.setStroke(getStroke());
           Iterator<Scalar> iterator = navigableSet.iterator();
           Scalar prev = iterator.next();
@@ -83,7 +85,7 @@ public class CandlestickChart extends BaseShowable {
     }
   }
 
-  // TODO BRIDGE refactor with showableConfig 
+  // TODO BRIDGE refactor with showableConfig
   public static NavigableSet<Scalar> asd(Clip clip, int rectangle_width) {
     NavigableSet<Scalar> navigableMap = new TreeSet<>();
     if (clip.min() instanceof DateTime) {

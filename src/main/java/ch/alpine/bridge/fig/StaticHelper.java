@@ -35,7 +35,13 @@ import ch.alpine.tensor.tmp.TsEntry;
   /** @param vector
    * @return null if given vector does not contain finite scalars */
   public static Clip minMax(Tensor vector) {
-    return vector.stream() //
+    return minMax(vector.stream());
+  }
+
+  /** @param stream
+   * @return */
+  public static Clip minMax(Stream<Tensor> stream) {
+    return stream //
         .map(Scalar.class::cast) //
         .filter(FiniteScalarQ::of) //
         .collect(MinMax.toClip());

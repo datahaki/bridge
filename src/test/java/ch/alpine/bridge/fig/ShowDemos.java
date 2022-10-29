@@ -52,6 +52,8 @@ import ch.alpine.tensor.sca.exp.Log10;
 import ch.alpine.tensor.sca.ply.Chebyshev;
 import ch.alpine.tensor.sca.ply.ChebyshevNodes;
 import ch.alpine.tensor.sca.ply.ClenshawChebyshev;
+import ch.alpine.tensor.sca.tri.ArcCos;
+import ch.alpine.tensor.sca.tri.ArcSin;
 import ch.alpine.tensor.sca.tri.Cos;
 import ch.alpine.tensor.sca.tri.Sin;
 import ch.alpine.tensor.sca.win.WindowFunctions;
@@ -529,6 +531,17 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       TimeSeries timeSeries = randomFunction.timeSeries();
       show.add(CandlestickChart.of(timeSeries)).setLabel("candles");
       show.add(TsPlot.of(timeSeries)).setLabel("timeSeries");
+      return show;
+    }
+  }, //
+  RE_IM_PLOT {
+    @Override
+    Show create() {
+      Show show = new Show(ColorDataLists._097.strict());
+      show.setPlotLabel("ReImPlot");
+      Clip clip = Clips.absolute(4);
+      show.add(ReImPlot.filling(ArcSin.FUNCTION, clip)).setLabel("arc sin");
+      show.add(ReImPlot.of(ArcCos.FUNCTION, clip)).setLabel("arc cos");
       return show;
     }
   }, //

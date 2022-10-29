@@ -72,7 +72,6 @@ public class Plot extends BaseShowable {
           double xc = x0;
           for (int i = 1; i <= size; ++i) {
             xc += dx;
-            // compute the xValue and yValue of the function at xPix
             path.lineTo(xc, showableConfig.y_pos(suo.apply(interpX.apply(RationalScalar.of(i, size)))));
           }
           graphics.draw(path);
