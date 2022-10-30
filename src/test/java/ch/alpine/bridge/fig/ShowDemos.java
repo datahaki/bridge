@@ -413,15 +413,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  SPECTROGRAM0 {
-    @Override
-    Show create() {
-      Show show = new Show();
-      show.setPlotLabel("Spectrogram");
-      show.add(SpectrogramDemo.create(0.32, 1.6)).setLabel("Chirp");
-      return show;
-    }
-  },
   LP_ZERO_HEIGHT {
     @Override
     Show create() {
@@ -544,7 +535,17 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.add(ReImPlot.of(ArcCos.FUNCTION, clip)).setLabel("arc cos");
       return show;
     }
-  }, //
+  },
+  SPECTROGRAM0 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Spectrogram");
+      show.add(SpectrogramDemo.create(0.32, 1.6)).setLabel("Chirp");
+      return show;
+    }
+  },
+  //
   ;
 
   public final boolean extra;

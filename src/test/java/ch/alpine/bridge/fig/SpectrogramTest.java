@@ -7,7 +7,6 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
-import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
@@ -26,7 +25,7 @@ class SpectrogramTest {
       double hi = 1.6;
       Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
       Tensor signal = domain.map(polynomial).map(Cos.FUNCTION);
-      Tensor points = Transpose.of(Tensors.of(domain, signal));
+      // Tensor points = Transpose.of(Tensors.of(domain, signal));
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
       show.add(ListLinePlot.of(domain.map(s -> Quantity.of(s, "s")), signal));
@@ -35,7 +34,7 @@ class SpectrogramTest {
       // show.getAxisY().setLabel("user defined");
       // if (count == 0)
       // show.getAxisY().setUnit(Unit.of("s^-1"));
-      Spectrogram.of(points);
+      Spectrogram.of(signal, Quantity.of(8000, "s^-1"));
     }
   }
 }
