@@ -209,6 +209,11 @@ public class Show implements Serializable {
     return showableConfig;
   }
 
+  public ShowableConfig render_autoIndent(Graphics _g, Rectangle rectangle2) {
+    Rectangle rectangle = defaultInsets(rectangle2.getSize(), _g.getFont().getSize());
+    return render(_g, new Rectangle(rectangle2.x + rectangle.x, rectangle2.y + rectangle.y, rectangle.width, rectangle.height));
+  }
+
   /** @param dimension
    * @return */
   public BufferedImage image(Dimension dimension) {
