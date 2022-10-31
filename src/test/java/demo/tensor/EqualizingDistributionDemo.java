@@ -1,16 +1,15 @@
 // code by jph
 package demo.tensor;
 
-import java.awt.Dimension;
-import java.io.IOException;
-
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.ShowDialog;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
-import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.pdf.Distribution;
 import ch.alpine.tensor.pdf.InverseCDF;
+import ch.alpine.tensor.pdf.PDF;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.EqualizingDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
@@ -20,26 +19,18 @@ import ch.alpine.tensor.sca.Clips;
 
 public enum EqualizingDistributionDemo {
   ;
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
     Tensor unscaledPDF = RandomVariate.of(UniformDistribution.unit(), 20);
     CategoricalDistribution dist1 = CategoricalDistribution.fromUnscaledPDF(unscaledPDF);
-    EqualizingDistribution dist2 = (EqualizingDistribution) EqualizingDistribution.fromUnscaledPDF(unscaledPDF);
-    {
-      Clip clip = Clips.positive(20);
-      Show show = new Show();
-      show.add(ListPlot.of(dist1::at, Range.of(0, 20)));
-      // visualSet.add(domain, domain.map(dist1::p_lessEquals));
-      show.add(Plot.of(dist2::at, clip));
-      show.export(HomeDirectory.Pictures("ed.png"), new Dimension(640, 480));
-    }
-    {
-      Clip clip = Clips.unit();
-      InverseCDF inv1 = InverseCDF.of(dist1);
-      InverseCDF inv2 = InverseCDF.of(dist2);
-      Show show = new Show();
-      show.add(Plot.of(inv1::quantile, clip));
-      show.add(Plot.of(inv2::quantile, clip));
-      show.export(HomeDirectory.Pictures("ed_inv.png"), new Dimension(640, 480));
-    }
+    Distribution dist2 = EqualizingDistribution.fromUnscaledPDF(unscaledPDF);
+    Show show1 = new Show();
+    show1.setPlotLabel("PDF");
+    show1.add(ListPlot.of(dist1::at, Range.of(0, 20))).setLabel("CategoricalDistribution");
+    show1.add(Plot.of(PDF.of(dist2)::at, Clips.positive(20))).setLabel("EqualizingDistribution");
+    Show show2 = new Show();
+    Clip clip = Clips.unit();
+    show2.add(Plot.of(InverseCDF.of(dist1)::quantile, clip));
+    show2.add(Plot.of(InverseCDF.of(dist2)::quantile, clip));
+    ShowDialog.of(show1, show2);
   }
 }

@@ -3,7 +3,11 @@ package ch.alpine.bridge.fig;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -12,22 +16,56 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
-public class ShowDialog extends JDialog {
-  private final ShowComponent showComponent = new ShowComponent();
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.sca.Ceiling;
+import ch.alpine.tensor.sca.Floor;
+import ch.alpine.tensor.sca.pow.Sqrt;
 
-  public ShowDialog(Component parentComponent, Show show) {
+public class ShowDialog extends JDialog {
+  public static JDialog of(Show... shows) {
+    return of(Arrays.asList(shows));
+  }
+
+  public static JDialog of(List<Show> list) {
+    ShowDialog showDialog = new ShowDialog(null, list);
+    showDialog.setVisible(true);
+    return showDialog;
+  }
+
+  public ShowDialog(Component parentComponent, List<Show> list) {
     super(JOptionPane.getFrameForComponent(parentComponent));
     JPanel jPanel = new JPanel(new BorderLayout());
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
       jToolBar.setFloatable(false);
-      jToolBar.add(new JButton("save"));
+      JButton jButton = new JButton("export");
+      jButton.addActionListener(event -> {
+        for (Show show : list)
+          try {
+            show.export(HomeDirectory.Pictures("fig_" + show.getPlotLabel() + ".png"), new Dimension(640, 480));
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+      });
+      jToolBar.add(jButton);
       jPanel.add(BorderLayout.NORTH, jToolBar);
     }
-    jPanel.add(BorderLayout.CENTER, showComponent);
-    showComponent.setShow(show);
-    setContentPane(jPanel);
+    {
+      Scalar sqrt = Sqrt.FUNCTION.apply(RealScalar.of(list.size()));
+      int cols = Floor.intValueExact(sqrt);
+      int rows = Ceiling.intValueExact(sqrt);
+      JPanel grid = new JPanel(new GridLayout(rows, cols));
+      for (Show show : list) {
+        ShowComponent showComponent = new ShowComponent();
+        showComponent.setShow(show);
+        grid.add(showComponent);
+      }
+      jPanel.add(BorderLayout.CENTER, grid);
+      setContentPane(jPanel);
+    }
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     setBounds(100, 100, 1000, 900);
   }

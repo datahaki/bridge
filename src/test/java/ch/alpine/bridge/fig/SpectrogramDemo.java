@@ -1,15 +1,11 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Dimension;
-import java.io.IOException;
-
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.ply.Polynomial;
@@ -27,9 +23,7 @@ public enum SpectrogramDemo {
     return Spectrogram.of(signal, Quantity.of(8000, "s^-1"));
   }
 
-  public static void main(String[] args) throws IOException {
-    Show show = ShowDemos.SPECTROGRAM0.create();
-    show.export(HomeDirectory.Pictures(Spectrogram.class.getSimpleName() + ".png"), //
-        new Dimension(512, 288));
+  public static void main(String[] args) {
+    ShowDialog.of(ShowDemos.SPECTROGRAM0.create());
   }
 }
