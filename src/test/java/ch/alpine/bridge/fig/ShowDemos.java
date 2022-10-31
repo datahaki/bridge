@@ -449,12 +449,12 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  ARRAY_PLOT0(true) {
+  MATRIX_PLOT0(true) {
     @Override
     Show create() {
       Show show = new Show();
-      show.setPlotLabel("Array Plot");
-      show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
+      show.setPlotLabel("Matrix Plot");
+      show.add(MatrixPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
       return show;
     }
   },

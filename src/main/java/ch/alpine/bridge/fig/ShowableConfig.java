@@ -18,10 +18,10 @@ public class ShowableConfig {
   final Rectangle rectangle;
   private final CoordinateBoundingBox cbb;
   private final Clip xRange;
-  private final Clip yRange;
+  protected final Clip yRange;
   private final double y_height; // TODO BRIDGE misnomer
   private final Scalar x2pixel;
-  private final Scalar y2pixel;
+  protected final Scalar y2pixel;
   private final Scalar pixel2x;
   private final Scalar pixel2y;
 

@@ -154,7 +154,10 @@ public class Show implements Serializable {
           rectangle.x + (rectangle.width - fontMetrics.stringWidth(string)) / 2, //
           rectangle.y + (rectangle.height + fontMetrics.getHeight()) / 2);
     } else {
-      showableConfig = new ShowableConfig(rectangle, _cbb);
+      boolean flipY = showables.stream().anyMatch(Showable::flipYAxis);
+      showableConfig = flipY //
+          ? new ShowableConfigY(rectangle, _cbb)
+          : new ShowableConfig(rectangle, _cbb);
       GridDrawer gridDrawer = new GridDrawer(dateTimeFocus);
       gridDrawer.render(showableConfig, _g);
       for (Showable showable : showables) {

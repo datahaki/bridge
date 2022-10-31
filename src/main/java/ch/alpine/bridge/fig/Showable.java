@@ -40,4 +40,8 @@ public interface Showable {
 
   /** @return */
   Stroke getStroke();
+
+  default boolean flipYAxis() {
+    return false;
+  }
 }
