@@ -73,8 +73,7 @@ public class ClassDiscovery {
       return;
     }
     try (URLClassLoader urlClassLoader = new URLClassLoader(urls)) {
-      for (int index = 0; index < items.length; ++index) {
-        String item = items[index];
+      for (String item : items)
         if (item.endsWith(".jar")) {
           try (JarFile jarFile = new JarFile(item)) {
             for (Enumeration<JarEntry> enumeration = jarFile.entries(); enumeration.hasMoreElements();) {
@@ -98,7 +97,7 @@ public class ClassDiscovery {
               }
             }
           } catch (IOException ioException) {
-            System.out.println("Error extracting " + items[index]);
+            System.out.println("Error extracting " + item);
           }
         } else {
           File file = new File(item);
@@ -106,7 +105,6 @@ public class ClassDiscovery {
             continue;
           visitDirectory(urlClassLoader, item, file, "");
         }
-      }
     } catch (Exception exception) {
       throw new RuntimeException(exception);
     }

@@ -5,7 +5,7 @@ import ch.alpine.tensor.Scalar;
 
 /** implementation of an un-recoverable watchdog
  * 
- * functionality like on a micro controller
+ * functionality like on a microcontroller
  * except that this watchdog does not notify an interrupt
  * but simply sets a flag to true.
  * Once set to true, the flag is never cleared.
@@ -23,7 +23,7 @@ public final class HardWatchdog implements Watchdog {
   /** Once set to true, the flag "isBlown" is never cleared. */
   private boolean isBlown = false;
 
-  /** @param tolerance in nano seconds */
+  /** @param tolerance in nanoseconds */
   private HardWatchdog(long tolerance) {
     this.tolerance = tolerance;
     lastNotify = System.nanoTime();

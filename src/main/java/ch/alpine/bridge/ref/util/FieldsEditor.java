@@ -36,7 +36,7 @@ public abstract class FieldsEditor {
   private final List<FieldPanelObject> list = new LinkedList<>();
   private final Set<Runnable> set = new CopyOnWriteLinkedSet<>();
 
-  /** register listener that converts GUI update to value and assigns field
+  /** register listener that converts a GUI update to value and assigns field
    * register listener to notify universal listeners
    * 
    * function applies annotations specific to field that concern layout

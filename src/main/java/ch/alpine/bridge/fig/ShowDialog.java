@@ -20,7 +20,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.sca.Ceiling;
-import ch.alpine.tensor.sca.Floor;
+import ch.alpine.tensor.sca.Round;
 import ch.alpine.tensor.sca.pow.Sqrt;
 
 public class ShowDialog extends JDialog {
@@ -55,7 +55,7 @@ public class ShowDialog extends JDialog {
     }
     {
       Scalar sqrt = Sqrt.FUNCTION.apply(RealScalar.of(list.size()));
-      int cols = Floor.intValueExact(sqrt);
+      int cols = Round.intValueExact(sqrt);
       int rows = Ceiling.intValueExact(sqrt);
       JPanel grid = new JPanel(new GridLayout(rows, cols));
       for (Show show : list) {

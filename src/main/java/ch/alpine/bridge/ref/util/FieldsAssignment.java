@@ -3,13 +3,13 @@ package ch.alpine.bridge.ref.util;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -32,7 +32,7 @@ import ch.alpine.tensor.ext.Integers;
  * combinations, then a complete, systematic enumeration is performed.
  * 
  * The modifications occur on the given object.
- * The given object does not need to be instance of {@link Serializable}. */
+ * The given object does not need to be an instance of {@link Serializable}. */
 public class FieldsAssignment {
   protected static final Random RANDOM = new SecureRandom();
 
@@ -57,7 +57,7 @@ public class FieldsAssignment {
     fieldOptionsCollector = new FieldOptionsCollector();
     ObjectFields.of(object, fieldOptionsCollector);
     this.map = fieldOptionsCollector.map();
-    keys = map.keySet().stream().collect(Collectors.toList());
+    keys = new ArrayList<>(map.keySet());
     array = keys.stream().map(map::get).mapToInt(List::size).toArray();
     total = IntStream.of(array) //
         .mapToObj(RealScalar::of) //

@@ -20,7 +20,7 @@ public abstract class LocalTimeDialog extends DialogBase<LocalTime> {
     protected void paintComponent(Graphics graphics) {
       Dimension dimension = getSize();
       Point point = new Point(dimension.width / 2, dimension.height / 2);
-      LocalTimeDisplay.INSTANCE.draw(graphics, current(), point);
+      LocalTimeDisplay.draw(graphics, current(), point);
     }
   };
   private final LocalTimeParam localTimeParam;

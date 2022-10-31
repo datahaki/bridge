@@ -35,6 +35,7 @@ import ch.alpine.tensor.sca.ply.Polynomial;
       Show show = new Show();
       show.setPlotLabel("Degree " + degree);
       show.add(ListPlot.of(x, y));
+      // show.add(ListLinePlot.of(x, y));
       show.add(Plot.of(x_to_y, domain_x));
       show.add(ListLinePlot.of(samples_y.map(y_to_x), samples_y));
       list.add(show);

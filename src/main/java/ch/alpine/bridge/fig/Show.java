@@ -34,7 +34,7 @@ public class Show implements Serializable {
 
   /** @param fontSize for instance graphics.getFont().getSize()
    * @return */
-  public static Insets defaultInsets(int fontSize) {
+  private static Insets defaultInsets(int fontSize) {
     return new Insets(4 + fontSize, 70, 10 + fontSize, 10);
   }
 

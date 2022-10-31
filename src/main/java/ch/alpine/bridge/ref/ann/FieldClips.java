@@ -7,6 +7,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.chq.DeterminateScalarQ;
 import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.qty.CompatibleUnitQ;
@@ -59,7 +60,7 @@ public class FieldClips implements Predicate<Scalar> {
 
   @Override // from Predicate
   public boolean test(Scalar scalar) {
-    return scalar.equals(scalar) // reject if NaN
+    return DeterminateScalarQ.of(scalar) // reject if NaN
         && compatible.test(scalar) //
         && clip.isInside(convert.apply(scalar));
   }

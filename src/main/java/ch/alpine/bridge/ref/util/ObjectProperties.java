@@ -29,7 +29,7 @@ import ch.alpine.tensor.io.Import;
  * {@link Enum}, {@link Color}, as well as nested parameters or arrays/lists
  * thereof are stored in, and retrieved from files in the {@link Properties} format.
  * 
- * the listed of supported types can be extended, see {@link FieldWraps}
+ * the list of supported types can be extended, see {@link FieldWraps}
  * 
  * Hint: the implementation does not assign null values to members. in case
  * of a parse failure, or invalid assignment, the preset/default/current

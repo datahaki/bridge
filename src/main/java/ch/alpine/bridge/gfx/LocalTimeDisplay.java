@@ -14,24 +14,23 @@ import java.time.LocalTime;
 import ch.alpine.bridge.awt.RenderQuality;
 
 public enum LocalTimeDisplay {
-  INSTANCE;
-
-  private final double _2pi = Math.PI + Math.PI;
-  private final int wid = 52;
-  private final int hourRad = 32;
-  private final int hourRadIn = 7;
-  private final int minRad = 45;
-  private final int minRadAl = 8;
-  private final int minRadOut = 48;
-  private final int minRadIn = 40;
-  private final int secRadOut = 32;
-  private final int secRadIn = 15;
-  private final int secCirc = 10;
+  ;
+  private static final double _2pi = Math.PI + Math.PI;
+  private static final int wid = 52;
+  private static final int hourRad = 32;
+  private static final int hourRadIn = 7;
+  private static final int minRad = 45;
+  private static final int minRadAl = 8;
+  private static final int minRadOut = 48;
+  private static final int minRadIn = 40;
+  private static final int secRadOut = 32;
+  private static final int secRadIn = 15;
+  private static final int secCirc = 10;
 
   /** @param _g
    * @param localTime
    * @param center */
-  public void draw(Graphics _g, LocalTime localTime, Point center) {
+  public static void draw(Graphics _g, LocalTime localTime, Point center) {
     Graphics2D graphics = (Graphics2D) _g.create();
     RenderQuality.setQuality(graphics);
     graphics.setColor(Color.WHITE);
@@ -88,7 +87,7 @@ public enum LocalTimeDisplay {
     graphics.dispose();
   }
 
-  private void dotAt(Graphics2D graphics, Point c, int a) {
+  private static void dotAt(Graphics2D graphics, Point c, int a) {
     double angle = Math.toRadians(a);
     double x1 = c.x + Math.cos(angle) * minRadOut;
     double y1 = c.y + Math.sin(angle) * minRadOut;
@@ -98,7 +97,7 @@ public enum LocalTimeDisplay {
     graphics.draw(shape);
   }
 
-  private void secAt(Graphics2D graphics, Point c, int a) {
+  private static void secAt(Graphics2D graphics, Point c, int a) {
     double angle = Math.toRadians(a);
     double x1 = c.x + Math.cos(angle) * minRadOut;
     double y1 = c.y + Math.sin(angle) * minRadOut;

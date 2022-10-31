@@ -158,7 +158,7 @@ import java.time.temporal.ChronoUnit;
 
   final ChronoUnit chronoUnit;
 
-  private LocalTimes(ChronoUnit chronoUnit) {
+  LocalTimes(ChronoUnit chronoUnit) {
     this.chronoUnit = chronoUnit;
   }
 

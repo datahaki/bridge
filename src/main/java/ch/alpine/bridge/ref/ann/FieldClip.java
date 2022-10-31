@@ -13,7 +13,7 @@ import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.sca.Clip;
 
-/** annotation to defined the limits for a field of type {@link Scalar}
+/** annotation to define the limits for a field of type {@link Scalar}
  * and {@link Clip}
  * 
  * if the {@link Unit} of min and max are not identical

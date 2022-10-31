@@ -11,7 +11,7 @@ import ch.alpine.tensor.qty.UnitSystem;
   private static final ScalarUnaryOperator NANOS = QuantityMagnitude.SI().in("ns");
 
   /** @param scalar with unit compatible with "s", "ms", "us", "ns", ...
-   * @return number of nano seconds encoded by scalar
+   * @return number of nanoseconds encoded by scalar
    * @see UnitSystem#SI() */
   public static long nanos(Scalar scalar) {
     return NANOS.apply(scalar).number().longValue();

@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Point2D;
@@ -41,11 +40,6 @@ public class ImagePlot extends BaseShowable {
       graphics.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
-  }
-
-  @Override
-  public void tender(ShowableConfig showableConfig, Graphics graphics) {
-    // ---
   }
 
   @Override // from Showable
