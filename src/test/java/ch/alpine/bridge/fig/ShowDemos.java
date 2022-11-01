@@ -449,15 +449,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  MATRIX_PLOT0(true) {
-    @Override
-    Show create() {
-      Show show = new Show();
-      show.setPlotLabel("Matrix Plot");
-      show.add(MatrixPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
-      return show;
-    }
-  },
   FILLING {
     @Override
     Show create() {
@@ -542,6 +533,24 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("Density Plot");
       ScalarBinaryOperator sbo = (x, y) -> x.multiply(y);
       show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.positive(1), Clips.positive(2))));
+      return show;
+    }
+  },
+  ArrayPlot0(true) {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Array Plot");
+      show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
+      return show;
+    }
+  },
+  MatrixPlot0(true) {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Matrix Plot");
+      show.add(MatrixPlot.of(Tensors.fromString("{{1, 2, 1}, {3, 0, 1}, {0, 0, -1}}")));
       return show;
     }
   },

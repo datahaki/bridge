@@ -5,27 +5,28 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarTensorFunction;
+import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.red.Max;
+import ch.alpine.tensor.red.MinMax;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/MatrixPlot.html">MatrixPlot</a> */
 public class MatrixPlot extends BarLegendPlot {
-  private static final UnaryOperator<Clip> TRANSLATION = Clips.translation(RationalScalar.HALF.negate());
-
   /** @param matrix
    * @param colorDataGradient
    * @return */
@@ -36,7 +37,7 @@ public class MatrixPlot extends BarLegendPlot {
   /** @param matrix
    * @return */
   public static Showable of(Tensor matrix) {
-    return of(matrix, ColorDataGradients.GRAYSCALE_REVERSED);
+    return of(matrix, ColorDataGradients.TEMPERATURE_LIGHT);
   }
 
   // ---
@@ -49,11 +50,17 @@ public class MatrixPlot extends BarLegendPlot {
       ScalarTensorFunction colorDataGradient) {
     super(colorDataGradient);
     MatrixQ.require(matrix);
-    Rescale rescale = new Rescale(matrix);
+    Clip clip = matrix.flatten(-1) //
+        .map(Scalar.class::cast) //
+        .filter(FiniteScalarQ::of) //
+        .collect(MinMax.toClip());
+    if (Objects.nonNull(clip))
+      clip = Clips.absolute(Max.of(clip.min().negate(), clip.max()));
+    Rescale rescale = new Rescale(matrix, clip);
     this.bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
     this.cbb = CoordinateBoundingBox.of( //
-        TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
-        TRANSLATION.apply(Clips.positive(matrix.length())));
+        StaticHelper.TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
+        StaticHelper.TRANSLATION.apply(Clips.positive(matrix.length())));
     this.clip = rescale.clip();
   }
 
@@ -61,12 +68,10 @@ public class MatrixPlot extends BarLegendPlot {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Point2D.Double ul = showableConfig.toPoint2D(Tensors.of( //
         cbb.getClip(0).min(), //
-        flipYAxis() ? cbb.getClip(1).min() : cbb.getClip(1).max() //
-    ));
+        cbb.getClip(1).min()));
     Point2D.Double dr = showableConfig.toPoint2D(Tensors.of( //
         cbb.getClip(0).max(), //
-        flipYAxis() ? cbb.getClip(1).max() : cbb.getClip(1).min() //
-    ));
+        cbb.getClip(1).max()));
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)

@@ -6,14 +6,13 @@ import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 
-import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarTensorFunction;
+import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -23,8 +22,6 @@ import ch.alpine.tensor.sca.Clips;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 public class ArrayPlot extends BarLegendPlot {
-  private static final UnaryOperator<Clip> TRANSLATION = Clips.translation(RationalScalar.HALF.negate());
-
   public static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     return new ArrayPlot(matrix, cbb, colorDataGradient);
   }
@@ -34,9 +31,13 @@ public class ArrayPlot extends BarLegendPlot {
    * @return */
   public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient) {
     return of(matrix, CoordinateBoundingBox.of( //
-        TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
-        TRANSLATION.apply(Clips.positive(matrix.length()))), //
+        StaticHelper.TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
+        StaticHelper.TRANSLATION.apply(Clips.positive(matrix.length()))), //
         colorDataGradient);
+  }
+
+  public static Showable of(Tensor matrix) {
+    return of(matrix, ColorDataGradients.GRAYSCALE_REVERSED);
   }
 
   // ---

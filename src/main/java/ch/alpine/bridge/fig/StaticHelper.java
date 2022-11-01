@@ -5,6 +5,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import ch.alpine.bridge.lang.Unicode;
@@ -32,6 +33,9 @@ import ch.alpine.tensor.tmp.TsEntry;
 
 /* package */ enum StaticHelper {
   ;
+  public static final UnaryOperator<Clip> TRANSLATION = Clips.translation(RationalScalar.HALF.negate());
+
+  // ---
   /** @param vector
    * @return null if given vector does not contain finite scalars */
   public static Clip minMax(Tensor vector) {
