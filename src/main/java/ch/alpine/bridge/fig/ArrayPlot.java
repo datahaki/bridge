@@ -30,12 +30,8 @@ import ch.alpine.tensor.sca.Clips;
 public class ArrayPlot extends BaseShowable {
   private static final UnaryOperator<Clip> TRANSLATION = Clips.translation(RationalScalar.HALF.negate());
 
-  public static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient, boolean smooth) {
-    return new ArrayPlot(matrix, cbb, colorDataGradient, smooth);
-  }
-
   public static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
-    return of(matrix, cbb, colorDataGradient, false);
+    return new ArrayPlot(matrix, cbb, colorDataGradient);
   }
 
   /** @param matrix
@@ -45,7 +41,7 @@ public class ArrayPlot extends BaseShowable {
     return of(matrix, CoordinateBoundingBox.of( //
         TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
         TRANSLATION.apply(Clips.positive(matrix.length()))), //
-        colorDataGradient, false);
+        colorDataGradient);
   }
 
   // ---
@@ -53,20 +49,17 @@ public class ArrayPlot extends BaseShowable {
   private final ScalarTensorFunction colorDataGradient;
   private final CoordinateBoundingBox cbb;
   private final Clip clip;
-  private final boolean smooth;
 
   private ArrayPlot( //
       Tensor matrix, //
       CoordinateBoundingBox cbb, //
-      ScalarTensorFunction colorDataGradient, //
-      boolean smooth) {
+      ScalarTensorFunction colorDataGradient) {
     MatrixQ.require(matrix);
     Rescale rescale = new Rescale(matrix);
     this.bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
     this.colorDataGradient = colorDataGradient;
     this.cbb = cbb;
     this.clip = rescale.clip();
-    this.smooth = smooth;
   }
 
   @Override // from Showable
@@ -80,15 +73,9 @@ public class ArrayPlot extends BaseShowable {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
-      if (smooth)
-        graphics.drawImage(bufferedImage, //
-            (int) ul.getX(), //
-            (int) ul.getY(), //
-            width, height, null);
-      else
-        graphics.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
-            (int) ul.getX(), //
-            (int) ul.getY(), null);
+      graphics.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
+          (int) ul.getX(), //
+          (int) ul.getY(), null);
   }
 
   @Override

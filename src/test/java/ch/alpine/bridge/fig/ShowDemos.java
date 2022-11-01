@@ -478,16 +478,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  DENSITY(true) {
-    @Override
-    Show create() {
-      Show show = new Show();
-      show.setPlotLabel("Density Plot");
-      ScalarBinaryOperator sbo = (x, y) -> x.multiply(y);
-      show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.positive(1), Clips.positive(2))));
-      return show;
-    }
-  },
   TS_WP3 {
     @Override
     Show create() {
@@ -542,6 +532,16 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
       show.add(SpectrogramDemo.create(0.32, 1.6)).setLabel("Chirp");
+      return show;
+    }
+  },
+  DENSITY(true) {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Density Plot");
+      ScalarBinaryOperator sbo = (x, y) -> x.multiply(y);
+      show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.positive(1), Clips.positive(2))));
       return show;
     }
   },
