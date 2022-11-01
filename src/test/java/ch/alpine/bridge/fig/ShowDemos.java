@@ -566,6 +566,16 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
+  DiscretePlot0 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Discrete Plot");
+      show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(20, 0.3))::at,Clips.positive(20)));
+      show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(25, 0.5))::at,Clips.positive(25)));
+      return show;
+    }
+  },
   //
   ;
 
