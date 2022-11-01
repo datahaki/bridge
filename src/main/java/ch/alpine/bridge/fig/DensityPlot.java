@@ -1,15 +1,11 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
-import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -22,11 +18,10 @@ import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
-import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/DensityPlot.html">DensityPlot</a> */
-public class DensityPlot extends BaseShowable {
+public class DensityPlot extends BarLegendPlot {
   private static final int RESOLUTION = 25;
 
   public static Showable of(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb) {
@@ -44,7 +39,6 @@ public class DensityPlot extends BaseShowable {
 
   // ---
   private final BufferedImage bufferedImage;
-  private final ScalarTensorFunction colorDataGradient;
   private final CoordinateBoundingBox cbb;
   private final Clip clip;
 
@@ -52,10 +46,10 @@ public class DensityPlot extends BaseShowable {
       Tensor matrix, //
       CoordinateBoundingBox cbb, //
       ScalarTensorFunction colorDataGradient) {
+    super(colorDataGradient);
     MatrixQ.require(matrix);
     Rescale rescale = new Rescale(matrix);
     this.bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
-    this.colorDataGradient = colorDataGradient;
     this.cbb = cbb;
     this.clip = rescale.clip();
   }
@@ -77,21 +71,13 @@ public class DensityPlot extends BaseShowable {
           width, height, null);
   }
 
-  @Override
-  public void tender(ShowableConfig showableConfig, Graphics graphics) {
-    Rectangle rectangle = showableConfig.rectangle;
-    int width = StaticHelper.GAP * 2;
-    int pix = rectangle.x + rectangle.width + 1 + StaticHelper.GAP * 2;
-    graphics.drawImage(ImageFormat.of(Subdivide.decreasing(Clips.unit(), rectangle.height - 1).map(Tensors::of).map(colorDataGradient)), //
-        pix, rectangle.y, width, rectangle.height, null);
-    new AxisYR(ISO8601DateTimeFocus.INSTANCE).render( //
-        showableConfig, //
-        new Point(pix + width + StaticHelper.GAP - 2, rectangle.y), //
-        rectangle.height, graphics, clip);
-  }
-
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
     return Optional.of(cbb);
+  }
+
+  @Override
+  protected Clip clip() {
+    return clip;
   }
 }
