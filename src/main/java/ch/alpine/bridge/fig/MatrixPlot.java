@@ -90,7 +90,7 @@ public class MatrixPlot extends BarLegendPlot {
     return true;
   }
 
-  @Override
+  @Override // from BarLegendPlot
   protected Clip clip() {
     return clip;
   }

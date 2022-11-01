@@ -19,6 +19,7 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.io.ImageFormat;
+import ch.alpine.tensor.io.ResourceData;
 import ch.alpine.tensor.itp.BSplineFunctionString;
 import ch.alpine.tensor.mat.HilbertMatrix;
 import ch.alpine.tensor.mat.re.LinearSolve;
@@ -551,6 +552,17 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.setPlotLabel("Matrix Plot");
       show.add(MatrixPlot.of(Tensors.fromString("{{1, 2, 1}, {3, 0, 1}, {0, 0, -1}}")));
+      return show;
+    }
+  },
+  MatrixPlot1(true) {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Matrix Plot");
+      Tensor matrix = ResourceData.of("/ch/alpine/bridge/fig/hb_west0381.csv");
+      matrix = matrix.map(Clips.absoluteOne());
+      show.add(MatrixPlot.of(matrix));
       return show;
     }
   },

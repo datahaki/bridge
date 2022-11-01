@@ -61,10 +61,10 @@ public class ArrayPlot extends BarLegendPlot {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Point2D.Double ul = showableConfig.toPoint2D(Tensors.of( //
         cbb.getClip(0).min(), //
-        cbb.getClip(1).max()));
+        cbb.getClip(1).min()));
     Point2D.Double dr = showableConfig.toPoint2D(Tensors.of( //
         cbb.getClip(0).max(), //
-        cbb.getClip(1).min()));
+        cbb.getClip(1).max()));
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
@@ -78,7 +78,12 @@ public class ArrayPlot extends BarLegendPlot {
     return Optional.of(cbb);
   }
 
-  @Override
+  @Override // from Showable
+  public boolean flipYAxis() {
+    return true;
+  }
+
+  @Override // from BarLegendPlot
   protected Clip clip() {
     return clip;
   }
