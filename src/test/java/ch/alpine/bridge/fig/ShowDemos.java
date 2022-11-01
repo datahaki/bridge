@@ -2,6 +2,7 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
+import java.awt.image.BufferedImage;
 
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
@@ -9,7 +10,6 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Range;
-import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.alg.UnitVector;
@@ -18,7 +18,6 @@ import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorDataLists;
-import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.io.ResourceData;
 import ch.alpine.tensor.itp.BSplineFunctionString;
 import ch.alpine.tensor.mat.HilbertMatrix;
@@ -401,19 +400,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  ARRAY_PLOT1 {
-    @Override
-    Show create() {
-      Show show = new Show();
-      show.setPlotLabel("Chebyshev Nodes");
-      Tensor matrix = ChebyshevNodes._1.matrix(64);
-      // VisualImage visualImage = new VisualImage(matrix);
-      // visualImage.setPlotLabel("ArrayPlot");
-      Tensor tensor = Rescale.of(matrix).map(ColorDataGradients.ALPINE);
-      show.add(ImagePlot.of(ImageFormat.of(tensor), CoordinateBoundingBox.of(Clips.unit(), Clips.unit())));
-      return show;
-    }
-  },
   LP_ZERO_HEIGHT {
     @Override
     Show create() {
@@ -450,7 +436,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  FILLING {
+  Filling1 {
     @Override
     Show create() {
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
@@ -459,7 +445,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  FILLINGS {
+  Filling2 {
     @Override
     Show create() {
       Show show = new Show();
@@ -470,7 +456,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  TS_WP3 {
+  Ts_WP3 {
     @Override
     Show create() {
       Scalar mu = Quantity.of(0.3, "m*s^-1");
@@ -488,7 +474,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  CANDLESTICK {
+  Candlestick {
     @Override
     Show create() {
       Scalar mu = Quantity.of(-0.3e-10, "m*s^-1");
@@ -506,8 +492,8 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.add(TsPlot.of(timeSeries)).setLabel("timeSeries");
       return show;
     }
-  }, //
-  RE_IM_PLOT {
+  },
+  ReImPlot0 {
     @Override
     Show create() {
       Show show = new Show(ColorDataLists._097.strict());
@@ -518,7 +504,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  SPECTROGRAM0 {
+  Spectrogram0 {
     @Override
     Show create() {
       Show show = new Show();
@@ -527,7 +513,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  DENSITY(true) {
+  DensityPlot0(true) {
     @Override
     Show create() {
       Show show = new Show();
@@ -566,13 +552,33 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
+  MatrixPlot2 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Chebyshev Nodes");
+      Tensor matrix = ChebyshevNodes._1.matrix(64);
+      show.add(MatrixPlot.of(matrix));
+      return show;
+    }
+  },
   DiscretePlot0 {
     @Override
     Show create() {
       Show show = new Show();
       show.setPlotLabel("Discrete Plot");
-      show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(20, 0.3))::at,Clips.positive(20)));
-      show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(25, 0.5))::at,Clips.positive(25)));
+      show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(20, 0.3))::at, Clips.positive(20))).setLabel("0.3");
+      show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(25, 0.5))::at, Clips.positive(25))).setLabel("0.5");
+      return show;
+    }
+  },
+  ImagePlot1 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Image Plot");
+      BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
+      show.add(ImagePlot.of(bufferedImage));
       return show;
     }
   },

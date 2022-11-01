@@ -56,8 +56,8 @@ public class ListPlot extends BaseShowable {
     if (0 < points.length()) {
       graphics.setColor(getColor());
       for (Tensor row : points) {
-        Point2D.Double point2d = showableConfig.toPoint2D(row);
-        graphics.fill(new Ellipse2D.Double(point2d.x - radius, point2d.y - radius, 2 * radius, 2 * radius));
+        Point2D point2d = showableConfig.toPoint2D(row);
+        graphics.fill(new Ellipse2D.Double(point2d.getX() - radius, point2d.getY() - radius, 2 * radius, 2 * radius));
         // below: diamond <>
         // Path2D.Double path = new Path2D.Double();
         // path.moveTo(point2d.x + rad, point2d.y);

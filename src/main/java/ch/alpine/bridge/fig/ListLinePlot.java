@@ -45,12 +45,12 @@ public class ListLinePlot extends BaseShowable {
       graphics.setStroke(getStroke());
       Path2D.Double path = new Path2D.Double();
       {
-        Point2D.Double point2d = showableConfig.toPoint2D(points.get(0));
-        path.moveTo(point2d.x, point2d.y);
+        Point2D point2d = showableConfig.toPoint2D(points.get(0));
+        path.moveTo(point2d.getX(), point2d.getY());
       }
       points.stream().skip(1).forEach(row -> {
-        Point2D.Double point2d = showableConfig.toPoint2D(row);
-        path.lineTo(point2d.x, point2d.y);
+        Point2D point2d = showableConfig.toPoint2D(row);
+        path.lineTo(point2d.getX(), point2d.getY());
       });
       graphics.draw(path);
     }

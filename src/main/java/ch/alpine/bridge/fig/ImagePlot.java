@@ -9,31 +9,45 @@ import java.util.Optional;
 
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 public class ImagePlot extends BaseShowable {
+  public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY) {
+    return new ImagePlot(bufferedImage, cbb, flipY);
+  }
+
   public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
-    return new ImagePlot(bufferedImage, cbb);
+    return of(bufferedImage, cbb, false);
+  }
+
+  public static Showable of(BufferedImage bufferedImage) {
+    return of(bufferedImage, CoordinateBoundingBox.of( //
+        StaticHelper.TRANSLATION.apply(Clips.positive(bufferedImage.getWidth())), //
+        StaticHelper.TRANSLATION.apply(Clips.positive(bufferedImage.getHeight()))), //
+        true);
   }
 
   // ---
   private final BufferedImage bufferedImage;
   private final CoordinateBoundingBox cbb;
+  private final boolean flipY;
 
-  private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
+  private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY) {
     this.bufferedImage = bufferedImage;
     this.cbb = cbb;
+    this.flipY = flipY;
   }
 
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    Point2D.Double ul = showableConfig.toPoint2D(Tensors.of( //
+    Point2D ul = showableConfig.toPoint2D(Tensors.of( //
         cbb.getClip(0).min(), //
-        cbb.getClip(1).max()));
-    Point2D.Double dr = showableConfig.toPoint2D(Tensors.of( //
+        flipY ? cbb.getClip(1).min() : cbb.getClip(1).max()));
+    Point2D dr = showableConfig.toPoint2D(Tensors.of( //
         cbb.getClip(0).max(), //
-        cbb.getClip(1).min()));
+        flipY ? cbb.getClip(1).max() : cbb.getClip(1).min()));
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
@@ -45,5 +59,10 @@ public class ImagePlot extends BaseShowable {
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
     return Optional.of(cbb);
+  }
+
+  @Override
+  public boolean flipYAxis() {
+    return flipY;
   }
 }

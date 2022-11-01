@@ -24,6 +24,6 @@ public enum SpectrogramDemo {
   }
 
   public static void main(String[] args) {
-    ShowDialog.of(ShowDemos.SPECTROGRAM0.create());
+    ShowDialog.of(ShowDemos.Spectrogram0.create());
   }
 }

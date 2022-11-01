@@ -5,7 +5,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -23,6 +25,7 @@ import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.util.FieldsEditor;
@@ -65,6 +68,8 @@ public class ShowDemo implements Runnable {
         graphics.setColor(Color.PINK);
         graphics.drawRect(0, 0, width - 1, height - 1);
         graphics.setColor(Color.LIGHT_GRAY);
+        graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 9));
+        RenderQuality.setQuality((Graphics2D) graphics);
         graphics.drawString(showDemos.name(), 0, 10);
         list.add(bufferedImage);
       } catch (Exception exception) {

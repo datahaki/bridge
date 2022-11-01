@@ -47,7 +47,7 @@ public class ShowableConfig {
     return y_height - y.subtract(yRange.min()).multiply(y2pixel).number().doubleValue();
   }
 
-  public Point2D.Double toPoint2D(Tensor vector) {
+  public Point2D toPoint2D(Tensor vector) {
     return new Point2D.Double( //
         x_pos(vector.Get(0)), //
         y_pos(vector.Get(1)));

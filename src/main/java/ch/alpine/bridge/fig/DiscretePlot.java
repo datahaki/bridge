@@ -5,12 +5,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.Optional;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -50,13 +52,12 @@ public class DiscretePlot extends BaseShowable {
     for (Tensor _x : samples) {
       Scalar x = (Scalar) _x;
       Scalar y = suo.apply(x);
-      double x_pos = showableConfig.x_pos(x);
+      Point2D point2d = showableConfig.toPoint2D(Tensors.of(x, y));
       double y0 = showableConfig.y_pos(y.zero());
-      double y1 = showableConfig.y_pos(y);
       graphics.setColor(getColor());
-      graphics.fill(new Ellipse2D.Double(x_pos - radius, y1 - radius, 2 * radius, 2 * radius));
+      graphics.fill(new Ellipse2D.Double(point2d.getX() - radius, point2d.getY() - radius, 2 * radius, 2 * radius));
       graphics.setColor(color);
-      graphics.draw(new Line2D.Double(x_pos, y0, x_pos, y1));
+      graphics.draw(new Line2D.Double(point2d.getX(), y0, point2d.getX(), point2d.getY()));
     }
   }
 
