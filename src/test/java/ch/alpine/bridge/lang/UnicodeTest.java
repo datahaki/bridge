@@ -31,13 +31,23 @@ class UnicodeTest {
   }
 
   @Test
-  void testInteger() {
+  void testScalarInteger() {
     assertEquals(Unicode.valueOf(RealScalar.of(123456789)), "123\u2009456\u2009789");
     assertEquals(Unicode.valueOf(RealScalar.of(12345678)), "12\u2009345\u2009678");
     assertEquals(Unicode.valueOf(RealScalar.of(1234567)), "1\u2009234\u2009567");
     assertEquals(Unicode.valueOf(RealScalar.of(-123456789)), "-123\u2009456\u2009789");
     assertEquals(Unicode.valueOf(RealScalar.of(-12345678)), "-12\u2009345\u2009678");
     assertEquals(Unicode.valueOf(RealScalar.of(-1234567)), "-1\u2009234\u2009567");
+  }
+
+  @Test
+  void testInteger() {
+    assertEquals(Unicode.valueOf(123456789), "123\u2009456\u2009789");
+    assertEquals(Unicode.valueOf(12345678), "12\u2009345\u2009678");
+    assertEquals(Unicode.valueOf(1234567), "1\u2009234\u2009567");
+    assertEquals(Unicode.valueOf(-123456789), "-123\u2009456\u2009789");
+    assertEquals(Unicode.valueOf(-12345678), "-12\u2009345\u2009678");
+    assertEquals(Unicode.valueOf(-1234567), "-1\u2009234\u2009567");
   }
 
   @Test

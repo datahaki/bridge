@@ -308,9 +308,9 @@ public enum DateTimeInterval {
    * @return */
   public static DateTimeInterval findAboveEquals(Scalar duration) {
     duration = UnitSystem.SI().apply(duration);
-    for (DateTimeInterval dateTimeIntervals : DateTimeInterval.values())
-      if (Scalars.lessEquals(duration, dateTimeIntervals.durationHint()))
-        return dateTimeIntervals;
+    for (DateTimeInterval dateTimeInterval : DateTimeInterval.values())
+      if (Scalars.lessEquals(duration, dateTimeInterval.durationHint()))
+        return dateTimeInterval;
     throw new Throw(duration);
   }
 }

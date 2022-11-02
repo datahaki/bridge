@@ -100,6 +100,13 @@ class DateTimeIntervalTest {
     assertNotEquals(localDateTime, dateTimeInterval.floorOrMinus(localDateTime));
   }
 
+  @ParameterizedTest
+  @EnumSource
+  void differentMinus2(DateTimeInterval dateTimeInterval) {
+    LocalDateTime localDateTime = LocalDateTime.of(1900, 1, 1, 0, 0, 0, 1); // <- was a Monday
+    assertNotEquals(localDateTime, dateTimeInterval.floorOrMinus(localDateTime));
+  }
+
   @Test
   void findAboveEquals() {
     assertEquals(DateTimeInterval._05_S, DateTimeInterval.findAboveEquals(Quantity.of(3, "s")));
