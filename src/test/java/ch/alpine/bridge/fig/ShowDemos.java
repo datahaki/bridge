@@ -582,6 +582,19 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
+  DateTimeY {
+    @Override
+    Show create() {
+      Distribution distribution = UniformDistribution.of( //
+          DateTime.of(1980, 3, 7, 12, 45), //
+          DateTime.of(1981, 3, 7, 12, 45));
+      Tensor points = RandomVariate.of(distribution, 20, 2);
+      Show show = new Show();
+      show.setPlotLabel("Image Plot");
+      show.add(ListPlot.of(points));
+      return show;
+    }
+  }
   //
   ;
 
