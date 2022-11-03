@@ -32,6 +32,7 @@ import ch.alpine.tensor.pdf.PDF;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.TruncatedDistribution;
 import ch.alpine.tensor.pdf.c.GammaDistribution;
+import ch.alpine.tensor.pdf.c.LogNormalDistribution;
 import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 import ch.alpine.tensor.pdf.c.TriangularDistribution;
@@ -590,8 +591,24 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
           DateTime.of(1981, 3, 7, 12, 45));
       Tensor points = RandomVariate.of(distribution, 20, 2);
       Show show = new Show();
-      show.setPlotLabel("Image Plot");
+      show.setPlotLabel("DateTime UnOp");
       show.add(ListPlot.of(points));
+      return show;
+    }
+  },
+  MultiTsPlot0 {
+    @Override
+    Show create() {
+      TimeSeries timeSeries = TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT);
+      Distribution dX = UniformDistribution.of( //
+          DateTime.of(1980, 3, 7, 12, 45), //
+          DateTime.of(1981, 3, 7, 12, 45));
+      Distribution dY = LogNormalDistribution.standard();
+      for (int i = 0; i < 20; ++i)
+        timeSeries.insert(RandomVariate.of(dX), RandomVariate.of(dY, 3));
+      Show show = new Show();
+      show.setPlotLabel("MultiTs");
+      show.add(MultiTsPlot.of(timeSeries, t -> t, ColorDataLists._094.strict()));
       return show;
     }
   }

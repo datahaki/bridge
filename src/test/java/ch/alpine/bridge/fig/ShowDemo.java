@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -62,7 +63,9 @@ public class ShowDemo implements Runnable {
         Rectangle rectangle = Show.defaultInsets(new Dimension(width, height), 12);
         if (showDemos.extra)
           rectangle.width -= 100;
-        BufferedImage bufferedImage = showDemos.create().image(new Dimension(width, height), rectangle);
+        Show show = showDemos.create();
+        Objects.requireNonNull(show);
+        BufferedImage bufferedImage = show.image(new Dimension(width, height), rectangle);
         Graphics graphics = bufferedImage.getGraphics();
         // java.awt.Font[family=Dialog,name=Dialog,style=plain,size=12]
         graphics.setColor(Color.PINK);

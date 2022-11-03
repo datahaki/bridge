@@ -16,6 +16,7 @@ import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.api.TensorScalarFunction;
+import ch.alpine.tensor.api.TensorUnaryOperator;
 import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.Quantity;
@@ -102,6 +103,17 @@ import ch.alpine.tensor.tmp.TsEntry;
         : Optional.of(CoordinateBoundingBox.of( //
             timeSeries.domain(), //
             timeSeries.stream().map(TsEntry::value).map(tsf).collect(MinMax.toClip())));
+  }
+
+  public static Optional<CoordinateBoundingBox> fullPlotRange(TimeSeries timeSeries, TensorUnaryOperator tuo) {
+    return timeSeries.isEmpty() //
+        ? Optional.empty()
+        : Optional.of(CoordinateBoundingBox.of( //
+            timeSeries.domain(), //
+            timeSeries.stream().map(TsEntry::value).map(tuo) //
+                .flatMap(Tensor::stream) //
+                .map(Scalar.class::cast) //
+                .collect(MinMax.toClip())));
   }
 
   public static Color withAlpha(Color color, int alpha) {

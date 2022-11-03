@@ -48,7 +48,7 @@ public class TsPlot extends BaseShowable {
       Clip x_clip = optional.orElseThrow();
       if (Sign.isPositive(x_clip.width())) {
         ScalarUnaryOperator suo = x -> tsf.apply(timeSeries.evaluate(x));
-        Path2D.Double path = new Path2D.Double();
+        Path2D path = new Path2D.Double();
         path.moveTo( //
             showableConfig.x_pos(x_clip.min()), //
             showableConfig.y_pos(suo.apply(x_clip.min())));
