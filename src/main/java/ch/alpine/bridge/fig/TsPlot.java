@@ -42,7 +42,6 @@ public class TsPlot extends BaseShowable {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     if (timeSeries.isEmpty())
       return;
-    // TODO BRIDGE TsPlot should also handle vectors
     Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), timeSeries.domain());
     if (optional.isPresent()) {
       Clip x_clip = optional.orElseThrow();
@@ -52,7 +51,7 @@ public class TsPlot extends BaseShowable {
         path.moveTo( //
             showableConfig.x_pos(x_clip.min()), //
             showableConfig.y_pos(suo.apply(x_clip.min())));
-        // TODO BRIDGE TsPlot should also handle vectors
+        // FIXME BRIDGE same issue as multiTsPlot
         timeSeries.block(x_clip, false).stream() //
             .forEach(tsEntry -> path.lineTo( //
                 showableConfig.x_pos(tsEntry.key()), //

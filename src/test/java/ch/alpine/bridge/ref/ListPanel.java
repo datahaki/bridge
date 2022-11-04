@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 
-/** EXPERIMENTAL currently not used
+/** EXPERIMENTAL BRIDGE currently not used
  * 
  * based on JList */
 /* package */ class ListPanel extends FieldPanel {

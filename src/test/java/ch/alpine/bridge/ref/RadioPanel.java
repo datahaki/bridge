@@ -15,7 +15,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-/** EXPERIMENTAL currently not used */
+/** EXPERIMENTAL BRIDGE currently not used */
 /* package */ class RadioPanel extends FieldPanel {
   private final JPanel jPanel;
   private final JComponent jComponent;

@@ -20,6 +20,7 @@ import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.io.ResourceData;
 import ch.alpine.tensor.itp.BSplineFunctionString;
+import ch.alpine.tensor.itp.MitchellNetravaliKernel;
 import ch.alpine.tensor.mat.HilbertMatrix;
 import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.mat.sv.SingularValueList;
@@ -637,7 +638,17 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.add(MatrixPlot.of(matrix, ColorDataGradients.CLASSIC, false));
       return show;
     }
-  }
+  },
+  MitchellNet0 {
+    @Override
+    Show create() {
+      Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
+      show.setPlotLabel("MitchellNetravaliKernel");
+      show.add(Plot.of(MitchellNetravaliKernel.standard(), Clips.absolute(2))).setLabel("1/3_1/3");
+      show.add(Plot.of(MitchellNetravaliKernel.of(1, 1), Clips.absolute(2))).setLabel("1_1");
+      return show;
+    }
+  },
   //
   ;
 

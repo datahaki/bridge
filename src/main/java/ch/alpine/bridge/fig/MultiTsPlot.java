@@ -63,8 +63,8 @@ public class MultiTsPlot extends BaseShowable {
         double x0 = showableConfig.x_pos(x_clip.min());
         for (int i = 0; i < v0.length(); ++i)
           list.get(i).moveTo(x0, showableConfig.y_pos(v0.Get(i)));
-        // FIXME pan this in ShowComponentDemo and see that the border is incorrect
-        // TODO draw until 1 element higher than right border (if exists), same 1 element lower
+        // FIXME BRIDGE pan this in ShowComponentDemo and see that the border is incorrect
+        // TODO BRIDGE draw until 1 element higher than right border (if exists), same 1 element lower
         timeSeries.block(x_clip, true).stream() //
             .forEach(tsEntry -> {
               double x1 = showableConfig.x_pos(tsEntry.key());
