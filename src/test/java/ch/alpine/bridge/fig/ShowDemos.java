@@ -38,6 +38,7 @@ import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
 import ch.alpine.tensor.pdf.c.TriangularDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.pdf.d.BinomialDistribution;
+import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
 import ch.alpine.tensor.pdf.d.PoissonDistribution;
 import ch.alpine.tensor.prc.PoissonProcess;
 import ch.alpine.tensor.prc.RandomFunction;
@@ -553,7 +554,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  MatrixPlot2 {
+  MatrixPlot2(true) {
     @Override
     Show create() {
       Show show = new Show();
@@ -604,11 +605,36 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
           DateTime.of(1980, 3, 7, 12, 45), //
           DateTime.of(1981, 3, 7, 12, 45));
       Distribution dY = LogNormalDistribution.standard();
+      Tensor ofs = Tensors.vector(0, 5, 10);
       for (int i = 0; i < 20; ++i)
-        timeSeries.insert(RandomVariate.of(dX), RandomVariate.of(dY, 3));
+        timeSeries.insert(RandomVariate.of(dX), RandomVariate.of(dY, 3).add(ofs));
       Show show = new Show();
       show.setPlotLabel("MultiTs");
       show.add(MultiTsPlot.of(timeSeries, t -> t, ColorDataLists._094.strict()));
+      return show;
+    }
+  },
+  MatrixPlotDT(true) {
+    @Override
+    Show create() {
+      Distribution dX = UniformDistribution.of( //
+          DateTime.of(1980, 3, 7, 12, 45), //
+          DateTime.of(1980, 5, 7, 12, 45));
+      Tensor matrix = RandomVariate.of(dX, 10, 20);
+      Show show = new Show();
+      show.setPlotLabel("MP DateTime");
+      show.add(MatrixPlot.of(matrix, ColorDataGradients.TEMPERATURE_LIGHT, false));
+      return show;
+    }
+  },
+  MatrixPlotNonSym(true) {
+    @Override
+    Show create() {
+      Distribution dX = DiscreteUniformDistribution.of(100, 111);
+      Tensor matrix = RandomVariate.of(dX, 10, 20);
+      Show show = new Show();
+      show.setPlotLabel("MP NonSymmetric");
+      show.add(MatrixPlot.of(matrix, ColorDataGradients.CLASSIC, false));
       return show;
     }
   }

@@ -58,23 +58,24 @@ public class MultiTsPlot extends BaseShowable {
       Clip x_clip = optional.orElseThrow();
       if (Sign.isPositive(x_clip.width())) {
         ScalarTensorFunction suo = x -> tuo.apply(timeSeries.evaluate(x));
-        Tensor vector = suo.apply(x_clip.min());
-        List<Path2D.Double> list = Stream.generate(() -> new Path2D.Double()).limit(vector.length()).toList();
+        Tensor v0 = suo.apply(x_clip.min());
+        List<Path2D.Double> list = Stream.generate(() -> new Path2D.Double()).limit(v0.length()).toList();
         double x0 = showableConfig.x_pos(x_clip.min());
-        for (int i = 0; i < vector.length(); ++i)
-          list.get(i).moveTo(x0, showableConfig.y_pos(vector.Get(i)));
-        timeSeries.block(x_clip, false).stream() //
+        for (int i = 0; i < v0.length(); ++i)
+          list.get(i).moveTo(x0, showableConfig.y_pos(v0.Get(i)));
+        // FIXME pan this in ShowComponentDemo and see that the border is incorrect
+        // TODO draw until 1 element higher than right border (if exists), same 1 element lower
+        timeSeries.block(x_clip, true).stream() //
             .forEach(tsEntry -> {
               double x1 = showableConfig.x_pos(tsEntry.key());
-              Tensor tensor = tuo.apply(tsEntry.value());
-              for (int i = 0; i < tensor.length(); ++i)
-                list.get(i).lineTo(x1, showableConfig.y_pos(tensor.Get(i)));
+              Tensor v1 = tuo.apply(tsEntry.value());
+              for (int i = 0; i < v1.length(); ++i)
+                list.get(i).lineTo(x1, showableConfig.y_pos(v1.Get(i)));
             });
         graphics.setStroke(getStroke());
-        int i = 0;
-        for (Path2D.Double path : list) {
-          graphics.setColor(colorDataIndexed.getColor(i++));
-          graphics.draw(path);
+        for (int i = 0; i < v0.length(); ++i) {
+          graphics.setColor(colorDataIndexed.getColor(i));
+          graphics.draw(list.get(i));
         }
       }
     }

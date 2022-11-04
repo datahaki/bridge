@@ -19,6 +19,7 @@ import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.red.Max;
 import ch.alpine.tensor.red.MinMax;
 import ch.alpine.tensor.sca.Clip;
@@ -27,11 +28,15 @@ import ch.alpine.tensor.sca.Clips;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/MatrixPlot.html">MatrixPlot</a> */
 public class MatrixPlot extends BarLegendPlot {
+  public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient, boolean symmetrize) {
+    return new MatrixPlot(matrix, colorDataGradient, symmetrize);
+  }
+
   /** @param matrix
    * @param colorDataGradient
    * @return */
   public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient) {
-    return new MatrixPlot(matrix, colorDataGradient);
+    return of(matrix, colorDataGradient, true);
   }
 
   /** @param matrix
@@ -47,15 +52,20 @@ public class MatrixPlot extends BarLegendPlot {
 
   private MatrixPlot( //
       Tensor matrix, //
-      ScalarTensorFunction colorDataGradient) {
+      ScalarTensorFunction colorDataGradient, //
+      boolean symmetrize) {
     super(colorDataGradient);
     MatrixQ.require(matrix);
     Clip clip = matrix.flatten(-1) //
         .map(Scalar.class::cast) //
         .filter(FiniteScalarQ::of) //
         .collect(MinMax.toClip());
-    if (Objects.nonNull(clip))
-      clip = Clips.absolute(Max.of(clip.min().negate(), clip.max()));
+    if (Objects.nonNull(clip) && symmetrize) {
+      if (clip.min() instanceof DateTime)
+        System.err.println("bypass symmetrize");
+      else
+        clip = Clips.absolute(Max.of(clip.min().negate(), clip.max()));
+    }
     Rescale rescale = new Rescale(matrix, clip);
     this.bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
     this.cbb = CoordinateBoundingBox.of( //

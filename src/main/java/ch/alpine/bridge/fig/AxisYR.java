@@ -34,6 +34,10 @@ class AxisYR extends Axis {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
+    // ---
+    // formula showableConfig.y_pos does not apply here, so we have to compute y_pos explicitly
+    double y_height = rectangle.y + rectangle.height - 1;
+    Scalar y2pixel = RealScalar.of(rectangle.height - 1).divide(clip.width());
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(20, rectangle.height)));
@@ -43,16 +47,14 @@ class AxisYR extends Axis {
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
-        int y_pos = (int) showableConfig.y_pos(dateTime);
+        int y_pos = (int) (y_height - dateTime.subtract(clip.min()).multiply(y2pixel).number().doubleValue());
         navigableMap.put(y_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
-      double y_height = rectangle.y + rectangle.height - 1;
       Scalar plotHeight = RealScalar.of(rectangle.height - 1);
       int fontSize = fontMetrics.getAscent();
       Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize * 2)));
-      Scalar y2pixel = RealScalar.of(rectangle.height - 1).divide(clip.width());
       for ( //
           Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
           Scalars.lessEquals(yValue, clip.max()); //
@@ -85,7 +87,4 @@ class AxisYR extends Axis {
       }
     }
   }
-  // public double y_pos(Scalar y) {
-  // return
-  // }
 }
