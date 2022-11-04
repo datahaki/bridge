@@ -243,7 +243,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  TS_DT {
+  TimeSeries_DT {
     @Override
     Show create() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
@@ -263,8 +263,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("Wiener Process with Integral");
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.of(3, 1));
       Tensor samples = RandomVariate.of(UniformDistribution.of(Clips.unit()), 100);
-      samples.map(randomFunction::evaluate); // for
-                                             // integral
+      samples.map(randomFunction::evaluate); // for integral
       show.add(Plot.of(randomFunction::evaluate, Clips.unit())).setLabel("timeSeries");
       TimeSeries timeSeries = randomFunction.timeSeries();
       TimeSeries integral = TimeSeriesIntegrate.of(timeSeries);

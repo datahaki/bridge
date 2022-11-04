@@ -44,15 +44,15 @@ public class TsPlot extends BaseShowable {
       return;
     Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), timeSeries.domain());
     if (optional.isPresent()) {
-      Clip x_clip = optional.orElseThrow();
-      if (Sign.isPositive(x_clip.width())) {
+      Clip clip = optional.orElseThrow();
+      if (Sign.isPositive(clip.width())) {
+        clip = StaticHelper.extend(timeSeries, clip);
         ScalarUnaryOperator suo = x -> tsf.apply(timeSeries.evaluate(x));
         Path2D path = new Path2D.Double();
         path.moveTo( //
-            showableConfig.x_pos(x_clip.min()), //
-            showableConfig.y_pos(suo.apply(x_clip.min())));
-        // FIXME BRIDGE same issue as multiTsPlot
-        timeSeries.block(x_clip, false).stream() //
+            showableConfig.x_pos(clip.min()), //
+            showableConfig.y_pos(suo.apply(clip.min())));
+        timeSeries.block(clip, true).stream() //
             .forEach(tsEntry -> path.lineTo( //
                 showableConfig.x_pos(tsEntry.key()), //
                 showableConfig.y_pos(tsf.apply(tsEntry.value()))));

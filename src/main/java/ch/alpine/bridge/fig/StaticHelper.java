@@ -4,6 +4,8 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
+import java.util.NavigableSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -118,5 +120,20 @@ import ch.alpine.tensor.tmp.TsEntry;
 
   public static Color withAlpha(Color color, int alpha) {
     return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+  }
+
+  public static Clip extend(TimeSeries timeSeries, Clip clip) {
+    NavigableSet<Scalar> navigableSet = timeSeries.keySet(timeSeries.domain(), true);
+    {
+      Scalar lo = navigableSet.floor(clip.min());
+      if (Objects.nonNull(lo))
+        clip = Clips.interval(lo, clip.max());
+    }
+    {
+      Scalar hi = navigableSet.ceiling(clip.max());
+      if (Objects.nonNull(hi))
+        clip = Clips.interval(clip.min(), hi);
+    }
+    return clip;
   }
 }

@@ -21,16 +21,15 @@ import ch.alpine.tensor.tmp.TimeSeries;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Plot.html">Plot</a> */
 public class MultiTsPlot extends BaseShowable {
+  public static Showable of(TimeSeries timeSeries, TensorUnaryOperator tuo, ColorDataIndexed colorDataIndexed) {
+    return new MultiTsPlot(timeSeries, tuo, colorDataIndexed);
+  }
+
   /** @param timeSeries
    * @param tuo */
   public static Showable of(TimeSeries timeSeries, TensorUnaryOperator tuo) {
     return of(timeSeries, tuo, ColorDataLists._097.cyclic());
   }
-
-  public static Showable of(TimeSeries timeSeries, TensorUnaryOperator tuo, ColorDataIndexed colorDataIndexed) {
-    return new MultiTsPlot(timeSeries, tuo, colorDataIndexed);
-  }
-  //
 
   /** @param timeSeries
    * @return */
@@ -55,17 +54,16 @@ public class MultiTsPlot extends BaseShowable {
       return;
     Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), timeSeries.domain());
     if (optional.isPresent()) {
-      Clip x_clip = optional.orElseThrow();
-      if (Sign.isPositive(x_clip.width())) {
+      Clip clip = optional.orElseThrow();
+      if (Sign.isPositive(clip.width())) {
+        clip = StaticHelper.extend(timeSeries, clip);
         ScalarTensorFunction suo = x -> tuo.apply(timeSeries.evaluate(x));
-        Tensor v0 = suo.apply(x_clip.min());
+        Tensor v0 = suo.apply(clip.min());
         List<Path2D.Double> list = Stream.generate(() -> new Path2D.Double()).limit(v0.length()).toList();
-        double x0 = showableConfig.x_pos(x_clip.min());
+        double x0 = showableConfig.x_pos(clip.min());
         for (int i = 0; i < v0.length(); ++i)
           list.get(i).moveTo(x0, showableConfig.y_pos(v0.Get(i)));
-        // FIXME BRIDGE pan this in ShowComponentDemo and see that the border is incorrect
-        // TODO BRIDGE draw until 1 element higher than right border (if exists), same 1 element lower
-        timeSeries.block(x_clip, true).stream() //
+        timeSeries.block(clip, true).stream() //
             .forEach(tsEntry -> {
               double x1 = showableConfig.x_pos(tsEntry.key());
               Tensor v1 = tuo.apply(tsEntry.value());

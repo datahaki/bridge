@@ -21,7 +21,7 @@ public class ShowComponentDemo implements Runnable {
   private final JFrame jFrame = new JFrame();
   private final ShowComponent showComponent = new ShowComponent();
   // ---
-  public ShowDemos showDemos = ShowDemos.MultiTsPlot0;
+  public ShowDemos showDemos = ShowDemos.TimeSeries_DT;
   public Font font = new JPanel().getFont();
   public Boolean xZoom = true;
   public Boolean xPan = true;
@@ -41,6 +41,7 @@ public class ShowComponentDemo implements Runnable {
     jFrame.setContentPane(jPanel);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setBounds(100, 100, 1000, 900);
+    run();
   }
 
   @Override
