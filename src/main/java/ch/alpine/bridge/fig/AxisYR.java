@@ -34,13 +34,14 @@ class AxisYR extends Axis {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
+    int fontSize = fontMetrics.getAscent() * 4 / 3;
     // ---
     // formula showableConfig.y_pos does not apply here, so we have to compute y_pos explicitly
     double y_height = rectangle.y + rectangle.height - 1;
     Scalar y2pixel = RealScalar.of(rectangle.height - 1).divide(clip.width());
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(20, rectangle.height)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(fontSize, rectangle.height)));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
@@ -53,8 +54,7 @@ class AxisYR extends Axis {
       }
     } else {
       Scalar plotHeight = RealScalar.of(rectangle.height - 1);
-      int fontSize = fontMetrics.getAscent();
-      Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize * 2)));
+      Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize)));
       for ( //
           Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
           Scalars.lessEquals(yValue, clip.max()); //

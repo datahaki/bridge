@@ -65,7 +65,21 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 /* package */ enum ShowDemos {
-  DEMO1 {
+  ListLinePlot0 {
+    @Override
+    Show create() {
+      Tensor rgba = ColorDataGradients.ALPINE.queryTableRgba().orElseThrow();
+      // System.out.println(Dimensions.of(rgba));
+      Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
+      show.setPlotLabel("Color Data Gradient 097");
+      Tensor domain = Range.of(0, rgba.length());
+      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
+      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
+      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
+      return show;
+    }
+  },
+  ListLinePlot1 {
     @Override
     Show create() {
       Tensor domain = Subdivide.increasing(Clips.unit(), 50);
@@ -131,21 +145,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.add(ListPlot.of(Range.of(0, values.length()), values.map(Log10.FUNCTION))).setLabel("singular values");
       Clip clip = Clips.absolute(5);
       show.add(Plot.of(Erfc.FUNCTION, clip)).setLabel("Erfc");
-      return show;
-    }
-  },
-  DISTR0 {
-    @Override
-    Show create() {
-      int n = 50;
-      Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
-      PDF pdf = PDF.of(distribution);
-      CDF cdf = CDF.of(distribution);
-      Show show = new Show();
-      show.setPlotLabel(distribution.toString());
-      Tensor domain = Range.of(0, n + 1);
-      show.add(ListPlot.of(domain, domain.map(pdf::at))).setLabel("PDF");
-      show.add(ListPlot.of(domain, domain.map(cdf::p_lessEquals))).setLabel("CDF");
       return show;
     }
   },
@@ -522,6 +521,21 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("Density Plot");
       ScalarBinaryOperator sbo = (x, y) -> x.multiply(y);
       show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.positive(1), Clips.positive(2))));
+      return show;
+    }
+  },
+  DiscretePlot1 {
+    @Override
+    Show create() {
+      int n = 50;
+      Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
+      PDF pdf = PDF.of(distribution);
+      CDF cdf = CDF.of(distribution);
+      Show show = new Show();
+      show.setPlotLabel(distribution.toString());
+      Clip clip = Clips.positive(n);
+      show.add(DiscretePlot.of(pdf::at, clip)).setLabel("PDF");
+      show.add(DiscretePlot.of(cdf::p_lessEquals, clip)).setLabel("CDF");
       return show;
     }
   },

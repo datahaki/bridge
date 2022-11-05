@@ -21,7 +21,7 @@ public class ShowComponentDemo implements Runnable {
   private final JFrame jFrame = new JFrame();
   private final ShowComponent showComponent = new ShowComponent();
   // ---
-  public ShowDemos showDemos = ShowDemos.TimeSeries_DT;
+  public ShowDemos showDemos = ShowDemos.ListLinePlot0;
   public Font font = new JPanel().getFont();
   public Boolean xZoom = true;
   public Boolean xPan = true;

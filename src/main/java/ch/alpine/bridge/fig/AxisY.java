@@ -34,9 +34,10 @@ class AxisY extends Axis {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
+    int fontSize = fontMetrics.getAscent() * 4 / 3;
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(20, rectangle.height)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(fontSize, rectangle.height)));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
@@ -49,8 +50,7 @@ class AxisY extends Axis {
       }
     } else {
       Scalar plotHeight = RealScalar.of(rectangle.height - 1);
-      int fontSize = fontMetrics.getAscent();
-      Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize * 2)));
+      Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize)));
       for ( //
           Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
           Scalars.lessEquals(yValue, clip.max()); //

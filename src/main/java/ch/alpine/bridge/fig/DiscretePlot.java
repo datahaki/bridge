@@ -43,9 +43,7 @@ public class DiscretePlot extends BaseShowable {
 
   @Override
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    Tensor samples = Range.of( //
-        Scalars.bigIntegerValueExact(domain.min()), //
-        Scalars.bigIntegerValueExact(domain.max()));
+    Tensor samples = Range.closed(domain);
     Color color = StaticHelper.withAlpha(getColor(), 64);
     double radius = 2.5;
     graphics.setStroke(getStroke());
