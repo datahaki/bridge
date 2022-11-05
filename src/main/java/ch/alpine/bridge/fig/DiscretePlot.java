@@ -52,10 +52,10 @@ public class DiscretePlot extends BaseShowable {
       Scalar y = suo.apply(x);
       Point2D point2d = showableConfig.toPoint2D(Tensors.of(x, y));
       double y0 = showableConfig.y_pos(y.zero());
-      graphics.setColor(getColor());
-      graphics.fill(new Ellipse2D.Double(point2d.getX() - radius, point2d.getY() - radius, 2 * radius, 2 * radius));
       graphics.setColor(color);
       graphics.draw(new Line2D.Double(point2d.getX(), y0, point2d.getX(), point2d.getY()));
+      graphics.setColor(getColor());
+      graphics.fill(new Ellipse2D.Double(point2d.getX() - radius, point2d.getY() - radius, 2 * radius, 2 * radius));
     }
   }
 

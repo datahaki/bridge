@@ -34,7 +34,7 @@ class AxisYR extends Axis {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
-    int fontSize = fontMetrics.getAscent() * 4 / 3;
+    int fontSize = StaticHelper.interval(fontMetrics);
     // ---
     // formula showableConfig.y_pos does not apply here, so we have to compute y_pos explicitly
     double y_height = rectangle.y + rectangle.height - 1;

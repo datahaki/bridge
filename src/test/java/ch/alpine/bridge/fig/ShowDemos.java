@@ -71,7 +71,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Tensor rgba = ColorDataGradients.ALPINE.queryTableRgba().orElseThrow();
       // System.out.println(Dimensions.of(rgba));
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Color Data Gradient 097");
+      show.setPlotLabel("Color Data Gradient Alpine");
       Tensor domain = Range.of(0, rgba.length());
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
@@ -84,8 +84,8 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       Tensor domain = Subdivide.increasing(Clips.unit(), 50);
       Tensor rgba = domain.map(ColorDataGradients.CLASSIC);
-      Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Color Data Gradient 097");
+      Show show = new Show(ColorDataLists._109.strict());
+      show.setPlotLabel("Color Data Gradient Classic");
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
@@ -97,7 +97,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
   DEMO3 {
     @Override
     Show create() {
-      Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
+      Show show = new Show(ColorDataLists._098.strict());
       show.setPlotLabel("Cosine");
       ScalarUnaryOperator suo = QuantityMagnitude.SI().in("rad");
       Showable showable = show.add(Plot.of(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Quantity.of(180, "deg"))));
@@ -164,23 +164,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       ScalarTensorFunction sto = BSplineFunctionString.of(2, sequence);
       ScalarUnaryOperator suo = s -> (Scalar) sto.apply(s);
       show.add(Plot.of(suo, Clips.interval(0, 3)));
-      return show;
-    }
-  },
-  DISTR2 {
-    @Override
-    Show create() {
-      Distribution original = PoissonDistribution.of(7);
-      Distribution distribution = TruncatedDistribution.of(original, Clips.interval(5, 10));
-      PDF pdf = PDF.of(distribution);
-      CDF cdf = CDF.of(distribution);
-      PDF pdf_o = PDF.of(original);
-      Show show = new Show();
-      show.setPlotLabel("Truncated Poisson Distribution[7]");
-      Tensor domain = Range.of(0, 12);
-      show.add(ListPlot.of(pdf::at, domain));
-      show.add(ListPlot.of(cdf::p_lessEquals, domain));
-      show.add(ListPlot.of(pdf_o::at, domain));
       return show;
     }
   },
@@ -524,21 +507,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  DiscretePlot1 {
-    @Override
-    Show create() {
-      int n = 50;
-      Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
-      PDF pdf = PDF.of(distribution);
-      CDF cdf = CDF.of(distribution);
-      Show show = new Show();
-      show.setPlotLabel(distribution.toString());
-      Clip clip = Clips.positive(n);
-      show.add(DiscretePlot.of(pdf::at, clip)).setLabel("PDF");
-      show.add(DiscretePlot.of(cdf::p_lessEquals, clip)).setLabel("CDF");
-      return show;
-    }
-  },
   ArrayPlot0(true) {
     @Override
     Show create() {
@@ -585,6 +553,38 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("Discrete Plot");
       show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(20, 0.3))::at, Clips.positive(20))).setLabel("0.3");
       show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(25, 0.5))::at, Clips.positive(25))).setLabel("0.5");
+      return show;
+    }
+  },
+  DiscretePlot1 {
+    @Override
+    Show create() {
+      int n = 50;
+      Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
+      PDF pdf = PDF.of(distribution);
+      CDF cdf = CDF.of(distribution);
+      Show show = new Show();
+      show.setPlotLabel(distribution.toString());
+      Clip clip = Clips.positive(n);
+      show.add(DiscretePlot.of(pdf::at, clip)).setLabel("PDF");
+      show.add(DiscretePlot.of(cdf::p_lessEquals, clip)).setLabel("CDF");
+      return show;
+    }
+  },
+  DiscretePlot2 {
+    @Override
+    Show create() {
+      Distribution original = PoissonDistribution.of(7);
+      Distribution distribution = TruncatedDistribution.of(original, Clips.interval(5, 10));
+      PDF pdf = PDF.of(distribution);
+      CDF cdf = CDF.of(distribution);
+      PDF pdf_o = PDF.of(original);
+      Show show = new Show();
+      show.setPlotLabel("Truncated Poisson Distribution[7]");
+      Clip clip = Clips.positive(12);
+      show.add(DiscretePlot.of(pdf::at, clip));
+      show.add(DiscretePlot.of(cdf::p_lessEquals, clip));
+      show.add(DiscretePlot.of(pdf_o::at, clip));
       return show;
     }
   },

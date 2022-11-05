@@ -4,11 +4,11 @@ package ch.alpine.bridge.usr;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Elev {
+public class P74 {
   final Set<Integer> set = new HashSet<>();
   final int limit;
 
-  public Elev(int limit) {
+  public P74(int limit) {
     this.limit = limit;
   }
 
@@ -27,7 +27,7 @@ public class Elev {
 
   public static void main(String[] args) {
     for (int limit = 10; limit < 20; ++limit) {
-      Elev elev = new Elev(limit);
+      P74 elev = new P74(limit);
       elev.rec(0);
       boolean status = elev.set.size() == limit + 1;
       System.out.println(limit + " " + status);

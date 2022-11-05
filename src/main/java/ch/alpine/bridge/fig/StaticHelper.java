@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Stroke;
 import java.util.NavigableSet;
 import java.util.Objects;
@@ -135,5 +136,9 @@ import ch.alpine.tensor.tmp.TsEntry;
         clip = Clips.interval(clip.min(), hi);
     }
     return clip;
+  }
+
+  public static int interval(FontMetrics fontMetrics) {
+    return fontMetrics.getAscent() * 8 / 5;
   }
 }

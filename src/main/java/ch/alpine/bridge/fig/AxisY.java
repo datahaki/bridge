@@ -34,7 +34,7 @@ class AxisY extends Axis {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
-    int fontSize = fontMetrics.getAscent() * 4 / 3;
+    int fontSize = StaticHelper.interval(fontMetrics);
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(fontSize, rectangle.height)));
