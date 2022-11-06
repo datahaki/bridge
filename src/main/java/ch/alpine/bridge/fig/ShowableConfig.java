@@ -19,7 +19,7 @@ public class ShowableConfig {
   private final CoordinateBoundingBox cbb;
   private final Clip xRange;
   protected final Clip yRange;
-  private final double y_height; // TODO BRIDGE misnomer
+  private final double yBaseline;
   private final Scalar x2pixel;
   protected final Scalar y2pixel;
   private final Scalar pixel2x;
@@ -30,7 +30,7 @@ public class ShowableConfig {
     this.cbb = cbb;
     this.xRange = cbb.getClip(0);
     this.yRange = cbb.getClip(1);
-    y_height = rectangle.y + rectangle.height - 1;
+    yBaseline = rectangle.y + rectangle.height - 1;
     x2pixel = RealScalar.of(rectangle.width - 1).divide(xRange.width());
     y2pixel = RealScalar.of(rectangle.height - 1).divide(yRange.width());
     Sign.requirePositive(x2pixel);
@@ -39,43 +39,42 @@ public class ShowableConfig {
     pixel2y = yRange.width().divide(RealScalar.of(rectangle.height - 1));
   }
 
-  public double x_pos(Scalar x) {
+  public final double x_pos(Scalar x) {
     return rectangle.x + x.subtract(xRange.min()).multiply(x2pixel).number().doubleValue();
   }
 
   public double y_pos(Scalar y) {
-    return y_height - y.subtract(yRange.min()).multiply(y2pixel).number().doubleValue();
+    return yBaseline - y.subtract(yRange.min()).multiply(y2pixel).number().doubleValue();
   }
 
-  public Point2D toPoint2D(Tensor vector) {
+  public final Point2D toPoint2D(Tensor vector) {
     return new Point2D.Double( //
         x_pos(vector.Get(0)), //
         y_pos(vector.Get(1)));
   }
 
-  public Optional<Tensor> toValue(Point point) {
+  public final Optional<Tensor> toValue(Point point) {
     return rectangle.contains(point) //
         ? Optional.of(Tensors.of( //
             xRange.min().add(RealScalar.of(point.x - rectangle.x).multiply(pixel2x)), //
-            yRange.min().add(RealScalar.of(y_height - point.y).multiply(pixel2y)) //
-        ))
+            yRange.min().add(RealScalar.of(yBaseline - point.y).multiply(pixel2y))))
         : Optional.empty();
   }
 
-  public Scalar dx(Scalar dx) {
+  public final Scalar dx(Scalar dx) {
     return dx.multiply(pixel2x);
   }
 
-  public Scalar dy(Scalar dy) {
+  public final Scalar dy(Scalar dy) {
     return dy.multiply(pixel2y);
   }
 
-  public Clip getClip(int index) {
+  public final Clip getClip(int index) {
     return cbb.getClip(index);
   }
 
   /** @return may be null */
-  public CoordinateBoundingBox getCbb() {
+  public final CoordinateBoundingBox getCbb() {
     return cbb;
   }
 }

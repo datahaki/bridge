@@ -16,6 +16,7 @@ import ch.alpine.tensor.alg.UnitVector;
 import ch.alpine.tensor.api.ScalarBinaryOperator;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.img.ColorDataGradient;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.io.ResourceData;
@@ -71,7 +72,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Tensor rgba = ColorDataGradients.ALPINE.queryTableRgba().orElseThrow();
       // System.out.println(Dimensions.of(rgba));
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Color Data Gradient Alpine");
+      show.setPlotLabel("Color Data Gradient Alpine Table");
       Tensor domain = Range.of(0, rgba.length());
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
       show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
@@ -82,15 +83,13 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
   ListLinePlot1 {
     @Override
     Show create() {
-      Tensor domain = Subdivide.increasing(Clips.unit(), 50);
-      Tensor rgba = domain.map(ColorDataGradients.CLASSIC);
-      Show show = new Show(ColorDataLists._109.strict());
+      ColorDataGradient f = ColorDataGradients.CLASSIC;
+      Clip clip = Clips.unit();
+      Show show = new Show(ColorDataLists._109.strict()); // use RGB for line color
       show.setPlotLabel("Color Data Gradient Classic");
-      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
-      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
-      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
-      show.add(Plot.of(s -> Cos.FUNCTION.apply(s.add(s)).multiply(RealScalar.of(100)), Clips.positive(0.5))).setLabel("sine");
-      show.add(ListLinePlot.of(Tensors.empty())).setLabel("empty");
+      show.add(Plot.of(s -> f.apply(s).Get(0), clip)).setLabel("red");
+      show.add(Plot.of(s -> f.apply(s).Get(1), clip)).setLabel("green");
+      show.add(Plot.of(s -> f.apply(s).Get(2), clip)).setLabel("blue");
       return show;
     }
   },
@@ -115,7 +114,18 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  DEMO5 {
+  Demo5 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("With Infinity");
+      Tensor points = Tensors.fromString("{{0,0}, {0.2, Infinity}, {0.3, 0.3}}");
+      show.add(ListPlot.of(points));
+      show.add(ListLinePlot.of(points));
+      return show;
+    }
+  },
+  WindowFunctions0 {
     @Override
     Show create() {
       WindowFunctions[] smoothingKernels = new WindowFunctions[] { //
@@ -130,9 +140,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
         Showable showable = show.add(Plot.of(windowFunctions.get(), Clips.absolute(0.5)));
         showable.setLabel(windowFunctions.name());
       }
-      Tensor points = Tensors.fromString("{{0,0}, {0.2, Infinity}, {0.3, 0.3}}");
-      show.add(ListPlot.of(points));
-      show.add(ListLinePlot.of(points));
       return show;
     }
   },
@@ -167,19 +174,19 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  DISTR3 {
+  TruncatedDistribution0 {
     @Override
     Show create() {
       Distribution original = NormalDistribution.standard();
-      Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 2.5));
+      Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 1.5));
       PDF pdf = PDF.of(distribution);
       CDF cdf = CDF.of(distribution);
       PDF pdf_o = PDF.of(original);
       Show show = new Show();
       show.setPlotLabel("Truncated Distribution");
       Clip clip = Clips.interval(-3, 3);
-      show.add(Plot.of(pdf_o::at, clip)).setLabel("PDF");
-      show.add(Plot.of(pdf::at, clip)).setLabel("trunc. PDF");
+      show.add(Plot.filling(pdf_o::at, clip)).setLabel("orig. PDF");
+      show.add(Plot.filling(pdf::at, clip)).setLabel("trunc. PDF");
       show.add(Plot.of(cdf::p_lessEquals, clip)).setLabel("trunc. CDF");
       return show;
     }
@@ -483,7 +490,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show(ColorDataLists._097.strict());
       show.setPlotLabel("ReImPlot");
       Clip clip = Clips.absolute(4);
-      show.add(ReImPlot.filling(ArcSin.FUNCTION, clip)).setLabel("arc sin");
+      show.add(ReImPlot.of(ArcSin.FUNCTION, clip)).setLabel("arc sin");
       show.add(ReImPlot.of(ArcCos.FUNCTION, clip)).setLabel("arc cos");
       return show;
     }
@@ -493,7 +500,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
-      show.add(SpectrogramDemo.create(0.32, 1.6)).setLabel("Chirp");
+      show.add(SpectrogramDemo.create(0.32, 1.6));
       return show;
     }
   },
@@ -533,6 +540,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Tensor matrix = ResourceData.of("/ch/alpine/bridge/fig/hb_west0381.csv");
       matrix = matrix.map(Clips.absoluteOne());
       show.add(MatrixPlot.of(matrix));
+      show.aspectRatio = RealScalar.ONE;
       return show;
     }
   },

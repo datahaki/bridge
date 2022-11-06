@@ -6,8 +6,8 @@ import java.awt.Rectangle;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
-public class ShowableConfigY extends ShowableConfig {
-  public ShowableConfigY(Rectangle rectangle, CoordinateBoundingBox cbb) {
+public class ShowableConfigYF extends ShowableConfig {
+  public ShowableConfigYF(Rectangle rectangle, CoordinateBoundingBox cbb) {
     super(rectangle, cbb);
   }
 

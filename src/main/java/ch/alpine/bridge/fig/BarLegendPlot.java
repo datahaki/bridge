@@ -29,7 +29,7 @@ import ch.alpine.tensor.sca.Clips;
     int pix = rectangle.x + rectangle.width + 1 + StaticHelper.GAP * 2;
     graphics.drawImage(ImageFormat.of(Subdivide.decreasing(Clips.unit(), rectangle.height - 1).map(Tensors::of).map(colorDataGradient)), //
         pix, rectangle.y, width, rectangle.height, null);
-    new AxisYR(ISO8601DateTimeFocus.INSTANCE).render( //
+    new AxisYF(ISO8601DateTimeFocus.INSTANCE).render( //
         showableConfig, //
         new Point(pix + width + StaticHelper.GAP - 2, rectangle.y), //
         rectangle.height, graphics, clip());

@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -122,6 +123,72 @@ public class Show implements Serializable {
     return showables.isEmpty();
   }
 
+  public Scalar aspectRatio = null;
+
+  /** @param graphics
+   * @param rectangle
+   * @return */
+  public ShowableConfig render(Graphics graphics, Rectangle rectangle) {
+    if (rectangle.width <= 1 || rectangle.height <= 1)
+      return null;
+    Rectangle r = new Rectangle(rectangle);
+    if (Objects.nonNull(aspectRatio)) {
+      // TODO BRIDGE
+      int uni = Math.min(rectangle.width, rectangle.height);
+      r.width = uni;
+      r.height = uni;
+    }
+    renderFrameTitle(graphics, r);
+    Graphics2D g = (Graphics2D) graphics.create();
+    g.setClip(r.x, r.y, r.width, r.height);
+    RenderQuality.setQuality(g);
+    ShowableConfig showableConfig = renderShowables(graphics, g, r);
+    renderLegend(g, r);
+    g.dispose();
+    return showableConfig;
+  }
+
+  /** @param graphics
+   * @param rectangle
+   * @return */
+  public ShowableConfig render_autoIndent(Graphics graphics, Rectangle rectangle) {
+    Rectangle r = defaultInsets(rectangle.getSize(), graphics.getFont().getSize());
+    return render(graphics, new Rectangle(rectangle.x + r.x, rectangle.y + r.y, r.width, r.height));
+  }
+
+  /** @param dimension
+   * @return */
+  public BufferedImage image(Dimension dimension) {
+    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D graphics = bufferedImage.createGraphics();
+    graphics.setColor(Color.WHITE);
+    graphics.fillRect(0, 0, dimension.width, dimension.height);
+    render(graphics, defaultInsets(dimension, graphics.getFont().getSize()));
+    return bufferedImage;
+  }
+
+  /** @param dimension
+   * @param rectangle
+   * @return */
+  public BufferedImage image(Dimension dimension, Rectangle rectangle) {
+    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D graphics = bufferedImage.createGraphics();
+    graphics.setColor(Color.WHITE);
+    graphics.fillRect(0, 0, dimension.width, dimension.height);
+    render(graphics, rectangle);
+    return bufferedImage;
+  }
+
+  /** @param file
+   * @param dimension of image
+   * @throws IOException */
+  public void export(File file, Dimension dimension) throws IOException {
+    String string = file.toString();
+    int index = string.lastIndexOf('.');
+    ImageIO.write(image(dimension), string.substring(index + 1), file);
+  }
+
+  // ---
   private void renderFrameTitle(Graphics _g, Rectangle rectangle) {
     Graphics2D graphics = (Graphics2D) _g.create();
     if (frame) {
@@ -156,7 +223,7 @@ public class Show implements Serializable {
     } else {
       boolean flipY = showables.stream().anyMatch(Showable::flipYAxis);
       showableConfig = flipY //
-          ? new ShowableConfigY(rectangle, _cbb)
+          ? new ShowableConfigYF(rectangle, _cbb)
           : new ShowableConfig(rectangle, _cbb);
       GridDrawer gridDrawer = new GridDrawer(dateTimeFocus);
       gridDrawer.render(showableConfig, _g);
@@ -197,55 +264,5 @@ public class Show implements Serializable {
         }
       }
     }
-  }
-
-  public ShowableConfig render(Graphics _g, Rectangle rectangle) {
-    if (rectangle.width <= 1 || rectangle.height <= 1)
-      return null;
-    renderFrameTitle(_g, rectangle);
-    Graphics2D graphics = (Graphics2D) _g.create();
-    graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    RenderQuality.setQuality(graphics);
-    ShowableConfig showableConfig = renderShowables(_g, graphics, rectangle);
-    renderLegend(graphics, rectangle);
-    graphics.dispose();
-    return showableConfig;
-  }
-
-  public ShowableConfig render_autoIndent(Graphics _g, Rectangle rectangle2) {
-    Rectangle rectangle = defaultInsets(rectangle2.getSize(), _g.getFont().getSize());
-    return render(_g, new Rectangle(rectangle2.x + rectangle.x, rectangle2.y + rectangle.y, rectangle.width, rectangle.height));
-  }
-
-  /** @param dimension
-   * @return */
-  public BufferedImage image(Dimension dimension) {
-    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = bufferedImage.createGraphics();
-    graphics.setColor(Color.WHITE);
-    graphics.fillRect(0, 0, dimension.width, dimension.height);
-    render(graphics, defaultInsets(dimension, graphics.getFont().getSize()));
-    return bufferedImage;
-  }
-
-  /** @param dimension
-   * @param rectangle
-   * @return */
-  public BufferedImage image(Dimension dimension, Rectangle rectangle) {
-    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = bufferedImage.createGraphics();
-    graphics.setColor(Color.WHITE);
-    graphics.fillRect(0, 0, dimension.width, dimension.height);
-    render(graphics, rectangle);
-    return bufferedImage;
-  }
-
-  /** @param file
-   * @param dimension of image
-   * @throws IOException */
-  public void export(File file, Dimension dimension) throws IOException {
-    String string = file.toString();
-    int index = string.lastIndexOf('.');
-    ImageIO.write(image(dimension), string.substring(index + 1), file);
   }
 }

@@ -22,8 +22,8 @@ import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
-class AxisYR extends Axis {
-  public AxisYR(DateTimeFocus dateTimeFocus) {
+class AxisYLog extends Axis {
+  public AxisYLog(DateTimeFocus dateTimeFocus) {
     super(dateTimeFocus);
   }
 
@@ -35,10 +35,6 @@ class AxisYR extends Axis {
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
     int fontSize = StaticHelper.interval(fontMetrics);
-    // ---
-    // formula showableConfig.y_pos does not apply here, so we have to compute y_pos explicitly
-    double y_height = rectangle.y + rectangle.height - 1;
-    Scalar y2pixel = RealScalar.of(rectangle.height - 1).divide(clip.width());
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(fontSize, rectangle.height)));
@@ -48,7 +44,7 @@ class AxisYR extends Axis {
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
-        int y_pos = (int) (y_height - dateTime.subtract(clip.min()).multiply(y2pixel).number().doubleValue());
+        int y_pos = (int) showableConfig.y_pos(dateTime);
         navigableMap.put(y_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
@@ -59,9 +55,15 @@ class AxisYR extends Axis {
           Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
           Scalars.lessEquals(yValue, clip.max()); //
           yValue = yValue.add(dY)) {
-        int y_pos = (int) (y_height - yValue.subtract(clip.min()).multiply(y2pixel).number().doubleValue());
+        int y_pos = (int) showableConfig.y_pos(yValue);
         navigableMap.put(y_pos, yValue);
       }
+    }
+    if (gridLines) {
+      graphics.setStroke(STROKE_GRIDLINES);
+      graphics.setColor(COLOR_GRIDLINES);
+      for (int piy : navigableMap.keySet())
+        graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width - 1, piy);
     }
     if (ticks) {
       {
@@ -69,7 +71,7 @@ class AxisYR extends Axis {
         graphics.setColor(COLOR_HELPER);
         graphics.drawLine(point.x, point.y, point.x, point.y + length - 1);
         for (int piy : navigableMap.keySet())
-          graphics.drawLine(point.x + 1, piy, point.x + 2, piy);
+          graphics.drawLine(point.x - 2, piy, point.x - 1, piy);
       }
       {
         graphics.setColor(StaticHelper.COLOR_FONT);
@@ -81,7 +83,7 @@ class AxisYR extends Axis {
               ? StaticHelper.format(value)
               : ((DateTime) value).format(dateTimeFormatter);
           graphics.drawString(yLabel, //
-              point.x + 5, //
+              point.x - fontMetrics.stringWidth(yLabel) - 5, //
               piy + fontMetrics.getAscent() / 2 - 1);
         }
       }

@@ -19,13 +19,13 @@ Features include
 
 ## Plots
 
-![ListPlot](https://user-images.githubusercontent.com/4012178/174350881-199e3d17-514d-402c-b59c-8418ee6fcdb8.png)
+![MatrixPlot1](https://user-images.githubusercontent.com/4012178/200159269-ed3b0969-3660-4bf3-ade6-0844d799e1e2.png)
 
-![Spectrogram](https://user-images.githubusercontent.com/4012178/174349666-ed465170-9bd7-4427-add7-d299e23db011.png)
+![ReImPlot0](https://user-images.githubusercontent.com/4012178/200159270-7e441eac-5ace-4070-830d-dfa3918eb464.png)
 
-![Histogram](https://user-images.githubusercontent.com/4012178/174354957-3134ea12-34a8-4a72-a680-f0ec38e8bce9.png)
+![Spectrogram0](https://user-images.githubusercontent.com/4012178/200159271-29157014-c2f3-4aa9-817d-d8b7280e9ab5.png)
 
-![ArrayPlot](https://user-images.githubusercontent.com/4012178/190851366-e9bd09f0-8e78-46d2-8606-6e1b739b56dd.png)
+![TruncatedDistribution0](https://user-images.githubusercontent.com/4012178/200159273-dfe78967-dc64-4cc5-a677-f931dc7700b9.png)
 
 ## Dialogs
 
