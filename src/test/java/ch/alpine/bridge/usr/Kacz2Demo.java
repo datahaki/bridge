@@ -28,7 +28,7 @@ public enum Kacz2Demo {
       for (int i = 0; i < n; ++i) {
         Tensor x = kaczmarzIteration.refine();
         Scalar err = Vector2Norm.of(matrix.dot(x).subtract(b));
-//        System.out.println(x);
+        // System.out.println(x);
         points.append(Tensors.of(RealScalar.of(i), err));
       }
       points.set(Log10.FUNCTION, Tensor.ALL, 1);

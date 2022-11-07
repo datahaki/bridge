@@ -22,11 +22,13 @@ import javax.imageio.ImageIO;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.opt.nd.CoordinateBounds;
+import ch.alpine.tensor.sca.Round;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
@@ -123,7 +125,11 @@ public class Show implements Serializable {
     return showables.isEmpty();
   }
 
-  public Scalar aspectRatio = null;
+  private Scalar aspectRatio = null;
+
+  public void setAspectRatio(Scalar aspectRatio) {
+    this.aspectRatio = aspectRatio;
+  }
 
   /** @param graphics
    * @param rectangle
@@ -131,9 +137,23 @@ public class Show implements Serializable {
   public ShowableConfig render(Graphics graphics, Rectangle rectangle) {
     if (rectangle.width <= 1 || rectangle.height <= 1)
       return null;
+    CoordinateBoundingBox _cbb = deriveCbb();
     Rectangle r = new Rectangle(rectangle);
-    if (Objects.nonNull(aspectRatio)) {
-      // TODO BRIDGE
+    if (Objects.nonNull(_cbb) && Objects.nonNull(aspectRatio)) {
+      Scalar ratio = _cbb.getClip(0).width().divide(_cbb.getClip(1).width()).divide(aspectRatio);
+      Scalar s_w = ratio.multiply(RealScalar.of(rectangle.height));
+      Scalar s_h = RealScalar.of(rectangle.width).divide(ratio);
+      int r_w = Round.intValueExact(s_w);
+      int r_h = Round.intValueExact(s_h);
+      if (rectangle.width < r_w) {
+        System.out.println("r_w=" + r_w);
+      }
+      if (rectangle.height < r_h) {
+        System.out.println("r_h=" + r_h);
+      }
+      if (rectangle.width < r_w && rectangle.height < r_h) {
+        System.err.println("WHUT");
+      }
       int uni = Math.min(rectangle.width, rectangle.height);
       r.width = uni;
       r.height = uni;

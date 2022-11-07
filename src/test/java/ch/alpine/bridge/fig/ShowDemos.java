@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.image.BufferedImage;
 
+import ch.alpine.tensor.ComplexScalar;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -51,11 +52,14 @@ import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityMagnitude;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
+import ch.alpine.tensor.sca.Im;
 import ch.alpine.tensor.sca.erf.Erfc;
 import ch.alpine.tensor.sca.exp.Log10;
 import ch.alpine.tensor.sca.ply.Chebyshev;
 import ch.alpine.tensor.sca.ply.ChebyshevNodes;
 import ch.alpine.tensor.sca.ply.ClenshawChebyshev;
+import ch.alpine.tensor.sca.pow.Power;
+import ch.alpine.tensor.sca.pow.Sqrt;
 import ch.alpine.tensor.sca.tri.ArcCos;
 import ch.alpine.tensor.sca.tri.ArcSin;
 import ch.alpine.tensor.sca.tri.Cos;
@@ -514,6 +518,17 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
+  DensityPlot1(true) {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Density Plot");
+      ScalarBinaryOperator sbo = (x, y) -> Im.FUNCTION.apply(Sqrt.FUNCTION.apply(Power.of(ComplexScalar.of(x, y), 3)));
+      show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.absolute(2), Clips.absolute(2))));
+      show.setAspectRatio(RealScalar.ONE);
+      return show;
+    }
+  },
   ArrayPlot0(true) {
     @Override
     Show create() {
@@ -540,7 +555,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Tensor matrix = ResourceData.of("/ch/alpine/bridge/fig/hb_west0381.csv");
       matrix = matrix.map(Clips.absoluteOne());
       show.add(MatrixPlot.of(matrix));
-      show.aspectRatio = RealScalar.ONE;
+      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },
@@ -667,6 +682,14 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("MitchellNetravaliKernel");
       show.add(Plot.of(MitchellNetravaliKernel.standard(), Clips.absolute(2))).setLabel("1/3_1/3");
       show.add(Plot.of(MitchellNetravaliKernel.of(1, 1), Clips.absolute(2))).setLabel("1_1");
+      return show;
+    }
+  },
+  ParametricPlot0 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.add(ParametricPlot.of(s -> Tensors.of(Sin.FUNCTION.apply(s), Sin.FUNCTION.apply(s.add(s))), Clips.positive(Pi.TWO)));
       return show;
     }
   },
