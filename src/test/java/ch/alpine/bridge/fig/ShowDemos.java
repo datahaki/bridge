@@ -529,15 +529,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
-  ArrayPlot0(true) {
-    @Override
-    Show create() {
-      Show show = new Show();
-      show.setPlotLabel("Array Plot");
-      show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
-      return show;
-    }
-  },
   MatrixPlot0(true) {
     @Override
     Show create() {
@@ -618,6 +609,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("Image Plot");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
       show.add(ImagePlot.of(bufferedImage));
+      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },
@@ -661,6 +653,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.setPlotLabel("MP DateTime");
       show.add(MatrixPlot.of(matrix, ColorDataGradients.TEMPERATURE_LIGHT, false));
+      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },
@@ -672,6 +665,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.setPlotLabel("MP NonSymmetric");
       show.add(MatrixPlot.of(matrix, ColorDataGradients.CLASSIC, false));
+      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },
@@ -682,6 +676,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("MitchellNetravaliKernel");
       show.add(Plot.of(MitchellNetravaliKernel.standard(), Clips.absolute(2))).setLabel("1/3_1/3");
       show.add(Plot.of(MitchellNetravaliKernel.of(1, 1), Clips.absolute(2))).setLabel("1_1");
+      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },
@@ -689,7 +684,21 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     @Override
     Show create() {
       Show show = new Show();
-      show.add(ParametricPlot.of(s -> Tensors.of(Sin.FUNCTION.apply(s), Sin.FUNCTION.apply(s.add(s))), Clips.positive(Pi.TWO)));
+      show.setPlotLabel("ParametricPlot");
+      show.add(ParametricPlot.of(s -> Tensors.of( //
+          Sin.FUNCTION.apply(s).multiply(RationalScalar.HALF), //
+          Sin.FUNCTION.apply(s.add(s))), Clips.positive(Pi.TWO)));
+      show.setAspectRatio(RealScalar.ONE);
+      return show;
+    }
+  },
+  ArrayPlot0(true) {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Array Plot");
+      show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
+      show.setAspectRatio(RationalScalar.HALF);
       return show;
     }
   },

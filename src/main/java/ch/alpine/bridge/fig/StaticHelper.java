@@ -143,7 +143,6 @@ import ch.alpine.tensor.tmp.TsEntry;
     return fontMetrics.getAscent() * 8 / 5;
   }
 
-  // TODO BRIDGE use function in aspect ratio
   public static Scalar ratio(Tensor a, Tensor b) {
     int n = a.length();
     VectorQ.requireLength(b, n);
