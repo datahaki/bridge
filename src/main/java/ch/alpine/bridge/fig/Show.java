@@ -16,6 +16,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -149,13 +152,24 @@ public class Show implements Serializable {
       return null;
     CoordinateBoundingBox _cbb = deriveCbb();
     Rectangle r = new Rectangle(rectangle);
-    if (Objects.nonNull(_cbb) && Objects.nonNull(aspectRatio)) {
-      Tensor a = Tensor.of(_cbb.stream().map(Clip::width));
-      a.set(aspectRatio::multiply, 1);
-      Tensor b = Tensors.vector(rectangle.width, rectangle.height);
-      Tensor c = a.multiply(StaticHelper.ratio(a, b));
-      r.width = Round.intValueExact(c.Get(0));
-      r.height = Round.intValueExact(c.Get(1));
+    if (Objects.nonNull(_cbb)) {
+      Scalar aspect = aspectRatio;
+      if (Objects.isNull(aspect)) {
+        Set<Scalar> set = showables.stream() //
+            .map(Showable::aspectRatioHint) //
+            .flatMap(Optional::stream) //
+            .collect(Collectors.toSet());
+        if (set.size() == 1)
+          aspect = set.iterator().next();
+      }
+      if (Objects.nonNull(aspect)) {
+        Tensor a = Tensor.of(_cbb.stream().map(Clip::width));
+        a.set(aspect::multiply, 1);
+        Tensor b = Tensors.vector(rectangle.width, rectangle.height);
+        Tensor c = a.multiply(StaticHelper.ratio(a, b));
+        r.width = Round.intValueExact(c.Get(0));
+        r.height = Round.intValueExact(c.Get(1));
+      }
     }
     renderFrameTitle(graphics, r);
     Graphics2D g = (Graphics2D) graphics.create();

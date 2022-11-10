@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Optional;
 
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -95,13 +96,18 @@ public class MatrixPlot extends BarLegendPlot {
     return Optional.of(cbb);
   }
 
+  @Override // from BarLegendPlot
+  protected Clip clip() {
+    return clip;
+  }
+
   @Override // from Showable
   public boolean flipYAxis() {
     return true;
   }
 
-  @Override // from BarLegendPlot
-  protected Clip clip() {
-    return clip;
+  @Override // from Showable
+  public Optional<Scalar> aspectRatioHint() {
+    return Optional.of(RealScalar.ONE);
   }
 }

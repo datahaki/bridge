@@ -7,6 +7,8 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clips;
@@ -14,30 +16,32 @@ import ch.alpine.tensor.sca.Clips;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 public class ImagePlot extends BaseShowable {
-  public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY) {
-    return new ImagePlot(bufferedImage, cbb, flipY);
+  public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
+    return new ImagePlot(bufferedImage, cbb, flipY, aspectRatio);
   }
 
   public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
-    return of(bufferedImage, cbb, false);
+    return of(bufferedImage, cbb, false, null);
   }
 
   public static Showable of(BufferedImage bufferedImage) {
     return of(bufferedImage, CoordinateBoundingBox.of( //
         StaticHelper.TRANSLATION.apply(Clips.positive(bufferedImage.getWidth())), //
         StaticHelper.TRANSLATION.apply(Clips.positive(bufferedImage.getHeight()))), //
-        true);
+        true, RealScalar.ONE);
   }
 
   // ---
   private final BufferedImage bufferedImage;
   private final CoordinateBoundingBox cbb;
   private final boolean flipY;
+  private final Scalar aspectRatio;
 
-  private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY) {
+  private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
     this.bufferedImage = bufferedImage;
     this.cbb = cbb;
     this.flipY = flipY;
+    this.aspectRatio = aspectRatio;
   }
 
   @Override // from Showable
@@ -61,8 +65,13 @@ public class ImagePlot extends BaseShowable {
     return Optional.of(cbb);
   }
 
-  @Override
+  @Override // from Showable
   public boolean flipYAxis() {
     return flipY;
+  }
+
+  @Override // from Showable
+  public Optional<Scalar> aspectRatioHint() {
+    return Optional.ofNullable(aspectRatio);
   }
 }

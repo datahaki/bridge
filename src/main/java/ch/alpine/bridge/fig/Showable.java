@@ -8,6 +8,7 @@ import java.awt.Stroke;
 import java.util.Optional;
 
 import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 public interface Showable {
@@ -41,7 +42,13 @@ public interface Showable {
   /** @return */
   Stroke getStroke();
 
+  /** @return whether y-axis should be flipped */
   default boolean flipYAxis() {
     return false;
+  }
+
+  /** @return */
+  default Optional<Scalar> aspectRatioHint() {
+    return Optional.empty();
   }
 }

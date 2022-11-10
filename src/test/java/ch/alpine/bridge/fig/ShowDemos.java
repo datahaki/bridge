@@ -546,7 +546,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Tensor matrix = ResourceData.of("/ch/alpine/bridge/fig/hb_west0381.csv");
       matrix = matrix.map(Clips.absoluteOne());
       show.add(MatrixPlot.of(matrix));
-      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },
@@ -609,7 +608,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("Image Plot");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
       show.add(ImagePlot.of(bufferedImage));
-      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },
@@ -653,7 +651,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.setPlotLabel("MP DateTime");
       show.add(MatrixPlot.of(matrix, ColorDataGradients.TEMPERATURE_LIGHT, false));
-      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },
@@ -665,7 +662,6 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show();
       show.setPlotLabel("MP NonSymmetric");
       show.add(MatrixPlot.of(matrix, ColorDataGradients.CLASSIC, false));
-      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },
