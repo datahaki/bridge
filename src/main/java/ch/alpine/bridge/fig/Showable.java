@@ -42,7 +42,9 @@ public interface Showable {
   /** @return */
   Stroke getStroke();
 
-  /** @return whether y-axis should be flipped */
+  /** Mathematica: "DataReversed"
+   * 
+   * @return whether y-axis should be flipped */
   default boolean flipYAxis() {
     return false;
   }

@@ -698,6 +698,15 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       return show;
     }
   },
+  Cepstrogram0 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Cepstrogram");
+      show.add(CepstrogramDemo.create());
+      return show;
+    }
+  },
   //
   ;
 
