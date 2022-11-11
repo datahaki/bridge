@@ -33,7 +33,7 @@ public enum Cepstrogram {
     BufferedImage bufferedImage = ImageFormat.of(Raster.of(CepstrogramArray.half_abs(signal, window), function));
     return ImagePlot.of(bufferedImage, CoordinateBoundingBox.of( //
         Clips.positive(RealScalar.of(signal.length()).divide(sampleRate)), //
-        Clips.positive(sampleRate.divide(RealScalar.TWO))));
+        Clips.positive(RealScalar.of(bufferedImage.getHeight())))); // TODO BRIDGE should also use sampleRate for yAxis
   }
 
   /** Example:
