@@ -8,7 +8,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.fft.CepstrogramArray;
+import ch.alpine.tensor.fft.XtrogramArray;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.Raster;
 import ch.alpine.tensor.io.ImageFormat;
@@ -30,7 +30,7 @@ public enum Cepstrogram {
    * @param function for instance {@link ColorDataGradients#VISIBLE_SPECTRUM}
    * @return */
   public static Showable of(Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
-    BufferedImage bufferedImage = ImageFormat.of(Raster.of(CepstrogramArray.half_abs(signal, window), function));
+    BufferedImage bufferedImage = ImageFormat.of(Raster.of(XtrogramArray.CepstrogramReal1.half_abs(signal, window), function));
     return ImagePlot.of(bufferedImage, CoordinateBoundingBox.of( //
         Clips.positive(RealScalar.of(signal.length()).divide(sampleRate)), //
         Clips.positive(RealScalar.of(bufferedImage.getHeight())))); // TODO BRIDGE should also use sampleRate for yAxis
