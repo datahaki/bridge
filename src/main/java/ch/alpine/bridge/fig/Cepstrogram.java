@@ -17,11 +17,21 @@ import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.win.DirichletWindow;
 import ch.alpine.tensor.sca.win.HannWindow;
 
-/** inspired by
+/** not refactored with Spectrogram because coordinate bounding box is different
+ * 
+ * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/Cepstrogram.html">Cepstrogram</a> */
-// TODO BRIDGE refactor with Spectrogram
 public enum Cepstrogram {
   ;
+  public static Showable of( //
+      XtrogramArray xtrogramArray, //
+      Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
+    BufferedImage bufferedImage = ImageFormat.of(Raster.of(xtrogramArray.half_abs(signal, window), function));
+    return ImagePlot.of(bufferedImage, CoordinateBoundingBox.of( //
+        Clips.positive(RealScalar.of(signal.length()).divide(sampleRate)), //
+        Clips.positive(RealScalar.of(bufferedImage.getHeight())))); // TODO BRIDGE should also use sampleRate for yAxis
+  }
+
   /** Remark: the unit of the signal is in the color not the axis
    * 
    * @param signal
@@ -30,10 +40,7 @@ public enum Cepstrogram {
    * @param function for instance {@link ColorDataGradients#VISIBLE_SPECTRUM}
    * @return */
   public static Showable of(Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
-    BufferedImage bufferedImage = ImageFormat.of(Raster.of(XtrogramArray.CepstrogramReal1.half_abs(signal, window), function));
-    return ImagePlot.of(bufferedImage, CoordinateBoundingBox.of( //
-        Clips.positive(RealScalar.of(signal.length()).divide(sampleRate)), //
-        Clips.positive(RealScalar.of(bufferedImage.getHeight())))); // TODO BRIDGE should also use sampleRate for yAxis
+    return of(XtrogramArray.CepstrogramReal, signal, sampleRate, window, function);
   }
 
   /** Example:
@@ -54,5 +61,9 @@ public enum Cepstrogram {
    * {@link DirichletWindow} and {@link ColorDataGradients#VISIBLE_SPECTRUM} */
   public static Showable of(Tensor signal, Scalar sampleRate) {
     return of(signal, sampleRate, DirichletWindow.FUNCTION);
+  }
+
+  public static Showable of(XtrogramArray xtrogramArray, Tensor signal, Scalar sampleRate) {
+    return of(xtrogramArray, signal, sampleRate, DirichletWindow.FUNCTION, ColorDataGradients.SUNSET_REVERSED);
   }
 }
