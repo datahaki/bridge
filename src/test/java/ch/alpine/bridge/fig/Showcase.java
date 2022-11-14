@@ -17,6 +17,7 @@ public enum Showcase {
     Set<ShowDemos> set = new HashSet<>();
     set.add(ShowDemos.ReImPlot0);
     set.add(ShowDemos.Spectrogram0);
+    set.add(ShowDemos.Cepstrogram0Re);
     set.add(ShowDemos.TruncatedDistribution0);
     set.add(ShowDemos.MatrixPlot1);
     for (ShowDemos showDemos : set) {

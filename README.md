@@ -27,6 +27,8 @@ Features include
 
 ![TruncatedDistribution0](https://user-images.githubusercontent.com/4012178/200159273-dfe78967-dc64-4cc5-a677-f931dc7700b9.png)
 
+![Cepstrogram0Re](https://user-images.githubusercontent.com/4012178/201620914-60a8e91a-8a69-470f-9a7a-8c153aeea83b.png)
+
 ## Dialogs
 
 ![LocalTime selection](https://user-images.githubusercontent.com/4012178/178134198-8b94131f-6163-408b-9b26-2bfb344d0da3.png)
