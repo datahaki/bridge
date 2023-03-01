@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.random.RandomGenerator;
 
 import org.junit.jupiter.api.Test;
 
@@ -91,7 +92,7 @@ class RandomFieldsAssignmentTest {
     assertEquals(set_color.size(), 0);
     assertEquals(set_time.size(), 0);
     int n = 20;
-    Random random = new Random(3);
+    RandomGenerator random = new Random(3);
     fieldsAssignment.randomize(random, n).forEach(i -> runnable.run());
     assertEquals(set_color.size(), n);
     assertEquals(set_time.size(), n);

@@ -12,7 +12,6 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import ch.alpine.bridge.lang.Unicode;
-import ch.alpine.tensor.IntegerQ;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -22,6 +21,7 @@ import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.api.TensorUnaryOperator;
 import ch.alpine.tensor.chq.FiniteScalarQ;
+import ch.alpine.tensor.chq.IntegerQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityUnit;

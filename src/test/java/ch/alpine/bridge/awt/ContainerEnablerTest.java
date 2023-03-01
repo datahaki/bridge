@@ -2,6 +2,7 @@
 package ch.alpine.bridge.awt;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ class ContainerEnablerTest {
   @Test
   void test() {
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
-    Random random = new Random();
+    RandomGenerator random = new Random();
     ContainerEnabler.setEnabled(guiExtensionDemo.jSplitPane, random.nextBoolean());
     ContainerEnabler.setEnabled(guiExtensionDemo.jSplitPane, false);
     ContainerEnabler.setEnabled(guiExtensionDemo.jSplitPane, true);

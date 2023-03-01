@@ -10,8 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -29,7 +29,7 @@ import ch.alpine.tensor.sca.Clip;
 
 /* package */ class FieldOptionsCollector extends ObjectFieldAll {
   private final Map<String, List<String>> map = new LinkedHashMap<>();
-  private final Map<String, Function<Random, String>> distributions = new LinkedHashMap<>();
+  private final Map<String, Function<RandomGenerator, String>> distributions = new LinkedHashMap<>();
 
   @Override // from ObjectFieldVisitor
   public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
@@ -77,7 +77,7 @@ import ch.alpine.tensor.sca.Clip;
     return Collections.unmodifiableMap(map);
   }
 
-  public Map<String, Function<Random, String>> distributions() {
+  public Map<String, Function<RandomGenerator, String>> distributions() {
     return Collections.unmodifiableMap(distributions);
   }
 }

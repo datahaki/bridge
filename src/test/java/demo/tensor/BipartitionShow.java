@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.gfx.GeometricLayer;
@@ -29,7 +30,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
   final Graphics2D graphics = bufferedImage.createGraphics();
 
   public BipartitionShow(int seed, boolean lines) {
-    Random random = new Random(seed);
+    RandomGenerator random = new Random(seed);
     Tensor points1 = RandomVariate.of(UniformDistribution.unit(), random, 9, 2);
     Tensor points2 = RandomVariate.of(UniformDistribution.unit(), random, 13, 2);
     Tensor matrix = Outer.of(Vector2Norm::between, points1, points2);

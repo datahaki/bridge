@@ -11,6 +11,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.fft.Fourier;
 import ch.alpine.tensor.fft.SpectrogramArray;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ImageResize;
@@ -25,7 +26,7 @@ import ch.alpine.tensor.sca.win.WindowFunctions;
 /* package */ enum SpectrogramWindowDemo {
   ;
   public static Tensor vector(Tensor vector, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
-    return Raster.of(SpectrogramArray.half_abs(vector, window), function);
+    return Raster.of(new SpectrogramArray(Fourier.FORWARD::transform, null, null, window).half_abs(vector), function);
   }
 
   public static void main(String[] args) throws IOException {

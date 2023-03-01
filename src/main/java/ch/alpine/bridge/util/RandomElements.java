@@ -4,8 +4,8 @@ package ch.alpine.bridge.util;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.random.RandomGenerator;
 
 /** Quote:
  * "We can take advantage of the Durstenfeld's algorithm (the most popular
@@ -28,7 +28,7 @@ public enum RandomElements {
    * @param random
    * @return unmodifiable list with size at most n
    * @throws Exception if n is negative */
-  public static <T> List<T> of(List<T> list, int n, Random random) {
+  public static <T> List<T> of(List<T> list, int n, RandomGenerator random) {
     int length = list.size();
     if (length <= n)
       return Collections.unmodifiableList(list);

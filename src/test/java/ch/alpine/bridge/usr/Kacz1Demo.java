@@ -2,6 +2,7 @@
 package ch.alpine.bridge.usr;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Show;
@@ -39,7 +40,7 @@ public enum Kacz1Demo {
     {
       KaczmarzIteration kaczmarzIteration = new KaczmarzIteration(matrix, b);
       Tensor points = Tensors.empty();
-      Random random = new Random();
+      RandomGenerator random = new Random();
       for (int i = 0; i < n; ++i) {
         Tensor x1 = kaczmarzIteration.refine(random);
         Tensor x2 = kaczmarzIteration.refine(random);

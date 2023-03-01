@@ -4,8 +4,8 @@ package ch.alpine.bridge.ref.util;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Random;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -23,7 +23,7 @@ public class RandomFieldsAssignment extends FieldsAssignment {
   }
 
   // ---
-  private final Map<String, Function<Random, String>> distributions;
+  private final Map<String, Function<RandomGenerator, String>> distributions;
 
   private RandomFieldsAssignment(Object object) {
     super(object);
@@ -31,8 +31,8 @@ public class RandomFieldsAssignment extends FieldsAssignment {
   }
 
   @Override // from FieldsAssignment
-  protected void insert(Properties properties, Random random) {
-    for (Entry<String, Function<Random, String>> entry : distributions.entrySet())
+  protected void insert(Properties properties, RandomGenerator random) {
+    for (Entry<String, Function<RandomGenerator, String>> entry : distributions.entrySet())
       properties.put(entry.getKey(), entry.getValue().apply(random)); // Properties requires a String as value
   }
 

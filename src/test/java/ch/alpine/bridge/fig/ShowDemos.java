@@ -17,7 +17,7 @@ import ch.alpine.tensor.alg.UnitVector;
 import ch.alpine.tensor.api.ScalarBinaryOperator;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.fft.XtrogramArray;
+import ch.alpine.tensor.fft.CepstrogramArray;
 import ch.alpine.tensor.img.ColorDataGradient;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorDataLists;
@@ -704,7 +704,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       Show show = new Show();
       show.setPlotLabel("Cepstrogram");
-      show.add(CepstrogramDemo.create(XtrogramArray.CepstrogramReal));
+      show.add(CepstrogramDemo.create(CepstrogramArray.Real));
       return show;
     }
   },
@@ -713,7 +713,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       Show show = new Show();
       show.setPlotLabel("Cepstrogram");
-      show.add(CepstrogramDemo.create(XtrogramArray.CepstrogramPower));
+      show.add(CepstrogramDemo.create(CepstrogramArray.Power));
       return show;
     }
   },

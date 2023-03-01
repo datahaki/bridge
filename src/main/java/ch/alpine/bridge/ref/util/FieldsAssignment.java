@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -34,7 +34,7 @@ import ch.alpine.tensor.ext.Integers;
  * The modifications occur on the given object.
  * The given object does not need to be an instance of {@link Serializable}. */
 public class FieldsAssignment {
-  protected static final Random RANDOM = new SecureRandom();
+  protected static final RandomGenerator RANDOM_GENERATOR = new SecureRandom();
 
   /** @param object */
   public static FieldsAssignment of(Object object) {
@@ -87,7 +87,7 @@ public class FieldsAssignment {
   /** @param random
    * @param limit of number of invocations
    * @return stream of given object, i.e. always the same instance */
-  public final Stream<Object> randomize(Random random, int limit) {
+  public final Stream<Object> randomize(RandomGenerator random, int limit) {
     Integers.requirePositiveOrZero(limit);
     return Scalars.lessEquals(total, RealScalar.of(limit)) && isGrid() //
         ? stream()
@@ -99,10 +99,10 @@ public class FieldsAssignment {
   /** @param limit
    * @return stream of given object, i.e. always the same instance */
   public final Stream<Object> randomize(int limit) {
-    return randomize(RANDOM, limit);
+    return randomize(RANDOM_GENERATOR, limit);
   }
 
-  private Object build(List<Integer> list, Random random) {
+  private Object build(List<Integer> list, RandomGenerator random) {
     Properties properties = new Properties();
     AtomicInteger atomicInteger = new AtomicInteger();
     for (String key : keys)
@@ -118,7 +118,7 @@ public class FieldsAssignment {
    * 
    * @param properties
    * @param random */
-  protected void insert(Properties properties, Random random) {
+  protected void insert(Properties properties, RandomGenerator random) {
     // ---
   }
 

@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class DisjointSetsTest {
     IntStream.range(0, n).forEach(i -> disjointSets.add());
     assertEquals(disjointSets.parents().size(), n);
     assertEquals(disjointSets.representatives().size(), n);
-    Random random = new Random();
+    RandomGenerator random = new Random();
     // Distribution distribution = DiscreteUniformDistribution.of(0, n);
     for (int index = 0; index < n; ++index) {
       int scalar = random.nextInt(n);

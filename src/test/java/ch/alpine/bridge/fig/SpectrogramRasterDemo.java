@@ -23,7 +23,7 @@ import ch.alpine.tensor.sca.win.DirichletWindow;
   ;
   public static void main(String[] args) throws IOException {
     Tensor tensor = Subdivide.of(0, 100, 2000).map(Polynomial.of(Tensors.vector(0, 5, 1))).map(Cos.FUNCTION);
-    Tensor spectrogram = SpectrogramArray.half_abs(tensor, DirichletWindow.FUNCTION);
+    Tensor spectrogram = SpectrogramArray.SPECTROGRAM.half_abs(tensor);
     File folder = HomeDirectory.Pictures(SpectrogramRasterDemo.class.getSimpleName());
     folder.mkdir();
     for (ColorDataGradients colorDataGradients : ColorDataGradients.values()) {
