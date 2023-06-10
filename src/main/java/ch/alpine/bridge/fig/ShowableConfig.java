@@ -28,8 +28,8 @@ public class ShowableConfig {
   public ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb) {
     this.rectangle = rectangle;
     this.cbb = cbb;
-    this.xRange = cbb.getClip(0);
-    this.yRange = cbb.getClip(1);
+    this.xRange = cbb.clip(0);
+    this.yRange = cbb.clip(1);
     yBaseline = rectangle.y + rectangle.height - 1;
     x2pixel = RealScalar.of(rectangle.width - 1).divide(xRange.width());
     y2pixel = RealScalar.of(rectangle.height - 1).divide(yRange.width());
@@ -70,7 +70,7 @@ public class ShowableConfig {
   }
 
   public final Clip getClip(int index) {
-    return cbb.getClip(index);
+    return cbb.clip(index);
   }
 
   /** @return may be null */

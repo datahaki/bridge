@@ -92,21 +92,21 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
         CoordinateBoundingBox cbb = showableConfig.getCbb();
         Scalar factor = Power.of(1.3, mouseWheelEvent.getWheelRotation());
         if (set_x.contains(Option.ZOOM)) {
-          Clip xclip = cbb.getClip(0);
+          Clip xclip = cbb.clip(0);
           Scalar xofs = xy.Get(0);
           Scalar lo = xclip.min().subtract(xofs).multiply(factor);
           Scalar hi = xclip.max().subtract(xofs).multiply(factor);
           cbb = CoordinateBoundingBox.of( //
               Clips.interval(xofs.add(lo), xofs.add(hi)), //
-              cbb.getClip(1));
+              cbb.clip(1));
         }
         if (set_y.contains(Option.ZOOM)) {
-          Clip yclip = cbb.getClip(1);
+          Clip yclip = cbb.clip(1);
           Scalar yofs = xy.Get(1);
           Scalar lo = yclip.min().subtract(yofs).multiply(factor);
           Scalar hi = yclip.max().subtract(yofs).multiply(factor);
           cbb = CoordinateBoundingBox.of( //
-              cbb.getClip(0), //
+              cbb.clip(0), //
               Clips.interval(yofs.add(lo), yofs.add(hi)));
         }
         show.setCbb(cbb);
@@ -133,16 +133,16 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
           // ---
           if (set_x.contains(Option.PAN)) {
             Scalar shift = showableConfig.dx(RealScalar.of(-dx));
-            Clip xRange = cbb.getClip(0);
+            Clip xRange = cbb.clip(0);
             cbb = CoordinateBoundingBox.of( //
                 Clips.interval(xRange.min().add(shift), xRange.max().add(shift)), //
-                cbb.getClip(1));
+                cbb.clip(1));
           }
           if (set_y.contains(Option.PAN)) {
             Scalar shift = showableConfig.dy(RealScalar.of(-dy));
-            Clip yRange = cbb.getClip(1);
+            Clip yRange = cbb.clip(1);
             cbb = CoordinateBoundingBox.of( //
-                cbb.getClip(0), //
+                cbb.clip(0), //
                 Clips.interval(yRange.min().add(shift), yRange.max().add(shift)));
           }
           // ---

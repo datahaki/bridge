@@ -6,7 +6,7 @@ import java.awt.geom.Path2D;
 import java.util.Optional;
 
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
@@ -44,21 +44,25 @@ public class TsPlot extends BaseShowable {
       return;
     Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), timeSeries.domain());
     if (optional.isPresent()) {
-      Clip clip = optional.orElseThrow();
-      if (Sign.isPositive(clip.width())) {
-        clip = StaticHelper.extend(timeSeries, clip);
-        ScalarUnaryOperator suo = x -> tsf.apply(timeSeries.evaluate(x));
-        Path2D path = new Path2D.Double();
-        path.moveTo( //
-            showableConfig.x_pos(clip.min()), //
-            showableConfig.y_pos(suo.apply(clip.min())));
-        timeSeries.block(clip, true).stream() //
-            .forEach(tsEntry -> path.lineTo( //
-                showableConfig.x_pos(tsEntry.key()), //
-                showableConfig.y_pos(tsf.apply(tsEntry.value()))));
+      Clip clip2 = optional.orElseThrow();
+      if (Sign.isPositive(clip2.width())) {
+        // Clip clip = StaticHelper.extend(timeSeries, clip2);
+        // ScalarUnaryOperator suo = x -> tsf.apply(timeSeries.evaluate(x));
         graphics.setColor(getColor());
         graphics.setStroke(getStroke());
-        graphics.draw(path);
+        timeSeries.lines().forEach(t -> {
+          Path2D path = new Path2D.Double();
+          Tensor tsFirst = t.get(0);
+          path.moveTo( //
+              showableConfig.x_pos(tsFirst.Get(0)), //
+              showableConfig.y_pos(tsf.apply(tsFirst.get(1))));
+          t.stream() //
+              .skip(1) //
+              .forEach(tsEntry -> path.lineTo( //
+                  showableConfig.x_pos(tsEntry.Get(0)), //
+                  showableConfig.y_pos(tsf.apply(tsEntry.get(1)))));
+          graphics.draw(path);
+        });
       }
     }
   }

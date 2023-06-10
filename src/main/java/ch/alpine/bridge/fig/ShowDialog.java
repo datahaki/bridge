@@ -24,6 +24,8 @@ import ch.alpine.tensor.sca.Round;
 import ch.alpine.tensor.sca.pow.Sqrt;
 
 public class ShowDialog extends JDialog {
+  /** @param shows
+   * @return */
   public static JDialog of(Show... shows) {
     return of(Arrays.asList(shows));
   }
@@ -34,6 +36,7 @@ public class ShowDialog extends JDialog {
     return showDialog;
   }
 
+  // ---
   public ShowDialog(Component parentComponent, List<Show> list) {
     super(JOptionPane.getFrameForComponent(parentComponent));
     JPanel jPanel = new JPanel(new BorderLayout());
@@ -54,6 +57,7 @@ public class ShowDialog extends JDialog {
       jPanel.add(BorderLayout.NORTH, jToolBar);
     }
     {
+      // TODO BRIDGE extract below computation to separate function
       Scalar sqrt = Sqrt.FUNCTION.apply(RealScalar.of(list.size()));
       int cols = Round.intValueExact(sqrt);
       int rows = Ceiling.intValueExact(sqrt);

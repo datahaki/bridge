@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.ShowDialog;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -47,5 +48,6 @@ public enum InfluenceMatrixDemo {
     show.add(ListLinePlot.of(t1)).setLabel("mahs");
     show.add(ListLinePlot.of(t2)).setLabel("inf");
     show.export(HomeDirectory.file("matrix_rect2.png"), new Dimension(500, 300));
+    ShowDialog.of(show);
   }
 }

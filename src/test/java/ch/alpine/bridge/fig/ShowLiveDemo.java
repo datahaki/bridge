@@ -22,14 +22,14 @@ import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Clips;
-import ch.alpine.tensor.tmp.ResamplingMethods;
+import ch.alpine.tensor.tmp.ResamplingMethod;
 import ch.alpine.tensor.tmp.TimeSeries;
 
 @ReflectionMarker
 public class ShowLiveDemo implements Runnable {
   private final Timer timer = new Timer();
   private final JFrame jFrame = new JFrame();
-  private final TimeSeries timeSeries = TimeSeries.empty(ResamplingMethods.LINEAR_INTERPOLATION);
+  private final TimeSeries timeSeries = TimeSeries.empty(ResamplingMethod.LINEAR_INTERPOLATION);
   private final Show show = new Show();
   private final ShowComponent showComponent = new ShowComponent();
   // ---

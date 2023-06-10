@@ -29,8 +29,8 @@ public class DensityPlot extends BarLegendPlot {
   }
 
   public static Showable of(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
-    Tensor dx = Subdivide.increasing(cbb.getClip(0), RESOLUTION);
-    Tensor dy = Subdivide.decreasing(cbb.getClip(1), RESOLUTION);
+    Tensor dx = Subdivide.increasing(cbb.clip(0), RESOLUTION);
+    Tensor dy = Subdivide.decreasing(cbb.clip(1), RESOLUTION);
     Tensor matrix = Tensor.of(dy.stream().parallel() //
         .map(Scalar.class::cast) //
         .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
@@ -57,11 +57,11 @@ public class DensityPlot extends BarLegendPlot {
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Point2D ul = showableConfig.toPoint2D(Tensors.of( //
-        cbb.getClip(0).min(), //
-        cbb.getClip(1).max()));
+        cbb.clip(0).min(), //
+        cbb.clip(1).max()));
     Point2D dr = showableConfig.toPoint2D(Tensors.of( //
-        cbb.getClip(0).max(), //
-        cbb.getClip(1).min()));
+        cbb.clip(0).max(), //
+        cbb.clip(1).min()));
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)

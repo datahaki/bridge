@@ -9,7 +9,7 @@ import java.util.Properties;
   /** code extracted as-is from {@link Properties}
    * 
    * @param theString
-   * @param escapeSpace
+   * @param escapeSpace when true inserts backslash before a space in first position
    * @param escapeUnicode
    * @return */
   public static String saveConvert(String theString, boolean escapeSpace, boolean escapeUnicode) {

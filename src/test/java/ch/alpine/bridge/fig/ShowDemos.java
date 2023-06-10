@@ -66,7 +66,7 @@ import ch.alpine.tensor.sca.tri.ArcSin;
 import ch.alpine.tensor.sca.tri.Cos;
 import ch.alpine.tensor.sca.tri.Sin;
 import ch.alpine.tensor.sca.win.WindowFunctions;
-import ch.alpine.tensor.tmp.ResamplingMethods;
+import ch.alpine.tensor.tmp.ResamplingMethod;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
@@ -242,7 +242,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
     Show create() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
       show.setPlotLabel("Time Series");
-      TimeSeries timeSeries = TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT);
+      TimeSeries timeSeries = TimeSeries.empty(ResamplingMethod.HOLD_VALUE_FROM_LEFT);
       timeSeries.insert(DateTime.of(2022, 11, 3, 10, 45), Quantity.of(4, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 3, 20, 35), Quantity.of(2, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 4, 8, 15), Quantity.of(1, "kW"));
@@ -277,7 +277,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process with Drift");
       show.add(Plot.of(randomFunction::evaluate, Clips.positive(Quantity.of(5, "s")))).setLabel("timeSeries");
-      show.add(TsPlot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
+      show.add(TsPlot.of(TimeSeries.empty(ResamplingMethod.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
       return show;
     }
   },
@@ -466,7 +466,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process with Offset");
       show.add(TsPlot.of(randomFunction.timeSeries())).setLabel("timeSeries");
-      show.add(TsPlot.of(TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
+      show.add(TsPlot.of(TimeSeries.empty(ResamplingMethod.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
       return show;
     }
   },
@@ -628,7 +628,7 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
   MultiTsPlot0 {
     @Override
     Show create() {
-      TimeSeries timeSeries = TimeSeries.empty(ResamplingMethods.HOLD_VALUE_FROM_LEFT);
+      TimeSeries timeSeries = TimeSeries.empty(ResamplingMethod.HOLD_VALUE_FROM_LEFT);
       Distribution dX = UniformDistribution.of( //
           DateTime.of(1980, 3, 7, 12, 45), //
           DateTime.of(1981, 3, 7, 12, 45));

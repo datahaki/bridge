@@ -47,11 +47,11 @@ public class ImagePlot extends BaseShowable {
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Point2D ul = showableConfig.toPoint2D(Tensors.of( //
-        cbb.getClip(0).min(), //
-        flipY ? cbb.getClip(1).min() : cbb.getClip(1).max()));
+        cbb.clip(0).min(), //
+        flipY ? cbb.clip(1).min() : cbb.clip(1).max()));
     Point2D dr = showableConfig.toPoint2D(Tensors.of( //
-        cbb.getClip(0).max(), //
-        flipY ? cbb.getClip(1).max() : cbb.getClip(1).min()));
+        cbb.clip(0).max(), //
+        flipY ? cbb.clip(1).max() : cbb.clip(1).min()));
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)

@@ -25,7 +25,7 @@ public class FileBlock {
   /** @param folder to generated `.lock` file in
    * @param uid unique identifier that is may be used as part of filename
    * @param showMessage whether to pop-up error dialog
-   * @return
+   * @return whether uid was reserved by a previous instance
    * @throws Exception if given uid cannot be used as part of filename */
   public static boolean of(File folder, String uid, boolean showMessage) {
     FileBlock fileBlock = new FileBlock(folder, uid);
