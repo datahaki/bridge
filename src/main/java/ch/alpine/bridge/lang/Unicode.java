@@ -12,11 +12,8 @@ import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 
-public class Unicode {
-  private Unicode() {
-    // ---
-  }
-
+public enum Unicode {
+  ;
   private static final char SPACE = ' ';
   private static final String OVER = SPACE + "/" + SPACE;
   private static final char NARROW = '\u2009';

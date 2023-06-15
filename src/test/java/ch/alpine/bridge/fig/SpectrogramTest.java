@@ -1,17 +1,27 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Dimensions;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.fft.SpectrogramArray;
+import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.sca.Abs;
 import ch.alpine.tensor.sca.ply.Polynomial;
 import ch.alpine.tensor.sca.tri.Cos;
+import ch.alpine.tensor.sca.win.DirichletWindow;
 
 class SpectrogramTest {
   @Test
@@ -36,5 +46,18 @@ class SpectrogramTest {
       // show.getAxisY().setUnit(Unit.of("s^-1"));
       Spectrogram.of(signal, Quantity.of(8000, "s^-1"));
     }
+  }
+
+  @Test
+  void testDefault() {
+    Tensor vector = Tensor.of(IntStream.range(0, 2000) //
+        .mapToDouble(i -> Math.cos(i * 0.25 + (i / 20.0) * (i / 20.0))) //
+        .mapToObj(RealScalar::of));
+    Showable image = Spectrogram.of(vector, Quantity.of(1, "s"), DirichletWindow.FUNCTION, ColorDataGradients.VISIBLE_SPECTRUM);
+    // ImageFormat.of(image);
+    // assertEquals(Dimensions.of(image), Arrays.asList(32, 93, 4));
+    assertEquals(Dimensions.of(SpectrogramArray.SPECTROGRAM.half_abs(vector)), Arrays.asList(32, 93));
+    Tensor tensor = SpectrogramArray.SPECTROGRAM.apply(vector).map(Abs.FUNCTION);
+    assertEquals(Dimensions.of(tensor), Arrays.asList(93, 64));
   }
 }

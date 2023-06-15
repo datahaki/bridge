@@ -28,6 +28,7 @@ import ch.alpine.tensor.mat.HilbertMatrix;
 import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.mat.sv.SingularValueList;
 import ch.alpine.tensor.num.Pi;
+import ch.alpine.tensor.num.Softplus;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.pdf.CDF;
 import ch.alpine.tensor.pdf.Distribution;
@@ -54,8 +55,10 @@ import ch.alpine.tensor.qty.QuantityMagnitude;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.Im;
+import ch.alpine.tensor.sca.Ramp;
 import ch.alpine.tensor.sca.erf.Erfc;
 import ch.alpine.tensor.sca.exp.Log10;
+import ch.alpine.tensor.sca.exp.LogisticSigmoid;
 import ch.alpine.tensor.sca.ply.Chebyshev;
 import ch.alpine.tensor.sca.ply.ChebyshevNodes;
 import ch.alpine.tensor.sca.ply.ClenshawChebyshev;
@@ -696,6 +699,21 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
       show.setPlotLabel("Array Plot");
       show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
       show.setAspectRatio(RationalScalar.HALF);
+      return show;
+    }
+  },
+  Softplus1 {
+    @Override
+    Show create() {
+      Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
+      show.setPlotLabel("Ramps");
+      Clip clip = Clips.absolute(5);
+      show.add(Plot.of(Ramp.FUNCTION, clip)).setLabel("Ramp");
+      show.add(Plot.of(Softplus.FUNCTION, clip)).setLabel("Softplus");
+      show.add(Plot.of(LogisticSigmoid.FUNCTION, clip)).setLabel("LogisticSigmoid");
+      show.add(Plot.of(s -> //
+      LogisticSigmoid.FUNCTION.apply(s).multiply(Ramp.FUNCTION.apply(s)), clip)).setLabel("LogisticSigmoid*Ramp");
+      show.setAspectRatio(RealScalar.ONE);
       return show;
     }
   },

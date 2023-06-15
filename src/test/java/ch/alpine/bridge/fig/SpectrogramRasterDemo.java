@@ -15,7 +15,6 @@ import ch.alpine.tensor.img.Raster;
 import ch.alpine.tensor.io.Export;
 import ch.alpine.tensor.sca.ply.Polynomial;
 import ch.alpine.tensor.sca.tri.Cos;
-import ch.alpine.tensor.sca.win.DirichletWindow;
 
 /** Example from Mathematica::Spectrogram:
  * Table[Cos[ i/4 + (i/20)^2], {i, 2000}] */
