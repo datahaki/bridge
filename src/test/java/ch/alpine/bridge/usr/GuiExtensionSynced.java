@@ -45,8 +45,11 @@ public enum GuiExtensionSynced {
         }
         {
           JButton jButton = new JButton("sync");
-          jButton.addActionListener(event -> fieldsEditor.updateJComponents());
-          jButton.addActionListener(event -> objectPropertiesArea.update());
+          jButton.addActionListener(event -> {
+            guiExtension.rectangle = jFrame.getBounds();
+            fieldsEditor.updateJComponents();
+            objectPropertiesArea.update();
+          });
           buttonPanel.add(jButton);
         }
         jPanel.add(buttonPanel, BorderLayout.SOUTH);

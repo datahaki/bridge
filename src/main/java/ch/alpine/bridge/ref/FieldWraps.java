@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ public enum FieldWraps {
     map.put(LocalDate.class, LocalDateFieldWrap::new);
     map.put(LocalTime.class, LocalTimeFieldWrap::new);
     map.put(LocalDateTime.class, LocalDateTimeFieldWrap::new);
+    map.put(Rectangle.class, RectangleFieldWrap::new);
     // ---
     map.put(Tensor.class, TensorFieldWrap::new);
     map.put(Scalar.class, ScalarFieldWrap::new);

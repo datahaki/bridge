@@ -3,6 +3,7 @@ package ch.alpine.bridge.ref.ex;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -55,6 +56,7 @@ public class GuiExtension {
   @FieldFuse("press to restart")
   public Boolean fuse = false;
   public Font font = new JLabel().getFont();
+  public Rectangle rectangle = new Rectangle(2, 3, 4, 5);
   @FieldSelectionArray({ "{0, 3}", "{10, 11}" })
   public Clip clip = Clips.absolute(3);
   @FieldSlider(showRange = true, showValue = true)
