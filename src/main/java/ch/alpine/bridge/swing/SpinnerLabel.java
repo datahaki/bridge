@@ -192,7 +192,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
   }
 
   public void setMenuHover(boolean hover) {
-    this.isMenuHover = hover;
+    isMenuHover = hover;
   }
 
   public boolean isOverArrows(Point point) {

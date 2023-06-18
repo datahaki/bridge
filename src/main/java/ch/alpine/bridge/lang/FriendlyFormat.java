@@ -62,4 +62,17 @@ public enum FriendlyFormat {
   public static Scalar of(Number number, String unit) {
     return of(RealScalar.of(number), unit);
   }
+
+  /** @return -18+4/7 for display, not parsing */
+  public static String toHighSchoolString(Scalar scalar) {
+    Scalar floor = Floor.FUNCTION.apply(scalar);
+    if (Scalars.isZero(floor))
+      return scalar.toString();
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(floor);
+    Scalar reman = scalar.subtract(floor);
+    if (Scalars.nonZero(reman))
+      stringBuilder.append("+" + reman);
+    return stringBuilder.toString();
+  }
 }
