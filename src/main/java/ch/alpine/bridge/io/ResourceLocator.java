@@ -24,6 +24,10 @@ public final class ResourceLocator {
   }
 
   private File file(Object object) {
-    return new File(root, object.getClass().getSimpleName() + ".properties");
+    return properties(object.getClass().getSimpleName());
+  }
+
+  public File properties(String string) {
+    return new File(root, string + ".properties");
   }
 }

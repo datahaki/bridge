@@ -12,9 +12,6 @@ import java.util.Objects;
 
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.util.ObjectProperties;
-import ch.alpine.tensor.Scalars;
-import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Timing;
 
 /** loads and saves window position
@@ -38,34 +35,26 @@ public class WindowBounds {
   }
 
   // ---
-  public Tensor bounds = Tensors.vector(100, 100, 800, 800);
+  public Rectangle rectangle = new Rectangle(100, 100, 800, 800);
 
   private WindowBounds() {
     // ---
   }
 
-  public void setBounds(Rectangle rectangle) {
-    bounds = Tensors.vector(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-  }
-
-  public Rectangle getBounds() {
-    return new ScreenRectangle().allVisible(new Rectangle( //
-        Scalars.intValueExact(bounds.Get(0)), //
-        Scalars.intValueExact(bounds.Get(1)), //
-        Scalars.intValueExact(bounds.Get(2)), //
-        Scalars.intValueExact(bounds.Get(3))));
+  public Rectangle getBoundsAllVisible() {
+    return new ScreenRectangle().allVisible(rectangle);
   }
 
   private final Point shift = new Point();
 
   private void private_attach(Window window, File file) {
-    window.setBounds(getBounds());
+    window.setBounds(getBoundsAllVisible());
     WindowBounds windowBounds = this;
     WindowClosed.runs(window, () -> {
       Rectangle rectangle = window.getBounds();
       rectangle.x -= shift.x;
       rectangle.y -= shift.y;
-      windowBounds.setBounds(rectangle);
+      windowBounds.rectangle = rectangle;
       ObjectProperties.trySave(windowBounds, file);
     });
     window.addComponentListener(new ComponentAdapter() {
