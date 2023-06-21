@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.ref;
 
-import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
@@ -18,8 +17,6 @@ import javax.swing.undo.UndoManager;
 import ch.alpine.bridge.swing.UIManagerColor;
 
 /* package */ abstract class StringPanel extends FieldPanel {
-  private static final Color COLOR_FAIL_BGND = new Color(255, 192, 192);
-  private static final Color COLOR_FAIL_TEXT = new Color(51, 51, 51);
   private static final int MASK = InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK;
   private static final int UNDO = InputEvent.CTRL_DOWN_MASK;
   private static final int REDO = MASK;
@@ -134,8 +131,8 @@ import ch.alpine.bridge.swing.UIManagerColor;
         jTextField.setForeground(UIManagerColor.TextField_foreground.get());
         jTextField.setBackground(UIManagerColor.TextField_background.get());
       } else {
-        jTextField.setForeground(COLOR_FAIL_TEXT);
-        jTextField.setBackground(COLOR_FAIL_BGND);
+        jTextField.setForeground(FieldsEditorParam.GLOBAL.stringPanel_Fail_TEXT);
+        jTextField.setBackground(FieldsEditorParam.GLOBAL.stringPanel_Fail_BGND);
       }
   }
 

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -74,5 +77,13 @@ public enum FriendlyFormat {
     if (Scalars.nonZero(reman))
       stringBuilder.append("+" + reman);
     return stringBuilder.toString();
+  }
+
+  private static final Collector<CharSequence, ?, String> COLLECTOR = Collectors.joining(" ", "[", "]");
+
+  public static String of(byte[] data) {
+    return IntStream.range(0, data.length) //
+        .mapToObj(index -> String.format("%02x", data[index])) //
+        .collect(COLLECTOR);
   }
 }

@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.ref;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -41,6 +42,8 @@ public class FieldsEditorParam {
   public CheckBoxIcon checkBoxIcon = CheckBoxIcon.METRO;
   @FieldSelectionArray({ "16", "20", "24", "28", "32" })
   public Scalar checkBoxIconSize = RealScalar.of(16);
+  public Color stringPanel_Fail_BGND = new Color(255, 192, 192);
+  public Color stringPanel_Fail_TEXT = new Color(51, 51, 51);
 
   public void minHeight(JComponent jComponent) {
     if (componentMinHeight_override) {

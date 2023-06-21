@@ -25,16 +25,16 @@ public enum RandomElements {
    * 
    * @param list
    * @param n non-negative
-   * @param random
+   * @param randomGenerator
    * @return unmodifiable list with size at most n
    * @throws Exception if n is negative */
-  public static <T> List<T> of(List<T> list, int n, RandomGenerator random) {
+  public static <T> List<T> of(List<T> list, int n, RandomGenerator randomGenerator) {
     int length = list.size();
     if (length <= n)
       return Collections.unmodifiableList(list);
     int lo = length - n;
     for (int index = length - 1; lo <= index; --index)
-      Collections.swap(list, index, random.nextInt(index + 1));
+      Collections.swap(list, index, randomGenerator.nextInt(index + 1));
     return Collections.unmodifiableList(list.subList(length - n, length));
   }
 

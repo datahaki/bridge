@@ -56,6 +56,9 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.Im;
 import ch.alpine.tensor.sca.Ramp;
+import ch.alpine.tensor.sca.SawtoothWave;
+import ch.alpine.tensor.sca.SquareWave;
+import ch.alpine.tensor.sca.TriangleWave;
 import ch.alpine.tensor.sca.erf.Erfc;
 import ch.alpine.tensor.sca.exp.Log10;
 import ch.alpine.tensor.sca.exp.LogisticSigmoid;
@@ -148,6 +151,20 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
         Showable showable = show.add(Plot.of(windowFunctions.get(), Clips.absolute(0.5)));
         showable.setLabel(windowFunctions.name());
       }
+      return show;
+    }
+  },
+  WaveFunctions0 {
+    @Override
+    Show create() {
+      Show show = new Show();
+      show.setPlotLabel("Wave Functions");
+      ScalarUnaryOperator[] suos = { //
+          SawtoothWave.FUNCTION, //
+          SquareWave.FUNCTION, //
+          TriangleWave.FUNCTION };
+      for (ScalarUnaryOperator suo : suos)
+        show.add(Plot.of(suo, Clips.absolute(2)));
       return show;
     }
   },

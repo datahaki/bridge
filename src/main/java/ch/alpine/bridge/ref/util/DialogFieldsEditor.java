@@ -24,7 +24,7 @@ public class DialogFieldsEditor extends JDialog {
   private static final int MARGIN_HEIGHT = 60;
 
   /** @param parentComponent may be null
-   * @param title of dialog window
+   * @param title of dialog window, may be null
    * @param object non-null
    * @return dialog */
   public static DialogFieldsEditor show(Component parentComponent, String title, Object object) {
@@ -41,7 +41,7 @@ public class DialogFieldsEditor extends JDialog {
   private boolean status = false;
 
   /** @param parentComponent may be null
-   * @param title of dialog window
+   * @param title of dialog window, may be null
    * @param object non-null
    * @return dialog */
   public DialogFieldsEditor(Component parentComponent, String title, Object object) {
