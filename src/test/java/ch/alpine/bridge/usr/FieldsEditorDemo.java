@@ -9,6 +9,6 @@ public enum FieldsEditorDemo {
   ;
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
-    DialogFieldsEditor.show(null, "here", new MyConfig());
+    DialogFieldsEditor.show(null, new MyConfig(), "here");
   }
 }

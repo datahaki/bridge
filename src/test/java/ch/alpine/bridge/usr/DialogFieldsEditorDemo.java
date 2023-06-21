@@ -10,7 +10,7 @@ enum DialogFieldsEditorDemo {
   ;
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
-    DialogFieldsEditor dialogFieldsEditor = DialogFieldsEditor.show(null, "here", new GuiExtension());
+    DialogFieldsEditor dialogFieldsEditor = DialogFieldsEditor.show(null, new GuiExtension(), "here");
     WindowClosed.runs(dialogFieldsEditor, () -> System.out.println(dialogFieldsEditor.getSelection()));
   }
 }

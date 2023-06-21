@@ -15,6 +15,6 @@ public class TemplateEnumParam {
 
   public static void main(String[] args) {
     TemplateEnumParam templateEnumParam = new TemplateEnumParam();
-    DialogFieldsEditor.show(null, "title", templateEnumParam);
+    DialogFieldsEditor.show(null, templateEnumParam, "title");
   }
 }

@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,6 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
+
+import ch.alpine.bridge.awt.WindowClosed;
 
 /** the standalone dialog allows the user to modify the contents of the given object
  * (changes take effect immediately) and finally decide whether to affirm or cancel. */
@@ -27,10 +30,25 @@ public class DialogFieldsEditor extends JDialog {
    * @param title of dialog window, may be null
    * @param object non-null
    * @return dialog */
-  public static DialogFieldsEditor show(Component parentComponent, String title, Object object) {
-    DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(parentComponent, title, object);
+  public static DialogFieldsEditor show(Component parentComponent, Object object, String title) {
+    return show(parentComponent, object, title, false, null);
+  }
+
+  /** @param parentComponent
+   * @param title
+   * @param object
+   * @param modal
+   * @param consumer
+   * @return */
+  public static DialogFieldsEditor show(Component parentComponent, Object object, String title, boolean modal, Consumer<Object> consumer) {
+    DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(parentComponent, object);
     dialogFieldsEditor.setLocationRelativeTo(parentComponent);
+    dialogFieldsEditor.setTitle(title);
+    dialogFieldsEditor.setModal(modal);
+//    dialogFieldsEditor.setUndecorated(true);
     dialogFieldsEditor.setVisible(true);
+    if (Objects.nonNull(consumer))
+      WindowClosed.runs(dialogFieldsEditor, () -> dialogFieldsEditor.getSelection().ifPresent(consumer));
     return dialogFieldsEditor;
   }
 
@@ -44,9 +62,8 @@ public class DialogFieldsEditor extends JDialog {
    * @param title of dialog window, may be null
    * @param object non-null
    * @return dialog */
-  public DialogFieldsEditor(Component parentComponent, String title, Object object) {
+  public DialogFieldsEditor(Component parentComponent, Object object) {
     super(JOptionPane.getFrameForComponent(parentComponent));
-    setTitle(title);
     this.object = Objects.requireNonNull(object);
     panelFieldsEditor = new PanelFieldsEditor(object);
     fallback = ObjectProperties.join(object);

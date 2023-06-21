@@ -5,12 +5,14 @@ import java.io.File;
 
 import ch.alpine.bridge.ref.util.ObjectProperties;
 
-public class ResourceLocator {
-  final File root;
+public final class ResourceLocator {
+  private final File root;
 
   public ResourceLocator(File root) {
     this.root = root;
     root.mkdirs();
+    if (!root.isDirectory())
+      throw new RuntimeException("no directory: " + root);
   }
 
   public <T> T tryLoad(T object) {
@@ -22,7 +24,6 @@ public class ResourceLocator {
   }
 
   private File file(Object object) {
-    String title = object.getClass().getSimpleName() + ".properties";
-    return new File(root, title);
+    return new File(root, object.getClass().getSimpleName() + ".properties");
   }
 }
