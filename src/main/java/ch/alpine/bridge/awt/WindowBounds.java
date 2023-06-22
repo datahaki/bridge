@@ -42,7 +42,7 @@ public class WindowBounds {
   }
 
   public Rectangle getBoundsAllVisible() {
-    return new ScreenRectangle().allVisible(rectangle);
+    return ScreenRectangles.create().allVisible(rectangle);
   }
 
   private final Point shift = new Point();
