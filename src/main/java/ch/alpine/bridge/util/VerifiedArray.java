@@ -3,6 +3,7 @@ package ch.alpine.bridge.util;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /** one application is to manage the registers for modbus communication
@@ -18,7 +19,7 @@ public class VerifiedArray {
   }
 
   // ---
-  private final CopyOnWriteLinkedSet<Predicate<ByteBuffer>> predicates = new CopyOnWriteLinkedSet<>();
+  private final Set<Predicate<ByteBuffer>> predicates = new CopyOnWriteLinkedSet<>();
   private final byte[] data;
 
   /** @param length non-negative */

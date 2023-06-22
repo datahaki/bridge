@@ -45,7 +45,7 @@ public class DialogFieldsEditor extends JDialog {
     dialogFieldsEditor.setLocationRelativeTo(parentComponent);
     dialogFieldsEditor.setTitle(title);
     dialogFieldsEditor.setModal(modal);
-//    dialogFieldsEditor.setUndecorated(true);
+    // dialogFieldsEditor.setUndecorated(true);
     dialogFieldsEditor.setVisible(true);
     if (Objects.nonNull(consumer))
       WindowClosed.runs(dialogFieldsEditor, () -> dialogFieldsEditor.getSelection().ifPresent(consumer));

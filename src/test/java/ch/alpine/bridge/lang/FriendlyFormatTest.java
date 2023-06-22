@@ -22,4 +22,10 @@ class FriendlyFormatTest {
     assertEquals(FriendlyFormat.toHighSchoolString(Scalars.fromString("4/3")), "1+1/3");
     assertEquals(FriendlyFormat.toHighSchoolString(Scalars.fromString("5")), "5");
   }
+
+  @Test
+  void testBytes() {
+    String string = FriendlyFormat.of(new byte[] { 2, 3, (byte) 255 });
+    assertEquals(string, "[02 03 ff]");
+  }
 }

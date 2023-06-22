@@ -5,6 +5,7 @@ import java.io.File;
 
 import ch.alpine.bridge.ref.util.ObjectProperties;
 
+// TODO BRIDGE API not final
 public final class ResourceLocator {
   private final File root;
 
@@ -13,6 +14,10 @@ public final class ResourceLocator {
     root.mkdirs();
     if (!root.isDirectory())
       throw new RuntimeException("no directory: " + root);
+  }
+
+  public File root() {
+    return root;
   }
 
   public <T> T tryLoad(T object) {
@@ -29,5 +34,9 @@ public final class ResourceLocator {
 
   public File properties(String string) {
     return new File(root, string + ".properties");
+  }
+
+  public File properties(Class<?> cls) {
+    return properties(cls.getSimpleName());
   }
 }

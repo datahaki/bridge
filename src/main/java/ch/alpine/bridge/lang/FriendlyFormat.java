@@ -81,6 +81,8 @@ public enum FriendlyFormat {
 
   private static final Collector<CharSequence, ?, String> COLLECTOR = Collectors.joining(" ", "[", "]");
 
+  /** @param data
+   * @return for instance "[a0 12 cd 3f ff 00]" */
   public static String of(byte[] data) {
     return IntStream.range(0, data.length) //
         .mapToObj(index -> String.format("%02x", data[index])) //
