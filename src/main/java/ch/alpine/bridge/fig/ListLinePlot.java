@@ -34,7 +34,7 @@ public class ListLinePlot extends BaseShowable {
   private final Tensor points;
 
   private ListLinePlot(Tensor points) {
-    points.stream().forEach(row -> VectorQ.requireLength(row, 2));
+    points.forEach(row -> VectorQ.requireLength(row, 2));
     this.points = points;
   }
 

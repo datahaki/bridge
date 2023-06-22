@@ -32,7 +32,7 @@ class ScreenRectanglesTest {
     Rectangle r4 = new Rectangle(2560 + 10, 10, 200, 300);
     assertEquals(r4, screenRectangles.allVisible(r4));
   }
-  
+
   @Test
   void testEmpty() {
     ScreenRectangles screenRectangles = new ScreenRectangles(Arrays.asList());

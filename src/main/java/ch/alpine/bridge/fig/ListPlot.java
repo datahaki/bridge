@@ -43,7 +43,7 @@ public class ListPlot extends BaseShowable {
   private double radius = RADIUS;
 
   private ListPlot(Tensor points) {
-    points.stream().forEach(row -> VectorQ.requireLength(row, 2));
+    points.forEach(row -> VectorQ.requireLength(row, 2));
     this.points = points;
   }
 

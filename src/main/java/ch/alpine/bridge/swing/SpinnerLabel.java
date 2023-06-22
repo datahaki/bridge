@@ -235,8 +235,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
 
   /** does not invoke callbacks
    * 
-   * @param type non-null
-   * @throws Exception if type is not present in list */
+   * @param type non-null */
   public void setValue(T type) {
     value = Objects.requireNonNull(type);
     setText(String.valueOf(getValue()));

@@ -30,12 +30,11 @@ public record ScreenRectangles(List<Rectangle> rectangles) {
     int y = Integers.clip(available.y, available.y + Math.max(0, available.height - height)).applyAsInt(window.y - (window.height - height));
     return new Rectangle(x, y, width, height);
   }
-  
+
   public Rectangle findScreen(Rectangle window) {
     return rectangles.stream() //
         .filter(rectangle -> !rectangle.intersection(window).isEmpty()) //
         .findFirst() //
         .orElse(rectangles.stream().findFirst().orElse(window));
   }
-
 }
