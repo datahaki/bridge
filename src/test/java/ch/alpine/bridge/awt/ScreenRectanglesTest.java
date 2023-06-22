@@ -16,7 +16,6 @@ class ScreenRectanglesTest {
     Rectangle rectangle = new Rectangle(10, 10, 100, 100);
     Rectangle allVisible = screenRectangles.allVisible(rectangle);
     assertEquals(rectangle, allVisible);
-    // System.out.println(screenRectangles.rectangles());
   }
 
   @Test

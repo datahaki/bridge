@@ -23,14 +23,19 @@ public record ScreenRectangles(List<Rectangle> rectangles) {
   /** @param window
    * @return rectangle that is entirely contained inside one of the available screen rectangles */
   public Rectangle allVisible(Rectangle window) {
-    Rectangle available = rectangles.stream() //
-        .filter(rectangle -> !rectangle.intersection(window).isEmpty()) //
-        .findFirst() //
-        .orElse(rectangles.stream().findFirst().orElse(window));
+    Rectangle available = findScreen(window);
     int width = Integers.clip(0, available.width).applyAsInt(window.width);
     int height = Integers.clip(0, available.height).applyAsInt(window.height);
     int x = Integers.clip(available.x, available.x + Math.max(0, available.width - width)).applyAsInt(window.x - (window.width - width));
     int y = Integers.clip(available.y, available.y + Math.max(0, available.height - height)).applyAsInt(window.y - (window.height - height));
     return new Rectangle(x, y, width, height);
   }
+  
+  public Rectangle findScreen(Rectangle window) {
+    return rectangles.stream() //
+        .filter(rectangle -> !rectangle.intersection(window).isEmpty()) //
+        .findFirst() //
+        .orElse(rectangles.stream().findFirst().orElse(window));
+  }
+
 }
