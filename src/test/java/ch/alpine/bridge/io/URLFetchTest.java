@@ -3,6 +3,7 @@ package ch.alpine.bridge.io;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.awt.image.BufferedImage;
@@ -67,12 +68,7 @@ class URLFetchTest {
       try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/favicon.ico"))) {
         urlFetch.downloadIfMissing(file);
         urlFetch.downloadIfMissing(file);
-        try {
-          urlFetch.download(HomeDirectory.Downloads("download.that.never.started"));
-          fail();
-        } catch (Exception exception) {
-          // ---
-        }
+        assertThrows(Exception.class, () -> urlFetch.download(HomeDirectory.Downloads("download.that.never.started")));
       }
       assertEquals(file.length(), 1406);
     }
