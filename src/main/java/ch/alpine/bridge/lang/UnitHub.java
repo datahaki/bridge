@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.lang;
 
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
@@ -38,7 +39,7 @@ public class UnitHub {
 
   private UnitHub(UnitSystem unitSystem, Unit unit) {
     this.unit = unit;
-    zero = quantity(0);
+    zero = quantity(RealScalar.ZERO);
     convert = UnitConvert.of(unitSystem).to(unit);
     magnitude = QuantityMagnitude.of(unitSystem).in(unit);
   }
