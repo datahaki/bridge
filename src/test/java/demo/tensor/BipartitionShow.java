@@ -27,9 +27,9 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 // 4 22 35
 /* package */ class BipartitionShow {
   final BufferedImage bufferedImage = StaticHelper.createWhite(192 * 2);
-  final Graphics2D graphics = bufferedImage.createGraphics();
 
   public BipartitionShow(int seed, boolean lines) {
+    Graphics2D graphics = bufferedImage.createGraphics();
     RandomGenerator random = new Random(seed);
     Tensor points1 = RandomVariate.of(UniformDistribution.unit(), random, 9, 2);
     Tensor points2 = RandomVariate.of(UniformDistribution.unit(), random, 13, 2);
@@ -60,7 +60,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
       graphics.fill(path2d);
       geometricLayer.popMatrix();
     }
-    // bufferedImage;
+    graphics.dispose();
   }
 
   public static void main(String[] args) throws IOException {

@@ -13,5 +13,6 @@ class RenderQualityTest {
     Graphics2D graphics = bufferedImage.createGraphics();
     RenderQuality.setQuality(graphics);
     RenderQuality.setDefault(graphics);
+    graphics.dispose();
   }
 }
