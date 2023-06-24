@@ -88,7 +88,7 @@ public class ClassDiscovery {
                 // try loading that class
                 try {
                   Class<?> cls = urlClassLoader.loadClass(className);
-                  if (cls == null)
+                  if (Objects.isNull(cls))
                     continue;
                   classVisitor.accept(item, cls);
                 } catch (Throwable throwable) {

@@ -246,7 +246,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
   }
 
   public void addToComponentReduced(JComponent jComponent, Dimension dimension, String toolTip) {
-    setToolTipText(toolTip == null || toolTip.isEmpty() ? null : toolTip);
+    setToolTipText(Objects.isNull(toolTip) || toolTip.isEmpty() ? null : toolTip);
     setPreferredSize(dimension);
     jComponent.add(this);
   }
