@@ -3,7 +3,7 @@ package ch.alpine.bridge.swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -83,7 +83,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
     final boolean enabled = isEnabled();
     final boolean insideActive = mouseInside && enabled;
     Graphics2D graphics = (Graphics2D) _graphics;
-    Dimension dimension = getSize(); // myJLabel.
+    Dimension dimension = getSize();
     border_width = Integers.clip(BORDER_WIDTH_MIN, BORDER_WIDTH_MAX).applyAsInt(BORDER_WIDTH_MIN - 2 + dimension.width / 10);
     // ---
     if (isOverArrows(lastMouse) && enabled) {
@@ -241,28 +241,21 @@ public abstract class SpinnerLabel<T> extends JTextField {
     setText(String.valueOf(getValue()));
   }
 
-  public void addToComponent(JComponent jComponent, Dimension dimension, String toolTip) {
-    addToComponentReduced(jComponent, dimension, toolTip);
-  }
-
-  public void addToComponentReduced(JComponent jComponent, Dimension dimension, String toolTip) {
+  public void addToComponent(JComponent jComponent, String toolTip) {
     setToolTipText(Objects.isNull(toolTip) || toolTip.isEmpty() ? null : toolTip);
-    setPreferredSize(dimension);
+    updatePreferredSize();
     jComponent.add(this);
   }
 
-  public static void updatePreferredSize(JTextField jTextField, List<?> list) {
-    Dimension dimension = jTextField.getPreferredSize();
-    Font font = jTextField.getFont();
-    for (Object object : list) {
-      JTextField probe = new JTextField(object.toString() + "\u3000");
-      probe.setFont(font);
-      dimension.width = Math.max(dimension.width, probe.getPreferredSize().width);
-    }
-    jTextField.setPreferredSize(dimension);
-  }
-
-  public void updatePreferredSize() {
-    updatePreferredSize(this, getList());
+  public Dimension updatePreferredSize() {
+    FontMetrics metrics = getFontMetrics(getFont());
+    int max = getList().stream() //
+        .map(Object::toString) //
+        .mapToInt(metrics::stringWidth) //
+        .max().orElse(0);
+    Dimension dimension = getPreferredSize();
+    dimension.width = max + 2 * metrics.charWidth('\u3000');
+    setPreferredSize(dimension);
+    return dimension;
   }
 }
