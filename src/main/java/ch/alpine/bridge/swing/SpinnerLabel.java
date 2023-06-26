@@ -12,9 +12,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import javax.swing.JComponent;
@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 
 import ch.alpine.bridge.awt.LazyMouse;
 import ch.alpine.bridge.awt.LazyMouseListener;
+import ch.alpine.bridge.util.CopyOnWriteLinkedSet;
 import ch.alpine.tensor.ext.Integers;
 
 /** selector in gui for easy scrolling through a list with mouse-wheel
@@ -65,7 +66,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
   }
 
   // ---
-  private final List<SpinnerListener<T>> spinnerListeners = new LinkedList<>();
+  private final Set<SpinnerListener<T>> spinnerListeners = new CopyOnWriteLinkedSet<>();
   private T value;
   private boolean mouseInside = false;
   private Point lastMouse = new Point();
