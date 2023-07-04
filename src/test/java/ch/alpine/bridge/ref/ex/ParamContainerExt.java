@@ -6,7 +6,7 @@ import ch.alpine.bridge.ref.util.ObjectProperties;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.io.ResourceData;
+import ch.alpine.tensor.ext.ResourceData;
 
 @ReflectionMarker
 public class ParamContainerExt extends ParamContainer {

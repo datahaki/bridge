@@ -20,13 +20,13 @@ import javax.imageio.ImageIO;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.img.ImageRotate;
 import ch.alpine.tensor.img.Thumbnail;
 import ch.alpine.tensor.io.Export;
 import ch.alpine.tensor.io.FileHash;
 import ch.alpine.tensor.io.ImageFormat;
-import ch.alpine.tensor.io.ResourceData;
 import ch.alpine.tensor.sca.pow.Sqrt;
 
 @Deprecated

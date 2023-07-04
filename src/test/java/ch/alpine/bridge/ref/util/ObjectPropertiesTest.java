@@ -31,7 +31,7 @@ import ch.alpine.bridge.ref.ex.TimeParam;
 import ch.alpine.bridge.ref.ex.V011Param;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.io.ResourceData;
+import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.Clips;
 

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.ext.Cache;
-import ch.alpine.tensor.io.ResourceData;
+import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Sign;

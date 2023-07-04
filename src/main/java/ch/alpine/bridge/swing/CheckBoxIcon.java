@@ -5,8 +5,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
+import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.img.ImageResize;
-import ch.alpine.tensor.io.ResourceData;
 
 /** Careful: the enum entries are used as part of resource locations
  * 
