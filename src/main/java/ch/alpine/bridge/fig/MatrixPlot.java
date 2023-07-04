@@ -13,6 +13,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.alg.Flatten;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.chq.FiniteScalarQ;
@@ -57,9 +58,7 @@ public class MatrixPlot extends BarLegendPlot {
       boolean symmetrize) {
     super(colorDataGradient);
     MatrixQ.require(matrix);
-    // Flatten.scalars(matrix);
-    Clip clip = matrix.flatten(-1) //
-        .map(Scalar.class::cast) //
+    Clip clip = Flatten.scalars(matrix) //
         .filter(FiniteScalarQ::of) //
         .collect(MinMax.toClip());
     if (Objects.nonNull(clip) && symmetrize) {
