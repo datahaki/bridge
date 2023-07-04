@@ -3,9 +3,12 @@ package ch.alpine.bridge.lang;
 
 import ch.alpine.tensor.qty.Unit;
 
-/** names inspired by Mathematica, see names.properties */
+/** names inspired by Mathematica, see names.properties
+ * 
+ * EXPERIMENTAL BRIDGE file should be auto generated */
 public enum SI {
   ;
+  public static final UnitHub METERS = UnitHub.si("m");
   public static final UnitHub METERS_PER_SECOND = UnitHub.si("m*s^-1");
   public static final UnitHub MILLISECONDS = UnitHub.si("ms");
   public static final UnitHub NANOSECONDS = UnitHub.si("ns");

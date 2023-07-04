@@ -2,12 +2,10 @@
 package ch.alpine.bridge.lang;
 
 import java.util.HashMap;
+import java.util.HexFormat;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -79,13 +77,11 @@ public enum FriendlyFormat {
     return stringBuilder.toString();
   }
 
-  private static final Collector<CharSequence, ?, String> COLLECTOR = Collectors.joining(" ", "[", "]");
+  private static final HexFormat HEX_FORMAT = HexFormat.ofDelimiter(" ");
 
   /** @param data
    * @return for instance "[a0 12 cd 3f ff 00]" */
   public static String of(byte[] data) {
-    return IntStream.range(0, data.length) //
-        .mapToObj(index -> String.format("%02x", data[index])) //
-        .collect(COLLECTOR);
+    return '[' + HEX_FORMAT.formatHex(data) + ']';
   }
 }

@@ -4,26 +4,15 @@ package ch.alpine.bridge.ref.util;
 import java.lang.reflect.Field;
 
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.FieldWraps;
 
 public interface ObjectFieldVisitor {
-  enum Type {
-    /** a node invokes push and pop at a later point */
-    NODE,
-    /** a leaf is guaranteed to have an associated {@link FieldWrap}
-     * 
-     * {@link ObjectFieldVisitor#accept(String, FieldWrap, Object, Object)}
-     * is called for a leaf
-     * 
-     * @see FieldWraps#elemental(Class) */
-    LEAF,
-    /** ignore field */
-    SKIP
-  }
+  /** @param field
+   * @return */
+  boolean isLeaf(Field field);
 
   /** @param field
-   * @return classify given field as node, leaf, or skip */
-  Type classify(Field field);
+   * @return */
+  boolean isNode(Field field);
 
   /** invoked before the traversing of a nested element
    * 

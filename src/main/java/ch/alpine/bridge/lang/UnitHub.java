@@ -1,6 +1,8 @@
 // code by jph
 package ch.alpine.bridge.lang;
 
+import java.io.Serializable;
+
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -14,7 +16,10 @@ import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Round;
 
-public class UnitHub {
+public class UnitHub implements Serializable {
+  /** @param unitSystem
+   * @param unit
+   * @return */
   public static UnitHub of(UnitSystem unitSystem, Unit unit) {
     return new UnitHub(unitSystem, unit);
   }

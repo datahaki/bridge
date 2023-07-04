@@ -24,6 +24,20 @@ public class ObjectFields {
     }
   }
 
+  private static enum Type {
+    /** a node invokes push and pop at a later point */
+    NODE,
+    /** a leaf is guaranteed to have an associated {@link FieldWrap}
+     * 
+     * {@link ObjectFieldVisitor#accept(String, FieldWrap, Object, Object)}
+     * is called for a leaf
+     * 
+     * @see FieldWraps#elemental(Class) */
+    LEAF,
+    /** ignore field */
+    SKIP
+  }
+
   // ---
   private final ObjectFieldVisitor objectFieldVisitor;
 
@@ -31,19 +45,33 @@ public class ObjectFields {
     this.objectFieldVisitor = objectFieldVisitor;
   }
 
+  /** @param field
+   * @return classify given field as node, leaf, or skip */
+  private Type classify(Field field) {
+    Class<?> class_field = field.getType();
+    if (FieldWraps.INSTANCE.elemental(class_field)) {
+      if (objectFieldVisitor.isLeaf(field))
+        return Type.LEAF;
+    } else //
+    if (objectFieldVisitor.isNode(field))
+      return Type.NODE;
+    return Type.SKIP;
+  }
+
   private void visit(String _prefix, Object object) {
     if (Objects.nonNull(object))
       for (Field field : list(object.getClass())) {
         String prefix = _prefix + field.getName();
-        switch (objectFieldVisitor.classify(field)) {
+        switch (classify(field)) {
         case NODE -> {
           Class<?> class_field = field.getType();
           if (class_field.isArray())
             iterate(prefix, field, List.of((Object[]) StaticHelper.get(field, object)));
           else {
-            if (field.getType().equals(List.class))
+            if (field.getType().equals(List.class)) {
+              // System.out.println(field.getGenericType());
               iterate(prefix, field, (List<?>) StaticHelper.get(field, object));
-            else {
+            } else {
               objectFieldVisitor.push(prefix, field, null);
               visit(prefix + ".", StaticHelper.get(field, object));
               objectFieldVisitor.pop();

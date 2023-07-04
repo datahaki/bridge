@@ -57,6 +57,7 @@ public class MatrixPlot extends BarLegendPlot {
       boolean symmetrize) {
     super(colorDataGradient);
     MatrixQ.require(matrix);
+    // Flatten.scalars(matrix);
     Clip clip = matrix.flatten(-1) //
         .map(Scalar.class::cast) //
         .filter(FiniteScalarQ::of) //

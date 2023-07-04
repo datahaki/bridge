@@ -12,23 +12,23 @@ import ch.alpine.bridge.swing.FontStyle;
 
 /* package */ enum Randoms {
   ;
-  public static LocalTime localTime(RandomGenerator random) {
-    return LocalTime.of(random.nextInt(24), random.nextInt(60), random.nextInt(60), random.nextInt(1_000_000_000));
+  public static LocalTime localTime(RandomGenerator randomGenerator) {
+    return LocalTime.of(randomGenerator.nextInt(24), randomGenerator.nextInt(60), randomGenerator.nextInt(60), randomGenerator.nextInt(1_000_000_000));
   }
 
-  public static Color color(RandomGenerator random) {
+  public static Color color(RandomGenerator randomGenerator) {
     return new Color( //
-        random.nextInt(256), //
-        random.nextInt(256), //
-        random.nextInt(256), //
-        random.nextInt(256));
+        randomGenerator.nextInt(256), //
+        randomGenerator.nextInt(256), //
+        randomGenerator.nextInt(256), //
+        randomGenerator.nextInt(256));
   }
 
-  public static Font font(RandomGenerator random) {
+  public static Font font(RandomGenerator randomGenerator) {
     List<String> list = FontDialog.FontParam.names();
     return new Font( //
-        list.get(random.nextInt(list.size())), //
-        random.nextInt(FontStyle.values().length), //
-        random.nextInt(40));
+        list.get(randomGenerator.nextInt(list.size())), //
+        randomGenerator.nextInt(FontStyle.values().length), //
+        randomGenerator.nextInt(40));
   }
 }

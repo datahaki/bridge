@@ -14,6 +14,7 @@ import java.util.random.RandomGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.lang.SI;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
@@ -42,18 +43,15 @@ class ListPlotTest {
     // CascadeHelper.draw(ListPlot.of(show.setJoined(false)));
   }
 
-  private static final ScalarUnaryOperator suoX = s -> Quantity.of(s, "s");
-  private static final ScalarUnaryOperator suoY = s -> Quantity.of(s, "m");
-
   @Test
   void testUnitsX() {
     Show show = new Show();
     Showable visualRow = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
     visualRow.setLabel("empty");
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5).map(suoX), Tensors.vector(2, 2.2, -1.6)));
+    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5).map(SI.SECONDS::quantity), Tensors.vector(2, 2.2, -1.6)));
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(0, 2, 5).map(suoX), Tensors.vector(1, 2, 1.6)));
+    show.add(ListLinePlot.of(Tensors.vector(0, 2, 5).map(SI.SECONDS::quantity), Tensors.vector(1, 2, 1.6)));
     show.add(ListLinePlot.of(Tensors.empty()));
     // CascadeHelper.draw(ListPlot.of(show));
   }
@@ -64,9 +62,9 @@ class ListPlotTest {
     Showable visualRow = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
     visualRow.setLabel("empty");
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).map(suoY)));
+    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).map(SI.METERS::quantity)));
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(3, 5), Tensors.vector(1, 2.6).map(suoY)));
+    show.add(ListLinePlot.of(Tensors.vector(3, 5), Tensors.vector(1, 2.6).map(SI.METERS::quantity)));
     // CascadeHelper.draw(ListPlot.of(show));
   }
 

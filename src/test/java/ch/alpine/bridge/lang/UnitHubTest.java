@@ -4,6 +4,8 @@ package ch.alpine.bridge.lang;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.ext.Serialization;
@@ -17,9 +19,10 @@ class UnitHubTest {
   }
 
   @Test
-  void testSerializable() {
+  void testSerializable() throws ClassNotFoundException, IOException {
     UnitHub unitHub = UnitHub.si("s*m^-1");
-    assertThrows(Exception.class, () -> Serialization.copy(unitHub));
+    Serialization.copy(unitHub);
+    // assertThrows(Exception.class, () -> Serialization.copy(unitHub));
     assertEquals(unitHub.zero(), Quantity.of(0, "m^-1*s"));
   }
 }
