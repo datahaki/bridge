@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -58,6 +59,6 @@ class SpectrogramTest {
     // assertEquals(Dimensions.of(image), Arrays.asList(32, 93, 4));
     assertEquals(Dimensions.of(SpectrogramArray.SPECTROGRAM.half_abs(vector)), Arrays.asList(32, 93));
     Tensor tensor = SpectrogramArray.SPECTROGRAM.apply(vector).map(Abs.FUNCTION);
-    assertEquals(Dimensions.of(tensor), Arrays.asList(93, 64));
+    assertEquals(Dimensions.of(tensor), List.of(93, 64));
   }
 }

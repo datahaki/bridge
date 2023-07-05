@@ -6,6 +6,8 @@ import java.io.File;
 import ch.alpine.bridge.ref.util.ObjectProperties;
 
 // TODO BRIDGE API not final
+/** manage operations of ObjectProperties on a local installation
+ * suitable for singleton parameter files, for instance editor */
 public final class ResourceLocator {
   private final File root;
 

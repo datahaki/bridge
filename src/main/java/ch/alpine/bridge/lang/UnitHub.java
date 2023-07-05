@@ -14,6 +14,7 @@ import ch.alpine.tensor.qty.QuantityMagnitude;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.qty.UnitSystem;
+import ch.alpine.tensor.sca.Floor;
 import ch.alpine.tensor.sca.Round;
 
 public class UnitHub implements Serializable {
@@ -102,6 +103,10 @@ public class UnitHub implements Serializable {
    * @throws Exception if rounding results in an integer value outside the 32-bit range */
   public int intValue(Scalar scalar) {
     return Scalars.intValueExact(Round.FUNCTION.apply(magnitude(scalar)));
+  }
+
+  public int intValueFloor(Scalar scalar) {
+    return Scalars.intValueExact(Floor.FUNCTION.apply(magnitude(scalar)));
   }
 
   public int intValueExact(Scalar scalar) {

@@ -4,7 +4,6 @@ package ch.alpine.bridge.awt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Rectangle;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ class ScreenRectanglesTest {
   void testReal() {
     Rectangle r1 = new Rectangle(0, 0, 2560, 1440);
     Rectangle r2 = new Rectangle(2560, 0, 1920, 1080);
-    List<Rectangle> list = Arrays.asList(r1, r2);
+    List<Rectangle> list = List.of(r1, r2);
     ScreenRectangles screenRectangles = new ScreenRectangles(list);
     assertEquals(new Rectangle(), screenRectangles.allVisible(new Rectangle()));
     assertEquals(r1, screenRectangles.allVisible(r1));
@@ -35,7 +34,7 @@ class ScreenRectanglesTest {
 
   @Test
   void testEmpty() {
-    ScreenRectangles screenRectangles = new ScreenRectangles(Arrays.asList());
+    ScreenRectangles screenRectangles = new ScreenRectangles(List.of());
     Rectangle r3 = new Rectangle(2560 + 10, 10, 19200, 10800);
     assertEquals(r3, screenRectangles.allVisible(r3));
   }

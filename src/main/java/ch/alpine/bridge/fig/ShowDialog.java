@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -27,7 +26,7 @@ public class ShowDialog extends JDialog {
   /** @param shows
    * @return */
   public static JDialog of(Show... shows) {
-    return of(Arrays.asList(shows));
+    return of(List.of(shows));
   }
 
   public static JDialog of(List<Show> list) {
