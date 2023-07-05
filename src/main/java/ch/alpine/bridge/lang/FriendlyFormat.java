@@ -77,11 +77,49 @@ public enum FriendlyFormat {
     return stringBuilder.toString();
   }
 
+  // ---
   private static final HexFormat HEX_FORMAT = HexFormat.ofDelimiter(" ");
 
   /** @param data
    * @return for instance "[a0 12 cd 3f ff 00]" */
   public static String of(byte[] data) {
     return '[' + HEX_FORMAT.formatHex(data) + ']';
+  }
+
+  // ---
+  private static final Pattern PATTERN = Pattern.compile("\\W+");
+
+  /** removes blank-space, and non-letter characters
+   * Careful: also '.' is removed
+   * 
+   * Reference:
+   * https://stackoverflow.com/questions/1184176/how-can-i-safely-encode-a-string-in-java-to-use-as-a-filename
+   * 
+   * @param string
+   * @return letter, digits, and '_' in myString */
+  public static String safeFileTitle(String string) {
+    return PATTERN.matcher(string).replaceAll("");
+  }
+
+  // ---
+  private static final String[][] PAIRS = { //
+      { "<", "&lt;" }, //
+      { ">", "&gt;" }, //
+      { "'", "&apos;" } };
+
+  public static String convertChars(String string) {
+    for (String[] pair : PAIRS)
+      string = string.replaceAll(pair[0], pair[1]);
+    return string;
+  }
+
+  public static String convertAmps(String string) {
+    for (String[] pair : PAIRS)
+      if (string.contains(pair[0]))
+        throw new IllegalArgumentException(string);
+    // ---
+    for (String[] pair : PAIRS)
+      string = string.replaceAll(pair[1], pair[0]);
+    return string;
   }
 }

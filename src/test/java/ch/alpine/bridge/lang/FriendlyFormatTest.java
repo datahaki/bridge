@@ -28,4 +28,18 @@ class FriendlyFormatTest {
     String string = FriendlyFormat.of(new byte[] { 2, 3, (byte) 255 });
     assertEquals(string, "[02 03 ff]");
   }
+
+  @Test
+  void testFilename() {
+    String string = FriendlyFormat.safeFileTitle("s ls \u3000 323 \\ dff& / :{}.csv _ ");
+    assertEquals(string, "sls323dffcsv_");
+  }
+
+  @Test
+  void testAmps() {
+    String string = FriendlyFormat.convertChars("asf<>'");
+    assertEquals(string, "asf&lt;&gt;&apos;");
+    string = FriendlyFormat.convertAmps(string);
+    assertEquals(string, "asf<>'");
+  }
 }
