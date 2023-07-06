@@ -2,6 +2,7 @@
 package ch.alpine.bridge.lang;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -20,5 +21,22 @@ class EnumValueTest {
     assertEquals(EnumValue.match(WindowFunctions.class, "manharris"), WindowFunctions.BLACKMAN_HARRIS);
     assertEquals(EnumValue.match(WindowFunctions.class, "drchlt"), WindowFunctions.DIRICHLET);
     assertEquals(EnumValue.match(WindowFunctions.class, "nttl"), WindowFunctions.NUTTALL);
+  }
+
+  @Test
+  void testEmptyFail() {
+    assertThrows(Exception.class, () -> EnumValue.match(EnumValue.class, ""));
+  }
+
+  @Test
+  void testNullFail() {
+    assertThrows(Exception.class, () -> EnumValue.match(null, "a"));
+    assertThrows(Exception.class, () -> EnumValue.match(WindowFunctions.class, null));
+  }
+
+  @Test
+  void testCycle() {
+    assertEquals(EnumValue.cycle(WindowFunctions.TUKEY, 3), WindowFunctions.BARTLETT_HANN);
+    assertEquals(EnumValue.cycle(WindowFunctions.TUKEY, -3), WindowFunctions.NUTTALL);
   }
 }
