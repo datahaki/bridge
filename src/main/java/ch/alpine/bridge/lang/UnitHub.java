@@ -77,10 +77,20 @@ public class UnitHub implements Serializable {
     return convert.apply(scalar);
   }
 
+  /** @param scalar with a compatible unit
+   * @return scalar with unit dropped after conversion to this unit */
+  public Scalar magnitude(Scalar scalar) {
+    return magnitude.apply(scalar);
+  }
+
+  /** @param scalar
+   * @return */
   public double doubleValue(Scalar scalar) {
     return magnitude(scalar).number().doubleValue();
   }
 
+  /** @param scalar
+   * @return */
   public float floatValue(Scalar scalar) {
     return magnitude(scalar).number().floatValue();
   }
@@ -93,6 +103,8 @@ public class UnitHub implements Serializable {
     return Scalars.longValueExact(Round.FUNCTION.apply(magnitude(scalar)));
   }
 
+  /** @param scalar
+   * @return */
   public long longValueExact(Scalar scalar) {
     return Scalars.longValueExact(magnitude(scalar));
   }
@@ -105,6 +117,8 @@ public class UnitHub implements Serializable {
     return Scalars.intValueExact(Round.FUNCTION.apply(magnitude(scalar)));
   }
 
+  /** @param scalar
+   * @return */
   public int intValueFloor(Scalar scalar) {
     return Scalars.intValueExact(Floor.FUNCTION.apply(magnitude(scalar)));
   }
@@ -122,14 +136,6 @@ public class UnitHub implements Serializable {
     byte value = (byte) intValue;
     Integers.requireEquals(value, intValue);
     return value;
-  }
-
-  /** function is private because projection operation is discouraged
-   * 
-   * @param scalar with a compatible unit
-   * @return scalar with unit dropped after conversion to this unit */
-  private Scalar magnitude(Scalar scalar) {
-    return magnitude.apply(scalar);
   }
 
   @Override
