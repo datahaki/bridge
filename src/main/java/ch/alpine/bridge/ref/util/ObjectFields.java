@@ -25,8 +25,6 @@ public class ObjectFields {
   }
 
   private static enum Type {
-    /** a node invokes push and pop at a later point */
-    NODE,
     /** a leaf is guaranteed to have an associated {@link FieldWrap}
      * 
      * {@link ObjectFieldVisitor#accept(String, FieldWrap, Object, Object)}
@@ -34,7 +32,13 @@ public class ObjectFields {
      * 
      * @see FieldWraps#elemental(Class) */
     LEAF,
-    /** ignore field */
+    /** a node invokes push and pop at a later point */
+    NODE,
+    /** array */
+    HOST,
+    /** list */
+    LIST,
+    /** ignore field, for instance primitives */
     SKIP
   }
 
@@ -53,8 +57,14 @@ public class ObjectFields {
       if (objectFieldVisitor.isLeaf(field))
         return Type.LEAF;
     } else //
-    if (objectFieldVisitor.isNode(field))
-      return Type.NODE;
+    if (objectFieldVisitor.isNode(field)) {
+      if (class_field.isArray())
+        return Type.HOST;
+      if (class_field.equals(List.class))
+        return Type.LIST;
+      if (!class_field.isPrimitive())
+        return Type.NODE;
+    }
     return Type.SKIP;
   }
 
@@ -63,24 +73,14 @@ public class ObjectFields {
       for (Field field : list(object.getClass())) {
         String prefix = _prefix + field.getName();
         switch (classify(field)) {
+        case LEAF -> objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, StaticHelper.get(field, object));
         case NODE -> {
-          Class<?> class_field = field.getType();
-          if (class_field.isArray())
-            iterate(prefix, field, List.of((Object[]) StaticHelper.get(field, object)));
-          else {
-            if (field.getType().equals(List.class)) {
-              // System.out.println(field.getGenericType());
-              iterate(prefix, field, (List<?>) StaticHelper.get(field, object));
-            } else {
-              objectFieldVisitor.push(prefix, field, null);
-              visit(prefix + ".", StaticHelper.get(field, object));
-              objectFieldVisitor.pop();
-            }
-          }
+          objectFieldVisitor.push(prefix, field, null);
+          visit(prefix + ".", StaticHelper.get(field, object));
+          objectFieldVisitor.pop();
         }
-        case LEAF -> {
-          objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, StaticHelper.get(field, object));
-        }
+        case HOST -> iterate(prefix, field, List.of((Object[]) StaticHelper.get(field, object)));
+        case LIST -> iterate(prefix, field, (List<?>) StaticHelper.get(field, object));
         default -> {
           // skip
         }
