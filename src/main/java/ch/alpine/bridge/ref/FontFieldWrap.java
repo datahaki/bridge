@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
+import ch.alpine.bridge.lang.EnumValue;
 import ch.alpine.bridge.swing.FontStyle;
 
 /** for strings that can be parsed into {@link Font}, for instance
@@ -40,7 +41,7 @@ import ch.alpine.bridge.swing.FontStyle;
   @Override // from FieldWrap
   public String toString(Object value) {
     Font font = (Font) value;
-    return String.format("Font[%s, %s, %d]", font.getName(), FontStyle.values()[font.getStyle()], font.getSize());
+    return String.format("Font[%s, %s, %d]", font.getName(), EnumValue.fromOrdinal(FontStyle.class, font.getStyle()), font.getSize());
   }
 
   @Override // from FieldWrap

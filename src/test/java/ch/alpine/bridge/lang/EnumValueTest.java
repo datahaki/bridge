@@ -39,4 +39,11 @@ class EnumValueTest {
     assertEquals(EnumValue.cycle(WindowFunctions.TUKEY, 3), WindowFunctions.BARTLETT_HANN);
     assertEquals(EnumValue.cycle(WindowFunctions.TUKEY, -3), WindowFunctions.NUTTALL);
   }
+
+  @Test
+  void testFromOrdinal() {
+    assertEquals(EnumValue.fromOrdinal(WindowFunctions.class, 5), WindowFunctions.BOHMAN);
+    assertThrows(Exception.class, () -> EnumValue.fromOrdinal(WindowFunctions.class, -1));
+    assertThrows(Exception.class, () -> EnumValue.fromOrdinal(WindowFunctions.class, 1000));
+  }
 }

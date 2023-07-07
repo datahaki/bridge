@@ -67,4 +67,15 @@ public enum EnumValue {
     Enum[] enums = type.getClass().getEnumConstants();
     return (T) enums[Math.floorMod(Math.addExact(type.ordinal(), delta), enums.length)];
   }
+
+  /** alternative to
+   * MyEnum.values()[ordinal]
+   * 
+   * @param cls
+   * @param ordinal
+   * @return
+   * @throws Exception if ordinal is not in valid range */
+  public static <T extends Enum<T>> T fromOrdinal(Class<T> cls, int ordinal) {
+    return cls.getEnumConstants()[ordinal];
+  }
 }

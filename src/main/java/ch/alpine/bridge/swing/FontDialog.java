@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
 import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.bridge.lang.EnumValue;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
@@ -39,7 +40,7 @@ public abstract class FontDialog extends DialogBase<Font> {
     /** @param font */
     protected FontParam(Font font) {
       name = font.getName();
-      style = FontStyle.values()[font.getStyle()];
+      style = EnumValue.fromOrdinal(FontStyle.class, font.getStyle());
       size = font.getSize();
     }
 
