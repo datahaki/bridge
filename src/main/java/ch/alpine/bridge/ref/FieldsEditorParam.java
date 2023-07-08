@@ -2,14 +2,18 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 
+import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.text.JTextComponent;
 
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
@@ -23,9 +27,9 @@ public class FieldsEditorParam {
   public static final FieldsEditorParam GLOBAL = new FieldsEditorParam();
   // ---
   /** min height applicable to all {@link FieldPanel}s */
-  public Boolean componentMinHeight_override = false;
+  public Boolean componentMinExtension_override = false;
   @FieldSelectionArray({ "28", "30", "32" })
-  public Integer componentMinHeight = 28;
+  public Integer componentMinExtension = 28;
   // ---
   /** font applicable to {@link StringPanel} and {@link EnumPanel} */
   public Boolean labelFont_override = false;
@@ -43,12 +47,22 @@ public class FieldsEditorParam {
   public Color stringPanel_Fail_BGND = new Color(255, 192, 192);
   public Color stringPanel_Fail_TEXT = new Color(51, 51, 51);
 
-  public void minHeight(JComponent jComponent) {
-    if (componentMinHeight_override) {
-      int height = componentMinHeight;
-      Dimension dimension = jComponent.getPreferredSize();
-      dimension.height = Math.max(dimension.height, height);
-      jComponent.setPreferredSize(dimension);
+  public void minExtension(JComponent jComponent) {
+    if (componentMinExtension_override) {
+      Component[] components = jComponent.getComponents();
+      if (0 < components.length)
+        for (Component component : components)
+          minExtension((JComponent) component);
+      else //
+      if (jComponent instanceof AbstractButton || //
+          jComponent instanceof JTextComponent || //
+          jComponent instanceof JSlider) {
+        int lowerBound = componentMinExtension;
+        Dimension dimension = jComponent.getPreferredSize();
+        dimension.width = Math.max(dimension.width, lowerBound);
+        dimension.height = Math.max(dimension.height, lowerBound);
+        jComponent.setPreferredSize(dimension);
+      }
     }
   }
 

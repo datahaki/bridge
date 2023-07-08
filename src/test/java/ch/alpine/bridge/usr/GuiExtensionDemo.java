@@ -14,6 +14,7 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
@@ -73,8 +74,8 @@ public class GuiExtensionDemo {
 
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
-    // FieldsEditorParam.GLOBAL.componentMinHeight_override = true;
-    // FieldsEditorParam.GLOBAL.componentMinHeight = RealScalar.of(32);
+    FieldsEditorParam.GLOBAL.componentMinExtension_override = true;
+    FieldsEditorParam.GLOBAL.componentMinExtension = 32;
     // ---
     // FieldsEditorParam.GLOBAL.textFieldFont_override = true;
     // FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 22);

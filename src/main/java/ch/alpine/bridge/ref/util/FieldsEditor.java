@@ -55,7 +55,7 @@ public abstract class FieldsEditor {
     // ---
     JComponent jComponent = fieldPanel.getJComponent();
     // ---
-    FieldsEditorParam.GLOBAL.minHeight(jComponent);
+    FieldsEditorParam.GLOBAL.minExtension(jComponent);
     // ---
     FieldPreferredWidth fieldPreferredWidth = fieldWrap.getField().getAnnotation(FieldPreferredWidth.class);
     if (Objects.nonNull(fieldPreferredWidth)) {
