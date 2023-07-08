@@ -1,7 +1,7 @@
 // code by jph, gjoel
 package ch.alpine.bridge.ref;
 
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
 import java.util.Objects;
 
 import javax.swing.JButton;
@@ -9,13 +9,13 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /* package */ final class BooleanButton extends FieldPanel {
-  private final JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+  private final JPanel jPanel = new JPanel(new BorderLayout());
 
   public BooleanButton(FieldWrap fieldWrap, String text) {
     super(fieldWrap);
     JButton jButton = new JButton(text);
     jButton.addActionListener(event -> notifyListeners(BooleanParser.TRUE));
-    jPanel.add(jButton);
+    jPanel.add(BorderLayout.WEST, jButton);
   }
 
   @Override // from FieldPanel
