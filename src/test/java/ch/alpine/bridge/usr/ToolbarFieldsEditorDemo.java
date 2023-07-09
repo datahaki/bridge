@@ -23,7 +23,7 @@ public enum ToolbarFieldsEditorDemo {
     GuiExtension guiExtension = new GuiExtension();
     JToolBar jToolBar = new JToolBar();
     jToolBar.setFloatable(false);
-    FieldsEditor fieldsEditor = ToolbarFieldsEditor.add(guiExtension, jToolBar);
+    FieldsEditor fieldsEditor = ToolbarFieldsEditor.addToComponent(guiExtension, jToolBar);
     fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     // ---
     JFrame jFrame = new JFrame();

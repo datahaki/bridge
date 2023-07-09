@@ -92,7 +92,7 @@ public class ShowDemo implements Runnable {
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-      FieldsEditor fieldsEditor = ToolbarFieldsEditor.add(this, jToolBar);
+      FieldsEditor fieldsEditor = ToolbarFieldsEditor.addToComponent(this, jToolBar);
       fieldsEditor.addUniversalListener(this);
       jPanel.add(BorderLayout.NORTH, jToolBar);
     }

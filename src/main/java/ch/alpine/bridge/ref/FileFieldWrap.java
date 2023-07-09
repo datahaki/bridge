@@ -6,7 +6,6 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -26,7 +25,7 @@ import ch.alpine.bridge.ref.ann.FieldFileExtensions;
     fieldExistingFile = field.getAnnotation(FieldExistingFile.class);
     fileFilters = Arrays.stream(field.getAnnotationsByType(FieldFileExtension.class)) //
         .map(FieldFileExtensions::of) //
-        .collect(Collectors.toList());
+        .toList();
   }
 
   @Override // from FieldWrap

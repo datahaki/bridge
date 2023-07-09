@@ -18,7 +18,7 @@ import ch.alpine.bridge.ref.ex.SliderFailParam;
 class ToolbarFieldsEditorTest {
   @Test
   void testSimple() {
-    FieldsEditor fieldsEditor = ToolbarFieldsEditor.add(new GuiExtension(), new JToolBar());
+    FieldsEditor fieldsEditor = ToolbarFieldsEditor.addToComponent(new GuiExtension(), new JToolBar());
     fieldsEditor.updateJComponents();
   }
 
@@ -26,7 +26,7 @@ class ToolbarFieldsEditorTest {
   void testEmptyToolbar() {
     OtherPackageParam otherPackageParam = new OtherPackageParam();
     JToolBar jToolBar = new JToolBar();
-    FieldsEditor fieldsEditor = ToolbarFieldsEditor.add(otherPackageParam, jToolBar);
+    FieldsEditor fieldsEditor = ToolbarFieldsEditor.addToComponent(otherPackageParam, jToolBar);
     assertTrue(fieldsEditor.list().isEmpty());
     assertEquals(jToolBar.getComponentCount(), 0);
   }
@@ -42,7 +42,7 @@ class ToolbarFieldsEditorTest {
     guiExtension.file = null;
     guiExtension.clip = null;
     JToolBar jToolBar = new JToolBar();
-    ToolbarFieldsEditor.add(guiExtension, jToolBar);
+    ToolbarFieldsEditor.addToComponent(guiExtension, jToolBar);
     JFrame jFrame = new JFrame();
     jFrame.setContentPane(jToolBar);
     jFrame.setBounds(100, 100, 1000, 100);
@@ -61,7 +61,7 @@ class ToolbarFieldsEditorTest {
   void testFrame() throws InterruptedException {
     GuiExtension guiExtension = new GuiExtension();
     JToolBar jToolBar = new JToolBar();
-    ToolbarFieldsEditor.add(guiExtension, jToolBar);
+    ToolbarFieldsEditor.addToComponent(guiExtension, jToolBar);
     JFrame jFrame = new JFrame();
     jFrame.setContentPane(jToolBar);
     jFrame.setBounds(100, 100, 1000, 100);
@@ -73,6 +73,6 @@ class ToolbarFieldsEditorTest {
   @Test
   void testSliderFailToolbar() {
     SliderFailParam sliderFailParam = new SliderFailParam();
-    assertThrows(Exception.class, () -> ToolbarFieldsEditor.add(sliderFailParam, new JToolBar()));
+    assertThrows(Exception.class, () -> ToolbarFieldsEditor.addToComponent(sliderFailParam, new JToolBar()));
   }
 }

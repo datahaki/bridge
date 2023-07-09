@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JToolBar;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
@@ -16,18 +15,19 @@ import ch.alpine.bridge.ref.ann.FieldLabels;
 
 public class ToolbarFieldsEditor extends FieldsEditor {
   /** @param object
-   * @param jToolBar
+   * @param jComponent
    * @return fields editor to which callback functions may be attached via
    * {@link #addUniversalListener(Runnable)} */
-  public static FieldsEditor add(Object object, JToolBar jToolBar) {
-    return new ToolbarFieldsEditor(object, jToolBar);
+  public static FieldsEditor addToComponent(Object object, JComponent jComponent) {
+    return new ToolbarFieldsEditor(object, jComponent);
   }
 
+  // ---
   private class Visitor extends ObjectFieldAll {
-    private final JToolBar jToolBar;
+    private final JComponent jComponent;
 
-    public Visitor(JToolBar jToolBar) {
-      this.jToolBar = jToolBar;
+    public Visitor(JComponent jComponent) {
+      this.jComponent = jComponent;
     }
 
     @Override // from ObjectFieldVisitor
@@ -40,23 +40,23 @@ public class ToolbarFieldsEditor extends FieldsEditor {
           ? new TogglePanel(fieldWrap, text, (Boolean) value)
           : fieldWrap.createFieldPanel(object, value);
       register(fieldPanel, object);
-      JComponent jComponent = fieldPanel.getJComponent();
+      JComponent component = fieldPanel.getJComponent();
       if (field.getType().isEnum()) {
-        jComponent.setToolTipText(text);
+        component.setToolTipText(text);
       } else //
       if (!isBoolean) {
         JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(text + " ");
         jLabel.setToolTipText(FieldToolTip.of(field));
-        jToolBar.add(jLabel);
+        jComponent.add(jLabel);
       }
-      jToolBar.add(jComponent);
+      jComponent.add(component);
       // some look and feels introduce a vertical line | as separator...
       // jToolBar.addSeparator();
-      jToolBar.add(new JLabel("\u2000"));
+      jComponent.add(new JLabel("\u2000"));
     }
   }
 
-  private ToolbarFieldsEditor(Object object, JToolBar jToolBar) {
+  private ToolbarFieldsEditor(Object object, JComponent jToolBar) {
     ObjectFields.of(object, new Visitor(jToolBar));
   }
 }

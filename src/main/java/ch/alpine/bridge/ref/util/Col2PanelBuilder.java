@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldLabels;
@@ -16,6 +17,7 @@ import ch.alpine.bridge.ref.ann.FieldLabels;
 final class Col2PanelBuilder implements PanelBuilder {
   private final JPanel jPanel = new JPanel(new GridBagLayout());
   private final GridBagConstraints gridBagConstraints = new GridBagConstraints();
+  private int level = 0;
 
   public Col2PanelBuilder() {
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -34,9 +36,10 @@ final class Col2PanelBuilder implements PanelBuilder {
   /** @param jComponent that spreads over the entire width */
   @Override
   public void push(String key, Field field, Integer index) {
-    JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, index));
+    JLabel jLabel = createJLabel(key, field, index);
     jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
     append(jLabel);
+    ++level;
   }
 
   /** append a row consisting of two components of equal height:
@@ -51,7 +54,7 @@ final class Col2PanelBuilder implements PanelBuilder {
     gridBagConstraints.gridwidth = 1;
     gridBagConstraints.gridx = 0;
     gridBagConstraints.weightx = 0;
-    JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, null));
+    JLabel jLabel = createJLabel(key, field, null);
     jLabel.setToolTipText(FieldToolTip.of(field));
     jPanel.add(jLabel, gridBagConstraints);
     // ---
@@ -60,9 +63,16 @@ final class Col2PanelBuilder implements PanelBuilder {
     jPanel.add(jComponent2, gridBagConstraints);
   }
 
+  private JLabel createJLabel(String key, Field field, Integer index) {
+    JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, index));
+    if (0 < level)
+      jLabel.setBorder(new EmptyBorder(0, FieldsEditorParam.INSET_LEFT * level, 0, 0));
+    return jLabel;
+  }
+
   @Override
   public void pop() {
-    // ---
+    --level;
   }
 
   @Override

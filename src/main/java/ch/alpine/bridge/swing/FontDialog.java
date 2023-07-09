@@ -9,10 +9,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
@@ -47,7 +45,7 @@ public abstract class FontDialog extends DialogBase<Font> {
     @ReflectionMarker
     public static List<String> names() {
       GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      return Arrays.stream(graphicsEnvironment.getAvailableFontFamilyNames()).collect(Collectors.toList());
+      return List.of(graphicsEnvironment.getAvailableFontFamilyNames());
     }
 
     /** Experimentation has shown that a font name unknown to the graphics environment

@@ -12,6 +12,25 @@ import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
 
 public class PanelFieldsEditor extends FieldsEditor {
+  /** @param object
+   * @return */
+  public static PanelFieldsEditor nested(Object object) {
+    return new PanelFieldsEditor(object, new Rec2PanelBuilder());
+  }
+
+  /** @param object
+   * @return */
+  public static PanelFieldsEditor splits(Object object) {
+    return new PanelFieldsEditor(object, new Col2PanelBuilder());
+  }
+
+  /** @param object
+   * @return */
+  public static PanelFieldsEditor single(Object object) {
+    return new PanelFieldsEditor(object, new Col1PanelBuilder());
+  }
+
+  // ---
   private class Visitor extends ObjectFieldAll {
     @Override // from ObjectFieldVisitor
     public void push(String key, Field field, Integer index) {
@@ -31,22 +50,10 @@ public class PanelFieldsEditor extends FieldsEditor {
     }
   }
 
-  public static PanelFieldsEditor nested(Object object) {
-    return new PanelFieldsEditor(object, new Rec2PanelBuilder());
-  }
-
-  public static PanelFieldsEditor splits(Object object) {
-    return new PanelFieldsEditor(object, new Col2PanelBuilder());
-  }
-
-  public static PanelFieldsEditor single(Object object) {
-    return new PanelFieldsEditor(object, new Col1PanelBuilder());
-  }
-
   private final PanelBuilder panelBuilder;
 
-  private PanelFieldsEditor(Object object, PanelBuilder editorPanelBuilder) {
-    this.panelBuilder = editorPanelBuilder;
+  private PanelFieldsEditor(Object object, PanelBuilder panelBuilder) {
+    this.panelBuilder = panelBuilder;
     ObjectFields.of(object, new Visitor());
   }
 

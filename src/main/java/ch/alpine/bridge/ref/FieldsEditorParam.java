@@ -24,6 +24,8 @@ import ch.alpine.bridge.swing.CheckBoxIcon;
  * {@link FieldsEditor} that are not already covered by {@link UIManager}. */
 @ReflectionMarker
 public class FieldsEditorParam {
+  public static final int INSET_LEFT = 10;
+  // ---
   public static final FieldsEditorParam GLOBAL = new FieldsEditorParam();
   // ---
   /** min height applicable to all {@link FieldPanel}s */
