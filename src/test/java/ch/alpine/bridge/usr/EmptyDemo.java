@@ -11,7 +11,7 @@ public enum EmptyDemo {
   ;
   public static void main(String[] args) {
     EmptyParam emptyParam = new EmptyParam();
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(emptyParam);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(emptyParam);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     // ---
     JFrame jFrame = new JFrame();

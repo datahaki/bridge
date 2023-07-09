@@ -14,7 +14,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 class FontFieldWrapTest {
   public static FontFieldWrap getFontFieldWrap() {
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(FieldsEditorParam.GLOBAL);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(FieldsEditorParam.GLOBAL);
     List<FieldPanel> list = panelFieldsEditor.list();
     Optional<FieldPanel> optional = list.stream().filter(fp -> fp instanceof FontPanel).findFirst();
     FieldPanel fieldPanel = optional.orElseThrow();

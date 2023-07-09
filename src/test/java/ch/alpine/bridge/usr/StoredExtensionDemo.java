@@ -21,7 +21,7 @@ public enum StoredExtensionDemo {
       ObjectProperties.tryLoad(new StoredExtension(), FILE);
 
   public static void main(String[] args) {
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(INSTANCE);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(INSTANCE);
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, INSTANCE);
     // ---
     JFrame jFrame = new JFrame();

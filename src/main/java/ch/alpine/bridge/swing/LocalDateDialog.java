@@ -18,7 +18,7 @@ public abstract class LocalDateDialog extends DialogBase<LocalDate> {
   protected LocalDateDialog(LocalDate localDate) {
     super(localDate);
     localDateParam = new LocalDateParam(localDate);
-    panelFieldsEditor = new PanelFieldsEditor(localDateParam);
+    panelFieldsEditor = PanelFieldsEditor.splits(localDateParam);
     panelFieldsEditor.addUniversalListener(() -> selection(current()));
   }
 

@@ -12,7 +12,7 @@ class FieldLabelsTest {
   @Test
   void testFormatFail() {
     FieldLabelsT fieldLabelsT = new FieldLabelsT();
-    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(fieldLabelsT);
+    PanelFieldsEditor fieldsPanel = PanelFieldsEditor.splits(fieldLabelsT);
     assertEquals(fieldsPanel.list().size(), 4);
     fieldsPanel.createJScrollPane();
   }

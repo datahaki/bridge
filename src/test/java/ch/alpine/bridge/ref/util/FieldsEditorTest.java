@@ -9,7 +9,7 @@ import ch.alpine.bridge.ref.ex.V011Param;
 class FieldsEditorTest {
   @Test
   void testSimple() {
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(new SimpleParam());
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(new SimpleParam());
     panelFieldsEditor.createJScrollPane();
     panelFieldsEditor.list().forEach(fieldPanel -> fieldPanel.addListener(s -> {
       // ---
@@ -19,7 +19,7 @@ class FieldsEditorTest {
 
   @Test
   void testV011() {
-    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(new V011Param(3));
+    PanelFieldsEditor fieldsPanel = PanelFieldsEditor.splits(new V011Param(3));
     fieldsPanel.createJScrollPane();
   }
 }

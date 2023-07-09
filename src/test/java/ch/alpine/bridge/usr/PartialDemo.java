@@ -26,7 +26,7 @@ public enum PartialDemo {
   public static void main(String[] args) {
     LookAndFeels.INTELLI_J.updateComponentTreeUI();
     GuiExtension guiExtension = new GuiExtension();
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(guiExtension);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, guiExtension);
     // ---

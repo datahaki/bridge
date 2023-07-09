@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ import ch.alpine.bridge.ref.ex.SliderFailParam;
 class PanelFieldsEditorTest {
   @Test
   void testSimple() {
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(new GuiExtension());
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(new GuiExtension());
     panelFieldsEditor.addUniversalListener(() -> {
       // ---
     });
@@ -33,15 +32,15 @@ class PanelFieldsEditorTest {
   @Test
   void testEmptyPanel() {
     OtherPackageParam otherPackageParam = new OtherPackageParam();
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(otherPackageParam);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(otherPackageParam);
     assertTrue(panelFieldsEditor.list().isEmpty());
-    JPanel jPanel = panelFieldsEditor.getJPanel();
+    JComponent jPanel = panelFieldsEditor.getJPanel();
     assertEquals(jPanel.getComponentCount(), 0);
   }
 
   @Test
   void testInstances() {
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(new GuiExtension());
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(new GuiExtension());
     List<JComponent> l1 = panelFieldsEditor.list().stream().map(FieldPanel::getJComponent).collect(Collectors.toList());
     List<JComponent> l2 = panelFieldsEditor.list().stream().map(FieldPanel::getJComponent).collect(Collectors.toList());
     assertEquals(l1, l2);
@@ -52,21 +51,21 @@ class PanelFieldsEditorTest {
     GuiExtension guiExtension = new GuiExtension();
     guiExtension.cdg = null;
     guiExtension.pivots = null;
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(guiExtension);
     panelFieldsEditor.createJScrollPane();
   }
 
   @Test
   void testFieLabParam() {
     ObjectProperties.join(new FieLabParam(4));
-    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(new FieLabParam(4));
+    PanelFieldsEditor fieldsPanel = PanelFieldsEditor.splits(new FieLabParam(4));
     fieldsPanel.createJScrollPane();
   }
 
   @Test
   void testGuiExtension() {
     GuiExtension guiExtension = new GuiExtension();
-    PanelFieldsEditor fieldsPanel = new PanelFieldsEditor(guiExtension);
+    PanelFieldsEditor fieldsPanel = PanelFieldsEditor.splits(guiExtension);
     fieldsPanel.addUniversalListener(() -> System.out.println("changed"));
     fieldsPanel.createJScrollPane();
     List<FieldPanel> list = fieldsPanel.list();
@@ -85,6 +84,6 @@ class PanelFieldsEditorTest {
   @Test
   void testSliderFailPanel() {
     SliderFailParam sliderFailParam = new SliderFailParam();
-    assertThrows(Exception.class, () -> new PanelFieldsEditor(sliderFailParam));
+    assertThrows(Exception.class, () -> PanelFieldsEditor.splits(sliderFailParam));
   }
 }

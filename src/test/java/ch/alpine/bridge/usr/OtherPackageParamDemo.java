@@ -18,7 +18,7 @@ public enum OtherPackageParamDemo {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     // ---
     OtherPackageParam otherPackageParam = new OtherPackageParam();
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(otherPackageParam);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(otherPackageParam);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
     jGrid.add(panelFieldsEditor.createJScrollPane());

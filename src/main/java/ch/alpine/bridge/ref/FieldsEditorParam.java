@@ -27,9 +27,9 @@ public class FieldsEditorParam {
   public static final FieldsEditorParam GLOBAL = new FieldsEditorParam();
   // ---
   /** min height applicable to all {@link FieldPanel}s */
-  public Boolean componentMinExtension_override = false;
+  public Boolean componentMinSize_override = false;
   @FieldSelectionArray({ "28", "30", "32" })
-  public Integer componentMinExtension = 28;
+  public Integer componentMinSize = 28;
   // ---
   /** font applicable to {@link StringPanel} and {@link EnumPanel} */
   public Boolean labelFont_override = false;
@@ -47,17 +47,17 @@ public class FieldsEditorParam {
   public Color stringPanel_Fail_BGND = new Color(255, 192, 192);
   public Color stringPanel_Fail_TEXT = new Color(51, 51, 51);
 
-  public void minExtension(JComponent jComponent) {
-    if (componentMinExtension_override) {
+  public void minSize(JComponent jComponent) {
+    if (componentMinSize_override) {
       Component[] components = jComponent.getComponents();
       if (0 < components.length)
         for (Component component : components)
-          minExtension((JComponent) component);
+          minSize((JComponent) component);
       else //
       if (jComponent instanceof AbstractButton || //
           jComponent instanceof JTextComponent || //
           jComponent instanceof JSlider) {
-        int lowerBound = componentMinExtension;
+        int lowerBound = componentMinSize;
         Dimension dimension = jComponent.getPreferredSize();
         dimension.width = Math.max(dimension.width, lowerBound);
         dimension.height = Math.max(dimension.height, lowerBound);

@@ -18,8 +18,8 @@ public enum GuiExtensionSynced {
   public static void main(String[] args) {
     LookAndFeels.INTELLI_J.updateComponentTreeUI();
     GuiExtension guiExtension = new GuiExtension();
-    PanelFieldsEditor left_FieldsEditor = new PanelFieldsEditor(guiExtension);
-    PanelFieldsEditor rightFieldsEditor = new PanelFieldsEditor(guiExtension);
+    PanelFieldsEditor left_FieldsEditor = PanelFieldsEditor.splits(guiExtension);
+    PanelFieldsEditor rightFieldsEditor = PanelFieldsEditor.splits(guiExtension);
     left_FieldsEditor.addUniversalListener(() -> System.out.println("left_ changed"));
     rightFieldsEditor.addUniversalListener(() -> System.out.println("right changed"));
     // ---

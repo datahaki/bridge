@@ -43,6 +43,16 @@ import ch.alpine.tensor.sca.Clips;
 
 @ReflectionMarker
 public class GuiExtension {
+  public static class NestA {
+    public Color text = Color.RED;
+    public final NestB nestB = new NestB();
+  }
+
+  public static class NestB {
+    public String s = "abc";
+    public Pivots pivot = Pivots.ARGMAX_ABS;
+  }
+
   // the scalar array is not tracked by the FieldEditor
   public Scalar[] scalars = { Pi.VALUE, RealScalar.ONE };
   @FieldSelectionCallback("getStrings")
@@ -51,6 +61,7 @@ public class GuiExtension {
   public String function = "abc";
   @FieldSelectionArray({ "ttyS0", "ttyS1", "ttyS2", "ttyS3", "ttyUSB0", "ttyUSB1" })
   public String selectable = "ttyS0";
+  public final NestA nestA = new NestA();
   protected Boolean status = true;
   @FieldLabel("Big Fuse")
   @FieldFuse("press to restart")

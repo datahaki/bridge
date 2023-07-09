@@ -86,7 +86,7 @@ public abstract class FontDialog extends DialogBase<Font> {
     // ---
     jComponent.setPreferredSize(new Dimension(200, 60));
     // ---
-    panelFieldsEditor = new PanelFieldsEditor(fontParam);
+    panelFieldsEditor = PanelFieldsEditor.splits(fontParam);
     panelFieldsEditor.addUniversalListener(() -> {
       jComponent.repaint();
       selection(current());

@@ -28,7 +28,7 @@ class SpinnerLabelTest {
   void testFrame() throws InterruptedException {
     JFrame jFrame = new JFrame();
     GuiExtension guiExtension = new GuiExtension();
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(guiExtension);
     jFrame.setContentPane(panelFieldsEditor.createJScrollPane());
     jFrame.setBounds(100, 100, 400, 400);
     jFrame.setVisible(true);

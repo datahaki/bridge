@@ -2,60 +2,56 @@
 package ch.alpine.bridge.ref.util;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.lang.reflect.Field;
 
-import javax.swing.JLabel;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.FieldsEditorParam;
-import ch.alpine.bridge.ref.ann.FieldLabels;
-import ch.alpine.bridge.swing.RowPanelBuilder;
 
 public class PanelFieldsEditor extends FieldsEditor {
   private class Visitor extends ObjectFieldAll {
-    private int level = 0;
-
     @Override // from ObjectFieldVisitor
     public void push(String key, Field field, Integer index) {
-      JLabel jLabel = createJLabel(FieldLabels.of(key, field, index));
-      jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
-      rowPanelBuilder.appendRow(jLabel);
-      ++level;
+      panelBuilder.push(key, field, index);
     }
 
     @Override // from ObjectFieldVisitor
     public void accept(String key, FieldWrap fieldWrap, Object object, Object value) {
-      Field field = fieldWrap.getField();
-      JLabel jLabel = createJLabel(FieldLabels.of(key, field, null));
-      jLabel.setToolTipText(FieldToolTip.of(field));
       FieldPanel fieldPanel = fieldWrap.createFieldPanel(object, value);
       register(fieldPanel, object);
-      rowPanelBuilder.appendRow(jLabel, fieldPanel.getJComponent());
+      panelBuilder.item(key, fieldWrap.getField(), fieldPanel.getJComponent());
     }
 
     @Override // from ObjectFieldVisitor
     public void pop() {
-      --level;
-    }
-
-    private JLabel createJLabel(String text) {
-      return FieldsEditorParam.GLOBAL.createLabel("\u3000".repeat(level) + text);
+      panelBuilder.pop();
     }
   }
 
-  private final RowPanelBuilder rowPanelBuilder = new RowPanelBuilder();
+  public static PanelFieldsEditor nested(Object object) {
+    return new PanelFieldsEditor(object, new Rec2PanelBuilder());
+  }
 
-  /** @param object */
-  public PanelFieldsEditor(Object object) {
+  public static PanelFieldsEditor splits(Object object) {
+    return new PanelFieldsEditor(object, new Col2PanelBuilder());
+  }
+
+  public static PanelFieldsEditor single(Object object) {
+    return new PanelFieldsEditor(object, new Col1PanelBuilder());
+  }
+
+  private final PanelBuilder panelBuilder;
+
+  private PanelFieldsEditor(Object object, PanelBuilder editorPanelBuilder) {
+    this.panelBuilder = editorPanelBuilder;
     ObjectFields.of(object, new Visitor());
   }
 
-  public JPanel getJPanel() {
-    return rowPanelBuilder.getJPanel();
+  public JComponent getJPanel() {
+    return panelBuilder.getJComponent();
   }
 
   /** @return new instance of scroll panel with panel embedded aligned

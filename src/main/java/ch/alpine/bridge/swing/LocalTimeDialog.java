@@ -33,7 +33,7 @@ public abstract class LocalTimeDialog extends DialogBase<LocalTime> {
     // ---
     jComponent.setPreferredSize(new Dimension(120, 100));
     // ---
-    panelFieldsEditor = new PanelFieldsEditor(localTimeParam);
+    panelFieldsEditor = PanelFieldsEditor.splits(localTimeParam);
     panelFieldsEditor.addUniversalListener(() -> {
       jComponent.repaint();
       selection(current());

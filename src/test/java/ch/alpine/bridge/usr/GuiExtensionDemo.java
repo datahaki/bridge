@@ -14,7 +14,6 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
@@ -31,7 +30,7 @@ public class GuiExtensionDemo {
     guiExtension.font = null;
     guiExtension.date = null;
     guiExtension.time = null;
-    PanelFieldsEditor panelFieldsEditor = new PanelFieldsEditor(guiExtension);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(guiExtension);
     guiExtension.pivots = Pivots.FIRST_NON_ZERO;
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     // the code below demonstrates that individual listeners can be attached
@@ -74,8 +73,8 @@ public class GuiExtensionDemo {
 
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
-    FieldsEditorParam.GLOBAL.componentMinExtension_override = true;
-    FieldsEditorParam.GLOBAL.componentMinExtension = 32;
+    // FieldsEditorParam.GLOBAL.componentMinExtension_override = true;
+    // FieldsEditorParam.GLOBAL.componentMinExtension = 32;
     // ---
     // FieldsEditorParam.GLOBAL.textFieldFont_override = true;
     // FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 22);

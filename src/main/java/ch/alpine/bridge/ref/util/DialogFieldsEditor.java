@@ -65,7 +65,7 @@ public class DialogFieldsEditor extends JDialog {
   public DialogFieldsEditor(Component parentComponent, Object object) {
     super(JOptionPane.getFrameForComponent(parentComponent));
     this.object = Objects.requireNonNull(object);
-    panelFieldsEditor = new PanelFieldsEditor(object);
+    panelFieldsEditor = PanelFieldsEditor.splits(object);
     fallback = ObjectProperties.join(object);
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     addWindowListener(new WindowAdapter() {

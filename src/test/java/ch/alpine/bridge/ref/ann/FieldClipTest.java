@@ -13,6 +13,6 @@ class FieldClipTest {
   @Test
   void testFailEx() {
     FieldClipT fieldClipCorrupt = new FieldClipT();
-    assertThrows(Exception.class, () -> new PanelFieldsEditor(fieldClipCorrupt));
+    assertThrows(Exception.class, () -> PanelFieldsEditor.splits(fieldClipCorrupt));
   }
 }
