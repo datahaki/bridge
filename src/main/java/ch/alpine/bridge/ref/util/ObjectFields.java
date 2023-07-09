@@ -68,6 +68,7 @@ public class ObjectFields {
     return Type.SKIP;
   }
 
+  // TODO BRIDGE possibilities 1) dynamic allocate list content using default constr,, or 2) truncate preallocated list based on file content
   private void visit(String _prefix, Object object) {
     if (Objects.nonNull(object))
       for (Field field : list(object.getClass())) {

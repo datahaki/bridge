@@ -2,6 +2,7 @@
 package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,12 +23,13 @@ import ch.alpine.bridge.swing.SpinnerMenu;
     super(fieldWrap, value);
     jButton.addActionListener(actionEvent -> {
       JComponent jTextField = getTextFieldComponent();
+      Font font = jTextField.getFont();
       SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>( //
           supplier.get(), // options
           fieldWrap().toValue(getText()), // selected value
           fieldWrap::toString, // object to string function
+          font, //
           false); // no hover
-      spinnerMenu.setFont(jTextField.getFont());
       spinnerMenu.addSpinnerListener(value1 -> {
         String string = fieldWrap.toString(value1);
         setText(string);

@@ -14,6 +14,7 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ContainerEnabler;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
@@ -68,13 +69,13 @@ public class GuiExtensionDemo {
     }
     jSplitPane.setDividerLocation(500);
     jFrame.setContentPane(jPanel);
-    jFrame.setBounds(500, 100, 500, 900);
+    jFrame.setBounds(500, 100, 800, 900);
   }
 
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
-    // FieldsEditorParam.GLOBAL.componentMinExtension_override = true;
-    // FieldsEditorParam.GLOBAL.componentMinExtension = 32;
+    FieldsEditorParam.GLOBAL.componentMinSize_override = true;
+    FieldsEditorParam.GLOBAL.componentMinSize = 40;
     // ---
     // FieldsEditorParam.GLOBAL.textFieldFont_override = true;
     // FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 22);

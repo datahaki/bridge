@@ -152,8 +152,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
           increment(point.y < dimension.height / 2 ? -1 : 1); // sign of difference
         else //
         if (isMenuEnabled) {
-          SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(getList(), getValue(), Object::toString, isMenuHover);
-          spinnerMenu.setFont(getFont());
+          SpinnerMenu<T> spinnerMenu = new SpinnerMenu<>(getList(), getValue(), Object::toString, getFont(), isMenuHover);
           spinnerMenu.addSpinnerListener(type -> {
             setValue(type);
             reportToAll();

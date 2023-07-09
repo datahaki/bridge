@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -39,11 +40,13 @@ public class SpinnerMenu<T> {
    * @param selectedValue may be null
    * @param function that determines what text each value is represented on a menu item
    * @param hover */
-  public SpinnerMenu(List<T> list, T selectedValue, Function<T, String> function, boolean hover) {
+  public SpinnerMenu(List<T> list, T selectedValue, Function<T, String> function, Font font, boolean hover) {
     this.selectedValue = selectedValue;
     // ---
     for (T value : list) {
       JMenuItem jMenuItem = new JMenuItem(function.apply(value));
+      if (Objects.nonNull(font))
+        jMenuItem.setFont(font);
       if (hover)
         jMenuItem.addMouseListener(new MouseAdapter() {
           @Override
@@ -59,6 +62,7 @@ public class SpinnerMenu<T> {
         jMenuItem.setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
       } else
         jMenuItem.addActionListener(actionEvent -> spinnerListeners_spun(value));
+      FieldsEditorParam.GLOBAL.minSize(jMenuItem);
       jPopupMenu.add(jMenuItem);
       map.put(value, jMenuItem);
     }
@@ -68,10 +72,9 @@ public class SpinnerMenu<T> {
   void spinnerListeners_spun(T value) {
     spinnerListeners.forEach(spinnerListener -> spinnerListener.spun(value));
   }
-
-  public void setFont(Font font) {
-    map.values().forEach(jMenuItem -> jMenuItem.setFont(font));
-  }
+  // public void setFont(Font font) {
+  // map.values().forEach(jMenuItem -> jMenuItem.setFont(font));
+  // }
 
   public void addSpinnerListener(SpinnerListener<T> spinnerListener) {
     spinnerListeners.add(spinnerListener);

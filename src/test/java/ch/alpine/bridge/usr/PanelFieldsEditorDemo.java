@@ -27,7 +27,7 @@ public class PanelFieldsEditorDemo {
   }
 
   public static void main(String[] args) {
-    LookAndFeels.GTK_PLUS.updateComponentTreeUI();
+    LookAndFeels.LIGHT.updateComponentTreeUI();
     // ---
     // FieldsEditorParam.GLOBAL.textFieldFont_override = true;
     // FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 22);
