@@ -66,7 +66,7 @@ final class Col2PanelBuilder implements PanelBuilder {
   private JLabel createJLabel(String key, Field field, Integer index) {
     JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, index));
     if (0 < level)
-      jLabel.setBorder(new EmptyBorder(0, FieldsEditorParam.INSET_LEFT * level, 0, 0));
+      jLabel.setBorder(new EmptyBorder(0, FieldsEditorParam.GLOBAL.insetLeft * level, 0, 0));
     return jLabel;
   }
 

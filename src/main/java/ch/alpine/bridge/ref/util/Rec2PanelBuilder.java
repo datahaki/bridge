@@ -32,7 +32,7 @@ import ch.alpine.bridge.ref.ann.FieldLabels;
     jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
     PanelBuilder panelBuilder = new Col2PanelBuilder();
     JComponent jComponent = panelBuilder.getJComponent();
-    jComponent.setBorder(new EmptyBorder(0, FieldsEditorParam.INSET_LEFT, 0, 0));
+    jComponent.setBorder(new EmptyBorder(0, FieldsEditorParam.GLOBAL.insetLeft, 0, 0));
     deque.peek().append(jLabel);
     deque.peek().append(jComponent);
     deque.push(panelBuilder);
