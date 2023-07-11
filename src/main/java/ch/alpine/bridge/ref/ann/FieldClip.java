@@ -43,6 +43,7 @@ public @interface FieldClip {
    * to specify that the min max values are restricted to
    * integer values.
    * 
+   * TODO BRIDGE documentation not clear
    * In particular, the method is not used when annotating
    * fields of type {@link Scalar}, or {@link Integer}.
    * 

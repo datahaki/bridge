@@ -99,6 +99,7 @@ public class FieldClips implements Predicate<Scalar> {
     return clip;
   }
 
+  // TODO BRIDGE document
   public boolean isInteger() {
     return isInteger;
   }

@@ -43,11 +43,8 @@ import ch.alpine.tensor.Scalar;
         ? fieldClips.getIntegerResolution()
         : RESOLUTION;
     jLabel = new JLabel("", SwingConstants.CENTER);
-    if (Objects.nonNull(value)) {
-      Scalar scalar = convert(value);
-      jLabel.setText(Unicode.valueOf(scalar));
-      index = fieldClips.indexOf(scalar, resolution);
-    }
+    if (Objects.nonNull(value))
+      labelIndex(value);
     jSlider = new JSlider(0, resolution, index);
     jSlider.setOpaque(false); // for use in toolbar
     jSlider.setPaintTicks(resolution <= TICKS_MAX);
@@ -56,8 +53,7 @@ import ch.alpine.tensor.Scalar;
       int value1 = jSlider.getValue();
       if (index != value1) { // prevent notifications if slider value hasn't changed
         Scalar scalar = fieldClips.interp(RationalScalar.of(index = value1, resolution));
-        if (Objects.nonNull(jLabel))
-          jLabel.setText(Unicode.valueOf(scalar));
+        jLabel.setText(Unicode.valueOf(scalar));
         notifyListeners(scalar.toString());
       }
     });
@@ -86,9 +82,15 @@ import ch.alpine.tensor.Scalar;
         : RealScalar.of((Integer) value);
   }
 
+  private void labelIndex(Object value) {
+    Scalar scalar = convert(value);
+    jLabel.setText(Unicode.valueOf(scalar));
+    index = fieldClips.indexOf(scalar, resolution);
+  }
+
   @Override // from FieldPanel
   public void updateJComponent(Object value) {
-    index = fieldClips.indexOf(convert(value), resolution);
+    labelIndex(value);
     /* Quote from JSlider:
      * "If the new value is different from the previous value, all change listeners are notified."
      * In case the value is not different from the previous value the function returns immediately
