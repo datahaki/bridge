@@ -28,6 +28,7 @@ import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.ext.FileExtension;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -216,9 +217,7 @@ public class Show implements Serializable {
    * @param dimension of image
    * @throws IOException */
   public void export(File file, Dimension dimension) throws IOException {
-    String string = file.toString();
-    int index = string.lastIndexOf('.');
-    ImageIO.write(image(dimension), string.substring(index + 1), file);
+    ImageIO.write(image(dimension), FileExtension.of(file), file);
   }
 
   // ---
