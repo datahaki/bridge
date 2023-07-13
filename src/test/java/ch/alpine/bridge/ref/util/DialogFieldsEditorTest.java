@@ -8,14 +8,8 @@ import ch.alpine.bridge.ref.ex.GuiExtension;
 
 class DialogFieldsEditorTest {
   @Test
-  void test() {
-    DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(null, new GuiExtension());
-    dialogFieldsEditor.fieldsEditor().addUniversalListener(() -> System.out.println("changed"));
-  }
-
-  @Test
   void testShow() {
-    DialogFieldsEditor dialogFieldsEditor = DialogFieldsEditor.show(null, new GuiExtension(), "here", false, Consumers.empty());
+    DialogFieldsEditor dialogFieldsEditor = DialogFieldsEditor.show(null, new GuiExtension(), "here", Consumers.empty());
     dialogFieldsEditor.getSelection();
   }
 }

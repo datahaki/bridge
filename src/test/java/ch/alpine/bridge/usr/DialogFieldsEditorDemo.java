@@ -8,10 +8,10 @@ import ch.alpine.bridge.swing.LookAndFeels;
 
 enum DialogFieldsEditorDemo {
   ;
-  // FIXME BRIDGE date slider does not "Revert"
   public static void main(String[] args) {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     DialogFieldsEditor dialogFieldsEditor = DialogFieldsEditor.show(null, new GuiExtension(), "here");
     WindowClosed.runs(dialogFieldsEditor, () -> System.out.println(dialogFieldsEditor.getSelection()));
+    System.out.println("non blocking");
   }
 }

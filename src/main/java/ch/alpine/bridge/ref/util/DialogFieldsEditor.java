@@ -27,29 +27,37 @@ public class DialogFieldsEditor extends JDialog {
   private static final int MARGIN_HEIGHT = 60;
 
   /** @param parentComponent may be null
-   * @param title of dialog window, may be null
    * @param object non-null
-   * @return dialog */
+   * @param title of dialog window, may be null
+   * @return */
   public static DialogFieldsEditor show(Component parentComponent, Object object, String title) {
-    return show(parentComponent, object, title, false, null);
+    return show(parentComponent, object, title, null);
   }
 
   /** @param parentComponent
+   * @param object non-null
    * @param title
-   * @param object
-   * @param modal
    * @param consumer
    * @return */
-  public static DialogFieldsEditor show(Component parentComponent, Object object, String title, boolean modal, Consumer<Object> consumer) {
-    DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(parentComponent, object);
+  public static DialogFieldsEditor show(Component parentComponent, Object object, String title, Consumer<Object> consumer) {
+    DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(parentComponent, title, false, object);
     dialogFieldsEditor.setLocationRelativeTo(parentComponent);
-    dialogFieldsEditor.setTitle(title);
-    dialogFieldsEditor.setModal(modal);
-    // dialogFieldsEditor.setUndecorated(true);
-    dialogFieldsEditor.setVisible(true);
     if (Objects.nonNull(consumer))
       WindowClosed.runs(dialogFieldsEditor, () -> dialogFieldsEditor.getSelection().ifPresent(consumer));
+    dialogFieldsEditor.setVisible(true);
     return dialogFieldsEditor;
+  }
+
+  /** @param parentComponent
+   * @param object
+   * @param title
+   * @return */
+  @SuppressWarnings("unchecked")
+  public static <T> Optional<T> block(Component parentComponent, T object, String title) {
+    DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(parentComponent, title, true, object);
+    dialogFieldsEditor.setLocationRelativeTo(parentComponent);
+    dialogFieldsEditor.setVisible(true);
+    return dialogFieldsEditor.getSelection().map(obj -> (T) obj);
   }
 
   // ---
@@ -60,10 +68,11 @@ public class DialogFieldsEditor extends JDialog {
 
   /** @param parentComponent may be null
    * @param title of dialog window, may be null
+   * @param modal
    * @param object non-null
    * @return dialog */
-  public DialogFieldsEditor(Component parentComponent, Object object) {
-    super(JOptionPane.getFrameForComponent(parentComponent));
+  private DialogFieldsEditor(Component parentComponent, String title, boolean modal, Object object) {
+    super(JOptionPane.getFrameForComponent(parentComponent), title, modal);
     this.object = Objects.requireNonNull(object);
     panelFieldsEditor = PanelFieldsEditor.splits(object);
     fallback = ObjectProperties.join(object);
