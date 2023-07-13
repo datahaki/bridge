@@ -40,12 +40,25 @@ public class FieldsEditorParam {
   /** font applicable to {@link StringPanel} and {@link EnumPanel} */
   public Boolean textFieldFont_override = false;
   public Font textFieldFont = new Font(Font.DIALOG_INPUT, Font.PLAIN, 15);
+
+  public static class CheckBoxParam {
+    /** icon applicable to {@link BooleanCheckBox} */
+    public Boolean override = false;
+    public CheckBoxIcon icon = CheckBoxIcon.METRO;
+    @FieldSelectionArray({ "16", "20", "24", "28", "32" })
+    public Integer size = 16;
+
+    public void layout(JCheckBox jCheckBox) {
+      if (override) {
+        int n = size;
+        jCheckBox.setIcon(icon.create(n, false));
+        jCheckBox.setSelectedIcon(icon.create(n, true));
+      }
+    }
+  }
+
+  public final CheckBoxParam checkBoxParam = new CheckBoxParam();
   // ---
-  /** icon applicable to {@link BooleanCheckBox} */
-  public Boolean checkBoxIcon_override = false;
-  public CheckBoxIcon checkBoxIcon = CheckBoxIcon.METRO;
-  @FieldSelectionArray({ "16", "20", "24", "28", "32" })
-  public Integer checkBoxIconSize = 16;
   public Color stringPanel_Fail_BGND = new Color(255, 192, 192);
   public Color stringPanel_Fail_TEXT = new Color(51, 51, 51);
 
@@ -71,14 +84,6 @@ public class FieldsEditorParam {
   public void setFont(JTextField jTextField) {
     if (textFieldFont_override)
       jTextField.setFont(textFieldFont);
-  }
-
-  public void setIcon(JCheckBox jCheckBox) {
-    if (checkBoxIcon_override) {
-      int n = checkBoxIconSize;
-      jCheckBox.setIcon(checkBoxIcon.create(n, false));
-      jCheckBox.setSelectedIcon(checkBoxIcon.create(n, true));
-    }
   }
 
   public JLabel createLabel(String text) {

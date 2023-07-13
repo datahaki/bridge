@@ -30,6 +30,20 @@ public class SpinnerMenu<T> {
    * the color is yellowish/golden */
   private static final Color ACTIVE_ITEM_LIGHT = new Color(243, 239, 124);
   private static final Color ACTIVE_ITEM_DARK = new Color(95, 95, 0);
+
+  /** @param jMenuItem_getForeground
+   * @return */
+  public static Color getBackgroundHighlight(Color jMenuItem_getForeground) {
+    Scalar mean = Mean.ofVector(ColorFormat.toVector(jMenuItem_getForeground).extract(0, 3));
+    return Scalars.lessThan(RealScalar.of(128), mean) //
+        ? ACTIVE_ITEM_DARK
+        : ACTIVE_ITEM_LIGHT;
+  }
+
+  public static void setBackgroundHighlight(JMenuItem jMenuItem) {
+    jMenuItem.setBackground(getBackgroundHighlight(jMenuItem.getForeground()));
+  }
+
   // ---
   private final List<SpinnerListener<T>> spinnerListeners = new LinkedList<>();
   private final JPopupMenu jPopupMenu = new JPopupMenu();
@@ -55,10 +69,7 @@ public class SpinnerMenu<T> {
           }
         });
       if (value.equals(selectedValue)) {
-        Scalar mean = Mean.ofVector(ColorFormat.toVector(jMenuItem.getForeground()).extract(0, 3));
-        jMenuItem.setBackground(Scalars.lessThan(RealScalar.of(128), mean) //
-            ? ACTIVE_ITEM_DARK
-            : ACTIVE_ITEM_LIGHT);
+        setBackgroundHighlight(jMenuItem);
         jMenuItem.setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
       } else
         jMenuItem.addActionListener(actionEvent -> spinnerListeners_spun(value));

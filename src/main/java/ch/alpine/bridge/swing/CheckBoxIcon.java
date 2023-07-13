@@ -13,6 +13,7 @@ import ch.alpine.tensor.img.ImageResize;
  * {@link PanelFieldsEditor} */
 public enum CheckBoxIcon {
   METRO,
+  /** green checkmark in a thin black rectangle */
   BALLIT,
   BALLOT,
   GENTLEFACE,
