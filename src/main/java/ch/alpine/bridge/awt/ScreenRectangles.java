@@ -5,6 +5,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -36,5 +37,9 @@ public record ScreenRectangles(List<Rectangle> rectangles) {
         .filter(rectangle -> !rectangle.intersection(window).isEmpty()) //
         .findFirst() //
         .orElse(rectangles.stream().findFirst().orElse(window));
+  }
+
+  public void placement(Window window) {
+    window.setBounds(allVisible(window.getBounds()));
   }
 }

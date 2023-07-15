@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.ScreenRectangles;
 import ch.alpine.bridge.awt.WindowClosed;
 
 /** the standalone dialog allows the user to modify the contents of the given object
@@ -44,6 +45,7 @@ public class DialogFieldsEditor extends JDialog {
     dialogFieldsEditor.setLocationRelativeTo(parentComponent);
     if (Objects.nonNull(consumer))
       WindowClosed.runs(dialogFieldsEditor, () -> dialogFieldsEditor.getSelection().ifPresent(consumer));
+    ScreenRectangles.create().placement(dialogFieldsEditor);
     dialogFieldsEditor.setVisible(true);
     return dialogFieldsEditor;
   }
