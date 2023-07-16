@@ -58,6 +58,7 @@ public class DialogFieldsEditor extends JDialog {
   public static <T> Optional<T> block(Component parentComponent, T object, String title) {
     DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(parentComponent, title, true, object);
     dialogFieldsEditor.setLocationRelativeTo(parentComponent);
+    ScreenRectangles.create().placement(dialogFieldsEditor);
     dialogFieldsEditor.setVisible(true);
     return dialogFieldsEditor.getSelection().map(obj -> (T) obj);
   }

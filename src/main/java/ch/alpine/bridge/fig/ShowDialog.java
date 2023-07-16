@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.ScreenRectangles;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -23,7 +24,9 @@ import ch.alpine.tensor.sca.Round;
 import ch.alpine.tensor.sca.pow.Sqrt;
 
 public class ShowDialog extends JDialog {
-  /** @param shows
+  /** non-blocking
+   * 
+   * @param shows
    * @return */
   public static JDialog of(Show... shows) {
     return of(List.of(shows));
@@ -37,7 +40,8 @@ public class ShowDialog extends JDialog {
 
   // ---
   public ShowDialog(Component parentComponent, List<Show> list) {
-    super(JOptionPane.getFrameForComponent(parentComponent));
+    super(JOptionPane.getFrameForComponent(parentComponent), false); // non-blocking
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
     {
       JToolBar jToolBar = new JToolBar();
@@ -69,7 +73,8 @@ public class ShowDialog extends JDialog {
       jPanel.add(BorderLayout.CENTER, grid);
       setContentPane(jPanel);
     }
-    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    setBounds(100, 100, 1000, 900);
+    setSize(1000, 1000);
+    setLocationRelativeTo(parentComponent);
+    ScreenRectangles.create().placement(this);
   }
 }

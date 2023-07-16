@@ -87,7 +87,7 @@ import javax.swing.WindowConstants;
     jFrame.getContentPane().add(this, BorderLayout.CENTER);
     // jFrame.pack();
     // Set window location and display.
-    jFrame.setBounds(100, 100, 500, 300);
+    jFrame.setSize(500, 300);
     jFrame.setLocationRelativeTo(null);
     jFrame.setVisible(true);
     return jFrame;
