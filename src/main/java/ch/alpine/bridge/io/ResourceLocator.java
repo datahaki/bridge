@@ -5,40 +5,40 @@ import java.io.File;
 
 import ch.alpine.bridge.ref.util.ObjectProperties;
 
-// TODO BRIDGE API not final
 /** manage operations of ObjectProperties on a local installation
  * suitable for singleton parameter files, for instance editor */
 public final class ResourceLocator {
-  private final File root;
+  private final File base;
 
-  public ResourceLocator(File root) {
-    this.root = root;
-    root.mkdirs();
-    if (!root.isDirectory())
-      throw new RuntimeException("no directory: " + root);
+  /** @param base directory which will be created */
+  public ResourceLocator(File base) {
+    this.base = base;
+    base.mkdirs();
+    if (!base.isDirectory())
+      throw new RuntimeException("no directory: " + base);
   }
 
-  public File root() {
-    return root;
+  public ResourceLocator sub(String folder_name) {
+    return new ResourceLocator(file(folder_name));
   }
 
   public <T> T tryLoad(T object) {
-    return ObjectProperties.tryLoad(object, file(object));
+    return ObjectProperties.tryLoad(object, properties(object.getClass()));
   }
 
   public boolean trySave(Object object) {
-    return ObjectProperties.trySave(object, file(object));
-  }
-
-  private File file(Object object) {
-    return properties(object.getClass().getSimpleName());
-  }
-
-  public File properties(String string) {
-    return new File(root, string + ".properties");
+    return ObjectProperties.trySave(object, properties(object.getClass()));
   }
 
   public File properties(Class<?> cls) {
     return properties(cls.getSimpleName());
+  }
+
+  public File properties(String string) {
+    return file(string + ".properties");
+  }
+
+  public File file(String string) {
+    return new File(base, string);
   }
 }

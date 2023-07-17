@@ -21,6 +21,9 @@ import ch.alpine.tensor.ext.Timing;
  * @see ObjectProperties */
 @ReflectionMarker
 public class WindowBounds {
+  private static final int OFFSET = 100;
+  private static final int SIZE = 800;
+
   /** function is typically called before the given window is made visible
    * 
    * loads previous window bounds from file, and attaches listeners to
@@ -30,12 +33,11 @@ public class WindowBounds {
    * @param window
    * @param file */
   public static void persistent(Window window, File file) {
-    WindowBounds windowBounds = ObjectProperties.tryLoad(new WindowBounds(), file);
-    windowBounds.private_attach(window, file);
+    ObjectProperties.tryLoad(new WindowBounds(), file).private_attach(window, file);
   }
 
   // ---
-  public Rectangle rectangle = new Rectangle(100, 100, 800, 800);
+  public Rectangle rectangle = new Rectangle(OFFSET, OFFSET, SIZE, SIZE);
 
   private WindowBounds() {
     // ---
