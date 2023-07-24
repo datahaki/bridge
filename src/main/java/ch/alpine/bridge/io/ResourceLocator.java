@@ -10,7 +10,7 @@ import ch.alpine.bridge.ref.util.ObjectProperties;
 public final class ResourceLocator {
   private final File base;
 
-  /** @param base directory which will be created */
+  /** @param base directory which will be created if necessary */
   public ResourceLocator(File base) {
     this.base = base;
     base.mkdirs();

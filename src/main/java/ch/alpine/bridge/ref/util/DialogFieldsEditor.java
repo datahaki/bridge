@@ -20,6 +20,7 @@ import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.ScreenRectangles;
 import ch.alpine.bridge.awt.WindowClosed;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 
 /** the standalone dialog allows the user to modify the contents of the given object
  * (changes take effect immediately) and finally decide whether to affirm or cancel. */
@@ -95,6 +96,7 @@ public class DialogFieldsEditor extends JDialog {
       jToolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
       {
         JButton jButton = new JButton("Done");
+        FieldsEditorParam.GLOBAL.minSize(jButton);
         jButton.setToolTipText("close dialog and keep current values");
         jButton.addActionListener(actionEvent -> {
           status = true;
@@ -104,6 +106,7 @@ public class DialogFieldsEditor extends JDialog {
       }
       {
         JButton jButton = new JButton("Revert");
+        FieldsEditorParam.GLOBAL.minSize(jButton);
         jButton.setToolTipText("revert to initial values");
         jButton.addActionListener(actionEvent -> {
           ObjectProperties.part(object, fallback);
@@ -113,15 +116,18 @@ public class DialogFieldsEditor extends JDialog {
       }
       {
         JButton jButton = new JButton("Cancel");
+        FieldsEditorParam.GLOBAL.minSize(jButton);
         jButton.setToolTipText("close dialog and revert to initial values");
         jButton.addActionListener(actionEvent -> cancel());
         jToolBar.add(jButton);
       }
       jPanel.add(BorderLayout.SOUTH, jToolBar);
     }
+    // jPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
     setContentPane(jPanel);
     Dimension dimension = getPreferredSize();
     setSize(new Dimension(dimension.width + MARGIN_WIDTH, dimension.height + MARGIN_HEIGHT));
+    
   }
 
   public FieldsEditor fieldsEditor() {

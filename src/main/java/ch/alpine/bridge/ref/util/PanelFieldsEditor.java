@@ -6,10 +6,12 @@ import java.lang.reflect.Field;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
+import ch.alpine.bridge.ref.FieldsEditorParam;
 
 public class PanelFieldsEditor extends FieldsEditor {
   /** @param object
@@ -57,6 +59,7 @@ public class PanelFieldsEditor extends FieldsEditor {
     ObjectFields.of(object, new Visitor());
   }
 
+  /** @return without scroll pane */
   public JComponent getJPanel() {
     return panelBuilder.getJComponent();
   }
@@ -66,6 +69,17 @@ public class PanelFieldsEditor extends FieldsEditor {
   public JScrollPane createJScrollPane() {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(getJPanel(), BorderLayout.NORTH);
-    return new JScrollPane(jPanel);
+    JScrollPane jScrollPane = new JScrollPane(jPanel);
+    // JScrollPane jScrollPane = new JScrollPane(jPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+    // TODO BRIDGE min size
+    {
+      JScrollBar jScrollBar = jScrollPane.getHorizontalScrollBar();
+      FieldsEditorParam.GLOBAL.minSize(jScrollBar);
+    }
+    {
+      JScrollBar jScrollBar = jScrollPane.getVerticalScrollBar();
+      FieldsEditorParam.GLOBAL.minSize(jScrollBar);
+    }
+    return jScrollPane;
   }
 }

@@ -6,6 +6,8 @@ import java.util.HexFormat;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -121,5 +123,17 @@ public enum FriendlyFormat {
     for (String[] pair : PAIRS)
       string = string.replaceAll(pair[1], pair[0]);
     return string;
+  }
+
+  // ---
+  public static String toCamelCase(String string) {
+    return Stream.of(string.split("_")) //
+        .map(FriendlyFormat::headRest) //
+        .collect(Collectors.joining());
+  }
+
+  private static String headRest(String string) {
+    char first = Character.toUpperCase(string.charAt(0));
+    return first + string.substring(1).toLowerCase();
   }
 }
