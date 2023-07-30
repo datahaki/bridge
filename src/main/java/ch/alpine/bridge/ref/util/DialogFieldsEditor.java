@@ -127,7 +127,6 @@ public class DialogFieldsEditor extends JDialog {
     setContentPane(jPanel);
     Dimension dimension = getPreferredSize();
     setSize(new Dimension(dimension.width + MARGIN_WIDTH, dimension.height + MARGIN_HEIGHT));
-    
   }
 
   public FieldsEditor fieldsEditor() {

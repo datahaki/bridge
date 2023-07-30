@@ -17,7 +17,6 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Unprotect;
-import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.api.TensorUnaryOperator;
 import ch.alpine.tensor.chq.FiniteScalarQ;
@@ -141,19 +140,5 @@ import ch.alpine.tensor.tmp.TsEntry;
 
   public static int interval(FontMetrics fontMetrics) {
     return fontMetrics.getAscent() * 8 / 5;
-  }
-
-  public static Scalar ratio(Tensor a, Tensor b) {
-    int n = a.length();
-    VectorQ.requireLength(b, n);
-    Scalar max = null;
-    for (int i = 0; i < n; ++i) {
-      Scalar r = b.Get(i).divide(a.Get(i));
-      if (b.subtract(a.multiply(r)).stream() //
-          .map(Scalar.class::cast) //
-          .allMatch(Sign::isPositiveOrZero))
-        max = r;
-    }
-    return max;
   }
 }

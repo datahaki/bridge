@@ -15,4 +15,9 @@ public class ShowableConfigYF extends ShowableConfig {
   public double y_pos(Scalar y) {
     return rectangle.y + y.subtract(yRange.min()).multiply(y2pixel).number().doubleValue();
   }
+
+  @Override
+  public Scalar dy(Scalar dy) {
+    return super.dy(dy).negate();
+  }
 }

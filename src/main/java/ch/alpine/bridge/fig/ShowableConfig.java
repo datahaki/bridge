@@ -65,7 +65,7 @@ public class ShowableConfig {
     return dx.multiply(pixel2x);
   }
 
-  public final Scalar dy(Scalar dy) {
+  public Scalar dy(Scalar dy) {
     return dy.multiply(pixel2y);
   }
 

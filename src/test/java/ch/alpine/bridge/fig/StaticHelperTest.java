@@ -35,18 +35,4 @@ class StaticHelperTest {
     clip = StaticHelper.nonZero(clip);
     assertEquals(clip.width(), Quantity.of(2, "m"));
   }
-
-  @Test
-  void testRatio1() {
-    Tensor a = Tensors.fromString("{3[m],4[m]}");
-    Scalar r = StaticHelper.ratio(a, Tensors.vector(400, 400));
-    assertEquals(r, Quantity.of(100, "m^-1"));
-  }
-
-  @Test
-  void testRatio2() {
-    Tensor a = Tensors.fromString("{3[m],4[m]}");
-    Scalar r = StaticHelper.ratio(a, Tensors.vector(200, 400));
-    assertEquals(r, Quantity.of(RationalScalar.of(200, 3), "m^-1"));
-  }
 }

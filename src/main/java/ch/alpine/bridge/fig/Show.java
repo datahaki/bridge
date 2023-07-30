@@ -28,6 +28,7 @@ import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.chq.ExactScalarQ;
 import ch.alpine.tensor.ext.FileExtension;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
@@ -136,9 +137,10 @@ public class Show implements Serializable {
   /** Remark: our implementation is inconsistent with Mathematica
    * Mathematica::"Automatic" is 1 in the tensor lib
    * 
-   * @param aspectRatio for instance 1 */
+   * @param aspectRatio exact scalar, for instance 1
+   * @see ExactScalarQ */
   public void setAspectRatio(Scalar aspectRatio) {
-    this.aspectRatio = aspectRatio;
+    this.aspectRatio = ExactScalarQ.require(aspectRatio);
   }
 
   public Scalar getAspectRatio() {
@@ -147,7 +149,7 @@ public class Show implements Serializable {
 
   /** @param graphics
    * @param rectangle
-   * @return */
+   * @return null if input rectangle is unsuitable for drawing */
   public ShowableConfig render(Graphics graphics, Rectangle rectangle) {
     if (rectangle.width <= 1 || rectangle.height <= 1)
       return null;
@@ -167,7 +169,10 @@ public class Show implements Serializable {
         Tensor a = Tensor.of(_cbb.stream().map(Clip::width));
         a.set(aspect::multiply, 1);
         Tensor b = Tensors.vector(rectangle.width, rectangle.height);
-        Tensor c = a.multiply(StaticHelper.ratio(a, b));
+        Optional<Tensor> optional = CbbFit.inside(a, b);
+        if (optional.isEmpty())
+          return null;
+        Tensor c = optional.orElseThrow();
         r.width = Round.intValueExact(c.Get(0));
         r.height = Round.intValueExact(c.Get(1));
       }
