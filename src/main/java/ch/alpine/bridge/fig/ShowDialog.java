@@ -24,6 +24,8 @@ import ch.alpine.tensor.sca.Round;
 import ch.alpine.tensor.sca.pow.Sqrt;
 
 public class ShowDialog extends JDialog {
+  private static final int SIZE = 800;
+
   /** non-blocking
    * 
    * @param shows
@@ -34,6 +36,7 @@ public class ShowDialog extends JDialog {
 
   public static JDialog of(List<Show> list) {
     ShowDialog showDialog = new ShowDialog(null, list);
+    ScreenRectangles.create().placement(showDialog);
     showDialog.setVisible(true);
     return showDialog;
   }
@@ -51,9 +54,11 @@ public class ShowDialog extends JDialog {
       jButton.addActionListener(event -> {
         for (Show show : list)
           try {
+            // TODO BRIDGE label to filename
+            // TODO BRIDGE dimension from dialog
             show.export(HomeDirectory.Pictures("fig_" + show.getPlotLabel() + ".png"), new Dimension(640, 480));
-          } catch (Exception e) {
-            e.printStackTrace();
+          } catch (Exception exception) {
+            exception.printStackTrace();
           }
       });
       jToolBar.add(jButton);
@@ -73,7 +78,7 @@ public class ShowDialog extends JDialog {
       jPanel.add(BorderLayout.CENTER, grid);
       setContentPane(jPanel);
     }
-    setSize(1000, 1000);
+    setSize(SIZE, SIZE);
     setLocationRelativeTo(parentComponent);
     ScreenRectangles.create().placement(this);
   }

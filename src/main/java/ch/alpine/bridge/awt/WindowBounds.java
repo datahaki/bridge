@@ -85,12 +85,12 @@ public class WindowBounds {
           shift.x = moved.x - shown.x;
           shift.y = moved.y - shown.y;
           if (shift.x != 0) {
-            System.err.println("WindowBounds shift=" + shift + " -> reset");
+            // System.err.println("WindowBounds shift=" + shift + " -> reset");
             shift.x = 0;
             shift.y = 0;
           }
         } else {
-          System.err.println("WindowBounds nanos=" + nanos);
+          // System.err.println("WindowBounds nanos=" + nanos);
         }
         window.removeComponentListener(this);
       }

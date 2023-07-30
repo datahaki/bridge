@@ -6,9 +6,11 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.mat.Tolerance;
+import ch.alpine.tensor.opt.lp.LinearOptimization;
 import ch.alpine.tensor.sca.Sign;
 
 // TODO BRIDGE API not final
+/** @see LinearOptimization */
 public enum CbbFit {
   ;
   /** max_r r | a*r <= b
