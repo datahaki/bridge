@@ -27,12 +27,14 @@ public class ScalableImage {
    * @param height
    * @return */
   public Image getScaledInstance(int width, int height) {
-    return cache.apply(Tensors.vector(width, height));
+    return bufferedImage.getWidth() == width && bufferedImage.getHeight() == height //
+        ? bufferedImage
+        : cache.apply(Tensors.vector(width, height));
   }
 
   private Image compute(Tensor wh) {
-    return bufferedImage.getScaledInstance( //
-        wh.Get(0).number().intValue(), //
-        wh.Get(1).number().intValue(), hints);
+    int w = wh.Get(0).number().intValue();
+    int h = wh.Get(1).number().intValue();
+    return bufferedImage.getScaledInstance(w, h, hints);
   }
 }
