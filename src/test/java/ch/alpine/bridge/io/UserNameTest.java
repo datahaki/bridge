@@ -8,8 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.io.UserName;
-
 class UserNameTest {
   @Test
   void testGetProperty() {

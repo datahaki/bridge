@@ -4,10 +4,10 @@ package ch.alpine.bridge.fig;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Optional;
 
+import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -48,7 +48,7 @@ public class MatrixPlot extends BarLegendPlot {
   }
 
   // ---
-  private final BufferedImage bufferedImage;
+  private final ScalableImage scalableImage;
   private final CoordinateBoundingBox cbb;
   private final Clip clip;
 
@@ -68,7 +68,7 @@ public class MatrixPlot extends BarLegendPlot {
         clip = Clips.absolute(Max.of(clip.min().negate(), clip.max()));
     }
     Rescale rescale = new Rescale(matrix, clip);
-    this.bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
+    this.scalableImage = new ScalableImage(ImageFormat.of(rescale.result().map(colorDataGradient)), Image.SCALE_AREA_AVERAGING);
     this.cbb = CoordinateBoundingBox.of( //
         StaticHelper.TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
         StaticHelper.TRANSLATION.apply(Clips.positive(matrix.length())));
@@ -86,7 +86,7 @@ public class MatrixPlot extends BarLegendPlot {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
-      graphics.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
+      graphics.drawImage(scalableImage.getScaledInstance(width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
   }

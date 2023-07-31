@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
+import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
@@ -32,13 +33,13 @@ public class ImagePlot extends BaseShowable {
   }
 
   // ---
-  private final BufferedImage bufferedImage;
+  private final ScalableImage scalableImage;
   private final CoordinateBoundingBox cbb;
   private final boolean flipY;
   private final Scalar aspectRatio;
 
   private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
-    this.bufferedImage = bufferedImage;
+    this.scalableImage = new ScalableImage(bufferedImage, Image.SCALE_AREA_AVERAGING);
     this.cbb = cbb;
     this.flipY = flipY;
     this.aspectRatio = aspectRatio;
@@ -55,7 +56,7 @@ public class ImagePlot extends BaseShowable {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
-      graphics.drawImage(bufferedImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), //
+      graphics.drawImage(scalableImage.getScaledInstance(width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
   }
