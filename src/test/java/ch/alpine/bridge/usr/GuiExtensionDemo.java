@@ -11,7 +11,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.awt.ContainerEnabler;
+import ch.alpine.bridge.awt.ContainerDescent;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.FieldsEditorParam;
@@ -62,7 +62,7 @@ public class GuiExtensionDemo {
       jToolBar.addSeparator();
       {
         JCheckBox jCheckBox = new JCheckBox("disable");
-        jCheckBox.addActionListener(a -> ContainerEnabler.setEnabled(jSplitPane, !jCheckBox.isSelected()));
+        jCheckBox.addActionListener(a -> ContainerDescent.setEnabled(jSplitPane, !jCheckBox.isSelected()));
         jToolBar.add(jCheckBox);
       }
       jPanel.add(BorderLayout.SOUTH, jToolBar);

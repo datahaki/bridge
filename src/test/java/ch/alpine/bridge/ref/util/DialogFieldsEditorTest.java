@@ -11,5 +11,6 @@ class DialogFieldsEditorTest {
   void testShow() {
     DialogFieldsEditor dialogFieldsEditor = DialogFieldsEditor.show(null, new GuiExtension(), "here", Consumers.empty());
     dialogFieldsEditor.getSelection();
+    dialogFieldsEditor.dispose();
   }
 }

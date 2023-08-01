@@ -4,10 +4,9 @@ package ch.alpine.bridge.awt;
 import java.awt.Component;
 import java.awt.Container;
 
-import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
-public enum ContainerEnabler {
+public enum ContainerDescent {
   ;
   /** function visits subcomponent of given container and changes enabled status
    * of components in the subcomponent tree to given value
@@ -20,8 +19,8 @@ public enum ContainerEnabler {
     else {
       container.setEnabled(enabled);
       for (Component component : container.getComponents())
-        if (component instanceof JComponent)
-          setEnabled((JComponent) component, enabled);
+        if (component instanceof Container)
+          setEnabled((Container) component, enabled);
     }
   }
 }

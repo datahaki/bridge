@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.ContainerDescent;
 import ch.alpine.bridge.awt.ScreenRectangles;
 import ch.alpine.bridge.awt.WindowClosed;
 import ch.alpine.bridge.ref.FieldsEditorParam;
@@ -60,6 +61,7 @@ public class DialogFieldsEditor extends JDialog {
     DialogFieldsEditor dialogFieldsEditor = new DialogFieldsEditor(parentComponent, title, true, object);
     dialogFieldsEditor.setLocationRelativeTo(parentComponent);
     ScreenRectangles.create().placement(dialogFieldsEditor);
+    // WindowClosed.runs(dialogFieldsEditor, () -> System.out.println("CLOSED ACTION"));
     dialogFieldsEditor.setVisible(true);
     return dialogFieldsEditor.getSelection().map(obj -> (T) obj);
   }
@@ -141,6 +143,7 @@ public class DialogFieldsEditor extends JDialog {
   }
 
   private void cancel() {
+    ContainerDescent.setEnabled(panelFieldsEditor.getJPanel(), false);
     ObjectProperties.part(object, fallback);
     dispose();
   }

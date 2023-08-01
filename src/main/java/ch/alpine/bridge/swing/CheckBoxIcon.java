@@ -12,6 +12,7 @@ import ch.alpine.tensor.img.ImageResize;
  * 
  * {@link PanelFieldsEditor} */
 public enum CheckBoxIcon {
+  // TODO BRIDGE these images are bad when using DARK
   METRO,
   /** green checkmark in a thin black rectangle */
   BALLIT,

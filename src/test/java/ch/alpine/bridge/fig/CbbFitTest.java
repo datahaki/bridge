@@ -8,9 +8,11 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
+import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.opt.lp.LinearOptimization;
 import ch.alpine.tensor.opt.lp.LinearProgram;
@@ -23,6 +25,26 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
 
 class CbbFitTest {
+  static void _checkInside(Tensor a, Tensor b, Tensor exp) {
+    VectorQ.require(a);
+    VectorQ.require(b);
+    VectorQ.require(exp);
+    // ---
+    Tensor A = Transpose.of(Tensors.of(a));
+    LinearProgram linearProgram = LinearProgram.of(Objective.MAX, Tensors.vector(1), ConstraintType.LESS_EQUALS, A, b, Variables.NON_NEGATIVE);
+    Tensor sol = LinearOptimization.of(linearProgram);
+    assertEquals(a.multiply(sol.Get(0)), exp);
+    LinearProgram dual = linearProgram.toggle();
+    Tensor sot = LinearOptimization.of(dual);
+    assertEquals(sot.dot(a), RealScalar.ONE);
+    Scalar f = (Scalar) sot.dot(dual.c);
+    Tensor res = dual.A.multiply(f);
+    Tensor obj = res.get(0);
+    if (!obj.equals(exp))
+      System.err.println("mismatch dual\n " + obj + "\n " + exp);
+    // assertEquals(obj, exp);
+  }
+
   @Test
   void testRatio1() {
     Tensor a = Tensors.fromString("{3[m],4[m]}");
@@ -32,14 +54,10 @@ class CbbFitTest {
       Tensor r = CbbFit.inside(a, b).orElseThrow();
       Tensor exp = Tensors.vector(300, 400);
       assertEquals(r, exp);
-      LinearProgram linearProgram = LinearProgram.of(Objective.MAX, Tensors.vector(1), ConstraintType.LESS_EQUALS, A, b, Variables.NON_NEGATIVE);
-      Tensor sol = LinearOptimization.of(linearProgram);
-      assertEquals(a.multiply(sol.Get(0)), exp);
+      _checkInside(a, b, exp);
     }
     {
       Tensor r = CbbFit.outside(a, b).orElseThrow();
-      // System.out.println(r2);
-      // System.out.println(r2.map(N.DOUBLE));
       Tensor exp = Tensors.fromString("{400, 1600/3}");
       assertEquals(r, exp);
       LinearProgram linearProgram = LinearProgram.of(Objective.MIN, Tensors.vector(1), ConstraintType.GREATER_EQUALS, A, b, Variables.NON_NEGATIVE);
@@ -67,9 +85,7 @@ class CbbFitTest {
       Tensor r = CbbFit.inside(a, b).orElseThrow();
       Tensor exp = Tensors.vector(300, 500, 400);
       assertEquals(r, exp);
-      LinearProgram linearProgram = LinearProgram.of(Objective.MAX, Tensors.vector(1), ConstraintType.LESS_EQUALS, A, b, Variables.NON_NEGATIVE);
-      Tensor sol = LinearOptimization.of(linearProgram);
-      assertEquals(a.multiply(sol.Get(0)), exp);
+      _checkInside(a, b, exp);
     }
     {
       Tensor r = CbbFit.outside(a, b).orElseThrow();
@@ -95,6 +111,7 @@ class CbbFitTest {
       assertEquals(a.multiply(sol.Get(0)), r);
       Tensor sot = LinearOptimization.of(linearProgram.toggle());
       assertEquals(sot.dot(a), RealScalar.ONE);
+      _checkInside(a, b, r);
     }
     {
       Tensor r = CbbFit.outside(a, b).orElseThrow();

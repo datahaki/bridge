@@ -79,9 +79,11 @@ import ch.alpine.bridge.swing.UIManagerColor;
 
       @Override
       public void focusLost(FocusEvent focusEvent) {
-        String string = jTextField.getText();
-        if (!string.equals(_value))
-          nofifyIfValid(_value = string);
+        if (jTextField.isEnabled()) {
+          String string = jTextField.getText();
+          if (!string.equals(_value))
+            nofifyIfValid(_value = string);
+        }
       }
     });
     jTextField.getDocument().addDocumentListener(new DocumentListener() {

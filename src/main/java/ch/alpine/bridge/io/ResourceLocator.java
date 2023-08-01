@@ -8,6 +8,8 @@ import ch.alpine.bridge.ref.util.ObjectProperties;
 /** manage operations of ObjectProperties on a local installation
  * suitable for singleton parameter files, for instance editor */
 public final class ResourceLocator {
+  public static final String FILE_EXTENSION = ".properties";
+  // ---
   private final File base;
 
   /** @param base directory which will be created if necessary */
@@ -26,8 +28,22 @@ public final class ResourceLocator {
     return ObjectProperties.tryLoad(object, properties(object.getClass()));
   }
 
+  /** @param object
+   * @param string to which ".properties" is appended to define filename
+   * @return */
+  public <T> T tryLoad(T object, String string) {
+    return ObjectProperties.tryLoad(object, properties(string));
+  }
+
   public boolean trySave(Object object) {
     return ObjectProperties.trySave(object, properties(object.getClass()));
+  }
+
+  /** @param object
+   * @param string to which ".properties" is appended to define filename
+   * @return */
+  public boolean trySave(Object object, String string) {
+    return ObjectProperties.trySave(object, properties(string));
   }
 
   public File properties(Class<?> cls) {
@@ -35,7 +51,7 @@ public final class ResourceLocator {
   }
 
   public File properties(String string) {
-    return file(string + ".properties");
+    return file(string + FILE_EXTENSION);
   }
 
   public File file(String string) {
