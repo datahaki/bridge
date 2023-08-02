@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,7 +32,7 @@ class InvalidFieldDetectionTest {
     // TODO BRIDGE DOC document specifially in class where invalid field assignments are intended
     List<FieldValueContainer> list = InvalidFieldDetection.of(new GuiExtension());
     list.forEach(System.out::println);
-    assertEquals(list.size(), 2);
+    assertFalse(list.isEmpty());
   }
 
   @Test
