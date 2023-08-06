@@ -79,6 +79,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
 
       @Override
       public void focusLost(FocusEvent focusEvent) {
+        // the component is disabled when "cancel" is pressed in the dialog
         if (jTextField.isEnabled()) {
           String string = jTextField.getText();
           if (!string.equals(_value))

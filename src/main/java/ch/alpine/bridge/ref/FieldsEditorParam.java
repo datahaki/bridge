@@ -11,7 +11,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
@@ -62,6 +61,7 @@ public class FieldsEditorParam {
   public Color stringPanel_Fail_BGND = new Color(255, 192, 192);
   public Color stringPanel_Fail_TEXT = new Color(51, 51, 51);
 
+  /** @param jComponent */
   public void minSize(JComponent jComponent) {
     if (componentMinSize_override) {
       Component[] components = jComponent.getComponents();
@@ -81,11 +81,14 @@ public class FieldsEditorParam {
     }
   }
 
-  public void setFont(JTextField jTextField) {
+  /** @param jComponent */
+  public void setFont(JComponent jComponent) {
     if (textFieldFont_override)
-      jTextField.setFont(textFieldFont);
+      jComponent.setFont(textFieldFont);
   }
 
+  /** @param text
+   * @return */
   public JLabel createLabel(String text) {
     JLabel jLabel = new JLabel(text);
     if (labelFont_override)

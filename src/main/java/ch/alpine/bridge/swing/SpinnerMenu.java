@@ -2,8 +2,8 @@
 package ch.alpine.bridge.swing;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedHashMap;
@@ -53,6 +53,7 @@ public class SpinnerMenu<T> {
   /** @param list
    * @param selectedValue may be null
    * @param function that determines what text each value is represented on a menu item
+   * @param font
    * @param hover */
   public SpinnerMenu(List<T> list, T selectedValue, Function<T, String> function, Font font, boolean hover) {
     this.selectedValue = selectedValue;
@@ -83,15 +84,16 @@ public class SpinnerMenu<T> {
   void spinnerListeners_spun(T value) {
     spinnerListeners.forEach(spinnerListener -> spinnerListener.spun(value));
   }
-  // public void setFont(Font font) {
-  // map.values().forEach(jMenuItem -> jMenuItem.setFont(font));
-  // }
 
   public void addSpinnerListener(SpinnerListener<T> spinnerListener) {
     spinnerListeners.add(spinnerListener);
   }
 
   public void showRight(JComponent jComponent) {
+    showRight(jComponent, new Rectangle(jComponent.getSize()));
+  }
+
+  public void showRight(JComponent jComponent, Rectangle rectangle) {
     // computation below is necessary to compute position on display
     int delta = 2; // constant was found to work well, but could depend on l&f
     if (Objects.nonNull(selectedValue) && map.containsKey(selectedValue))
@@ -102,8 +104,7 @@ public class SpinnerMenu<T> {
           break;
         }
       }
-    Dimension dimension = jComponent.getSize();
-    jPopupMenu.show(jComponent, dimension.width, dimension.height / 2 - delta);
+    jPopupMenu.show(jComponent, rectangle.x + rectangle.width, rectangle.y + rectangle.height / 2 - delta);
   }
 
   public void showSouth(JComponent jComponent) {

@@ -54,7 +54,9 @@ public final class ResourceLocator {
     return file(string + FILE_EXTENSION);
   }
 
-  public File file(String string) {
-    return new File(base, string);
+  /** @param name of file, for instance consisting of title and extension
+   * @return file in given base directory with given name */
+  public File file(String name) {
+    return new File(base, name);
   }
 }
