@@ -1,13 +1,13 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class UIManagerLongTest {
-  @Test
-  void testSimple() {
-    for (UIManagerLong uiManagerLong : UIManagerLong.values()) {
-      uiManagerLong.getAsLong();
-    }
+  @ParameterizedTest
+  @EnumSource
+  void testSimple(UIManagerLong uiManagerLong) {
+    uiManagerLong.getAsLong();
   }
 }

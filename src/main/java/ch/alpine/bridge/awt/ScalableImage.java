@@ -10,7 +10,10 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Cache;
 
 /** caches one scaled instance of a given BufferedImage so that repeated
- * computations for a specific width/height pair are skipped */
+ * computations for a specific width/height pair are skipped
+ * 
+ * functionality is suitable for on-screen display, but not for printing
+ * graphics */
 public class ScalableImage {
   private final Cache<Tensor, Image> cache = Cache.of(this::compute, 1);
   private final BufferedImage bufferedImage;

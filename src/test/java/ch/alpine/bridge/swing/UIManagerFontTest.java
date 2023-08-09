@@ -1,13 +1,21 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import org.junit.jupiter.api.Test;
+import java.util.Objects;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class UIManagerFontTest {
-  @Test
-  void testSimple() {
-    for (UIManagerFont uiManagerFont : UIManagerFont.values()) {
-      uiManagerFont.get();
-    }
+  @BeforeAll
+  static void beforeAll() {
+    LookAndFeels.DEFAULT.updateComponentTreeUI();
+  }
+
+  @ParameterizedTest
+  @EnumSource
+  void testSimple(UIManagerFont uiManagerFont) {
+    Objects.requireNonNull(uiManagerFont.get());
   }
 }

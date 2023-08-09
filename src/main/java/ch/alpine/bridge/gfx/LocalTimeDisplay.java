@@ -15,7 +15,6 @@ import ch.alpine.bridge.awt.RenderQuality;
 
 public enum LocalTimeDisplay {
   ;
-  private static final double _2pi = Math.PI + Math.PI;
   private static final int wid = 52;
   private static final int hourRad = 32;
   private static final int hourRadIn = 7;
@@ -39,9 +38,9 @@ public enum LocalTimeDisplay {
     int hms_m = localTime.getMinute();
     int hms_s = localTime.getSecond();
     int hms_n = localTime.getNano();
-    final double h = ((hms_h + hms_m / 60.0) / 12.0) * _2pi;
-    final double m = ((hms_m + hms_s / 60.0) / 60.0) * _2pi;
-    final double s = (hms_s + hms_n * 1E-9) / 60.0 * _2pi;
+    final double h = ((hms_h + hms_m / 60.0) / 6.0) * Math.PI;
+    final double m = ((hms_m + hms_s / 60.0) / 30.0) * Math.PI;
+    final double s = (hms_s + hms_n * 1E-9) / 30.0 * Math.PI;
     // Draw the hands of the clock
     // graphics2d.drawLine(c.x, c.y, c.x + Math.cos(m) * minutesRadius, cy + sin(m) * minutesRadius);
     graphics.setColor(Color.BLACK); // new Color(128, 128, 128, 255)

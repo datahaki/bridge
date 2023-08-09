@@ -1,13 +1,21 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
-import org.junit.jupiter.api.Test;
+import java.util.Objects;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class UIManagerDimensionTest {
-  @Test
-  void testSimple() {
-    for (UIManagerDimension uiManagerDimension : UIManagerDimension.values()) {
-      uiManagerDimension.get();
-    }
+  @BeforeAll
+  static void beforeAll() {
+    LookAndFeels.DEFAULT.updateComponentTreeUI();
+  }
+
+  @ParameterizedTest
+  @EnumSource
+  void testSimple(UIManagerDimension uiManagerDimension) {
+    Objects.requireNonNull(uiManagerDimension.get());
   }
 }

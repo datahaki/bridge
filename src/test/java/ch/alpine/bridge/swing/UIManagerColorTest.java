@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-class UIManagerInsetsTest {
+class UIManagerColorTest {
   @BeforeAll
   static void beforeAll() {
     LookAndFeels.DEFAULT.updateComponentTreeUI();
@@ -15,7 +15,7 @@ class UIManagerInsetsTest {
 
   @ParameterizedTest
   @EnumSource
-  void testSimple(UIManagerInsets uiManagerInsets) {
-    Objects.requireNonNull(uiManagerInsets.get());
+  void test(UIManagerColor uiManagerColor) {
+    Objects.requireNonNull(uiManagerColor.get());
   }
 }

@@ -4,13 +4,14 @@ package ch.alpine.bridge.swing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class UIManagerBooleanTest {
-  @Test
-  void testSimple() {
-    for (UIManagerBoolean uiManagerInt : UIManagerBoolean.values()) {
-      uiManagerInt.getAsBoolean();
-    }
+  @ParameterizedTest
+  @EnumSource
+  void testSimple(UIManagerBoolean uiManagerBoolean) {
+    uiManagerBoolean.getAsBoolean();
   }
 
   @Test
