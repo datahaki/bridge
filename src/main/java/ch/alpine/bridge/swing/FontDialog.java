@@ -63,7 +63,7 @@ public abstract class FontDialog extends DialogBase<Font> {
     protected void paintComponent(Graphics _g) {
       Dimension dimension = getSize();
       Point point = new Point(dimension.width / 2, dimension.height / 2);
-      Graphics2D graphics = (Graphics2D) _g;
+      Graphics2D graphics = (Graphics2D) _g.create();
       graphics.setColor(Color.WHITE);
       graphics.fillRect(0, 0, dimension.width, dimension.height);
       RenderQuality.setQuality(graphics);
@@ -73,6 +73,7 @@ public abstract class FontDialog extends DialogBase<Font> {
       int stringWidth = fontMetrics.stringWidth(DEMO);
       graphics.setColor(Color.DARK_GRAY);
       graphics.drawString(DEMO, point.x - stringWidth / 2, point.y + ascent / 2);
+      graphics.dispose();
     }
   };
   private final FontParam fontParam;

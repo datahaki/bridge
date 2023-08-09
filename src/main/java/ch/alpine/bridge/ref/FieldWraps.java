@@ -47,6 +47,14 @@ public enum FieldWraps {
         || cls.isEnum();
   }
 
+  /** @param cls
+   * @param function */
+  public void insert(Class<?> cls, Function<Field, FieldWrap> function) {
+    if (map.containsKey(cls))
+      throw new IllegalArgumentException(cls.getCanonicalName());
+    map.put(cls, function);
+  }
+
   /** @param field non-null
    * @return instance of {@link FieldWrap} or null if field type is not supported */
   public FieldWrap wrap(Field field) {
@@ -60,13 +68,5 @@ public enum FieldWraps {
       return function.apply(field);
     }
     return null;
-  }
-
-  /** @param cls
-   * @param function */
-  public void insert(Class<?> cls, Function<Field, FieldWrap> function) {
-    if (map.containsKey(cls))
-      throw new IllegalArgumentException(cls.getCanonicalName());
-    map.put(cls, function);
   }
 }

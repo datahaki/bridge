@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Objects;
 
 public class LazyMouse implements MouseListener, MouseMotionListener {
   public static final float TOLERANCE_DEFAULT = 3;
@@ -17,7 +18,7 @@ public class LazyMouse implements MouseListener, MouseMotionListener {
   private final LazyMouseListener lazyMouseListener;
 
   public LazyMouse(LazyMouseListener lazyMouseListener) {
-    this.lazyMouseListener = lazyMouseListener;
+    this.lazyMouseListener = Objects.requireNonNull(lazyMouseListener);
   }
 
   public void setTolerance(float tolerance) {

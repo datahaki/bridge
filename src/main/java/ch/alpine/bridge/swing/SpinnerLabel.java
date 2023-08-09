@@ -83,7 +83,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
     // ---
     final boolean enabled = isEnabled();
     final boolean insideActive = mouseInside && enabled;
-    Graphics2D graphics = (Graphics2D) _graphics;
+    Graphics2D graphics = (Graphics2D) _graphics.create();
     Dimension dimension = getSize();
     border_width = Integers.clip(BORDER_WIDTH_MIN, BORDER_WIDTH_MAX).applyAsInt(BORDER_WIDTH_MIN - 2 + dimension.width / 10);
     // ---
@@ -112,6 +112,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
       path2D.closePath();
       graphics.fill(path2D);
     }
+    graphics.dispose();
   }
 
   private SpinnerLabel() {

@@ -66,14 +66,15 @@ public class ShowDemo implements Runnable {
         Show show = showDemos.create();
         Objects.requireNonNull(show);
         BufferedImage bufferedImage = show.image(new Dimension(width, height), rectangle);
-        Graphics graphics = bufferedImage.getGraphics();
+        Graphics2D graphics = bufferedImage.createGraphics();
         // java.awt.Font[family=Dialog,name=Dialog,style=plain,size=12]
         graphics.setColor(Color.PINK);
         graphics.drawRect(0, 0, width - 1, height - 1);
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 9));
-        RenderQuality.setQuality((Graphics2D) graphics);
+        RenderQuality.setQuality(graphics);
         graphics.drawString(showDemos.name(), 0, 10);
+        graphics.dispose();
         list.add(bufferedImage);
       } catch (Exception exception) {
         System.err.println(showDemos);

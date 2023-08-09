@@ -9,8 +9,8 @@ import java.awt.Rectangle;
   ;
   private static final Color GRAY = new Color(220, 220, 220);
 
-  public static void using(Graphics g, Rectangle rectangle) {
-    paint(g, rectangle, PaintThumb.GRAY, Color.BLACK);
+  public static void using(Graphics _g, Rectangle rectangle) {
+    paint(_g, rectangle, GRAY, Color.BLACK);
   }
 
   private static void paint(Graphics _g, Rectangle rectangle, Color colorFill, Color colorLine) {
