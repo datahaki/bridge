@@ -1,9 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -11,7 +9,6 @@ import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Flatten;
 import ch.alpine.tensor.alg.Rescale;
@@ -29,9 +26,29 @@ import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/MatrixPlot.html">MatrixPlot</a> */
-public class MatrixPlot extends BarLegendPlot {
+public class MatrixPlot extends AbstractGridPlot {
+  /** @param matrix
+   * @param colorDataGradient
+   * @param symmetrize
+   * @return */
   public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient, boolean symmetrize) {
-    return new MatrixPlot(matrix, colorDataGradient, symmetrize);
+    MatrixQ.require(matrix);
+    Clip clip = Flatten.scalars(matrix) //
+        .filter(FiniteScalarQ::of) //
+        .collect(MinMax.toClip());
+    if (Objects.nonNull(clip) && symmetrize) {
+      if (clip.min() instanceof DateTime)
+        System.err.println("bypass symmetrize");
+      else
+        clip = Clips.absolute(Max.of(clip.min().negate(), clip.max()));
+    }
+    Rescale rescale = new Rescale(matrix, clip);
+    ScalableImage scalableImage = new ScalableImage( //
+        ImageFormat.of(rescale.result().map(colorDataGradient)), Image.SCALE_AREA_AVERAGING);
+    CoordinateBoundingBox cbb = CoordinateBoundingBox.of( //
+        StaticHelper.TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
+        StaticHelper.TRANSLATION.apply(Clips.positive(matrix.length())));
+    return new MatrixPlot(colorDataGradient, scalableImage, cbb, rescale.clip());
   }
 
   /** @param matrix
@@ -48,62 +65,8 @@ public class MatrixPlot extends BarLegendPlot {
   }
 
   // ---
-  private final ScalableImage scalableImage;
-  private final CoordinateBoundingBox cbb;
-  private final Clip clip;
-
-  private MatrixPlot( //
-      Tensor matrix, //
-      ScalarTensorFunction colorDataGradient, //
-      boolean symmetrize) {
-    super(colorDataGradient);
-    MatrixQ.require(matrix);
-    Clip clip = Flatten.scalars(matrix) //
-        .filter(FiniteScalarQ::of) //
-        .collect(MinMax.toClip());
-    if (Objects.nonNull(clip) && symmetrize) {
-      if (clip.min() instanceof DateTime)
-        System.err.println("bypass symmetrize");
-      else
-        clip = Clips.absolute(Max.of(clip.min().negate(), clip.max()));
-    }
-    Rescale rescale = new Rescale(matrix, clip);
-    this.scalableImage = new ScalableImage(ImageFormat.of(rescale.result().map(colorDataGradient)), Image.SCALE_AREA_AVERAGING);
-    this.cbb = CoordinateBoundingBox.of( //
-        StaticHelper.TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
-        StaticHelper.TRANSLATION.apply(Clips.positive(matrix.length())));
-    this.clip = rescale.clip();
-  }
-
-  @Override // from Showable
-  public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    Point2D ul = showableConfig.toPoint2D(Tensors.of( //
-        cbb.clip(0).min(), //
-        cbb.clip(1).min()));
-    Point2D dr = showableConfig.toPoint2D(Tensors.of( //
-        cbb.clip(0).max(), //
-        cbb.clip(1).max()));
-    int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
-    int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
-    if (0 < width && 0 < height)
-      graphics.drawImage(scalableImage.getScaledInstance(width, height), //
-          (int) ul.getX(), //
-          (int) ul.getY(), null);
-  }
-
-  @Override // from Showable
-  public Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Optional.of(cbb);
-  }
-
-  @Override // from BarLegendPlot
-  protected Clip clip() {
-    return clip;
-  }
-
-  @Override // from Showable
-  public boolean flipYAxis() {
-    return true;
+  private MatrixPlot(ScalarTensorFunction colorDataGradient, ScalableImage scalableImage, CoordinateBoundingBox cbb, Clip clip) {
+    super(colorDataGradient, scalableImage, cbb, clip);
   }
 
   @Override // from Showable

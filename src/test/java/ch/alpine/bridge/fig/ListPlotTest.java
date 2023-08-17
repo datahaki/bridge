@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,8 +37,8 @@ class ListPlotTest {
   @Test
   void testEmptyRow() {
     Show show = new Show();
-    Showable visualRow = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
-    visualRow.setLabel("empty");
+    Showable showable = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
+    showable.setLabel("empty");
     show.add(ListLinePlot.of(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6)));
     // CascadeHelper.draw(ListPlot.of(show.setJoined(true)));
     // CascadeHelper.draw(ListPlot.of(show.setJoined(false)));
@@ -46,8 +47,8 @@ class ListPlotTest {
   @Test
   void testUnitsX() {
     Show show = new Show();
-    Showable visualRow = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
-    visualRow.setLabel("empty");
+    Showable showable = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
+    showable.setLabel("empty");
     show.add(ListLinePlot.of(Tensors.empty()));
     show.add(ListLinePlot.of(Tensors.vector(1, 2, 5).map(SI.SECONDS::quantity), Tensors.vector(2, 2.2, -1.6)));
     show.add(ListLinePlot.of(Tensors.empty()));
@@ -59,8 +60,8 @@ class ListPlotTest {
   @Test
   void testUnitsY() {
     Show show = new Show();
-    Showable visualRow = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
-    visualRow.setLabel("empty");
+    Showable showable = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
+    showable.setLabel("empty");
     show.add(ListLinePlot.of(Tensors.empty()));
     show.add(ListLinePlot.of(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).map(SI.METERS::quantity)));
     show.add(ListLinePlot.of(Tensors.empty()));
@@ -97,8 +98,8 @@ class ListPlotTest {
     Tensor domain1 = RandomVariate.of(UniformDistribution.unit(), values1.length());
     ScalarUnaryOperator suoX = s -> Quantity.of(s.add(RealScalar.of(100)), "s");
     ScalarUnaryOperator suoY = s -> Quantity.of(s.add(RealScalar.of(300)), "m");
-    Showable visualRow1 = show.add(ListLinePlot.of(domain1.map(suoX), values1.map(suoY)));
-    visualRow1.setLabel("first");
+    Showable showable1 = show.add(ListLinePlot.of(domain1.map(suoX), values1.map(suoY)));
+    showable1.setLabel("first");
     Tensor domain2 = RandomVariate.of(UniformDistribution.unit(), values2.length());
     show.add(ListLinePlot.of(domain2.map(suoX), values2.map(suoY)));
     Tensor domain3 = RandomVariate.of(UniformDistribution.unit(), values3.length());
@@ -174,8 +175,8 @@ class ListPlotTest {
     Showable row2 = set.add(ListLinePlot.of(domain, values2));
     row1.setLabel("row 1");
     row2.setLabel("row 2");
-    // assertEquals(set.getVisualRow(0).getLabelString(), "row 1");
-    // assertEquals(set.getVisualRow(1).getLabelString(), "row 2");
+    assertEquals(row1.getLabel(), "row 1");
+    assertEquals(row2.getLabel(), "row 2");
   }
 
   @Test

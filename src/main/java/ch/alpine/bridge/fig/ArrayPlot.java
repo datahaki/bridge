@@ -1,14 +1,10 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.Point2D;
-import java.util.Optional;
 
 import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarTensorFunction;
@@ -21,9 +17,17 @@ import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
-public class ArrayPlot extends BarLegendPlot {
+public class ArrayPlot extends AbstractGridPlot {
+  /** @param matrix
+   * @param cbb
+   * @param colorDataGradient
+   * @return */
   public static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
-    return new ArrayPlot(matrix, cbb, colorDataGradient);
+    MatrixQ.require(matrix);
+    Rescale rescale = new Rescale(matrix);
+    ScalableImage scalableImage = new ScalableImage(ImageFormat.of(rescale.result().map(colorDataGradient)), Image.SCALE_AREA_AVERAGING);
+    Clip clip = rescale.clip();
+    return new ArrayPlot(colorDataGradient, scalableImage, cbb, clip);
   }
 
   /** @param matrix
@@ -36,55 +40,14 @@ public class ArrayPlot extends BarLegendPlot {
         colorDataGradient);
   }
 
+  /** @param matrix
+   * @return */
   public static Showable of(Tensor matrix) {
     return of(matrix, ColorDataGradients.GRAYSCALE_REVERSED);
   }
 
   // ---
-  private final ScalableImage scalableImage;
-  private final CoordinateBoundingBox cbb;
-  private final Clip clip;
-
-  private ArrayPlot( //
-      Tensor matrix, //
-      CoordinateBoundingBox cbb, //
-      ScalarTensorFunction colorDataGradient) {
-    super(colorDataGradient);
-    MatrixQ.require(matrix);
-    Rescale rescale = new Rescale(matrix);
-    this.scalableImage = new ScalableImage(ImageFormat.of(rescale.result().map(colorDataGradient)), Image.SCALE_AREA_AVERAGING);
-    this.cbb = cbb;
-    this.clip = rescale.clip();
-  }
-
-  @Override // from Showable
-  public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    Point2D ul = showableConfig.toPoint2D(Tensors.of( //
-        cbb.clip(0).min(), //
-        cbb.clip(1).min()));
-    Point2D dr = showableConfig.toPoint2D(Tensors.of( //
-        cbb.clip(0).max(), //
-        cbb.clip(1).max()));
-    int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
-    int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
-    if (0 < width && 0 < height)
-      graphics.drawImage(scalableImage.getScaledInstance(width, height), //
-          (int) ul.getX(), //
-          (int) ul.getY(), null);
-  }
-
-  @Override // from Showable
-  public Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Optional.of(cbb);
-  }
-
-  @Override // from Showable
-  public boolean flipYAxis() {
-    return true;
-  }
-
-  @Override // from BarLegendPlot
-  protected Clip clip() {
-    return clip;
+  private ArrayPlot(ScalarTensorFunction colorDataGradient, ScalableImage scalableImage, CoordinateBoundingBox cbb, Clip clip) {
+    super(colorDataGradient, scalableImage, cbb, clip);
   }
 }

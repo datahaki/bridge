@@ -2,6 +2,7 @@
 package ch.alpine.bridge.io;
 
 import java.io.File;
+import java.nio.file.FileSystemNotFoundException;
 
 import ch.alpine.bridge.ref.util.ObjectProperties;
 
@@ -17,7 +18,7 @@ public final class ResourceLocator {
     this.base = base;
     base.mkdirs();
     if (!base.isDirectory())
-      throw new RuntimeException("no directory: " + base);
+      throw new FileSystemNotFoundException(base.getPath());
   }
 
   public ResourceLocator sub(String folder_name) {

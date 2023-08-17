@@ -69,7 +69,7 @@ import ch.alpine.tensor.sca.Sign;
     if (list.size() == 1 && 1 < map.size()) {
       Entry<String, Scalar> entry = list.iterator().next();
       Unit den = Unit.of(entry.getKey() + Unit.POWER_DELIMITER + entry.getValue().negate());
-      return toString(unit.add(den).map()) + "/" + toString(den.map());
+      return toString(unit.add(den).map()) + '/' + toString(den.map());
     }
     return toString(map);
   }
