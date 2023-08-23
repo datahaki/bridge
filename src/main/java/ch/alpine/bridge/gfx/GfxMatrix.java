@@ -10,8 +10,7 @@ import ch.alpine.tensor.sca.tri.ArcTan;
 import ch.alpine.tensor.sca.tri.Cos;
 import ch.alpine.tensor.sca.tri.Sin;
 
-/** Hint: this class is identical to Se2Matrix in the library
- * ch.alpine.sophus */
+/** see Se2Matrix in the library ch.alpine.sophus */
 public enum GfxMatrix {
   ;
   /** maps a vector from the group SE2 to a matrix in SE2

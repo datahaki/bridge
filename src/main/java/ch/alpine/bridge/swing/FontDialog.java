@@ -15,6 +15,7 @@ import java.util.Optional;
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
+import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.lang.EnumValue;
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -62,7 +63,7 @@ public abstract class FontDialog extends DialogBase<Font> {
     @Override
     protected void paintComponent(Graphics _g) {
       Dimension dimension = getSize();
-      Point point = new Point(dimension.width / 2, dimension.height / 2);
+      Point point = AwtUtil.center(dimension);
       Graphics2D graphics = (Graphics2D) _g.create();
       graphics.setColor(Color.WHITE);
       graphics.fillRect(0, 0, dimension.width, dimension.height);

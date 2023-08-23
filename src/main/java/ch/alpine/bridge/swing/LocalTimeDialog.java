@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
+import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.gfx.LocalTimeDisplay;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
@@ -19,7 +20,7 @@ public abstract class LocalTimeDialog extends DialogBase<LocalTime> {
     @Override
     protected void paintComponent(Graphics graphics) {
       Dimension dimension = getSize();
-      Point point = new Point(dimension.width / 2, dimension.height / 2);
+      Point point = AwtUtil.center(dimension);
       LocalTimeDisplay.draw(graphics, current(), point);
     }
   };

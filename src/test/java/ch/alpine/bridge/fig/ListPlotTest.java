@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.random.RandomGenerator;
 
 import org.junit.jupiter.api.Test;
@@ -79,7 +79,7 @@ class ListPlotTest {
 
   @Test
   void testAlreadyLargeNaN() {
-    RandomGenerator random = new Random();
+    RandomGenerator random = new SecureRandom();
     Show visualSet = new Show();
     int n = 100_000; // tested for up to 10 million
     Tensor points = RandomVariate.of(UniformDistribution.of(Quantity.of(1, "m"), Quantity.of(10, "m")), n, 2);
