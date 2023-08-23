@@ -61,11 +61,12 @@ import ch.alpine.tensor.sca.Clip;
       if (fieldClips.isFinite()) {
         Clip clip = fieldClips.clip();
         if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
-          return Range.closed(clip).stream().map(Scalar.class::cast).collect(Collectors.toList());
+          return Range.closed(clip).stream() //
+              .map(Scalar.class::cast) //
+              .collect(Collectors.toList());
       }
       return Stream.of(fieldClips.min(), fieldClips.max()) //
           .filter(FiniteScalarQ::of) //
-          .map(this::toString) //
           .collect(Collectors.toList());
     }
     return list;

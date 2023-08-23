@@ -3,6 +3,8 @@ package ch.alpine.bridge.ref;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -21,8 +23,28 @@ import ch.alpine.bridge.swing.SpinnerMenu;
    * @param supplier invoked when menu button "?" is pressed */
   public MenuPanel(FieldWrap fieldWrap, Object value, Supplier<List<Object>> supplier) {
     super(fieldWrap, value);
+    JComponent jTextField = getTextFieldComponent();
+    jTextField.addMouseWheelListener(new MouseWheelListener() {
+      @Override
+      public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+        // TODO BRIDGE IMPL not clean due to object vs. string
+        List<String> list = supplier.get().stream().map(Object::toString).toList();
+        String string = getText();
+        // System.out.println(string + " in " + list);
+        int index = list.indexOf(string);
+        // System.out.println("index=" + index);
+        if (0 <= index) {
+          index += mouseWheelEvent.getWheelRotation();
+          if (0 <= index && index < list.size()) {
+            string = fieldWrap.toString(list.get(index));
+            setText(string);
+            indicateGui();
+            nofifyIfValid(string);
+          }
+        }
+      }
+    });
     jButton.addActionListener(actionEvent -> {
-      JComponent jTextField = getTextFieldComponent();
       Font font = jTextField.getFont();
       SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>( //
           supplier.get(), // options
