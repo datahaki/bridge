@@ -12,7 +12,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -75,13 +74,12 @@ public class ShowDemo implements Runnable {
         RenderQuality.setQuality(graphics);
         graphics.drawString(showDemos.name(), 0, 10);
         graphics.dispose();
-        list.add(bufferedImage);
+        list.addFirst(bufferedImage);
       } catch (Exception exception) {
         System.err.println(showDemos);
         exception.printStackTrace();
       }
     }
-    Collections.reverse(list);
     return list;
   }
 

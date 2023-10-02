@@ -38,6 +38,7 @@ public class DensityPlot extends BarLegendPlot {
   private final ScalarTensorFunction colorDataGradient;
 
   private class Inner {
+    private final BufferedImage bufferedImage;
     private final ScalableImage scalableImage;
     private final Clip clip;
 
@@ -48,7 +49,7 @@ public class DensityPlot extends BarLegendPlot {
           .map(Scalar.class::cast) //
           .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
       Rescale rescale = new Rescale(matrix);
-      BufferedImage bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
+      bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
       scalableImage = new ScalableImage(bufferedImage, Image.SCALE_AREA_AVERAGING);
       clip = rescale.clip();
     }
@@ -109,5 +110,9 @@ public class DensityPlot extends BarLegendPlot {
 
   public int getPlotPoints() {
     return resolution;
+  }
+
+  public BufferedImage getImage() {
+    return inner().bufferedImage;
   }
 }
