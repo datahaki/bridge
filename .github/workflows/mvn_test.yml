@@ -7,10 +7,11 @@ jobs:
   os_matrix:
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+      fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
-      - name: checkout bridge
+      - name: checkout main repo
         uses: actions/checkout@v4
 
       - name: set up JDK 25
@@ -31,5 +32,10 @@ jobs:
         working-directory: ./tensor
 
       - name: mvn test
-        run: xvfb-run --auto-servernum mvn test -B
-
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            xvfb-run --auto-servernum mvn test -B
+          else
+            mvn test -B
+          fi
