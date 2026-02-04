@@ -20,6 +20,7 @@ public enum GeoPosition {
 
   /** @param vector of length 3
    * @return orthogonal matrix with dimensions 3 x 3 */
+  // TODO BRIDGE redundant :-(
   public static Tensor vectorExp(Tensor vector) {
     Scalar beta = Vector2Norm.of(vector);
     Scalar s1 = Sinc.FUNCTION.apply(beta);

@@ -10,10 +10,4 @@ public enum Consumers {
       // ---
     };
   }
-  //
-  // public static <T> Consumer<T> evoke(Runnable runnable) {
-  // return _ -> {
-  // runnable.run();
-  // };
-  // }
 }

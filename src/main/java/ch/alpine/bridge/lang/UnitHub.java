@@ -100,7 +100,7 @@ public class UnitHub implements Serializable {
    * and projection to integer
    * @throws Exception if rounding results in an integer value outside the 64-bit range */
   public long longValue(Scalar scalar) {
-    return Scalars.longValueExact(Round.FUNCTION.apply(magnitude(scalar)));
+    return Round.longValueExact(magnitude(scalar));
   }
 
   /** @param scalar
@@ -113,8 +113,9 @@ public class UnitHub implements Serializable {
    * @return int value of given scalar after conversion to this unit, rounding,
    * and projection to integer
    * @throws Exception if rounding results in an integer value outside the 32-bit range */
+  // TODO BRIDGE figure out what makes sense ...
   public int intValue(Scalar scalar) {
-    return Scalars.intValueExact(Round.FUNCTION.apply(magnitude(scalar)));
+    return Round.intValueExact(magnitude(scalar));
   }
 
   /** @param scalar
