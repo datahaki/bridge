@@ -22,6 +22,8 @@ public class ClassFieldCheck implements ClassVisitor {
     if (Objects.nonNull(reflectionMarker)) {
       Object object = null;
       try {
+        /* get_Declared_Constructor() is needed to discover an
+         * implicit, i.e. not implemented default constructor */
         object = cls.getDeclaredConstructor().newInstance();
       } catch (Exception exception) {
         // ---

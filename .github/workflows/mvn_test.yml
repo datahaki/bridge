@@ -26,16 +26,15 @@ jobs:
         with:
           repository: datahaki/tensor
           path: tensor
-
       - name: build and install tensor
-        run: mvn install -DskipTests
+        run: mvn -B -ntp install -DskipTests
         working-directory: ./tensor
 
       - name: mvn test
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
-            xvfb-run --auto-servernum mvn test -B
+            xvfb-run --auto-servernum mvn -B -ntp test
           else
-            mvn test -B
+            mvn -B -ntp test
           fi

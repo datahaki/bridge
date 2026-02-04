@@ -17,7 +17,7 @@ import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import demo.NameString;
+import test.data.NameString;
 
 class FieldOptionsCollectorTest {
   @ReflectionMarker

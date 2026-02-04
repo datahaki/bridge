@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.util.ObjectProperties;
-import demo.GuiExtension;
+import test.data.GuiExtension;
 
 class EnumFieldWrapTest {
   @Test

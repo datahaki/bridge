@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
-import demo.GuiExtension;
+import test.data.GuiExtension;
 
 class FieldToolTipTest {
   @Test

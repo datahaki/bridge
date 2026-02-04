@@ -21,7 +21,7 @@ import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
-import demo.AnnotatedContainer;
+import test.data.AnnotatedContainer;
 
 class FieldClipsTest {
   @Test

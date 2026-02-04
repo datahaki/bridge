@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
-import demo.FieldLabelsT;
+import test.data.FieldLabelsT;
 
 class FieldLabelsTest {
   @Test

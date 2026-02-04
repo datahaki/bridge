@@ -64,36 +64,3 @@ jFrame.setContentPane(panelFieldsEditor.createJScrollPane());
 jFrame.setBounds(100, 100, 320, 200);
 jFrame.setVisible(true);
 ```
-
-## Integration
-
-From time to time, a version is deployed and made available for maven integration. Specify `repository` and `dependency` of the bridge library in the `pom.xml` file of your maven project:
-
-```xml
-<dependencies>
-  <!-- other dependencies -->
-  <dependency>
-    <groupId>ch.alpine</groupId>
-    <artifactId>bridge</artifactId>
-    <version>0.3.6</version>
-  </dependency>
-</dependencies>
-
-<repositories>
-  <!-- other repositories -->
-  <repository>
-    <id>bridge-mvn-repo</id>
-    <url>https://raw.github.com/datahaki/bridge/mvn-repo/</url>
-    <snapshots>
-      <enabled>true</enabled>
-      <updatePolicy>always</updatePolicy>
-    </snapshots>
-  </repository>
-</repositories>
-```
-
-For Java 11, for `version` use `0.4.1-jdk-11`.
-
-The source code is attached to every release.
-
-The branch `master` always contains the latest features for Java 17, and does not correspond to the most recent deployed version generally.

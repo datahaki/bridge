@@ -78,7 +78,7 @@ import ch.alpine.tensor.sca.win.WindowFunctions;
 import ch.alpine.tensor.tmp.ResamplingMethod;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
-import demo.CepstrogramDemo;
+import test.demo.CepstrogramDemo;
 
 public enum Showcases {
   ListLinePlot0 {

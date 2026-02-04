@@ -3,8 +3,8 @@ package ch.alpine.bridge.ref.util;
 
 import org.junit.jupiter.api.Test;
 
-import demo.SimpleParam;
-import demo.V011Param;
+import test.data.SimpleParam;
+import test.data.V011Param;
 
 class FieldsEditorTest {
   @Test
