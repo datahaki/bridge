@@ -20,7 +20,9 @@ class WindowBoundsTest {
     WindowBounds.persistent(jFrame, new File(tempDir, "window.properties"));
     jFrame.setVisible(true);
     Thread.sleep(100);
+    jFrame.setVisible(false);
     jFrame.dispose();
+    System.gc();
   }
 
   @AfterAll

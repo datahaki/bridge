@@ -61,7 +61,7 @@ public class ShowDialog extends JDialog {
     }
     {
       
-      jPanel.add(BorderLayout.CENTER, GridComponent.asd(list));
+      jPanel.add(BorderLayout.CENTER, ShowGridComponent.of(list));
     }
     setContentPane(jPanel);
     setSize(SIZE, SIZE);

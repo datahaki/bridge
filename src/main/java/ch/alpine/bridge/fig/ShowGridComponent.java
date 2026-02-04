@@ -11,8 +11,9 @@ import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Round;
 import ch.alpine.tensor.sca.pow.Sqrt;
 
-public class GridComponent {
-  public static JPanel asd(List<Show> list) {
+public enum ShowGridComponent {
+  ;
+  public static JPanel of(List<Show> list) {
     Scalar sqrt = Sqrt.FUNCTION.apply(RealScalar.of(list.size()));
     int cols = Round.intValueExact(sqrt);
     int rows = Ceiling.intValueExact(sqrt);

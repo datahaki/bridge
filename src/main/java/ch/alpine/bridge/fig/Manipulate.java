@@ -27,11 +27,11 @@ public class Manipulate extends JDialog {
     super(JOptionPane.getFrameForComponent(parentComponent), false); // non-blocking
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-    jSplitPane.setRightComponent(GridComponent.asd(function.get()));
+    jSplitPane.setRightComponent(ShowGridComponent.of(function.get()));
     {
       PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.nested(object);
       panelFieldsEditor.addUniversalListener(() -> {
-        jSplitPane.setRightComponent(GridComponent.asd(function.get()));
+        jSplitPane.setRightComponent(ShowGridComponent.of(function.get()));
         // showComponent.setShow(function.get());
         // showComponent.repaint();
       });
