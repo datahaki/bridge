@@ -34,6 +34,7 @@ class GeometricLayerTest {
         { RealScalar.ZERO, RealScalar.ZERO, RealScalar.ONE }, //
     });
   }
+
   public static Tensor gfxMatrix_translation(Tensor xy) {
     return Tensors.matrix(new Scalar[][] { //
         { RealScalar.ONE, RealScalar.ZERO, xy.Get(0) }, //

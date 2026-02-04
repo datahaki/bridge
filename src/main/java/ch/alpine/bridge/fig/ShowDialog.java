@@ -60,7 +60,6 @@ public class ShowDialog extends JDialog {
       jPanel.add(BorderLayout.NORTH, jToolBar);
     }
     {
-      
       jPanel.add(BorderLayout.CENTER, ShowGridComponent.of(list));
     }
     setContentPane(jPanel);

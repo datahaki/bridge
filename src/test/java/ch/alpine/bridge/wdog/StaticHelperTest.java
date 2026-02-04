@@ -44,7 +44,7 @@ class StaticHelperTest {
     long nanos = StaticHelper.nanos(Quantity.of(173, "ns"));
     assertEquals(nanos, 173);
   }
-  
+
   @Test
   void testFail() {
     assertThrows(Exception.class, () -> StaticHelper.nanos(Quantity.of(1e100, "ns")));

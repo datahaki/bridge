@@ -6,14 +6,16 @@ import java.io.File;
 import javax.swing.JFrame;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class WindowBoundsTest {
-  // TODO BRIDGE this does not terminate properly on Windows
   @TempDir
   File tempDir;
 
+  // TODO BRIDGE this does not terminate properly on Windows
+  @Disabled
   @Test
   void test() throws InterruptedException {
     JFrame jFrame = new JFrame();

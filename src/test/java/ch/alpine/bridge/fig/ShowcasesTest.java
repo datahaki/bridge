@@ -25,7 +25,7 @@ class ShowcasesTest {
     assertEquals(bufferedImage.getHeight(), 300);
     File folder = HomeDirectory.Downloads("export");
     folder.mkdir();
-    Jpeg.put(bufferedImage, new File(folder, showDemos.name()+".jpg"), 0.9f);
+    Jpeg.put(bufferedImage, new File(folder, showDemos.name() + ".jpg"), 0.9f);
     // Serialization.copy(bufferedImage);
   }
 }
