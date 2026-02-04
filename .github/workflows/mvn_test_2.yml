@@ -32,6 +32,5 @@ jobs:
         working-directory: ./tensor
 
       - name: mvn test
-        working-directory: .
         run: mvn test -B
 
