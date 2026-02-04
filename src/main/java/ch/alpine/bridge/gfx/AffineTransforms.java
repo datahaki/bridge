@@ -10,8 +10,7 @@ public enum AffineTransforms {
   /** function helps to draw a transformed BufferedImage in a Graphics object
    * 
    * @param matrix 3 x 3 in SE2
-   * @return java::AffineTransform
-   * @see GfxMatrix */
+   * @return java::AffineTransform */
   public static AffineTransform of(Tensor matrix) {
     return new AffineTransform( //
         matrix.Get(0, 0).number().doubleValue(), //

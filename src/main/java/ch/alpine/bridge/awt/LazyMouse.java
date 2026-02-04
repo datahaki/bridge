@@ -75,6 +75,7 @@ public class LazyMouse implements MouseListener, MouseMotionListener {
     // empty by default
   }
 
+  // TODO BRIDGE bad API design since can be added multiple times, and no remove !?
   public void addListenersTo(Component component) {
     component.addMouseListener(this);
     component.addMouseMotionListener(this);

@@ -1,6 +1,8 @@
 // code by clruch
 package ch.alpine.bridge.swing.rs;
 
+import java.time.Duration;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -17,7 +19,7 @@ class RangeSliderTest {
     RangeSliderDemo rangeSliderDemo = new RangeSliderDemo();
     JFrame jFrame = rangeSliderDemo.display();
     /* allow time to play */
-    Thread.sleep(5 * 1000);
+    Thread.sleep(Duration.ofSeconds(5));
     jFrame.dispose();
   }
 }

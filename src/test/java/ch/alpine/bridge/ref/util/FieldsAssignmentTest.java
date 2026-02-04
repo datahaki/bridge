@@ -14,8 +14,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import ch.alpine.bridge.ref.ex.FieldOuterParam;
-import ch.alpine.bridge.ref.ex.GuiExtension;
+import demo.FieldOuterParam;
+import demo.GuiExtension;
 
 class FieldsAssignmentTest {
   @Test
@@ -24,7 +24,7 @@ class FieldsAssignmentTest {
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
     FieldsAssignment fieldsAssignment = FieldsAssignment.of(fieldOuterParam);
-    fieldsAssignment.stream().forEach(i -> {
+    fieldsAssignment.stream().forEach(_ -> {
       atomicInteger.getAndIncrement();
       assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
       assertEquals(fieldOuterParam.nestedParam[1].text, "abc");
@@ -60,13 +60,13 @@ class FieldsAssignmentTest {
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
     FieldsAssignment fieldsAssignment = FieldsAssignment.of(fieldOuterParam);
-    fieldsAssignment.randomize(15).forEach(i -> {
+    fieldsAssignment.randomize(15).forEach(_ -> {
       atomicInteger.getAndIncrement();
       assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
       assertEquals(fieldOuterParam.nestedParam[1].text, "abc");
     });
     assertEquals(atomicInteger.get(), 15);
-    fieldsAssignment.randomize(200).forEach(i -> {
+    fieldsAssignment.randomize(200).forEach(_ -> {
       atomicInteger.getAndIncrement();
       assertEquals(fieldOuterParam.nestedParam[0].text, "abc");
       assertEquals(fieldOuterParam.nestedParam[1].text, "abc");
@@ -79,7 +79,7 @@ class FieldsAssignmentTest {
     AtomicInteger atomicInteger = new AtomicInteger();
     GuiExtension guiExtension = new GuiExtension();
     FieldsAssignment fieldsAssignment = FieldsAssignment.of(guiExtension);
-    fieldsAssignment.randomize(133).forEach(i -> atomicInteger.getAndIncrement());
+    fieldsAssignment.randomize(133).forEach(_ -> atomicInteger.getAndIncrement());
     assertEquals(atomicInteger.get(), 133);
     fieldsAssignment.restore();
   }

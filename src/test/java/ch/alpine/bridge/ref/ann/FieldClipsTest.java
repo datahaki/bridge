@@ -10,7 +10,6 @@ import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.ex.AnnotatedContainer;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
@@ -22,6 +21,7 @@ import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
+import demo.AnnotatedContainer;
 
 class FieldClipsTest {
   @Test

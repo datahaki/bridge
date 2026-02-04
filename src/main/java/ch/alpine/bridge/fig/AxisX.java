@@ -22,6 +22,7 @@ import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
+// TODO BRIDGE logarithmic scale
 class AxisX extends Axis {
   public AxisX(DateTimeFocus dateTimeFocus) {
     super(dateTimeFocus);
@@ -30,6 +31,7 @@ class AxisX extends Axis {
   @Override
   void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
     Rectangle rectangle = showableConfig.rectangle;
+    graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;

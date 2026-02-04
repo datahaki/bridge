@@ -10,6 +10,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.sca.Floor;
 import ch.alpine.tensor.sca.Round;
@@ -54,7 +55,7 @@ public class LocalTimeParam {
     return LocalTime.of( //
         h, //
         min, //
-        fs.number().intValue(), //
+        Scalars.intValueExact(fs), //
         n.number().intValue());
   }
 

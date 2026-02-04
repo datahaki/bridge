@@ -5,14 +5,20 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 import ch.alpine.bridge.awt.ScalableImage;
+import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Clips;
 
+/** base class for ArrayPlot and MatrixPlot */
 /* package */ abstract class AbstractGridPlot extends BarLegendPlot {
+  public static final UnaryOperator<Clip> CENTER_INT = Clips.translation(RationalScalar.HALF.negate());
+  // ---
   private final ScalableImage scalableImage;
   private final CoordinateBoundingBox cbb;
   private final Clip clip;

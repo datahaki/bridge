@@ -7,6 +7,7 @@ import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
@@ -121,7 +122,8 @@ public class ReImPlot extends BaseShowable {
           .stream() //
           .map(Scalar.class::cast) //
           .map(suo) //
-          .flatMap(ReIm::stream));
+          .map(ReIm::of) //
+          .flatMap(reIm -> Stream.of(reIm.re(), reIm.im())));
       if (Objects.nonNull(clip))
         return Optional.of(CoordinateBoundingBox.of(domain, clip));
     }

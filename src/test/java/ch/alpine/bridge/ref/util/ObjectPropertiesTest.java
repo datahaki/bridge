@@ -21,19 +21,19 @@ import java.util.Properties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import ch.alpine.bridge.ref.ex.ClipParam;
-import ch.alpine.bridge.ref.ex.GuiExtension;
-import ch.alpine.bridge.ref.ex.ParamContainer;
-import ch.alpine.bridge.ref.ex.ParamContainerExt;
-import ch.alpine.bridge.ref.ex.SimpleLaram;
-import ch.alpine.bridge.ref.ex.SimpleParam;
-import ch.alpine.bridge.ref.ex.TimeParam;
-import ch.alpine.bridge.ref.ex.V011Param;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.Clips;
+import demo.ClipParam;
+import demo.GuiExtension;
+import demo.ParamContainer;
+import demo.ParamContainerExt;
+import demo.SimpleLaram;
+import demo.SimpleParam;
+import demo.TimeParam;
+import demo.V011Param;
 
 class ObjectPropertiesTest {
   @Test

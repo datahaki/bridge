@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -20,7 +21,9 @@ abstract class Axis {
   final DateTimeFocus dateTimeFocus;
   boolean gridLines = true;
   boolean ticks = true;
+  private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
+  // TODO BRIDGE probably not good API design
   public Axis(DateTimeFocus dateTimeFocus) {
     this.dateTimeFocus = dateTimeFocus;
   }
@@ -32,4 +35,12 @@ abstract class Axis {
   }
 
   abstract void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip);
+
+  public void setFont(Font font) {
+    this.font = font;
+  }
+
+  public Font getFont() {
+    return font;
+  }
 }

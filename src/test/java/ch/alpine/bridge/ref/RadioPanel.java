@@ -31,7 +31,7 @@ import javax.swing.ScrollPaneConstants;
       JRadioButton jRadioButton = new JRadioButton(value.toString());
       jRadioButton.setSelected(value.equals(object));
       buttonGroup.add(jRadioButton);
-      ActionListener actionListener = actionEvent -> {
+      ActionListener actionListener = _ -> {
         if (jRadioButton.isSelected()) {
           String string = fieldWrap.toString(value);
           if (!string.equals(previous))

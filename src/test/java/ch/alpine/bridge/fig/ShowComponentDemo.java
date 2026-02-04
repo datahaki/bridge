@@ -21,7 +21,7 @@ public class ShowComponentDemo implements Runnable {
   private final JFrame jFrame = new JFrame();
   private final ShowComponent showComponent = new ShowComponent();
   // ---
-  public ShowDemos showDemos = ShowDemos.ListLinePlot0;
+  public Showcases showDemos = Showcases.ListLinePlot0;
   public Font font = new JPanel().getFont();
   public Boolean xZoom = true;
   public Boolean xPan = true;
@@ -55,7 +55,7 @@ public class ShowComponentDemo implements Runnable {
     showComponent.repaint();
   }
 
-  public static void main(String[] args) {
+  static void main() {
     LookAndFeels.LIGHT.updateComponentTreeUI();
     ShowComponentDemo showComponentDemo = new ShowComponentDemo();
     showComponentDemo.jFrame.setVisible(true);

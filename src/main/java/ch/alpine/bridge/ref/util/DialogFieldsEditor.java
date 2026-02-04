@@ -100,7 +100,7 @@ public class DialogFieldsEditor extends JDialog {
         JButton jButton = new JButton("Done");
         FieldsEditorParam.GLOBAL.minSize(jButton);
         jButton.setToolTipText("close dialog and keep current values");
-        jButton.addActionListener(actionEvent -> {
+        jButton.addActionListener(_ -> {
           status = true;
           dispose();
         });
@@ -110,7 +110,7 @@ public class DialogFieldsEditor extends JDialog {
         JButton jButton = new JButton("Revert");
         FieldsEditorParam.GLOBAL.minSize(jButton);
         jButton.setToolTipText("revert to initial values");
-        jButton.addActionListener(actionEvent -> {
+        jButton.addActionListener(_ -> {
           ObjectProperties.part(object, fallback);
           panelFieldsEditor.updateJComponents();
         });
@@ -120,7 +120,7 @@ public class DialogFieldsEditor extends JDialog {
         JButton jButton = new JButton("Cancel");
         FieldsEditorParam.GLOBAL.minSize(jButton);
         jButton.setToolTipText("close dialog and revert to initial values");
-        jButton.addActionListener(actionEvent -> cancel());
+        jButton.addActionListener(_ -> cancel());
         jToolBar.add(jButton);
       }
       jPanel.add(BorderLayout.SOUTH, jToolBar);

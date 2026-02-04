@@ -4,22 +4,24 @@ package ch.alpine.bridge.awt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.time.Duration;
 
 import javax.swing.JFrame;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.tensor.ext.Int;
+
 class WindowClosedTest {
   @Test
   void test() throws InterruptedException {
     JFrame jFrame = new JFrame();
-    AtomicInteger atomicInteger = new AtomicInteger();
-    WindowClosed.runs(jFrame, atomicInteger::getAndIncrement);
+    Int i = new Int();
+    WindowClosed.runs(jFrame, i::getAndIncrement);
     jFrame.setVisible(true);
     jFrame.dispose();
-    Thread.sleep(100);
-    assertEquals(atomicInteger.get(), 1);
+    Thread.sleep(Duration.ofMillis(100));
+    assertEquals(i.getAndIncrement(), 1);
   }
 
   @Test

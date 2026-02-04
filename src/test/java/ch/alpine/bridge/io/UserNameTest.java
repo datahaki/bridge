@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,6 +27,12 @@ class UserNameTest {
     assertTrue(UserName.is(UserName.get()));
     assertFalse(UserName.is(""));
     assertFalse(UserName.is("&E T H!"));
+  }
+
+  @Test
+  void testFiler() {
+    assumeTrue(UserName.is("datahaki"));
+    assertTrue(UserName.is("datahaki"));
   }
 
   @Test

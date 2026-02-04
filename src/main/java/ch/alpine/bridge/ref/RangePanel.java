@@ -58,7 +58,7 @@ import ch.alpine.tensor.sca.Clips;
     rangeSlider.setOpaque(false); // for use in toolbar
     rangeSlider.setPaintTicks(resolution <= TICKS_MAX);
     rangeSlider.setMinorTickSpacing(1);
-    rangeSlider.addChangeListener(changeEvent -> {
+    rangeSlider.addChangeListener(_ -> {
       int value_min = rangeSlider.getValue();
       int value_max = rangeSlider.getUpperValue();
       if (value_min != index_min || value_max != index_max) {

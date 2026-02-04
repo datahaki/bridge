@@ -16,7 +16,7 @@ import ch.alpine.bridge.swing.SpinnerMenu;
 
 /* package */ class MenuPanel extends StringPanel {
   private final JPanel jPanel = new JPanel(new BorderLayout());
-  private final JButton jButton = new JButton(StaticHelper.BUTTON_TEXT);
+  private final JButton jButton = new JButton(BUTTON_SEEK);
 
   /** @param fieldWrap
    * @param value during initialization
@@ -44,7 +44,7 @@ import ch.alpine.bridge.swing.SpinnerMenu;
         }
       }
     });
-    jButton.addActionListener(actionEvent -> {
+    jButton.addActionListener(_ -> {
       Font font = jTextField.getFont();
       SpinnerMenu<Object> spinnerMenu = new SpinnerMenu<>( //
           supplier.get(), // options

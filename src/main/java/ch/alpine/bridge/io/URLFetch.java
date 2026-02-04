@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /** Example:
@@ -39,8 +41,8 @@ public class URLFetch implements AutoCloseable {
     }
   }
 
-  public URLFetch(String url) throws IOException {
-    this(new URL(url));
+  public URLFetch(String url) throws IOException, URISyntaxException {
+    this(new URI(url).toURL());
   }
 
   /** @return

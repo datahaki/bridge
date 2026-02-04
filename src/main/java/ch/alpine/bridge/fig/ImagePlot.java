@@ -2,8 +2,8 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.Point2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
@@ -16,6 +16,7 @@ import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
+// TODO BRIDGE mouse wheel scales image around location of mouse!
 public class ImagePlot extends BaseShowable {
   public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
     return new ImagePlot(bufferedImage, cbb, flipY, aspectRatio);
@@ -27,8 +28,8 @@ public class ImagePlot extends BaseShowable {
 
   public static Showable of(BufferedImage bufferedImage) {
     return of(bufferedImage, CoordinateBoundingBox.of( //
-        StaticHelper.TRANSLATION.apply(Clips.positive(bufferedImage.getWidth())), //
-        StaticHelper.TRANSLATION.apply(Clips.positive(bufferedImage.getHeight()))), //
+        AbstractGridPlot.CENTER_INT.apply(Clips.positive(bufferedImage.getWidth())), //
+        AbstractGridPlot.CENTER_INT.apply(Clips.positive(bufferedImage.getHeight()))), //
         true, RealScalar.ONE);
   }
 
@@ -39,7 +40,7 @@ public class ImagePlot extends BaseShowable {
   private final Scalar aspectRatio;
 
   private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
-    this.scalableImage = new ScalableImage(bufferedImage, Image.SCALE_AREA_AVERAGING);
+    this.scalableImage = new ScalableImage(bufferedImage, AffineTransformOp.TYPE_BICUBIC);
     this.cbb = cbb;
     this.flipY = flipY;
     this.aspectRatio = aspectRatio;

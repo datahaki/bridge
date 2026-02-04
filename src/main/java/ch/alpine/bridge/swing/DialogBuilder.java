@@ -39,7 +39,7 @@ public interface DialogBuilder<T> {
       dialogBuilder.decorate(jToolBar);
       {
         JButton jButton = new JButton("Done");
-        jButton.addActionListener(actionEvent -> {
+        jButton.addActionListener(_ -> {
           jDialog.dispose();
           dialogBuilder.selection(dialogBuilder.current());
         });
@@ -48,7 +48,7 @@ public interface DialogBuilder<T> {
       jToolBar.addSeparator();
       {
         JButton jButton = new JButton("Cancel");
-        jButton.addActionListener(actionEvent -> {
+        jButton.addActionListener(_ -> {
           jDialog.dispose();
           dialogBuilder.selection(dialogBuilder.fallback());
         });

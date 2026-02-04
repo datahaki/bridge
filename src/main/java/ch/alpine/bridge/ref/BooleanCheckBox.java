@@ -19,7 +19,7 @@ import javax.swing.JComponent;
     jCheckBox.setOpaque(false);
     if (Objects.nonNull(value))
       jCheckBox.setSelected(value);
-    jCheckBox.addActionListener(event -> notifyListeners(fieldWrap.toString(jCheckBox.isSelected())));
+    jCheckBox.addActionListener(_ -> notifyListeners(fieldWrap.toString(jCheckBox.isSelected())));
   }
 
   @Override // from FieldPanel

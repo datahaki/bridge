@@ -9,17 +9,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.ex.ClipParam;
-import ch.alpine.bridge.ref.ex.ExampleBadClip;
-import ch.alpine.bridge.ref.ex.ExampleBadDirectory;
-import ch.alpine.bridge.ref.ex.ExampleBadFieldClip;
-import ch.alpine.bridge.ref.ex.ExampleBadFile;
-import ch.alpine.bridge.ref.ex.ExampleBadFuse;
-import ch.alpine.bridge.ref.ex.ExampleBadMethod;
-import ch.alpine.bridge.ref.ex.ExampleBadReturn;
-import ch.alpine.bridge.ref.ex.ExampleBadScalar;
-import ch.alpine.bridge.ref.ex.ExampleNullValue;
-import ch.alpine.bridge.ref.ex.GuiExtension;
+import demo.ClipParam;
+import demo.ExampleNullValue;
+import demo.GuiExtension;
 
 class InvalidFieldDetectionTest {
   @Test

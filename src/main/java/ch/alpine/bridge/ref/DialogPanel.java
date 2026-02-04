@@ -15,7 +15,7 @@ import ch.alpine.bridge.awt.WindowClosed;
 
 /* package */ abstract class DialogPanel extends StringPanel {
   private final JPanel jPanel = new JPanel(new BorderLayout());
-  private final JButton jButton = new JButton(StaticHelper.BUTTON_TEXT);
+  private final JButton jButton = new JButton(BUTTON_SEEK);
   /** For each instance of {@link ColorPanel}, a single JColorChooser may be opened
    * by the user. The jDialog field is non-null whenever the dialog is visible. */
   private JDialog jDialog = null;
@@ -24,7 +24,7 @@ import ch.alpine.bridge.awt.WindowClosed;
    * @param value initial and fallback */
   protected DialogPanel(FieldWrap fieldWrap, Object value) {
     super(fieldWrap, value);
-    jButton.addActionListener(actionEvent -> {
+    jButton.addActionListener(_ -> {
       if (Objects.isNull(jDialog)) {
         // fallback font is restored when "Cancel" is pressed
         jDialog = createDialog(jButton, fieldWrap().toValue(getText()));

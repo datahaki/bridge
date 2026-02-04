@@ -3,15 +3,15 @@ package ch.alpine.bridge.ref.util;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.ex.SimpleParam;
-import ch.alpine.bridge.ref.ex.V011Param;
+import demo.SimpleParam;
+import demo.V011Param;
 
 class FieldsEditorTest {
   @Test
   void testSimple() {
     PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(new SimpleParam());
     panelFieldsEditor.createJScrollPane();
-    panelFieldsEditor.list().forEach(fieldPanel -> fieldPanel.addListener(s -> {
+    panelFieldsEditor.list().forEach(fieldPanel -> fieldPanel.addListener(_ -> {
       // ---
     }));
     panelFieldsEditor.updateJComponents();

@@ -26,7 +26,7 @@ public abstract class FieldsEditor {
    * In a field editor instance, the object as value in the map is not necessary unique. */
   private record FieldPanelObject(FieldPanel fieldPanel, Object object) {
     public void updateJComponent() {
-      Object value = StaticHelper.get(fieldPanel.fieldWrap().getField(), object);
+      Object value = new FieldValue(fieldPanel.fieldWrap().getField()).get(object);
       if (Objects.nonNull(value))
         // any exception caused by implementation based on presented value is deliberately not caught
         fieldPanel.updateJComponent(value);
@@ -51,7 +51,7 @@ public abstract class FieldsEditor {
     list.add(new FieldPanelObject(fieldPanel, object));
     FieldWrap fieldWrap = fieldPanel.fieldWrap();
     fieldPanel.addListener(string -> fieldWrap.setIfValid(object, string));
-    fieldPanel.addListener(string -> notifyUniversalListeners());
+    fieldPanel.addListener(_ -> notifyUniversalListeners());
     // ---
     JComponent jComponent = fieldPanel.getJComponent();
     // ---

@@ -49,7 +49,7 @@ import ch.alpine.tensor.Scalar;
     jSlider.setOpaque(false); // for use in toolbar
     jSlider.setPaintTicks(resolution <= TICKS_MAX);
     jSlider.setMinorTickSpacing(1);
-    jSlider.addChangeListener(changeEvent -> {
+    jSlider.addChangeListener(_ -> {
       int value1 = jSlider.getValue();
       if (index != value1) { // prevent notifications if slider value hasn't changed
         Scalar scalar = fieldClips.interp(RationalScalar.of(index = value1, resolution));

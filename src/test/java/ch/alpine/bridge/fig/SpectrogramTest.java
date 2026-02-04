@@ -55,8 +55,7 @@ class SpectrogramTest {
         .mapToDouble(i -> Math.cos(i * 0.25 + (i / 20.0) * (i / 20.0))) //
         .mapToObj(RealScalar::of));
     Showable image = Spectrogram.of(vector, Quantity.of(1, "s"), DirichletWindow.FUNCTION, ColorDataGradients.VISIBLE_SPECTRUM);
-    // ImageFormat.of(image);
-    // assertEquals(Dimensions.of(image), Arrays.asList(32, 93, 4));
+    new Show().add(image);
     assertEquals(Dimensions.of(SpectrogramArray.SPECTROGRAM.half_abs(vector)), Arrays.asList(32, 93));
     Tensor tensor = SpectrogramArray.SPECTROGRAM.apply(vector).map(Abs.FUNCTION);
     assertEquals(Dimensions.of(tensor), List.of(93, 64));

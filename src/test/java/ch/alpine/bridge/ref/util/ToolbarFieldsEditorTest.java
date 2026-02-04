@@ -6,14 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Duration;
+
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.ex.GuiExtension;
-import ch.alpine.bridge.ref.ex.OtherPackageParam;
-import ch.alpine.bridge.ref.ex.SliderFailParam;
+import demo.GuiExtension;
+import demo.OtherPackageParam;
+import demo.SliderFailParam;
 
 class ToolbarFieldsEditorTest {
   @Test
@@ -47,7 +49,7 @@ class ToolbarFieldsEditorTest {
     jFrame.setContentPane(jToolBar);
     jFrame.setBounds(100, 100, 1000, 100);
     jFrame.setVisible(true);
-    Thread.sleep(100);
+    Thread.sleep(Duration.ofMillis(100));
     jFrame.setVisible(false);
     assertNull(guiExtension.function);
     // assertNull(guiExtension.status);
@@ -66,7 +68,7 @@ class ToolbarFieldsEditorTest {
     jFrame.setContentPane(jToolBar);
     jFrame.setBounds(100, 100, 1000, 100);
     jFrame.setVisible(true);
-    Thread.sleep(100);
+    Thread.sleep(Duration.ofMillis(100));
     jFrame.setVisible(false);
   }
 

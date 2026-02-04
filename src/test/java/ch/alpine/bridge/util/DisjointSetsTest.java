@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 
@@ -23,17 +23,17 @@ class DisjointSetsTest {
   void testSimple() {
     int n = 100;
     DisjointSets disjointSets = new DisjointSets();
-    IntStream.range(0, n).forEach(i -> disjointSets.add());
+    IntStream.range(0, n).forEach(_ -> disjointSets.add());
     assertEquals(disjointSets.parents().size(), n);
     assertEquals(disjointSets.representatives().size(), n);
-    RandomGenerator random = new Random();
+    RandomGenerator randomGenerator = ThreadLocalRandom.current();
     // Distribution distribution = DiscreteUniformDistribution.of(0, n);
     for (int index = 0; index < n; ++index) {
-      int scalar = random.nextInt(n);
+      int scalar = randomGenerator.nextInt(n);
       disjointSets.union(index, scalar);
     }
     {
-      int maxDepth = IntStream.range(0, n).map(disjointSets::depth).reduce(Math::max).getAsInt();
+      int maxDepth = IntStream.range(0, n).map(disjointSets::depth).reduce(Math::max).orElseThrow();
       assertTrue(1 < maxDepth);
     }
     Collection<Integer> parents = disjointSets.parents(); // before representatives()
@@ -51,7 +51,7 @@ class DisjointSetsTest {
   void testSingle() {
     int n = 1000;
     DisjointSets disjointSets = new DisjointSets();
-    IntStream.range(0, n).forEach(i -> disjointSets.add());
+    IntStream.range(0, n).forEach(_ -> disjointSets.add());
     for (int index = 0; index < n; ++index)
       disjointSets.union(index, 2);
     assertEquals(disjointSets.parents().size(), 1);
@@ -65,7 +65,7 @@ class DisjointSetsTest {
   void testDual() {
     int n = 1000;
     DisjointSets disjointSets = new DisjointSets();
-    IntStream.range(0, n).forEach(i -> disjointSets.add());
+    IntStream.range(0, n).forEach(_ -> disjointSets.add());
     for (int index = 0; index < n; ++index)
       disjointSets.union(index, 100 + (index & 1));
     assertEquals(disjointSets.parents().size(), 2);
@@ -79,7 +79,7 @@ class DisjointSetsTest {
   void testSame() {
     int n = 1000;
     DisjointSets disjointSets = new DisjointSets();
-    IntStream.range(0, n).forEach(i -> disjointSets.add());
+    IntStream.range(0, n).forEach(_ -> disjointSets.add());
     for (int index = 0; index < n; ++index)
       disjointSets.union(index, index);
     assertEquals(disjointSets.parents().size(), n);

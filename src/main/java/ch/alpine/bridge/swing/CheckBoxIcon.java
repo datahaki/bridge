@@ -1,6 +1,8 @@
 // code by jph
 package ch.alpine.bridge.swing;
 
+import java.awt.image.AffineTransformOp;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -23,6 +25,6 @@ public enum CheckBoxIcon {
   /** @param n pixel width and height */
   public Icon create(int n, boolean selected) {
     String string = String.format("/ch/alpine/bridge/ref/checkbox/%s/%d.png", name().toLowerCase(), selected ? 1 : 0);
-    return new ImageIcon(ImageResize.of(ResourceData.bufferedImage(string), n, n));
+    return new ImageIcon(ImageResize.of(ResourceData.bufferedImage(string), n, n, AffineTransformOp.TYPE_BICUBIC));
   }
 }

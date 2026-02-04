@@ -93,7 +93,7 @@ import javax.swing.WindowConstants;
     return jFrame;
   }
 
-  public static void main(String[] args) {
+  static void main() {
     RangeSliderDemo rangeSliderDemo = new RangeSliderDemo();
     rangeSliderDemo.display();
   }

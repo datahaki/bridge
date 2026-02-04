@@ -16,7 +16,6 @@ import java.util.random.RandomGenerator;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.pdf.Distribution;
@@ -49,7 +48,7 @@ import ch.alpine.tensor.sca.Clip;
               UniformDistribution.of(clip), //
               DiracDeltaDistribution.of(fieldClips.min()), //
               DiracDeltaDistribution.of(fieldClips.max()));
-          distributions.put(key, random -> fieldWrap.toString(RandomVariate.of(distribution, random)));
+          distributions.put(key, randomGenerator -> fieldWrap.toString(RandomVariate.of(distribution, randomGenerator)));
         }
       }
     }
@@ -58,18 +57,17 @@ import ch.alpine.tensor.sca.Clip;
       if (Objects.nonNull(fieldClip)) {
         FieldClips fieldClips = FieldClips.wrap(fieldClip);
         if (fieldClips.isFinite()) {
-          Clip clip = fieldClips.clip();
-          Distribution distribution = DiscreteUniformDistribution.of(clip.min(), clip.max().add(RealScalar.ONE));
-          distributions.put(key, random -> fieldWrap.toString(RandomVariate.of(distribution, random)));
+          Distribution distribution = DiscreteUniformDistribution.of(fieldClips.clip());
+          distributions.put(key, randomGenerator -> fieldWrap.toString(RandomVariate.of(distribution, randomGenerator)));
         }
       }
     }
     if (cls.equals(Color.class))
-      distributions.put(key, random -> fieldWrap.toString(Randoms.color(random)));
+      distributions.put(key, randomGenerator -> fieldWrap.toString(Randoms.color(randomGenerator)));
     if (cls.equals(LocalTime.class))
-      distributions.put(key, random -> fieldWrap.toString(Randoms.localTime(random)));
+      distributions.put(key, randomGenerator -> fieldWrap.toString(Randoms.localTime(randomGenerator)));
     if (cls.equals(Font.class))
-      distributions.put(key, random -> fieldWrap.toString(Randoms.font(random)));
+      distributions.put(key, randomGenerator -> fieldWrap.toString(Randoms.font(randomGenerator)));
   }
 
   /** @return mapping from field name to list of suggested value strings */

@@ -3,27 +3,74 @@ package ch.alpine.bridge.gfx;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Dot;
 import ch.alpine.tensor.ext.Serialization;
-import ch.alpine.tensor.lie.r2.CirclePoints;
+import ch.alpine.tensor.lie.rot.CirclePoints;
 import ch.alpine.tensor.mat.IdentityMatrix;
 import ch.alpine.tensor.sca.Chop;
+import ch.alpine.tensor.sca.tri.Cos;
+import ch.alpine.tensor.sca.tri.Sin;
 
 class GeometricLayerTest {
+  public static Tensor gfxMatrix_of(Tensor xya) {
+    Scalar angle = xya.Get(2);
+    Scalar cos = Cos.FUNCTION.apply(angle);
+    Scalar sin = Sin.FUNCTION.apply(angle);
+    return Tensors.matrix(new Scalar[][] { //
+        { cos, sin.negate(), xya.Get(0) }, //
+        { sin, cos /*----*/, xya.Get(1) }, //
+        { RealScalar.ZERO, RealScalar.ZERO, RealScalar.ONE }, //
+    });
+  }
+  public static Tensor gfxMatrix_translation(Tensor xy) {
+    return Tensors.matrix(new Scalar[][] { //
+        { RealScalar.ONE, RealScalar.ZERO, xy.Get(0) }, //
+        { RealScalar.ZERO, RealScalar.ONE, xy.Get(1) }, //
+        { RealScalar.ZERO, RealScalar.ZERO, RealScalar.ONE }, //
+    });
+  }
+
+  @Test
+  void testSimple345() {
+    Tensor m1 = gfxMatrix_of(Tensors.vector(1, 2, 3));
+    Tensor m2 = gfxMatrix_of(Tensors.vector(-.3, 0.2, .4));
+    AffineFrame2D af2 = new AffineFrame2D(m1);
+    AffineFrame2D af3 = af2.dot(m2);
+    assertEquals(af3.matrix_copy(), m1.dot(m2));
+    Point2D point2d = af3.toPoint2D();
+    Point2D actual = new Point2D.Double(1.2687737473681602, 1.7596654982619508);
+    assertTrue(point2d.distance(actual) < 1e-9);
+    assertTrue(point2d.distance(af3.toPoint2D(0, 0)) < 1e-9);
+  }
+
+  @Test
+  void testPoint() {
+    Tensor m1 = gfxMatrix_of(Tensors.vector(1, 2, 3));
+    AffineFrame2D af2 = new AffineFrame2D(m1);
+    Tensor v = Tensors.vector(-.3, -.4, 1);
+    Point2D p = af2.toPoint2D(v.Get(0).number().doubleValue(), v.Get(1).number().doubleValue());
+    Tensor q = m1.dot(v);
+    assertEquals(p.getX(), q.Get(0).number().doubleValue());
+    assertEquals(p.getY(), q.Get(1).number().doubleValue());
+  }
+
   @Test
   void testPush() {
-    Tensor a = GfxMatrix.translation(Tensors.vector(10, 10));
+    Tensor a = gfxMatrix_translation(Tensors.vector(10, 10));
     GeometricLayer geometricLayer = new GeometricLayer(a);
-    Tensor b = GfxMatrix.of(Tensors.vector(2, 3, 4));
+    Tensor b = gfxMatrix_of(Tensors.vector(2, 3, 4));
     geometricLayer.pushMatrix(b);
     Chop._10.requireClose(Dot.of(a, b), geometricLayer.getMatrix());
     geometricLayer.toPoint2D(Tensors.vector(1, 2));
@@ -43,7 +90,7 @@ class GeometricLayerTest {
 
   @Test
   void testPopFail() {
-    GeometricLayer geometricLayer = new GeometricLayer(GfxMatrix.translation(Tensors.vector(0, 0)));
+    GeometricLayer geometricLayer = new GeometricLayer(gfxMatrix_translation(Tensors.vector(0, 0)));
     assertThrows(Exception.class, geometricLayer::popMatrix);
   }
 

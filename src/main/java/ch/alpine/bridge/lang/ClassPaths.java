@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.lang;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
@@ -27,6 +28,6 @@ public enum ClassPaths {
   static String join(String... paths) {
     return Arrays.stream(paths) //
         .filter(Objects::nonNull) //
-        .collect(Collectors.joining(System.getProperty("path.separator")));
+        .collect(Collectors.joining(File.pathSeparator));
   }
 }

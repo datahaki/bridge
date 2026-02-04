@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Image;
+import java.awt.image.AffineTransformOp;
 
 import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.Tensor;
@@ -25,7 +25,8 @@ public class ArrayPlot extends AbstractGridPlot {
   public static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     MatrixQ.require(matrix);
     Rescale rescale = new Rescale(matrix);
-    ScalableImage scalableImage = new ScalableImage(ImageFormat.of(rescale.result().map(colorDataGradient)), Image.SCALE_AREA_AVERAGING);
+    ScalableImage scalableImage = new ScalableImage( //
+        ImageFormat.of(rescale.result().map(colorDataGradient)), AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
     Clip clip = rescale.clip();
     return new ArrayPlot(colorDataGradient, scalableImage, cbb, clip);
   }
@@ -35,8 +36,8 @@ public class ArrayPlot extends AbstractGridPlot {
    * @return */
   public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient) {
     return of(matrix, CoordinateBoundingBox.of( //
-        StaticHelper.TRANSLATION.apply(Clips.positive(Unprotect.dimension1(matrix))), //
-        StaticHelper.TRANSLATION.apply(Clips.positive(matrix.length()))), //
+        AbstractGridPlot.CENTER_INT.apply(Clips.positive(Unprotect.dimension1(matrix))), //
+        AbstractGridPlot.CENTER_INT.apply(Clips.positive(matrix.length()))), //
         colorDataGradient);
   }
 

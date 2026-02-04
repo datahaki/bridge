@@ -39,15 +39,15 @@ import javax.swing.WindowConstants;
   protected JDialog createDialog(Component component, Object value) {
     Color fallback = Objects.isNull(value) ? FALLBACK : (Color) value;
     JColorChooser jColorChooser = new JColorChooser(fallback);
-    jColorChooser.getSelectionModel().addChangeListener(changeEvent -> updateAndNotify(jColorChooser.getColor()));
+    jColorChooser.getSelectionModel().addChangeListener(_ -> updateAndNotify(jColorChooser.getColor()));
     JDialog jDialog = JColorChooser.createDialog( //
         component, "color selection: " + fieldWrap().getField().getName(), //
         false, jColorChooser, //
-        actionEvent -> { // ok listener
+        _ -> { // ok listener
           dispose();
           updateAndNotify(jColorChooser.getColor());
         }, //
-        actionEvent -> { // cancel listener
+        _ -> { // cancel listener
           dispose();
           updateAndNotify(fallback);
         });

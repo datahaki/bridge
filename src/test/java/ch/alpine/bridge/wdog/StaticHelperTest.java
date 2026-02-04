@@ -2,6 +2,7 @@
 package ch.alpine.bridge.wdog;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -42,5 +43,11 @@ class StaticHelperTest {
   void testSimpleNS1() {
     long nanos = StaticHelper.nanos(Quantity.of(173, "ns"));
     assertEquals(nanos, 173);
+  }
+  
+  @Test
+  void testFail() {
+    assertThrows(Exception.class, () -> StaticHelper.nanos(Quantity.of(1e100, "ns")));
+    assertThrows(Exception.class, () -> StaticHelper.nanos(Quantity.of(1e100, "s")));
   }
 }

@@ -13,14 +13,14 @@ import javax.swing.filechooser.FileFilter;
 
 /* package */ class FilePanel extends StringPanel {
   private final JPanel jPanel = new JPanel(new BorderLayout());
-  private final JButton jButton = new JButton(StaticHelper.BUTTON_TEXT);
+  private final JButton jButton = new JButton(BUTTON_SEEK);
 
   /** @param fieldWrap
    * @param _file initially
    * @param fileFilters */
   public FilePanel(FieldWrap fieldWrap, File _file, List<FileFilter> fileFilters) {
     super(fieldWrap, _file);
-    jButton.addActionListener(actionEvent -> {
+    jButton.addActionListener(_ -> {
       JFileChooser jFileChooser = new JFileChooser();
       for (FileFilter fileFilter : fileFilters)
         jFileChooser.setFileFilter(fileFilter);

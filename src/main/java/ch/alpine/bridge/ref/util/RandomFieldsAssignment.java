@@ -31,9 +31,9 @@ public class RandomFieldsAssignment extends FieldsAssignment {
   }
 
   @Override // from FieldsAssignment
-  protected void insert(Properties properties, RandomGenerator random) {
+  protected void insert(Properties properties, RandomGenerator randomGenerator) {
     for (Entry<String, Function<RandomGenerator, String>> entry : distributions.entrySet())
-      properties.put(entry.getKey(), entry.getValue().apply(random)); // Properties requires a String as value
+      properties.put(entry.getKey(), entry.getValue().apply(randomGenerator)); // Properties requires a String as value
   }
 
   @Override // from FieldsAssignment

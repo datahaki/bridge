@@ -10,7 +10,7 @@ public class PrimitiveFields {
   public byte byte_value;
   public int[] int_array;
 
-  public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException {
+  static void main() throws IllegalArgumentException, IllegalAccessException {
     PrimitiveFields primitiveFields = new PrimitiveFields();
     System.out.println(primitiveFields.int_value);
     int count = 0;

@@ -29,8 +29,11 @@ public enum Spectrogram {
    * @param window for instance {@link HannWindow#FUNCTION}
    * @param function for instance {@link ColorDataGradients#VISIBLE_SPECTRUM}
    * @return */
-  public static Showable of(Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
-    BufferedImage bufferedImage = ImageFormat.of(Raster.of(new SpectrogramArray(Fourier.FORWARD::transform, null, null, window).half_abs(signal), function));
+  public static Showable of( //
+      Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, //
+      Function<Scalar, ? extends Tensor> function) {
+    Tensor array = new SpectrogramArray(Fourier.FORWARD::transform, null, null, window).half_abs(signal);
+    BufferedImage bufferedImage = ImageFormat.of(Raster.of(array, function));
     return ImagePlot.of(bufferedImage, CoordinateBoundingBox.of( //
         Clips.positive(RealScalar.of(signal.length()).divide(sampleRate)), //
         Clips.positive(sampleRate.divide(RealScalar.TWO))));

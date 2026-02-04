@@ -61,7 +61,7 @@ public class ClassDiscovery {
 
   /** Given a colon-delimited list of jar files, iterate over the classes in them. */
   private void findClasses() {
-    final String ps = System.getProperty("path.separator");
+    final String ps = File.pathSeparator;
     String[] items = classpath.split(ps);
     // Create a class loader that has access to the whole class path.
     URL[] urls = new URL[items.length];
@@ -69,7 +69,7 @@ public class ClassDiscovery {
       for (int index = 0; index < items.length; ++index)
         urls[index] = new File(items[index]).toURI().toURL();
     } catch (IOException ioException) {
-      System.out.println("ClassDiscoverer ERR: " + ioException);
+      IO.println("ClassDiscoverer ERR: " + ioException);
       return;
     }
     try (URLClassLoader urlClassLoader = new URLClassLoader(urls)) {
@@ -97,7 +97,7 @@ public class ClassDiscovery {
               }
             }
           } catch (IOException ioException) {
-            System.out.println("Error extracting " + item);
+            IO.println("Error extracting " + item);
           }
         } else {
           File file = new File(item);

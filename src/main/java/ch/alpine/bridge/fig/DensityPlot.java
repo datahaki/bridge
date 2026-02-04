@@ -2,8 +2,8 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.Point2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,7 +50,7 @@ public class DensityPlot extends BarLegendPlot {
           .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
       Rescale rescale = new Rescale(matrix);
       bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
-      scalableImage = new ScalableImage(bufferedImage, Image.SCALE_AREA_AVERAGING);
+      scalableImage = new ScalableImage(bufferedImage, AffineTransformOp.TYPE_BILINEAR);
       clip = rescale.clip();
     }
   }

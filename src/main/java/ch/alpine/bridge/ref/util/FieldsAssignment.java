@@ -2,13 +2,12 @@
 package ch.alpine.bridge.ref.util;
 
 import java.io.Serializable;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -18,6 +17,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Array;
+import ch.alpine.tensor.ext.Int;
 import ch.alpine.tensor.ext.Integers;
 
 /** OuterFieldsAssignment creates a complete, or randomized set of
@@ -34,8 +34,6 @@ import ch.alpine.tensor.ext.Integers;
  * The modifications occur on the given object.
  * The given object does not need to be an instance of {@link Serializable}. */
 public class FieldsAssignment {
-  protected static final RandomGenerator RANDOM_GENERATOR = new SecureRandom();
-
   /** @param object */
   public static FieldsAssignment of(Object object) {
     return new FieldsAssignment(object);
@@ -78,36 +76,36 @@ public class FieldsAssignment {
 
   private Object build(List<Integer> list) {
     Properties properties = new Properties();
-    AtomicInteger atomicInteger = new AtomicInteger();
+    Int i = new Int();
     for (String key : keys)
-      properties.put(key, map.get(key).get(list.get(atomicInteger.getAndIncrement())));
+      properties.put(key, map.get(key).get(list.get(i.getAndIncrement())));
     return ObjectProperties.set(object, properties);
   }
 
-  /** @param random
+  /** @param randomGenerator
    * @param limit of number of invocations
    * @return stream of given object, i.e. always the same instance */
-  public final Stream<Object> randomize(RandomGenerator random, int limit) {
+  public final Stream<Object> randomize(RandomGenerator randomGenerator, int limit) {
     Integers.requirePositiveOrZero(limit);
     return Scalars.lessEquals(total, RealScalar.of(limit)) && isGrid() //
         ? stream()
         : IntStream.range(0, limit) //
-            .mapToObj(i -> Integers.asList(Arrays.stream(array).map(random::nextInt).toArray())) //
-            .map(list -> build(list, random));
+            .mapToObj(_ -> Integers.asList(Arrays.stream(array).map(randomGenerator::nextInt).toArray())) //
+            .map(list -> build(list, randomGenerator));
   }
 
   /** @param limit
    * @return stream of given object, i.e. always the same instance */
   public final Stream<Object> randomize(int limit) {
-    return randomize(RANDOM_GENERATOR, limit);
+    return randomize(ThreadLocalRandom.current(), limit);
   }
 
-  private Object build(List<Integer> list, RandomGenerator random) {
+  private Object build(List<Integer> list, RandomGenerator randomGenerator) {
     Properties properties = new Properties();
-    AtomicInteger atomicInteger = new AtomicInteger();
+    Int i = new Int();
     for (String key : keys)
-      properties.put(key, map.get(key).get(list.get(atomicInteger.getAndIncrement())));
-    insert(properties, random);
+      properties.put(key, map.get(key).get(list.get(i.getAndIncrement())));
+    insert(properties, randomGenerator);
     return ObjectProperties.set(object, properties);
   }
 
@@ -117,8 +115,8 @@ public class FieldsAssignment {
    * to given properties
    * 
    * @param properties
-   * @param random */
-  protected void insert(Properties properties, RandomGenerator random) {
+   * @param randomGenerator */
+  protected void insert(Properties properties, RandomGenerator randomGenerator) {
     // ---
   }
 

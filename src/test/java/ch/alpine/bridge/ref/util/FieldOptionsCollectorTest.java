@@ -15,9 +15,9 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
-import ch.alpine.bridge.ref.ex.NameString;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import demo.NameString;
 
 class FieldOptionsCollectorTest {
   @ReflectionMarker
@@ -30,7 +30,7 @@ class FieldOptionsCollectorTest {
     Param param = new Param();
     List<NameString> list = new LinkedList<>();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(param);
-    fieldsAssignment.stream().forEach(i -> list.add(param.nameString));
+    fieldsAssignment.stream().forEach(_ -> list.add(param.nameString));
     assertEquals(list.size(), 3);
     assertEquals(list.stream().distinct().count(), 3);
   }
@@ -50,11 +50,11 @@ class FieldOptionsCollectorTest {
     Set<Scalar> set = new HashSet<>();
     DiscreteParam discreteParam = new DiscreteParam();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(discreteParam);
-    fieldsAssignment.stream().forEach(i -> set.add(discreteParam.integer()));
+    fieldsAssignment.stream().forEach(_ -> set.add(discreteParam.integer()));
     assertEquals(set.size(), 2);
     assertTrue(set.contains(RealScalar.of(-10)));
     assertTrue(set.contains(RealScalar.of(100)));
-    fieldsAssignment.randomize(20).forEach(i -> set.add(discreteParam.integer()));
+    fieldsAssignment.randomize(20).forEach(_ -> set.add(discreteParam.integer()));
     assertTrue(10 < set.size());
   }
 
@@ -63,7 +63,7 @@ class FieldOptionsCollectorTest {
     Set<Scalar> set = new HashSet<>();
     DiscreteParam discreteParam = new DiscreteParam();
     FieldsAssignment fieldsAssignment = FieldsAssignment.of(discreteParam);
-    fieldsAssignment.stream().forEach(i -> set.add(discreteParam.integer()));
+    fieldsAssignment.stream().forEach(_ -> set.add(discreteParam.integer()));
     assertEquals(set.size(), 2);
     assertTrue(set.contains(RealScalar.of(-10)));
     assertTrue(set.contains(RealScalar.of(100)));

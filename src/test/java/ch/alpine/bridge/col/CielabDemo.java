@@ -12,7 +12,7 @@ import ch.alpine.tensor.sca.Clips;
 
 public enum CielabDemo {
   ;
-  public static void main(String[] args) {
+  static void main() {
     Clip clip = Clips.unit();
     Tensor domain = Subdivide.increasing(clip, 50);
     Show show = new Show();

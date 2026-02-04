@@ -30,6 +30,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.chq.ExactScalarQ;
 import ch.alpine.tensor.ext.FileExtension;
+import ch.alpine.tensor.ext.Jpeg;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -40,6 +41,7 @@ import ch.alpine.tensor.sca.Round;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
 public class Show implements Serializable {
+  // FIXME BRIDGE zoom does not work indefinitely yet!
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
 
   /** @param fontSize for instance graphics.getFont().getSize()
@@ -73,6 +75,7 @@ public class Show implements Serializable {
    * passed via {@link #add(Showable)} */
   public Show(ColorDataIndexed colorDataIndexed) {
     this.colorDataIndexed = Objects.requireNonNull(colorDataIndexed);
+    // TODO BRIDGE use default font
   }
 
   /** uses Mathematica default color scheme */
@@ -106,7 +109,9 @@ public class Show implements Serializable {
         : StaticHelper.nonZero(cbb);
   }
 
-  /** @return may be null */
+  /** TODO current design is so that value is calculated only after drawing :-(
+   * 
+   * @return may be null */
   public CoordinateBoundingBox getCbb() {
     return cbb;
   }
@@ -140,6 +145,7 @@ public class Show implements Serializable {
    * @param aspectRatio exact scalar, for instance 1
    * @see ExactScalarQ */
   public void setAspectRatio(Scalar aspectRatio) {
+    // TODO BRIDGE throw exception if axis X and Y are not compatible unit etc.
     this.aspectRatio = ExactScalarQ.require(aspectRatio);
   }
 
@@ -218,11 +224,19 @@ public class Show implements Serializable {
     return bufferedImage;
   }
 
+  private static final float JPG_QUALITY = 0.98f;
+
   /** @param file
    * @param dimension of image
    * @throws IOException */
   public void export(File file, Dimension dimension) throws IOException {
-    ImageIO.write(image(dimension), FileExtension.of(file), file);
+    String string = FileExtension.of(file);
+    // FIXME BRIDGE image type should depend on file extension
+    BufferedImage bufferedImage = image(dimension);
+    switch (string) {
+    case "jpg", "jpeg" -> Jpeg.put(bufferedImage, file, JPG_QUALITY);
+    default -> ImageIO.write(bufferedImage, string, file);
+    }
   }
 
   // ---

@@ -24,7 +24,7 @@ public class ObjectFields {
     }
   }
 
-  private static enum Type {
+  private enum Type {
     /** a leaf is guaranteed to have an associated {@link FieldWrap}
      * 
      * {@link ObjectFieldVisitor#accept(String, FieldWrap, Object, Object)}
@@ -74,14 +74,14 @@ public class ObjectFields {
       for (Field field : list(object.getClass())) {
         String prefix = _prefix + field.getName();
         switch (classify(field)) {
-        case LEAF -> objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, StaticHelper.get(field, object));
+        case LEAF -> objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, new FieldValue(field).get(object));
         case NODE -> {
           objectFieldVisitor.push(prefix, field, null);
-          visit(prefix + ".", StaticHelper.get(field, object));
+          visit(prefix + ".", new FieldValue(field).get(object));
           objectFieldVisitor.pop();
         }
-        case HOST -> iterate(prefix, field, List.of((Object[]) StaticHelper.get(field, object)));
-        case LIST -> iterate(prefix, field, (List<?>) StaticHelper.get(field, object));
+        case HOST -> iterate(prefix, field, List.of((Object[]) new FieldValue(field).get(object)));
+        case LIST -> iterate(prefix, field, (List<?>) new FieldValue(field).get(object));
         default -> {
           // skip
         }

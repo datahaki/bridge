@@ -82,7 +82,7 @@ public class RangeSlider extends JSlider {
   }
 
   public void printValues() {
-    System.out.println(getValue() + " - " + getUpperValue());
+    IO.println(getValue() + " - " + getUpperValue());
   }
 
   public boolean mousePressed() {

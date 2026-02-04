@@ -34,7 +34,7 @@ public class MultiTsPlot extends BaseShowable {
   /** @param timeSeries
    * @return */
   public static Showable of(TimeSeries timeSeries) {
-    return of(timeSeries, TensorUnaryOperator.IDENTITY);
+    return of(timeSeries, t -> t);
   }
 
   // ---
@@ -59,7 +59,7 @@ public class MultiTsPlot extends BaseShowable {
         clip = StaticHelper.extend(timeSeries, clip);
         ScalarTensorFunction suo = x -> tuo.apply(timeSeries.evaluate(x));
         Tensor v0 = suo.apply(clip.min());
-        List<Path2D.Double> list = Stream.generate(() -> new Path2D.Double()).limit(v0.length()).toList();
+        List<Path2D.Double> list = Stream.generate(Path2D.Double::new).limit(v0.length()).toList();
         double x0 = showableConfig.x_pos(clip.min());
         for (int i = 0; i < v0.length(); ++i)
           list.get(i).moveTo(x0, showableConfig.y_pos(v0.Get(i)));

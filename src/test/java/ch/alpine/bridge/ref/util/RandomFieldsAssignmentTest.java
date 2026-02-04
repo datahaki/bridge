@@ -15,10 +15,10 @@ import java.util.random.RandomGenerator;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
-import ch.alpine.bridge.ref.ex.ColorParam;
-import ch.alpine.bridge.ref.ex.FieldOuterParam;
-import ch.alpine.bridge.ref.ex.FieldOuterParam.NestedParam;
 import ch.alpine.tensor.Scalar;
+import demo.ColorParam;
+import demo.FieldOuterParam;
+import demo.FieldOuterParam.NestedParam;
 
 class RandomFieldsAssignmentTest {
   @ReflectionMarker
@@ -35,7 +35,7 @@ class RandomFieldsAssignmentTest {
     Holder holder = new Holder(new ColorParam(), new ColorParam());
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder);
-    fieldsAssignment.stream().forEach(i -> atomicInteger.getAndIncrement());
+    fieldsAssignment.stream().forEach(_ -> atomicInteger.getAndIncrement());
     assertEquals(atomicInteger.get(), 1);
   }
 
@@ -44,7 +44,7 @@ class RandomFieldsAssignmentTest {
     Holder holder = new Holder();
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder);
-    fieldsAssignment.stream().forEach(i -> atomicInteger.getAndIncrement());
+    fieldsAssignment.stream().forEach(_ -> atomicInteger.getAndIncrement());
     assertEquals(atomicInteger.get(), 1);
   }
 
@@ -53,7 +53,7 @@ class RandomFieldsAssignmentTest {
     Holder holder = new Holder();
     AtomicInteger atomicInteger = new AtomicInteger();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(holder);
-    fieldsAssignment.randomize(10).forEach(i -> atomicInteger.getAndIncrement());
+    fieldsAssignment.randomize(10).forEach(_ -> atomicInteger.getAndIncrement());
     assertEquals(atomicInteger.get(), 1);
   }
 
@@ -63,7 +63,7 @@ class RandomFieldsAssignmentTest {
     FieldOuterParam fieldOuterParam = new FieldOuterParam();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(fieldOuterParam);
     assertEquals(set.size(), 0);
-    fieldsAssignment.randomize(300).forEach(i -> set.add(fieldOuterParam.ratio));
+    fieldsAssignment.randomize(300).forEach(_ -> set.add(fieldOuterParam.ratio));
     assertTrue(100 < set.size());
   }
 
@@ -73,9 +73,9 @@ class RandomFieldsAssignmentTest {
     NestedParam nestedParam = new NestedParam();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(nestedParam);
     assertEquals(atomicInteger.get(), 0);
-    fieldsAssignment.randomize(2).forEach(i -> atomicInteger.getAndIncrement());
+    fieldsAssignment.randomize(2).forEach(_ -> atomicInteger.getAndIncrement());
     assertEquals(atomicInteger.get(), 2);
-    fieldsAssignment.randomize(10).forEach(i -> atomicInteger.getAndIncrement());
+    fieldsAssignment.randomize(10).forEach(_ -> atomicInteger.getAndIncrement());
     assertEquals(atomicInteger.get(), 2 + 4);
   }
 
@@ -92,12 +92,12 @@ class RandomFieldsAssignmentTest {
     assertEquals(set_color.size(), 0);
     assertEquals(set_time.size(), 0);
     int n = 20;
-    RandomGenerator random = new Random(3);
-    fieldsAssignment.randomize(random, n).forEach(i -> runnable.run());
+    RandomGenerator randomGenerator = new Random(3);
+    fieldsAssignment.randomize(randomGenerator, n).forEach(_ -> runnable.run());
     assertEquals(set_color.size(), n);
     assertEquals(set_time.size(), n);
-    random = new Random(3);
-    fieldsAssignment.randomize(random, n).forEach(i -> runnable.run());
+    randomGenerator = new Random(3);
+    fieldsAssignment.randomize(randomGenerator, n).forEach(_ -> runnable.run());
     assertEquals(set_color.size(), n);
     assertEquals(set_time.size(), n);
   }

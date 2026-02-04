@@ -8,7 +8,6 @@ import java.awt.Stroke;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import ch.alpine.bridge.lang.Unicode;
@@ -24,6 +23,7 @@ import ch.alpine.tensor.chq.IntegerQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityUnit;
+import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.red.MinMax;
 import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
@@ -37,9 +37,6 @@ import ch.alpine.tensor.tmp.TsEntry;
 
 /* package */ enum StaticHelper {
   ;
-  public static final UnaryOperator<Clip> TRANSLATION = Clips.translation(RationalScalar.HALF.negate());
-
-  // ---
   /** @param vector
    * @return null if given vector does not contain finite scalars */
   public static Clip minMax(Tensor vector) {
@@ -61,7 +58,9 @@ import ch.alpine.tensor.tmp.TsEntry;
   public static final int GAP = 5;
 
   private static Scalar delta(Scalar scalar) {
-    return Quantity.of(scalar.one(), QuantityUnit.of(scalar.zero()));
+    // invoking scalar.zero() is needed when scalar is instance of DateTime
+    Unit unit = QuantityUnit.of(scalar.zero());
+    return Quantity.of(scalar.one(), unit);
   }
 
   public static Clip nonZero(Clip clip) {

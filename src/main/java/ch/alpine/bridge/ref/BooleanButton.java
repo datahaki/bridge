@@ -14,7 +14,7 @@ import javax.swing.JPanel;
   public BooleanButton(FieldWrap fieldWrap, String text) {
     super(fieldWrap);
     JButton jButton = new JButton(text);
-    jButton.addActionListener(event -> notifyListeners(BooleanParser.TRUE));
+    jButton.addActionListener(_ -> notifyListeners(BooleanParser.TRUE));
     jPanel.add(BorderLayout.WEST, jButton);
   }
 

@@ -18,8 +18,8 @@ import ch.alpine.tensor.sca.Sign;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Plot.html">Plot</a> */
 public class Plot extends BaseShowable {
-  private static final int RESOLUTION = 20;
-  private static final int ALPHA = 64;
+  private static final int RESOLUTION = 40;
+  private static final int FILL_ALPHA = 64;
 
   /** @param suo
    * @param domain
@@ -65,6 +65,7 @@ public class Plot extends BaseShowable {
           final double x0 = showableConfig.x_pos(x_clip.min());
           final double x1 = showableConfig.x_pos(x_clip.max());
           Path2D.Double path = new Path2D.Double();
+          // TODO there is several interpolations concat here, also: enhance precision?
           path.moveTo(x0, showableConfig.y_pos(suo.apply(x_clip.min())));
           ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
           final int size = (int) ((x1 - x0) * segmentsPerPixel);
@@ -78,7 +79,7 @@ public class Plot extends BaseShowable {
           if (fill) {
             path.lineTo(x1, showableConfig.y_pos(suo.apply(x_clip.max()).zero()));
             path.lineTo(x0, showableConfig.y_pos(suo.apply(x_clip.min()).zero()));
-            graphics.setColor(StaticHelper.withAlpha(getColor(), ALPHA));
+            graphics.setColor(StaticHelper.withAlpha(getColor(), FILL_ALPHA));
             graphics.fill(path);
           }
         }

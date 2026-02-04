@@ -12,6 +12,7 @@ public class ShortStackTrace {
   }
 
   public void print(Exception exception) {
+    // TODO BRIDGE use stackwalker
     StackTraceElement[] stackTraceElements = exception.getStackTrace();
     for (StackTraceElement stackTraceElement : stackTraceElements) {
       String className = stackTraceElement.getClassName();

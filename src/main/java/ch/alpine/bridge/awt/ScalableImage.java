@@ -8,6 +8,8 @@ import java.util.Objects;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Cache;
+import ch.alpine.tensor.img.ImageResize;
+import ch.alpine.tensor.sca.Round;
 
 /** caches one scaled instance of a given BufferedImage so that repeated
  * computations for a specific width/height pair are skipped
@@ -18,13 +20,13 @@ import ch.alpine.tensor.ext.Cache;
 public class ScalableImage {
   private final Cache<Tensor, Image> cache = Cache.of(this::compute, 1);
   private final BufferedImage bufferedImage;
-  private final int hints;
+  private final int interpolationType;
 
   /** @param bufferedImage
    * @param hints typically Image.SCALE_SMOOTH, or Image.SCALE_AREA_AVERAGING */
-  public ScalableImage(BufferedImage bufferedImage, int hints) {
+  public ScalableImage(BufferedImage bufferedImage, int interpolationType) {
     this.bufferedImage = Objects.requireNonNull(bufferedImage);
-    this.hints = hints;
+    this.interpolationType = interpolationType;
   }
 
   /** @param width
@@ -37,8 +39,8 @@ public class ScalableImage {
   }
 
   private Image compute(Tensor wh) {
-    int w = wh.Get(0).number().intValue();
-    int h = wh.Get(1).number().intValue();
-    return bufferedImage.getScaledInstance(w, h, hints);
+    int w = Round.intValueExact(wh.Get(0));
+    int h = Round.intValueExact(wh.Get(1));
+    return ImageResize.of(bufferedImage, w, h, interpolationType);
   }
 }

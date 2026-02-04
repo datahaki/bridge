@@ -75,17 +75,17 @@ public class FileBlock {
       if (Objects.nonNull(fileLock))
         fileLock.release();
     } catch (Exception exception) {
-      System.out.println("FileLock (ignore!): " + exception);
+      IO.println("FileLock (ignore!): " + exception);
     }
     try {
       fileChannel.close();
     } catch (Exception exception) {
-      System.out.println("FileChannel (ignore!): " + exception);
+      IO.println("FileChannel (ignore!): " + exception);
     }
     try {
       randomAccessFile.close();
     } catch (Exception exception) {
-      System.out.println("RandomAccessFile (ignore!): " + exception);
+      IO.println("RandomAccessFile (ignore!): " + exception);
     }
   }
 

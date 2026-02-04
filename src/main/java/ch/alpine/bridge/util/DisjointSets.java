@@ -22,7 +22,7 @@ public class DisjointSets {
    * @return */
   public static DisjointSets allocate(int initialSize) {
     DisjointSets disjointSets = new DisjointSets();
-    IntStream.range(0, initialSize).forEach(i -> disjointSets.add());
+    IntStream.range(0, initialSize).forEach(_ -> disjointSets.add());
     return disjointSets;
   }
 
@@ -75,7 +75,7 @@ public class DisjointSets {
         .map(this::key) //
         .boxed() //
         .distinct() //
-        .collect(Collectors.toMap(Function.identity(), key -> supplier.get()));
+        .collect(Collectors.toMap(Function.identity(), _ -> supplier.get()));
   }
 
   // ---

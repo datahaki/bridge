@@ -29,7 +29,7 @@ public enum Unicode {
     if (scalar instanceof Quantity quantity)
       return valueOf(quantity.value()) + SPACE + valueOf(quantity.unit());
     if (scalar instanceof DoubleScalar doubleScalar) {
-      String string = scalar.toString();
+      String string = doubleScalar.toString();
       int index = string.indexOf('.');
       return 0 <= index //
           ? valueOf(new BigInteger(string.substring(0, index))) + string.substring(index)

@@ -1,8 +1,10 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Optional;
 
@@ -51,12 +53,21 @@ public class ListPlot extends BaseShowable {
     this.radius = radius;
   }
 
+  public boolean filling = false;
+
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     if (0 < points.length()) {
       graphics.setColor(getColor());
+      // TODO BRIDGE
+      Point2D zero = filling ? showableConfig.toPoint2D(points.get(0).map(Scalar::zero)) : null;
       for (Tensor row : points) {
         Point2D point2d = showableConfig.toPoint2D(row);
+        if (filling) {
+          graphics.setStroke(new BasicStroke(2));
+          graphics.draw(new Line2D.Double(point2d.getX(), zero.getY(), point2d.getX(), point2d.getY()));
+        }
+        graphics.setStroke(new BasicStroke());
         graphics.fill(new Ellipse2D.Double(point2d.getX() - radius, point2d.getY() - radius, 2 * radius, 2 * radius));
         // below: diamond <>
         // Path2D.Double path = new Path2D.Double();

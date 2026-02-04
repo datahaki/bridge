@@ -83,7 +83,7 @@ public class FieldClips implements Predicate<Scalar> {
 
   public int indexOf(Scalar scalar, int resolution) {
     Scalar rescale = clip.rescale(convert.apply(scalar));
-    return Round.FUNCTION.apply(rescale.multiply(RealScalar.of(resolution))).number().intValue();
+    return Round.intValueExact(rescale.multiply(RealScalar.of(resolution)));
   }
 
   /** @return

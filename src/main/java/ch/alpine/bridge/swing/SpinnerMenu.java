@@ -73,7 +73,7 @@ public class SpinnerMenu<T> {
         setBackgroundHighlight(jMenuItem);
         jMenuItem.setOpaque(true); // several l&f require opaque, otherwise background will not be drawn
       } else
-        jMenuItem.addActionListener(actionEvent -> spinnerListeners_spun(value));
+        jMenuItem.addActionListener(_ -> spinnerListeners_spun(value));
       FieldsEditorParam.GLOBAL.minSize(jMenuItem);
       jPopupMenu.add(jMenuItem);
       map.put(value, jMenuItem);

@@ -2,6 +2,7 @@
 package ch.alpine.bridge.wdog;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -32,5 +33,11 @@ class HardWatchdogTest {
     Thread.sleep(70);
     watchdog.notifyWatchdog();
     assertTrue(watchdog.isBarking());
+  }
+
+  @Test
+  void testFail() {
+    assertThrows(Exception.class, () -> HardWatchdog.notified(Quantity.of(1e100, "ns")));
+    assertThrows(Exception.class, () -> HardWatchdog.notified(Quantity.of(1e200, "s")));
   }
 }

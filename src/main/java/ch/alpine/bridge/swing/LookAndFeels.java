@@ -62,7 +62,7 @@ public enum LookAndFeels {
   }
 
   @PackageTestAccess
-  /* package */ static List<LookAndFeels> standard() {
+  static List<LookAndFeels> standard() {
     return List.of(DEFAULT, DARK, LIGHT, CDE_MOTIF, DRACULA, INTELLI_J);
   }
 }

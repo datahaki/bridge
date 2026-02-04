@@ -43,7 +43,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
       public void mouseClicked(MouseEvent mouseEvent) {
         if (Objects.nonNull(showableConfig)) {
           Optional<Tensor> optional = showableConfig.toValue(mouseEvent.getPoint());
-          optional.ifPresent(System.out::println);
+          optional.ifPresent(IO::println);
           // if (optional.isPresent()) {
           // System.out.println(optional);
           // }

@@ -5,9 +5,15 @@ import java.util.function.Consumer;
 
 public enum Consumers {
   ;
-  public static final <T> Consumer<T> empty() {
-    return s -> {
+  public static <T> Consumer<T> empty() {
+    return _ -> {
       // ---
     };
   }
+  //
+  // public static <T> Consumer<T> evoke(Runnable runnable) {
+  // return _ -> {
+  // runnable.run();
+  // };
+  // }
 }

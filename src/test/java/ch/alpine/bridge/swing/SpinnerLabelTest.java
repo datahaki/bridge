@@ -8,9 +8,9 @@ import javax.swing.JLabel;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.ref.ex.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.mat.re.Pivots;
+import demo.GuiExtension;
 
 class SpinnerLabelTest {
   @Test

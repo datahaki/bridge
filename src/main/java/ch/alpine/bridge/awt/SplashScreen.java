@@ -33,7 +33,7 @@ public enum SplashScreen {
     };
     jComponent.setPreferredSize(dimension);
     jDialog.setContentPane(jComponent);
-    jComponent.addMouseListener(new LazyMouse(mouseEvent -> jDialog.dispose()));
+    jComponent.addMouseListener(new LazyMouse(_ -> jDialog.dispose()));
     jDialog.setSize(dimension);
     jDialog.setAlwaysOnTop(true);
     jDialog.setLocationRelativeTo(null);

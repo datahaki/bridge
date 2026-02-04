@@ -45,7 +45,7 @@ public abstract class LocalDateTimeDialog extends DialogBase<LocalDateTime> {
   @Override
   public void decorate(JToolBar jToolBar) {
     JButton jButton = new JButton("Now");
-    jButton.addActionListener(actionEvent -> {
+    jButton.addActionListener(_ -> {
       localDateTimeParam.set(LocalDateTime.now());
       panelFieldsEditor.updateJComponents();
       panelFieldsEditor.notifyUniversalListeners();

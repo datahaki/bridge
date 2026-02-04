@@ -17,6 +17,7 @@ import javax.swing.undo.UndoManager;
 import ch.alpine.bridge.swing.UIManagerColor;
 
 /* package */ abstract class StringPanel extends FieldPanel {
+  protected static final String BUTTON_SEEK = "?";
   private static final int MASK = InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK;
   private static final int UNDO = InputEvent.CTRL_DOWN_MASK;
   private static final int REDO = MASK;
@@ -33,7 +34,7 @@ import ch.alpine.bridge.swing.UIManagerColor;
     UndoManager undoManager = new UndoManager();
     jTextField.getDocument().addUndoableEditListener(undoManager);
     FieldsEditorParam.GLOBAL.setFont(jTextField);
-    jTextField.addActionListener(l -> nofifyIfValid(jTextField.getText()));
+    jTextField.addActionListener(_ -> nofifyIfValid(jTextField.getText()));
     jTextField.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent keyEvent) {
