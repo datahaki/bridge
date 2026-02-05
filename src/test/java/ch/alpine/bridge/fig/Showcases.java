@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.image.BufferedImage;
 
+import ch.alpine.bridge.lang.ShowProvider;
 import ch.alpine.tensor.ComplexScalar;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
@@ -78,12 +79,12 @@ import ch.alpine.tensor.sca.win.WindowFunctions;
 import ch.alpine.tensor.tmp.ResamplingMethod;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
-import test.demo.CepstrogramDemo;
+import showcase.demo.CepstrogramDemo;
 
-public enum Showcases {
+public enum Showcases implements ShowProvider {
   ListLinePlot0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Tensor rgba = ColorDataGradients.ALPINE.queryTableRgba().orElseThrow();
       // System.out.println(Dimensions.of(rgba));
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
@@ -97,7 +98,7 @@ public enum Showcases {
   },
   ListLinePlot1 {
     @Override
-    public Show create() {
+    public Show getShow() {
       ColorDataGradient f = ColorDataGradients.CLASSIC;
       Clip clip = Clips.unit();
       Show show = new Show(ColorDataLists._109.strict()); // use RGB for line color
@@ -110,7 +111,7 @@ public enum Showcases {
   },
   DEMO3 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show(ColorDataLists._098.strict());
       show.setPlotLabel("Cosine");
       ScalarUnaryOperator suo = QuantityMagnitude.SI().in("rad");
@@ -122,7 +123,7 @@ public enum Showcases {
   },
   DEMO4 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.add(ListLinePlot.of(Tensors.fromString("{{2[m],3[s]}, {3[m],0[s]}, {4[m],3[s]}, {5[m],1[s]}}"))).setLabel("first");
       show.add(ListLinePlot.of(Tensors.fromString("{{3[m],2[s]}, {4[m],2.5[s]}, {5[m],2[s]}}"))).setLabel("second");
@@ -131,7 +132,7 @@ public enum Showcases {
   },
   Demo5 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("With Infinity");
       Tensor points = Tensors.fromString("{{0,0}, {0.2, Infinity}, {0.3, 0.3}}");
@@ -142,7 +143,7 @@ public enum Showcases {
   },
   WindowFunctions0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       WindowFunctions[] smoothingKernels = new WindowFunctions[] { //
           WindowFunctions.GAUSSIAN, //
           WindowFunctions.HAMMING, //
@@ -160,7 +161,7 @@ public enum Showcases {
   },
   WaveFunctions0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Wave Functions");
       ScalarUnaryOperator[] suos = { //
@@ -174,7 +175,7 @@ public enum Showcases {
   },
   SVD0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Tensor matrix = HilbertMatrix.of(40);
       Show show = new Show();
       Tensor values = SingularValueList.of(matrix);
@@ -186,7 +187,7 @@ public enum Showcases {
   },
   DISTR1 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Distribution distribution = TrapezoidalDistribution.of(0.5, 1.5, 1.5, 2.5);
       PDF pdf = PDF.of(distribution);
       CDF cdf = CDF.of(distribution);
@@ -205,7 +206,7 @@ public enum Showcases {
   },
   TruncatedDistribution0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Distribution original = NormalDistribution.standard();
       Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 1.5));
       PDF pdf = PDF.of(distribution);
@@ -222,7 +223,7 @@ public enum Showcases {
   },
   DISTR4 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Distribution original = NormalDistribution.standard();
       Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 2.5));
       InverseCDF inverseCDF = InverseCDF.of(distribution);
@@ -234,7 +235,7 @@ public enum Showcases {
   },
   DISTR5 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Distribution dist1 = NormalDistribution.of(2, 0.5);
       Distribution dist2 = TriangularDistribution.with(2, 0.5);
       Clip clip = Clips.interval(-3 + 2, 3 + 2);
@@ -248,7 +249,7 @@ public enum Showcases {
   },
   DISTR6 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Distribution dist1 = NormalDistribution.of(2, 1.2);
       Distribution dist2 = TrapezoidalDistribution.with(2, 1.2, 2.4);
       Clip clip = Clips.interval(-3 + 2, 3 + 2);
@@ -263,7 +264,7 @@ public enum Showcases {
   },
   TimeSeries_DT {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
       show.setPlotLabel("Time Series");
       TimeSeries timeSeries = TimeSeries.empty(ResamplingMethod.HOLD_VALUE_FROM_LEFT);
@@ -276,7 +277,7 @@ public enum Showcases {
   },
   TS_WP1 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show(ColorDataLists._058.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process with Integral");
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.of(3, 1));
@@ -293,7 +294,7 @@ public enum Showcases {
   },
   TS_WP2 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Scalar mu = Quantity.of(1, "m*s^-1");
       Scalar sigma = Quantity.of(0.2, "m*s^-1/2");
       RandomProcess randomProcess = WienerProcess.of(mu, sigma);
@@ -307,7 +308,7 @@ public enum Showcases {
   },
   TS_PP0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       RandomProcess randomProcess = PoissonProcess.of(Quantity.of(3.4, "s^-1"));
       RandomFunction randomFunction = RandomFunction.of(randomProcess);
       Show show = new Show(ColorDataLists._003.strict().deriveWithAlpha(192));
@@ -318,7 +319,7 @@ public enum Showcases {
   },
   POLY0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       int max = 6;
       Tensor domain = Subdivide.of(-1., 1., 30);
       Show show = new Show();
@@ -333,7 +334,7 @@ public enum Showcases {
   },
   POLY1 {
     @Override
-    public Show create() {
+    public Show getShow() {
       int max = 6;
       Show show = new Show();
       show.setPlotLabel("Chebyshev Polynomials T");
@@ -344,7 +345,7 @@ public enum Showcases {
   },
   POLY2 {
     @Override
-    public Show create() {
+    public Show getShow() {
       int max = 6;
       Show show = new Show();
       show.setPlotLabel("Chebyshev Polynomials U");
@@ -355,7 +356,7 @@ public enum Showcases {
   },
   POLY3 {
     @Override
-    public Show create() {
+    public Show getShow() {
       int n = 7 + 7;
       ScalarUnaryOperator suo = x -> Sin.FUNCTION.apply(x.multiply(x).negate().add(x));
       Tensor domain = Subdivide.of(-1, 1, 100);
@@ -373,7 +374,7 @@ public enum Showcases {
   },
   LP_NOT_JOINED {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
       show.setPlotLabel(ListPlot.class.getSimpleName());
       Distribution distribution = UniformDistribution.unit();
@@ -388,7 +389,7 @@ public enum Showcases {
   },
   EMPTY_NO_DATA {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Unnamed");
       return show;
@@ -396,7 +397,7 @@ public enum Showcases {
   },
   EMPTY_WITH_VIEW {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Unnamed");
       show.setCbb(CoordinateBoundingBox.of( //
@@ -407,7 +408,7 @@ public enum Showcases {
   },
   PERIODOGRAM {
     @Override
-    public Show create() {
+    public Show getShow() {
       Scalar f0 = Pi.TWO.multiply(RealScalar.of(697));
       Scalar f1 = Pi.TWO.multiply(RealScalar.of(1209));
       ScalarUnaryOperator suo = t -> Sin.FUNCTION.apply(f0.multiply(t)).add(Sin.FUNCTION.apply(f1.multiply(t)));
@@ -422,7 +423,7 @@ public enum Showcases {
   },
   LP_ZERO_HEIGHT {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("FlatlineX");
       show.add(ListPlot.of(Tensors.fromString("{{0,1}, {10,1}}")));
@@ -431,7 +432,7 @@ public enum Showcases {
   },
   LP_ZERO_WIDTH {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("FlatlineY");
       show.add(ListPlot.of(Tensors.fromString("{{0,1}, {0,10}}")));
@@ -440,7 +441,7 @@ public enum Showcases {
   },
   LP_ZERO_HEIGHT_UNIT {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("FlatlineX Quantity");
       show.add(ListPlot.of(Tensors.fromString("{{0[m],1[s]}, {10[m],1[s]}}")));
@@ -449,7 +450,7 @@ public enum Showcases {
   },
   LP_ZERO_WIDTH_UNIT {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("FlatlineY Quantity");
       show.add(ListPlot.of(Tensors.fromString("{{0[m],1[s]}, {0[m],10[s]}}")));
@@ -458,7 +459,7 @@ public enum Showcases {
   },
   Filling1 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
       show.setPlotLabel("Sine");
       show.add(Plot.filling(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2))).setLabel("sine");
@@ -467,7 +468,7 @@ public enum Showcases {
   },
   Filling2 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Gamma Distributions");
       show.add(Plot.filling(PDF.of(GammaDistribution.of(1, 2))::at, Clips.positive(20))).setLabel("alpha = 1");
@@ -478,7 +479,7 @@ public enum Showcases {
   },
   Ts_WP3 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Scalar mu = Quantity.of(0.3, "m*s^-1");
       Scalar sigma = Quantity.of(1, "m*s^-1/2");
       Scalar t_zero = DateTime.of(2020, 3, 4, 22, 15);
@@ -496,7 +497,7 @@ public enum Showcases {
   },
   Candlestick {
     @Override
-    public Show create() {
+    public Show getShow() {
       Scalar mu = Quantity.of(-0.3e-10, "m*s^-1");
       Scalar sigma = Quantity.of(1e-3, "m*s^-1/2");
       Scalar t_zero = DateTime.of(2000, 3, 4, 22, 15);
@@ -515,7 +516,7 @@ public enum Showcases {
   },
   ReImPlot0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show(ColorDataLists._097.strict());
       show.setPlotLabel("ReImPlot");
       Clip clip = Clips.absolute(4);
@@ -526,7 +527,7 @@ public enum Showcases {
   },
   SpectrogramLin {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
       show.add(SpectrogramDemo.createLin(0, 1.6));
@@ -535,7 +536,7 @@ public enum Showcases {
   },
   SpectrogramQud {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
       show.add(SpectrogramDemo.createQud(0, 1.6));
@@ -544,7 +545,7 @@ public enum Showcases {
   },
   SpectrogramExp {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
       show.add(SpectrogramDemo.createExp(0, 1.6));
@@ -553,7 +554,7 @@ public enum Showcases {
   },
   DensityPlot0(true) {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Density Plot");
       ScalarBinaryOperator sbo = (x, y) -> x.multiply(y);
@@ -563,7 +564,7 @@ public enum Showcases {
   },
   DensityPlot1(true) {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Density Plot");
       ScalarBinaryOperator sbo = (x, y) -> Im.FUNCTION.apply(Sqrt.FUNCTION.apply(Power.of(ComplexScalar.of(x, y), 3)));
@@ -574,7 +575,7 @@ public enum Showcases {
   },
   MatrixPlot0(true) {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Matrix Plot");
       show.add(MatrixPlot.of(Tensors.fromString("{{1, 2, 1}, {3, 0, 1}, {0, 0, -1}}")));
@@ -583,7 +584,7 @@ public enum Showcases {
   },
   MatrixPlot1(true) {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Matrix Plot");
       Tensor matrix = Import.of("/ch/alpine/bridge/fig/hb_west0381.csv");
@@ -594,7 +595,7 @@ public enum Showcases {
   },
   MatrixPlot2(true) {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Chebyshev Nodes");
       Tensor matrix = ChebyshevNodes._1.matrix(64);
@@ -604,7 +605,7 @@ public enum Showcases {
   },
   DiscretePlot0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Discrete Plot");
       show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(20, 0.3))::at, Clips.positive(20))).setLabel("0.3");
@@ -614,7 +615,7 @@ public enum Showcases {
   },
   DiscretePlot1 {
     @Override
-    public Show create() {
+    public Show getShow() {
       int n = 50;
       Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
       PDF pdf = PDF.of(distribution);
@@ -629,7 +630,7 @@ public enum Showcases {
   },
   DiscretePlot2 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Distribution original = PoissonDistribution.of(7);
       Distribution distribution = TruncatedDistribution.of(original, Clips.interval(5, 10));
       PDF pdf = PDF.of(distribution);
@@ -646,7 +647,7 @@ public enum Showcases {
   },
   ImagePlot1 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Image Plot");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
@@ -656,7 +657,7 @@ public enum Showcases {
   },
   DateTimeY {
     @Override
-    public Show create() {
+    public Show getShow() {
       Distribution distribution = UniformDistribution.of( //
           DateTime.of(1980, 3, 7, 12, 45), //
           DateTime.of(1981, 3, 7, 12, 45));
@@ -669,7 +670,7 @@ public enum Showcases {
   },
   MultiTsPlot0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       TimeSeries timeSeries = TimeSeries.empty(ResamplingMethod.HOLD_VALUE_FROM_LEFT);
       Distribution dX = UniformDistribution.of( //
           DateTime.of(1980, 3, 7, 12, 45), //
@@ -686,7 +687,7 @@ public enum Showcases {
   },
   MatrixPlotDT(true) {
     @Override
-    public Show create() {
+    public Show getShow() {
       Distribution dX = UniformDistribution.of( //
           DateTime.of(1980, 3, 7, 12, 45), //
           DateTime.of(1980, 5, 7, 12, 45));
@@ -699,7 +700,7 @@ public enum Showcases {
   },
   MatrixPlotNonSym(true) {
     @Override
-    public Show create() {
+    public Show getShow() {
       Distribution dX = DiscreteUniformDistribution.of(100, 111);
       Tensor matrix = RandomVariate.of(dX, 10, 20);
       Show show = new Show();
@@ -710,7 +711,7 @@ public enum Showcases {
   },
   MitchellNet0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
       show.setPlotLabel("MitchellNetravaliKernel");
       show.add(Plot.of(MitchellNetravaliKernel.standard(), Clips.absolute(2))).setLabel("1/3_1/3");
@@ -721,7 +722,7 @@ public enum Showcases {
   },
   ParametricPlot0 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("ParametricPlot");
       show.add(ParametricPlot.of(s -> Tensors.of( //
@@ -733,7 +734,7 @@ public enum Showcases {
   },
   ArrayPlot0(true) {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Array Plot");
       show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
@@ -743,7 +744,7 @@ public enum Showcases {
   },
   Softplus1 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
       show.setPlotLabel("Ramps");
       Clip clip = Clips.absolute(5);
@@ -758,7 +759,7 @@ public enum Showcases {
   },
   Cepstrogram0Re {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Cepstrogram");
       show.add(CepstrogramDemo.create(CepstrogramArray.Real));
@@ -767,7 +768,7 @@ public enum Showcases {
   },
   Cepstrogram0Pwr {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Cepstrogram");
       show.add(CepstrogramDemo.create(CepstrogramArray.Power));
@@ -776,7 +777,7 @@ public enum Showcases {
   },
   ImagePlot2 {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Image Plot With Units");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
@@ -790,7 +791,7 @@ public enum Showcases {
   },
   LanczosKernel {
     @Override
-    public Show create() {
+    public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("LanczosKernel");
       Tensor tensor = Tensors.fromString("{{0,0,0,0}, {0,1,2,0}, {0,0,-1,0}, {0,0,0,0}, {0,0,0,0}}");
@@ -814,6 +815,4 @@ public enum Showcases {
   private Showcases(boolean extra) {
     this.extra = extra;
   }
-
-  public abstract Show create();
 }

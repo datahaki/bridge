@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-import test.data.SimpleParam;
+import showcase.data.SimpleParam;
 
 class ObjectFieldsTest {
   @Test

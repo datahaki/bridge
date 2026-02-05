@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.mat.re.Pivots;
-import test.data.GuiExtension;
+import showcase.data.GuiExtension;
 
 class SpinnerLabelTest {
   @Test

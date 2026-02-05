@@ -20,16 +20,10 @@ public enum ReflectionMarkers {
       expected(fieldWrap.getField().getDeclaringClass());
     }
   };
-  private boolean debugPrint = false;
+  public final ThreadLocal<Boolean> DEBUG_PRINT = ThreadLocal.withInitial(() -> false);
 
   ReflectionMarkers() {
     checked.add(Object.class);
-  }
-
-  /** permanently set global flag to print out debug information
-   * on reflection marker checks */
-  public void enableDebugPrint() {
-    debugPrint = true;
   }
 
   /** function checks if class of given object has been analyzed
@@ -54,7 +48,7 @@ public enum ReflectionMarkers {
       // careful: the if statement modifies the set `missing`
       if (Objects.isNull(reflectionMarker) && //
           missing.add(cls) && //
-          debugPrint)
+          DEBUG_PRINT.get())
         System.err.println("hint: use @ReflectionMarker on " + cls);
     }
   }

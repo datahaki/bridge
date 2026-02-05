@@ -22,7 +22,7 @@ enum Showcase {
     set.add(Showcases.TruncatedDistribution0);
     set.add(Showcases.MatrixPlot1);
     for (Showcases showDemos : set) {
-      Show show = showDemos.create();
+      Show show = showDemos.getShow();
       show.export(new File(folder, showDemos.name() + ".png"), new Dimension(480, 240));
     }
   }

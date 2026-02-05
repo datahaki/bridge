@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.lang.ClassDiscovery;
 import ch.alpine.bridge.lang.ClassPaths;
-import test.data.FieldClipT;
+import showcase.data.FieldClipT;
 
 class ClassFieldCheckTest {
   @Test

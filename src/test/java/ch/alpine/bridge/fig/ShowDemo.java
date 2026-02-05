@@ -65,7 +65,7 @@ public class ShowDemo implements Runnable {
         Rectangle rectangle = Show.defaultInsets(new Dimension(width, height), 12);
         if (showDemos.extra)
           rectangle.width -= 100;
-        Show show = showDemos.create();
+        Show show = showDemos.getShow();
         Objects.requireNonNull(show);
         BufferedImage bufferedImage = show.image(new Dimension(width, height), rectangle);
         Graphics2D graphics = bufferedImage.createGraphics();

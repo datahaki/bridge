@@ -39,7 +39,7 @@ public enum SpectrogramDemo {
 
   static void main() {
     double lo = 0.0;
-    Show show1 = Showcases.SpectrogramQud.create();
+    Show show1 = Showcases.SpectrogramQud.getShow();
     ScalarUnaryOperator linear = ChirpFunctions.linear(RealScalar.of(400), RealScalar.of(2800));
     linear = linear.andThen(Quantity.of(1, "m")::multiply);
     Show show = new Show();

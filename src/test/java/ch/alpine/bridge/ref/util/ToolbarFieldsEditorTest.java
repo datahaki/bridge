@@ -13,9 +13,9 @@ import javax.swing.JToolBar;
 
 import org.junit.jupiter.api.Test;
 
-import test.data.GuiExtension;
-import test.data.OtherPackageParam;
-import test.data.SliderFailParam;
+import showcase.data.GuiExtension;
+import showcase.data.OtherPackageParam;
+import showcase.data.SliderFailParam;
 
 class ToolbarFieldsEditorTest {
   @Test

@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.mat.re.Pivots;
-import test.data.GuiExtension;
+import showcase.data.GuiExtension;
 
 class FieldWrapsTest {
   @Test

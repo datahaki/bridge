@@ -26,14 +26,14 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.Clips;
-import test.data.ClipParam;
-import test.data.GuiExtension;
-import test.data.ParamContainer;
-import test.data.ParamContainerExt;
-import test.data.SimpleLaram;
-import test.data.SimpleParam;
-import test.data.TimeParam;
-import test.data.V011Param;
+import showcase.data.ClipParam;
+import showcase.data.GuiExtension;
+import showcase.data.ParamContainer;
+import showcase.data.ParamContainerExt;
+import showcase.data.SimpleLaram;
+import showcase.data.SimpleParam;
+import showcase.data.TimeParam;
+import showcase.data.V011Param;
 
 class ObjectPropertiesTest {
   @Test

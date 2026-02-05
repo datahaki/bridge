@@ -18,7 +18,7 @@ class ShowcasesTest {
   @ParameterizedTest
   @EnumSource
   void test(Showcases showDemos) throws IOException {
-    Show show = showDemos.create();
+    Show show = showDemos.getShow();
     // Serialization.copy(show);
     BufferedImage bufferedImage = show.image(new Dimension(400, 300));
     assertEquals(bufferedImage.getWidth(), 400);

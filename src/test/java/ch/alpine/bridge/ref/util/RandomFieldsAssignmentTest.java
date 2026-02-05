@@ -16,9 +16,9 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.Scalar;
-import test.data.ColorParam;
-import test.data.FieldOuterParam;
-import test.data.FieldOuterParam.NestedParam;
+import showcase.data.ColorParam;
+import showcase.data.FieldOuterParam;
+import showcase.data.FieldOuterParam.NestedParam;
 
 class RandomFieldsAssignmentTest {
   @ReflectionMarker

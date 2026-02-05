@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.FieldWrap;
-import test.data.EmptyParam;
+import showcase.data.EmptyParam;
 
 class ObjectFieldVisitorTest {
   @Test

@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
-import test.data.FieLabParam;
-import test.data.GuiExtension;
-import test.data.OtherPackageParam;
-import test.data.SliderFailParam;
+import showcase.data.FieLabParam;
+import showcase.data.GuiExtension;
+import showcase.data.OtherPackageParam;
+import showcase.data.SliderFailParam;
 
 class PanelFieldsEditorTest {
   @Test

@@ -15,9 +15,9 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
-import test.data.AnnotatedContainer;
-import test.data.ParamContainer;
-import test.data.ParamContainerEnum;
+import showcase.data.AnnotatedContainer;
+import showcase.data.ParamContainer;
+import showcase.data.ParamContainerEnum;
 
 class FieldWrapTest {
   @Test

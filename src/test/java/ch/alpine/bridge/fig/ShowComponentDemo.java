@@ -47,7 +47,7 @@ public class ShowComponentDemo implements Runnable {
   @Override
   public void run() {
     showComponent.setFont(font);
-    showComponent.setShow(showDemos.create());
+    showComponent.setShow(showDemos.getShow());
     showComponent.setOptionX(Option.PAN, xPan);
     showComponent.setOptionX(Option.ZOOM, xZoom);
     showComponent.setOptionY(Option.PAN, yPan);

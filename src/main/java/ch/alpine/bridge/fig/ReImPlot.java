@@ -76,9 +76,9 @@ public class ReImPlot extends BaseShowable {
           Path2D.Double pathRe = new Path2D.Double();
           Path2D.Double pathIm = new Path2D.Double();
           {
-            Scalar eval = suo.apply(x_clip.min());
-            pathRe.moveTo(x0, showableConfig.y_pos(Re.FUNCTION.apply(eval)));
-            pathIm.moveTo(x0, showableConfig.y_pos(Im.FUNCTION.apply(eval)));
+            ReIm reIm = ReIm.of(suo.apply(x_clip.min()));
+            pathRe.moveTo(x0, showableConfig.y_pos(reIm.re()));
+            pathIm.moveTo(x0, showableConfig.y_pos(reIm.im()));
           }
           ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
           final int size = (int) ((x1 - x0) * segmentsPerPixel);
@@ -86,9 +86,9 @@ public class ReImPlot extends BaseShowable {
           double xc = x0;
           for (int i = 1; i <= size; ++i) {
             xc += dx;
-            Scalar eval = suo.apply(interpX.apply(RationalScalar.of(i, size)));
-            pathRe.lineTo(xc, showableConfig.y_pos(Re.FUNCTION.apply(eval)));
-            pathIm.lineTo(xc, showableConfig.y_pos(Im.FUNCTION.apply(eval)));
+            ReIm reIm = ReIm.of(suo.apply(interpX.apply(RationalScalar.of(i, size))));
+            pathRe.lineTo(xc, showableConfig.y_pos(reIm.re()));
+            pathIm.lineTo(xc, showableConfig.y_pos(reIm.im()));
           }
           graphics.setColor(getColor());
           graphics.setStroke(STROKE_RE);
