@@ -13,9 +13,9 @@ import ch.alpine.tensor.ext.HomeDirectory;
 class FileBlockTest {
   @Test
   void testSimple() {
-    assertFalse(FileBlock.of(HomeDirectory.file(), "abc", false));
-    assertTrue(FileBlock.of(HomeDirectory.file(), "abc", false));
-    assertTrue(FileBlock.of(HomeDirectory.file(), "abc", false));
+    assertFalse(FileBlock.of(HomeDirectory.path(), "abc", false));
+    assertTrue(FileBlock.of(HomeDirectory.path(), "abc", false));
+    assertTrue(FileBlock.of(HomeDirectory.path(), "abc", false));
   }
 
   @ParameterizedTest

@@ -32,7 +32,7 @@ import ch.alpine.tensor.sca.win.WindowFunctions;
 
   static void main() throws IOException {
     Tensor tensor = Subdivide.of(0, 100, 2000).map(Polynomial.of(Tensors.vector(0, 5, 1))).map(Cos.FUNCTION);
-    Path folder = HomeDirectory.Pictures(SpectrogramWindowDemo.class.getSimpleName());
+    Path folder = HomeDirectory.Pictures.resolve(SpectrogramWindowDemo.class.getSimpleName());
     Files.createDirectories(folder);
     for (WindowFunctions windowFunctions : WindowFunctions.values()) {
       ScalarUnaryOperator scalarUnaryOperator = windowFunctions.get();

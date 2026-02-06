@@ -92,7 +92,7 @@ class URLFetchTest {
     try (URLFetch urlFetch = new URLFetch("http://www.hakenberg.de/favicon.ico")) {
       urlFetch.downloadIfMissing(file);
       urlFetch.downloadIfMissing(file);
-      assertThrows(Exception.class, () -> urlFetch.download(HomeDirectory.Downloads("download.that.never.started")));
+      assertThrows(Exception.class, () -> urlFetch.download(HomeDirectory.Downloads.resolve("download.that.never.started")));
     }
     assertEquals(Files.size(file), 1406);
   }

@@ -22,7 +22,7 @@ public class MissingMarkerParam extends MissingMarkerBase {
   }
 
   public static class ArrayParam {
-    public File file = HomeDirectory.file().toFile();
+    public File file = HomeDirectory.path().toFile();
   }
 
   public static class PartsParam {

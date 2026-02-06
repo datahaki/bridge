@@ -30,7 +30,7 @@ public enum CepstrogramDemo {
     Show show = new Show();
     show.add(create(CepstrogramArray.Real));
     ShowDialog.of(show);
-    show.export(HomeDirectory.Pictures("some.png"), new Dimension(600, 400));
-    show.export(HomeDirectory.Pictures("some.jpg"), new Dimension(600, 400));
+    show.export(HomeDirectory.Pictures.resolve("some.png"), new Dimension(600, 400));
+    show.export(HomeDirectory.Pictures.resolve("some.jpg"), new Dimension(600, 400));
   }
 }

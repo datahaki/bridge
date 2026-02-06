@@ -28,7 +28,7 @@ public enum JpegStuff {
     Tensor image = Rescale.of(FourierDCT._1.matrix(64)).map(ColorDataGradients.HUE).map(Floor.FUNCTION);
     // Tensor image = RandomVariate.of(UniformDistribution.unit(30), 10, 20).map(ColorDataGradients.HUE).map(Floor.FUNCTION);
     final BufferedImage bufferedImage = ImageFormat.of(image);
-    Path file = HomeDirectory.Pictures("jpegStuff.jpg");
+    Path file = HomeDirectory.Pictures.resolve("jpegStuff.jpg");
     Jpeg.put(bufferedImage, file, 1f);
     {
       Show show = new Show();

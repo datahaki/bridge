@@ -24,7 +24,7 @@ import ch.alpine.tensor.sca.tri.Cos;
   static void main() throws IOException {
     Tensor tensor = Subdivide.of(0, 100, 2000).map(Polynomial.of(Tensors.vector(0, 5, 1))).map(Cos.FUNCTION);
     Tensor spectrogram = SpectrogramArray.SPECTROGRAM.half_abs(tensor);
-    Path folder = HomeDirectory.Pictures(SpectrogramRasterDemo.class.getSimpleName());
+    Path folder = HomeDirectory.Pictures.resolve(SpectrogramRasterDemo.class.getSimpleName());
     Files.createDirectories(folder);
     for (ColorDataGradients colorDataGradients : ColorDataGradients.values()) {
       Tensor image = Raster.of(spectrogram, colorDataGradients);

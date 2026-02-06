@@ -11,8 +11,8 @@ import ch.alpine.tensor.ext.HomeDirectory;
 class ParentFileQTest {
   @Test
   void test() {
-    assertTrue(ParentFileQ.test(HomeDirectory.file().toFile(), HomeDirectory.Documents().toFile()));
-    assertTrue(ParentFileQ.test(HomeDirectory.file().toFile(), HomeDirectory.Documents("test.txt").toFile()));
-    assertFalse(ParentFileQ.test(HomeDirectory.Desktop().toFile(), HomeDirectory.Documents().toFile()));
+    assertTrue(ParentFileQ.test(HomeDirectory.path().toFile(), HomeDirectory.Documents.resolve().toFile()));
+    assertTrue(ParentFileQ.test(HomeDirectory.path().toFile(), HomeDirectory.Documents.resolve("test.txt").toFile()));
+    assertFalse(ParentFileQ.test(HomeDirectory.Desktop.resolve().toFile(), HomeDirectory.Documents.resolve().toFile()));
   }
 }

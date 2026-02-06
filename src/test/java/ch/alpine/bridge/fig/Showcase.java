@@ -14,7 +14,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 enum Showcase {
   ;
   static void main() throws IOException {
-    Path folder = HomeDirectory.Pictures("Showcase");
+    Path folder = HomeDirectory.Pictures.resolve("Showcase");
     Files.createDirectories(folder);
     Set<Showcases> set = new HashSet<>();
     set.add(Showcases.ReImPlot0);

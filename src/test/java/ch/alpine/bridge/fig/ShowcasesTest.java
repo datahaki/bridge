@@ -24,7 +24,7 @@ class ShowcasesTest {
     BufferedImage bufferedImage = show.image(new Dimension(400, 300));
     assertEquals(bufferedImage.getWidth(), 400);
     assertEquals(bufferedImage.getHeight(), 300);
-    Path folder = HomeDirectory.Downloads("export");
+    Path folder = HomeDirectory.Downloads.resolve("export");
     Files.createDirectories(folder);
     Jpeg.put(bufferedImage, folder.resolve(showDemos.name() + ".jpg"), 0.9f);
     // Serialization.copy(bufferedImage);

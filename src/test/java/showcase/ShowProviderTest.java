@@ -35,7 +35,7 @@ class ShowProviderTest {
   @ParameterizedTest
   @MethodSource("allWindowSuppliers")
   void testWindow(Class<?> cls) throws Exception {
-    Path folder = HomeDirectory.Pictures("bridge_showcase");
+    Path folder = HomeDirectory.Pictures.resolve("bridge_showcase");
     // folder.mkdir();
     folder = tempDir;
     if (cls.isEnum()) {

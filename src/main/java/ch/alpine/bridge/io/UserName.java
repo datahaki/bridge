@@ -5,15 +5,7 @@ package ch.alpine.bridge.io;
  * <a href="https://reference.wolfram.com/language/ref/$UserName.html">$UserName</a> */
 public enum UserName {
   ;
-  private static String user_name() {
-    try {
-      return System.getProperty("user.name");
-    } catch (Exception exception) { // security exception, null pointer
-      return null;
-    }
-  }
-
-  private static final String USER_NAME = user_name();
+  private static final String USER_NAME = System.getProperty("user.name");
 
   /** @return system user name */
   public static String get() {

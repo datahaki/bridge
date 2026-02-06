@@ -16,7 +16,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 class DeleteDirectoryTest {
   @Test
   void testLayer0() throws IOException {
-    Path folder = HomeDirectory.Downloads(getClass().getSimpleName() + "0");
+    Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "0");
     Files.createDirectories(folder);
     DeleteDirectory deleteDirectory = DeleteDirectory.of(folder, 0, 1, DeleteDirectory.DELETE_FAIL_ABORTS);
     assertEquals(deleteDirectory.fileCount(), 1);
@@ -24,7 +24,7 @@ class DeleteDirectoryTest {
 
   @Test
   void testLayer1a() throws IOException {
-    Path folder = HomeDirectory.Downloads(getClass().getSimpleName() + "1a");
+    Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "1a");
     Files.createDirectories(folder);
     Path sample1_txt = folder.resolve("sample1.txt");
     Files.createFile(sample1_txt);
@@ -40,7 +40,7 @@ class DeleteDirectoryTest {
 
   @Test
   void testLayer1b() throws IOException {
-    Path folder = HomeDirectory.Downloads(getClass().getSimpleName() + "1b");
+    Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "1b");
     Files.createDirectories(folder);
     Files.createFile(folder.resolve("sample1.txt"));
     Files.createFile(folder.resolve("sample2.txt"));
@@ -52,7 +52,7 @@ class DeleteDirectoryTest {
 
   @Test
   void testLayer2() throws IOException {
-    Path folder = HomeDirectory.Downloads(getClass().getSimpleName() + "2");
+    Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "2");
     Files.createDirectories(folder);
     Files.createFile(folder.resolve("sample1.txt"));
     Files.createFile(folder.resolve("sample2.txt"));
@@ -66,14 +66,14 @@ class DeleteDirectoryTest {
 
   @Test
   void testNotFound() {
-    Path folder = HomeDirectory.Downloads(getClass().getSimpleName() + "NotFound");
+    Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "NotFound");
     assertThrows(Exception.class, () -> DeleteDirectory.of(folder, 1, 10));
   }
 
   @Test
   void testRenameDirectory() throws IOException {
-    Path folder1 = HomeDirectory.Downloads(getClass().getSimpleName() + "NotFound1234");
-    Path folder2 = HomeDirectory.Downloads(getClass().getSimpleName() + "NotFound1235");
+    Path folder1 = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "NotFound1234");
+    Path folder2 = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "NotFound1235");
     Files.createDirectories(folder1);
     {
       Path file1 = folder1.resolve("dummy.txt");
