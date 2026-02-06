@@ -3,8 +3,8 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -19,13 +19,13 @@ import ch.alpine.tensor.sca.Clips;
 
 class ArrayPlotTest {
   @Test
-  void testResolution(@TempDir File tempDir) throws IOException {
+  void testResolution(@TempDir Path tempDir) throws IOException {
     // the test exists to check whether the image size is constrained by 2^15-1
     // and finds that the image size may exceed that
     Tensor raw = RandomVariate.of(UniformDistribution.unit(), 2, Short.MAX_VALUE);
     BufferedImage bufferedImage = ImageFormat.of(raw.map(ColorDataGradients.TEMPERATURE_WEATHER));
     Show show = new Show();
     show.add(ImagePlot.of(bufferedImage, CoordinateBoundingBox.of(Clips.unit(), Clips.unit())));
-    show.export(new File(tempDir, "file.png"), new Dimension(1000, 300));
+    show.export(tempDir.resolve("file.png"), new Dimension(1000, 300));
   }
 }

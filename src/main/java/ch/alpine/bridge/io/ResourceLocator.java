@@ -1,8 +1,9 @@
 // code by jph
 package ch.alpine.bridge.io;
 
-import java.io.File;
-import java.nio.file.FileSystemNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import ch.alpine.bridge.ref.util.ObjectProperties;
 
@@ -11,18 +12,20 @@ import ch.alpine.bridge.ref.util.ObjectProperties;
 public final class ResourceLocator {
   public static final String FILE_EXTENSION = ".properties";
   // ---
-  private final File base;
+  private final Path base;
 
   /** @param base directory which will be created if necessary */
-  public ResourceLocator(File base) {
+  public ResourceLocator(Path base) {
     this.base = base;
-    base.mkdirs();
-    if (!base.isDirectory())
-      throw new FileSystemNotFoundException(base.getPath());
+    try {
+      Files.createDirectories(base);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public ResourceLocator sub(String folder_name) {
-    return new ResourceLocator(file(folder_name));
+    return new ResourceLocator(resolve(folder_name));
   }
 
   public <T> T tryLoad(T object) {
@@ -47,17 +50,17 @@ public final class ResourceLocator {
     return ObjectProperties.trySave(object, properties(string));
   }
 
-  public File properties(Class<?> cls) {
+  public Path properties(Class<?> cls) {
     return properties(cls.getSimpleName());
   }
 
-  public File properties(String string) {
-    return file(string + FILE_EXTENSION);
+  public Path properties(String string) {
+    return resolve(string + FILE_EXTENSION);
   }
 
   /** @param name of file, for instance consisting of title and extension
    * @return file in given base directory with given name */
-  public File file(String name) {
-    return new File(base, name);
+  public Path resolve(String name) {
+    return base.resolve(name);
   }
 }

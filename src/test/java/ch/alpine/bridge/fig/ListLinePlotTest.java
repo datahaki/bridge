@@ -7,8 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.random.RandomGenerator;
 
@@ -89,7 +90,7 @@ class ListLinePlotTest {
   }
 
   @Test
-  void testSome(@TempDir File tempDir) throws IOException {
+  void testSome(@TempDir Path tempDir) throws IOException {
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
     Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
@@ -107,12 +108,12 @@ class ListLinePlotTest {
     Tensor domain4 = Tensors.vector(1, 3, 2, 5, 4).multiply(RealScalar.of(0.2));
     show.add(ListLinePlot.of(domain4.map(suoX), domain4.map(suoY)));
     // ChartFactory.setChartTheme(ChartTheme.STANDARD);
-    File file = new File(tempDir, ListPlot.class.getSimpleName() + ".png");
+    Path file = tempDir.resolve(ListPlot.class.getSimpleName() + ".png");
     show.export(file, new Dimension(500, 300));
   }
 
   @Test
-  void testDistrib1(@TempDir File tempDir) throws IOException {
+  void testDistrib1(@TempDir Path tempDir) throws IOException {
     Distribution dist = NormalDistribution.of(1, 2);
     HistogramDistribution distribution = (HistogramDistribution) //
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
@@ -122,12 +123,12 @@ class ListLinePlotTest {
       show.add(ListLinePlot.of(domain, domain.map(distribution::at)));
       show.add(ListLinePlot.of(domain, domain.map(distribution::p_lessEquals)));
       show.add(ListLinePlot.of(domain, domain.map(PDF.of(dist)::at)));
-      show.export(new File(tempDir, "hd.png"), new Dimension(640, 480));
+      show.export(tempDir.resolve("hd.png"), new Dimension(640, 480));
     }
   }
 
   @Test
-  void testDistrib2(@TempDir File tempDir) throws IOException {
+  void testDistrib2(@TempDir Path tempDir) throws IOException {
     Distribution dist = NormalDistribution.of(1, 2);
     HistogramDistribution distribution = (HistogramDistribution) //
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
@@ -138,7 +139,7 @@ class ListLinePlotTest {
       Show show = new Show();
       show.add(ListLinePlot.of(domain, domain.map(inv1::quantile)));
       show.add(ListLinePlot.of(domain, domain.map(inv2::quantile)));
-      show.export(new File(tempDir, "hd_inv.png"), new Dimension(640, 480));
+      show.export(tempDir.resolve("hd_inv.png"), new Dimension(640, 480));
     }
   }
 
@@ -180,14 +181,14 @@ class ListLinePlotTest {
   }
 
   @Test
-  void testEmptyPass(@TempDir File tempDir) throws IOException {
+  void testEmptyPass(@TempDir Path tempDir) throws IOException {
     Show show = new Show();
     show.add(ListLinePlot.of(Tensors.empty()));
-    File file = new File(tempDir, "file.png");
-    assertFalse(file.exists());
+    Path file = tempDir.resolve("file.png");
+    assertFalse(Files.isRegularFile(file));
     show.export(file, new Dimension(100, 100));
-    assertTrue(file.isFile());
-    assertTrue(file.canWrite());
+    assertTrue(Files.isRegularFile(file));
+    assertTrue(Files.isWritable(file));
   }
 
   @Test

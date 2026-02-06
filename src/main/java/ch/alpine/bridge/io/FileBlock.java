@@ -2,10 +2,12 @@
 // http://www.velocityreviews.com/forums/t137115-preventing-multiple-instance-standalone-desktop-gui-applications.html
 package ch.alpine.bridge.io;
 
-import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -27,7 +29,7 @@ public class FileBlock {
    * @param showMessage whether to pop-up error dialog
    * @return whether uid was reserved by a previous instance
    * @throws Exception if given uid cannot be used as part of filename */
-  public static boolean of(File folder, String uid, boolean showMessage) {
+  public static boolean of(Path folder, String uid, boolean showMessage) {
     FileBlock fileBlock = new FileBlock(folder, uid);
     boolean isActive = fileBlock.isActive();
     if (isActive && showMessage)
@@ -36,21 +38,21 @@ public class FileBlock {
   }
 
   // ---
-  private final File folder;
+  private final Path folder;
   private final String uid;
   private RandomAccessFile randomAccessFile;
   private FileChannel fileChannel;
   private FileLock fileLock;
 
-  private FileBlock(File folder, String identifier) {
+  private FileBlock(Path folder, String identifier) {
     this.folder = folder;
     this.uid = identifier;
   }
 
   /* package */ boolean isActive() {
     try {
-      File file = new File(folder, '.' + uid + ".lock");
-      randomAccessFile = new RandomAccessFile(file, "rw");
+      Path path = folder.resolve('.' + uid + ".lock");
+      randomAccessFile = new RandomAccessFile(path.toFile(), "rw");
       fileChannel = randomAccessFile.getChannel();
       fileLock = fileChannel.tryLock(); // documentation not clear on "return vs. exception"
       if (Objects.isNull(fileLock)) { // standard behavior if file exists
@@ -60,7 +62,11 @@ public class FileBlock {
       // File::deleteOnExit is not used to ensure release() is called before deleting file
       Runtime.getRuntime().addShutdownHook(new Thread(() -> {
         release(); // remove all locks
-        file.delete(); // finally delete file
+        try {
+          Files.delete(path); // finally delete file
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }));
       return false;
     } catch (Exception exception) {

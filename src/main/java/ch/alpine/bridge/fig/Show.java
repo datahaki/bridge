@@ -10,9 +10,9 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -226,16 +226,16 @@ public class Show implements Serializable {
 
   private static final float JPG_QUALITY = 0.98f;
 
-  /** @param file
+  /** @param path
    * @param dimension of image
    * @throws IOException */
-  public void export(File file, Dimension dimension) throws IOException {
-    String string = FileExtension.of(file);
+  public void export(Path path, Dimension dimension) throws IOException {
+    String string = FileExtension.of(path);
     // FIXME BRIDGE image type should depend on file extension
     BufferedImage bufferedImage = image(dimension);
     switch (string) {
-    case "jpg", "jpeg" -> Jpeg.put(bufferedImage, file, JPG_QUALITY);
-    default -> ImageIO.write(bufferedImage, string, file);
+    case "jpg", "jpeg" -> Jpeg.put(bufferedImage, path, JPG_QUALITY);
+    default -> ImageIO.write(bufferedImage, string, path.toFile());
     }
   }
 

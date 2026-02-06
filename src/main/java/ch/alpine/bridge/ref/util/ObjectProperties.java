@@ -5,12 +5,13 @@ import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -62,8 +63,8 @@ public class ObjectProperties {
    * @param object
    * @param file properties
    * @throws IOException */
-  public static void save(Object object, File file) throws IOException {
-    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, CHARSET))) {
+  public static void save(Object object, Path file) throws IOException {
+    try (BufferedWriter bufferedWriter = Files.newBufferedWriter(file, CHARSET)) {
       ObjectFieldVisitor objectFieldVisitor = new ObjectFieldIo() {
         @Override // from ObjectFieldVisitor
         public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
@@ -88,7 +89,7 @@ public class ObjectProperties {
    * @param object
    * @param file properties
    * @return true if saving to given file was successful, false otherwise */
-  public static boolean trySave(Object object, File file) {
+  public static boolean trySave(Object object, Path file) {
     try {
       save(object, file);
       return true;
@@ -105,14 +106,14 @@ public class ObjectProperties {
    * @throws FileNotFoundException
    * @throws IOException
    * @see Properties */
-  public static void load(Object object, File file) throws FileNotFoundException, IOException {
+  public static void load(Object object, Path file) throws FileNotFoundException, IOException {
     set(object, Import.properties(file));
   }
 
   /** @param object
    * @param file properties
    * @return object with fields updated from properties file if loading was successful */
-  public static <T> T tryLoad(T object, File file) {
+  public static <T> T tryLoad(T object, Path file) {
     try {
       load(object, file);
     } catch (Exception exception) {

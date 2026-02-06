@@ -18,8 +18,6 @@ import ch.alpine.tensor.num.ReIm;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
-import ch.alpine.tensor.sca.Im;
-import ch.alpine.tensor.sca.Re;
 import ch.alpine.tensor.sca.Sign;
 
 /** <p>inspired by

@@ -3,7 +3,7 @@ package showcase.demo;
 
 import java.awt.GridLayout;
 import java.awt.Window;
-import java.io.File;
+import java.nio.file.Path;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,7 +17,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 import showcase.data.StoredExtension;
 
 class StoredExtensionDemo implements WindowProvider {
-  private static final File FILE = HomeDirectory.Downloads(StoredExtension.class.getSimpleName() + ".properties");
+  private static final Path FILE = HomeDirectory.Downloads(StoredExtension.class.getSimpleName() + ".properties");
   public static final StoredExtension INSTANCE = //
       ObjectProperties.tryLoad(new StoredExtension(), FILE);
 

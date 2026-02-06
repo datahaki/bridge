@@ -23,10 +23,10 @@ public class StoredExtension {
   public Boolean status = true;
   public Pivots pivots = Pivots.ARGMAX_ABS;
   @FieldExistingDirectory
-  public File folder = HomeDirectory.file();
+  public File folder = HomeDirectory.file().toFile();
   @FieldExistingFile
-  public File file = HomeDirectory.file();
-  public File anyFile = HomeDirectory.file();
+  public File file = HomeDirectory.file().toFile();
+  public File anyFile = HomeDirectory.file().toFile();
   public Tensor tensor = Tensors.fromString("{1, 2}");
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");

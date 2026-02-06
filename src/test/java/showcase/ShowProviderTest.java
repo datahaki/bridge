@@ -1,8 +1,8 @@
 package showcase;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.lang.reflect.Constructor;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +19,7 @@ import io.github.classgraph.ScanResult;
 
 class ShowProviderTest {
   @TempDir
-  File tempDir;
+  Path tempDir;
 
   static Collection<Class<?>> allWindowSuppliers() {
     List<Class<?>> list = new LinkedList<>();
@@ -35,7 +35,7 @@ class ShowProviderTest {
   @ParameterizedTest
   @MethodSource("allWindowSuppliers")
   void testWindow(Class<?> cls) throws Exception {
-    File folder = HomeDirectory.Pictures("bridge_showcase");
+    Path folder = HomeDirectory.Pictures("bridge_showcase");
     // folder.mkdir();
     folder = tempDir;
     if (cls.isEnum()) {
@@ -44,7 +44,11 @@ class ShowProviderTest {
         _check((ShowProvider) object, folder, cls.getSimpleName() + "_" + enm.name());
       }
     } else //
-    if (!cls.isAnonymousClass()) {
+    if (cls.isInterface()) {
+    } else //
+    if (cls.isAnonymousClass()) {
+    } else //
+    {
       Constructor<?> constructor = cls.getDeclaredConstructor();
       constructor.setAccessible(true);
       Object object = constructor.newInstance();
@@ -52,10 +56,10 @@ class ShowProviderTest {
     }
   }
 
-  public static void _check(ShowProvider showProvider, File tempDir, String string) {
+  public static void _check(ShowProvider showProvider, Path tempDir, String string) {
     Show show = showProvider.getShow();
-    File file = new File(tempDir, string + ".png");
-    IO.println(file.getName());
+    Path file = tempDir.resolve(string + ".png");
+    IO.println(file.getFileName());
     try {
       show.export(file, new Dimension(400, 300));
     } catch (Exception e) {

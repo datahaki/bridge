@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -20,20 +21,20 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 class ZipDirectoryTest {
   @Test
-  void testSimple(@TempDir File tempDir) throws IOException {
-    File folder = new File(tempDir, "folder");
-    assertFalse(folder.exists());
-    folder.mkdirs();
+  void testSimple(@TempDir Path tempDir) throws IOException {
+    Path folder = tempDir.resolve("folder");
+    assertFalse(Files.exists(folder));
+    Files.createDirectories(folder);
     {
       Show show = new Show();
       show.add(ListLinePlot.of(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2)));
-      show.export(new File(folder, "image.png"), new Dimension(300, 200));
+      show.export(folder.resolve("image.png"), new Dimension(300, 200));
     }
-    File zipFile = new File(tempDir, "file.zip");
-    assertFalse(zipFile.exists());
+    Path zipFile = tempDir.resolve("file.zip");
+    assertFalse(Files.isRegularFile(zipFile));
     ZipDirectory.of(folder, zipFile);
     DeleteDirectory.of(folder, 1, 10);
-    zipFile.delete();
+    Files.delete(zipFile);
   }
 
   @Test

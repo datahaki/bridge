@@ -104,17 +104,17 @@ public class GuiExtension {
   public LocalDate date = LocalDate.now();
   public LocalTime time = LocalTime.now();
   @FieldExistingDirectory
-  public File folder = HomeDirectory.file();
+  public File folder = HomeDirectory.file().toFile();
   @FieldExistingFile
-  public File file = HomeDirectory.file();
+  public File file = HomeDirectory.file().toFile();
   @FieldExistingFile
   @FieldFileExtension(description = "Plain Text-Files", extensions = { "txt", "md" })
-  public File txtFile = HomeDirectory.file();
+  public File txtFile = HomeDirectory.file().toFile();
   @FieldExistingFile
   @FieldFileExtension(description = "PNG-Files", extensions = "png")
   @FieldFileExtension(description = "JPG-Files", extensions = "jpg")
-  public File imgFile = HomeDirectory.file();
-  public File anyFile = HomeDirectory.file();
+  public File imgFile = HomeDirectory.file().toFile();
+  public File anyFile = HomeDirectory.file().toFile();
   public final FieldsEditorParam fieldsEditorParam = FieldsEditorParam.GLOBAL;
   @FieldSelectionArray({ "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");

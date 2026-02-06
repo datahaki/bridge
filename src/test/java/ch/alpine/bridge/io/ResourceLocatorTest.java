@@ -6,23 +6,25 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class ResourceLocatorTest {
   @Test
-  void test(@TempDir File folder) {
+  void test(@TempDir Path folder) {
     ResourceLocator resourceLocator = new ResourceLocator(folder);
-    assertEquals(resourceLocator.file(""), folder);
-    File file = resourceLocator.properties(getClass());
-    assertFalse(file.exists());
+    assertEquals(resourceLocator.resolve(""), folder);
+    Path file = resourceLocator.properties(getClass());
+    assertFalse(Files.isRegularFile(file));
     resourceLocator.tryLoad(new ResourceLocatorTest());
     resourceLocator.trySave(new ResourceLocatorTest());
     ResourceLocator rl2 = resourceLocator.sub("here");
-    assertTrue(new File(folder, "here").isDirectory());
-    assertEquals(rl2.file(""), new File(folder, "here"));
+    Path path = folder.resolve("here");
+    assertTrue(Files.isDirectory(path));
+    assertEquals(rl2.resolve(""), path);
   }
 
   @Test

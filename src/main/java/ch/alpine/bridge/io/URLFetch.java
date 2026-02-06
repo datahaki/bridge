@@ -1,8 +1,6 @@
 // code by jph
 package ch.alpine.bridge.io;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /** Example:
  * <pre>
@@ -51,21 +51,21 @@ public class URLFetch implements AutoCloseable {
     return httpURLConnection.getInputStream();
   }
 
-  /** @param file to download web content to if file does not already exist,
+  /** @param path to download web content to if file does not already exist,
    * or has the wrong length
    * @throws IOException */
-  public void downloadIfMissing(File file) throws IOException {
-    if (file.isFile() && //
-        file.length() == length)
+  public void downloadIfMissing(Path path) throws IOException {
+    if (Files.isRegularFile(path) && //
+        Files.size(path) == length)
       return;
-    download(file);
+    download(path);
   }
 
-  /** @param file to download web content to
+  /** @param path to download web content to
    * @throws IOException if function was already called */
-  public void download(File file) throws IOException {
+  public void download(Path path) throws IOException {
     try (InputStream inputStream = httpURLConnection.getInputStream()) {
-      try (OutputStream outputStream = new FileOutputStream(file)) {
+      try (OutputStream outputStream = Files.newOutputStream(path)) {
         byte[] buffer = new byte[BUFFER_SIZE];
         int bytesRead;
         while ((bytesRead = inputStream.read(buffer)) != -1)

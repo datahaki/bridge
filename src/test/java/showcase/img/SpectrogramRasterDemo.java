@@ -1,7 +1,9 @@
 // code by jph
 package showcase.img;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -19,14 +21,14 @@ import ch.alpine.tensor.sca.tri.Cos;
  * Table[Cos[ i/4 + (i/20)^2], {i, 2000}] */
 /* package */ enum SpectrogramRasterDemo {
   ;
-  static void main() {
+  static void main() throws IOException {
     Tensor tensor = Subdivide.of(0, 100, 2000).map(Polynomial.of(Tensors.vector(0, 5, 1))).map(Cos.FUNCTION);
     Tensor spectrogram = SpectrogramArray.SPECTROGRAM.half_abs(tensor);
-    File folder = HomeDirectory.Pictures(SpectrogramRasterDemo.class.getSimpleName());
-    folder.mkdir();
+    Path folder = HomeDirectory.Pictures(SpectrogramRasterDemo.class.getSimpleName());
+    Files.createDirectories(folder);
     for (ColorDataGradients colorDataGradients : ColorDataGradients.values()) {
       Tensor image = Raster.of(spectrogram, colorDataGradients);
-      Unprotect._export(new File(folder, colorDataGradients.name() + ".png"), ImageResize.nearest(image, 4));
+      Unprotect.Export(folder.resolve(colorDataGradients.name() + ".png"), ImageResize.nearest(image, 4));
     }
   }
 }

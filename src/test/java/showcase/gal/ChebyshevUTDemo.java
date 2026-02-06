@@ -7,7 +7,6 @@ import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowDialog;
 import ch.alpine.bridge.fig.Showable;
-import ch.alpine.bridge.lang.ShowProvider;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.ply.Chebyshev;

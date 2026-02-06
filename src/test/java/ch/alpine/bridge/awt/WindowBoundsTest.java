@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.bridge.awt;
 
-import java.io.File;
+import java.nio.file.Path;
 
 import javax.swing.JFrame;
 
@@ -12,14 +12,14 @@ import org.junit.jupiter.api.io.TempDir;
 
 class WindowBoundsTest {
   @TempDir
-  File tempDir;
+  Path tempDir;
 
   // TODO BRIDGE this does not terminate properly on Windows
   @Disabled
   @Test
   void test() throws InterruptedException {
     JFrame jFrame = new JFrame();
-    WindowBounds.persistent(jFrame, new File(tempDir, "window.properties"));
+    WindowBounds.persistent(jFrame, tempDir.resolve("window.properties"));
     jFrame.setVisible(true);
     Thread.sleep(100);
     jFrame.setVisible(false);

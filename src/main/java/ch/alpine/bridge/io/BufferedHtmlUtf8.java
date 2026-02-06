@@ -1,15 +1,15 @@
 // code by jph
 package ch.alpine.bridge.io;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /* package */ class BufferedHtmlUtf8 extends HtmlUtf8 {
   private final StringBuilder stringBuilder = new StringBuilder();
 
-  protected BufferedHtmlUtf8(File file) {
-    super(file);
+  protected BufferedHtmlUtf8(Path path) {
+    super(path);
   }
 
   @Override
@@ -20,7 +20,8 @@ import java.io.OutputStreamWriter;
   @Override
   public void close() {
     super.close();
-    try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), CHARSET)) {
+    try (OutputStreamWriter outputStreamWriter = //
+        new OutputStreamWriter(Files.newOutputStream(path), CHARSET)) {
       outputStreamWriter.write(stringBuilder.toString());
     } catch (Exception exception) {
       throw new RuntimeException(exception);

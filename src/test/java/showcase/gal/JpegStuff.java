@@ -3,15 +3,14 @@ package showcase.gal;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.alpine.bridge.fig.ImagePlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowDialog;
-import ch.alpine.bridge.fig.Showcases;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -29,7 +28,7 @@ public enum JpegStuff {
     Tensor image = Rescale.of(FourierDCT._1.matrix(64)).map(ColorDataGradients.HUE).map(Floor.FUNCTION);
     // Tensor image = RandomVariate.of(UniformDistribution.unit(30), 10, 20).map(ColorDataGradients.HUE).map(Floor.FUNCTION);
     final BufferedImage bufferedImage = ImageFormat.of(image);
-    File file = HomeDirectory.Pictures("jpegStuff.jpg");
+    Path file = HomeDirectory.Pictures("jpegStuff.jpg");
     Jpeg.put(bufferedImage, file, 1f);
     {
       Show show = new Show();

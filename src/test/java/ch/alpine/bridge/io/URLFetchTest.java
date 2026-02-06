@@ -8,13 +8,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.imageio.ImageIO;
 
@@ -49,16 +50,16 @@ class URLFetchTest {
   }
 
   @Test
-  void testSimple(@TempDir File tempDir) throws IOException, URISyntaxException {
-    File file = new File(tempDir, "file.ico");
+  void testSimple(@TempDir Path tempDir) throws IOException, URISyntaxException {
+    Path file = tempDir.resolve("file.ico");
     try (URLFetch urlFetch = new URLFetch("http://www.hakenberg.de/favicon.ico")) {
       assertEquals(urlFetch.length(), 1406);
       assertEquals(urlFetch.contentType(), "image/x-icon");
       urlFetch.downloadIfMissing(file);
     }
-    assertEquals(file.length(), 1406);
-    file.delete();
-    assertFalse(file.exists());
+    assertEquals(Files.size(file), 1406);
+    Files.delete(file);
+    assertFalse(Files.isRegularFile(file));
   }
 
   @Test
@@ -86,13 +87,13 @@ class URLFetchTest {
   }
 
   @Test
-  void testDuplicate(@TempDir File tempDir) throws IOException, URISyntaxException {
-    File file = new File(tempDir, "file.ico");
+  void testDuplicate(@TempDir Path tempDir) throws IOException, URISyntaxException {
+    Path file = tempDir.resolve("file.ico");
     try (URLFetch urlFetch = new URLFetch("http://www.hakenberg.de/favicon.ico")) {
       urlFetch.downloadIfMissing(file);
       urlFetch.downloadIfMissing(file);
       assertThrows(Exception.class, () -> urlFetch.download(HomeDirectory.Downloads("download.that.never.started")));
     }
-    assertEquals(file.length(), 1406);
+    assertEquals(Files.size(file), 1406);
   }
 }

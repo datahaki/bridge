@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Objects;
 
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
@@ -31,9 +31,9 @@ public class WindowBounds {
    * the last bounds are stored in the given file.
    * 
    * @param window
-   * @param file */
-  public static void persistent(Window window, File file) {
-    ObjectProperties.tryLoad(new WindowBounds(), file).private_attach(window, file);
+   * @param path */
+  public static void persistent(Window window, Path path) {
+    ObjectProperties.tryLoad(new WindowBounds(), path).private_attach(window, path);
   }
 
   // ---
@@ -49,7 +49,7 @@ public class WindowBounds {
 
   private final Point shift = new Point();
 
-  private void private_attach(Window window, File file) {
+  private void private_attach(Window window, Path path) {
     window.setBounds(getBoundsAllVisible());
     WindowBounds windowBounds = this;
     WindowClosed.runs(window, () -> {
@@ -57,7 +57,7 @@ public class WindowBounds {
       rectangle.x -= shift.x;
       rectangle.y -= shift.y;
       windowBounds.rectangle = rectangle;
-      ObjectProperties.trySave(windowBounds, file);
+      ObjectProperties.trySave(windowBounds, path);
     });
     window.addComponentListener(new ComponentAdapter() {
       private final Timing timing = Timing.stopped();

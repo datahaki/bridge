@@ -1,8 +1,9 @@
 // code by jph
 package showcase.img;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.function.Function;
 
 import ch.alpine.tensor.Scalar;
@@ -31,12 +32,12 @@ import ch.alpine.tensor.sca.win.WindowFunctions;
 
   static void main() throws IOException {
     Tensor tensor = Subdivide.of(0, 100, 2000).map(Polynomial.of(Tensors.vector(0, 5, 1))).map(Cos.FUNCTION);
-    File folder = HomeDirectory.Pictures(SpectrogramWindowDemo.class.getSimpleName());
-    folder.mkdir();
+    Path folder = HomeDirectory.Pictures(SpectrogramWindowDemo.class.getSimpleName());
+    Files.createDirectories(folder);
     for (WindowFunctions windowFunctions : WindowFunctions.values()) {
       ScalarUnaryOperator scalarUnaryOperator = windowFunctions.get();
       Tensor image = vector(tensor, scalarUnaryOperator, ColorDataGradients.VISIBLE_SPECTRUM);
-      Export.of(new File(folder, windowFunctions.name() + ".png"), ImageResize.nearest(image, 4));
+      Export.of(folder.resolve(windowFunctions.name() + ".png"), ImageResize.nearest(image, 4));
     }
   }
 }

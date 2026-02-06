@@ -2,8 +2,9 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,8 +14,8 @@ import ch.alpine.tensor.ext.HomeDirectory;
 enum Showcase {
   ;
   static void main() throws IOException {
-    File folder = HomeDirectory.Pictures("Showcase");
-    folder.mkdir();
+    Path folder = HomeDirectory.Pictures("Showcase");
+    Files.createDirectories(folder);
     Set<Showcases> set = new HashSet<>();
     set.add(Showcases.ReImPlot0);
     set.add(Showcases.SpectrogramLin);
@@ -23,7 +24,7 @@ enum Showcase {
     set.add(Showcases.MatrixPlot1);
     for (Showcases showDemos : set) {
       Show show = showDemos.getShow();
-      show.export(new File(folder, showDemos.name() + ".png"), new Dimension(480, 240));
+      show.export(folder.resolve(showDemos.name() + ".png"), new Dimension(480, 240));
     }
   }
 }

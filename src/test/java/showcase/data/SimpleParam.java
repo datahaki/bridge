@@ -37,7 +37,7 @@ public class SimpleParam extends BaseParam {
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
 
   public static class AnotherParam {
-    public File file = HomeDirectory.file();
+    public File file = HomeDirectory.file().toFile();
     public Color color = Color.RED;
   }
 
