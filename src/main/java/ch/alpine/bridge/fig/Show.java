@@ -31,8 +31,8 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.chq.ExactScalarQ;
-import ch.alpine.tensor.ext.FileExtension;
 import ch.alpine.tensor.ext.Jpeg;
+import ch.alpine.tensor.ext.PathName;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -232,7 +232,7 @@ public class Show implements Serializable {
    * @param dimension of image
    * @throws IOException */
   public void export(Path path, Dimension dimension) throws IOException {
-    String string = FileExtension.of(path);
+    String string = PathName.of(path).extension();
     BufferedImage bufferedImage = image(dimension);
     switch (string) {
     case "jpg", "jpeg" -> Jpeg.put(bufferedImage, path, JPG_QUALITY);

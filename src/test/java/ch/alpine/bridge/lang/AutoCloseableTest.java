@@ -49,8 +49,9 @@ class AutoCloseableTest {
   }
 
   @Test
-  void test2b() throws InterruptedException {
+  void test2b() {
     try (Inner2 _ = new Inner2()) {
+      // ---
     } catch (Exception exception) {
       // ---
     }
