@@ -13,16 +13,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class ResourceLocatorTest {
+  @TempDir
+  Path tempDir;
+
   @Test
-  void test(@TempDir Path folder) {
-    ResourceLocator resourceLocator = new ResourceLocator(folder);
-    assertEquals(resourceLocator.resolve(""), folder);
+  void test() {
+    ResourceLocator resourceLocator = new ResourceLocator(tempDir);
+    assertEquals(resourceLocator.resolve(""), tempDir);
     Path file = resourceLocator.properties(getClass());
     assertFalse(Files.isRegularFile(file));
     resourceLocator.tryLoad(new ResourceLocatorTest());
     resourceLocator.trySave(new ResourceLocatorTest());
     ResourceLocator rl2 = resourceLocator.sub("here");
-    Path path = folder.resolve("here");
+    Path path = tempDir.resolve("here");
     assertTrue(Files.isDirectory(path));
     assertEquals(rl2.resolve(""), path);
   }

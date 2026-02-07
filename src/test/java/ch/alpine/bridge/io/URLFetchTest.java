@@ -49,9 +49,12 @@ class URLFetchTest {
     assumeTrue(IS_ONLINE);
   }
 
+  @TempDir
+  Path tempDir;
+
   @Test
-  void testSimple(@TempDir Path tempDir) throws IOException, URISyntaxException {
-    Path file = tempDir.resolve("file.ico");
+  void testSimple() throws IOException, URISyntaxException {
+    Path file = tempDir.resolve("file1.ico");
     try (URLFetch urlFetch = new URLFetch("http://www.hakenberg.de/favicon.ico")) {
       assertEquals(urlFetch.length(), 1406);
       assertEquals(urlFetch.contentType(), "image/x-icon");
@@ -87,8 +90,8 @@ class URLFetchTest {
   }
 
   @Test
-  void testDuplicate(@TempDir Path tempDir) throws IOException, URISyntaxException {
-    Path file = tempDir.resolve("file.ico");
+  void testDuplicate() throws IOException, URISyntaxException {
+    Path file = tempDir.resolve("file2.ico");
     try (URLFetch urlFetch = new URLFetch("http://www.hakenberg.de/favicon.ico")) {
       urlFetch.downloadIfMissing(file);
       urlFetch.downloadIfMissing(file);

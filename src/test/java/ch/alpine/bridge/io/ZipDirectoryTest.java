@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,8 +19,11 @@ import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 
 class ZipDirectoryTest {
+  @TempDir
+  Path tempDir;
+
   @Test
-  void testSimple(@TempDir Path tempDir) throws IOException {
+  void testSimple() throws IOException {
     Path folder = tempDir.resolve("folder");
     assertFalse(Files.exists(folder));
     Files.createDirectories(folder);
@@ -38,13 +40,13 @@ class ZipDirectoryTest {
   }
 
   @Test
-  void testBinary(@TempDir File tempDir) throws IOException {
-    File file = new File(tempDir, "file");
-    assertFalse(file.exists());
+  void testBinary() throws IOException {
+    Path file = tempDir.resolve("file");
+    assertFalse(Files.exists(file));
     {
       byte[] array = Primitives.toByteArray(RandomVariate.of(UniformDistribution.unit(), 23948));
-      Files.write(file.toPath(), array);
-      byte[] read = Files.readAllBytes(file.toPath());
+      Files.write(file, array);
+      byte[] read = Files.readAllBytes(file);
       assertArrayEquals(array, read);
     }
   }

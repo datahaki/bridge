@@ -38,14 +38,17 @@ import showcase.data.TimeParam;
 import showcase.data.V011Param;
 
 class ObjectPropertiesTest {
+  @TempDir
+  Path tempDir;
+
   @Test
-  void testSimple(@TempDir Path folder) throws IOException {
+  void testSimple() throws IOException {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[1].some = false;
     simpleParam.nestedParams[1].text = "here!";
     simpleParam.nestedParams[1].anotherParam.color = Color.BLUE;
     simpleParam.nestedParams[1].basic = false;
-    Path file = folder.resolve("here.properties");
+    Path file = tempDir.resolve("hereSimple.properties");
     ObjectProperties.save(simpleParam, file);
     simpleParam = null;
     SimpleParam simpleCopy = new SimpleParam();
@@ -61,13 +64,13 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  void testTrySaveAndLoad(@TempDir Path tempDir) throws IOException {
+  void testTrySaveAndLoad() throws IOException {
     SimpleParam simpleParam = new SimpleParam();
     simpleParam.nestedParams[0].some = false;
     simpleParam.nestedParams[1].text = "here!";
     simpleParam.nestedParams[0].anotherParam.color = Color.PINK;
     simpleParam.nestedParams[1].basic = false;
-    Path file = tempDir.resolve("file.properties");
+    Path file = tempDir.resolve("fileTryAndSave.properties");
     assertFalse(Files.exists(file));
     ObjectProperties.trySave(simpleParam, file);
     assertTrue(Files.exists(file));
@@ -83,14 +86,14 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  void testLaram(@TempDir Path folder) throws IOException {
+  void testLaram() throws IOException {
     SimpleLaram simpleLaram = new SimpleLaram();
     String string0 = ObjectProperties.join(simpleLaram);
     simpleLaram.nestedParams.get(0).some = false;
     simpleLaram.nestedParams.get(1).text = "new text";
     simpleLaram.nestedParams.get(1).scalar = RationalScalar.HALF;
     String string1 = ObjectProperties.join(simpleLaram);
-    Path file = folder.resolve("here2.properties");
+    Path file = tempDir.resolve("here2.properties");
     ObjectProperties.save(simpleLaram, file);
     simpleLaram = null;
     SimpleLaram simpleCopy = new SimpleLaram();
@@ -147,11 +150,11 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  void testSaveLoad(@TempDir Path folder) throws IOException {
+  void testSaveLoad() throws IOException {
     V011Param v011Param1 = new V011Param(3);
     v011Param1.anotherParam.file = new File("c:\\windows\\here.txt");
     v011Param1.string = "abc\u00a3 here more\njaja\tasd\u3000special";
-    Path file = folder.resolve("export.properties");
+    Path file = tempDir.resolve("exportSaveLoad.properties");
     ObjectProperties.save(v011Param1, file);
     V011Param v011Param2 = new V011Param(3);
     ObjectProperties.load(v011Param2, file);
@@ -170,12 +173,12 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  void testTimeParam(@TempDir Path folder) throws IOException {
+  void testTimeParam() throws IOException {
     TimeParam timeParam = new TimeParam();
     timeParam.dateTime = LocalDateTime.of(2020, 1, 1, 0, 0);
     timeParam.date = LocalDate.of(1923, 12, 31);
     timeParam.time = LocalTime.of(23, 59, 33);
-    Path file = folder.resolve("file.properties");
+    Path file = tempDir.resolve("fileTimeParam.properties");
     ObjectProperties.save(timeParam, file);
     timeParam = new TimeParam();
     ObjectProperties.load(timeParam, file);
@@ -185,23 +188,23 @@ class ObjectPropertiesTest {
   }
 
   @Test
-  void testSimple2(@TempDir Path folder) throws IOException {
+  void testSimple2() throws IOException {
     V011Param v011Param = new V011Param(3);
     v011Param.list.set(1, null);
     v011Param.another.set(1, null);
     ObjectProperties.list(v011Param);
     ObjectProperties.join(v011Param);
-    Path file = folder.resolve("here4.properties");
+    Path file = tempDir.resolve("here4.properties");
     ObjectProperties.save(v011Param, file);
     ObjectProperties.load(new V011Param(1), file);
     ObjectProperties.load(new V011Param(2), file);
   }
 
   @Test
-  void testRecreate(@TempDir Path folder) throws IOException {
+  void testRecreate() throws IOException {
     ClipParam clipParam = new ClipParam();
     clipParam.clipReal = Clips.interval(9, 10);
-    Path file = folder.resolve("here3.properties");
+    Path file = tempDir.resolve("here3.properties");
     ObjectProperties.save(clipParam, file);
     ClipParam clipParam2 = new ClipParam();
     ObjectProperties.load(clipParam2, file);

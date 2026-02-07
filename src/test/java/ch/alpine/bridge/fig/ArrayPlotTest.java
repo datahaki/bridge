@@ -18,8 +18,11 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.sca.Clips;
 
 class ArrayPlotTest {
+  @TempDir
+  Path tempDir;
+
   @Test
-  void testResolution(@TempDir Path tempDir) throws IOException {
+  void testResolution() throws IOException {
     // the test exists to check whether the image size is constrained by 2^15-1
     // and finds that the image size may exceed that
     Tensor raw = RandomVariate.of(UniformDistribution.unit(), 2, Short.MAX_VALUE);

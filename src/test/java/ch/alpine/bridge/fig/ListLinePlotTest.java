@@ -35,6 +35,9 @@ import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
 
 class ListLinePlotTest {
+  @TempDir
+  Path tempDir;
+
   @Test
   void testEmptyRow() {
     Show show = new Show();
@@ -90,7 +93,7 @@ class ListLinePlotTest {
   }
 
   @Test
-  void testSome(@TempDir Path tempDir) throws IOException {
+  void testSome() throws IOException {
     Tensor values1 = RandomVariate.of(UniformDistribution.unit(), 5);
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
     Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
@@ -108,12 +111,12 @@ class ListLinePlotTest {
     Tensor domain4 = Tensors.vector(1, 3, 2, 5, 4).multiply(RealScalar.of(0.2));
     show.add(ListLinePlot.of(domain4.map(suoX), domain4.map(suoY)));
     // ChartFactory.setChartTheme(ChartTheme.STANDARD);
-    Path file = tempDir.resolve(ListPlot.class.getSimpleName() + ".png");
+    Path file = tempDir.resolve(ListPlot.class.getSimpleName() + "Some.png");
     show.export(file, new Dimension(500, 300));
   }
 
   @Test
-  void testDistrib1(@TempDir Path tempDir) throws IOException {
+  void testDistrib1() throws IOException {
     Distribution dist = NormalDistribution.of(1, 2);
     HistogramDistribution distribution = (HistogramDistribution) //
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
@@ -128,7 +131,7 @@ class ListLinePlotTest {
   }
 
   @Test
-  void testDistrib2(@TempDir Path tempDir) throws IOException {
+  void testDistrib2() throws IOException {
     Distribution dist = NormalDistribution.of(1, 2);
     HistogramDistribution distribution = (HistogramDistribution) //
     HistogramDistribution.of(RandomVariate.of(dist, 2000), RealScalar.of(0.25));
@@ -181,10 +184,10 @@ class ListLinePlotTest {
   }
 
   @Test
-  void testEmptyPass(@TempDir Path tempDir) throws IOException {
+  void testEmptyPass() throws IOException {
     Show show = new Show();
     show.add(ListLinePlot.of(Tensors.empty()));
-    Path file = tempDir.resolve("file.png");
+    Path file = tempDir.resolve("filePass.png");
     assertFalse(Files.isRegularFile(file));
     show.export(file, new Dimension(100, 100));
     assertTrue(Files.isRegularFile(file));

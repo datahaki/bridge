@@ -11,7 +11,9 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -231,11 +233,14 @@ public class Show implements Serializable {
    * @throws IOException */
   public void export(Path path, Dimension dimension) throws IOException {
     String string = FileExtension.of(path);
-    // FIXME BRIDGE image type should depend on file extension
     BufferedImage bufferedImage = image(dimension);
     switch (string) {
     case "jpg", "jpeg" -> Jpeg.put(bufferedImage, path, JPG_QUALITY);
-    default -> ImageIO.write(bufferedImage, string, path.toFile());
+    default -> {
+      try (OutputStream outputStream = Files.newOutputStream(path)) {
+        ImageIO.write(bufferedImage, string, outputStream);
+      }
+    }
     }
   }
 
