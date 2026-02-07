@@ -5,7 +5,7 @@ import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.Periodogram;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
-import ch.alpine.bridge.lang.ShowProvider;
+import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;

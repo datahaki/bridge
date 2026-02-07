@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.WindowClosed;
-import ch.alpine.bridge.lang.WindowProvider;
+import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.util.ObjectProperties;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.ext.HomeDirectory;

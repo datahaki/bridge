@@ -211,6 +211,7 @@ public class Show implements Serializable {
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
     render(graphics, defaultInsets(dimension, graphics.getFont().getSize()));
+    graphics.dispose();
     return bufferedImage;
   }
 
@@ -223,6 +224,7 @@ public class Show implements Serializable {
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
     render(graphics, rectangle);
+    graphics.dispose();
     return bufferedImage;
   }
 

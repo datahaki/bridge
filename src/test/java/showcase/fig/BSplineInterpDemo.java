@@ -5,7 +5,7 @@ import ch.alpine.bridge.fig.ListPlot;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
-import ch.alpine.bridge.lang.ShowProvider;
+import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;

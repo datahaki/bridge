@@ -3,7 +3,7 @@ package showcase.fig;
 
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
-import ch.alpine.bridge.lang.ShowProvider;
+import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.tri.Cosh;

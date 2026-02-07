@@ -49,7 +49,6 @@ public class ShowDialog extends JDialog {
       jButton.addActionListener(_ -> {
         for (Show show : list)
           try {
-            // TODO BRIDGE label to filename
             // TODO BRIDGE dimension from dialog
             show.export(HomeDirectory.Pictures.resolve("fig_" + show.getPlotLabel() + ".png"), new Dimension(640, 480));
           } catch (Exception exception) {

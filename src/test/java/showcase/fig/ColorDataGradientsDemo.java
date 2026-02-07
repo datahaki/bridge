@@ -3,7 +3,7 @@ package showcase.fig;
 
 import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.Show;
-import ch.alpine.bridge.lang.ShowProvider;
+import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.img.ColorDataGradients;

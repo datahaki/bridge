@@ -13,7 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import ch.alpine.bridge.fig.Show;
-import ch.alpine.bridge.lang.ShowProvider;
+import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.ext.HomeDirectory;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;

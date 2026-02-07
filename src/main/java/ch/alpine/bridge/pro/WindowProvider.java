@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.lang;
+package ch.alpine.bridge.pro;
 
 import java.awt.Window;
 

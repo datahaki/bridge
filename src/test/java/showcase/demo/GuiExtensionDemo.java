@@ -13,7 +13,7 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.ContainerDescent;
-import ch.alpine.bridge.lang.WindowProvider;
+import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.FieldPanel;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.FieldsEditorParam;

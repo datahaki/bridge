@@ -4,7 +4,7 @@ package showcase.demo;
 import java.awt.Window;
 
 import ch.alpine.bridge.awt.WindowClosed;
-import ch.alpine.bridge.lang.WindowProvider;
+import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.util.DialogFieldsEditor;
 import ch.alpine.bridge.swing.LookAndFeels;
 import showcase.data.GuiExtension;

@@ -4,7 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.image.BufferedImage;
 
-import ch.alpine.bridge.lang.ShowProvider;
+import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.ComplexScalar;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
