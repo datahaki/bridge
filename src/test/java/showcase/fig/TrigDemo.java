@@ -1,3 +1,4 @@
+// code by jph
 package showcase.fig;
 
 import ch.alpine.bridge.fig.Plot;

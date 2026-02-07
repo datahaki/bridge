@@ -1,3 +1,4 @@
+// code by jph
 package showcase;
 
 import java.awt.Dimension;

@@ -1,3 +1,4 @@
+// code by jph
 package showcase.fig;
 
 import java.awt.BasicStroke;

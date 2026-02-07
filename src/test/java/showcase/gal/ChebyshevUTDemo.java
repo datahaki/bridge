@@ -1,3 +1,4 @@
+// code by jph
 package showcase.gal;
 
 import java.util.LinkedList;

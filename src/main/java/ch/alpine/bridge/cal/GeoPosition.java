@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.cal;
 
 import ch.alpine.tensor.RealScalar;
