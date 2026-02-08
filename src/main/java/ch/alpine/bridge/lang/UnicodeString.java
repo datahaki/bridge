@@ -12,7 +12,7 @@ import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 
-public enum Unicode {
+public enum UnicodeString {
   ;
   private static final char SPACE = ' ';
   private static final String OVER = SPACE + "/" + SPACE;
@@ -20,19 +20,19 @@ public enum Unicode {
 
   /** @param scalar
    * @return string expression of given scalar suitable for rendering in {@link Graphics} */
-  public static String valueOf(Scalar scalar) {
+  public static String of(Scalar scalar) {
     Optional<BigInteger> optional = Scalars.optionalBigInteger(scalar);
     if (optional.isPresent())
-      return valueOf(optional.orElseThrow());
+      return of(optional.orElseThrow());
     if (scalar instanceof RationalScalar rationalScalar)
-      return valueOf(rationalScalar.numerator()) + OVER + valueOf(rationalScalar.denominator());
+      return of(rationalScalar.numerator()) + OVER + of(rationalScalar.denominator());
     if (scalar instanceof Quantity quantity)
-      return valueOf(quantity.value()) + SPACE + valueOf(quantity.unit());
+      return of(quantity.value()) + SPACE + of(quantity.unit());
     if (scalar instanceof DoubleScalar doubleScalar) {
       String string = doubleScalar.toString();
       int index = string.indexOf('.');
       return 0 <= index //
-          ? valueOf(new BigInteger(string.substring(0, index))) + string.substring(index)
+          ? of(new BigInteger(string.substring(0, index))) + string.substring(index)
           : string; // Infinity, NaN
     }
     return scalar.toString();
@@ -40,7 +40,7 @@ public enum Unicode {
 
   /** @param bigInteger
    * @return string expression of given bigInteger suitable for rendering in {@link Graphics} */
-  public static String valueOf(BigInteger bigInteger) {
+  public static String of(BigInteger bigInteger) {
     String string = bigInteger.abs().toString();
     int offset = string.length() % 3;
     if (offset == 0)
@@ -56,8 +56,8 @@ public enum Unicode {
     return stringBuilder.toString();
   }
 
-  public static String valueOf(Integer integer) {
-    return valueOf(BigInteger.valueOf(integer));
+  public static String of(Integer integer) {
+    return of(BigInteger.valueOf(integer));
   }
   // ---
 
@@ -68,7 +68,7 @@ public enum Unicode {
    * 
    * @param unit
    * @return string expression of given unit suitable for rendering in {@link Graphics} */
-  public static String valueOf(Unit unit) {
+  public static String of(Unit unit) {
     return UnicodeUnit.toString(unit);
   }
 }

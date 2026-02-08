@@ -40,7 +40,7 @@ public class ImagePlot extends BaseShowable {
   private final Scalar aspectRatio;
 
   private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
-    this.scalableImage = new ScalableImage(bufferedImage, AffineTransformOp.TYPE_BICUBIC);
+    this.scalableImage = new ScalableImage(bufferedImage, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
     this.cbb = cbb;
     this.flipY = flipY;
     this.aspectRatio = aspectRatio;

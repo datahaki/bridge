@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import ch.alpine.bridge.lang.Unicode;
+import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.bridge.swing.rs.RangeSlider;
@@ -73,8 +73,8 @@ import ch.alpine.tensor.sca.Clips;
     if (fieldSlider.showRange() || fieldSlider.showValue()) {
       JPanel jPanel = new JPanel(new BorderLayout());
       if (fieldSlider.showRange()) {
-        jPanel.add(new JLabel(Unicode.valueOf(fieldClips.min())), BorderLayout.WEST);
-        jPanel.add(new JLabel(Unicode.valueOf(fieldClips.max())), BorderLayout.EAST);
+        jPanel.add(new JLabel(UnicodeString.of(fieldClips.min())), BorderLayout.WEST);
+        jPanel.add(new JLabel(UnicodeString.of(fieldClips.max())), BorderLayout.EAST);
       }
       if (fieldSlider.showValue())
         jPanel.add(jLabel, BorderLayout.NORTH);
@@ -85,7 +85,7 @@ import ch.alpine.tensor.sca.Clips;
   }
 
   private void setLabel(Clip clip) {
-    jLabel.setText(Unicode.valueOf(clip.min()) + " \u2026 " + Unicode.valueOf(clip.max()));
+    jLabel.setText(UnicodeString.of(clip.min()) + " \u2026 " + UnicodeString.of(clip.max()));
   }
 
   @Override // from FieldPanel

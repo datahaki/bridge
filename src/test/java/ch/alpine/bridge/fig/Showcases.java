@@ -3,6 +3,8 @@ package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.ComplexScalar;
@@ -82,6 +84,20 @@ import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 import showcase.demo.CepstrogramDemo;
 
 public enum Showcases implements ShowProvider {
+  TextsPlot0 {
+    @Override
+    public Show getShow() {
+      ColorDataGradient f = ColorDataGradients.CLASSIC;
+      Show show = new Show(ColorDataLists._109.strict()); // use RGB for line color
+      Map<Tensor, String> map = new HashMap<>();
+      map.put(Tensors.vector(1, 2), "12");
+      map.put(Tensors.vector(3, 2), "32");
+      map.put(Tensors.vector(2, 3), "23");
+      map.put(Tensors.vector(4, 4), "text");
+      show.add(TextsPlot.of(map));
+      return show;
+    }
+  },
   ListLinePlot0 {
     @Override
     public Show getShow() {

@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 
-import ch.alpine.bridge.lang.Unicode;
+import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.tensor.RationalScalar;
@@ -53,15 +53,15 @@ import ch.alpine.tensor.Scalar;
       int value1 = jSlider.getValue();
       if (index != value1) { // prevent notifications if slider value hasn't changed
         Scalar scalar = fieldClips.interp(RationalScalar.of(index = value1, resolution));
-        jLabel.setText(Unicode.valueOf(scalar));
+        jLabel.setText(UnicodeString.of(scalar));
         notifyListeners(scalar.toString());
       }
     });
     if (fieldSlider.showRange() || fieldSlider.showValue()) {
       JPanel jPanel = new JPanel(new BorderLayout());
       if (fieldSlider.showRange()) {
-        jPanel.add(new JLabel(Unicode.valueOf(fieldClips.min())), BorderLayout.WEST);
-        jPanel.add(new JLabel(Unicode.valueOf(fieldClips.max())), BorderLayout.EAST);
+        jPanel.add(new JLabel(UnicodeString.of(fieldClips.min())), BorderLayout.WEST);
+        jPanel.add(new JLabel(UnicodeString.of(fieldClips.max())), BorderLayout.EAST);
       }
       if (fieldSlider.showValue())
         jPanel.add(jLabel, BorderLayout.NORTH);
@@ -84,7 +84,7 @@ import ch.alpine.tensor.Scalar;
 
   private void labelIndex(Object value) {
     Scalar scalar = convert(value);
-    jLabel.setText(Unicode.valueOf(scalar));
+    jLabel.setText(UnicodeString.of(scalar));
     index = fieldClips.indexOf(scalar, resolution);
   }
 

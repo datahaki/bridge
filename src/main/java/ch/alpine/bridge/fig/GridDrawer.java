@@ -10,7 +10,7 @@ import java.util.Objects;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
-import ch.alpine.bridge.lang.Unicode;
+import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.sca.Clip;
@@ -41,8 +41,8 @@ public class GridDrawer {
           rectangle.height, _g, showableConfig.getClip(1));
     // ---
     {
-      String unit0 = Unicode.valueOf(QuantityUnit.of(xRange));
-      String unit1 = Unicode.valueOf(QuantityUnit.of(yRange));
+      String unit0 = UnicodeString.of(QuantityUnit.of(xRange));
+      String unit1 = UnicodeString.of(QuantityUnit.of(yRange));
       if (!unit0.isEmpty() || !unit1.isEmpty()) {
         if (unit0.isEmpty())
           unit0 = "[]";

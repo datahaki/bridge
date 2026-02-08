@@ -41,7 +41,7 @@ public class ShowDialog extends JDialog {
     super(JOptionPane.getFrameForComponent(parentComponent), false); // non-blocking
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
-    {
+    if (false) {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
       jToolBar.setFloatable(false);

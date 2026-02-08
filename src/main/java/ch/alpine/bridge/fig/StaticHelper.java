@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import ch.alpine.bridge.lang.Unicode;
+import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -78,7 +78,7 @@ import ch.alpine.tensor.tmp.TsEntry;
     Scalar scalar = IntegerQ.of(display) //
         ? display
         : N.DOUBLE.apply(display);
-    return Unicode.valueOf(scalar);
+    return UnicodeString.of(scalar);
   }
 
   private static final Scalar[] RATIOS = { //

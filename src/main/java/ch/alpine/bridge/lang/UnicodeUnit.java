@@ -19,6 +19,9 @@ import ch.alpine.tensor.sca.Sign;
 /* package */ enum UnicodeUnit {
   INSTANCE;
 
+  private static final String JOIN_DELIMITER = "\u2009";
+  private static final char DIVISION = '\u2215';
+
   /** @param unit
    * @return string expression of unit using unicode characters */
   public static String toString(Unit unit) {
@@ -69,7 +72,7 @@ import ch.alpine.tensor.sca.Sign;
     if (list.size() == 1 && 1 < map.size()) {
       Entry<String, Scalar> entry = list.getFirst();
       Unit den = Unit.of(entry.getKey() + Unit.POWER_DELIMITER + entry.getValue().negate());
-      return toString(unit.add(den).map()) + '/' + toString(den.map());
+      return toString(unit.add(den).map()) + DIVISION + toString(den.map());
     }
     return toString(map);
   }
@@ -79,7 +82,7 @@ import ch.alpine.tensor.sca.Sign;
   private String toString(Map<String, Scalar> map) {
     return map.entrySet().stream() //
         .map(entry -> atomString(entry.getKey()) + exponentString(entry.getValue().toString())) //
-        .collect(Collectors.joining(Unit.JOIN_DELIMITER)); // delimited by '*'
+        .collect(Collectors.joining(JOIN_DELIMITER)); // delimited by '*'
   }
 
   private String atomString(String atom) {

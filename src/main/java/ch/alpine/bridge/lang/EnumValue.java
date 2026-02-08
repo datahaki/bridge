@@ -76,6 +76,7 @@ public enum EnumValue {
    * @return
    * @throws Exception if ordinal is not in valid range */
   public static <T extends Enum<T>> T fromOrdinal(Class<T> cls, int ordinal) {
+    /* getEnumConstants() clones the entire array of enum constants(!) */
     return cls.getEnumConstants()[ordinal];
   }
 }
