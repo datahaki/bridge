@@ -19,7 +19,11 @@ import ch.alpine.tensor.sca.Sign;
 /* package */ enum UnicodeUnit {
   INSTANCE;
 
+  /** replaces the multiplication star '*' between base units
+   * for example in "m^2*s" */
   private static final String JOIN_DELIMITER = "\u2009";
+  /** may occur once in the string for instance
+   * "m*s^-1" is mapped to "m/s" */
   private static final char DIVISION = '\u2215';
 
   /** @param unit

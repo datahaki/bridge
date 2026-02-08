@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.fig;
 
 import java.awt.Color;
@@ -12,6 +13,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 public class TextsPlot extends BaseShowable {
+  // TODO BRIDGE this is not the final data structure
   public static TextsPlot of(Map<Tensor, String> map) {
     return new TextsPlot(map);
   }

@@ -71,6 +71,7 @@ public class Show implements Serializable {
   private CoordinateBoundingBox cbb = null;
   private DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
   private boolean frame = true;
+  private boolean gridLines = true;
   private String plotLabel = "";
 
   /** @param colorDataIndexed to assign a default color to a showable when
@@ -101,6 +102,15 @@ public class Show implements Serializable {
   /** @return */
   public final String getPlotLabel() {
     return plotLabel;
+  }
+
+  // TODO BRIDGE offer more fine grain control: gridline and axes are currently coupled
+  public final void setGridLines(boolean gridLines) {
+    this.gridLines = gridLines;
+  }
+
+  public final boolean getGridLines() {
+    return gridLines;
   }
 
   /** @param cbb null is permitted in which case the function
@@ -283,8 +293,10 @@ public class Show implements Serializable {
       showableConfig = flipY //
           ? new ShowableConfigYF(rectangle, _cbb)
           : new ShowableConfig(rectangle, _cbb);
-      GridDrawer gridDrawer = new GridDrawer(dateTimeFocus);
-      gridDrawer.render(showableConfig, _g);
+      if (gridLines) {
+        GridDrawer gridDrawer = new GridDrawer(dateTimeFocus);
+        gridDrawer.render(showableConfig, _g);
+      }
       for (Showable showable : showables) {
         showable.render(showableConfig, graphics);
         showable.tender(showableConfig, _g);

@@ -16,6 +16,9 @@ import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 
 class UnicodeUnitTest {
+  private static final String T = "\u2009";
+  private static final char D = '\u2215';
+
   @Test
   void testOne() {
     String string = UnicodeString.of(Unit.ONE);
@@ -24,9 +27,9 @@ class UnicodeUnitTest {
 
   @Test
   void testOfUnit() {
-    assertEquals(UnicodeString.of(Unit.of("kg*m*s^-2")), "kg*m/s\u00b2");
-    assertEquals(UnicodeString.of(Unit.of("kg*m*s^-2*z^-1")), "kg*m*s\u207b\u00b2*z\u207b\u00b9");
-    assertEquals(UnicodeString.of(Unit.of("kg*m^2")), "kg*m\u00b2");
+    assertEquals(UnicodeString.of(Unit.of("kg*m*s^-2")), "kg" + T + "m" + D + "s\u00b2");
+    assertEquals(UnicodeString.of(Unit.of("kg*m*s^-2*z^-1")), "kg" + T + "m" + T + "s\u207b\u00b2" + T + "z\u207b\u00b9");
+    assertEquals(UnicodeString.of(Unit.of("kg*m^2")), "kg" + T + "m\u00b2");
     assertEquals(UnicodeString.of(Unit.of("m^-2")), "m\u207b\u00b2");
   }
 

@@ -13,12 +13,15 @@ import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
 
 class UnicodeStringTest {
+  private static final String T = "\u2009";
+  private static final char D = '\u2215';
+
   @Test
   void testQuantity() {
     assertEquals(UnicodeString.of(RealScalar.of(3)), "3");
     assertEquals(UnicodeString.of(Quantity.of(3, "s^2")), "3 s\u00b2");
     assertEquals(UnicodeString.of(Quantity.of(3, "s^-2")), "3 s\u207b\u00b2");
-    assertEquals(UnicodeString.of(Quantity.of(3, "m*s^-2")), "3 m/s\u00b2");
+    assertEquals(UnicodeString.of(Quantity.of(3, "m*s^-2")), "3 m" + D + "s\u00b2");
     assertEquals(UnicodeString.of(Quantity.of(4, "s^3")), "4 s\u00b3");
     assertEquals(UnicodeString.of(Quantity.of(4, "s^-3")), "4 s\u207b\u00b3");
     assertEquals(UnicodeString.of(Quantity.of(5, "s^4")), "5 s^4");
