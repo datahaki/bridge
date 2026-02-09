@@ -51,7 +51,7 @@ public class DensityPlot extends BarLegendPlot {
           .map(Scalar.class::cast) //
           .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
       Rescale rescale = new Rescale(matrix);
-      bufferedImage = ImageFormat.of(rescale.result().map(colorDataGradient));
+      bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
       scalableImage = new ScalableImage(bufferedImage, AffineTransformOp.TYPE_BILINEAR);
       clip = rescale.clip();
     }

@@ -22,7 +22,7 @@ public enum SpectrogramDemo {
     Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
     ScalarUnaryOperator linear = ChirpFunctions.linear(RealScalar.of(400), RealScalar.of(2800));
     linear = linear.andThen(Quantity.of(1, "m")::multiply);
-    Tensor signal = domain.map(linear);
+    Tensor signal = domain.maps(linear);
     return Spectrogram.of(signal, Quantity.of(8000, "s^-1"));
   }
 
@@ -30,7 +30,7 @@ public enum SpectrogramDemo {
     Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
     ScalarUnaryOperator linear = ChirpFunctions.quadratic(RealScalar.of(400), RealScalar.of(4000));
     linear = linear.andThen(Quantity.of(1, "m")::multiply);
-    Tensor signal = domain.map(linear);
+    Tensor signal = domain.maps(linear);
     return Spectrogram.of(signal, Quantity.of(8000, "s^-1"));
   }
 
@@ -38,7 +38,7 @@ public enum SpectrogramDemo {
     Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
     ScalarUnaryOperator linear = ChirpFunctions.exponential(RealScalar.of(400), RealScalar.of(2));
     linear = linear.andThen(Quantity.of(1, "m")::multiply);
-    Tensor signal = domain.map(linear);
+    Tensor signal = domain.maps(linear);
     return Spectrogram.of(signal, Quantity.of(8000, "s^-1"));
   }
 

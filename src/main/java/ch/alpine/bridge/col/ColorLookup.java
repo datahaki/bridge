@@ -19,7 +19,7 @@ public enum ColorLookup {
    * @return strict color data table with given length number of colors */
   public static ColorDataIndexed hsluv_lightness(int length, double lightness) {
     return StrictColorDataIndexed.of(Subdivide.increasing(Clips.unit(), length - 1) //
-        .map(hue -> ColorFormat.toVector(Hsluv.of(hue.number().doubleValue(), 1, lightness, 1))));
+        .maps(hue -> ColorFormat.toVector(Hsluv.of(hue.number().doubleValue(), 1, lightness, 1))));
   }
 
   /** @param length
@@ -27,7 +27,7 @@ public enum ColorLookup {
    * @return
    * @see ColorDataGradient */
   public static ColorDataIndexed increasing(int length, ScalarTensorFunction colorDataGradient) {
-    return StrictColorDataIndexed.of(Subdivide.increasing(Clips.unit(), length - 1).map(colorDataGradient));
+    return StrictColorDataIndexed.of(Subdivide.increasing(Clips.unit(), length - 1).maps(colorDataGradient));
   }
 
   /** @param length
@@ -35,6 +35,6 @@ public enum ColorLookup {
    * @return
    * @see ColorDataGradient */
   public static ColorDataIndexed decreasing(int length, ScalarTensorFunction colorDataGradient) {
-    return StrictColorDataIndexed.of(Subdivide.decreasing(Clips.unit(), length - 1).map(colorDataGradient));
+    return StrictColorDataIndexed.of(Subdivide.decreasing(Clips.unit(), length - 1).maps(colorDataGradient));
   }
 }

@@ -16,7 +16,7 @@ import ch.alpine.tensor.sca.tri.Sinc;
 
 public enum GeoPosition {
   ;
-  private static final Tensor ID3 = IdentityMatrix.of(3).map(N.DOUBLE);
+  private static final Tensor ID3 = IdentityMatrix.of(3).maps(N.DOUBLE);
   private static final Scalar HALF = RealScalar.of(0.5);
 
   /** @param vector of length 3

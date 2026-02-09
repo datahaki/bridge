@@ -65,7 +65,7 @@ public class DiscretePlot extends BaseShowable {
       Tensor samples = Range.of( //
           Scalars.bigIntegerValueExact(domain.min()), //
           Scalars.bigIntegerValueExact(domain.max()));
-      Clip clip = StaticHelper.minMax(samples.map(suo));
+      Clip clip = StaticHelper.minMax(samples.maps(suo));
       if (Objects.nonNull(clip))
         return Optional.of(CoordinateBoundingBox.of(domain, clip));
     }

@@ -26,7 +26,7 @@ public class ArrayPlot extends AbstractGridPlot {
     MatrixQ.require(matrix);
     Rescale rescale = new Rescale(matrix);
     ScalableImage scalableImage = new ScalableImage( //
-        ImageFormat.of(rescale.result().map(colorDataGradient)), AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        ImageFormat.of(rescale.result().maps(colorDataGradient)), AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
     Clip clip = rescale.clip();
     return new ArrayPlot(colorDataGradient, scalableImage, cbb, clip);
   }

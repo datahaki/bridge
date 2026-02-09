@@ -210,7 +210,7 @@ public enum Showcases implements ShowProvider {
       Tensor matrix = HilbertMatrix.of(40);
       Show show = new Show();
       Tensor values = SingularValueList.of(matrix);
-      show.add(ListPlot.of(Range.of(0, values.length()), values.map(Log10.FUNCTION))).setLabel("singular values");
+      show.add(ListPlot.of(Range.of(0, values.length()), values.maps(Log10.FUNCTION))).setLabel("singular values");
       Clip clip = Clips.absolute(5);
       show.add(Plot.of(Erfc.FUNCTION, clip)).setLabel("Erfc");
       return show;
@@ -313,7 +313,7 @@ public enum Showcases implements ShowProvider {
       show.setPlotLabel("Wiener Process with Integral");
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.of(3, 1));
       Tensor samples = RandomVariate.of(UniformDistribution.of(Clips.unit()), 100);
-      samples.map(randomFunction::evaluate); // for integral
+      samples.maps(randomFunction::evaluate); // for integral
       show.add(Plot.of(randomFunction::evaluate, Clips.unit())).setLabel("timeSeries");
       TimeSeries timeSeries = randomFunction.timeSeries();
       TimeSeries integral = TimeSeriesIntegrate.of(timeSeries);
@@ -357,7 +357,7 @@ public enum Showcases implements ShowProvider {
       for (int d = 0; d < max; ++d) {
         ScalarUnaryOperator suo = ClenshawChebyshev.of(UnitVector.of(d + 1, d));
         ScalarUnaryOperator su2 = Chebyshev.T.of(d);
-        show.add(ListLinePlot.of(domain, domain.map(suo).subtract(domain.map(su2)))).setLabel("" + d);
+        show.add(ListLinePlot.of(domain, domain.maps(suo).subtract(domain.maps(su2)))).setLabel("" + d);
         // show.add(Plot.of(s->suo.apply(s).subtract(su2.apply(s)), Clips.absoluteOne())).setLabel(""+d);
       }
       return show;
@@ -394,9 +394,9 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("Clenshaw Chebyshev");
       for (ChebyshevNodes chebyshevNodes : ChebyshevNodes.values()) {
-        Tensor coeffs = LinearSolve.of(chebyshevNodes.matrix(n), chebyshevNodes.of(n).map(suo));
+        Tensor coeffs = LinearSolve.of(chebyshevNodes.matrix(n), chebyshevNodes.of(n).maps(suo));
         // System.out.println(Pretty.of(coeffs.map(Round._3)));
-        Tensor error = domain.map(ClenshawChebyshev.of(coeffs)).subtract(domain.map(suo));
+        Tensor error = domain.maps(ClenshawChebyshev.of(coeffs)).subtract(domain.maps(suo));
         Showable showable = show.add(ListLinePlot.of(domain, error));
         showable.setLabel(chebyshevNodes.name());
       }
@@ -444,7 +444,7 @@ public enum Showcases implements ShowProvider {
       Scalar f1 = Pi.TWO.multiply(RealScalar.of(1209));
       ScalarUnaryOperator suo = t -> Sin.FUNCTION.apply(f0.multiply(t)).add(Sin.FUNCTION.apply(f1.multiply(t)));
       Tensor domain = Subdivide.of(0.0, 0.3, 2400);
-      Tensor signal = domain.map(suo);
+      Tensor signal = domain.maps(suo);
       Tensor points = Transpose.of(Tensors.of(domain, signal));
       Show show = new Show();
       show.setPlotLabel("Periodogram");
@@ -518,7 +518,7 @@ public enum Showcases implements ShowProvider {
       RandomProcess randomProcess = WienerProcess.of(mu, sigma, t_zero, Quantity.of(-3, "m"));
       RandomFunction randomFunction = RandomFunction.of(randomProcess);
       Distribution distribution = UniformDistribution.of(t_zero, t_fine);
-      RandomVariate.of(distribution, 1000).map(randomFunction::evaluate);
+      RandomVariate.of(distribution, 1000).maps(randomFunction::evaluate);
       Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
       show.setPlotLabel("Wiener Process with Offset");
       show.add(TsPlot.of(randomFunction.timeSeries())).setLabel("timeSeries");
@@ -536,7 +536,7 @@ public enum Showcases implements ShowProvider {
       RandomProcess randomProcess = WienerProcess.of(mu, sigma, t_zero, Quantity.of(-3, "m"));
       RandomFunction randomFunction = RandomFunction.of(randomProcess);
       Distribution distribution = UniformDistribution.of(t_zero, t_fine);
-      RandomVariate.of(distribution, 1000).map(randomFunction::evaluate);
+      RandomVariate.of(distribution, 1000).maps(randomFunction::evaluate);
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
       show.setPlotLabel("Candlestick Chart");
       TimeSeries timeSeries = randomFunction.timeSeries();
@@ -619,7 +619,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("Matrix Plot");
       Tensor matrix = Import.of("/ch/alpine/bridge/fig/hb_west0381.csv");
-      matrix = matrix.map(Clips.absoluteOne());
+      matrix = matrix.maps(Clips.absoluteOne());
       show.add(MatrixPlot.of(matrix));
       return show;
     }

@@ -54,9 +54,9 @@ class ListLinePlotTest {
     Showable showable = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
     showable.setLabel("empty");
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5).map(SI.SECONDS::quantity), Tensors.vector(2, 2.2, -1.6)));
+    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5).maps(SI.SECONDS::quantity), Tensors.vector(2, 2.2, -1.6)));
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(0, 2, 5).map(SI.SECONDS::quantity), Tensors.vector(1, 2, 1.6)));
+    show.add(ListLinePlot.of(Tensors.vector(0, 2, 5).maps(SI.SECONDS::quantity), Tensors.vector(1, 2, 1.6)));
     show.add(ListLinePlot.of(Tensors.empty()));
     // CascadeHelper.draw(ListPlot.of(show));
   }
@@ -67,9 +67,9 @@ class ListLinePlotTest {
     Showable showable = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
     showable.setLabel("empty");
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).map(SI.METERS::quantity)));
+    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).maps(SI.METERS::quantity)));
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(3, 5), Tensors.vector(1, 2.6).map(SI.METERS::quantity)));
+    show.add(ListLinePlot.of(Tensors.vector(3, 5), Tensors.vector(1, 2.6).maps(SI.METERS::quantity)));
     // CascadeHelper.draw(ListPlot.of(show));
   }
 
@@ -102,14 +102,14 @@ class ListLinePlotTest {
     Tensor domain1 = RandomVariate.of(UniformDistribution.unit(), values1.length());
     ScalarUnaryOperator suoX = s -> Quantity.of(s.add(RealScalar.of(100)), "s");
     ScalarUnaryOperator suoY = s -> Quantity.of(s.add(RealScalar.of(300)), "m");
-    Showable showable1 = show.add(ListLinePlot.of(domain1.map(suoX), values1.map(suoY)));
+    Showable showable1 = show.add(ListLinePlot.of(domain1.maps(suoX), values1.maps(suoY)));
     showable1.setLabel("first");
     Tensor domain2 = RandomVariate.of(UniformDistribution.unit(), values2.length());
-    show.add(ListLinePlot.of(domain2.map(suoX), values2.map(suoY)));
+    show.add(ListLinePlot.of(domain2.maps(suoX), values2.maps(suoY)));
     Tensor domain3 = RandomVariate.of(UniformDistribution.unit(), values3.length());
-    show.add(ListLinePlot.of(domain3.map(suoX), values3.map(suoY)));
+    show.add(ListLinePlot.of(domain3.maps(suoX), values3.maps(suoY)));
     Tensor domain4 = Tensors.vector(1, 3, 2, 5, 4).multiply(RealScalar.of(0.2));
-    show.add(ListLinePlot.of(domain4.map(suoX), domain4.map(suoY)));
+    show.add(ListLinePlot.of(domain4.maps(suoX), domain4.maps(suoY)));
     // ChartFactory.setChartTheme(ChartTheme.STANDARD);
     Path file = tempDir.resolve(ListPlot.class.getSimpleName() + "Some.png");
     show.export(file, new Dimension(500, 300));
@@ -123,9 +123,9 @@ class ListLinePlotTest {
     {
       Tensor domain = Subdivide.of(-5, 8, 300);
       Show show = new Show();
-      show.add(ListLinePlot.of(domain, domain.map(distribution::at)));
-      show.add(ListLinePlot.of(domain, domain.map(distribution::p_lessEquals)));
-      show.add(ListLinePlot.of(domain, domain.map(PDF.of(dist)::at)));
+      show.add(ListLinePlot.of(domain, domain.maps(distribution::at)));
+      show.add(ListLinePlot.of(domain, domain.maps(distribution::p_lessEquals)));
+      show.add(ListLinePlot.of(domain, domain.maps(PDF.of(dist)::at)));
       show.export(tempDir.resolve("hd.png"), new Dimension(640, 480));
     }
   }
@@ -140,8 +140,8 @@ class ListLinePlotTest {
       InverseCDF inv1 = InverseCDF.of(distribution);
       InverseCDF inv2 = InverseCDF.of(dist);
       Show show = new Show();
-      show.add(ListLinePlot.of(domain, domain.map(inv1::quantile)));
-      show.add(ListLinePlot.of(domain, domain.map(inv2::quantile)));
+      show.add(ListLinePlot.of(domain, domain.maps(inv1::quantile)));
+      show.add(ListLinePlot.of(domain, domain.maps(inv2::quantile)));
       show.export(tempDir.resolve("hd_inv.png"), new Dimension(640, 480));
     }
   }

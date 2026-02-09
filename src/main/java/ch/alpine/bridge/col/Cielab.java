@@ -38,13 +38,13 @@ public enum Cielab {
 
   Cielab(double x, double y, double z) {
     xyzn = Tensors.vectorDouble(x, y, z);
-    xyzi = this.xyzn.map(Scalar::reciprocal);
+    xyzi = this.xyzn.maps(Scalar::reciprocal);
   }
 
   /** @param xyz vector of length 3 with entries in unit interval
    * @return vector of length 3 with entries in [-1, 1] */
   public Tensor xyz2lab(Tensor xyz) {
-    Tensor fs3 = Times.of(xyz, xyzi).map(Cielabf::forward);
+    Tensor fs3 = Times.of(xyz, xyzi).maps(Cielabf::forward);
     Scalar L = _116.multiply(fs3.Get(1)).subtract(_016);
     Scalar a = _500.multiply(fs3.Get(0).subtract(fs3.Get(1)));
     Scalar b = _200.multiply(fs3.Get(1).subtract(fs3.Get(2)));

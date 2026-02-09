@@ -35,7 +35,7 @@ public enum Periodogram {
       Tolerance.CHOP.requireClose(navigableSet.first(), navigableSet.last());
     }
     Tensor signal = points.get(Tensor.ALL, 1);
-    Tensor values = PeriodogramArray.of(windowLength, offset).apply(signal).map(scaling);
+    Tensor values = PeriodogramArray.of(windowLength, offset).apply(signal).maps(scaling);
     int h = values.length() / 2;
     return ListLinePlot.of(Subdivide.of(0, 0.5, h - 1), values.extract(0, h));
   }

@@ -40,7 +40,7 @@ public class ParametricPlot extends BaseShowable {
       graphics.setStroke(getStroke());
       Path2D.Double path = new Path2D.Double();
       // TODO BRIDGE adaptive resolution (see SpiralDemo)
-      Tensor points = Subdivide.increasing(domain, 3 * RESOLUTION).map(stf);
+      Tensor points = Subdivide.increasing(domain, 3 * RESOLUTION).maps(stf);
       {
         Point2D point2d = showableConfig.toPoint2D(points.get(0));
         path.moveTo(point2d.getX(), point2d.getY());
@@ -56,7 +56,7 @@ public class ParametricPlot extends BaseShowable {
   @Override
   public Optional<CoordinateBoundingBox> fullPlotRange() {
     if (Objects.nonNull(domain) && Sign.isPositive(domain.width()))
-      return Optional.of(CoordinateBounds.of(Subdivide.increasing(domain, RESOLUTION).map(stf)));
+      return Optional.of(CoordinateBounds.of(Subdivide.increasing(domain, RESOLUTION).maps(stf)));
     return Optional.empty();
   }
 }

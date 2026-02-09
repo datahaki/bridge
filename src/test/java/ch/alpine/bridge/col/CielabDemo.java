@@ -17,7 +17,7 @@ class CielabDemo implements ShowProvider {
     Tensor domain = Subdivide.increasing(clip, 50);
     Show show = new Show();
     show.setPlotLabel("Cielabf");
-    show.add(ListLinePlot.of(domain.map(Cielabf::forward), domain));
+    show.add(ListLinePlot.of(domain.maps(Cielabf::forward), domain));
     show.add(Plot.of(Cielabf::inverse, clip));
     return show;
   }

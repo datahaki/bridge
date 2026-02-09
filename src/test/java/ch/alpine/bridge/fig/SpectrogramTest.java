@@ -35,11 +35,11 @@ class SpectrogramTest {
       double lo = 0.32;
       double hi = 1.6;
       Tensor domain = Subdivide.of(RealScalar.of(lo), RealScalar.of(hi), (int) (8000 * (hi - lo)));
-      Tensor signal = domain.map(polynomial).map(Cos.FUNCTION);
+      Tensor signal = domain.maps(polynomial).maps(Cos.FUNCTION);
       // Tensor points = Transpose.of(Tensors.of(domain, signal));
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
-      show.add(ListLinePlot.of(domain.map(s -> Quantity.of(s, "s")), signal));
+      show.add(ListLinePlot.of(domain.maps(s -> Quantity.of(s, "s")), signal));
       // show.getAxisX().setUnit(Unit.of("ms"));
       // show.getAxisX().setLabel("time");
       // show.getAxisY().setLabel("user defined");
@@ -57,7 +57,7 @@ class SpectrogramTest {
     Showable image = Spectrogram.of(vector, Quantity.of(1, "s"), DirichletWindow.FUNCTION, ColorDataGradients.VISIBLE_SPECTRUM);
     new Show().add(image);
     assertEquals(Dimensions.of(SpectrogramArray.SPECTROGRAM.half_abs(vector)), Arrays.asList(32, 93));
-    Tensor tensor = SpectrogramArray.SPECTROGRAM.apply(vector).map(Abs.FUNCTION);
+    Tensor tensor = SpectrogramArray.SPECTROGRAM.apply(vector).maps(Abs.FUNCTION);
     assertEquals(Dimensions.of(tensor), List.of(93, 64));
   }
 }
