@@ -12,7 +12,10 @@ import java.util.Objects;
 
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.util.ObjectProperties;
-import ch.alpine.tensor.ext.Timing;
+import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.qty.Timing;
 
 /** loads and saves window position
  * 
@@ -48,6 +51,7 @@ public class WindowBounds {
   }
 
   private final Point shift = new Point();
+  private static final Scalar LIMIT = Quantity.of(300_000_000, "ns");
 
   private void private_attach(Window window, Path path) {
     window.setBounds(getBoundsAllVisible());
@@ -77,9 +81,9 @@ public class WindowBounds {
 
       @Override
       public void componentMoved(ComponentEvent componentEvent) {
-        long nanos = timing.nanoSeconds(); // 45846090
+        Scalar nanos = timing.nanoSeconds(); // 45846090
         // System.out.println("ns=" + nanos);
-        if (nanos < 300_000_000 && Objects.nonNull(shown)) {
+        if (Scalars.lessThan(nanos, LIMIT) && Objects.nonNull(shown)) {
           Point moved = window.getLocationOnScreen();
           // System.out.println("moved location: " + jFrame.getLocationOnScreen());
           shift.x = moved.x - shown.x;
