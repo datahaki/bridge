@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 
 import ch.alpine.bridge.fig.Cepstrogram;
 import ch.alpine.bridge.fig.Show;
-import ch.alpine.bridge.fig.ShowDialog;
+import ch.alpine.bridge.fig.ShowWindow;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.RealScalar;
@@ -29,7 +29,7 @@ public enum CepstrogramDemo {
   static void main() throws IOException {
     Show show = new Show();
     show.add(create(CepstrogramArray.Real));
-    ShowDialog.of(show);
+    ShowWindow.of(show);
     show.export(HomeDirectory.Pictures.resolve("some.png"), new Dimension(600, 400));
     show.export(HomeDirectory.Pictures.resolve("some.jpg"), new Dimension(600, 400));
   }

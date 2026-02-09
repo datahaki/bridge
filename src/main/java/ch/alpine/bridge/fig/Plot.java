@@ -90,6 +90,7 @@ public class Plot extends BaseShowable {
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
     if (Objects.nonNull(domain) && Sign.isPositive(domain.width())) {
+      // TODO BRIDGE evaluating suo at points may throw an exception...
       Clip clip = StaticHelper.minMax(Subdivide.increasing(domain, RESOLUTION).map(suo));
       if (Objects.nonNull(clip))
         return Optional.of(CoordinateBoundingBox.of(domain, clip));

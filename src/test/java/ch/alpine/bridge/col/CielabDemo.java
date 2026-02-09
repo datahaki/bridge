@@ -4,7 +4,7 @@ package ch.alpine.bridge.col;
 import ch.alpine.bridge.fig.ListLinePlot;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
-import ch.alpine.bridge.fig.ShowDialog;
+import ch.alpine.bridge.fig.ShowWindow;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.sca.Clip;
@@ -19,6 +19,6 @@ public enum CielabDemo {
     show.setPlotLabel("Cielabf");
     show.add(ListLinePlot.of(domain.map(Cielabf::forward), domain));
     show.add(Plot.of(Cielabf::inverse, clip));
-    ShowDialog.of(show);
+    ShowWindow.of(show);
   }
 }

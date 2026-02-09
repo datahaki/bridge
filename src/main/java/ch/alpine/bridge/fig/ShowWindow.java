@@ -20,7 +20,7 @@ import ch.alpine.bridge.io.SanitizeFilename;
 import ch.alpine.tensor.ext.HomeDirectory;
 
 // TODO BRIDGE cannot easily go fullscreen etc...
-public class ShowDialog extends JDialog {
+public class ShowWindow extends JDialog {
   private static final int SIZE = 800;
 
   /** non-blocking
@@ -32,14 +32,14 @@ public class ShowDialog extends JDialog {
   }
 
   public static JDialog of(List<Show> list) {
-    ShowDialog showDialog = new ShowDialog(null, list);
+    ShowWindow showDialog = new ShowWindow(null, list);
     ScreenRectangles.create().placement(showDialog);
     showDialog.setVisible(true);
     return showDialog;
   }
 
   // ---
-  private ShowDialog(Component parentComponent, List<Show> list) {
+  private ShowWindow(Component parentComponent, List<Show> list) {
     /* false -> non-modal == non-blocking */
     super(JOptionPane.getFrameForComponent(parentComponent), false);
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

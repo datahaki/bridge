@@ -5,7 +5,7 @@ import java.util.List;
 
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;
-import ch.alpine.bridge.fig.ShowDialog;
+import ch.alpine.bridge.fig.ShowWindow;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.Spectrogram;
 import ch.alpine.tensor.RealScalar;
@@ -49,6 +49,6 @@ public enum SpectrogramDemo {
     linear = linear.andThen(Quantity.of(1, "m")::multiply);
     Show show = new Show();
     show.add(Plot.of(linear, Clips.interval(lo, lo + 0.1)));
-    ShowDialog.of(List.of(show1, show));
+    ShowWindow.of(List.of(show1, show));
   }
 }
