@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
-import showcase.data.GuiExtension;
+import ch.alpine.bridge.ref.data.GuiExtension;
 
 class FieldValueTest {
   @Test

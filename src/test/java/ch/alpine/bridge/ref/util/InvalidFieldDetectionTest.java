@@ -9,9 +9,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import showcase.data.ClipParam;
-import showcase.data.ExampleNullValue;
-import showcase.data.GuiExtension;
+import ch.alpine.bridge.ref.data.ClipParam;
+import ch.alpine.bridge.ref.data.ExampleNullValue;
+import ch.alpine.bridge.ref.data.GuiExtension;
 
 class InvalidFieldDetectionTest {
   @Test

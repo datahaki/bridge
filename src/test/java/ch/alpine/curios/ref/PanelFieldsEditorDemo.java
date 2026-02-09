@@ -1,0 +1,51 @@
+// code by jph
+package ch.alpine.curios.ref;
+
+import java.awt.Font;
+import java.awt.Window;
+
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.WindowConstants;
+
+import ch.alpine.bridge.pro.WindowProvider;
+import ch.alpine.bridge.ref.FieldsEditorParam;
+import ch.alpine.bridge.ref.data.GuiExtension;
+import ch.alpine.bridge.ref.util.PanelFieldsEditor;
+import ch.alpine.bridge.swing.CheckBoxIcon;
+import ch.alpine.bridge.swing.LookAndFeels;
+
+class PanelFieldsEditorDemo implements WindowProvider {
+  private final JFrame jFrame = new JFrame();
+
+  public PanelFieldsEditorDemo() {
+    JTabbedPane jTabbedPane = new JTabbedPane();
+    jTabbedPane.addTab("nested", PanelFieldsEditor.nested(new GuiExtension()).createJScrollPane());
+    jTabbedPane.addTab("splits", PanelFieldsEditor.splits(new GuiExtension()).createJScrollPane());
+    jTabbedPane.addTab("single", PanelFieldsEditor.single(new GuiExtension()).createJScrollPane());
+    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    jFrame.setContentPane(jTabbedPane);
+    jFrame.setBounds(100, 100, 800, 900);
+  }
+
+  @Override
+  public Window getWindow() {
+    return jFrame;
+  }
+
+  static void main() {
+    LookAndFeels.LIGHT.updateComponentTreeUI();
+    // ---
+    FieldsEditorParam.GLOBAL.textFieldFont_override = true;
+    FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 22);
+    // ---
+    FieldsEditorParam.GLOBAL.labelFont_override = true;
+    FieldsEditorParam.GLOBAL.labelFont = new Font(Font.SERIF, Font.PLAIN, 13);
+    // ---
+    FieldsEditorParam.GLOBAL.checkBoxParam.override = true;
+    FieldsEditorParam.GLOBAL.checkBoxParam.icon = CheckBoxIcon.LEDGREEN;
+    FieldsEditorParam.GLOBAL.checkBoxParam.size = 32;
+    // ---
+    new PanelFieldsEditorDemo().run();
+  }
+}

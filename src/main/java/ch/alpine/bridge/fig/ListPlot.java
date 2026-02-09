@@ -60,7 +60,9 @@ public class ListPlot extends BaseShowable {
     if (0 < points.length()) {
       graphics.setColor(getColor());
       // TODO BRIDGE
-      Point2D zero = filling ? showableConfig.toPoint2D(points.get(0).map(Scalar::zero)) : null;
+      Point2D zero = filling //
+          ? showableConfig.toPoint2D(points.get(0).map(Scalar::zero))
+          : null;
       for (Tensor row : points) {
         Point2D point2d = showableConfig.toPoint2D(row);
         if (filling) {

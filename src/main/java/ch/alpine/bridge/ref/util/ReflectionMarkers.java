@@ -20,7 +20,7 @@ public enum ReflectionMarkers {
       expected(fieldWrap.getField().getDeclaringClass());
     }
   };
-  public final ThreadLocal<Boolean> DEBUG_PRINT = ThreadLocal.withInitial(() -> false);
+  public final ThreadLocal<Boolean> DEBUG_PRINT = ThreadLocal.withInitial(() -> true);
 
   ReflectionMarkers() {
     checked.add(Object.class);

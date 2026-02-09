@@ -27,6 +27,7 @@ import javax.imageio.ImageIO;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -151,14 +152,17 @@ public class Show implements Serializable {
 
   private Scalar aspectRatio = null;
 
-  /** Remark: our implementation is inconsistent with Mathematica
-   * Mathematica::"Automatic" is 1 in the tensor lib
-   * 
-   * @param aspectRatio exact scalar, for instance 1
+  /** @param xStep exact scalar, for instance 1
    * @see ExactScalarQ */
-  public void setAspectRatio(Scalar aspectRatio) {
+  public void setAspectRatio(Scalar xStep, Scalar yStep) {
     // TODO BRIDGE throw exception if axis X and Y are not compatible unit etc.
-    this.aspectRatio = ExactScalarQ.require(aspectRatio);
+    this.aspectRatio = ExactScalarQ.require(xStep.divide(yStep));
+  }
+
+  /** Remark: our implementation is inconsistent with Mathematica
+   * Mathematica::"Automatic" is 1 in the tensor lib */
+  public void setAspectRatioOne() {
+    setAspectRatio(RealScalar.ONE, RealScalar.ONE);
   }
 
   public Scalar getAspectRatio() {

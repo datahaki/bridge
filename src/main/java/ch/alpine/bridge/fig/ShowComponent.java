@@ -72,6 +72,10 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
     showableConfig = null;
   }
 
+  public synchronized Show getShow() {
+    return show;
+  }
+
   @Override
   protected synchronized void paintComponent(Graphics graphics) {
     // graphics.setFont(FONT);

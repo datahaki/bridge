@@ -11,7 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import showcase.data.MissingMarkerParam;
+import ch.alpine.bridge.ref.data.MissingMarkerParam;
 
 class ReflectionMarkersTest {
   @Test

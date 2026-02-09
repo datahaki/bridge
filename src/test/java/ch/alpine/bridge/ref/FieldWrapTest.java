@@ -10,14 +10,14 @@ import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.ref.data.AnnotatedContainer;
+import ch.alpine.bridge.ref.data.ParamContainer;
+import ch.alpine.bridge.ref.data.ParamContainerEnum;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
-import showcase.data.AnnotatedContainer;
-import showcase.data.ParamContainer;
-import showcase.data.ParamContainerEnum;
 
 class FieldWrapTest {
   @Test

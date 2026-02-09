@@ -15,10 +15,10 @@ import java.util.random.RandomGenerator;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
+import ch.alpine.bridge.ref.data.ColorParam;
+import ch.alpine.bridge.ref.data.FieldOuterParam;
+import ch.alpine.bridge.ref.data.FieldOuterParam.NestedParam;
 import ch.alpine.tensor.Scalar;
-import showcase.data.ColorParam;
-import showcase.data.FieldOuterParam;
-import showcase.data.FieldOuterParam.NestedParam;
 
 class RandomFieldsAssignmentTest {
   @ReflectionMarker

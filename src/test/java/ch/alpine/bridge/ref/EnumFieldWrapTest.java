@@ -9,8 +9,8 @@ import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.util.ObjectProperties;
-import showcase.data.GuiExtension;
 
 class EnumFieldWrapTest {
   @Test

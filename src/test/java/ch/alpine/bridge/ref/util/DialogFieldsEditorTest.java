@@ -4,7 +4,7 @@ package ch.alpine.bridge.ref.util;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.lang.Consumers;
-import showcase.data.GuiExtension;
+import ch.alpine.bridge.ref.data.GuiExtension;
 
 class DialogFieldsEditorTest {
   @Test

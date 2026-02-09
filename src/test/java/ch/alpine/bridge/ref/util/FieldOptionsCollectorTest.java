@@ -15,9 +15,9 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
+import ch.alpine.bridge.ref.data.NameString;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import showcase.data.NameString;
 
 class FieldOptionsCollectorTest {
   @ReflectionMarker

@@ -14,8 +14,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import showcase.data.FieldOuterParam;
-import showcase.data.GuiExtension;
+import ch.alpine.bridge.ref.data.FieldOuterParam;
+import ch.alpine.bridge.ref.data.GuiExtension;
 
 class FieldsAssignmentTest {
   @Test
