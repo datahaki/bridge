@@ -3,9 +3,9 @@ package ch.alpine.curios.fig;
 
 import ch.alpine.bridge.fig.ShowWindow;
 
-public enum ShowDialogDemo {
+public enum ShowWindowDemo {
   ;
   static void main() {
-    ShowWindow.of(Showcases.DensityPlot0.getShow());
+    ShowWindow.asDialog(Showcases.DensityPlot0.getShow());
   }
 }

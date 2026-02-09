@@ -13,6 +13,8 @@ import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.mat.re.Pivots;
 
 class SpinnerMenuTest {
+  long sleep_ms = 300;
+
   @Test
   void testSimple() throws InterruptedException {
     SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), Pivots.ARGMAX_ABS, Object::toString, null, false);
@@ -22,7 +24,7 @@ class SpinnerMenuTest {
     jFrame.setContentPane(jButton);
     jFrame.setVisible(true);
     spinnerMenu.showRight(jButton);
-    Thread.sleep(100);
+    Thread.sleep(sleep_ms);
     jFrame.setVisible(false);
   }
 
@@ -36,7 +38,7 @@ class SpinnerMenuTest {
     jFrame.setContentPane(jButton);
     jFrame.setVisible(true);
     spinnerMenu.showRight(jButton);
-    Thread.sleep(100);
+    Thread.sleep(sleep_ms);
     jFrame.setVisible(false);
   }
 
@@ -50,7 +52,7 @@ class SpinnerMenuTest {
     jFrame.setContentPane(jButton);
     jFrame.setVisible(true);
     spinnerMenu.showRight(jButton);
-    Thread.sleep(100);
+    Thread.sleep(sleep_ms);
     jFrame.setVisible(false);
   }
 }

@@ -11,6 +11,6 @@ public interface ShowProvider {
   Show getShow();
 
   default Window run() {
-    return ShowWindow.of(getShow());
+    return ShowWindow.asFrame(getShow());
   }
 }

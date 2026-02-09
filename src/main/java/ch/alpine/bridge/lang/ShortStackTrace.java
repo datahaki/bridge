@@ -16,6 +16,7 @@ public class ShortStackTrace {
   public void print() {
     StackWalker stackWalker = StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE);
     stackWalker.walk(stream -> stream //
+        .skip(1) // skip stackwalker
         .filter(predicate) //
         .peek(IO::println) //
         .count());

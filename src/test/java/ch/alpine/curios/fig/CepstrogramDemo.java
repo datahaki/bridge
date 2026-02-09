@@ -29,7 +29,7 @@ public enum CepstrogramDemo {
   static void main() throws IOException {
     Show show = new Show();
     show.add(create(CepstrogramArray.Real));
-    ShowWindow.of(show);
+    ShowWindow.asDialog(show);
     show.export(HomeDirectory.Pictures.resolve("some.png"), new Dimension(600, 400));
     show.export(HomeDirectory.Pictures.resolve("some.jpg"), new Dimension(600, 400));
   }

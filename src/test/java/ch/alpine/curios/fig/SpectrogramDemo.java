@@ -49,6 +49,6 @@ public enum SpectrogramDemo {
     linear = linear.andThen(Quantity.of(1, "m")::multiply);
     Show show = new Show();
     show.add(Plot.of(linear, Clips.interval(lo, lo + 0.1)));
-    ShowWindow.of(List.of(show1, show));
+    ShowWindow.asDialog(List.of(show1, show));
   }
 }
