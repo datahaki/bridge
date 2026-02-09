@@ -1,25 +1,23 @@
 // code by jph
 package ch.alpine.bridge.lang;
 
+import java.lang.StackWalker.Option;
+import java.lang.StackWalker.StackFrame;
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.function.Predicate;
 
 public class ShortStackTrace {
-  private final String[] prefix;
+  private final Predicate<StackFrame> predicate;
 
   public ShortStackTrace(String... prefix) {
-    this.prefix = prefix;
+    predicate = stackFrame -> Arrays.stream(prefix).filter(stackFrame.getClassName()::startsWith).findAny().isPresent();
   }
 
-  public void print(Exception exception) {
-    StackWalker s;
-    // TODO BRIDGE use stackwalker
-    StackTraceElement[] stackTraceElements = exception.getStackTrace();
-    for (StackTraceElement stackTraceElement : stackTraceElements) {
-      String className = stackTraceElement.getClassName();
-      Optional<String> optional = Arrays.stream(prefix).filter(className::startsWith).findAny();
-      if (optional.isPresent())
-        System.err.println(" " + stackTraceElement);
-    }
+  public void print() {
+    StackWalker stackWalker = StackWalker.getInstance(Option.RETAIN_CLASS_REFERENCE);
+    stackWalker.walk(stream -> stream //
+        .filter(predicate) //
+        .peek(IO::println) //
+        .count());
   }
 }

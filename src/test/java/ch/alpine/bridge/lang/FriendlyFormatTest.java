@@ -42,4 +42,10 @@ class FriendlyFormatTest {
     string = FriendlyFormat.convertAmps(string);
     assertEquals(string, "asf<>'");
   }
+
+  @Test
+  void testSanitize() {
+    String string = FriendlyFormat.sanitize(" .a12sd  //?* . txt  ");
+    assertEquals(string, " .a12sd  ____ . txt");
+  }
 }

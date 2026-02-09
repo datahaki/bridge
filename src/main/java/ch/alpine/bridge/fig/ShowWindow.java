@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.lang.StackWalker.StackFrame;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.ScreenRectangles;
-import ch.alpine.bridge.io.SanitizeFilename;
+import ch.alpine.bridge.lang.FriendlyFormat;
 import ch.alpine.tensor.ext.HomeDirectory;
 
 // TODO BRIDGE cannot easily go fullscreen etc...
@@ -42,6 +43,14 @@ public class ShowWindow extends JDialog {
   private ShowWindow(Component parentComponent, List<Show> list) {
     /* false -> non-modal == non-blocking */
     super(JOptionPane.getFrameForComponent(parentComponent), false);
+    {
+      StackWalker stackWalker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+      StackFrame stackFrame = stackWalker.walk(stream -> stream //
+          .filter(sf -> !sf.getDeclaringClass().equals(ShowWindow.class)) //
+          .findFirst() //
+          .orElseThrow());
+      setTitle(stackFrame.getDeclaringClass().getSimpleName() + " " + stackFrame.getMethodName());
+    }
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel contentPane = new JPanel(new BorderLayout());
     JPanel center = ShowGridComponent.of(list);
@@ -56,7 +65,7 @@ public class ShowWindow extends JDialog {
         Show show = showComponent.getShow();
         try {
           String string = "fig_" + show.getPlotLabel() + ".png";
-          Path path = HomeDirectory.Pictures.resolve(SanitizeFilename.of(string));
+          Path path = HomeDirectory.Pictures.resolve(FriendlyFormat.sanitize(string));
           Dimension dimension = showComponent.getSize();
           show.export(path, dimension);
         } catch (Exception exception) {

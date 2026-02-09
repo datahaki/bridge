@@ -18,7 +18,7 @@ import ch.alpine.tensor.sca.Sign;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ParametricPlot.html">ParametricPlot</a> */
 public class ParametricPlot extends BaseShowable {
-  private static final int RESOLUTION = 20;
+  private static final int RESOLUTION = 50;
 
   public static Showable of(ScalarTensorFunction stf, Clip domain) {
     return new ParametricPlot(stf, domain);
@@ -39,7 +39,7 @@ public class ParametricPlot extends BaseShowable {
       graphics.setColor(getColor());
       graphics.setStroke(getStroke());
       Path2D.Double path = new Path2D.Double();
-      // TODO BRIDGE adaptive resolution
+      // TODO BRIDGE adaptive resolution (see SpiralDemo)
       Tensor points = Subdivide.increasing(domain, 3 * RESOLUTION).map(stf);
       {
         Point2D point2d = showableConfig.toPoint2D(points.get(0));

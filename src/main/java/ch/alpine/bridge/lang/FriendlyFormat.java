@@ -89,6 +89,7 @@ public enum FriendlyFormat {
   }
 
   // ---
+  @Deprecated
   private static final Pattern PATTERN = Pattern.compile("\\W+");
 
   /** removes blank-space, and non-letter characters
@@ -99,8 +100,18 @@ public enum FriendlyFormat {
    * 
    * @param string
    * @return letter, digits, and '_' in myString */
+  @Deprecated
   public static String safeFileTitle(String string) {
     return PATTERN.matcher(string).replaceAll("");
+  }
+
+  /** @param string
+   * @return */
+  public static String sanitize(String string) {
+    return string //
+        .replaceAll("[\\\\/:*?\"<>|]", "_") //
+        .replaceAll("\\s+$", "") //
+        .replaceAll("\\.+$", "");
   }
 
   // ---
