@@ -2,6 +2,9 @@
 package ch.alpine.bridge.fig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import java.lang.reflect.Modifier;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,11 +15,6 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
 class StaticHelperTest {
-  @Test
-  void testSimple() {
-    assertEquals(StaticHelper.class.getModifiers() & 1, 0);
-  }
-
   @Test
   void testDateTime() {
     DateTime scalar = DateTime.now();
@@ -31,5 +29,10 @@ class StaticHelperTest {
     Clip clip = Clips.interval(scalar, scalar);
     clip = StaticHelper.nonZero(clip);
     assertEquals(clip.width(), Quantity.of(2, "m"));
+  }
+
+  @Test
+  void testSimple() {
+    assertFalse(Modifier.isPublic(StaticHelper.class.getModifiers()));
   }
 }

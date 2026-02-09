@@ -23,6 +23,8 @@ import ch.alpine.tensor.sca.Clip;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/DensityPlot.html">DensityPlot</a> */
+// TODO BRIDGE make dynamic zooming possible
+// ... constrain area by initial Clip
 public class DensityPlot extends BarLegendPlot {
   public static DensityPlot of(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb) {
     return of(sbo, cbb, ColorDataGradients.DENSITY);
