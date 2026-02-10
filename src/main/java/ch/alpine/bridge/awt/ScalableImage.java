@@ -20,27 +20,29 @@ import ch.alpine.tensor.sca.Round;
 public class ScalableImage {
   private final Cache<Tensor, Image> cache = Cache.of(this::compute, 1);
   private final BufferedImage bufferedImage;
-  private final int interpolationType;
 
   /** @param bufferedImage
    * @param hints typically Image.SCALE_SMOOTH, or Image.SCALE_AREA_AVERAGING */
-  public ScalableImage(BufferedImage bufferedImage, int interpolationType) {
+  public ScalableImage(BufferedImage bufferedImage) {
     this.bufferedImage = Objects.requireNonNull(bufferedImage);
-    this.interpolationType = interpolationType;
   }
 
   /** @param width
    * @param height
    * @return */
-  public Image getScaledInstance(int width, int height) {
-    return bufferedImage.getWidth() == width && bufferedImage.getHeight() == height //
-        ? bufferedImage
-        : cache.apply(Tensors.vector(width, height));
+  // public Image getScaledInstance(int width, int height) {
+  // return bufferedImage.getWidth() == width && bufferedImage.getHeight() == height //
+  // ? bufferedImage
+  // : cache.apply(Tensors.vector(width, height, interpolationType));
+  // }
+  public Image getScaledInstance(int width, int height, int interpolationType) {
+    return cache.apply(Tensors.vector(width, height, interpolationType));
   }
 
   private Image compute(Tensor wh) {
     int w = Round.intValueExact(wh.Get(0));
     int h = Round.intValueExact(wh.Get(1));
+    int interpolationType = Round.intValueExact(wh.Get(2));
     return ImageResize.of(bufferedImage, w, h, interpolationType);
   }
 }

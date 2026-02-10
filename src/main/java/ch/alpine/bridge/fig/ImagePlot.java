@@ -38,12 +38,21 @@ public class ImagePlot extends BaseShowable {
   private final CoordinateBoundingBox cbb;
   private final boolean flipY;
   private final Scalar aspectRatio;
+  private int interpolationType = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
 
   private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
-    this.scalableImage = new ScalableImage(bufferedImage, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+    this.scalableImage = new ScalableImage(bufferedImage);
     this.cbb = cbb;
     this.flipY = flipY;
     this.aspectRatio = aspectRatio;
+  }
+
+  public int getInterpolationType() {
+    return interpolationType;
+  }
+
+  public void setInterpolationType(int interpolationType) {
+    this.interpolationType = interpolationType;
   }
 
   @Override // from Showable
@@ -57,7 +66,7 @@ public class ImagePlot extends BaseShowable {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
-      graphics.drawImage(scalableImage.getScaledInstance(width, height), //
+      graphics.drawImage(scalableImage.getScaledInstance(width, height, interpolationType), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
   }

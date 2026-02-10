@@ -2,9 +2,10 @@
 package ch.alpine.curios.fig;
 
 import java.awt.BasicStroke;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 import ch.alpine.bridge.fig.ArrayPlot;
 import ch.alpine.bridge.fig.CandlestickChart;
@@ -21,7 +22,8 @@ import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.ReImPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
-import ch.alpine.bridge.fig.TextsPlot;
+import ch.alpine.bridge.fig.StringPlot;
+import ch.alpine.bridge.fig.StringPlot.StringItem;
 import ch.alpine.bridge.fig.TsPlot;
 import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.ComplexScalar;
@@ -104,12 +106,12 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._109.strict()); // use RGB for line color
-      Map<Tensor, String> map = new HashMap<>();
-      map.put(Tensors.vector(1, 2), "12");
-      map.put(Tensors.vector(3, 2), "32");
-      map.put(Tensors.vector(2, 3), "23");
-      map.put(Tensors.vector(4, 4), "text");
-      show.add(TextsPlot.of(map));
+      List<StringItem> list = new LinkedList<>();
+      list.add(StringItem.of(Tensors.vector(1, 2), "12"));
+      list.add(StringItem.of(Tensors.vector(3, 2), "32"));
+      list.add(StringItem.of(Tensors.vector(2, 3), "23"));
+      list.add(StringItem.of(Tensors.vector(4, 4), "text"));
+      show.add(StringPlot.of(list));
       return show;
     }
   },
@@ -673,6 +675,28 @@ public enum Showcases implements ShowProvider {
       show.add(DiscretePlot.of(pdf::at, clip));
       show.add(DiscretePlot.of(cdf::p_lessEquals, clip));
       show.add(DiscretePlot.of(pdf_o::at, clip));
+      return show;
+    }
+  },
+  ImagePlot3 {
+    @Override
+    public Show getShow() {
+      Show show = new Show();
+      show.setPlotLabel("Image Plot BICUBIC");
+      BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
+      Showable showable = show.add(ImagePlot.of(bufferedImage));
+      ((ImagePlot) showable).setInterpolationType(AffineTransformOp.TYPE_BICUBIC);
+      return show;
+    }
+  },
+  ImagePlot1_ {
+    @Override
+    public Show getShow() {
+      Show show = new Show();
+      show.setPlotLabel("Image Plot BILINEAR");
+      BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
+      Showable showable = show.add(ImagePlot.of(bufferedImage));
+      ((ImagePlot) showable).setInterpolationType(AffineTransformOp.TYPE_BILINEAR);
       return show;
     }
   },

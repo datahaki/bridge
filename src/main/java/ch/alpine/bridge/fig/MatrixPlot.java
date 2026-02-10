@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.image.AffineTransformOp;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,7 +43,7 @@ public class MatrixPlot extends AbstractGridPlot {
     }
     Rescale rescale = new Rescale(matrix, clip);
     ScalableImage scalableImage = new ScalableImage( //
-        ImageFormat.of(rescale.result().maps(colorDataGradient)), AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        ImageFormat.of(rescale.result().maps(colorDataGradient)));
     CoordinateBoundingBox cbb = CoordinateBoundingBox.of( //
         AbstractGridPlot.CENTER_INT.apply(Clips.positive(Unprotect.dimension1(matrix))), //
         AbstractGridPlot.CENTER_INT.apply(Clips.positive(matrix.length())));

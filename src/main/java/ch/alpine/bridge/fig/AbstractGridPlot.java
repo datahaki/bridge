@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.awt.image.AffineTransformOp;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -24,6 +25,7 @@ import ch.alpine.tensor.sca.Clips;
   private final CoordinateBoundingBox cbb;
   private final Clip clip;
   private Color meshColor = null;
+  private int interpolationType = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
 
   protected AbstractGridPlot(ScalarTensorFunction colorDataGradient, ScalableImage scalableImage, CoordinateBoundingBox cbb, Clip clip) {
     super(colorDataGradient);
@@ -43,13 +45,21 @@ import ch.alpine.tensor.sca.Clips;
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height) {
-      graphics.drawImage(scalableImage.getScaledInstance(width, height), //
+      graphics.drawImage(scalableImage.getScaledInstance(width, height, interpolationType), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
       if (Objects.nonNull(meshColor)) {
         // TODO BRIDGE
       }
     }
+  }
+
+  public int getInterpolationType() {
+    return interpolationType;
+  }
+
+  public void setInterpolationType(int interpolationType) {
+    this.interpolationType = interpolationType;
   }
 
   @Override // from Showable

@@ -52,7 +52,7 @@ public class DensityPlot extends BarLegendPlot {
           .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
       Rescale rescale = new Rescale(matrix);
       bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
-      scalableImage = new ScalableImage(bufferedImage, AffineTransformOp.TYPE_BILINEAR);
+      scalableImage = new ScalableImage(bufferedImage);
       clip = rescale.clip();
     }
   }
@@ -82,7 +82,7 @@ public class DensityPlot extends BarLegendPlot {
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height) {
       graphics.drawImage( //
-          inner().scalableImage.getScaledInstance(width, height), //
+          inner().scalableImage.getScaledInstance(width, height, AffineTransformOp.TYPE_BILINEAR), //
           (int) ul.getX(), //
           (int) ul.getY(), //
           null);
