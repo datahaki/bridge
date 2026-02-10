@@ -88,25 +88,8 @@ public enum FriendlyFormat {
     return '[' + HEX_FORMAT.formatHex(data) + ']';
   }
 
-  // ---
-  @Deprecated
-  private static final Pattern PATTERN = Pattern.compile("\\W+");
-
-  /** removes blank-space, and non-letter characters
-   * Careful: also '.' is removed
-   * 
-   * Reference:
-   * https://stackoverflow.com/questions/1184176/how-can-i-safely-encode-a-string-in-java-to-use-as-a-filename
-   * 
-   * @param string
-   * @return letter, digits, and '_' in myString */
-  @Deprecated
-  public static String safeFileTitle(String string) {
-    return PATTERN.matcher(string).replaceAll("");
-  }
-
   /** @param string
-   * @return */
+   * @return letter, digits, and '_' in myString */
   public static String sanitize(String string) {
     return string //
         .replaceAll("[\\\\/:*?\"<>|]", "_") //

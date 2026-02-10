@@ -4,7 +4,6 @@ package ch.alpine.bridge.fig;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
 import java.util.Optional;
 
 import ch.alpine.bridge.awt.ScalableImage;
@@ -18,16 +17,16 @@ import ch.alpine.tensor.sca.Clips;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 // TODO BRIDGE mouse wheel scales image around location of mouse!
-public class ImagePlot extends BaseShowable {
-  public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
+public class ImagePlot extends ArrayShowable {
+  public static ImagePlot of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
     return new ImagePlot(bufferedImage, cbb, flipY, aspectRatio);
   }
 
-  public static Showable of(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
+  public static ImagePlot of(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
     return of(bufferedImage, cbb, false, null);
   }
 
-  public static Showable of(BufferedImage bufferedImage) {
+  public static ImagePlot of(BufferedImage bufferedImage) {
     return of(bufferedImage, CoordinateBoundingBox.of( //
         AbstractGridPlot.CENTER_INT.apply(Clips.positive(bufferedImage.getWidth())), //
         AbstractGridPlot.CENTER_INT.apply(Clips.positive(bufferedImage.getHeight()))), //
@@ -39,21 +38,13 @@ public class ImagePlot extends BaseShowable {
   private final CoordinateBoundingBox cbb;
   private final boolean flipY;
   private final Scalar aspectRatio;
-  private ImageResize imageResize = ImageResize.DEGREE_1;
 
   private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
     this.scalableImage = new ScalableImage(bufferedImage);
     this.cbb = cbb;
     this.flipY = flipY;
     this.aspectRatio = aspectRatio;
-  }
-
-  public ImageResize getImageResize() {
-    return imageResize;
-  }
-
-  public void setImageResize(ImageResize imageResize) {
-    this.imageResize = Objects.requireNonNull(imageResize);
+    setImageResize(ImageResize.DEGREE_1);
   }
 
   @Override // from Showable
@@ -67,7 +58,7 @@ public class ImagePlot extends BaseShowable {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
-      graphics.drawImage(scalableImage.getScaledInstance(imageResize, width, height), //
+      graphics.drawImage(scalableImage.getScaledInstance(getImageResize(), width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
   }

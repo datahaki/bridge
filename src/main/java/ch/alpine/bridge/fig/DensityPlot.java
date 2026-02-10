@@ -59,7 +59,6 @@ public class DensityPlot extends BarLegendPlot {
 
   private Inner inner = null;
   private int resolution = 25;
-  private ImageResize imageResize = ImageResize.DEGREE_1;
 
   private DensityPlot( //
       ScalarBinaryOperator sbo, //
@@ -69,14 +68,7 @@ public class DensityPlot extends BarLegendPlot {
     this.sbo = sbo;
     this.cbb = cbb;
     this.colorDataGradient = colorDataGradient;
-  }
-
-  public ImageResize getImageResize() {
-    return imageResize;
-  }
-
-  public void setImageResize(ImageResize imageResize) {
-    this.imageResize = Objects.requireNonNull(imageResize);
+    setImageResize(ImageResize.DEGREE_1);
   }
 
   @Override // from Showable
@@ -91,7 +83,7 @@ public class DensityPlot extends BarLegendPlot {
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height) {
       graphics.drawImage( //
-          inner().scalableImage.getScaledInstance(imageResize, width, height), //
+          inner().scalableImage.getScaledInstance(getImageResize(), width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), //
           null);

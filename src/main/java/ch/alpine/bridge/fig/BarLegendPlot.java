@@ -13,7 +13,7 @@ import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
-/* package */ abstract class BarLegendPlot extends BaseShowable {
+/* package */ abstract class BarLegendPlot extends ArrayShowable {
   private final ScalarTensorFunction colorDataGradient;
 
   public BarLegendPlot(ScalarTensorFunction colorDataGradient) {

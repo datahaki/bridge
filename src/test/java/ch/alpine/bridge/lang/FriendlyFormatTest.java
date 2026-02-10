@@ -31,8 +31,8 @@ class FriendlyFormatTest {
 
   @Test
   void testFilename() {
-    String string = FriendlyFormat.safeFileTitle("s ls \u3000 323 \\ dff& / :{}.csv _ ");
-    assertEquals(string, "sls323dffcsv_");
+    String string = FriendlyFormat.sanitize("s ls \u3000 323 \\ dff& / :{}.csv _ ");
+    assertEquals(string, "s ls 　 323 _ dff& _ _{}.csv _");
   }
 
   @Test

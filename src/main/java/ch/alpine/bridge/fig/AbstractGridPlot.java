@@ -12,7 +12,6 @@ import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarTensorFunction;
-import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
@@ -25,7 +24,6 @@ import ch.alpine.tensor.sca.Clips;
   private final CoordinateBoundingBox cbb;
   private final Clip clip;
   private Color meshColor = null;
-  private ImageResize imageResize = ImageResize.DEGREE_0;
 
   protected AbstractGridPlot(ScalarTensorFunction colorDataGradient, ScalableImage scalableImage, CoordinateBoundingBox cbb, Clip clip) {
     super(colorDataGradient);
@@ -45,21 +43,13 @@ import ch.alpine.tensor.sca.Clips;
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height) {
-      graphics.drawImage(scalableImage.getScaledInstance(imageResize, width, height), //
+      graphics.drawImage(scalableImage.getScaledInstance(getImageResize(), width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
       if (Objects.nonNull(meshColor)) {
         // TODO BRIDGE
       }
     }
-  }
-
-  public final ImageResize getImageResize() {
-    return imageResize;
-  }
-
-  public final void setImageResize(ImageResize imageResize) {
-    this.imageResize = Objects.requireNonNull(imageResize);
   }
 
   @Override // from Showable
