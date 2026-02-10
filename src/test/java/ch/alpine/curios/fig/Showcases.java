@@ -2,7 +2,6 @@
 package ch.alpine.curios.fig;
 
 import java.awt.BasicStroke;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,6 +43,7 @@ import ch.alpine.tensor.fft.CepstrogramArray;
 import ch.alpine.tensor.img.ColorDataGradient;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorDataLists;
+import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.io.Import;
 import ch.alpine.tensor.itp.BSplineFunctionString;
 import ch.alpine.tensor.itp.Interpolation;
@@ -685,7 +685,7 @@ public enum Showcases implements ShowProvider {
       show.setPlotLabel("Image Plot BICUBIC");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
       Showable showable = show.add(ImagePlot.of(bufferedImage));
-      ((ImagePlot) showable).setInterpolationType(AffineTransformOp.TYPE_BICUBIC);
+      ((ImagePlot) showable).setImageResize(ImageResize.DEGREE_3);
       return show;
     }
   },
@@ -696,7 +696,7 @@ public enum Showcases implements ShowProvider {
       show.setPlotLabel("Image Plot BILINEAR");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
       Showable showable = show.add(ImagePlot.of(bufferedImage));
-      ((ImagePlot) showable).setInterpolationType(AffineTransformOp.TYPE_BILINEAR);
+      ((ImagePlot) showable).setImageResize(ImageResize.DEGREE_1);
       return show;
     }
   },
@@ -704,9 +704,10 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Image Plot");
+      show.setPlotLabel("Image Plot NEAREST");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
-      show.add(ImagePlot.of(bufferedImage));
+      Showable showable = show.add(ImagePlot.of(bufferedImage));
+      ((ImagePlot) showable).setImageResize(ImageResize.DEGREE_0);
       return show;
     }
   },

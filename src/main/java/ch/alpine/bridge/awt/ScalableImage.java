@@ -2,6 +2,7 @@
 package ch.alpine.bridge.awt;
 
 import java.awt.Image;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
@@ -29,20 +30,19 @@ public class ScalableImage {
 
   /** @param width
    * @param height
-   * @return */
-  // public Image getScaledInstance(int width, int height) {
-  // return bufferedImage.getWidth() == width && bufferedImage.getHeight() == height //
-  // ? bufferedImage
-  // : cache.apply(Tensors.vector(width, height, interpolationType));
-  // }
-  public Image getScaledInstance(int width, int height, int interpolationType) {
-    return cache.apply(Tensors.vector(width, height, interpolationType));
+   * @param interpolationType
+   * @return
+   * @see AffineTransformOp#TYPE_NEAREST_NEIGHBOR
+   * @see AffineTransformOp#TYPE_BILINEAR
+   * @see AffineTransformOp#TYPE_BICUBIC */
+  public Image getScaledInstance(ImageResize imageResize, int width, int height) {
+    return cache.apply(Tensors.vector(imageResize.ordinal(), width, height));
   }
 
-  private Image compute(Tensor wh) {
-    int w = Round.intValueExact(wh.Get(0));
-    int h = Round.intValueExact(wh.Get(1));
-    int interpolationType = Round.intValueExact(wh.Get(2));
-    return ImageResize.of(bufferedImage, w, h, interpolationType);
+  private Image compute(Tensor wht) {
+    int a = Round.intValueExact(wht.Get(0));
+    int w = Round.intValueExact(wht.Get(1));
+    int h = Round.intValueExact(wht.Get(2));
+    return ImageResize.values()[a].of(bufferedImage, w, h);
   }
 }

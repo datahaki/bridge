@@ -3,14 +3,15 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 import java.util.Optional;
 
 import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clips;
 
@@ -38,7 +39,7 @@ public class ImagePlot extends BaseShowable {
   private final CoordinateBoundingBox cbb;
   private final boolean flipY;
   private final Scalar aspectRatio;
-  private int interpolationType = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
+  private ImageResize imageResize = ImageResize.DEGREE_1;
 
   private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
     this.scalableImage = new ScalableImage(bufferedImage);
@@ -47,12 +48,12 @@ public class ImagePlot extends BaseShowable {
     this.aspectRatio = aspectRatio;
   }
 
-  public int getInterpolationType() {
-    return interpolationType;
+  public ImageResize getImageResize() {
+    return imageResize;
   }
 
-  public void setInterpolationType(int interpolationType) {
-    this.interpolationType = interpolationType;
+  public void setImageResize(ImageResize imageResize) {
+    this.imageResize = Objects.requireNonNull(imageResize);
   }
 
   @Override // from Showable
@@ -66,7 +67,7 @@ public class ImagePlot extends BaseShowable {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
-      graphics.drawImage(scalableImage.getScaledInstance(width, height, interpolationType), //
+      graphics.drawImage(scalableImage.getScaledInstance(imageResize, width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
   }

@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,7 @@ public class ShowDemo implements Runnable {
     protected void paintComponent(Graphics graphics) {
       int ofs = 0;
       for (BufferedImage bufferedImage : list) {
-        BufferedImage dst = ImageResize.of(bufferedImage, width * mag, height * mag, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        BufferedImage dst = ImageResize.DEGREE_0.of(bufferedImage, width * mag, height * mag);
         graphics.drawImage(dst, 0, ofs, null);
         ofs += height * mag;
       }

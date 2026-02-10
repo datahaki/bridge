@@ -4,7 +4,6 @@ package ch.alpine.bridge.fig;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.image.AffineTransformOp;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -13,6 +12,7 @@ import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarTensorFunction;
+import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
@@ -25,7 +25,7 @@ import ch.alpine.tensor.sca.Clips;
   private final CoordinateBoundingBox cbb;
   private final Clip clip;
   private Color meshColor = null;
-  private int interpolationType = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
+  private ImageResize imageResize = ImageResize.DEGREE_0;
 
   protected AbstractGridPlot(ScalarTensorFunction colorDataGradient, ScalableImage scalableImage, CoordinateBoundingBox cbb, Clip clip) {
     super(colorDataGradient);
@@ -45,7 +45,7 @@ import ch.alpine.tensor.sca.Clips;
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height) {
-      graphics.drawImage(scalableImage.getScaledInstance(width, height, interpolationType), //
+      graphics.drawImage(scalableImage.getScaledInstance(imageResize, width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
       if (Objects.nonNull(meshColor)) {
@@ -54,12 +54,12 @@ import ch.alpine.tensor.sca.Clips;
     }
   }
 
-  public int getInterpolationType() {
-    return interpolationType;
+  public final ImageResize getImageResize() {
+    return imageResize;
   }
 
-  public void setInterpolationType(int interpolationType) {
-    this.interpolationType = interpolationType;
+  public final void setImageResize(ImageResize imageResize) {
+    this.imageResize = Objects.requireNonNull(imageResize);
   }
 
   @Override // from Showable

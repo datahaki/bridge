@@ -3,7 +3,6 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,6 +16,7 @@ import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarBinaryOperator;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.img.ColorDataGradients;
+import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
@@ -59,6 +59,7 @@ public class DensityPlot extends BarLegendPlot {
 
   private Inner inner = null;
   private int resolution = 25;
+  private ImageResize imageResize = ImageResize.DEGREE_1;
 
   private DensityPlot( //
       ScalarBinaryOperator sbo, //
@@ -68,6 +69,14 @@ public class DensityPlot extends BarLegendPlot {
     this.sbo = sbo;
     this.cbb = cbb;
     this.colorDataGradient = colorDataGradient;
+  }
+
+  public ImageResize getImageResize() {
+    return imageResize;
+  }
+
+  public void setImageResize(ImageResize imageResize) {
+    this.imageResize = Objects.requireNonNull(imageResize);
   }
 
   @Override // from Showable
@@ -82,7 +91,7 @@ public class DensityPlot extends BarLegendPlot {
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height) {
       graphics.drawImage( //
-          inner().scalableImage.getScaledInstance(width, height, AffineTransformOp.TYPE_BILINEAR), //
+          inner().scalableImage.getScaledInstance(imageResize, width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), //
           null);
