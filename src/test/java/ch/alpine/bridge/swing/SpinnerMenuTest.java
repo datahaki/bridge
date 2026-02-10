@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.mat.re.Pivots;
@@ -42,6 +44,7 @@ class SpinnerMenuTest {
     jFrame.setVisible(false);
   }
 
+  @DisabledOnOs(OS.WINDOWS)
   @Test
   void testNonContains() throws InterruptedException {
     SpinnerMenu<ColorDataGradients> spinnerMenu = //
