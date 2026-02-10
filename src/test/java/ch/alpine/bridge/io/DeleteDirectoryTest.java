@@ -15,7 +15,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 
 class DeleteDirectoryTest {
   @Test
-  void testLayer0() throws IOException {
+  void testLayer0() throws Exception {
     Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "0");
     Files.createDirectories(folder);
     DeleteDirectory deleteDirectory = DeleteDirectory.of(folder, 0, 1, DeleteDirectory.DELETE_FAIL_ABORTS);
@@ -23,7 +23,7 @@ class DeleteDirectoryTest {
   }
 
   @Test
-  void testLayer1a() throws IOException {
+  void testLayer1a() throws Exception {
     Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "1a");
     Files.createDirectories(folder);
     Path sample1_txt = folder.resolve("sample1.txt");
@@ -39,7 +39,7 @@ class DeleteDirectoryTest {
   }
 
   @Test
-  void testLayer1b() throws IOException {
+  void testLayer1b() throws Exception {
     Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "1b");
     Files.createDirectories(folder);
     Files.createFile(folder.resolve("sample1.txt"));
@@ -51,7 +51,7 @@ class DeleteDirectoryTest {
   }
 
   @Test
-  void testLayer2() throws IOException {
+  void testLayer2() throws Exception {
     Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "2");
     Files.createDirectories(folder);
     Files.createFile(folder.resolve("sample1.txt"));

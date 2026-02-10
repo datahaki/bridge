@@ -23,7 +23,7 @@ class ZipDirectoryTest {
   Path tempDir;
 
   @Test
-  void testSimple() throws IOException {
+  void testSimple() throws Exception {
     Path folder = tempDir.resolve("folder");
     assertFalse(Files.exists(folder));
     Files.createDirectories(folder);

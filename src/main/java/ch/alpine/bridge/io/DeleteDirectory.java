@@ -3,9 +3,9 @@ package ch.alpine.bridge.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 /** recursive file/directory deletion
  * 
@@ -36,8 +36,7 @@ public class DeleteDirectory {
    * @param max_delete
    * @return
    * @throws Exception if given directory does not exist, or criteria are not met */
-  public static DeleteDirectory of(Path directory, int max_nested, long max_delete) throws IOException {
-    // TODO BRIDGE IMPL restrict to permitted extensions, e.g. html, png
+  public static DeleteDirectory of(Path directory, int max_nested, long max_delete) throws Exception {
     return of(directory, max_nested, max_delete, 0);
   }
 
@@ -48,7 +47,7 @@ public class DeleteDirectory {
    * @return
    * @throws Exception if given directory corresponds to an existing file
    * @throws IOException */
-  public static DeleteDirectory of(Path directory, int max_nested, long max_delete, int mask) throws IOException {
+  public static DeleteDirectory of(Path directory, int max_nested, long max_delete, int mask) throws Exception {
     if (!Files.isDirectory(directory))
       throw new RuntimeException("not a directory: " + directory);
     DeleteDirectory deleteDirectory = new DeleteDirectory(max_nested, mask);
@@ -77,24 +76,24 @@ public class DeleteDirectory {
 
   private void visitRecursively(Path path, int depth, boolean delete) throws IOException {
     if (max_nested < depth) // enforce depth limit, abort criteria 1)
-      throw new IOException("directory tree exceeds permitted depth");
+      throw new RuntimeException("directory tree exceeds permitted depth");
     ++fileCount;
     reachedDepth = Math.max(reachedDepth, depth);
-    if (Files.isDirectory(path)) { // if file is a directory, recur
-      // Files.list(path).forEach(entry ->visitRecursively(entry, depth + 1, delete));
-      List<Path> list = Files.list(path).toList();
-      for (Path entry : list)
-        visitRecursively(entry, depth + 1, delete);
-    }
+    if (Files.isDirectory(path)) // if file is a directory, recur
+      Files.list(path).forEach(entry -> {
+        try {
+          visitRecursively(entry, depth + 1, delete);
+        } catch (IOException ioException) {
+          throw new UncheckedIOException(ioException);
+        }
+      });
     if (delete) {
       boolean file_delete = Files.deleteIfExists(path);
       if (!file_delete && delete_fail_aborts) // abort criteria 4)
-        throw new IOException("cannot delete " + path);
-    }
-    // TODO BRIDGE using path
-    // else //
-    // if (!file.canWrite()) // abort criteria 3)
-    // throw new IOException("cannot write " + file);
+        throw new RuntimeException("cannot delete " + path);
+    } else //
+    if (!Files.isWritable(path)) // abort criteria 3)
+      throw new RuntimeException("cannot write " + path);
   }
 
   /** @return number of deleted files including directories */
