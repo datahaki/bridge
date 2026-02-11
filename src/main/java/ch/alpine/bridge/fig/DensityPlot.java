@@ -97,7 +97,7 @@ public class DensityPlot extends BarLegendPlot {
           (int) ul.getY(), //
           null);
       //
-      graphics.setColor(Color.DARK_GRAY);
+      graphics.setColor(Color.GRAY);
       graphics.drawString("" + resolution, (int) ul.getX(), //
           (int) ul.getY() + 10);
     }
