@@ -20,6 +20,7 @@ public enum Manipulate {
   public static JFrame asFrame(Object object, Supplier<JComponent> function) {
     Component parentComponent = null;
     JFrame jFrame = new JFrame();
+    jFrame.setTitle(StaticHelper.defaultTitle());
     JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
     jSplitPane.setRightComponent(function.get());
     {

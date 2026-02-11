@@ -27,7 +27,7 @@ import ch.alpine.tensor.sca.Clip;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/DensityPlot.html">DensityPlot</a> */
-// TODO BRIDGE constrain area by initial Clip
+// TODO BRIDGE option to constrain area by initial Clip
 public class DensityPlot extends BarLegendPlot {
   private static final Scalar RENDER_TIME_TARGET = Quantity.of(0.1, "s");
   private static final int RESOLUTION_DEFAULT = 80;
@@ -96,10 +96,11 @@ public class DensityPlot extends BarLegendPlot {
           (int) ul.getX(), //
           (int) ul.getY(), //
           null);
-      //
-      graphics.setColor(Color.GRAY);
-      graphics.drawString("" + resolution, (int) ul.getX(), //
-          (int) ul.getY() + 10);
+      // debug info
+      graphics.setColor(new Color(128, 128, 128, 128));
+      graphics.drawString("" + resolution, //
+          (int) ul.getX(), //
+          (int) ul.getY() + 12); // magic const dep on fontsize
     }
   }
 

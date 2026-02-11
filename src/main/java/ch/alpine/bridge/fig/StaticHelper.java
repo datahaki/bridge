@@ -5,6 +5,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Stroke;
+import java.lang.StackWalker.StackFrame;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -139,5 +140,16 @@ import ch.alpine.tensor.tmp.TsEntry;
 
   public static int interval(FontMetrics fontMetrics) {
     return fontMetrics.getAscent() * 8 / 5;
+  }
+
+  public static String defaultTitle() {
+    String packageName = StaticHelper.class.getPackageName();
+    StackWalker stackWalker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+    StackFrame stackFrame = stackWalker.walk(stream -> stream //
+        .filter(sf -> !sf.getDeclaringClass().getPackageName().equals(packageName)) //
+        .filter(sf -> !sf.getDeclaringClass().isInterface()) //
+        .findFirst() //
+        .orElseThrow());
+    return stackFrame.getDeclaringClass().getSimpleName().replaceAll("([A-Z])", " $1").trim();
   }
 }

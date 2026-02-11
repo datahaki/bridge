@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.lang.StackWalker.StackFrame;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public enum ShowWindow {
     jDialog.setContentPane(createContainer(list));
     jDialog.setSize(SIZE, SIZE);
     jDialog.setLocationRelativeTo(parentComponent);
-    jDialog.setTitle(defaultTitle());
+    jDialog.setTitle(StaticHelper.defaultTitle());
     jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     ScreenRectangles.create().placement(jDialog);
     jDialog.setVisible(true);
@@ -62,22 +61,11 @@ public enum ShowWindow {
     jFrame.setContentPane(createContainer(list));
     jFrame.setSize(SIZE, SIZE);
     jFrame.setLocationRelativeTo(parentComponent);
-    jFrame.setTitle(defaultTitle());
+    jFrame.setTitle(StaticHelper.defaultTitle());
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     ScreenRectangles.create().placement(jFrame);
     jFrame.setVisible(true);
     return jFrame;
-  }
-
-  private static String defaultTitle() {
-    StackWalker stackWalker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
-    StackFrame stackFrame = stackWalker.walk(stream -> stream //
-        .filter(sf -> !sf.getDeclaringClass().equals(ShowWindow.class)) //
-        .filter(sf -> !sf.getDeclaringClass().isInterface()) //
-        .findFirst() //
-        .orElseThrow());
-    // new ShortStackTrace("ch").print();
-    return stackFrame.getDeclaringClass().getSimpleName();
   }
 
   private static Container createContainer(List<Show> list) {
