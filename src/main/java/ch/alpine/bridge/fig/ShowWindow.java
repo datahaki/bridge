@@ -4,17 +4,13 @@ package ch.alpine.bridge.fig;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -22,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.OffscreenRender;
 import ch.alpine.bridge.awt.ScreenRectangles;
 import ch.alpine.bridge.io.ImageClipboard;
 import ch.alpine.bridge.lang.FriendlyFormat;
@@ -74,15 +71,6 @@ public enum ShowWindow {
     return jFrame;
   }
 
-  private static BufferedImage fromComponent(JComponent center) {
-    Dimension dimension = center.getSize();
-    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = bufferedImage.createGraphics();
-    center.printAll(graphics);
-    graphics.dispose();
-    return bufferedImage;
-  }
-
   private static Container createContainer(List<Show> list) {
     JPanel contentPane = new JPanel(new BorderLayout());
     JPanel center = ShowGridComponent.of(list);
@@ -92,7 +80,7 @@ public enum ShowWindow {
     jToolBar.setFloatable(false);
     {
       JButton jButton = new JButton("copy");
-      jButton.addActionListener(_ -> ImageClipboard.copy(fromComponent(center)));
+      jButton.addActionListener(_ -> ImageClipboard.copy(OffscreenRender.of(center)));
       jToolBar.add(jButton);
     }
     {
@@ -101,7 +89,7 @@ public enum ShowWindow {
         try {
           String string = "fig_" + System.nanoTime() + ".png";
           Path path = HomeDirectory.Pictures.resolve(FriendlyFormat.sanitize(string));
-          ImageIO.write(fromComponent(center), "png", Files.newOutputStream(path));
+          ImageIO.write(OffscreenRender.of(center), "png", Files.newOutputStream(path));
         } catch (Exception exception) {
           exception.printStackTrace();
         }
