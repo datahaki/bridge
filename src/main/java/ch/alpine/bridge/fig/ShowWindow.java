@@ -6,10 +6,15 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,6 +23,7 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.ScreenRectangles;
+import ch.alpine.bridge.io.ImageClipboard;
 import ch.alpine.bridge.lang.FriendlyFormat;
 import ch.alpine.tensor.ext.HomeDirectory;
 
@@ -68,6 +74,15 @@ public enum ShowWindow {
     return jFrame;
   }
 
+  private static BufferedImage fromComponent(JComponent center) {
+    Dimension dimension = center.getSize();
+    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D graphics = bufferedImage.createGraphics();
+    center.printAll(graphics);
+    graphics.dispose();
+    return bufferedImage;
+  }
+
   private static Container createContainer(List<Show> list) {
     JPanel contentPane = new JPanel(new BorderLayout());
     JPanel center = ShowGridComponent.of(list);
@@ -75,22 +90,24 @@ public enum ShowWindow {
     JToolBar jToolBar = new JToolBar();
     jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
     jToolBar.setFloatable(false);
-    JButton jButton = new JButton("export");
-    jButton.addActionListener(_ -> {
-      for (Component component : center.getComponents()) {
-        ShowComponent showComponent = (ShowComponent) component;
-        Show show = showComponent.getShow();
+    {
+      JButton jButton = new JButton("copy");
+      jButton.addActionListener(_ -> ImageClipboard.copy(fromComponent(center)));
+      jToolBar.add(jButton);
+    }
+    {
+      JButton jButton = new JButton("export");
+      jButton.addActionListener(_ -> {
         try {
-          String string = "fig_" + show.getPlotLabel() + ".png";
+          String string = "fig_" + System.nanoTime() + ".png";
           Path path = HomeDirectory.Pictures.resolve(FriendlyFormat.sanitize(string));
-          Dimension dimension = showComponent.getSize();
-          show.export(path, dimension);
+          ImageIO.write(fromComponent(center), "png", Files.newOutputStream(path));
         } catch (Exception exception) {
           exception.printStackTrace();
         }
-      }
-    });
-    jToolBar.add(jButton);
+      });
+      jToolBar.add(jButton);
+    }
     contentPane.add(BorderLayout.NORTH, jToolBar);
     return contentPane;
   }
