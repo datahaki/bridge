@@ -9,7 +9,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Integers;
 
 /** @see AffineTransform */
-/* package */ class AffineFrame2D {
+/* package */ final class AffineFrame2D {
   private final Tensor matrix;
   private final double m00;
   private final double m01;

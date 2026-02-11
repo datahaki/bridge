@@ -14,7 +14,7 @@ import ch.alpine.tensor.Tensors;
 /** GeometricLayer transforms from model to pixel coordinates
  * 
  * see RenderInterface */
-public class GeometricLayer {
+public final class GeometricLayer {
   private final Deque<AffineFrame2D> deque = new ArrayDeque<>();
 
   /** @param model2pixel matrix of dimension 3x3 that becomes first element on matrix stack */

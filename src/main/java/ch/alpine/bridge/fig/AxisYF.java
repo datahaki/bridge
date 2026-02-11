@@ -30,6 +30,8 @@ class AxisYF extends Axis {
   /** draw lines and numbers like this: _________________ */
   @Override
   void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
+    if (Scalars.isZero(clip.width()))
+      return;
     Rectangle rectangle = showableConfig.rectangle;
     graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();

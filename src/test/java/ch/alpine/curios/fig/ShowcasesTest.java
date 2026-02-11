@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.ext.Jpeg;
+import ch.alpine.tensor.ext.Serialization;
 
 class ShowcasesTest {
   @TempDir
@@ -21,8 +22,9 @@ class ShowcasesTest {
 
   @ParameterizedTest
   @EnumSource
-  void test(Showcases showDemos) throws IOException {
+  void test(Showcases showDemos) throws IOException, ClassNotFoundException {
     Show show = showDemos.getShow();
+    Serialization.copy(show);
     BufferedImage bufferedImage = show.image(new Dimension(400, 300));
     assertEquals(bufferedImage.getWidth(), 400);
     assertEquals(bufferedImage.getHeight(), 300);

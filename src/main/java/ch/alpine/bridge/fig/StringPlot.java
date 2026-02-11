@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 public class StringPlot extends BaseShowable {
-  public record StringItem(Tensor pos, String string, Color color) {
+  public record StringItem(Tensor pos, String string, Color color) implements Serializable {
     public static StringItem of(Tensor pos, String string) {
       return new StringItem(pos, string, Color.BLACK);
     }
