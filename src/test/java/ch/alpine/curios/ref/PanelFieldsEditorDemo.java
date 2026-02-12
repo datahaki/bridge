@@ -13,12 +13,11 @@ import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.bridge.swing.CheckBoxIcon;
-import ch.alpine.bridge.swing.LookAndFeels;
 
 class PanelFieldsEditorDemo implements WindowProvider {
-  private final JFrame jFrame = new JFrame();
-
-  public PanelFieldsEditorDemo() {
+  @Override
+  public Window getWindow() {
+    JFrame jFrame = new JFrame();
     JTabbedPane jTabbedPane = new JTabbedPane();
     jTabbedPane.addTab("nested", PanelFieldsEditor.nested(new GuiExtension()).createJScrollPane());
     jTabbedPane.addTab("splits", PanelFieldsEditor.splits(new GuiExtension()).createJScrollPane());
@@ -26,16 +25,10 @@ class PanelFieldsEditorDemo implements WindowProvider {
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setContentPane(jTabbedPane);
     jFrame.setBounds(100, 100, 800, 900);
-  }
-
-  @Override
-  public Window getWindow() {
     return jFrame;
   }
 
   static void main() {
-    LookAndFeels.LIGHT.updateComponentTreeUI();
-    // ---
     FieldsEditorParam.GLOBAL.textFieldFont_override = true;
     FieldsEditorParam.GLOBAL.textFieldFont = new Font(Font.MONOSPACED, Font.BOLD, 22);
     // ---

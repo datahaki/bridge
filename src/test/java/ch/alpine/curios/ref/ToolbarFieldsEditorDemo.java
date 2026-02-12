@@ -15,13 +15,11 @@ import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.util.FieldsEditor;
 import ch.alpine.bridge.ref.util.ToolbarFieldsEditor;
-import ch.alpine.bridge.swing.LookAndFeels;
 
 /** the components' height are elevated probably because of the slider */
 class ToolbarFieldsEditorDemo implements WindowProvider {
   @Override
   public Window getWindow() {
-    LookAndFeels.DARK.updateComponentTreeUI();
     GuiExtension guiExtension = new GuiExtension();
     JToolBar jToolBar = new JToolBar();
     jToolBar.setFloatable(false);

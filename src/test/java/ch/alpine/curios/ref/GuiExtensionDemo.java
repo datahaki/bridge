@@ -19,7 +19,6 @@ import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
-import ch.alpine.bridge.swing.LookAndFeels;
 import ch.alpine.tensor.mat.re.Pivots;
 
 class GuiExtensionDemo implements WindowProvider {
@@ -80,7 +79,6 @@ class GuiExtensionDemo implements WindowProvider {
   }
 
   static void main() {
-    LookAndFeels.LIGHT.updateComponentTreeUI();
     FieldsEditorParam.GLOBAL.componentMinSize_override = true;
     FieldsEditorParam.GLOBAL.componentMinSize = 40;
     // ---

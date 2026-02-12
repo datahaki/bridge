@@ -17,7 +17,6 @@ import ch.alpine.bridge.awt.WindowClosed;
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
-import ch.alpine.bridge.swing.LookAndFeels;
 
 /** this demo periodically invokes updateJComponents
  * to illustrate what is the behavior of the dialog
@@ -25,7 +24,6 @@ import ch.alpine.bridge.swing.LookAndFeels;
 class PartialDemo implements WindowProvider {
   @Override
   public Window getWindow() {
-    LookAndFeels.INTELLI_J.updateComponentTreeUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(guiExtension);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));

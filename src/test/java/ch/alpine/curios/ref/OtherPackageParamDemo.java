@@ -12,13 +12,10 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.OtherPackageParam;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
-import ch.alpine.bridge.swing.LookAndFeels;
 
 class OtherPackageParamDemo implements WindowProvider {
   @Override
   public Window getWindow() {
-    LookAndFeels.LIGHT.updateComponentTreeUI();
-    // ---
     OtherPackageParam otherPackageParam = new OtherPackageParam();
     PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(otherPackageParam);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));

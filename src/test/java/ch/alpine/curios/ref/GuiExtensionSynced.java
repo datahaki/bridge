@@ -13,12 +13,10 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
-import ch.alpine.bridge.swing.LookAndFeels;
 
 class GuiExtensionSynced implements WindowProvider {
   @Override
   public Window getWindow() {
-    LookAndFeels.INTELLI_J.updateComponentTreeUI();
     GuiExtension guiExtension = new GuiExtension();
     PanelFieldsEditor left_FieldsEditor = PanelFieldsEditor.splits(guiExtension);
     PanelFieldsEditor rightFieldsEditor = PanelFieldsEditor.splits(guiExtension);
