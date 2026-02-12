@@ -15,6 +15,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
+import ch.alpine.bridge.os.OperatingSystem;
 import ch.alpine.tensor.ext.PackageTestAccess;
 
 /** Do not invoke LookAndFeel#getDefaults()
@@ -64,5 +65,9 @@ public enum LookAndFeels {
   @PackageTestAccess
   static List<LookAndFeels> standard() {
     return List.of(DEFAULT, DARK, LIGHT, CDE_MOTIF, DRACULA, INTELLI_J);
+  }
+
+  public static void autoDetect() {
+    OperatingSystem.get().lookAndFeels().updateComponentTreeUI();
   }
 }

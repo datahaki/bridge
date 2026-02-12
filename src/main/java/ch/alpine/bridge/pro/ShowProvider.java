@@ -12,7 +12,7 @@ public interface ShowProvider {
   Show getShow();
 
   default Window run() {
-    LookAndFeels.LIGHT.updateComponentTreeUI();
+    LookAndFeels.autoDetect();
     return ShowWindow.asFrame(getShow());
   }
 }

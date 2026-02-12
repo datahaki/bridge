@@ -12,7 +12,7 @@ public interface ManipulateProvider {
   JComponent getJComponent();
 
   default Window run() {
-    LookAndFeels.LIGHT.updateComponentTreeUI();
+    LookAndFeels.autoDetect();
     return Manipulate.asFrame(this, () -> getJComponent());
   }
 }
