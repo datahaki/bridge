@@ -818,7 +818,7 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Cepstrogram");
-      show.add(CepstrogramDemo.create(CepstrogramArray.Real));
+      show.add(CepstrogramDemo.create(CepstrogramArray.REAL));
       return show;
     }
   },
@@ -827,7 +827,7 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Cepstrogram");
-      show.add(CepstrogramDemo.create(CepstrogramArray.Power));
+      show.add(CepstrogramDemo.create(CepstrogramArray.POWER));
       return show;
     }
   },

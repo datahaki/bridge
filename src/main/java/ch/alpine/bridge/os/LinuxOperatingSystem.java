@@ -23,7 +23,7 @@ enum LinuxOperatingSystem implements OperatingSystem {
       if (Objects.nonNull(output)) {
         // 'default'
         if (output.equals("'prefer-dark'"))
-        return LookAndFeels.DARK;
+          return LookAndFeels.DARK;
       }
     } catch (Exception exception) {
       exception.printStackTrace();

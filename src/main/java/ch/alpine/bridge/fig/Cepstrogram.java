@@ -42,7 +42,7 @@ public enum Cepstrogram {
    * @param function for instance {@link ColorDataGradients#VISIBLE_SPECTRUM}
    * @return */
   public static Showable of(Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
-    return of(CepstrogramArray.Real, signal, sampleRate, window, function);
+    return of(CepstrogramArray.REAL, signal, sampleRate, window, function);
   }
 
   /** Example:
