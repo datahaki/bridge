@@ -42,11 +42,13 @@ import ch.alpine.tensor.sca.Clips;
 
 @ReflectionMarker
 public class GuiExtension {
+  @ReflectionMarker
   public static class NestA {
     public Color text = Color.RED;
     public final NestB nestB = new NestB();
   }
 
+  @ReflectionMarker
   public static class NestB {
     public String s = "abc";
     public Pivots pivot = Pivots.ARGMAX_ABS;

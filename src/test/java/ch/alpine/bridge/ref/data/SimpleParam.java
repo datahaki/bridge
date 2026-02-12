@@ -36,11 +36,13 @@ public class SimpleParam extends BaseParam {
   @FieldLabel("Nested %d")
   public final NestedParam[] nestedParams = { new NestedParam(), new NestedParam() };
 
+  @ReflectionMarker
   public static class AnotherParam {
     public File file = HomeDirectory.path().toFile();
     public Color color = Color.RED;
   }
 
+  @ReflectionMarker
   public static class NestedParam extends BaseParam {
     @FieldFuse("fuse")
     public Boolean some = true;

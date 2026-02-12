@@ -110,10 +110,6 @@ public enum FriendlyFormat {
   }
 
   public static String convertAmps(String string) {
-    // for (String[] pair : PAIRS)
-    // if (string.contains(pair[0]))
-    // throw new IllegalArgumentException(string);
-    // ---
     for (String[] pair : PAIRS)
       string = string.replaceAll(pair[1], pair[0]);
     return string;

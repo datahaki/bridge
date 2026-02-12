@@ -13,7 +13,6 @@ class DialogFieldsEditorDemo implements WindowProvider {
   public Window getWindow() {
     DialogFieldsEditor dialogFieldsEditor = DialogFieldsEditor.show(null, new GuiExtension(), "here");
     WindowClosed.runs(dialogFieldsEditor, () -> System.out.println(dialogFieldsEditor.getSelection()));
-    System.out.println("non blocking");
     return dialogFieldsEditor;
   }
 

@@ -1,9 +1,11 @@
 // code by jph
 package ch.alpine.bridge.ref.data;
 
+import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.swing.FontStyle;
 import ch.alpine.tensor.mat.re.Pivots;
 
+@ReflectionMarker
 public class TemplateEnumParam {
   public Pivots _pivots = Pivots.ARGMAX_ABS;
   public FontStyle _fontStyle = FontStyle.BOLD;

@@ -6,6 +6,9 @@ import java.awt.Font;
 import java.io.File;
 import java.time.LocalTime;
 
+import ch.alpine.bridge.ref.ann.ReflectionMarker;
+
+@ReflectionMarker
 public class MyConfig {
   public String text = "abc";
   public Boolean flag = false;

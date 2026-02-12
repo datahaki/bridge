@@ -40,6 +40,7 @@ public class FieldsEditorParam {
   public Boolean textFieldFont_override = false;
   public Font textFieldFont = new Font(Font.DIALOG_INPUT, Font.PLAIN, 15);
 
+  @ReflectionMarker
   public static class CheckBoxParam {
     /** icon applicable to {@link BooleanCheckBox} */
     public Boolean override = false;
