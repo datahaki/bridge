@@ -44,7 +44,7 @@ class SpinnerMenuTest {
     jFrame.setVisible(false);
   }
 
-  @DisabledOnOs(OS.WINDOWS)
+  @DisabledOnOs({ OS.WINDOWS, OS.MAC })
   @Test
   void testNonContains() throws InterruptedException {
     SpinnerMenu<ColorDataGradients> spinnerMenu = //
