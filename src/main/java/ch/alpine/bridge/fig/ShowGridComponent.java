@@ -14,6 +14,8 @@ import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Round;
 import ch.alpine.tensor.sca.pow.Sqrt;
 
+/** inspired by
+ * <a href="https://reference.wolfram.com/language/ref/GraphicsGrid.html">GraphicsGrid</a> */
 public enum ShowGridComponent {
   ;
   public static JComponent of(List<Show> list) {

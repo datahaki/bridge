@@ -4,7 +4,6 @@ package ch.alpine.bridge.fig;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -13,6 +12,8 @@ import ch.alpine.tensor.qty.Unit;
 
 abstract class ArrayShowable extends BaseShowable {
   protected final CoordinateBoundingBox cbb;
+  private ImageResize imageResize = ImageResize.DEGREE_0;
+  private boolean aspectRatioOneHint = true;
 
   public ArrayShowable(CoordinateBoundingBox cbb) {
     this.cbb = Objects.requireNonNull(cbb);
@@ -24,8 +25,6 @@ abstract class ArrayShowable extends BaseShowable {
     return Optional.of(cbb);
   }
 
-  private ImageResize imageResize = ImageResize.DEGREE_0;
-
   public final ImageResize getImageResize() {
     return imageResize;
   }
@@ -34,13 +33,11 @@ abstract class ArrayShowable extends BaseShowable {
     this.imageResize = Objects.requireNonNull(imageResize);
   }
 
-  private boolean aspectRatioOneHint = true;
-
   public final boolean getAspectRatioOneHint() {
-    Scalar ratio = cbb.clip(0).width().divide(cbb.clip(1).width());
-    Unit unit = QuantityUnit.of(ratio);
+    Unit unit0 = QuantityUnit.of(cbb.clip(0).width());
+    Unit unit1 = QuantityUnit.of(cbb.clip(1).width());
     return aspectRatioOneHint //
-        && Unit.ONE.equals(unit);
+        && unit0.equals(unit1);
   }
 
   public final void setAspectRatioOne(boolean hint) {

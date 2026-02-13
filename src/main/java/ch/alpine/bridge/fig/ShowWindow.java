@@ -4,26 +4,16 @@ package ch.alpine.bridge.fig;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.FlowLayout;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.awt.OffscreenRender;
 import ch.alpine.bridge.awt.ScreenRectangles;
-import ch.alpine.bridge.io.ImageClipboard;
-import ch.alpine.bridge.lang.FriendlyFormat;
-import ch.alpine.tensor.ext.HomeDirectory;
 
 public enum ShowWindow {
   ;
@@ -76,28 +66,7 @@ public enum ShowWindow {
     JPanel contentPane = new JPanel(new BorderLayout());
     JComponent jComponent = ShowGridComponent.of(list);
     contentPane.add(BorderLayout.CENTER, jComponent);
-    JToolBar jToolBar = new JToolBar();
-    jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-    jToolBar.setFloatable(false);
-    {
-      JButton jButton = new JButton("copy");
-      jButton.addActionListener(_ -> ImageClipboard.copy(OffscreenRender.of(jComponent)));
-      jToolBar.add(jButton);
-    }
-    {
-      JButton jButton = new JButton("export");
-      jButton.addActionListener(_ -> {
-        try {
-          String string = "fig_" + System.nanoTime() + ".png";
-          Path path = HomeDirectory.Pictures.resolve(FriendlyFormat.sanitize(string));
-          ImageIO.write(OffscreenRender.of(jComponent), "png", Files.newOutputStream(path));
-        } catch (Exception exception) {
-          exception.printStackTrace();
-        }
-      });
-      jToolBar.add(jButton);
-    }
-    contentPane.add(BorderLayout.NORTH, jToolBar);
+    contentPane.add(BorderLayout.NORTH, StaticHelper.createToolbar(jComponent));
     return contentPane;
   }
 }
