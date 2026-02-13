@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Arrays;
 import java.util.List;
@@ -33,5 +34,17 @@ public enum ShowGridComponent {
 
   public static JComponent of(Show... shows) {
     return of(Arrays.asList(shows));
+  }
+
+  public static JComponent column(List<Show> list) {
+    JPanel grid = new JPanel(new GridLayout(list.size(), 1));
+    for (Show show : list) {
+      // grid.add(new JLabel("HERE"));
+      ShowComponent showComponent = new ShowComponent();
+      showComponent.setShow(show);
+      showComponent.setPreferredSize(new Dimension(400, 300));
+      grid.add(showComponent);
+    }
+    return grid;
   }
 }

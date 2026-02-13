@@ -135,9 +135,9 @@ public enum Showcases implements ShowProvider {
       Clip clip = Clips.unit();
       Show show = new Show(ColorDataLists._109.strict()); // use RGB for line color
       show.setPlotLabel("Color Data Gradient Classic");
-      show.add(Plot.of(s -> f.apply(s).Get(0), clip)).setLabel("red");
-      show.add(Plot.of(s -> f.apply(s).Get(1), clip)).setLabel("green");
-      show.add(Plot.of(s -> f.apply(s).Get(2), clip)).setLabel("blue");
+      show.add(Plot.of(s -> f.apply(s).Get(0), clip,Option.STRICT)).setLabel("red");
+      show.add(Plot.of(s -> f.apply(s).Get(1), clip,Option.STRICT)).setLabel("green");
+      show.add(Plot.of(s -> f.apply(s).Get(2), clip,Option.STRICT)).setLabel("blue");
       return show;
     }
   },
@@ -261,7 +261,7 @@ public enum Showcases implements ShowProvider {
       InverseCDF inverseCDF = InverseCDF.of(distribution);
       Show show = new Show();
       show.setPlotLabel("Truncated Normal Distribution");
-      show.add(Plot.of(inverseCDF::quantile, Clips.unit()));
+      show.add(Plot.of(inverseCDF::quantile, Clips.unit(), Option.STRICT));
       return show;
     }
   },
@@ -315,7 +315,7 @@ public enum Showcases implements ShowProvider {
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.of(3, 1));
       Tensor samples = RandomVariate.of(UniformDistribution.of(Clips.unit()), 100);
       samples.maps(randomFunction::evaluate); // for integral
-      show.add(Plot.of(randomFunction::evaluate, Clips.unit())).setLabel("timeSeries");
+      show.add(Plot.of(randomFunction::evaluate, Clips.unit(), Option.STRICT)).setLabel("timeSeries");
       TimeSeries timeSeries = randomFunction.timeSeries();
       TimeSeries integral = TimeSeriesIntegrate.of(timeSeries);
       Showable showable = show.add(TsPlot.of(integral));

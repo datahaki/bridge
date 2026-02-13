@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +28,15 @@ import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.util.FieldsEditor;
 import ch.alpine.bridge.ref.util.ToolbarFieldsEditor;
-import ch.alpine.bridge.swing.LookAndFeels;
 import ch.alpine.tensor.img.ImageResize;
 
 @ReflectionMarker
-public class ShowDemo implements Runnable {
+public class ShowDemo implements WindowProvider {
   public Integer width = 400;
   public Integer height = 200;
   @FieldClip(min = "1", max = "5")
@@ -60,12 +61,12 @@ public class ShowDemo implements Runnable {
 
   private List<BufferedImage> recomp() {
     List<BufferedImage> list = new ArrayList<>();
-    for (Showcases showDemos : Showcases.values()) {
+    for (Showcases showcases : Showcases.values()) {
       try {
         Rectangle rectangle = Show.defaultInsets(new Dimension(width, height), 12);
-        if (showDemos.extra)
+        if (showcases.extra)
           rectangle.width -= 100;
-        Show show = showDemos.getShow();
+        Show show = showcases.getShow();
         Objects.requireNonNull(show);
         BufferedImage bufferedImage = show.image(new Dimension(width, height), rectangle);
         Graphics2D graphics = bufferedImage.createGraphics();
@@ -75,11 +76,11 @@ public class ShowDemo implements Runnable {
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 9));
         RenderQuality.setQuality(graphics);
-        graphics.drawString(showDemos.name(), 0, 10);
+        graphics.drawString(showcases.name(), 0, 10);
         graphics.dispose();
         list.addFirst(bufferedImage);
       } catch (Exception exception) {
-        System.err.println(showDemos);
+        System.err.println(showcases);
         exception.printStackTrace();
       }
     }
@@ -89,13 +90,25 @@ public class ShowDemo implements Runnable {
   private ShowDemo() {
     JScrollBar jScrollBar = jScrollPane.getVerticalScrollBar();
     jScrollBar.setPreferredSize(new Dimension(30, 30));
-    run();
+    Runnable runnable = new Runnable() {
+      @Override
+      public void run() {
+        list = recomp();
+        int piy = Showcases.values().length * height * mag;
+        jComponent.setPreferredSize(new Dimension(width, piy));
+        jComponent.repaint();
+        JViewport viewport = jScrollPane.getViewport();
+        viewport.setViewPosition(new Point(0, piy - 1));
+        viewport.setViewPosition(new Point(0, 0));
+      }
+    };
+    runnable.run();
     JPanel jPanel = new JPanel(new BorderLayout());
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
       FieldsEditor fieldsEditor = ToolbarFieldsEditor.addToComponent(this, jToolBar);
-      fieldsEditor.addUniversalListener(this);
+      fieldsEditor.addUniversalListener(runnable);
       jPanel.add(BorderLayout.NORTH, jToolBar);
     }
     jPanel.add(BorderLayout.CENTER, jScrollPane);
@@ -104,20 +117,13 @@ public class ShowDemo implements Runnable {
     jFrame.setBounds(100, 100, 1000, 900);
   }
 
+
   @Override
-  public void run() {
-    list = recomp();
-    int piy = Showcases.values().length * height * mag;
-    jComponent.setPreferredSize(new Dimension(width, piy));
-    jComponent.repaint();
-    JViewport viewport = jScrollPane.getViewport();
-    viewport.setViewPosition(new Point(0, piy - 1));
-    viewport.setViewPosition(new Point(0, 0));
+  public Window getWindow() {
+    return jFrame;
   }
 
   static void main() {
-    LookAndFeels.LIGHT.updateComponentTreeUI();
-    ShowDemo showDemo = new ShowDemo();
-    showDemo.jFrame.setVisible(true);
+    new ShowDemo().run();
   }
 }
