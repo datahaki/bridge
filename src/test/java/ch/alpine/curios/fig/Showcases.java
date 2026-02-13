@@ -18,6 +18,7 @@ import ch.alpine.bridge.fig.MultiTsPlot;
 import ch.alpine.bridge.fig.ParametricPlot;
 import ch.alpine.bridge.fig.Periodogram;
 import ch.alpine.bridge.fig.Plot;
+import ch.alpine.bridge.fig.Plot.Option;
 import ch.alpine.bridge.fig.ReImPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
@@ -36,7 +37,6 @@ import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.alg.UnitVector;
 import ch.alpine.tensor.api.ScalarBinaryOperator;
-import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.fft.CepstrogramArray;
@@ -45,7 +45,6 @@ import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.io.Import;
-import ch.alpine.tensor.itp.BSplineFunctionString;
 import ch.alpine.tensor.itp.Interpolation;
 import ch.alpine.tensor.itp.LanczosInterpolation;
 import ch.alpine.tensor.itp.MitchellNetravaliKernel;
@@ -218,25 +217,25 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  DISTR1 {
-    @Override
-    public Show getShow() {
-      Distribution distribution = TrapezoidalDistribution.of(0.5, 1.5, 1.5, 2.5);
-      PDF pdf = PDF.of(distribution);
-      CDF cdf = CDF.of(distribution);
-      Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Trapezoidal Distribution");
-      Clip clip = Clips.interval(0, 4);
-      show.add(Plot.of(pdf::at, clip));
-      show.add(Plot.of(cdf::p_lessEquals, clip));
-      Tensor sequence = Tensors.vector(0, 0, 1, 1);
-      // Tensor domain = Subdivide.of(0, sequence.length() - 1, 100);
-      ScalarTensorFunction sto = BSplineFunctionString.of(2, sequence);
-      ScalarUnaryOperator suo = s -> (Scalar) sto.apply(s);
-      show.add(Plot.of(suo, Clips.interval(0, 3)));
-      return show;
-    }
-  },
+  // DISTR1 {
+  // @Override
+  // public Show getShow() {
+  // Distribution distribution = TrapezoidalDistribution.of(0.5, 1.5, 1.5, 2.5);
+  // PDF pdf = PDF.of(distribution);
+  // CDF cdf = CDF.of(distribution);
+  // Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
+  // show.setPlotLabel("Trapezoidal Distribution");
+  // Clip clip = Clips.interval(0, 4);
+  // show.add(Plot.of(pdf::at, clip));
+  // show.add(Plot.of(cdf::p_lessEquals, clip));
+  // Tensor sequence = Tensors.vector(0, 0, 1, 1);
+  // // Tensor domain = Subdivide.of(0, sequence.length() - 1, 100);
+  // ScalarTensorFunction sto = BSplineFunctionString.of(2, sequence);
+  // ScalarUnaryOperator suo = s -> (Scalar) sto.apply(s);
+  // show.add(Plot.of(suo, Clips.interval(0, 3)));
+  // return show;
+  // }
+  // },
   TruncatedDistribution0 {
     @Override
     public Show getShow() {
@@ -248,8 +247,8 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("Truncated Distribution");
       Clip clip = Clips.interval(-3, 3);
-      show.add(Plot.filling(pdf_o::at, clip)).setLabel("orig. PDF");
-      show.add(Plot.filling(pdf::at, clip)).setLabel("trunc. PDF");
+      show.add(Plot.of(pdf_o::at, clip, Option.FILLING)).setLabel("orig. PDF");
+      show.add(Plot.of(pdf::at, clip, Option.FILLING)).setLabel("trunc. PDF");
       show.add(Plot.of(cdf::p_lessEquals, clip)).setLabel("trunc. CDF");
       return show;
     }
@@ -495,7 +494,7 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
       show.setPlotLabel("Sine");
-      show.add(Plot.filling(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2))).setLabel("sine");
+      show.add(Plot.of(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2), Option.FILLING)).setLabel("sine");
       return show;
     }
   },
@@ -504,9 +503,9 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Gamma Distributions");
-      show.add(Plot.filling(PDF.of(GammaDistribution.of(1, 2))::at, Clips.positive(20))).setLabel("alpha = 1");
-      show.add(Plot.filling(PDF.of(GammaDistribution.of(4, 2))::at, Clips.positive(20))).setLabel("alpha = 4");
-      show.add(Plot.filling(PDF.of(GammaDistribution.of(6, 2))::at, Clips.positive(20))).setLabel("alpha = 6");
+      show.add(Plot.of(PDF.of(GammaDistribution.of(1, 2))::at, Clips.positive(20), Option.FILLING)).setLabel("alpha = 1");
+      show.add(Plot.of(PDF.of(GammaDistribution.of(4, 2))::at, Clips.positive(20), Option.FILLING)).setLabel("alpha = 4");
+      show.add(Plot.of(PDF.of(GammaDistribution.of(6, 2))::at, Clips.positive(20), Option.FILLING)).setLabel("alpha = 6");
       return show;
     }
   },
