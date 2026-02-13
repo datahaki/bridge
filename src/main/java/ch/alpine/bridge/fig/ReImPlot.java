@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import ch.alpine.bridge.fig.Plot.Option;
 import ch.alpine.tensor.RationalScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.alg.Subdivide;
@@ -17,12 +18,11 @@ import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.num.ReIm;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
-import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.Sign;
 
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ReImPlot.html">ReImPlot</a> */
-public class ReImPlot extends BaseShowable {
+public class ReImPlot extends UnaryShowable {
   public static final Stroke STROKE_RE = //
       new BasicStroke(1.5f);
   public static final Stroke STROKE_IM = //
@@ -33,81 +33,63 @@ public class ReImPlot extends BaseShowable {
   /** @param suo
    * @param domain
    * @return */
-  public static Showable of(ScalarUnaryOperator suo, Clip domain) {
-    return new ReImPlot(suo, domain, false);
+  public static Showable of(ScalarUnaryOperator suo, Clip domain, Option... options) {
+    return new ReImPlot(suo, domain, options);
   }
-
-  /** used for plotting distributions
-   * 
-   * @param suo
-   * @param domain
-   * @return */
-  public static Showable filling(ScalarUnaryOperator suo, Clip domain) {
-    return new ReImPlot(suo, domain, true);
-  }
-
-  // ---
-  private final ScalarUnaryOperator suo;
-  private final Clip domain;
-  private final boolean fill;
 
   // ---
   /** @param suo
    * @param domain may be null, in which case the plot is empty
    * @param whether area between function and axis is shaded */
-  private ReImPlot(ScalarUnaryOperator suo, Clip domain, boolean fill) {
-    this.suo = suo;
-    this.domain = domain;
-    this.fill = fill;
+  private ReImPlot(ScalarUnaryOperator suo, Clip domain, Option... options) {
+    super(suo, domain, options);
   }
 
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    if (Objects.nonNull(domain)) {
-      Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), domain);
-      if (optional.isPresent()) {
-        int segmentsPerPixel = 1;
-        Clip x_clip = optional.orElseThrow();
-        if (Sign.isPositive(x_clip.width())) {
-          final double x0 = showableConfig.x_pos(x_clip.min());
-          final double x1 = showableConfig.x_pos(x_clip.max());
-          Path2D.Double pathRe = new Path2D.Double();
-          Path2D.Double pathIm = new Path2D.Double();
+    Optional<Clip> optional = x_clip(showableConfig);
+    if (optional.isPresent()) {
+      Clip x_clip = optional.orElseThrow();
+      int segmentsPerPixel = 1;
+      if (Sign.isPositive(x_clip.width())) {
+        final double x0 = showableConfig.x_pos(x_clip.min());
+        final double x1 = showableConfig.x_pos(x_clip.max());
+        Path2D.Double pathRe = new Path2D.Double();
+        Path2D.Double pathIm = new Path2D.Double();
+        {
+          ReIm reIm = ReIm.of(suo.apply(x_clip.min()));
+          pathRe.moveTo(x0, showableConfig.y_pos(reIm.re()));
+          pathIm.moveTo(x0, showableConfig.y_pos(reIm.im()));
+        }
+        ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
+        final int size = (int) ((x1 - x0) * segmentsPerPixel);
+        final double dx = 1.0 / segmentsPerPixel;
+        double xc = x0;
+        for (int i = 1; i <= size; ++i) {
+          xc += dx;
+          ReIm reIm = ReIm.of(suo.apply(interpX.apply(RationalScalar.of(i, size))));
+          pathRe.lineTo(xc, showableConfig.y_pos(reIm.re()));
+          pathIm.lineTo(xc, showableConfig.y_pos(reIm.im()));
+        }
+        graphics.setColor(getColor());
+        graphics.setStroke(STROKE_RE);
+        graphics.draw(pathRe);
+        graphics.setStroke(STROKE_IM);
+        graphics.draw(pathIm);
+        if (isFilling()) {
           {
-            ReIm reIm = ReIm.of(suo.apply(x_clip.min()));
-            pathRe.moveTo(x0, showableConfig.y_pos(reIm.re()));
-            pathIm.moveTo(x0, showableConfig.y_pos(reIm.im()));
+            double y1 = showableConfig.y_pos(suo.apply(x_clip.max()).zero());
+            pathRe.lineTo(x1, y1);
+            pathIm.lineTo(x1, y1);
           }
-          ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
-          final int size = (int) ((x1 - x0) * segmentsPerPixel);
-          final double dx = 1.0 / segmentsPerPixel;
-          double xc = x0;
-          for (int i = 1; i <= size; ++i) {
-            xc += dx;
-            ReIm reIm = ReIm.of(suo.apply(interpX.apply(RationalScalar.of(i, size))));
-            pathRe.lineTo(xc, showableConfig.y_pos(reIm.re()));
-            pathIm.lineTo(xc, showableConfig.y_pos(reIm.im()));
+          {
+            double y0 = showableConfig.y_pos(suo.apply(x_clip.min()).zero());
+            pathRe.lineTo(x0, y0);
+            pathIm.lineTo(x0, y0);
           }
-          graphics.setColor(getColor());
-          graphics.setStroke(STROKE_RE);
-          graphics.draw(pathRe);
-          graphics.setStroke(STROKE_IM);
-          graphics.draw(pathIm);
-          if (fill) {
-            {
-              double y1 = showableConfig.y_pos(suo.apply(x_clip.max()).zero());
-              pathRe.lineTo(x1, y1);
-              pathIm.lineTo(x1, y1);
-            }
-            {
-              double y0 = showableConfig.y_pos(suo.apply(x_clip.min()).zero());
-              pathRe.lineTo(x0, y0);
-              pathIm.lineTo(x0, y0);
-            }
-            graphics.setColor(StaticHelper.withAlpha(getColor(), ALPHA));
-            graphics.fill(pathRe);
-            graphics.fill(pathIm);
-          }
+          graphics.setColor(StaticHelper.withAlpha(getColor(), ALPHA));
+          graphics.fill(pathRe);
+          graphics.fill(pathIm);
         }
       }
     }
@@ -115,7 +97,7 @@ public class ReImPlot extends BaseShowable {
 
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
-    if (Objects.nonNull(domain) && Sign.isPositive(domain.width())) {
+    if (Sign.isPositive(domain.width())) {
       Clip clip = StaticHelper.minMax(Subdivide.increasing(domain, RESOLUTION) //
           .stream() //
           .map(Scalar.class::cast) //

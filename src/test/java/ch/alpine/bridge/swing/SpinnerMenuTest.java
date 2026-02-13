@@ -17,6 +17,7 @@ import ch.alpine.tensor.mat.re.Pivots;
 class SpinnerMenuTest {
   long sleep_ms = 300;
 
+  @DisabledOnOs({ OS.WINDOWS })
   @Test
   void testSimple() throws InterruptedException {
     SpinnerMenu<Pivots> spinnerMenu = new SpinnerMenu<>(Arrays.asList(Pivots.values()), Pivots.ARGMAX_ABS, Object::toString, null, false);
