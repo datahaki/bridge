@@ -4,6 +4,8 @@ package ch.alpine.bridge.io;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.file.Path;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -13,9 +15,10 @@ import ch.alpine.tensor.ext.HomeDirectory;
 class FileBlockTest {
   @Test
   void testSimple() {
-    assertFalse(FileBlock.of(HomeDirectory.path(), "abc", false));
-    assertTrue(FileBlock.of(HomeDirectory.path(), "abc", false));
-    assertTrue(FileBlock.of(HomeDirectory.path(), "abc", false));
+    Path path = HomeDirectory.Documents.resolve();
+    assertFalse(FileBlock.of(path, "abc", false));
+    assertTrue(FileBlock.of(path, "abc", false));
+    assertTrue(FileBlock.of(path, "abc", false));
   }
 
   @ParameterizedTest
