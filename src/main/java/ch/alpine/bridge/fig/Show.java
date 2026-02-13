@@ -91,6 +91,8 @@ public class Show implements Serializable {
    * @return given showable */
   public final Showable add(Showable showable) {
     showable.setColor(colorDataIndexed.getColor(showables.size()));
+    if (showable instanceof ArrayShowable)
+      setAspectRatioOne();
     showables.add(showable);
     return showable;
   }

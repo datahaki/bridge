@@ -602,7 +602,6 @@ public enum Showcases implements ShowProvider {
       show.setPlotLabel("Density Plot");
       ScalarBinaryOperator sbo = (x, y) -> Im.FUNCTION.apply(Sqrt.FUNCTION.apply(Power.of(ComplexScalar.of(x, y), 3)));
       show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.absolute(2), Clips.absolute(2))));
-      show.setAspectRatioOne();
       return show;
     }
   },

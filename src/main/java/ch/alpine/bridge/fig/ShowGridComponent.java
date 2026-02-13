@@ -2,8 +2,10 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.GridLayout;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import ch.alpine.tensor.RealScalar;
@@ -14,7 +16,7 @@ import ch.alpine.tensor.sca.pow.Sqrt;
 
 public enum ShowGridComponent {
   ;
-  public static JPanel of(List<Show> list) {
+  public static JComponent of(List<Show> list) {
     Scalar sqrt = Sqrt.FUNCTION.apply(RealScalar.of(list.size()));
     int cols = Round.intValueExact(sqrt);
     int rows = Ceiling.intValueExact(sqrt);
@@ -25,5 +27,9 @@ public enum ShowGridComponent {
       grid.add(showComponent);
     }
     return grid;
+  }
+
+  public static JComponent of(Show... shows) {
+    return of(Arrays.asList(shows));
   }
 }

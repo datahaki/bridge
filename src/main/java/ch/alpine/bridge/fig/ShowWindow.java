@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -73,14 +74,14 @@ public enum ShowWindow {
 
   private static Container createContainer(List<Show> list) {
     JPanel contentPane = new JPanel(new BorderLayout());
-    JPanel center = ShowGridComponent.of(list);
-    contentPane.add(BorderLayout.CENTER, center);
+    JComponent jComponent = ShowGridComponent.of(list);
+    contentPane.add(BorderLayout.CENTER, jComponent);
     JToolBar jToolBar = new JToolBar();
     jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
     jToolBar.setFloatable(false);
     {
       JButton jButton = new JButton("copy");
-      jButton.addActionListener(_ -> ImageClipboard.copy(OffscreenRender.of(center)));
+      jButton.addActionListener(_ -> ImageClipboard.copy(OffscreenRender.of(jComponent)));
       jToolBar.add(jButton);
     }
     {
@@ -89,7 +90,7 @@ public enum ShowWindow {
         try {
           String string = "fig_" + System.nanoTime() + ".png";
           Path path = HomeDirectory.Pictures.resolve(FriendlyFormat.sanitize(string));
-          ImageIO.write(OffscreenRender.of(center), "png", Files.newOutputStream(path));
+          ImageIO.write(OffscreenRender.of(jComponent), "png", Files.newOutputStream(path));
         } catch (Exception exception) {
           exception.printStackTrace();
         }
