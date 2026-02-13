@@ -12,7 +12,7 @@ import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.ext.UserName;
+import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.qty.Quantity;
 
@@ -23,10 +23,10 @@ public class StoredExtension {
   public Boolean status = true;
   public Pivots pivots = Pivots.ARGMAX_ABS;
   @FieldExistingDirectory
-  public File folder = UserName.home().toFile();
+  public File folder = HomeDirectory.Desktop.resolve().toFile();
   @FieldExistingFile
-  public File file = UserName.home().toFile();
-  public File anyFile = UserName.home().toFile();
+  public File file = HomeDirectory.Music.resolve().toFile();
+  public File anyFile = HomeDirectory.Templates.resolve().toFile();
   public Tensor tensor = Tensors.fromString("{1, 2}");
   @FieldClip(min = "1[m*s^-1]", max = "10[m*s^-1]")
   public Scalar scalar = Quantity.of(3, "m*s^-1");

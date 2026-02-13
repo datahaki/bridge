@@ -31,7 +31,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.ext.UserName;
+import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.mat.re.Pivots;
 import ch.alpine.tensor.num.Pi;
@@ -106,17 +106,17 @@ public class GuiExtension {
   public LocalDate date = LocalDate.now();
   public LocalTime time = LocalTime.now();
   @FieldExistingDirectory
-  public File folder = UserName.home().toFile();
+  public File folder = HomeDirectory.Documents.resolve().toFile();
   @FieldExistingFile
-  public File file = UserName.home().toFile();
+  public File file = HomeDirectory.Downloads.resolve().toFile();
   @FieldExistingFile
   @FieldFileExtension(description = "Plain Text-Files", extensions = { "txt", "md" })
-  public File txtFile = UserName.home().toFile();
+  public File txtFile = HomeDirectory.Documents.resolve().toFile();
   @FieldExistingFile
   @FieldFileExtension(description = "PNG-Files", extensions = "png")
   @FieldFileExtension(description = "JPG-Files", extensions = "jpg")
-  public File imgFile = UserName.home().toFile();
-  public File anyFile = UserName.home().toFile();
+  public File imgFile = HomeDirectory.Documents.resolve().toFile();
+  public File anyFile = HomeDirectory.Pictures.resolve().toFile();
   public final FieldsEditorParam fieldsEditorParam = FieldsEditorParam.GLOBAL;
   @FieldSelectionArray({ "1[%]", "2[%]", "3[%]" })
   public Tensor tensor = Tensors.fromString("{1, 2}");

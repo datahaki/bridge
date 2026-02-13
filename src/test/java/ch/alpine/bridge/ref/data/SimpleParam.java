@@ -9,7 +9,7 @@ import ch.alpine.bridge.ref.ann.FieldLabel;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.swing.LookAndFeels;
-import ch.alpine.tensor.ext.UserName;
+import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.mat.re.Pivots;
 
@@ -38,7 +38,7 @@ public class SimpleParam extends BaseParam {
 
   @ReflectionMarker
   public static class AnotherParam {
-    public File file = UserName.home().toFile();
+    public File file = HomeDirectory.public_html.resolve().toFile();
     public Color color = Color.RED;
   }
 
