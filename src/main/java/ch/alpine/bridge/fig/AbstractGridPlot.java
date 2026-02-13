@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 import ch.alpine.bridge.awt.ScalableImage;
@@ -21,14 +20,12 @@ import ch.alpine.tensor.sca.Clips;
   public static final UnaryOperator<Clip> CENTER_INT = Clips.translation(RationalScalar.HALF.negate());
   // ---
   private final ScalableImage scalableImage;
-  private final CoordinateBoundingBox cbb;
   private final Clip clip;
   private Color meshColor = null;
 
   protected AbstractGridPlot(ScalarTensorFunction colorDataGradient, ScalableImage scalableImage, CoordinateBoundingBox cbb, Clip clip) {
-    super(colorDataGradient);
+    super(cbb, colorDataGradient);
     this.scalableImage = scalableImage;
-    this.cbb = cbb;
     this.clip = clip;
   }
 
@@ -50,11 +47,6 @@ import ch.alpine.tensor.sca.Clips;
         // TODO BRIDGE
       }
     }
-  }
-
-  @Override // from Showable
-  public final Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Optional.of(cbb);
   }
 
   @Override // from BarLegendPlot

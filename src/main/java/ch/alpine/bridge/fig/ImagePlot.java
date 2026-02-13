@@ -35,13 +35,12 @@ public class ImagePlot extends ArrayShowable {
 
   // ---
   private final ScalableImage scalableImage;
-  private final CoordinateBoundingBox cbb;
   private final boolean flipY;
   private final Scalar aspectRatio;
 
   private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
+    super(cbb);
     this.scalableImage = new ScalableImage(bufferedImage);
-    this.cbb = cbb;
     this.flipY = flipY;
     this.aspectRatio = aspectRatio;
     setImageResize(ImageResize.DEGREE_1);
@@ -61,11 +60,6 @@ public class ImagePlot extends ArrayShowable {
       graphics.drawImage(scalableImage.getScaledInstance(getImageResize(), width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
-  }
-
-  @Override // from Showable
-  public Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Optional.of(cbb);
   }
 
   @Override // from Showable

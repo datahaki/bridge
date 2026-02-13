@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.Optional;
 
 import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.Scalar;
@@ -44,7 +43,6 @@ public class DensityPlot extends BarLegendPlot {
   // ---
   private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
   private final ScalarBinaryOperator sbo;
-  private final CoordinateBoundingBox cbb;
   private final ScalarTensorFunction colorDataGradient;
   // ---
   private Clip inner_clip = null;
@@ -72,9 +70,8 @@ public class DensityPlot extends BarLegendPlot {
       ScalarBinaryOperator sbo, //
       CoordinateBoundingBox cbb, //
       ScalarTensorFunction colorDataGradient) {
-    super(colorDataGradient);
+    super(cbb, colorDataGradient);
     this.sbo = sbo;
-    this.cbb = cbb;
     this.colorDataGradient = colorDataGradient;
     setImageResize(ImageResize.DEGREE_3);
   }
@@ -113,11 +110,6 @@ public class DensityPlot extends BarLegendPlot {
     resolution = Math.max(RESOLUTION_MIN, resolution);
     inner_clip = inner.clip;
     return inner;
-  }
-
-  @Override // from Showable
-  public Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Optional.of(cbb);
   }
 
   @Override

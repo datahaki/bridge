@@ -29,9 +29,11 @@ public enum Cepstrogram {
       Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
     // FIXME BRIDGE
     BufferedImage bufferedImage = ImageFormat.of(Raster.of(xtrogramArray.half_abs(signal), function));
-    return ImagePlot.of(bufferedImage, CoordinateBoundingBox.of( //
+    ImagePlot imagePlot = ImagePlot.of(bufferedImage, CoordinateBoundingBox.of( //
         Clips.positive(RealScalar.of(signal.length()).divide(sampleRate)), //
         Clips.positive(RealScalar.of(bufferedImage.getHeight())))); // TODO BRIDGE should also use sampleRate for yAxis
+    imagePlot.setAspectRatioOne(false);
+    return imagePlot;
   }
 
   /** Remark: the unit of the signal is in the color not the axis

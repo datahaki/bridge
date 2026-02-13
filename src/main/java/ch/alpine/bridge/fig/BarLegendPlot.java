@@ -11,13 +11,15 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.io.ImageFormat;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
 /* package */ abstract class BarLegendPlot extends ArrayShowable {
   private final ScalarTensorFunction colorDataGradient;
 
-  public BarLegendPlot(ScalarTensorFunction colorDataGradient) {
+  public BarLegendPlot(CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
+    super(cbb);
     this.colorDataGradient = colorDataGradient;
   }
 

@@ -34,9 +34,11 @@ public enum Spectrogram {
       Function<Scalar, ? extends Tensor> function) {
     Tensor array = SpectrogramArray.of(Fourier.FORWARD::transform, null, null, window).half_abs(signal);
     BufferedImage bufferedImage = ImageFormat.of(Raster.of(array, function));
-    return ImagePlot.of(bufferedImage, CoordinateBoundingBox.of( //
+    ImagePlot imagePlot = ImagePlot.of(bufferedImage, CoordinateBoundingBox.of( //
         Clips.positive(RealScalar.of(signal.length()).divide(sampleRate)), //
         Clips.positive(sampleRate.divide(RealScalar.TWO))));
+    imagePlot.setAspectRatioOne(false);
+    return imagePlot;
   }
 
   /** Example:

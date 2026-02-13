@@ -2,6 +2,7 @@
 package ch.alpine.bridge.io;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -19,8 +20,8 @@ public final class ResourceLocator {
     this.base = base;
     try {
       Files.createDirectories(base);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    } catch (IOException ioException) {
+      throw new UncheckedIOException(ioException);
     }
   }
 
