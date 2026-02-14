@@ -76,6 +76,7 @@ import ch.alpine.tensor.prc.WienerProcess;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityMagnitude;
+import ch.alpine.tensor.sca.Arg;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.Im;
@@ -86,6 +87,7 @@ import ch.alpine.tensor.sca.TriangleWave;
 import ch.alpine.tensor.sca.erf.Erfc;
 import ch.alpine.tensor.sca.exp.Log10;
 import ch.alpine.tensor.sca.exp.LogisticSigmoid;
+import ch.alpine.tensor.sca.gam.Gamma;
 import ch.alpine.tensor.sca.ply.Chebyshev;
 import ch.alpine.tensor.sca.ply.ChebyshevNodes;
 import ch.alpine.tensor.sca.ply.ClenshawChebyshev;
@@ -101,6 +103,17 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  DensityGamma {
+    @Override
+    public Show getShow() {
+      Show show = new Show(); // use RGB for line color
+      ScalarBinaryOperator sbo = (re, im) -> Arg.FUNCTION.apply(Gamma.FUNCTION.apply(ComplexScalar.of(re, im)));
+      show.add(DensityPlot.of(sbo, //
+          CoordinateBoundingBox.of(Clips.absolute(3), Clips.absolute(3)), //
+          ColorDataGradients.HUE));
+      return show;
+    }
+  },
   TextsPlot0 {
     @Override
     public Show getShow() {
@@ -135,13 +148,13 @@ public enum Showcases implements ShowProvider {
       Clip clip = Clips.unit();
       Show show = new Show(ColorDataLists._109.strict()); // use RGB for line color
       show.setPlotLabel("Color Data Gradient Classic");
-      show.add(Plot.of(s -> f.apply(s).Get(0), clip,Option.STRICT)).setLabel("red");
-      show.add(Plot.of(s -> f.apply(s).Get(1), clip,Option.STRICT)).setLabel("green");
-      show.add(Plot.of(s -> f.apply(s).Get(2), clip,Option.STRICT)).setLabel("blue");
+      show.add(Plot.of(s -> f.apply(s).Get(0), clip, Option.STRICT)).setLabel("red");
+      show.add(Plot.of(s -> f.apply(s).Get(1), clip, Option.STRICT)).setLabel("green");
+      show.add(Plot.of(s -> f.apply(s).Get(2), clip, Option.STRICT)).setLabel("blue");
       return show;
     }
   },
-  DEMO3 {
+  PlotCosine {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._098.strict());
@@ -153,7 +166,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  DEMO4 {
+  ListLinePlotQuantity {
     @Override
     public Show getShow() {
       Show show = new Show();
@@ -162,7 +175,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  Demo5 {
+  ListPlots {
     @Override
     public Show getShow() {
       Show show = new Show();
@@ -205,7 +218,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  SVD0 {
+  PlotAndList {
     @Override
     public Show getShow() {
       Tensor matrix = HilbertMatrix.of(40);
@@ -253,7 +266,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  DISTR4 {
+  PlotInverseCdfStrict {
     @Override
     public Show getShow() {
       Distribution original = NormalDistribution.standard();
@@ -265,7 +278,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  DISTR5 {
+  PlotPdfs {
     @Override
     public Show getShow() {
       Distribution dist1 = NormalDistribution.of(2, 0.5);

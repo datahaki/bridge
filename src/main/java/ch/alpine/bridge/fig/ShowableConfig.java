@@ -17,13 +17,13 @@ import ch.alpine.tensor.sca.Sign;
 public class ShowableConfig {
   final Rectangle rectangle;
   private final CoordinateBoundingBox cbb;
-  private final Clip xRange;
+  protected final Clip xRange;
   protected final Clip yRange;
   private final double yBaseline;
   private final Scalar x2pixel;
   protected final Scalar y2pixel;
-  private final Scalar pixel2x;
-  private final Scalar pixel2y;
+  protected final Scalar pixel2x;
+  protected final Scalar pixel2y;
 
   public ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb) {
     this.rectangle = rectangle;
@@ -57,8 +57,13 @@ public class ShowableConfig {
     return rectangle.contains(point) //
         ? Optional.of(Tensors.of( //
             xRange.min().add(RealScalar.of(point.x - rectangle.x).multiply(pixel2x)), //
-            yRange.min().add(RealScalar.of(yBaseline - point.y).multiply(pixel2y))))
+            // yRange.min().add(RealScalar.of(yBaseline - point.y).multiply(pixel2y))
+            y_val(point.y)))
         : Optional.empty();
+  }
+
+  protected Scalar y_val(int point_y) {
+    return yRange.min().add(RealScalar.of(yBaseline - point_y).multiply(pixel2y));
   }
 
   public final Scalar dx(Scalar dx) {

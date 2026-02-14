@@ -36,13 +36,12 @@ public enum ShowGridComponent {
     return of(Arrays.asList(shows));
   }
 
-  public static JComponent column(List<Show> list) {
+  public static JComponent column(List<Show> list, Dimension dimension) {
     JPanel grid = new JPanel(new GridLayout(list.size(), 1));
     for (Show show : list) {
-      // grid.add(new JLabel("HERE"));
       ShowComponent showComponent = new ShowComponent();
       showComponent.setShow(show);
-      showComponent.setPreferredSize(new Dimension(400, 300));
+      showComponent.setPreferredSize(dimension);
       grid.add(showComponent);
     }
     return grid;

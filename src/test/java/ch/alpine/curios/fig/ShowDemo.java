@@ -117,7 +117,6 @@ public class ShowDemo implements WindowProvider {
     jFrame.setBounds(100, 100, 1000, 900);
   }
 
-
   @Override
   public Window getWindow() {
     return jFrame;

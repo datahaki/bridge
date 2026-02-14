@@ -50,8 +50,6 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
         }
       }
 
-      //
-      //
       @Override
       public void mousePressed(MouseEvent mouseEvent) {
         pressed = mouseEvent.getPoint();
@@ -64,7 +62,6 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
     });
     addMouseMotionListener(this);
     addMouseWheelListener(this);
-    // setMinimumSize(new Dimension(100, 100));
   }
 
   /** @param show may be null */
