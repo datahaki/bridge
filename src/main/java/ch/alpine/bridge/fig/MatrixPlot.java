@@ -2,13 +2,9 @@
 package ch.alpine.bridge.fig;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import ch.alpine.bridge.awt.ScalableImage;
-import ch.alpine.tensor.RealScalar;
-import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Flatten;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarTensorFunction;
@@ -16,7 +12,6 @@ import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
-import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.red.Max;
 import ch.alpine.tensor.red.MinMax;
@@ -25,7 +20,8 @@ import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/MatrixPlot.html">MatrixPlot</a> */
-public class MatrixPlot extends AbstractGridPlot {
+public enum MatrixPlot {
+  ;
   /** @param matrix
    * @param colorDataGradient
    * @param symmetrize
@@ -42,12 +38,8 @@ public class MatrixPlot extends AbstractGridPlot {
         clip = Clips.absolute(Max.of(clip.min().negate(), clip.max()));
     }
     Rescale rescale = new Rescale(matrix, clip);
-    ScalableImage scalableImage = new ScalableImage( //
-        ImageFormat.of(rescale.result().maps(colorDataGradient)));
-    CoordinateBoundingBox cbb = CoordinateBoundingBox.of( //
-        AbstractGridPlot.CENTER_INT.apply(Clips.positive(Unprotect.dimension1(matrix))), //
-        AbstractGridPlot.CENTER_INT.apply(Clips.positive(matrix.length())));
-    return new MatrixPlot(colorDataGradient, scalableImage, cbb, rescale.clip());
+    ScalableImage scalableImage = new ScalableImage(ImageFormat.of(rescale.result().maps(colorDataGradient)));
+    return new BaseArrayPlot(colorDataGradient, scalableImage, BaseArrayPlot.shift(matrix), rescale.clip());
   }
 
   /** @param matrix
@@ -61,15 +53,5 @@ public class MatrixPlot extends AbstractGridPlot {
    * @return */
   public static Showable of(Tensor matrix) {
     return of(matrix, ColorDataGradients.TEMPERATURE_LIGHT);
-  }
-
-  // ---
-  private MatrixPlot(ScalarTensorFunction colorDataGradient, ScalableImage scalableImage, CoordinateBoundingBox cbb, Clip clip) {
-    super(colorDataGradient, scalableImage, cbb, clip);
-  }
-
-  @Override // from Showable
-  public Optional<Scalar> aspectRatioHint() {
-    return Optional.of(RealScalar.ONE);
   }
 }

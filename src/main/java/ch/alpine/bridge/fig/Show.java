@@ -44,7 +44,7 @@ import ch.alpine.tensor.sca.Round;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
 public class Show implements Serializable {
-  // FIXME BRIDGE zoom does not work indefinitely yet!
+  // TODO BRIDGE zoom does not work indefinitely yet!
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
 
   /** @param fontSize for instance graphics.getFont().getSize()
@@ -79,7 +79,6 @@ public class Show implements Serializable {
    * passed via {@link #add(Showable)} */
   public Show(ColorDataIndexed colorDataIndexed) {
     this.colorDataIndexed = Objects.requireNonNull(colorDataIndexed);
-    // TODO BRIDGE use default font
   }
 
   /** uses Mathematica default color scheme */
@@ -156,6 +155,7 @@ public class Show implements Serializable {
   private Scalar aspectRatio = null;
 
   /** @param xStep exact scalar, for instance 1
+   * @param yStep
    * @see ExactScalarQ */
   public void setAspectRatio(Scalar xStep, Scalar yStep) {
     // TODO BRIDGE throw exception if axis X and Y are not compatible unit etc.

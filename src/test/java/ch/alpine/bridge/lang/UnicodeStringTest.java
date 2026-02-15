@@ -13,7 +13,7 @@ import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
 
 class UnicodeStringTest {
-  private static final String T = "\u2009";
+  // private static final String T = "\u2009";
   private static final char D = '\u2215';
 
   @Test

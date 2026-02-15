@@ -17,7 +17,6 @@ import ch.alpine.tensor.sca.Round;
  * Careful: functionality is suitable for on-screen display.
  * When printing graphics always use the full resolution image for
  * maximum quality. */
-// TODO implements Serializable
 public class ScalableImage {
   private final BufferedImage bufferedImage;
   private final Cache<Tensor, BufferedImage> cache = Cache.of(this::compute, 1);

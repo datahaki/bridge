@@ -113,7 +113,6 @@ public class UnitHub implements Serializable {
    * @return int value of given scalar after conversion to this unit, rounding,
    * and projection to integer
    * @throws Exception if rounding results in an integer value outside the 32-bit range */
-  // TODO BRIDGE figure out what makes sense ...
   public int intValue(Scalar scalar) {
     return Round.intValueExact(magnitude(scalar));
   }

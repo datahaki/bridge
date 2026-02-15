@@ -10,13 +10,12 @@ import java.util.List;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 
-/** VERSION 1 */
+/** VERSION 1.1 */
 public record ClassGraphUtils<T>(Class<T> cls) {
-  @SuppressWarnings("hiding")
-  public <T> List<T> getInstances(String... packageNames) {
+  public List<T> getInstances(String... packageNames) {
     List<T> collection = new LinkedList<>();
     for (Class<?> implementation : getImplementations("ch")) {
-      List<T> list = getInstances(implementation);
+      List<T> list = (List<T>) getInstances(implementation);
       collection.addAll(list);
     }
     return collection;
@@ -31,8 +30,7 @@ public record ClassGraphUtils<T>(Class<T> cls) {
     }
   }
 
-  @SuppressWarnings("unchecked")
-  private <T> List<T> getInstances(Class<?> implementation) {
+  private List<T> getInstances(Class<?> implementation) {
     List<T> list = new LinkedList<>();
     for (Field field : implementation.getDeclaredFields())
       if (Modifier.isStatic(field.getModifiers()))
@@ -43,7 +41,7 @@ public record ClassGraphUtils<T>(Class<T> cls) {
             // IO.println("---");
             // IO.println(implementation);
             // IO.println(field);
-            list.add((T) object);
+            list.add(cls.cast(object));
           }
         } catch (Exception e) {
           System.err.println("error " + e.getMessage());
@@ -65,7 +63,7 @@ public record ClassGraphUtils<T>(Class<T> cls) {
         Constructor<?> constructor = implementation.getDeclaredConstructor();
         constructor.setAccessible(true);
         Object object = constructor.newInstance();
-        list.add((T) object);
+        list.add(cls.cast(object));
       } catch (Exception exception) {
         // ---
       }

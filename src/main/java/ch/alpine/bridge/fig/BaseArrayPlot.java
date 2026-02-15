@@ -1,29 +1,51 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.util.Objects;
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
 /** base class for ArrayPlot and MatrixPlot */
-/* package */ abstract class AbstractGridPlot extends BarLegendPlot {
-  public static final UnaryOperator<Clip> CENTER_INT = Clips.translation(RationalScalar.HALF.negate());
+/* package */ class BaseArrayPlot extends BarLegendPlot {
+  private static final UnaryOperator<Clip> SHIFT_HALF = Clips.translation(RationalScalar.HALF.negate());
+
+  protected static CoordinateBoundingBox shift(Tensor matrix) {
+    return shift(Unprotect.dimension1(matrix), matrix.length());
+  }
+
+  protected static CoordinateBoundingBox shift(BufferedImage bufferedImage) {
+    return shift(bufferedImage.getWidth(), bufferedImage.getHeight());
+  }
+
+  private static CoordinateBoundingBox shift(int dim0, int dim1) {
+    return CoordinateBoundingBox.of( //
+        SHIFT_HALF.apply(Clips.positive(dim0)), //
+        SHIFT_HALF.apply(Clips.positive(dim1)));
+  }
+
   // ---
   private final ScalableImage scalableImage;
   private final Clip clip;
-  private Color meshColor = null;
 
-  protected AbstractGridPlot(ScalarTensorFunction colorDataGradient, ScalableImage scalableImage, CoordinateBoundingBox cbb, Clip clip) {
+  public BaseArrayPlot( //
+      ScalarTensorFunction colorDataGradient, //
+      ScalableImage scalableImage, //
+      CoordinateBoundingBox cbb, //
+      Clip clip) {
     super(cbb, colorDataGradient);
     this.scalableImage = scalableImage;
     this.clip = clip;
@@ -43,9 +65,6 @@ import ch.alpine.tensor.sca.Clips;
       graphics.drawImage(scalableImage.getScaledInstance(getImageResize(), width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
-      if (Objects.nonNull(meshColor)) {
-        // TODO BRIDGE
-      }
     }
   }
 
@@ -59,11 +78,8 @@ import ch.alpine.tensor.sca.Clips;
     return true;
   }
 
-  public final void setMeshColor(Color color) {
-    meshColor = color;
-  }
-
-  public final Color getMeshColor() {
-    return meshColor;
+  @Override // from Showable
+  public final Optional<Scalar> aspectRatioHint() {
+    return Optional.of(RealScalar.ONE);
   }
 }

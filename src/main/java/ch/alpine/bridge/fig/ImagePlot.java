@@ -12,11 +12,9 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
-import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
-// TODO BRIDGE mouse wheel scales image around location of mouse!
 public class ImagePlot extends ArrayShowable {
   public static ImagePlot of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
     return new ImagePlot(bufferedImage, cbb, flipY, aspectRatio);
@@ -27,10 +25,7 @@ public class ImagePlot extends ArrayShowable {
   }
 
   public static ImagePlot of(BufferedImage bufferedImage) {
-    return of(bufferedImage, CoordinateBoundingBox.of( //
-        AbstractGridPlot.CENTER_INT.apply(Clips.positive(bufferedImage.getWidth())), //
-        AbstractGridPlot.CENTER_INT.apply(Clips.positive(bufferedImage.getHeight()))), //
-        true, RealScalar.ONE);
+    return of(bufferedImage, BaseArrayPlot.shift(bufferedImage), true, RealScalar.ONE);
   }
 
   // ---

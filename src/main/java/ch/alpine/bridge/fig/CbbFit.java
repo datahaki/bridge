@@ -10,7 +10,6 @@ import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.opt.lp.LinearOptimization;
 import ch.alpine.tensor.sca.Sign;
 
-// TODO BRIDGE API not final
 /** @see LinearOptimization */
 public enum CbbFit {
   ;
