@@ -3,9 +3,9 @@ package ch.alpine.bridge.fig;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.util.function.Supplier;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -19,7 +19,7 @@ public enum Manipulate {
   private static final int WIDTH = 1200;
   private static final int SIZE = 1000;
 
-  public static JFrame asFrame(Object object, Supplier<JComponent> function) {
+  public static JFrame asFrame(Object object, Supplier<Container> function) {
     Component parentComponent = null;
     JFrame jFrame = new JFrame();
     jFrame.setTitle(StaticHelper.defaultTitle());

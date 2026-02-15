@@ -53,6 +53,7 @@ public class Plot extends UnaryShowable {
         final double x1 = showableConfig.x_pos(x_clip.max());
         Path2D.Double path = new Path2D.Double();
         // TODO there is several interpolations concat here, also: enhance precision?
+        // TODO BRIDGE values NaN, Inf are just skipped right now, see BrokenSUO
         path.moveTo(x0, showableConfig.y_pos(suo.apply(x_clip.min())));
         ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
         final int size = (int) ((x1 - x0) * segmentsPerPixel);
@@ -76,7 +77,6 @@ public class Plot extends UnaryShowable {
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
     if (Sign.isPositive(domain.width())) {
-      // TODO BRIDGE evaluating suo at points may throw an exception...
       Clip clip = StaticHelper.minMax(Subdivide.increasing(domain, RESOLUTION).maps(suo));
       if (Objects.nonNull(clip))
         return Optional.of(CoordinateBoundingBox.of(domain, clip));
