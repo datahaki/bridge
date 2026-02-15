@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 class MousePositionTest {
   @Test
   void testSimple() {
-    Optional<Point> optional = MousePosition.get();
+    Optional<Point> optional = MousePosition.optional();
     assertTrue(optional.isPresent());
   }
 }

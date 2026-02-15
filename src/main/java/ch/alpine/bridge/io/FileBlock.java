@@ -4,6 +4,7 @@ package ch.alpine.bridge.io;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.UncheckedIOException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.file.Files;
@@ -64,8 +65,8 @@ public class FileBlock {
         release(); // remove all locks
         try {
           Files.delete(path); // finally delete file
-        } catch (IOException e) {
-          e.printStackTrace();
+        } catch (IOException ioException) {
+          throw new UncheckedIOException(ioException);
         }
       }));
       return false;

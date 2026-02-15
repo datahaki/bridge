@@ -71,7 +71,7 @@ public class Show implements Serializable {
   // ---
   private CoordinateBoundingBox cbb = null;
   private DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
-  private boolean frame = true;
+  private boolean framed = true;
   private boolean gridLines = true;
   private String plotLabel = "";
 
@@ -114,6 +114,14 @@ public class Show implements Serializable {
 
   public final boolean getGridLines() {
     return gridLines;
+  }
+
+  public boolean isFramed() {
+    return framed;
+  }
+
+  public void setFramed(boolean framed) {
+    this.framed = framed;
   }
 
   /** @param cbb null is permitted in which case the function
@@ -266,7 +274,7 @@ public class Show implements Serializable {
   // ---
   private void renderFrameTitle(Graphics _g, Rectangle rectangle) {
     Graphics2D graphics = (Graphics2D) _g.create();
-    if (frame) {
+    if (isFramed()) {
       graphics.setStroke(StaticHelper.STROKE_SOLID);
       graphics.setColor(Show.COLOR_FRAME);
       graphics.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);

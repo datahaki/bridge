@@ -17,6 +17,6 @@ public interface ManipulateProvider {
 
   default Window run() {
     LookAndFeels.autoDetect();
-    return Manipulate.asFrame(this, () -> getContainer());
+    return Manipulate.asFrame(this, this::getContainer);
   }
 }

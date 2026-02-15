@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import ch.alpine.bridge.swing.LookAndFeels;
 
-enum LinuxOperatingSystem implements OperatingSystem {
+/* package */ enum LinuxOperatingSystem implements OperatingSystem {
   Linux;
 
   @Override
@@ -26,7 +26,7 @@ enum LinuxOperatingSystem implements OperatingSystem {
           return LookAndFeels.DARK;
       }
     } catch (Exception exception) {
-      exception.printStackTrace();
+      throw new RuntimeException(exception);
     }
     return LookAndFeels.LIGHT;
   }

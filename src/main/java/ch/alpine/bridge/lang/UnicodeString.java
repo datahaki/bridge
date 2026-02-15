@@ -24,18 +24,18 @@ public enum UnicodeString {
     Optional<BigInteger> optional = Scalars.optionalBigInteger(scalar);
     if (optional.isPresent())
       return of(optional.orElseThrow());
-    if (scalar instanceof RationalScalar rationalScalar)
-      return of(rationalScalar.numerator()) + OVER + of(rationalScalar.denominator());
-    if (scalar instanceof Quantity quantity)
-      return of(quantity.value()) + SPACE + of(quantity.unit());
-    if (scalar instanceof DoubleScalar doubleScalar) {
+    return switch (scalar) {
+    case RationalScalar rationalScalar -> of(rationalScalar.numerator()) + OVER + of(rationalScalar.denominator());
+    case Quantity quantity -> of(quantity.value()) + SPACE + of(quantity.unit());
+    case DoubleScalar doubleScalar -> {
       String string = doubleScalar.toString();
       int index = string.indexOf('.');
-      return 0 <= index //
+      yield 0 <= index //
           ? of(new BigInteger(string.substring(0, index))) + string.substring(index)
           : string; // Infinity, NaN
     }
-    return scalar.toString();
+    default -> scalar.toString();
+    };
   }
 
   /** @param bigInteger
