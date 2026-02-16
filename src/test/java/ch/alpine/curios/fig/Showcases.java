@@ -9,7 +9,6 @@ import java.util.stream.IntStream;
 
 import ch.alpine.bridge.fig.ArrayPlot;
 import ch.alpine.bridge.fig.CandlestickChart;
-import ch.alpine.bridge.fig.Cepstrogram;
 import ch.alpine.bridge.fig.DensityPlot;
 import ch.alpine.bridge.fig.DiscretePlot;
 import ch.alpine.bridge.fig.ImagePlot;
@@ -820,7 +819,7 @@ public enum Showcases implements ShowProvider {
       Tensor signal = Tensor.of(IntStream.range(0, 10000) //
           .mapToObj(i -> Rational.of(i, 100).add(Rational.of(i * i, 1000_000))) //
           .map(SawtoothWave.FUNCTION));
-      show.add(Cepstrogram.of(CepstrogramArray.REAL, signal, RealScalar.ONE));
+      show.add(Spectrogram.of(CepstrogramArray.REAL, signal, RealScalar.ONE));
       return show;
     }
   },
