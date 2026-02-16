@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import ch.alpine.bridge.lang.ClassVisitor;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
+import ch.alpine.tensor.ext.ref.ClassVisitor;
 
 /** class visitor that visits classes that are annotated with
  * {@link ReflectionMarker} */

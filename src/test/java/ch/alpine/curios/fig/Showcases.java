@@ -5,9 +5,11 @@ import java.awt.BasicStroke;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import ch.alpine.bridge.fig.ArrayPlot;
 import ch.alpine.bridge.fig.CandlestickChart;
+import ch.alpine.bridge.fig.Cepstrogram;
 import ch.alpine.bridge.fig.DensityPlot;
 import ch.alpine.bridge.fig.DiscretePlot;
 import ch.alpine.bridge.fig.ImagePlot;
@@ -22,6 +24,7 @@ import ch.alpine.bridge.fig.Plot.Option;
 import ch.alpine.bridge.fig.ReImPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.Spectrogram;
 import ch.alpine.bridge.fig.StringPlot;
 import ch.alpine.bridge.fig.StringPlot.StringItem;
 import ch.alpine.bridge.fig.TsPlot;
@@ -575,25 +578,9 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
-      show.add(SpectrogramDemo.createLin(0, 1.6));
-      return show;
-    }
-  },
-  SpectrogramQud {
-    @Override
-    public Show getShow() {
-      Show show = new Show();
-      show.setPlotLabel("Spectrogram");
-      show.add(SpectrogramDemo.createQud(0, 1.6));
-      return show;
-    }
-  },
-  SpectrogramExp {
-    @Override
-    public Show getShow() {
-      Show show = new Show();
-      show.setPlotLabel("Spectrogram");
-      show.add(SpectrogramDemo.createExp(0, 1.6));
+      Tensor signal = Subdivide.of(0.0, 100.0, 1000).maps(t -> Sin.FUNCTION.apply(t.multiply(t)));
+      Showable showable = Spectrogram.of(signal, Quantity.of(8000, "s^-1"));
+      show.add(showable);
       return show;
     }
   },
@@ -829,16 +816,11 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Cepstrogram");
-      show.add(CepstrogramDemo.create(CepstrogramArray.REAL));
-      return show;
-    }
-  },
-  Cepstrogram0Pwr {
-    @Override
-    public Show getShow() {
-      Show show = new Show();
-      show.setPlotLabel("Cepstrogram");
-      show.add(CepstrogramDemo.create(CepstrogramArray.POWER));
+      // Tensor signal = Subdivide.of(0.0, 100.0, 10000).maps(t->Sin.FUNCTION.apply(t.multiply(t)));
+      Tensor signal = Tensor.of(IntStream.range(0, 10000) //
+          .mapToObj(i -> Rational.of(i, 100).add(Rational.of(i * i, 1000_000))) //
+          .map(SawtoothWave.FUNCTION));
+      show.add(Cepstrogram.of(CepstrogramArray.REAL, signal, RealScalar.ONE));
       return show;
     }
   },

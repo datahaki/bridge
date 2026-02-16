@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge;
+package ch.alpine.bridge.pro;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.io.TempDir;
 
-import ch.alpine.bridge.pro.WindowProvider;
+import ch.alpine.tensor.ext.ref.ImplementationDiscovery;
 
 class WindowProviderTest implements Consumer<WindowProvider> {
   @TempDir
@@ -23,7 +23,8 @@ class WindowProviderTest implements Consumer<WindowProvider> {
 
   @TestFactory
   Collection<DynamicTest> dynamicTests() {
-    List<WindowProvider> list = new ClassGraphUtils<>(WindowProvider.class).getInstances("ch.bridge");
+    ImplementationDiscovery<WindowProvider> classDiscUtils = new ImplementationDiscovery<>(WindowProvider.class);
+    List<WindowProvider> list = classDiscUtils.getInstances("ch.alpine");
     assertFalse(list.isEmpty());
     return list.stream() //
         .map(instance -> DynamicTest.dynamicTest(instance.toString(), () -> accept(instance))) //

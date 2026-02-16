@@ -233,7 +233,7 @@ public enum DateTimeInterval {
     public LocalDateTime plus(LocalDateTime localDateTime) {
       return localDateTime.plusYears(100);
     }
-  },;
+  };
 
   private final LocalDates localDates;
   private final LocalTimes localTimes;

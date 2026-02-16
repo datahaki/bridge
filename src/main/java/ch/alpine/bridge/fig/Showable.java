@@ -53,4 +53,12 @@ public interface Showable {
   default Optional<Scalar> aspectRatioHint() {
     return Optional.empty();
   }
+
+  /** @return */
+  default Show asShow() {
+    Show show = new Show();
+    show.add(this);
+    show.setPlotLabel(getClass().getSimpleName());
+    return show;
+  }
 }
