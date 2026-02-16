@@ -1,32 +1,31 @@
 // code by jph
 package ch.alpine.bridge.pro;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Graphics2D;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.io.TempDir;
 
-import ch.alpine.tensor.ext.ref.ImplementationDiscovery;
+import ch.alpine.tensor.ext.ref.InstanceDiscovery;
 
 class WindowProviderTest implements Consumer<WindowProvider> {
+  private static final AtomicInteger COUNT = new AtomicInteger();
   @TempDir
   Path tempDir;
 
   @TestFactory
   Collection<DynamicTest> dynamicTests() {
-    ImplementationDiscovery<WindowProvider> classDiscUtils = new ImplementationDiscovery<>(WindowProvider.class);
-    List<WindowProvider> list = classDiscUtils.getInstances("ch.alpine");
-    assertFalse(list.isEmpty());
-    return list.stream() //
+    return InstanceDiscovery.of("ch.alpine", WindowProvider.class).stream() //
         .map(instance -> DynamicTest.dynamicTest(instance.toString(), () -> accept(instance))) //
         .toList();
   }
@@ -46,5 +45,11 @@ class WindowProviderTest implements Consumer<WindowProvider> {
     Graphics2D graphics = bufferedImage.createGraphics();
     window.printAll(graphics);
     graphics.dispose();
+    COUNT.getAndIncrement();
+  }
+
+  @AfterAll
+  static void here() {
+    assertTrue(13 <= COUNT.get());
   }
 }
