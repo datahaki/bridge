@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.awt.Graphics2D;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -14,14 +13,11 @@ import java.util.function.Consumer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
-import org.junit.jupiter.api.io.TempDir;
 
 import ch.alpine.tensor.ext.ref.InstanceDiscovery;
 
 class WindowProviderTest implements Consumer<WindowProvider> {
   private static final AtomicInteger COUNT = new AtomicInteger();
-  @TempDir
-  Path tempDir;
 
   @TestFactory
   Collection<DynamicTest> dynamicTests() {

@@ -3,12 +3,10 @@ package ch.alpine.bridge.lang;
 
 import java.awt.Graphics;
 import java.math.BigInteger;
-import java.util.Optional;
 
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.Unit;
 
@@ -21,12 +19,12 @@ public enum UnicodeString {
   /** @param scalar
    * @return string expression of given scalar suitable for rendering in {@link Graphics} */
   public static String of(Scalar scalar) {
-    Optional<BigInteger> optional = Scalars.optionalBigInteger(scalar);
-    if (optional.isPresent())
-      return of(optional.orElseThrow());
     return switch (scalar) {
-    case Rational rational -> of(rational.numerator()) + OVER + of(rational.denominator());
+    case Rational rational -> rational.isInteger() //
+        ? of(rational.numerator())
+        : of(rational.numerator()) + OVER + of(rational.denominator());
     case Quantity quantity -> of(quantity.value()) + SPACE + of(quantity.unit());
+    // TODO DecimalScalar
     case DoubleScalar doubleScalar -> {
       String string = doubleScalar.toString();
       int index = string.indexOf('.');

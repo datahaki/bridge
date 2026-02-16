@@ -19,6 +19,7 @@ class UnicodeStringTest {
   @Test
   void testQuantity() {
     assertEquals(UnicodeString.of(RealScalar.of(3)), "3");
+    assertEquals(UnicodeString.of(RealScalar.of(-3)), "-3");
     assertEquals(UnicodeString.of(Quantity.of(3, "s^2")), "3 s\u00b2");
     assertEquals(UnicodeString.of(Quantity.of(3, "s^-2")), "3 s\u207b\u00b2");
     assertEquals(UnicodeString.of(Quantity.of(3, "m*s^-2")), "3 m" + D + "s\u00b2");

@@ -12,12 +12,12 @@ import java.awt.image.BufferedImage;
 public enum ImageClipboard {
   ;
   public static void copy(BufferedImage bufferedImage) {
-    Transferable transferable = new TransferableImage(bufferedImage);
+    Transferable transferable = new ImageTransferable(bufferedImage);
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     clipboard.setContents(transferable, null);
   }
 
-  private record TransferableImage(Image image) implements Transferable {
+  private record ImageTransferable(Image image) implements Transferable {
     @Override
     public DataFlavor[] getTransferDataFlavors() {
       return new DataFlavor[] { DataFlavor.imageFlavor };
