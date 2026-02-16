@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 import ch.alpine.tensor.DoubleScalar;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.Quantity;
@@ -25,7 +25,7 @@ public enum UnicodeString {
     if (optional.isPresent())
       return of(optional.orElseThrow());
     return switch (scalar) {
-    case RationalScalar rationalScalar -> of(rationalScalar.numerator()) + OVER + of(rationalScalar.denominator());
+    case Rational rational -> of(rational.numerator()) + OVER + of(rational.denominator());
     case Quantity quantity -> of(quantity.value()) + SPACE + of(quantity.unit());
     case DoubleScalar doubleScalar -> {
       String string = doubleScalar.toString();

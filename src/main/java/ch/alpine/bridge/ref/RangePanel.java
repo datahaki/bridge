@@ -13,7 +13,7 @@ import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldSlider;
 import ch.alpine.bridge.swing.rs.RangeSlider;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
@@ -63,8 +63,8 @@ import ch.alpine.tensor.sca.Clips;
       int value_max = rangeSlider.getUpperValue();
       if (value_min != index_min || value_max != index_max) {
         // prevent notifications if slider value hasn't changed
-        Scalar min = fieldClips.interp(RationalScalar.of(index_min = value_min, resolution));
-        Scalar max = fieldClips.interp(RationalScalar.of(index_max = value_max, resolution));
+        Scalar min = fieldClips.interp(Rational.of(index_min = value_min, resolution));
+        Scalar max = fieldClips.interp(Rational.of(index_max = value_max, resolution));
         Clip clip = Clips.interval(min, max);
         setLabel(clip);
         notifyListeners(fieldWrap.toString(clip));

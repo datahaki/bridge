@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import ch.alpine.bridge.fig.Plot.Option;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
@@ -67,7 +67,7 @@ public class ReImPlot extends UnaryShowable {
         double xc = x0;
         for (int i = 1; i <= size; ++i) {
           xc += dx;
-          ReIm reIm = ReIm.of(suo.apply(interpX.apply(RationalScalar.of(i, size))));
+          ReIm reIm = ReIm.of(suo.apply(interpX.apply(Rational.of(i, size))));
           pathRe.lineTo(xc, showableConfig.y_pos(reIm.re()));
           pathIm.lineTo(xc, showableConfig.y_pos(reIm.im()));
         }

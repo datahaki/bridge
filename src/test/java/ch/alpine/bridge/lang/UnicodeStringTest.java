@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.ComplexScalar;
 import ch.alpine.tensor.DoubleScalar;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
@@ -60,7 +60,7 @@ class UnicodeStringTest {
 
   @Test
   void testRational() {
-    assertEquals(UnicodeString.of(RationalScalar.of(1234, 233567)), "1\u2009234 / 233\u2009567");
+    assertEquals(UnicodeString.of(Rational.of(1234, 233567)), "1\u2009234 / 233\u2009567");
   }
 
   @Test

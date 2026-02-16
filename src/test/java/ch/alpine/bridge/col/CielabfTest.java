@@ -3,7 +3,7 @@ package ch.alpine.bridge.col;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Subdivide;
@@ -13,7 +13,7 @@ import ch.alpine.tensor.sca.Clips;
 class CielabfTest {
   @Test
   void test() {
-    Scalar x = RationalScalar.HALF;
+    Scalar x = Rational.HALF;
     Scalar inverse = Cielabf.inverse(Cielabf.forward(x));
     Tolerance.CHOP.requireClose(x, inverse);
   }

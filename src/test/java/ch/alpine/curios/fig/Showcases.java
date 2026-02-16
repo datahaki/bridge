@@ -27,7 +27,7 @@ import ch.alpine.bridge.fig.StringPlot.StringItem;
 import ch.alpine.bridge.fig.TsPlot;
 import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.ComplexScalar;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -661,7 +661,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       int n = 50;
-      Distribution distribution = BinomialDistribution.of(n, RationalScalar.HALF);
+      Distribution distribution = BinomialDistribution.of(n, Rational.HALF);
       PDF pdf = PDF.of(distribution);
       CDF cdf = CDF.of(distribution);
       Show show = new Show();
@@ -793,7 +793,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("ParametricPlot");
       show.add(ParametricPlot.of(s -> Tensors.of( //
-          Sin.FUNCTION.apply(s).multiply(RationalScalar.HALF), //
+          Sin.FUNCTION.apply(s).multiply(Rational.HALF), //
           Sin.FUNCTION.apply(s.add(s))), Clips.positive(Pi.TWO)));
       show.setAspectRatioOne();
       return show;
@@ -805,7 +805,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("Array Plot");
       show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
-      show.setAspectRatio(RealScalar.ONE, RationalScalar.HALF);
+      show.setAspectRatio(RealScalar.ONE, Rational.HALF);
       return show;
     }
   },

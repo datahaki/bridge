@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 import ch.alpine.bridge.awt.ScalableImage;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -21,7 +21,7 @@ import ch.alpine.tensor.sca.Clips;
 
 /** base class for ArrayPlot and MatrixPlot */
 /* package */ class BaseArrayPlot extends BarLegendPlot {
-  private static final UnaryOperator<Clip> SHIFT_HALF = Clips.translation(RationalScalar.HALF.negate());
+  private static final UnaryOperator<Clip> SHIFT_HALF = Clips.translation(Rational.HALF.negate());
 
   protected static CoordinateBoundingBox shift(Tensor matrix) {
     return shift(Unprotect.dimension1(matrix), matrix.length());

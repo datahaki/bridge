@@ -7,7 +7,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -72,7 +72,7 @@ class CbbFitTest {
     Tensor a = Tensors.fromString("{3[m],4[m]}");
     Tensor b = Tensors.vector(200, 400);
     Tensor r1 = CbbFit.inside(a, b).orElseThrow();
-    assertEquals(r1, Tensors.of(RealScalar.of(200), RationalScalar.of(800, 3)));
+    assertEquals(r1, Tensors.of(RealScalar.of(200), Rational.of(800, 3)));
     Tensor r2 = CbbFit.outside(a, b).orElseThrow();
     assertEquals(r2, Tensors.fromString("{300, 400}"));
   }

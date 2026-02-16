@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.bridge.col;
 
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -12,10 +12,10 @@ import ch.alpine.tensor.sca.pow.Power;
  * https://en.wikipedia.org/wiki/CIELAB_color_space */
 /* package */ enum Cielabf {
   ;
-  private static final Scalar DELTA = RationalScalar.of(6, 29);
+  private static final Scalar DELTA = Rational.of(6, 29);
   private static final Scalar DELTA3 = Power.of(DELTA, 3);
   private static final Scalar FACTOR = Power.of(DELTA, 2).multiply(RealScalar.of(3));
-  private static final Scalar OFFSET = RationalScalar.of(4, 29);
+  private static final Scalar OFFSET = Rational.of(4, 29);
 
   public static Scalar forward(Scalar t) {
     return Scalars.lessEquals(DELTA3, t) //

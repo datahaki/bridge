@@ -14,7 +14,7 @@ import java.util.TreeMap;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -44,7 +44,7 @@ class AxisYF extends Axis {
     Scalar y2pixel = RealScalar.of(rectangle.height - 1).divide(clip.width());
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(fontSize, rectangle.height)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(fontSize, rectangle.height)));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt

@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.TreeSet;
 
 import ch.alpine.bridge.cal.DateTimeInterval;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -90,7 +90,7 @@ public class CandlestickChart extends BaseShowable {
     NavigableSet<Scalar> navigableMap = new TreeSet<>();
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(MIN_SPACE, rectangle_width)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(MIN_SPACE, rectangle_width)));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt

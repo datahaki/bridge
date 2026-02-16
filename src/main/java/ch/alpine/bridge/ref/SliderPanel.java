@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.bridge.ref.ann.FieldClips;
 import ch.alpine.bridge.ref.ann.FieldSlider;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 
@@ -52,7 +52,7 @@ import ch.alpine.tensor.Scalar;
     jSlider.addChangeListener(_ -> {
       int value1 = jSlider.getValue();
       if (index != value1) { // prevent notifications if slider value hasn't changed
-        Scalar scalar = fieldClips.interp(RationalScalar.of(index = value1, resolution));
+        Scalar scalar = fieldClips.interp(Rational.of(index = value1, resolution));
         jLabel.setText(UnicodeString.of(scalar));
         notifyListeners(scalar.toString());
       }

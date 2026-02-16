@@ -6,7 +6,7 @@ import java.awt.geom.Path2D;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.itp.LinearInterpolation;
@@ -61,7 +61,7 @@ public class Plot extends UnaryShowable {
         double xc = x0;
         for (int i = 1; i <= size; ++i) {
           xc += dx;
-          path.lineTo(xc, showableConfig.y_pos(suo.apply(interpX.apply(RationalScalar.of(i, size)))));
+          path.lineTo(xc, showableConfig.y_pos(suo.apply(interpX.apply(Rational.of(i, size)))));
         }
         graphics.draw(path);
         if (isFilling()) {

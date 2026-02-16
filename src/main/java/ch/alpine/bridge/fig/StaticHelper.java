@@ -23,7 +23,7 @@ import ch.alpine.bridge.awt.OffscreenRender;
 import ch.alpine.bridge.io.ImageClipboard;
 import ch.alpine.bridge.lang.FriendlyFormat;
 import ch.alpine.bridge.lang.UnicodeString;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
@@ -95,8 +95,8 @@ import ch.alpine.tensor.tmp.TsEntry;
   }
 
   private static final Scalar[] RATIOS = { //
-      RationalScalar.of(1, 5), //
-      RationalScalar.of(1, 2) };
+      Rational.of(1, 5), //
+      Rational.of(1, 2) };
 
   /** @param scalar positive
    * @return */

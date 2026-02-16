@@ -14,7 +14,7 @@ import java.util.TreeMap;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -38,7 +38,7 @@ class AxisX extends Axis {
     if (clip.min() instanceof DateTime) {
       // TODO BRIDGE 100 is a magic constant that should depend on font, and date formatter
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(RationalScalar.of(100, rectangle.width)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(100, rectangle.width)));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt

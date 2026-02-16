@@ -31,7 +31,7 @@ import ch.alpine.bridge.ref.data.SimpleLaram;
 import ch.alpine.bridge.ref.data.SimpleParam;
 import ch.alpine.bridge.ref.data.TimeParam;
 import ch.alpine.bridge.ref.data.V011Param;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.qty.Quantity;
@@ -91,7 +91,7 @@ class ObjectPropertiesTest {
     String string0 = ObjectProperties.join(simpleLaram);
     simpleLaram.nestedParams.get(0).some = false;
     simpleLaram.nestedParams.get(1).text = "new text";
-    simpleLaram.nestedParams.get(1).scalar = RationalScalar.HALF;
+    simpleLaram.nestedParams.get(1).scalar = Rational.HALF;
     String string1 = ObjectProperties.join(simpleLaram);
     Path file = tempDir.resolve("here2.properties");
     ObjectProperties.save(simpleLaram, file);
@@ -100,7 +100,7 @@ class ObjectPropertiesTest {
     ObjectProperties.load(simpleCopy, file);
     String string2 = ObjectProperties.join(simpleCopy);
     assertEquals(simpleCopy.nestedParams.get(1).text, "new text");
-    assertEquals(simpleCopy.nestedParams.get(1).scalar, RationalScalar.HALF);
+    assertEquals(simpleCopy.nestedParams.get(1).scalar, Rational.HALF);
     assertFalse(string0.equals(string1));
     assertEquals(string1, string2);
   }

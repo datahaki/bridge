@@ -9,7 +9,7 @@ import ch.alpine.bridge.fig.Cepstrogram;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowWindow;
 import ch.alpine.bridge.fig.Showable;
-import ch.alpine.tensor.RationalScalar;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.ext.HomeDirectory;
@@ -21,7 +21,7 @@ public enum CepstrogramDemo {
   ;
   public static Showable create(SpectrogramArray xtrogramArray) {
     Tensor signal = Tensor.of(IntStream.range(0, 10000) //
-        .mapToObj(i -> RationalScalar.of(i, 100).add(RationalScalar.of(i * i, 1000_000))) //
+        .mapToObj(i -> Rational.of(i, 100).add(Rational.of(i * i, 1000_000))) //
         .map(SawtoothWave.FUNCTION));
     return Cepstrogram.of(xtrogramArray, signal, RealScalar.ONE);
   }
