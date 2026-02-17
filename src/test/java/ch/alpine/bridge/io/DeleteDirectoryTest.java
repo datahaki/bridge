@@ -16,16 +16,14 @@ import ch.alpine.tensor.ext.HomeDirectory;
 class DeleteDirectoryTest {
   @Test
   void testLayer0() throws Exception {
-    Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "0");
-    Files.createDirectories(folder);
+    Path folder = HomeDirectory.Downloads.mk_dirs(getClass().getSimpleName() + "0");
     DeleteDirectory deleteDirectory = DeleteDirectory.of(folder, 0, 1, DeleteDirectory.DELETE_FAIL_ABORTS);
     assertEquals(deleteDirectory.fileCount(), 1);
   }
 
   @Test
   void testLayer1a() throws Exception {
-    Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "1a");
-    Files.createDirectories(folder);
+    Path folder = HomeDirectory.Downloads.mk_dirs(getClass().getSimpleName() + "1a");
     Path sample1_txt = folder.resolve("sample1.txt");
     Files.createFile(sample1_txt);
     assertThrows(Exception.class, () -> DeleteDirectory.of(sample1_txt, 2, 10));
@@ -40,8 +38,7 @@ class DeleteDirectoryTest {
 
   @Test
   void testLayer1b() throws Exception {
-    Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "1b");
-    Files.createDirectories(folder);
+    Path folder = HomeDirectory.Downloads.mk_dirs(getClass().getSimpleName() + "1b");
     Files.createFile(folder.resolve("sample1.txt"));
     Files.createFile(folder.resolve("sample2.txt"));
     Path sub = folder.resolve("sub");
@@ -52,8 +49,7 @@ class DeleteDirectoryTest {
 
   @Test
   void testLayer2() throws Exception {
-    Path folder = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "2");
-    Files.createDirectories(folder);
+    Path folder = HomeDirectory.Downloads.mk_dirs(getClass().getSimpleName() + "2");
     Files.createFile(folder.resolve("sample1.txt"));
     Files.createFile(folder.resolve("sample2.txt"));
     Path sub = folder.resolve("sub");
@@ -72,9 +68,8 @@ class DeleteDirectoryTest {
 
   @Test
   void testRenameDirectory() throws IOException {
-    Path folder1 = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "NotFound1234");
+    Path folder1 = HomeDirectory.Downloads.mk_dirs(getClass().getSimpleName() + "NotFound1234");
     Path folder2 = HomeDirectory.Downloads.resolve(getClass().getSimpleName() + "NotFound1235");
-    Files.createDirectories(folder1);
     {
       Path file1 = folder1.resolve("dummy.txt");
       Files.createFile(file1);
