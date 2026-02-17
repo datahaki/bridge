@@ -11,7 +11,7 @@ import ch.alpine.bridge.ref.util.ObjectProperties;
 /** manage operations of ObjectProperties on a local installation
  * suitable for singleton parameter files, for instance editor */
 public final class ResourceLocator {
-  public static final String FILE_EXTENSION = ".properties";
+  private static final String FILE_EXTENSION = ".properties";
   // ---
   private final Path base;
 

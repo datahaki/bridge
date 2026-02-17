@@ -3,6 +3,8 @@ package ch.alpine.bridge.pro;
 
 import java.awt.Window;
 
+import ch.alpine.bridge.awt.WindowBounds;
+import ch.alpine.bridge.io.ResourceLocator;
 import ch.alpine.bridge.swing.LookAndFeels;
 
 @FunctionalInterface
@@ -15,6 +17,8 @@ public interface WindowProvider {
   default Window run() {
     LookAndFeels.autoDetect();
     Window window = getWindow();
+    ResourceLocator resourceLocator = new ResourceLocator(StaticHelper.of(getClass()));
+    WindowBounds.persistent(window, resourceLocator.properties(WindowBounds.class));
     window.setVisible(true);
     return window;
   }

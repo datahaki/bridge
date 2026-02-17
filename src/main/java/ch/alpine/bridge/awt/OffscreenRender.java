@@ -9,12 +9,12 @@ import javax.swing.JComponent;
 
 public enum OffscreenRender {
   ;
-  public static BufferedImage of(JComponent jComponent) {
-    return of(jComponent, jComponent.getSize());
+  public static BufferedImage of(JComponent jComponent, int imageType) {
+    return of(jComponent, jComponent.getSize(), imageType);
   }
 
-  public static BufferedImage of(JComponent jComponent, Dimension dimension) {
-    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+  public static BufferedImage of(JComponent jComponent, Dimension dimension, int imageType) {
+    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, imageType);
     Graphics2D graphics = bufferedImage.createGraphics();
     jComponent.printAll(graphics);
     graphics.dispose();

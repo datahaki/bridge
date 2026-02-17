@@ -15,7 +15,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 class FileBlockTest {
   @Test
   void testSimple() {
-    Path path = HomeDirectory.Documents.resolve();
+    Path path = HomeDirectory.Ephemeral.resolve();
     assertFalse(FileBlock.of(path, "abc", false));
     assertTrue(FileBlock.of(path, "abc", false));
     assertTrue(FileBlock.of(path, "abc", false));

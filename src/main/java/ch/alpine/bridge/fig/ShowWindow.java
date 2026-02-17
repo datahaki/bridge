@@ -2,7 +2,6 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.util.List;
 
@@ -13,12 +12,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.awt.ScreenRectangles;
+import ch.alpine.bridge.awt.AwtUtil;
 
 public enum ShowWindow {
   ;
-  private static final int SIZE = 800;
-
   /** non-blocking
    * 
    * @param shows
@@ -32,16 +29,11 @@ public enum ShowWindow {
    * @param list
    * @return */
   public static JDialog asDialog(List<Show> list) {
-    Component parentComponent = null;
     /* false -> non-modal == non-blocking */
-    JDialog jDialog = new JDialog(JOptionPane.getFrameForComponent(parentComponent), false);
+    JDialog jDialog = new JDialog(JOptionPane.getFrameForComponent(null), false);
     jDialog.setContentPane(createContainer(list));
-    jDialog.setSize(SIZE, SIZE);
-    jDialog.setLocationRelativeTo(parentComponent);
     jDialog.setTitle(StaticHelper.defaultTitle());
     jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    ScreenRectangles.create().placement(jDialog);
-    jDialog.setVisible(true);
     return jDialog;
   }
 
@@ -50,15 +42,10 @@ public enum ShowWindow {
   }
 
   public static JFrame asFrame(List<Show> list) {
-    Component parentComponent = null;
     JFrame jFrame = new JFrame();
     jFrame.setContentPane(createContainer(list));
-    jFrame.setSize(SIZE, SIZE);
-    jFrame.setLocationRelativeTo(parentComponent);
     jFrame.setTitle(StaticHelper.defaultTitle());
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    ScreenRectangles.create().placement(jFrame);
-    jFrame.setVisible(true);
     return jFrame;
   }
 
@@ -66,7 +53,7 @@ public enum ShowWindow {
     JPanel contentPane = new JPanel(new BorderLayout());
     JComponent jComponent = ShowGridComponent.of(list);
     contentPane.add(BorderLayout.CENTER, jComponent);
-    contentPane.add(BorderLayout.NORTH, StaticHelper.createToolbar(jComponent));
+    contentPane.add(BorderLayout.NORTH, AwtUtil.createToolbar(jComponent));
     return contentPane;
   }
 }

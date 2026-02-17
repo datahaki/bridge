@@ -3,25 +3,14 @@ package ch.alpine.bridge.fig;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.FontMetrics;
 import java.awt.Stroke;
 import java.lang.StackWalker.StackFrame;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JToolBar;
-
-import ch.alpine.bridge.awt.OffscreenRender;
-import ch.alpine.bridge.io.ImageClipboard;
-import ch.alpine.bridge.lang.FriendlyFormat;
 import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
@@ -32,7 +21,6 @@ import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.api.TensorUnaryOperator;
 import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.chq.IntegerQ;
-import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityUnit;
@@ -163,32 +151,5 @@ import ch.alpine.tensor.tmp.TsEntry;
         .findFirst() //
         .orElseThrow());
     return stackFrame.getDeclaringClass().getSimpleName().replaceAll("([A-Z])", " $1").trim();
-  }
-
-  public static JToolBar createToolbar(JComponent jComponent) {
-    JToolBar jToolBar = new JToolBar();
-    {
-      jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-      jToolBar.setFloatable(false);
-      {
-        JButton jButton = new JButton("copy");
-        jButton.addActionListener(_ -> ImageClipboard.copy(OffscreenRender.of(jComponent)));
-        jToolBar.add(jButton);
-      }
-      {
-        JButton jButton = new JButton("export");
-        jButton.addActionListener(_ -> {
-          try {
-            String string = "fig_" + System.nanoTime() + ".png";
-            Path path = HomeDirectory.Pictures.resolve(FriendlyFormat.sanitize(string));
-            ImageIO.write(OffscreenRender.of(jComponent), "png", Files.newOutputStream(path));
-          } catch (Exception exception) {
-            exception.printStackTrace();
-          }
-        });
-        jToolBar.add(jButton);
-      }
-    }
-    return jToolBar;
   }
 }

@@ -26,6 +26,7 @@ import ch.alpine.tensor.qty.Timing;
 public class WindowBounds {
   private static final int OFFSET = 100;
   private static final int SIZE = 800;
+  private static final Scalar LIMIT = Quantity.of(300_000_000, "ns");
 
   /** function is typically called before the given window is made visible
    * 
@@ -51,7 +52,6 @@ public class WindowBounds {
   }
 
   private final Point shift = new Point();
-  private static final Scalar LIMIT = Quantity.of(300_000_000, "ns");
 
   private void private_attach(Window window, Path path) {
     window.setBounds(getBoundsAllVisible());
@@ -63,6 +63,9 @@ public class WindowBounds {
       windowBounds.rectangle = rectangle;
       ObjectProperties.trySave(windowBounds, path);
     });
+    /* this component listener is only needed to establish "shift"
+     * therefore the listener is removed upon the first invocation
+     * of componentMoved */
     window.addComponentListener(new ComponentAdapter() {
       private final Timing timing = Timing.stopped();
       private Point shown = null;
@@ -82,7 +85,6 @@ public class WindowBounds {
       @Override
       public void componentMoved(ComponentEvent componentEvent) {
         Scalar nanos = timing.nanoSeconds(); // 45846090
-        // System.out.println("ns=" + nanos);
         if (Scalars.lessThan(nanos, LIMIT) && Objects.nonNull(shown)) {
           Point moved = window.getLocationOnScreen();
           // System.out.println("moved location: " + jFrame.getLocationOnScreen());
