@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
 
 class FriendlyFormatTest {
@@ -21,6 +22,7 @@ class FriendlyFormatTest {
     assertEquals(FriendlyFormat.toHighSchoolString(Scalars.fromString("2/3")), "2/3");
     assertEquals(FriendlyFormat.toHighSchoolString(Scalars.fromString("4/3")), "1+1/3");
     assertEquals(FriendlyFormat.toHighSchoolString(Scalars.fromString("5")), "5");
+    assertEquals(FriendlyFormat.toHighSchoolString(Pi.VALUE), Pi.VALUE.toString());
   }
 
   @Test
@@ -47,5 +49,17 @@ class FriendlyFormatTest {
   void testSanitize() {
     String string = FriendlyFormat.sanitize(" .a12sd  //?* . txt  ");
     assertEquals(string, " .a12sd  ____ . txt");
+  }
+
+  @Test
+  void testCamel() {
+    String string = FriendlyFormat.toCamelCase("GRAND_PIANO");
+    assertEquals(string, "GrandPiano");
+  }
+
+  @Test
+  void testDefaultTitle() {
+    String string = FriendlyFormat.defaultTitle(getClass());
+    assertEquals(string, "Friendly Format Test");
   }
 }

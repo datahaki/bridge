@@ -2,11 +2,13 @@
 package ch.alpine.bridge.pro;
 
 import java.awt.Container;
-import java.awt.Window;
+
+import javax.swing.JFrame;
 
 import ch.alpine.bridge.awt.WindowBounds;
 import ch.alpine.bridge.awt.WindowClosed;
 import ch.alpine.bridge.io.ResourceLocator;
+import ch.alpine.bridge.lang.FriendlyFormat;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.swing.LookAndFeels;
 
@@ -19,14 +21,15 @@ public interface ManipulateProvider {
 
   /** @return
    * @apiNote should not be used for testing */
-  default Window run() {
+  default JFrame run() {
     LookAndFeels.autoDetect();
     ResourceLocator resourceLocator = new ResourceLocator(StaticHelper.of(getClass()));
-    resourceLocator.tryLoad(this);
-    Window window = Manipulate.asFrame(this, this::getContainer);
-    WindowBounds.persistent(window, resourceLocator.properties(WindowBounds.class));
-    WindowClosed.runs(window, () -> resourceLocator.trySave(this));
-    window.setVisible(true);
-    return window;
+    resourceLocator.tryLoad(this); // assign field values from properties file
+    JFrame jFrame = Manipulate.asFrame(this, this::getContainer);
+    jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
+    WindowBounds.persistent(jFrame, resourceLocator.properties(WindowBounds.class));
+    WindowClosed.runs(jFrame, () -> resourceLocator.trySave(this));
+    jFrame.setVisible(true);
+    return jFrame;
   }
 }

@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
@@ -44,9 +45,11 @@ public enum FriendlyFormat {
   /** @param scalar
    * @param unit atomic
    * @return */
+  // TODO needs documentation
   public static Scalar of(Scalar scalar, String unit) {
     if (unit.isEmpty() || //
         PREDICATE.test(unit)) {
+      // TODO require real scalar ?
       Scalar abs = Abs.FUNCTION.apply(scalar);
       Scalar log = Log10.FUNCTION.apply(abs);
       Scalar floor = Floor.toMultipleOf(RealScalar.of(3)).apply(log);
@@ -68,15 +71,18 @@ public enum FriendlyFormat {
 
   /** @return -18+4/7 for display, not parsing */
   public static String toHighSchoolString(Scalar scalar) {
-    Scalar floor = Floor.FUNCTION.apply(scalar);
-    if (Scalars.isZero(floor))
-      return scalar.toString();
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(floor);
-    Scalar reman = scalar.subtract(floor);
-    if (Scalars.nonZero(reman))
-      stringBuilder.append("+" + reman);
-    return stringBuilder.toString();
+    if (scalar instanceof Rational) {
+      Scalar floor = Floor.FUNCTION.apply(scalar);
+      if (Scalars.isZero(floor))
+        return scalar.toString();
+      StringBuilder stringBuilder = new StringBuilder();
+      stringBuilder.append(floor);
+      Scalar reman = scalar.subtract(floor);
+      if (Scalars.nonZero(reman))
+        stringBuilder.append("+" + reman);
+      return stringBuilder.toString();
+    }
+    return scalar.toString();
   }
 
   // ---
@@ -116,6 +122,8 @@ public enum FriendlyFormat {
   }
 
   // ---
+  /** @param string for example: "GRAND_PIANO"
+   * @return "GrandPiano" */
   public static String toCamelCase(String string) {
     return Stream.of(string.split("_")) //
         .map(FriendlyFormat::headRest) //
@@ -125,5 +133,11 @@ public enum FriendlyFormat {
   private static String headRest(String string) {
     char first = Character.toUpperCase(string.charAt(0));
     return first + string.substring(1).toLowerCase();
+  }
+
+  /** @param cls
+   * @return */
+  public static String defaultTitle(Class<?> cls) {
+    return cls.getSimpleName().replaceAll("([A-Z])", " $1").trim();
   }
 }

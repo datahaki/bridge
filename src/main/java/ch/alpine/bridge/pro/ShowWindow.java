@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.pro;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.AwtUtil;
+import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.ShowGridComponent;
 
 public enum ShowWindow {
   ;
@@ -32,7 +34,6 @@ public enum ShowWindow {
     /* false -> non-modal == non-blocking */
     JDialog jDialog = new JDialog(JOptionPane.getFrameForComponent(null), false);
     jDialog.setContentPane(createContainer(list));
-    jDialog.setTitle(StaticHelper.defaultTitle());
     jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     return jDialog;
   }
@@ -44,7 +45,6 @@ public enum ShowWindow {
   public static JFrame asFrame(List<Show> list) {
     JFrame jFrame = new JFrame();
     jFrame.setContentPane(createContainer(list));
-    jFrame.setTitle(StaticHelper.defaultTitle());
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     return jFrame;
   }
