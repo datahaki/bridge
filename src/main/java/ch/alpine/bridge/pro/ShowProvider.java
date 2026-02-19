@@ -19,7 +19,7 @@ public interface ShowProvider {
   default Window run() {
     ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
-    ResourceLocator resourceLocator = new ResourceLocator(StaticHelper.of(getClass()));
+    ResourceLocator resourceLocator = ResourceLocator.of(getClass());
     JFrame jFrame = ShowWindow.asFrame(getShow());
     jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
     WindowBounds.persistent(jFrame, resourceLocator.properties(WindowBounds.class));

@@ -20,7 +20,7 @@ public interface WindowProvider {
     ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
     Window window = getWindow();
-    ResourceLocator resourceLocator = new ResourceLocator(StaticHelper.of(getClass()));
+    ResourceLocator resourceLocator = ResourceLocator.of(getClass());
     WindowBounds.persistent(window, resourceLocator.properties(WindowBounds.class));
     window.setVisible(true);
     return window;

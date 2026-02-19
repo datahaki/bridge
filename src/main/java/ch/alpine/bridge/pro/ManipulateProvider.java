@@ -25,7 +25,7 @@ public interface ManipulateProvider {
   default JFrame run() {
     ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
-    ResourceLocator resourceLocator = new ResourceLocator(StaticHelper.of(getClass()));
+    ResourceLocator resourceLocator = ResourceLocator.of(getClass());
     resourceLocator.tryLoad(this); // assign field values from properties file
     JFrame jFrame = Manipulate.asFrame(this, this::getContainer);
     jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));

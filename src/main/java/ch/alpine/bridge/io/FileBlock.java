@@ -2,6 +2,7 @@
 // http://www.velocityreviews.com/forums/t137115-preventing-multiple-instance-standalone-desktop-gui-applications.html
 package ch.alpine.bridge.io;
 
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UncheckedIOException;
@@ -10,49 +11,41 @@ import java.nio.channels.FileLock;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import ch.alpine.tensor.ext.PackageTestAccess;
-
 /** also works if file already exists before any launch */
 public class FileBlock {
-  private static final Pattern PATTERN = Pattern.compile("^[\\w-.]{1,255}$");
-
-  @PackageTestAccess
-  static boolean validFilename(String string) {
-    return PATTERN.matcher(string).matches();
-  }
-
   /** @param folder to generated `.lock` file in
    * @param uid unique identifier that is may be used as part of filename
    * @param showMessage whether to pop-up error dialog
    * @return whether uid was reserved by a previous instance
    * @throws Exception if given uid cannot be used as part of filename */
-  public static boolean of(Path folder, String uid, boolean showMessage) {
-    FileBlock fileBlock = new FileBlock(folder, uid);
+  public static boolean of(Path folder, boolean showMessage) {
+    FileBlock fileBlock = new FileBlock(folder);
     boolean isActive = fileBlock.isActive();
     if (isActive && showMessage)
       fileBlock.showMessage();
     return isActive;
   }
 
+  public static boolean of(Path folder) {
+    return of(folder, !GraphicsEnvironment.isHeadless());
+  }
+
   // ---
   private final Path folder;
-  private final String uid;
   private RandomAccessFile randomAccessFile;
   private FileChannel fileChannel;
   private FileLock fileLock;
 
-  private FileBlock(Path folder, String identifier) {
+  private FileBlock(Path folder) {
     this.folder = folder;
-    this.uid = identifier;
   }
 
   /* package */ boolean isActive() {
     try {
-      Path path = folder.resolve('.' + uid + ".lock");
+      Path path = folder.resolve(".FileBlock.lock");
       randomAccessFile = new RandomAccessFile(path.toFile(), "rw");
       fileChannel = randomAccessFile.getChannel();
       fileLock = fileChannel.tryLock(); // documentation not clear on "return vs. exception"
@@ -99,7 +92,7 @@ public class FileBlock {
   private void showMessage() {
     JOptionPane.showMessageDialog( //
         null, //
-        uid + " is already running.", //
+        folder + "\nis already running.", //
         "Execution blocked", //
         JOptionPane.ERROR_MESSAGE);
   }

@@ -37,13 +37,12 @@ public enum ReflectionMarkers {
    * super types.
    * 
    * @param object non-null */
-  public void register(Object object) {
+  public synchronized void register(Object object) {
     Class<?> cls = object.getClass();
-    if (!checked.contains(cls))
-      synchronized (this) {
-        ClassHierarchy.of(cls).forEach(this::expected);
-        ObjectFields.of(object, objectFieldVisitor);
-      }
+    if (!checked.contains(cls)) {
+      ClassHierarchy.of(cls).forEach(this::expected);
+      ObjectFields.of(object, objectFieldVisitor);
+    }
   }
 
   private void expected(Class<?> cls) {
@@ -59,9 +58,7 @@ public enum ReflectionMarkers {
 
   /** @return set of all classes that where discovered up to this point
    * with missing {@link ReflectionMarker} annotation */
-  public Set<Class<?>> missing() {
-    synchronized (this) {
-      return Set.copyOf(missing);
-    }
+  public synchronized Set<Class<?>> missing() {
+    return Set.copyOf(missing);
   }
 }
