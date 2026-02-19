@@ -3,6 +3,8 @@ package ch.alpine.bridge.pro;
 
 import java.awt.Window;
 
+import javax.imageio.ImageIO;
+
 import ch.alpine.bridge.awt.WindowBounds;
 import ch.alpine.bridge.io.ResourceLocator;
 import ch.alpine.bridge.swing.LookAndFeels;
@@ -15,6 +17,7 @@ public interface WindowProvider {
   Window getWindow();
 
   default Window run() {
+    ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
     Window window = getWindow();
     ResourceLocator resourceLocator = new ResourceLocator(StaticHelper.of(getClass()));

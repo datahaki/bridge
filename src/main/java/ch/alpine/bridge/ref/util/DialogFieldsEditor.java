@@ -5,8 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -83,12 +81,7 @@ public class DialogFieldsEditor extends JDialog {
     panelFieldsEditor = PanelFieldsEditor.splits(object);
     fallback = ObjectProperties.join(object);
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosing(WindowEvent windowEvent) {
-        cancel();
-      }
-    });
+    WindowClosed.runs(this, this::cancel);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(panelFieldsEditor.createJScrollPane(), BorderLayout.CENTER);

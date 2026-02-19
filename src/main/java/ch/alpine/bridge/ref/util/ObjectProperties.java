@@ -2,10 +2,10 @@
 package ch.alpine.bridge.ref.util;
 
 import java.awt.Color;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
@@ -64,17 +64,12 @@ public class ObjectProperties {
    * @param file properties
    * @throws IOException */
   public static void save(Object object, Path file) throws IOException {
-    try (BufferedWriter bufferedWriter = Files.newBufferedWriter(file, CHARSET)) {
+    try (PrintWriter printWriter = new PrintWriter(Files.newBufferedWriter(file, CHARSET))) {
       ObjectFieldVisitor objectFieldVisitor = new ObjectFieldIo() {
         @Override // from ObjectFieldVisitor
         public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
           if (Objects.nonNull(value))
-            try {
-              bufferedWriter.write(line(prefix, fieldWrap.toString(value)));
-              bufferedWriter.newLine();
-            } catch (Exception exception) {
-              throw new RuntimeException(exception);
-            }
+            printWriter.println(line(prefix, fieldWrap.toString(value)));
         }
       };
       ObjectFields.of(object, objectFieldVisitor);

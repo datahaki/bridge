@@ -3,6 +3,7 @@ package ch.alpine.bridge.pro;
 
 import java.awt.Window;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import ch.alpine.bridge.awt.WindowBounds;
@@ -16,6 +17,7 @@ public interface ShowProvider {
   Show getShow();
 
   default Window run() {
+    ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
     ResourceLocator resourceLocator = new ResourceLocator(StaticHelper.of(getClass()));
     JFrame jFrame = ShowWindow.asFrame(getShow());

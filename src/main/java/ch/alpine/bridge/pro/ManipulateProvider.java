@@ -3,6 +3,7 @@ package ch.alpine.bridge.pro;
 
 import java.awt.Container;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import ch.alpine.bridge.awt.WindowBounds;
@@ -22,6 +23,7 @@ public interface ManipulateProvider {
   /** @return
    * @apiNote should not be used for testing */
   default JFrame run() {
+    ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
     ResourceLocator resourceLocator = new ResourceLocator(StaticHelper.of(getClass()));
     resourceLocator.tryLoad(this); // assign field values from properties file

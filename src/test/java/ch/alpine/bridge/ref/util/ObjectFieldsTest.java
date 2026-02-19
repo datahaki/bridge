@@ -35,6 +35,7 @@ class ObjectFieldsTest {
   void testDeepEquals() {
     SimpleParam sp1 = new SimpleParam();
     SimpleParam sp2 = new SimpleParam();
+    assertEquals(ObjectFields.hash(sp1), ObjectFields.hash(sp2));
     assertTrue(ObjectFields.deepEquals(sp1, sp2));
     sp1.basic ^= true;
     assertFalse(ObjectFields.deepEquals(sp1, sp2));

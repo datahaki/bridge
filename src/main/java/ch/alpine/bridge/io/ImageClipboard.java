@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 
 public enum ImageClipboard {
   ;
+  /** @param bufferedImage */
   public static void copy(BufferedImage bufferedImage) {
     Transferable transferable = new ImageTransferable(bufferedImage);
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
