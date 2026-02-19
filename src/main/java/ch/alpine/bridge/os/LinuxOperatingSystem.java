@@ -2,7 +2,10 @@
 package ch.alpine.bridge.os;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
+import java.nio.file.Path;
 import java.util.Objects;
 
 import ch.alpine.bridge.swing.LookAndFeels;
@@ -29,5 +32,14 @@ import ch.alpine.bridge.swing.LookAndFeels;
       throw new RuntimeException(exception);
     }
     return LookAndFeels.LIGHT;
+  }
+
+  @Override
+  public void navigateTo(Path path) {
+    try {
+      new ProcessBuilder("nautilus", path.toAbsolutePath().toString()).start();
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
 }

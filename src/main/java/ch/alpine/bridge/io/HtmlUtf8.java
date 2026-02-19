@@ -3,6 +3,7 @@ package ch.alpine.bridge.io;
 
 import java.awt.Color;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
@@ -68,6 +69,10 @@ public abstract class HtmlUtf8 implements Closeable {
 
   protected HtmlUtf8(Path path) {
     this.path = path;
+  }
+
+  public File file() {
+    return path.toFile();
   }
 
   public void append(Object object) {

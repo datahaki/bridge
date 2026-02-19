@@ -57,7 +57,7 @@ public class ShowComponentDemo implements Runnable {
   }
 
   static void main() {
-    LookAndFeels.LIGHT.updateComponentTreeUI();
+    LookAndFeels.autoDetect();
     ShowComponentDemo showComponentDemo = new ShowComponentDemo();
     showComponentDemo.jFrame.setVisible(true);
   }

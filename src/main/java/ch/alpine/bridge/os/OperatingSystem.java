@@ -1,6 +1,8 @@
 // code adapted from chatgpt
 package ch.alpine.bridge.os;
 
+import java.nio.file.Path;
+
 import ch.alpine.bridge.swing.LookAndFeels;
 
 public interface OperatingSystem {
@@ -17,4 +19,6 @@ public interface OperatingSystem {
   }
 
   LookAndFeels lookAndFeels();
+
+  void navigateTo(Path path);
 }

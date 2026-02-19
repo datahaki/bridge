@@ -14,7 +14,7 @@ public class StrangeThing {
   public String string = "asd";
 
   static void main() {
-    LookAndFeels.LIGHT.updateComponentTreeUI();
+    LookAndFeels.autoDetect();
     StrangeThing strangeThing = new StrangeThing();
     DialogFieldsEditor.show(null, strangeThing, null);
   }
