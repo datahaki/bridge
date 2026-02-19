@@ -12,6 +12,7 @@ public enum ReflOnEnum {
   INST2;
 
   public String here = name();
+  public transient Boolean flag = true;
 
   static void main() {
     List<String> list = ObjectProperties.list(INST1);

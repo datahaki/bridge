@@ -89,7 +89,7 @@ public class ObjectProperties {
       save(object, file);
       return true;
     } catch (Exception exception) {
-      // ---
+      System.err.println("save fail\n" + file);
     }
     return false;
   }
@@ -112,8 +112,8 @@ public class ObjectProperties {
     try {
       load(object, file);
     } catch (Exception exception) {
-      // ---
-    }
+
+      System.err.println("load fail:\n" + file);    }
     return object;
   }
 

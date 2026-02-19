@@ -16,5 +16,6 @@ class ReflOnEnumTest {
   void test(ReflOnEnum reflOnEnum) {
     List<String> list = ObjectProperties.list(reflOnEnum);
     assertEquals(list.get(0), "here=" + reflOnEnum.name());
+    assertEquals(list.size(), 1);
   }
 }
