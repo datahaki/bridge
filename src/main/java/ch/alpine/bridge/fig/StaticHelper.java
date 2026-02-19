@@ -35,7 +35,7 @@ import ch.alpine.tensor.sca.pow.Power;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TsEntry;
 
-/* package */ public enum StaticHelper {
+/* package */ enum StaticHelper {
   ;
   /** @param vector
    * @return null if given vector does not contain finite scalars */
