@@ -10,21 +10,20 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.WindowClosed;
+import ch.alpine.bridge.io.ResourceLocator;
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.StoredExtension;
 import ch.alpine.bridge.ref.util.ObjectProperties;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
-import ch.alpine.tensor.ext.HomeDirectory;
 
 class StoredExtensionDemo implements WindowProvider {
-  private static final Path FILE = HomeDirectory.Downloads.resolve(StoredExtension.class.getSimpleName() + ".properties");
-  public static final StoredExtension INSTANCE = //
-      ObjectProperties.tryLoad(new StoredExtension(), FILE);
-
   @Override
   public Window getWindow() {
-    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(INSTANCE);
-    ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, INSTANCE);
+    ResourceLocator resourceLocator = ResourceLocator.of(getClass());
+    Path path = resourceLocator.properties(StoredExtension.class);
+    StoredExtension storedExtension = ObjectProperties.tryLoad(new StoredExtension(), path);
+    PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(storedExtension);
+    ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, storedExtension);
     // ---
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -33,7 +32,7 @@ class StoredExtensionDemo implements WindowProvider {
     jGrid.add(objectPropertiesArea.createJComponent());
     jFrame.setContentPane(jGrid);
     jFrame.setBounds(500, 200, 500, 700);
-    WindowClosed.runs(jFrame, () -> ObjectProperties.trySave(INSTANCE, FILE));
+    WindowClosed.runs(jFrame, () -> ObjectProperties.trySave(storedExtension, path));
     return jFrame;
   }
 
