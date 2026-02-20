@@ -112,8 +112,8 @@ public class ObjectProperties {
     try {
       load(object, file);
     } catch (Exception exception) {
-
-      System.err.println("load fail:\n" + file);    }
+      System.err.println("load fail:\n" + file);
+    }
     return object;
   }
 

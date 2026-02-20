@@ -15,6 +15,6 @@ class TemplateEnumDemo implements WindowProvider {
   }
 
   static void main() {
-    new TemplateEnumDemo().run();
+    new TemplateEnumDemo().runStandalone();
   }
 }

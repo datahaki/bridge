@@ -16,7 +16,7 @@ public interface WindowProvider {
    * @return */
   Window getWindow();
 
-  default Window run() {
+  default Window runStandalone() {
     ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
     Window window = getWindow();

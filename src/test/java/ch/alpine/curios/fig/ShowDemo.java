@@ -123,6 +123,6 @@ public class ShowDemo implements WindowProvider {
   }
 
   static void main() {
-    new ShowDemo().run();
+    new ShowDemo().runStandalone();
   }
 }

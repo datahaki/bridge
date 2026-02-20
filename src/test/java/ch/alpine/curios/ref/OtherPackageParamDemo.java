@@ -34,6 +34,6 @@ class OtherPackageParamDemo implements WindowProvider {
   }
 
   static void main() {
-    new OtherPackageParamDemo().run();
+    new OtherPackageParamDemo().runStandalone();
   }
 }

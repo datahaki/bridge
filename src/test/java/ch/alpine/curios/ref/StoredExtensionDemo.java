@@ -38,6 +38,6 @@ class StoredExtensionDemo implements WindowProvider {
   }
 
   static void main() {
-    new StoredExtensionDemo().run();
+    new StoredExtensionDemo().runStandalone();
   }
 }

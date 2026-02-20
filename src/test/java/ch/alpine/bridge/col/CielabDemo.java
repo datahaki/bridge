@@ -23,6 +23,6 @@ class CielabDemo implements ShowProvider {
   }
 
   static void main() {
-    new CielabDemo().run();
+    new CielabDemo().runStandalone();
   }
 }

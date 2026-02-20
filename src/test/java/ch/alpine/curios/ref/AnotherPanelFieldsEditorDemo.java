@@ -33,6 +33,6 @@ class AnotherPanelFieldsEditorDemo implements WindowProvider {
   }
 
   static void main() {
-    new AnotherPanelFieldsEditorDemo().run();
+    new AnotherPanelFieldsEditorDemo().runStandalone();
   }
 }

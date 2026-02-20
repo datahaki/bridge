@@ -92,6 +92,6 @@ class GuiExtensionDemo implements WindowProvider {
     // FieldsEditorParam.GLOBAL.checkBoxIcon = CheckBoxIcon.LEDGREEN;
     // FieldsEditorParam.GLOBAL.checkBoxIconSize = RealScalar.of(32);
     // ---
-    new GuiExtensionDemo().run();
+    new GuiExtensionDemo().runStandalone();
   }
 }

@@ -33,6 +33,6 @@ class BrokenSUO implements ScalarUnaryOperator, ShowProvider {
   }
 
   static void main() {
-    new BrokenSUO().run();
+    new BrokenSUO().runStandalone();
   }
 }

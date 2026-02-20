@@ -14,6 +14,6 @@ class FieldsEditorDemo implements WindowProvider {
   }
 
   static void main() {
-    new FieldsEditorDemo().run();
+    new FieldsEditorDemo().runStandalone();
   }
 }

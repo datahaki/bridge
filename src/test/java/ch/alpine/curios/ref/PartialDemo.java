@@ -59,6 +59,6 @@ class PartialDemo implements WindowProvider {
   }
 
   static void main() {
-    new PartialDemo().run();
+    new PartialDemo().runStandalone();
   }
 }

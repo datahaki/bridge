@@ -2,6 +2,6 @@
 package ch.alpine.bridge.pro;
 
 @FunctionalInterface
-public interface RunProvider extends Runnable {
-  // ---
+public interface RunProvider {
+  void runStandalone();
 }

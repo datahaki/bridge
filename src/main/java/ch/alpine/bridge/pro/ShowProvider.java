@@ -16,7 +16,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
 public interface ShowProvider {
   Show getShow();
 
-  default Window run() {
+  default Window runStandalone() {
     ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
     ResourceLocator resourceLocator = ResourceLocator.of(getClass());

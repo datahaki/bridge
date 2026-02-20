@@ -22,7 +22,7 @@ public interface ManipulateProvider {
 
   /** @return
    * @apiNote should not be used for testing */
-  default JFrame run() {
+  default JFrame runStandalone() {
     ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
     ResourceLocator resourceLocator = ResourceLocator.of(getClass());

@@ -26,6 +26,6 @@ public class ShowWindowDemo implements WindowProvider {
   }
 
   static void main() {
-    new ShowWindowDemo().run();
+    new ShowWindowDemo().runStandalone();
   }
 }

@@ -40,6 +40,6 @@ class ToolbarFieldsEditorDemo implements WindowProvider {
   }
 
   static void main() {
-    new ToolbarFieldsEditorDemo().run();
+    new ToolbarFieldsEditorDemo().runStandalone();
   }
 }

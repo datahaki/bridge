@@ -62,6 +62,6 @@ class GuiExtensionSynced implements WindowProvider {
   }
 
   static void main() {
-    new GuiExtensionSynced().run();
+    new GuiExtensionSynced().runStandalone();
   }
 }

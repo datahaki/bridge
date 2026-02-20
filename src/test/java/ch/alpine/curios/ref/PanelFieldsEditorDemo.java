@@ -39,6 +39,6 @@ class PanelFieldsEditorDemo implements WindowProvider {
     FieldsEditorParam.GLOBAL.checkBoxParam.icon = CheckBoxIcon.LEDGREEN;
     FieldsEditorParam.GLOBAL.checkBoxParam.size = 32;
     // ---
-    new PanelFieldsEditorDemo().run();
+    new PanelFieldsEditorDemo().runStandalone();
   }
 }

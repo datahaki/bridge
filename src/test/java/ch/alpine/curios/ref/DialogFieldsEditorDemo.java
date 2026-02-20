@@ -17,6 +17,6 @@ class DialogFieldsEditorDemo implements WindowProvider {
   }
 
   static void main() {
-    new DialogFieldsEditorDemo().run();
+    new DialogFieldsEditorDemo().runStandalone();
   }
 }
