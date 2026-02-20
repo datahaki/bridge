@@ -300,9 +300,10 @@ public class Show implements Serializable {
       graphics.setColor(Color.DARK_GRAY);
       FontMetrics fontMetrics = graphics.getFontMetrics();
       String string = "no data";
+      double delta_y = (fontMetrics.getAscent() - fontMetrics.getDescent()) * 0.5;
       graphics.drawString(string, //
           rectangle.x + (rectangle.width - fontMetrics.stringWidth(string)) / 2, //
-          rectangle.y + (rectangle.height + fontMetrics.getHeight()) / 2);
+          rectangle.y + (int) (rectangle.height * 0.5 + delta_y));
     } else {
       boolean flipY = showables.stream().anyMatch(Showable::flipYAxis);
       showableConfig = flipY //

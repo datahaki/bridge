@@ -11,7 +11,7 @@ import ch.alpine.tensor.ext.HomeDirectory;
 
 /** manage operations of ObjectProperties on a local installation
  * suitable for singleton parameter files, for instance editor */
-public final class ResourceLocator {
+public class ResourceLocator {
   private static final String FILE_EXTENSION = ".properties";
 
   public static ResourceLocator of(Class<?> cls) {
