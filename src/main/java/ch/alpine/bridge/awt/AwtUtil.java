@@ -70,7 +70,7 @@ public enum AwtUtil {
     }
     return jToolBar;
   }
-  
+
   public static void ctrlW(JFrame jFrame) {
     JRootPane rootPane = jFrame.getRootPane();
     KeyStroke ctrlW = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
@@ -81,6 +81,5 @@ public enum AwtUtil {
         jFrame.dispose();
       }
     });
-
   }
 }

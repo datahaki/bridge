@@ -23,7 +23,7 @@ public enum Manipulate {
     jSplitPane.setRightComponent(jPanel);
     {
       JPanel side = new JPanel(new BorderLayout());
-      side.add(BorderLayout.NORTH, AwtUtil.createToolbar(jPanel));
+      side.add(BorderLayout.NORTH, AwtUtil.createToolbar(jSplitPane));
       PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.nested(object);
       side.add(BorderLayout.CENTER, panelFieldsEditor.createJScrollPane());
       jSplitPane.setLeftComponent(side);
