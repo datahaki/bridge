@@ -4,6 +4,8 @@ package ch.alpine.bridge.awt;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -12,9 +14,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JRootPane;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 import ch.alpine.bridge.io.ImageClipboard;
 import ch.alpine.bridge.lang.FriendlyFormat;
@@ -63,5 +69,18 @@ public enum AwtUtil {
       }
     }
     return jToolBar;
+  }
+  
+  public static void ctrlW(JFrame jFrame) {
+    JRootPane rootPane = jFrame.getRootPane();
+    KeyStroke ctrlW = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
+    rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlW, "closeWindow");
+    rootPane.getActionMap().put("closeWindow", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        jFrame.dispose();
+      }
+    });
+
   }
 }

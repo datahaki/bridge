@@ -6,6 +6,7 @@ import java.awt.Window;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.WindowBounds;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.io.ResourceLocator;
@@ -24,6 +25,7 @@ public interface ShowProvider extends RunProvider {
     JFrame jFrame = ShowWindow.asFrame(getShow());
     jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
     WindowBounds.persistent(jFrame, resourceLocator.properties(WindowBounds.class));
+    AwtUtil.ctrlW(jFrame);
     jFrame.setVisible(true);
     return jFrame;
   }

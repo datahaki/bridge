@@ -6,6 +6,7 @@ import java.awt.Container;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.WindowBounds;
 import ch.alpine.bridge.awt.WindowClosed;
 import ch.alpine.bridge.io.ResourceLocator;
@@ -23,6 +24,7 @@ public interface ManipulateProvider extends RunProvider {
 
   /** @return
    * @apiNote should not be used for testing */
+  @Override
   default JFrame runStandalone() {
     ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
@@ -32,6 +34,7 @@ public interface ManipulateProvider extends RunProvider {
     jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
     WindowBounds.persistent(jFrame, resourceLocator.properties(WindowBounds.class));
     WindowClosed.runs(jFrame, () -> resourceLocator.trySave(this));
+    AwtUtil.ctrlW(jFrame);
     jFrame.setVisible(true);
     return jFrame;
   }
