@@ -176,6 +176,10 @@ public class Show implements Serializable {
     setAspectRatio(RealScalar.ONE, RealScalar.ONE);
   }
 
+  public void setAspectRatioDontCare() {
+    aspectRatio = null;
+  }
+
   public Scalar getAspectRatio() {
     return aspectRatio;
   }
