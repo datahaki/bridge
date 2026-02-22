@@ -10,6 +10,8 @@ import java.awt.Point;
 import java.awt.Stroke;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.Clip;
 
 abstract class Axis {
@@ -17,6 +19,7 @@ abstract class Axis {
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
   public static final Color COLOR_GRIDLINES = new Color(224, 224, 224);
   public static final Color COLOR_HELPER = new Color(192, 192, 192);
+  static final Scalar RESERVE = RealScalar.of(50);
   // ---
   final DateTimeFocus dateTimeFocus;
   boolean gridLines = true;

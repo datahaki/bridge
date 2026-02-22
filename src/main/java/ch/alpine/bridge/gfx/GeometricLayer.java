@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.gfx;
 
+import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
@@ -10,6 +11,7 @@ import java.util.Deque;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** GeometricLayer transforms from model to pixel coordinates
  * 
@@ -117,6 +119,16 @@ public final class GeometricLayer {
     return path2d;
   }
 
+  public Rectangle toRectangle(CoordinateBoundingBox cbb) {
+    Point2D min = toPoint2D(cbb.min());
+    Point2D max = toPoint2D(cbb.max());
+    return new Rectangle( //
+        (int) min.getX(), //
+        (int) max.getY(), //
+        (int) (max.getX() - min.getX()), //
+        (int) (min.getY() - max.getY()));
+  }
+  
   /** function allows to render lines with width defined in model coordinates
    * <pre>
    * new BasicStroke(geometricLayer.model2pixelWidth(0.1))

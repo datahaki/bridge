@@ -279,6 +279,7 @@ public class Show implements Serializable {
   private void renderFrameTitle(Graphics _g, Rectangle rectangle) {
     Graphics2D graphics = (Graphics2D) _g.create();
     if (isFramed()) {
+      // draw box around ...
       graphics.setStroke(StaticHelper.STROKE_SOLID);
       graphics.setColor(Show.COLOR_FRAME);
       graphics.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);

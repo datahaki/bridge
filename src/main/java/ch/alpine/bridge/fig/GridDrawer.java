@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
+import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.QuantityUnit;
@@ -17,11 +18,15 @@ import ch.alpine.tensor.sca.Clip;
 
 public class GridDrawer {
   private final DateTimeFocus dateTimeFocus;
-  boolean axesX = true;
-  boolean axesY = true;
+  public boolean axesX = true;
+  public boolean axesY = true;
 
   public GridDrawer(DateTimeFocus dateTimeFocus) {
     this.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
+  }
+
+  public GridDrawer() {
+    this(ISO8601DateTimeFocus.INSTANCE);
   }
 
   public void render(ShowableConfig showableConfig, Graphics _g) {

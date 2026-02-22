@@ -51,7 +51,7 @@ class AxisX extends Axis {
       }
     } else {
       // TODO BRIDGE determine reserve, instead of 50 hardcode
-      Scalar dX = StaticHelper.getDecimalStep(clip.width().divide(RealScalar.of(rectangle.width)).multiply(RealScalar.of(50)));
+      Scalar dX = StaticHelper.getDecimalStep(clip.width().divide(RealScalar.of(rectangle.width)).multiply(Axis.RESERVE));
       for ( //
           Scalar xValue = Ceiling.toMultipleOf(dX).apply(clip.min()); //
           Scalars.lessEquals(xValue, clip.max()); //

@@ -51,7 +51,8 @@ class AxisY extends Axis {
       }
     } else {
       Scalar plotHeight = RealScalar.of(rectangle.height - 1);
-      Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize)));
+      // the "50" is instead of fontsize
+      Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(Axis.RESERVE));
       for ( //
           Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
           Scalars.lessEquals(yValue, clip.max()); //
