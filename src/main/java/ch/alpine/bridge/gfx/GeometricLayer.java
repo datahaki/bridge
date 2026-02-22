@@ -128,7 +128,7 @@ public final class GeometricLayer {
         (int) (max.getX() - min.getX()), //
         (int) (min.getY() - max.getY()));
   }
-  
+
   /** function allows to render lines with width defined in model coordinates
    * <pre>
    * new BasicStroke(geometricLayer.model2pixelWidth(0.1))

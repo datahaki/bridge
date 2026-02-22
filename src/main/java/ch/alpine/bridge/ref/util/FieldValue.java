@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
    * @return object.field_value */
   public Object get(Object object) {
     try {
+      field.trySetAccessible();
       return field.get(object);
     } catch (IllegalAccessException illegalAccessException) {
       throw new RuntimeException(illegalAccessException);
