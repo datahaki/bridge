@@ -12,12 +12,6 @@ import ch.alpine.tensor.qty.Unit;
 
 public enum UnicodeString {
   ;
-  public static final String WHITE_HEAVY_CHECK_MARK = "\u2705";
-  public static final String WHITE_MEDIUM_STAR = "\u2B50";
-  public static final String BRAIN = "\uD83E\uDDE0";
-  public static final String THUMBS_UP_SIGN = "\uD83D\uDC4D";
-  public static final String FIRE = "\uD83D\uDD25";
-  // ---
   private static final char SPACE = ' ';
   private static final String OVER = SPACE + "/" + SPACE;
   private static final char NARROW = '\u2009';

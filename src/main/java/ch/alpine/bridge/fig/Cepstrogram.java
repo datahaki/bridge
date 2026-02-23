@@ -6,7 +6,7 @@ import java.util.function.Function;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.fft.CepstrogramArray;
+import ch.alpine.tensor.fft.SpectrogramArrays;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.sca.win.DirichletWindow;
 import ch.alpine.tensor.sca.win.HannWindow;
@@ -25,7 +25,7 @@ public enum Cepstrogram {
    * @param function for instance {@link ColorDataGradients#VISIBLE_SPECTRUM}
    * @return */
   public static Showable of(Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
-    return Spectrogram.of(CepstrogramArray.REAL, signal, sampleRate, window, function);
+    return Spectrogram.of(SpectrogramArrays.REAL.operator(), signal, sampleRate, window, function);
   }
 
   /** Example:

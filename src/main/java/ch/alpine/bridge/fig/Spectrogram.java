@@ -9,6 +9,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.fft.SpectrogramArray;
+import ch.alpine.tensor.fft.SpectrogramArrays;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.Raster;
 import ch.alpine.tensor.io.ImageFormat;
@@ -44,7 +45,7 @@ public enum Spectrogram {
    * @return */
   public static Showable of(Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, //
       Function<Scalar, ? extends Tensor> function) {
-    return of(SpectrogramArray.SPECTROGRAM, signal, sampleRate, window, function);
+    return of(SpectrogramArrays.FOURIER.operator(), signal, sampleRate, window, function);
   }
 
   /** Example:

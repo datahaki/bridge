@@ -15,7 +15,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Dimensions;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.fft.SpectrogramArray;
+import ch.alpine.tensor.fft.SpectrogramArrays;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.Quantity;
@@ -56,8 +56,8 @@ class SpectrogramTest {
         .mapToObj(RealScalar::of));
     Showable image = Spectrogram.of(vector, Quantity.of(1, "s"), DirichletWindow.FUNCTION, ColorDataGradients.VISIBLE_SPECTRUM);
     new Show().add(image);
-    assertEquals(Dimensions.of(SpectrogramArray.SPECTROGRAM.half_abs(vector)), Arrays.asList(32, 93));
-    Tensor tensor = SpectrogramArray.SPECTROGRAM.apply(vector).maps(Abs.FUNCTION);
+    assertEquals(Dimensions.of(SpectrogramArrays.FOURIER.half_abs(vector)), Arrays.asList(32, 93));
+    Tensor tensor = SpectrogramArrays.FOURIER.apply(vector).maps(Abs.FUNCTION);
     assertEquals(Dimensions.of(tensor), List.of(93, 64));
   }
 }

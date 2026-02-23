@@ -41,7 +41,7 @@ import ch.alpine.tensor.alg.UnitVector;
 import ch.alpine.tensor.api.ScalarBinaryOperator;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.ResourceData;
-import ch.alpine.tensor.fft.CepstrogramArray;
+import ch.alpine.tensor.fft.SpectrogramArrays;
 import ch.alpine.tensor.img.ColorDataGradient;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorDataLists;
@@ -819,7 +819,7 @@ public enum Showcases implements ShowProvider {
       Tensor signal = Tensor.of(IntStream.range(0, 10000) //
           .mapToObj(i -> Rational.of(i, 100).add(Rational.of(i * i, 1000_000))) //
           .map(SawtoothWave.FUNCTION));
-      show.add(Spectrogram.of(CepstrogramArray.REAL, signal, RealScalar.ONE));
+      show.add(Spectrogram.of(SpectrogramArrays.REAL.operator(), signal, RealScalar.ONE));
       return show;
     }
   },
