@@ -29,6 +29,7 @@ import ch.alpine.bridge.lang.FriendlyFormat;
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.qty.DateTime;
 
+/** Abstract Window Toolkit Utilities */
 public enum AwtUtil {
   ;
   public static Point center(Dimension dimension) {

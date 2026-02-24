@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
- class FitIconLabel extends JLabel {
+class FitIconLabel extends JLabel {
   public FitIconLabel(Icon icon) {
     super(icon);
     setHorizontalAlignment(CENTER);
