@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.curios.ref;
+package ch.alpine.bridge.demo.ref;
 
 enum FileBlockDemo {
   ;

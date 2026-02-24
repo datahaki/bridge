@@ -17,8 +17,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
 /** implementing classes are subject to introspection
  * 
  * @see ReflectionMarker */
-@FunctionalInterface
-public interface ManipulateProvider extends RunProvider {
+public non-sealed interface ManipulateProvider extends RunProvider {
   /** @return */
   Container getContainer();
 

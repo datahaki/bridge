@@ -13,8 +13,7 @@ import ch.alpine.bridge.io.ResourceLocator;
 import ch.alpine.bridge.lang.FriendlyFormat;
 import ch.alpine.bridge.swing.LookAndFeels;
 
-@FunctionalInterface
-public interface ShowProvider extends RunProvider {
+public non-sealed interface ShowProvider extends RunProvider {
   Show getShow();
 
   @Override

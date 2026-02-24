@@ -1,8 +1,11 @@
 // code by jph
 package ch.alpine.bridge.pro;
 
-@FunctionalInterface
-public interface RunProvider {
+public sealed interface RunProvider permits //
+    ManipulateProvider, //
+    WindowProvider, //
+    ShowProvider, //
+    VoidProvider {
   /** @return */
   Object runStandalone();
 }

@@ -9,8 +9,7 @@ import ch.alpine.bridge.awt.WindowBounds;
 import ch.alpine.bridge.io.ResourceLocator;
 import ch.alpine.bridge.swing.LookAndFeels;
 
-@FunctionalInterface
-public interface WindowProvider extends RunProvider {
+public non-sealed interface WindowProvider extends RunProvider {
   /** Careful: multiple invocations may return the same instance, or a new window
    * 
    * @return */

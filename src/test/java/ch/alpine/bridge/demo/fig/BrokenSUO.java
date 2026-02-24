@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.curios.fig;
+package ch.alpine.bridge.demo.fig;
 
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.Show;

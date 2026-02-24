@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.curios.fig;
+package ch.alpine.bridge.demo.fig;
 
 import java.awt.BasicStroke;
 import java.awt.image.BufferedImage;
