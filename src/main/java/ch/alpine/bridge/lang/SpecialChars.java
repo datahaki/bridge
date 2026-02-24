@@ -25,6 +25,8 @@ public enum SpecialChars {
   BRAIN("🧠"),
   THUMBS_UP_SIGN("👍"),
   SOME("👉"),
+  CRISTAL("🔮"),
+  PALETTE("🎨"),
   MEDAL_1("🥇"),
   MEDAL_2("🥈"),
   MEDAL_3("🥉"),

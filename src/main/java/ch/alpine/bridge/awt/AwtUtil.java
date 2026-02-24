@@ -15,9 +15,11 @@ import java.time.LocalTime;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JRootPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
@@ -31,6 +33,10 @@ public enum AwtUtil {
   ;
   public static Point center(Dimension dimension) {
     return new Point(dimension.width / 2, dimension.height / 2);
+  }
+
+  public static JLabel iconAsLabel(Icon icon) {
+    return new FitIconLabel(icon);
   }
 
   public static JToolBar createToolbar(JComponent jComponent) {
