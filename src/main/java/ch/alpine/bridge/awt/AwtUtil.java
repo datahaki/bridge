@@ -18,6 +18,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRootPane;
@@ -86,6 +87,18 @@ public enum AwtUtil {
       @Override
       public void actionPerformed(ActionEvent e) {
         jFrame.dispose();
+      }
+    });
+  }
+
+  public static void ctrlW(JDialog jDialog) {
+    JRootPane rootPane = jDialog.getRootPane();
+    KeyStroke ctrlW = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
+    rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlW, "closeWindow");
+    rootPane.getActionMap().put("closeWindow", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        jDialog.dispose();
       }
     });
   }

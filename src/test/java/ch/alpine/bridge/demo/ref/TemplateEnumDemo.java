@@ -1,20 +1,12 @@
 // code by jph
 package ch.alpine.bridge.demo.ref;
 
-import java.awt.Window;
-
-import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.TemplateEnumParam;
 import ch.alpine.bridge.ref.util.DialogFieldsEditor;
 
-class TemplateEnumDemo implements WindowProvider {
-  @Override
-  public Window getWindow() {
-    TemplateEnumParam templateEnumParam = new TemplateEnumParam();
-    return DialogFieldsEditor.show(null, templateEnumParam, "title");
-  }
-
+class TemplateEnumDemo {
   static void main() {
-    new TemplateEnumDemo().runStandalone();
+    TemplateEnumParam templateEnumParam = new TemplateEnumParam();
+    DialogFieldsEditor.show(null, templateEnumParam, "title");
   }
 }

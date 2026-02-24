@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.ContainerDescent;
 import ch.alpine.bridge.awt.ScreenRectangles;
 import ch.alpine.bridge.awt.WindowClosed;
@@ -80,7 +81,7 @@ public class DialogFieldsEditor extends JDialog {
     this.object = Objects.requireNonNull(object);
     panelFieldsEditor = PanelFieldsEditor.splits(object);
     fallback = ObjectProperties.join(object);
-    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     WindowClosed.runs(this, this::cancel);
     // ---
     JPanel jPanel = new JPanel(new BorderLayout());
@@ -122,6 +123,7 @@ public class DialogFieldsEditor extends JDialog {
     setContentPane(jPanel);
     Dimension dimension = getPreferredSize();
     setSize(new Dimension(dimension.width + MARGIN_WIDTH, dimension.height + MARGIN_HEIGHT));
+    AwtUtil.ctrlW(this);
   }
 
   public FieldsEditor fieldsEditor() {

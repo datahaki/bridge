@@ -4,6 +4,8 @@ package ch.alpine.bridge.demo.ref;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.awt.WindowClosed;
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
@@ -29,15 +30,27 @@ class PartialDemo implements WindowProvider {
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, guiExtension);
     // ---
-    Timer timer = new Timer();
-    timer.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        guiExtension.function = "" + LocalDateTime.now();
-        panelFieldsEditor.updateJComponents();
-      }
-    }, 1000, 1000);
     JFrame jFrame = new JFrame();
+    jFrame.addWindowListener(new WindowAdapter() {
+      Timer timer;
+
+      @Override
+      public void windowOpened(WindowEvent e) {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+          @Override
+          public void run() {
+            guiExtension.function = "" + LocalDateTime.now();
+            panelFieldsEditor.updateJComponents();
+          }
+        }, 1000, 1000);
+      };
+
+      @Override
+      public void windowClosed(WindowEvent windowEvent) {
+        timer.cancel();
+      }
+    });
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
@@ -54,7 +67,6 @@ class PartialDemo implements WindowProvider {
     }
     jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 200, 500, 700);
-    WindowClosed.runs(jFrame, timer::cancel);
     return jFrame;
   }
 

@@ -1,22 +1,13 @@
 // code by jph
 package ch.alpine.bridge.demo.ref;
 
-import java.awt.Window;
-
 import ch.alpine.bridge.awt.WindowClosed;
-import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.util.DialogFieldsEditor;
 
-class DialogFieldsEditorDemo implements WindowProvider {
-  @Override
-  public Window getWindow() {
+class DialogFieldsEditorDemo {
+  static void main() {
     DialogFieldsEditor dialogFieldsEditor = DialogFieldsEditor.show(null, new GuiExtension(), "here");
     WindowClosed.runs(dialogFieldsEditor, () -> System.out.println(dialogFieldsEditor.getSelection()));
-    return dialogFieldsEditor;
-  }
-
-  static void main() {
-    new DialogFieldsEditorDemo().runStandalone();
   }
 }

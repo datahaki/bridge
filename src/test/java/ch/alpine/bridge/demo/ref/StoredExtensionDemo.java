@@ -27,10 +27,10 @@ class StoredExtensionDemo implements WindowProvider {
     // ---
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    JPanel jGrid = new JPanel(new GridLayout(2, 1));
-    jGrid.add(panelFieldsEditor.createJScrollPane());
-    jGrid.add(objectPropertiesArea.createJComponent());
-    jFrame.setContentPane(jGrid);
+    JPanel jPanel = new JPanel(new GridLayout(2, 1));
+    jPanel.add(panelFieldsEditor.createJScrollPane());
+    jPanel.add(objectPropertiesArea.createJComponent());
+    jFrame.setContentPane(jPanel);
     jFrame.setBounds(500, 200, 500, 700);
     WindowClosed.runs(jFrame, () -> ObjectProperties.trySave(storedExtension, path));
     return jFrame;
