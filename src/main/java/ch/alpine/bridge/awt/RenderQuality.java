@@ -10,17 +10,23 @@ public enum RenderQuality {
    * 
    * @param graphics */
   public static void setQuality(Graphics2D graphics) {
-    graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-    graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-  }
-
-  /** use for render speed rather than quality
-   * 
-   * @param graphics */
-  public static void setDefault(Graphics2D graphics) {
-    graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
-    graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-    graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT);
+    graphics.setRenderingHint( //
+        RenderingHints.KEY_ANTIALIASING, //
+        RenderingHints.VALUE_ANTIALIAS_ON);
+    graphics.setRenderingHint( //
+        RenderingHints.KEY_RENDERING, //
+        RenderingHints.VALUE_RENDER_QUALITY);
+    graphics.setRenderingHint( //
+        RenderingHints.KEY_INTERPOLATION, //
+        RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+    graphics.setRenderingHint( //
+        RenderingHints.KEY_TEXT_ANTIALIASING, //
+        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+    graphics.setRenderingHint( //
+        RenderingHints.KEY_STROKE_CONTROL, //
+        RenderingHints.VALUE_STROKE_PURE);
+    graphics.setRenderingHint( //
+        RenderingHints.KEY_FRACTIONALMETRICS, //
+        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
   }
 }

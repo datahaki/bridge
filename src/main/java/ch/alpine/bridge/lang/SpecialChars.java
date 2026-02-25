@@ -10,6 +10,7 @@ public enum SpecialChars {
   LAPTOP("💻"),
   BLAST("💥"),
   MAGNIFY("🔎"),
+  MICROSCOPE("🔬"),
   BULLET_POINT("🔴"),
   LAB_VILE("🧪"),
   BULB("💡"),
