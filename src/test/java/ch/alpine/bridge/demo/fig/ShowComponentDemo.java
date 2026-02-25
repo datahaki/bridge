@@ -4,6 +4,7 @@ package ch.alpine.bridge.demo.fig;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,13 +13,13 @@ import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.fig.ShowComponent;
 import ch.alpine.bridge.fig.ShowComponent.Option;
+import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.util.FieldsEditor;
 import ch.alpine.bridge.ref.util.ToolbarFieldsEditor;
-import ch.alpine.bridge.swing.LookAndFeels;
 
 @ReflectionMarker
-public class ShowComponentDemo implements Runnable {
+class ShowComponentDemo implements WindowProvider {
   private final JFrame jFrame = new JFrame();
   private final ShowComponent showComponent = new ShowComponent();
   // ---
@@ -35,18 +36,17 @@ public class ShowComponentDemo implements Runnable {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
       FieldsEditor fieldsEditor = ToolbarFieldsEditor.addToComponent(this, jToolBar);
-      fieldsEditor.addUniversalListener(this);
+      fieldsEditor.addUniversalListener(this::update);
       jPanel.add(BorderLayout.NORTH, jToolBar);
     }
     jPanel.add(BorderLayout.CENTER, showComponent);
     jFrame.setContentPane(jPanel);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setBounds(100, 100, 1200, 900);
-    run();
+    update();
   }
 
-  @Override
-  public void run() {
+  private void update() {
     showComponent.setFont(font);
     showComponent.setShow(showDemos.getShow());
     showComponent.setOptionX(Option.PAN, xPan);
@@ -56,9 +56,12 @@ public class ShowComponentDemo implements Runnable {
     showComponent.repaint();
   }
 
+  @Override
+  public Window getWindow() {
+    return jFrame;
+  }
+
   static void main() {
-    LookAndFeels.autoDetect();
-    ShowComponentDemo showComponentDemo = new ShowComponentDemo();
-    showComponentDemo.jFrame.setVisible(true);
+    new ShowComponentDemo().runStandalone();
   }
 }
