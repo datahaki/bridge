@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.cgr.ClassDiscovery;
+import ch.alpine.bridge.cgr.ClassPaths;
 import ch.alpine.bridge.ref.data.FieldClipT;
-import ch.alpine.tensor.ext.ref.ClassDiscovery;
-import ch.alpine.tensor.ext.ref.ClassPaths;
 
 class ClassFieldCheckTest {
   @Test

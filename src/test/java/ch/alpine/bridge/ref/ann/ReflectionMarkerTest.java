@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.cgr.ClassDiscovery;
+import ch.alpine.bridge.cgr.ClassPaths;
 import ch.alpine.bridge.ref.util.ClassFieldCheck;
 import ch.alpine.bridge.ref.util.FieldValueContainer;
-import ch.alpine.tensor.ext.ref.ClassDiscovery;
-import ch.alpine.tensor.ext.ref.ClassPaths;
 
 class ReflectionMarkerTest {
   @Test

@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import ch.alpine.bridge.cgr.ClassHierarchy;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
-import ch.alpine.tensor.ext.ref.ClassHierarchy;
 
 public enum ReflectionMarkers {
   INSTANCE;

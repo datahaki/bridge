@@ -7,10 +7,10 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
+import ch.alpine.bridge.cgr.InstanceDiscovery;
 import ch.alpine.bridge.pro.RunProvider;
 import ch.alpine.bridge.pro.SanityCheckRunProvider;
 import ch.alpine.bridge.pro.WindowProvider;
-import ch.alpine.tensor.ext.ref.InstanceDiscovery;
 
 class RunProviderTest {
   @TestFactory

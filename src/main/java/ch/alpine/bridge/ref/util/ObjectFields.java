@@ -8,9 +8,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ch.alpine.bridge.cgr.ClassHierarchy;
 import ch.alpine.bridge.ref.FieldWrap;
 import ch.alpine.bridge.ref.FieldWraps;
-import ch.alpine.tensor.ext.ref.ClassHierarchy;
 
 public class ObjectFields {
   /** @param object may be null
