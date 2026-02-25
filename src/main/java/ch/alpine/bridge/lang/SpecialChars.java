@@ -6,6 +6,7 @@ public enum SpecialChars {
   DIGIT_2("2️⃣"),
   DIGIT_3("3️⃣"),
   DIGIT_4("4️⃣"),
+  OWLETS("🦉"),
   LAPTOP("💻"),
   BLAST("💥"),
   MAGNIFY("🔎"),

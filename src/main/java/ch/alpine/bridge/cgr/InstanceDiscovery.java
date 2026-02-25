@@ -16,7 +16,7 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<Su
    * Example use:
    * generate dynamic test from the instances in the returned list
    * 
-   * @param basePackage
+   * @param basePackage for instance getClass().getPackageName()
    * @param cls
    * @return */
   public static <T> List<Supplier<T>> of(String basePackage, Class<T> cls) {
