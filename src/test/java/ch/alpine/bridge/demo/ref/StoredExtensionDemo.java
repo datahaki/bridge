@@ -31,7 +31,6 @@ class StoredExtensionDemo implements WindowProvider {
     jPanel.add(panelFieldsEditor.createJScrollPane());
     jPanel.add(objectPropertiesArea.createJComponent());
     jFrame.setContentPane(jPanel);
-    jFrame.setBounds(500, 200, 500, 700);
     WindowClosed.runs(jFrame, () -> ObjectProperties.trySave(storedExtension, path));
     return jFrame;
   }

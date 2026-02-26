@@ -21,14 +21,15 @@ class LookAndFeelsTest {
   }
 
   @Test
-  void testUpdateUI() {
+  void testUpdateUI() throws InterruptedException {
     for (LookAndFeels lookAndFeels : LookAndFeels.standard()) {
       JFrame jFrame = new JFrame();
+      jFrame.setBounds(100, 100, 300, 300);
       jFrame.setVisible(true);
       lookAndFeels.updateComponentTreeUI();
       JMenu jMenu = new JMenu();
       jMenu.getForeground();
-      jFrame.setVisible(false);
+      Thread.sleep(100);
       jFrame.dispose();
     }
   }

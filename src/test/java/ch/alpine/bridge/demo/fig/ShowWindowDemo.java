@@ -18,7 +18,6 @@ class ShowWindowDemo implements WindowProvider {
   @Override
   public Window getWindow() {
     JFrame jFrame = new JFrame();
-    jFrame.setBounds(100, 100, 800, 800);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     List<Show> list = Stream.of(Showcases.values()).map(Showcases::getShow).toList();
     JScrollPane jScrollPane = new JScrollPane(ShowGridComponent.column(list, new Dimension(400, 400)));

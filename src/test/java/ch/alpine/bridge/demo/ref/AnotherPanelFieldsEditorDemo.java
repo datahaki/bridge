@@ -28,7 +28,6 @@ class AnotherPanelFieldsEditorDemo implements WindowProvider {
     jGrid.add(panelFieldsEditor.createJScrollPane());
     jGrid.add(objectPropertiesArea.createJComponent());
     jFrame.setContentPane(jGrid);
-    jFrame.setBounds(100, 100, 500, 900);
     return jFrame;
   }
 

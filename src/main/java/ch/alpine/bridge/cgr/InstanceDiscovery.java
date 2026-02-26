@@ -4,13 +4,13 @@ package ch.alpine.bridge.cgr;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /** implementation of class visitor to extract implementation of cls */
-public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<Supplier<T>> consumer) implements ClassVisitor {
+public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<InstanceRecord<T>> consumer) implements ClassVisitor {
   /** function to discover instances of a certain class nested in basePackage
    * 
    * Example use:
@@ -19,9 +19,10 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<Su
    * @param basePackage for instance getClass().getPackageName()
    * @param cls
    * @return */
-  public static <T> List<Supplier<T>> of(String basePackage, Class<T> cls) {
-    List<Supplier<T>> list = new ArrayList<>();
-    ClassDiscovery.execute(ClassPaths.getDefault(), new InstanceDiscovery<>(basePackage, cls, list::add));
+  public static <T> List<InstanceRecord<T>> of(String basePackage, Class<T> cls) {
+    List<InstanceRecord<T>> list = new LinkedList<>();
+    ClassDiscovery.execute(ClassPaths.getDefault(), //
+        new InstanceDiscovery<>(basePackage, cls, list::add));
     return list;
   }
 
@@ -35,8 +36,9 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<Su
             field.trySetAccessible(); // mandatory
             Object object = field.get(null);
             if (cls.isInstance(object)) {
-              T cast = cls.cast(object);
-              consumer.accept(() -> cast);
+              T cast = cls.cast(object); // already loaded in memory
+              InstanceRecord<T> instanceRecord = new InstanceRecord<T>(subcls, field.getName(), () -> cast);
+              consumer.accept(instanceRecord);
             }
           } catch (Exception exception) {
             System.err.println("error " + exception);
@@ -62,7 +64,7 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<Su
             Object object = constructor.newInstance();
             cls.cast(object);
           }
-          consumer.accept(() -> {
+          Supplier<T> supplier = () -> {
             try {
               Constructor<?> constructor = subcls.getDeclaredConstructor();
               constructor.trySetAccessible();
@@ -71,7 +73,9 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<Su
             } catch (Exception exception) {
               throw new RuntimeException(exception);
             }
-          });
+          };
+          InstanceRecord<T> instanceRecord = new InstanceRecord<T>(subcls, null, supplier);
+          consumer.accept(instanceRecord);
         } catch (Exception exception) {
           // default constructor may not exist
         }

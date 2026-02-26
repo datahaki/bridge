@@ -1,4 +1,5 @@
 // code by clruch
+// adapted by jph
 package ch.alpine.bridge.swing.rs;
 
 import java.awt.BorderLayout;
@@ -12,21 +13,21 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
-/* package */ class RangeSliderDemo extends JPanel {
+import ch.alpine.bridge.pro.WindowProvider;
+
+class RangeSliderDemo implements WindowProvider {
+  private final JPanel jPanel = new JPanel(new BorderLayout());
   private final JLabel rangeSliderValueH1 = new JLabel();
   private final JLabel rangeSliderValueH2 = new JLabel();
   private final RangeSlider rangeSliderH = new RangeSlider(0, 100, () -> {
-    // ---
   });
   private final JLabel rangeSliderValueV1 = new JLabel();
   private final JLabel rangeSliderValueV2 = new JLabel();
   private final RangeSlider rangeSliderV = new RangeSlider(0, 100, () -> {
-    // ---
   });
 
   public RangeSliderDemo() {
-    setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
-    setLayout(new BorderLayout());
+    jPanel.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
     JLabel rangeSliderLabelH1 = new JLabel("Lower value: ");
     JLabel rangeSliderLabelH2 = new JLabel("Upper value: ");
     JLabel rangeSliderLabelV1 = new JLabel("Lower value: ");
@@ -52,9 +53,9 @@ import javax.swing.WindowConstants;
       jToolBar.addSeparator();
       jToolBar.add(rangeSliderLabelH2);
       jToolBar.add(rangeSliderValueH2);
-      add(jToolBar, BorderLayout.NORTH);
+      jPanel.add(jToolBar, BorderLayout.NORTH);
     }
-    add(rangeSliderH, BorderLayout.CENTER);
+    jPanel.add(rangeSliderH, BorderLayout.CENTER);
     {
       JToolBar jToolBar = new JToolBar();
       jToolBar.setFloatable(false);
@@ -63,15 +64,16 @@ import javax.swing.WindowConstants;
       jToolBar.addSeparator();
       jToolBar.add(rangeSliderLabelV2);
       jToolBar.add(rangeSliderValueV2);
-      add(jToolBar, BorderLayout.SOUTH);
+      jPanel.add(jToolBar, BorderLayout.SOUTH);
     }
     rangeSliderV.setValue(0);
     rangeSliderV.setOrientation(SwingConstants.VERTICAL);
-    add(rangeSliderV, BorderLayout.WEST);
-    add(new JSlider(SwingConstants.VERTICAL), BorderLayout.EAST);
+    jPanel.add(rangeSliderV, BorderLayout.WEST);
+    jPanel.add(new JSlider(SwingConstants.VERTICAL), BorderLayout.EAST);
   }
 
-  public JFrame display() {
+  @Override
+  public JFrame getWindow() {
     // Initialize values.
     rangeSliderH.setValue(3);
     rangeSliderH.setUpperValue(7);
@@ -81,20 +83,11 @@ import javax.swing.WindowConstants;
     // Create window frame.
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setTitle("Range Slider Demo");
-    // Set window content and validate.
-    jFrame.getContentPane().setLayout(new BorderLayout());
-    jFrame.getContentPane().add(this, BorderLayout.CENTER);
-    // jFrame.pack();
-    // Set window location and display.
-    jFrame.setSize(500, 300);
-    jFrame.setLocationRelativeTo(null);
-    jFrame.setVisible(true);
+    jFrame.setContentPane(jPanel);
     return jFrame;
   }
 
   static void main() {
-    RangeSliderDemo rangeSliderDemo = new RangeSliderDemo();
-    rangeSliderDemo.display();
+    new RangeSliderDemo().runStandalone();
   }
 }

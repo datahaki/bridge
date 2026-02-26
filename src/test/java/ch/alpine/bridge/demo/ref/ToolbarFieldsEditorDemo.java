@@ -35,7 +35,6 @@ class ToolbarFieldsEditorDemo implements WindowProvider {
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(fieldsEditor, guiExtension);
     jPanel.add(objectPropertiesArea.createJComponent(), BorderLayout.CENTER);
     jFrame.setContentPane(jPanel);
-    jFrame.setBounds(50, 200, 1500, 300);
     return jFrame;
   }
 

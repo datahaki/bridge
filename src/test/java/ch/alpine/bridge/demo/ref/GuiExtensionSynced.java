@@ -57,7 +57,6 @@ class GuiExtensionSynced implements WindowProvider {
       content.add(jPanel);
     }
     jFrame.setContentPane(content);
-    jFrame.setBounds(500, 200, 750, 800);
     return jFrame;
   }
 

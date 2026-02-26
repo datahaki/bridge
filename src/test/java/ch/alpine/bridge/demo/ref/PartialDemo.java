@@ -66,7 +66,6 @@ class PartialDemo implements WindowProvider {
       jPanel.add(jButton, BorderLayout.SOUTH);
     }
     jFrame.setContentPane(jPanel);
-    jFrame.setBounds(500, 200, 500, 700);
     return jFrame;
   }
 

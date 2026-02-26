@@ -29,7 +29,6 @@ class OtherPackageParamDemo implements WindowProvider {
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(jGrid, BorderLayout.CENTER);
     jFrame.setContentPane(jPanel);
-    jFrame.setBounds(500, 200, 500, 700);
     return jFrame;
   }
 

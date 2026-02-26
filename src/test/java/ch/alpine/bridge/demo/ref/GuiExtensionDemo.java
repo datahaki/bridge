@@ -2,7 +2,6 @@
 package ch.alpine.bridge.demo.ref;
 
 import java.awt.BorderLayout;
-import java.awt.Window;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,11 +21,11 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.mat.re.Pivots;
 
 class GuiExtensionDemo implements WindowProvider {
-  private final GuiExtension guiExtension = new GuiExtension();
-  public final JSplitPane jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-  private final JFrame jFrame = new JFrame();
-
-  public GuiExtensionDemo() {
+  @Override
+  public JFrame getWindow() {
+    GuiExtension guiExtension = new GuiExtension();
+    JSplitPane jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    JFrame jFrame = new JFrame();
     guiExtension.cdg = null;
     guiExtension.background = null;
     guiExtension.font = null;
@@ -66,15 +65,16 @@ class GuiExtensionDemo implements WindowProvider {
         jCheckBox.addActionListener(_ -> ContainerDescent.setEnabled(jSplitPane, !jCheckBox.isSelected()));
         jToolBar.add(jCheckBox);
       }
+      jToolBar.addSeparator();
+      {
+        JCheckBox jCheckBox = new JCheckBox("disable root");
+        jCheckBox.addActionListener(_ -> ContainerDescent.setEnabled(jFrame.getRootPane(), !jCheckBox.isSelected()));
+        jToolBar.add(jCheckBox);
+      }
       jPanel.add(BorderLayout.SOUTH, jToolBar);
     }
     jSplitPane.setDividerLocation(500);
     jFrame.setContentPane(jPanel);
-    jFrame.setBounds(500, 100, 800, 900);
-  }
-
-  @Override
-  public Window getWindow() {
     return jFrame;
   }
 

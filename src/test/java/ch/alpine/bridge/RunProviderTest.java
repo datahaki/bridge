@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge;
 
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DynamicTest;
@@ -16,13 +15,12 @@ class RunProviderTest {
   @TestFactory
   Stream<DynamicTest> dynamicTests() {
     return InstanceDiscovery.of(getClass().getPackageName(), RunProvider.class).stream() //
-        .map(Supplier::get) //
-        .map(instance -> DynamicTest.dynamicTest(instance.toString(), //
+        .map(instanceRecord -> DynamicTest.dynamicTest(instanceRecord.toString(), //
             () -> {
-              SanityCheckRunProvider.INSTANCE.accept(instance);
-              if (instance instanceof WindowProvider) {
-                IO.println(instance.getClass());
-                Thread.sleep(2000);
+              RunProvider runProvider = instanceRecord.supplier().get();
+              SanityCheckRunProvider.INSTANCE.accept(runProvider);
+              if (runProvider instanceof WindowProvider) {
+                // IO.println(runProvider.getClass());
               }
             }));
   }

@@ -4,6 +4,9 @@ package ch.alpine.bridge.demo.ref;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.random.RandomGenerator;
 
+import javax.swing.JFrame;
+import javax.swing.JRootPane;
+
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.awt.ContainerDescent;
@@ -13,9 +16,11 @@ class ContainerDescentTest {
   void test() {
     GuiExtensionDemo guiExtensionDemo = new GuiExtensionDemo();
     RandomGenerator randomGenerator = ThreadLocalRandom.current();
-    ContainerDescent.setEnabled(guiExtensionDemo.jSplitPane, randomGenerator.nextBoolean());
-    ContainerDescent.setEnabled(guiExtensionDemo.jSplitPane, false);
-    ContainerDescent.setEnabled(guiExtensionDemo.jSplitPane, true);
-    ContainerDescent.setEnabled(guiExtensionDemo.jSplitPane, false);
+    JFrame jFrame = guiExtensionDemo.getWindow();
+    JRootPane jRootPane = jFrame.getRootPane();
+    ContainerDescent.setEnabled(jRootPane, randomGenerator.nextBoolean());
+    ContainerDescent.setEnabled(jRootPane, false);
+    ContainerDescent.setEnabled(jRootPane, true);
+    ContainerDescent.setEnabled(jRootPane, false);
   }
 }

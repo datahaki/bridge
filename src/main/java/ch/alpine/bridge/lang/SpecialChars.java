@@ -26,6 +26,7 @@ public enum SpecialChars {
   TROPHY("🏆"),
   WHITE_MEDIUM_STAR("⭐"),
   BRAIN("🧠"),
+  HAND_WAVE("👋"),
   THUMBS_UP_SIGN("👍"),
   SOME("👉"),
   CRISTAL("🔮"),

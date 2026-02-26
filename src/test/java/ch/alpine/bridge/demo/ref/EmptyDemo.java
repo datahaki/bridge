@@ -1,15 +1,20 @@
 // code by jph
 package ch.alpine.bridge.demo.ref;
 
+import java.awt.Window;
+
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.EmptyParam;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
-enum EmptyDemo {
-  ;
-  static void main() {
+enum EmptyDemo implements WindowProvider {
+  INSTANCE;
+
+  @Override
+  public Window getWindow() {
     EmptyParam emptyParam = new EmptyParam();
     PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(emptyParam);
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
@@ -17,7 +22,10 @@ enum EmptyDemo {
     JFrame jFrame = new JFrame();
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setContentPane(panelFieldsEditor.createJScrollPane());
-    jFrame.setBounds(500, 100, 500, 900);
-    jFrame.setVisible(true);
+    return jFrame;
+  }
+
+  static void main() {
+    INSTANCE.runStandalone();
   }
 }

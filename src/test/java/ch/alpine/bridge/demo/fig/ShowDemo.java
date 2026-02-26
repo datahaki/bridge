@@ -114,7 +114,6 @@ public class ShowDemo implements WindowProvider {
     jPanel.add(BorderLayout.CENTER, jScrollPane);
     jFrame.setContentPane(jPanel);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setBounds(100, 100, 1000, 900);
   }
 
   @Override

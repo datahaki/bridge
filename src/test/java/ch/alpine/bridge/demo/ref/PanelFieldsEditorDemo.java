@@ -24,7 +24,6 @@ class PanelFieldsEditorDemo implements WindowProvider {
     jTabbedPane.addTab("single", PanelFieldsEditor.single(new GuiExtension()).createJScrollPane());
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setContentPane(jTabbedPane);
-    jFrame.setBounds(100, 100, 800, 900);
     return jFrame;
   }
 

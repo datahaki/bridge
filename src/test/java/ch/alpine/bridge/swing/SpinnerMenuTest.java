@@ -28,7 +28,7 @@ class SpinnerMenuTest {
     jFrame.setVisible(true);
     spinnerMenu.showRight(jButton);
     Thread.sleep(sleep_ms);
-    jFrame.setVisible(false);
+    jFrame.dispose();
   }
 
   @Test
@@ -42,7 +42,7 @@ class SpinnerMenuTest {
     jFrame.setVisible(true);
     spinnerMenu.showRight(jButton);
     Thread.sleep(sleep_ms);
-    jFrame.setVisible(false);
+    jFrame.dispose();
   }
 
   @DisabledOnOs({ OS.WINDOWS, OS.MAC })
@@ -57,6 +57,6 @@ class SpinnerMenuTest {
     jFrame.setVisible(true);
     spinnerMenu.showRight(jButton);
     Thread.sleep(sleep_ms);
-    jFrame.setVisible(false);
+    jFrame.dispose();
   }
 }

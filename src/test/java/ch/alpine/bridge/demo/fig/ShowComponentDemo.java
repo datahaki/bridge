@@ -42,7 +42,6 @@ class ShowComponentDemo implements WindowProvider {
     jPanel.add(BorderLayout.CENTER, showComponent);
     jFrame.setContentPane(jPanel);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setBounds(100, 100, 1200, 900);
     update();
   }
 

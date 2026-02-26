@@ -78,7 +78,6 @@ class ShowLiveDemo implements WindowProvider {
     });
     jFrame.setContentPane(jPanel);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    jFrame.setBounds(100, 100, 1000, 900);
   }
 
   private void update() {
