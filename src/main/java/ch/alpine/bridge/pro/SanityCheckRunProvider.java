@@ -29,6 +29,9 @@ public enum SanityCheckRunProvider implements Consumer<RunProvider> {
     }
   }
 
+  /** function renders content of window offscreen
+   * 
+   * @param windowProvider */
   private void check(WindowProvider windowProvider) {
     Window window = windowProvider.getWindow();
     window.setSize(WIDTH, HEIGHT);
