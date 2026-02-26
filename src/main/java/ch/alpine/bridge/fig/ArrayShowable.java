@@ -10,7 +10,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.Unit;
 
-abstract class ArrayShowable extends BaseShowable {
+public abstract class ArrayShowable extends BaseShowable {
   protected final CoordinateBoundingBox cbb;
   private ImageResize imageResize = ImageResize.DEGREE_0;
   private boolean aspectRatioOneHint = true;

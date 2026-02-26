@@ -7,6 +7,7 @@ import java.awt.RenderingHints;
 public enum RenderQuality {
   ;
   /** use for publishing quality
+   * suggestions by chatgpt
    * 
    * @param graphics */
   public static void setQuality(Graphics2D graphics) {
