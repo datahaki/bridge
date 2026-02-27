@@ -2,33 +2,22 @@
 package ch.alpine.bridge.ref.util;
 
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.lang.reflect.Field;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ch.alpine.bridge.awt.ColumnPanel;
 import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
 final class Col1PanelBuilder implements PanelBuilder {
-  private final JPanel jPanel = new JPanel(new GridBagLayout());
-  private final GridBagConstraints gridBagConstraints = new GridBagConstraints();
-
-  public Col1PanelBuilder() {
-    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-    gridBagConstraints.gridwidth = 1; // every row consists of 1 component
-    gridBagConstraints.weightx = 1; // every row may stretch to the max
-    gridBagConstraints.gridx = 0; // x position of component in grid is always 0
-    jPanel.setOpaque(false);
-  }
+  private final ColumnPanel ColumnPanel = new ColumnPanel();
 
   @Override
   public void append(JComponent jComponent) {
-    ++gridBagConstraints.gridy; // initially -1
-    jPanel.add(jComponent, gridBagConstraints);
+    ColumnPanel.append(jComponent);
   }
 
   @Override
@@ -53,6 +42,6 @@ final class Col1PanelBuilder implements PanelBuilder {
 
   @Override
   public JPanel getJComponent() {
-    return jPanel;
+    return ColumnPanel;
   }
 }

@@ -3,9 +3,9 @@ package ch.alpine.bridge.pro;
 
 public enum RunProviderType {
   VOID(VoidProvider.class),
-  WINDOW(WindowProvider.class),
   SHOW(ShowProvider.class),
-  MANIPULATE(ManipulateProvider.class);
+  MANIPULATE(ManipulateProvider.class),
+  WINDOW(WindowProvider.class);
 
   private final Class<? extends RunProvider> cls;
 
