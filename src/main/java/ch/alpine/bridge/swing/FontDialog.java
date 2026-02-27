@@ -26,6 +26,7 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 public abstract class FontDialog extends DialogBase<Font> {
   private static final String DEMO = "Abc123!";
+  private static final int MAX_SIZE = 64;
 
   @ReflectionMarker
   public static class FontParam {
@@ -68,12 +69,16 @@ public abstract class FontDialog extends DialogBase<Font> {
       graphics.setColor(Color.WHITE);
       graphics.fillRect(0, 0, dimension.width, dimension.height);
       RenderQuality.setQuality(graphics);
-      graphics.setFont(fontParam.toFont());
+      Font font = fontParam.toFont();
+      int size = font.getSize();
+      if (MAX_SIZE < size)
+        font = font.deriveFont((float) MAX_SIZE);
+      graphics.setFont(font);
       FontMetrics fontMetrics = graphics.getFontMetrics();
-      int ascent = fontMetrics.getAscent();
+      double delta_y = (fontMetrics.getAscent() - fontMetrics.getDescent()) * 0.5;
       int stringWidth = fontMetrics.stringWidth(DEMO);
       graphics.setColor(Color.DARK_GRAY);
-      graphics.drawString(DEMO, point.x - stringWidth / 2, point.y + ascent / 2);
+      graphics.drawString(DEMO, point.x - stringWidth / 2, (int) (point.y + delta_y));
       graphics.dispose();
     }
   };
