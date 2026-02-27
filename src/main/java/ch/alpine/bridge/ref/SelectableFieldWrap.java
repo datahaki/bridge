@@ -28,6 +28,7 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
     if (Objects.nonNull(fieldSelectionCallback))
       try {
         Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());
+        method.trySetAccessible();
         try {
           return (List<Object>) method.invoke(object);
         } catch (Exception exception) {
