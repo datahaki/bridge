@@ -37,7 +37,7 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<In
             Object object = field.get(null);
             if (cls.isInstance(object)) {
               T cast = cls.cast(object); // already loaded in memory
-              InstanceRecord<T> instanceRecord = new InstanceRecord<T>(subcls, field.getName(), () -> cast);
+              InstanceRecord<T> instanceRecord = new InstanceRecord<T>(subcls, field, () -> cast);
               consumer.accept(instanceRecord);
             }
           } catch (Exception exception) {
