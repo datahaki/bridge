@@ -23,7 +23,7 @@ import ch.alpine.tensor.sca.Sign;
  * <a href="https://reference.wolfram.com/language/ref/DiscretePlot.html">DiscretePlot</a> */
 public class DiscretePlot extends BaseShowable {
   /** @param suo
-   * @param domain
+   * @param domain may be null, in which case the plot is empty
    * @return */
   public static Showable of(ScalarUnaryOperator suo, Clip domain) {
     return new DiscretePlot(suo, domain);
@@ -33,9 +33,6 @@ public class DiscretePlot extends BaseShowable {
   private final ScalarUnaryOperator suo;
   private final Clip domain;
 
-  // ---
-  /** @param suo
-   * @param domain may be null, in which case the plot is empty */
   private DiscretePlot(ScalarUnaryOperator suo, Clip domain) {
     this.suo = suo;
     this.domain = domain;

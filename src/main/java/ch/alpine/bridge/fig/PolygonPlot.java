@@ -6,29 +6,19 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.alg.Transpose;
 
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ListLinePlot.html">ListLinePlot</a> */
-public class ListLinePlot extends BasePointsPlot {
+public class PolygonPlot extends BasePointsPlot {
   /** @param points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}}
    * The special case when points == {} is also allowed.
    * @return instance of the visual row, that was added to this visual set
    * @throws Exception if not all entries in points are vectors of length 2 */
   public static Showable of(Tensor points) {
-    return new ListLinePlot(points);
+    return new PolygonPlot(points);
   }
 
-  /** @param domain {x1, x2, ..., xn}
-   * @param values {y1, y2, ..., yn}
-   * @return */
-  public static Showable of(Tensor domain, Tensor tensor) {
-    return of(Transpose.of(Tensors.of(domain, tensor)));
-  }
-  // ---
-
-  private ListLinePlot(Tensor points) {
+  private PolygonPlot(Tensor points) {
     super(points);
   }
 
@@ -46,7 +36,8 @@ public class ListLinePlot extends BasePointsPlot {
         Point2D point2d = showableConfig.toPoint2D(row);
         path.lineTo(point2d.getX(), point2d.getY());
       });
-      graphics.draw(path);
+      path.closePath();
+      graphics.fill(path);
     }
   }
 }

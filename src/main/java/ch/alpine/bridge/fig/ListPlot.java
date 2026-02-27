@@ -6,19 +6,16 @@ import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.util.Optional;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
-import ch.alpine.tensor.alg.VectorQ;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ListPlot.html">ListPlot</a> */
-public class ListPlot extends BaseShowable {
+public class ListPlot extends BasePointsPlot {
   private static final double RADIUS = 2.5;
 
   /** @param points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}}
@@ -41,12 +38,10 @@ public class ListPlot extends BaseShowable {
   }
 
   // ---
-  private final Tensor points;
   private double radius = RADIUS;
 
   private ListPlot(Tensor points) {
-    points.forEach(row -> VectorQ.requireLength(row, 2));
-    this.points = points;
+    super(points);
   }
 
   public void setPointsize(double radius) {
@@ -80,14 +75,5 @@ public class ListPlot extends BaseShowable {
         // graphics.fill(path);
       }
     }
-  }
-
-  @Override // from Showable
-  public Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Tensors.isEmpty(points) //
-        ? Optional.empty()
-        : Optional.of(CoordinateBoundingBox.of( //
-            StaticHelper.minMax(points.get(Tensor.ALL, 0)), //
-            StaticHelper.minMax(points.get(Tensor.ALL, 1))));
   }
 }
