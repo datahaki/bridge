@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.awt;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
@@ -39,6 +40,14 @@ public enum AwtUtil {
 
   public static JLabel iconAsLabel(Icon icon) {
     return new FitIconLabel(icon);
+  }
+
+  public static Color withAlpha(Color color, int alpha) {
+    return new Color( //
+        color.getRed(), //
+        color.getGreen(), //
+        color.getBlue(), //
+        alpha);
   }
 
   public static JToolBar createToolbar(JComponent jComponent) {

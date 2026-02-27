@@ -36,6 +36,8 @@ public interface Showable {
   /** @return */
   Color getColor();
 
+  void setAlpha(int alpha);
+
   /** @param stroke */
   void setStroke(Stroke stroke);
 

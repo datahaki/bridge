@@ -8,6 +8,8 @@ import java.awt.Stroke;
 import java.io.Serializable;
 import java.util.Objects;
 
+import ch.alpine.bridge.awt.AwtUtil;
+
 public abstract class BaseShowable implements Showable, Serializable {
   private String string = "";
   private Color color = Color.BLACK;
@@ -36,6 +38,11 @@ public abstract class BaseShowable implements Showable, Serializable {
   @Override
   public final Color getColor() {
     return color;
+  }
+
+  @Override
+  public void setAlpha(int alpha) {
+    setColor(AwtUtil.withAlpha(color, alpha));
   }
 
   @Override
