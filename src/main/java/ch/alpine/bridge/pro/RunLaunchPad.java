@@ -20,7 +20,6 @@ import ch.alpine.bridge.cgr.InstanceRecord;
 import ch.alpine.tensor.img.ColorDataLists;
 
 // TODO all windows should have titles (noise demo simplex)
-// TODO redundant to Col1 ...
 public class RunLaunchPad {
   public static WindowProvider create(String packageName) {
     List<InstanceRecord<RunProvider>> list = //
