@@ -22,6 +22,7 @@ import ch.alpine.tensor.sca.win.HannWindow;
  * <a href="https://reference.wolfram.com/language/ref/Spectrogram.html">Spectrogram</a> */
 public enum Spectrogram {
   ;
+  // FIXME window is not used here
   public static Showable of(SpectrogramArray spectrogramArray, //
       Tensor signal, Scalar sampleRate, ScalarUnaryOperator window, Function<Scalar, ? extends Tensor> function) {
     BufferedImage bufferedImage = ImageFormat.of(Raster.of(spectrogramArray.half_abs(signal), function));

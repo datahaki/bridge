@@ -608,7 +608,7 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Matrix Plot");
-      show.add(MatrixPlot.of(Tensors.fromString("{{1, 2, 1}, {3, 0, 1}, {0, 0, -1}}")));
+      show.add(MatrixPlot.of(Tensors.fromString("{{1, 2, 1}, {3, 0, 1}, {0, 0, -1}}"), true));
       return show;
     }
   },

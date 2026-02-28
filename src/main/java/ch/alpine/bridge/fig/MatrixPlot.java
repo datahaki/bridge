@@ -9,6 +9,7 @@ import ch.alpine.tensor.alg.Flatten;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.chq.FiniteScalarQ;
+import ch.alpine.tensor.ext.PackageTestAccess;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
@@ -22,9 +23,11 @@ import ch.alpine.tensor.sca.Clips;
  * <a href="https://reference.wolfram.com/language/ref/MatrixPlot.html">MatrixPlot</a> */
 public enum MatrixPlot {
   ;
+  private static final boolean SYMMETRIZE_DEFAULT = false;
+
   /** @param matrix
    * @param colorDataGradient
-   * @param symmetrize
+   * @param symmetrize interval about zero
    * @return */
   public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient, boolean symmetrize) {
     MatrixQ.require(matrix);
@@ -35,7 +38,7 @@ public enum MatrixPlot {
       if (clip.min() instanceof DateTime)
         System.err.println("bypass symmetrize");
       else
-        clip = Clips.absolute(Max.of(clip.min().negate(), clip.max()));
+        clip = symmetrize(clip);
     }
     Rescale rescale = new Rescale(matrix, clip);
     ScalableImage scalableImage = new ScalableImage(ImageFormat.of(rescale.result().maps(colorDataGradient)));
@@ -46,12 +49,23 @@ public enum MatrixPlot {
    * @param colorDataGradient
    * @return */
   public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient) {
-    return of(matrix, colorDataGradient, true);
+    return of(matrix, colorDataGradient, SYMMETRIZE_DEFAULT);
   }
 
   /** @param matrix
    * @return */
   public static Showable of(Tensor matrix) {
-    return of(matrix, ColorDataGradients.TEMPERATURE_LIGHT);
+    return of(matrix, SYMMETRIZE_DEFAULT);
+  }
+
+  /** @param matrix
+   * @return */
+  public static Showable of(Tensor matrix, boolean symmetrize) {
+    return of(matrix, ColorDataGradients.TEMPERATURE_LIGHT, symmetrize);
+  }
+
+  @PackageTestAccess
+  static Clip symmetrize(Clip clip) {
+    return Clips.absolute(Max.of(clip.min().negate(), clip.max()));
   }
 }
