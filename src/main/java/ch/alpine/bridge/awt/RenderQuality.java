@@ -21,9 +21,9 @@ public enum RenderQuality {
         RenderingHints.KEY_INTERPOLATION, //
         RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     // at times produces "spaces"
-    graphics.setRenderingHint( //
-        RenderingHints.KEY_TEXT_ANTIALIASING, //
-        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+    // graphics.setRenderingHint( //
+    // RenderingHints.KEY_TEXT_ANTIALIASING, //
+    // RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
     graphics.setRenderingHint( //
         RenderingHints.KEY_STROKE_CONTROL, //
         RenderingHints.VALUE_STROKE_PURE);
