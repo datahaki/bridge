@@ -15,6 +15,6 @@ class RunProviderTest {
   Stream<DynamicTest> dynamicTests() {
     return InstanceDiscovery.of(getClass().getPackageName(), RunProvider.class).stream() //
         .map(instanceRecord -> DynamicTest.dynamicTest(instanceRecord.toString(), //
-            () -> SanityCheckRunProvider.INSTANCE.accept(instanceRecord)));
+            () -> new SanityCheckRunProvider().accept(instanceRecord)));
   }
 }

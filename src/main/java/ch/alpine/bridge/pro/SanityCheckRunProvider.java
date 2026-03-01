@@ -17,14 +17,12 @@ import ch.alpine.tensor.qty.Timing;
 import ch.alpine.tensor.sca.Round;
 
 /** DO NOT USE IN THE APPLICATION LAYER */
-public enum SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvider>> {
-  INSTANCE;
-
+public class SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvider>> {
   private static final int WIDTH = 800;
   private static final int HEIGHT = 800;
 
   @Override
-  public void accept(InstanceRecord<RunProvider> instanceRecord) {
+  public final void accept(InstanceRecord<RunProvider> instanceRecord) {
     IO.println("[" + UserName.whoami() + "]");
     Timing timing = Timing.started();
     println(instanceRecord);
@@ -46,7 +44,7 @@ public enum SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvide
   /** function renders content of window offscreen
    * 
    * @param windowProvider */
-  private void check(WindowProvider windowProvider) {
+  protected void check(WindowProvider windowProvider) {
     Window window = windowProvider.getWindow();
     window.setSize(WIDTH, HEIGHT);
     BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -55,7 +53,7 @@ public enum SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvide
     graphics.dispose();
   }
 
-  private void check(ManipulateProvider manipulateProvider) {
+  protected void check(ManipulateProvider manipulateProvider) {
     Container jComponent = manipulateProvider.getContainer();
     jComponent.setSize(WIDTH, HEIGHT);
     jComponent.doLayout(); // mandatory
@@ -72,7 +70,7 @@ public enum SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvide
     graphics.dispose();
   }
 
-  private void check(ShowProvider showProvider) {
+  protected void check(ShowProvider showProvider) {
     Show show = showProvider.getShow();
     Dimension dimension = new Dimension(800, 800);
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
@@ -81,7 +79,7 @@ public enum SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvide
     graphics.dispose();
   }
 
-  private void check(VoidProvider voidProvider) {
+  protected void check(VoidProvider voidProvider) {
     voidProvider.runStandalone();
   }
 }
