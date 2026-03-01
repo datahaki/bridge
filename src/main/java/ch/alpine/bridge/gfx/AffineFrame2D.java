@@ -10,6 +10,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.jet.AppendOne;
 import ch.alpine.tensor.mat.MatrixQ;
+import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.mat.re.Det;
 import ch.alpine.tensor.sca.Abs;
 import ch.alpine.tensor.sca.pow.Sqrt;
@@ -66,5 +67,10 @@ public final class AffineFrame2D implements Serializable {
   /** @return 3 x 3 matrix that represents this transformation */
   public Tensor matrix_copy() {
     return matrix.copy();
+  }
+
+  public boolean isAxisAligned() {
+    return Tolerance.CHOP.isZero(matrix.Get(1, 0)) //
+        && Tolerance.CHOP.isZero(matrix.Get(0, 1));
   }
 }

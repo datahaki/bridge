@@ -101,6 +101,10 @@ public final class GeometricLayer {
     return path2d;
   }
 
+  public boolean isAxisAligned() {
+    return deque.peek().isAxisAligned();
+  }
+
   public Rectangle toRectangle(CoordinateBoundingBox cbb) {
     Point2D min = toPoint2D(cbb.min());
     Point2D max = toPoint2D(cbb.max());
