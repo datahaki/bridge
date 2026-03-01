@@ -12,6 +12,8 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.sca.Abs;
+import ch.alpine.tensor.sca.pow.Sqrt;
 
 /** GeometricLayer transforms from model to pixel coordinates
  * 
@@ -29,31 +31,13 @@ public final class GeometricLayer {
    * @param vector of the form {px, py, ...}
    * @return */
   public Point2D toPoint2D(Tensor vector) {
-    return deque.peek().toPoint2D( //
-        vector.Get(0).number().doubleValue(), //
-        vector.Get(1).number().doubleValue());
-  }
-
-  /** @param px
-   * @param py
-   * @return */
-  public Point2D toPoint2D(double px, double py) {
-    return deque.peek().toPoint2D(px, py);
+    return deque.peek().toPoint2D(vector.extract(0, 2));
   }
 
   /** @param vector of the form {px, py, ...}
    * @return vector of length 2 */
   public Tensor toVector(Tensor vector) {
-    return deque.peek().toVector( //
-        vector.Get(0).number().doubleValue(), //
-        vector.Get(1).number().doubleValue());
-  }
-
-  /** @param px
-   * @param py
-   * @return vector of length 2 */
-  public Tensor toVector(double px, double py) {
-    return deque.peek().toVector(px, py);
+    return deque.peek().toVector(vector.extract(0, 2));
   }
 
   /** inspired by opengl
@@ -90,7 +74,7 @@ public final class GeometricLayer {
    * @return line that connects the origin with p */
   public Line2D toLine2D(Tensor p) {
     return new Line2D.Double( //
-        deque.peek().toPoint2D(), //
+        deque.peek().originToPoint2D(), //
         toPoint2D(p));
   }
 
@@ -136,11 +120,15 @@ public final class GeometricLayer {
    * 
    * @param modelWidth
    * @return non-negative value */
-  public float model2pixelWidth(Scalar modelWidth) {
-    return (float) (Math.sqrt(Math.abs(deque.peek().det())) * modelWidth.number().doubleValue());
+  public Scalar model2pixelWidth(Scalar modelWidth) {
+    Scalar abs = Abs.FUNCTION.apply(deque.peek().det());
+    Scalar sqrt = Sqrt.FUNCTION.apply(abs);
+    return sqrt.multiply(modelWidth);
   }
 
-  public double pixel2modelWidth(double pixelWidth) {
-    return pixelWidth / Math.sqrt(Math.abs(deque.peek().det()));
+  public Scalar pixel2modelWidth(Scalar pixelWidth) {
+    Scalar abs = Abs.FUNCTION.apply(deque.peek().det());
+    Scalar sqrt = Sqrt.FUNCTION.apply(abs);
+    return pixelWidth.divide(sqrt);
   }
 }

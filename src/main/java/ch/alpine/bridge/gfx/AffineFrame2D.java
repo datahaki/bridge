@@ -3,54 +3,53 @@ package ch.alpine.bridge.gfx;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.ext.Integers;
+import ch.alpine.tensor.jet.AppendOne;
+import ch.alpine.tensor.mat.MatrixQ;
+import ch.alpine.tensor.mat.re.Det;
 
 /** @see AffineTransform */
-/* package */ final class AffineFrame2D {
+public final class AffineFrame2D implements Serializable {
   private final Tensor matrix;
-  private final double m00;
-  private final double m01;
-  private final double m02;
-  private final double m10;
-  private final double m11;
-  private final double m12;
 
   /** @param matrix of dimensions 3 x 3 */
   public AffineFrame2D(Tensor matrix) {
-    Integers.requireEquals(matrix.length(), 3);
+    MatrixQ.requireSize(matrix, 3, 3);
     this.matrix = matrix;
-    m00 = matrix.Get(0, 0).number().doubleValue();
-    m01 = matrix.Get(0, 1).number().doubleValue();
-    m02 = matrix.Get(0, 2).number().doubleValue();
-    m10 = matrix.Get(1, 0).number().doubleValue();
-    m11 = matrix.Get(1, 1).number().doubleValue();
-    m12 = matrix.Get(1, 2).number().doubleValue();
   }
 
-  /** @param px
-   * @param py
-   * @return vector of length 2 */
-  public Point2D toPoint2D(double px, double py) {
+  public double toX(Tensor xy) {
+    return matrix.dot(AppendOne.FUNCTION.apply(xy)).Get(0).number().doubleValue();
+  }
+
+  public double toY(Tensor xy) {
+    return matrix.dot(AppendOne.FUNCTION.apply(xy)).Get(1).number().doubleValue();
+  }
+
+  public Point2D toPoint2D(Tensor xy) {
+    Tensor r = matrix.dot(AppendOne.FUNCTION.apply(xy));
     return new Point2D.Double( //
-        m00 * px + m01 * py + m02, //
-        m10 * px + m11 * py + m12);
+        r.Get(0).number().doubleValue(), //
+        r.Get(1).number().doubleValue());
   }
 
   /** @param px
    * @param py
    * @return vector of length 2 */
-  public Tensor toVector(double px, double py) {
-    return Tensors.vectorDouble( //
-        m00 * px + m01 * py + m02, //
-        m10 * px + m11 * py + m12);
+  public Tensor toVector(Tensor xy) {
+    return matrix.dot(AppendOne.FUNCTION.apply(xy)).extract(0, 2);
   }
 
   /** @return toPoint2D(0, 0) */
-  public Point2D toPoint2D() {
-    return new Point2D.Double(m02, m12);
+  public Point2D originToPoint2D() {
+    Tensor xy = Tensors.of( //
+        matrix.Get(0, 2).zero(), //
+        matrix.Get(1, 2).zero());
+    return toPoint2D(xy);
   }
 
   /** @param matrix with dimensions 3 x 3
@@ -60,9 +59,10 @@ import ch.alpine.tensor.ext.Integers;
   }
 
   /** @return determinant of affine transform, for a standard,
-   * right-hand coordinate system, the determinant is negative */
-  public double det() {
-    return m00 * m11 - m10 * m01;
+   * right-hand coordinate system, the determinant is negative
+   * because pixel coordinates are left handed */
+  public Scalar det() {
+    return Det.of(matrix);
   }
 
   /** @return 3 x 3 matrix that represents this transformation */

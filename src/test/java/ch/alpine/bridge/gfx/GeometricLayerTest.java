@@ -15,6 +15,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.alg.Dot;
 import ch.alpine.tensor.ext.Serialization;
 import ch.alpine.tensor.lie.rot.CirclePoints;
@@ -50,10 +51,10 @@ class GeometricLayerTest {
     AffineFrame2D af2 = new AffineFrame2D(m1);
     AffineFrame2D af3 = af2.dot(m2);
     assertEquals(af3.matrix_copy(), m1.dot(m2));
-    Point2D point2d = af3.toPoint2D();
+    Point2D point2d = af3.originToPoint2D();
     Point2D actual = new Point2D.Double(1.2687737473681602, 1.7596654982619508);
     assertTrue(point2d.distance(actual) < 1e-9);
-    assertTrue(point2d.distance(af3.toPoint2D(0, 0)) < 1e-9);
+    assertTrue(point2d.distance(af3.toPoint2D(Array.zeros(2))) < 1e-9);
   }
 
   @Test
@@ -61,7 +62,7 @@ class GeometricLayerTest {
     Tensor m1 = gfxMatrix_of(Tensors.vector(1, 2, 3));
     AffineFrame2D af2 = new AffineFrame2D(m1);
     Tensor v = Tensors.vector(-.3, -.4, 1);
-    Point2D p = af2.toPoint2D(v.Get(0).number().doubleValue(), v.Get(1).number().doubleValue());
+    Point2D p = af2.toPoint2D(v);
     Tensor q = m1.dot(v);
     assertEquals(p.getX(), q.Get(0).number().doubleValue());
     assertEquals(p.getY(), q.Get(1).number().doubleValue());
@@ -75,18 +76,17 @@ class GeometricLayerTest {
     geometricLayer.pushMatrix(b);
     Chop._10.requireClose(Dot.of(a, b), geometricLayer.getMatrix());
     geometricLayer.toPoint2D(Tensors.vector(1, 2));
-    geometricLayer.toPoint2D(1, 2);
     geometricLayer.toVector(Tensors.vector(1, 2));
-    geometricLayer.toVector(1, 2);
     geometricLayer.toLine2D(Tensors.vector(1, 2));
     geometricLayer.toLine2D(Tensors.vector(1, 2), Tensors.vector(4, 1));
     geometricLayer.toPath2D(CirclePoints.of(10));
     geometricLayer.toPath2D(CirclePoints.of(10), false);
     geometricLayer.toPath2D(CirclePoints.of(10), true);
     geometricLayer.toPath2D(Tensors.empty());
-    float model2pixelWidth = geometricLayer.model2pixelWidth(RealScalar.of(3));
-    double pixel2modelWidth = geometricLayer.pixel2modelWidth(model2pixelWidth);
-    Chop._10.requireClose(RealScalar.of(pixel2modelWidth), RealScalar.of(3));
+    Scalar in = RealScalar.of(3);
+    Scalar model2pixelWidth = geometricLayer.model2pixelWidth(in);
+    Scalar pixel2modelWidth = geometricLayer.pixel2modelWidth(model2pixelWidth);
+    Chop._10.requireClose(pixel2modelWidth, in);
   }
 
   @Test
@@ -131,7 +131,7 @@ class GeometricLayerTest {
     GeometricLayer geometricLayer = new GeometricLayer(model2pixel);
     Tensor vector = Tensors.vector(9, 20, 1);
     Tensor v1 = geometricLayer.toVector(vector);
-    Tensor v2 = geometricLayer.toVector(9, 20);
+    Tensor v2 = geometricLayer.toVector(Tensors.vector(9, 20));
     Tensor expected = model2pixel.dot(vector).extract(0, 2);
     assertEquals(expected, v1);
     assertEquals(expected, v2);
