@@ -9,24 +9,37 @@ import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 
+import ch.alpine.bridge.cgr.InstanceRecord;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.ext.Integers;
+import ch.alpine.tensor.ext.UserName;
+import ch.alpine.tensor.qty.Timing;
+import ch.alpine.tensor.sca.Round;
 
 /** DO NOT USE IN THE APPLICATION LAYER */
-public enum SanityCheckRunProvider implements Consumer<RunProvider> {
+public enum SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvider>> {
   INSTANCE;
 
   private static final int WIDTH = 800;
   private static final int HEIGHT = 800;
 
   @Override
-  public void accept(RunProvider runProvider) {
+  public void accept(InstanceRecord<RunProvider> instanceRecord) {
+    Timing timing = Timing.started();
+    println(instanceRecord);
+    RunProvider runProvider = instanceRecord.supplier().get();
     switch (runProvider) {
     case WindowProvider windowProvider -> check(windowProvider);
     case ManipulateProvider manipulateProvider -> check(manipulateProvider);
     case ShowProvider showProvider -> check(showProvider);
     case VoidProvider voidProvider -> check(voidProvider);
     }
+    println("Time elapsed: " + timing.seconds().maps(Round._3));
+  }
+
+  private static void println(Object object) {
+    if (UserName.whoami().startsWith("runner"))
+      IO.println(" [INFO] " + object);
   }
 
   /** function renders content of window offscreen
