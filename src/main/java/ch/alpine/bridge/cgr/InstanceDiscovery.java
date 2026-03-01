@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import ch.alpine.tensor.ext.UserName;
+
 /** implementation of class visitor to extract implementation of cls */
 public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<InstanceRecord<T>> consumer) implements ClassVisitor {
   /** function to discover instances of a certain class nested in basePackage
@@ -30,6 +32,8 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<In
   public void accept(String jarfile, Class<?> subcls) {
     if (StaticHelper.isInSubpackageOf(subcls, basePackage) && //
         cls.isAssignableFrom(subcls)) { // this narrow is deliberate
+      if (UserName.whoami().startsWith("runner"))
+        IO.println(" [INFO] " + subcls.getName());
       for (Field field : subcls.getDeclaredFields())
         if (Modifier.isStatic(field.getModifiers())) {
           try {

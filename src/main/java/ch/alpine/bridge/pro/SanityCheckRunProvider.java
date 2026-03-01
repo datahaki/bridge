@@ -23,7 +23,6 @@ public class SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvid
 
   @Override
   public final void accept(InstanceRecord<RunProvider> instanceRecord) {
-    IO.println("[" + UserName.whoami() + "]");
     Timing timing = Timing.started();
     println(instanceRecord);
     RunProvider runProvider = instanceRecord.supplier().get();
