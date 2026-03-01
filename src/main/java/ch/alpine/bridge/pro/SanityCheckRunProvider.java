@@ -25,6 +25,7 @@ public enum SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvide
 
   @Override
   public void accept(InstanceRecord<RunProvider> instanceRecord) {
+    IO.println("[" + UserName.whoami() + "]");
     Timing timing = Timing.started();
     println(instanceRecord);
     RunProvider runProvider = instanceRecord.supplier().get();
