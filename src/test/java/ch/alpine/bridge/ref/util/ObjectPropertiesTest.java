@@ -23,6 +23,7 @@ import java.util.Properties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.ref.Cacheables;
 import ch.alpine.bridge.ref.data.ClipParam;
 import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.data.ParamContainer;
@@ -146,7 +147,7 @@ class ObjectPropertiesTest {
     String string = ObjectProperties.join(v011Param1);
     V011Param v011Param2 = new V011Param(2);
     ObjectProperties.part(v011Param2, string);
-    assertTrue(ObjectFields.deepEquals(v011Param1, v011Param2));
+    assertTrue(Cacheables.deepEquals(v011Param1, v011Param2));
   }
 
   @Test
@@ -158,7 +159,7 @@ class ObjectPropertiesTest {
     ObjectProperties.save(v011Param1, file);
     V011Param v011Param2 = new V011Param(3);
     ObjectProperties.load(v011Param2, file);
-    assertTrue(ObjectFields.deepEquals(v011Param1, v011Param2));
+    assertTrue(Cacheables.deepEquals(v011Param1, v011Param2));
   }
 
   @Test

@@ -7,7 +7,6 @@ import ch.alpine.tensor.ext.UserName;
 
 public enum GitHubCI {
   ;
-
   private static final boolean isGitHubCI = UserName.whoami().startsWith("runner");
 
   public static void println(Object object) {

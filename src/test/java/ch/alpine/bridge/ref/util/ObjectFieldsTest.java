@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.ref.Cacheables;
 import ch.alpine.bridge.ref.data.SimpleParam;
 
 class ObjectFieldsTest {
@@ -35,12 +36,12 @@ class ObjectFieldsTest {
   void testDeepEquals() {
     SimpleParam sp1 = new SimpleParam();
     SimpleParam sp2 = new SimpleParam();
-    assertEquals(ObjectFields.hash(sp1), ObjectFields.hash(sp2));
-    assertTrue(ObjectFields.deepEquals(sp1, sp2));
+    assertEquals(Cacheables.hash(sp1), Cacheables.hash(sp2));
+    assertTrue(Cacheables.deepEquals(sp1, sp2));
     sp1.basic ^= true;
-    assertFalse(ObjectFields.deepEquals(sp1, sp2));
-    assertFalse(ObjectFields.deepEquals(sp1, false));
-    assertFalse(ObjectFields.deepEquals(false, sp2));
+    assertFalse(Cacheables.deepEquals(sp1, sp2));
+    assertFalse(Cacheables.deepEquals(sp1, false));
+    assertFalse(Cacheables.deepEquals(false, sp2));
   }
 
   @Test
