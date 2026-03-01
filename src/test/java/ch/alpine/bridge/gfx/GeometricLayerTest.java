@@ -18,6 +18,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.alg.Dot;
 import ch.alpine.tensor.ext.Serialization;
+import ch.alpine.tensor.jet.AppendOne;
 import ch.alpine.tensor.lie.rot.CirclePoints;
 import ch.alpine.tensor.mat.IdentityMatrix;
 import ch.alpine.tensor.sca.Chop;
@@ -61,9 +62,9 @@ class GeometricLayerTest {
   void testPoint() {
     Tensor m1 = gfxMatrix_of(Tensors.vector(1, 2, 3));
     AffineFrame2D af2 = new AffineFrame2D(m1);
-    Tensor v = Tensors.vector(-.3, -.4, 1);
+    Tensor v = Tensors.vector(-.3, -.4);
     Point2D p = af2.toPoint2D(v);
-    Tensor q = m1.dot(v);
+    Tensor q = m1.dot(AppendOne.FUNCTION.apply(v));
     assertEquals(p.getX(), q.Get(0).number().doubleValue());
     assertEquals(p.getY(), q.Get(1).number().doubleValue());
   }
