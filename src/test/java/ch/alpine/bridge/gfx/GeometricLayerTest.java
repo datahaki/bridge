@@ -85,8 +85,8 @@ class GeometricLayerTest {
     geometricLayer.toPath2D(CirclePoints.of(10), true);
     geometricLayer.toPath2D(Tensors.empty());
     Scalar in = RealScalar.of(3);
-    Scalar model2pixelWidth = geometricLayer.model2pixelWidth(in);
-    Scalar pixel2modelWidth = geometricLayer.pixel2modelWidth(model2pixelWidth);
+    Scalar model2pixelWidth = geometricLayer.model2pixelFactor(in);
+    Scalar pixel2modelWidth = geometricLayer.pixel2modelFactor(model2pixelWidth);
     Chop._10.requireClose(pixel2modelWidth, in);
   }
 

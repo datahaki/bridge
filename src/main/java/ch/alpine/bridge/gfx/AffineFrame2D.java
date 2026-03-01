@@ -11,6 +11,8 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.jet.AppendOne;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.mat.re.Det;
+import ch.alpine.tensor.sca.Abs;
+import ch.alpine.tensor.sca.pow.Sqrt;
 
 /** @see AffineTransform */
 public final class AffineFrame2D implements Serializable {
@@ -20,14 +22,6 @@ public final class AffineFrame2D implements Serializable {
   public AffineFrame2D(Tensor matrix) {
     MatrixQ.requireSize(matrix, 3, 3);
     this.matrix = matrix;
-  }
-
-  public double toX(Tensor xy) {
-    return matrix.dot(AppendOne.FUNCTION.apply(xy)).Get(0).number().doubleValue();
-  }
-
-  public double toY(Tensor xy) {
-    return matrix.dot(AppendOne.FUNCTION.apply(xy)).Get(1).number().doubleValue();
   }
 
   public Point2D toPoint2D(Tensor xy) {
@@ -40,12 +34,12 @@ public final class AffineFrame2D implements Serializable {
   /** @param px
    * @param py
    * @return vector of length 2 */
-  public Tensor toVector(Tensor xy) {
+  /* package */ Tensor toVector(Tensor xy) {
     return matrix.dot(AppendOne.FUNCTION.apply(xy)).extract(0, 2);
   }
 
   /** @return toPoint2D(0, 0) */
-  public Point2D originToPoint2D() {
+  /* package */ Point2D originToPoint2D() {
     Tensor xy = Tensors.of( //
         matrix.Get(0, 2).zero(), //
         matrix.Get(1, 2).zero());
@@ -63,6 +57,10 @@ public final class AffineFrame2D implements Serializable {
    * because pixel coordinates are left handed */
   public Scalar det() {
     return Det.of(matrix);
+  }
+
+  public Scalar sqrtDet() {
+    return Sqrt.FUNCTION.apply(Abs.FUNCTION.apply(det()));
   }
 
   /** @return 3 x 3 matrix that represents this transformation */

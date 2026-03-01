@@ -12,8 +12,6 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
-import ch.alpine.tensor.sca.Abs;
-import ch.alpine.tensor.sca.pow.Sqrt;
 
 /** GeometricLayer transforms from model to pixel coordinates
  * 
@@ -120,15 +118,11 @@ public final class GeometricLayer {
    * 
    * @param modelWidth
    * @return non-negative value */
-  public Scalar model2pixelWidth(Scalar modelWidth) {
-    Scalar abs = Abs.FUNCTION.apply(deque.peek().det());
-    Scalar sqrt = Sqrt.FUNCTION.apply(abs);
-    return sqrt.multiply(modelWidth);
+  public Scalar model2pixelFactor(Scalar modelWidth) {
+    return deque.peek().sqrtDet().multiply(modelWidth);
   }
 
-  public Scalar pixel2modelWidth(Scalar pixelWidth) {
-    Scalar abs = Abs.FUNCTION.apply(deque.peek().det());
-    Scalar sqrt = Sqrt.FUNCTION.apply(abs);
-    return pixelWidth.divide(sqrt);
+  public Scalar pixel2modelFactor(Scalar pixelWidth) {
+    return pixelWidth.divide(deque.peek().sqrtDet());
   }
 }
