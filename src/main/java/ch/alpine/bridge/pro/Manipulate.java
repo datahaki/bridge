@@ -36,7 +36,11 @@ public class Manipulate {
       PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.nested(object);
       editor.add(BorderLayout.CENTER, panelFieldsEditor.createJScrollPane());
       jSplitPane.setLeftComponent(editor);
-      panelFieldsEditor.addUniversalListener(() -> receive(function.get()));
+      panelFieldsEditor.addUniversalListener(() -> {
+        // ContainerDescent.setEnabled(editor, false);
+        receive(function.get());
+        // ContainerDescent.setEnabled(editor, true);
+      });
     }
     jFrame.setContentPane(jSplitPane);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
