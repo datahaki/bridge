@@ -25,6 +25,7 @@ public enum ReflectionMarkers {
   ReflectionMarkers() {
     checked.add(Object.class);
     checked.add(Enum.class);
+    checked.add(Record.class);
   }
 
   public void disableDebugPrint() {
