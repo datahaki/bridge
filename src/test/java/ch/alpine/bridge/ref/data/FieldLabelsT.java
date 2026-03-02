@@ -13,6 +13,7 @@ public class FieldLabelsT {
   @FieldLabel("nested %d")
   public final Nested[] nested2 = { new Nested(), new Nested() };
 
+  @ReflectionMarker
   public static class Nested {
     public Scalar value = RealScalar.ONE;
   }

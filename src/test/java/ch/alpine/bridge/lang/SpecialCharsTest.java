@@ -13,7 +13,7 @@ class SpecialCharsTest {
   void test(SpecialChars specialChars) {
     String string = specialChars.string();
     assertTrue(0 < string.length());
-    IO.println(string + " " + string.length());
+    // IO.println(string + " " + string.length());
     assertTrue(string.length() <= 3);
     assertEquals(string, string.trim());
   }

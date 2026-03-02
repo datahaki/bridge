@@ -3,11 +3,13 @@ package ch.alpine.bridge.os;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.io.GitHubCI;
+
 class OperatingSystemTest {
   @Test
   void test() {
     OperatingSystem operatingSystem = OperatingSystem.get();
-    IO.println(operatingSystem);
+    GitHubCI.println(operatingSystem);
     operatingSystem.lookAndFeels();
   }
 }

@@ -35,7 +35,8 @@ import ch.alpine.tensor.io.Import;
  * Hint: the implementation does not assign null values to members. in case
  * of a parse failure, or invalid assignment, the preset/default/current
  * value is retained. */
-public class ObjectProperties {
+public enum ObjectProperties {
+  ;
   /** charset UTF-8 guarantees the storage and loading of special
    * characters such as Chinese characters.
    * As of Java 18, the default charset is UTF-8. */
@@ -89,7 +90,7 @@ public class ObjectProperties {
       save(object, file);
       return true;
     } catch (Exception exception) {
-      System.err.println("save fail\n" + file);
+      System.err.println("save fail: " + file);
     }
     return false;
   }
@@ -112,7 +113,7 @@ public class ObjectProperties {
     try {
       load(object, file);
     } catch (Exception exception) {
-      System.err.println("load fail:\n" + file);
+      System.err.println("load fail: " + file);
     }
     return object;
   }

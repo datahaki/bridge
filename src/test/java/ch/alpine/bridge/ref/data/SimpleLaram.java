@@ -17,6 +17,7 @@ public class SimpleLaram {
       new NestedParam(), //
       new NestedParam());
 
+  @ReflectionMarker
   public static class NestedParam extends BaseParam {
     @FieldFuse("fuse")
     public Boolean some = true;

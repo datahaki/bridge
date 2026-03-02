@@ -12,6 +12,9 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.ref.ann.ReflectionMarker;
+
+@ReflectionMarker
 class ResourceLocatorTest {
   @TempDir
   Path tempDir;
