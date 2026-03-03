@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -19,6 +20,9 @@ import ch.alpine.tensor.sca.pow.Sqrt;
  * <a href="https://reference.wolfram.com/language/ref/GraphicsGrid.html">GraphicsGrid</a> */
 public enum ShowGridComponent {
   ;
+  /** @param list non-empty
+   * @return
+   * @throws Exception if list is empty */
   public static JComponent of(List<Show> list) {
     Scalar sqrt = Sqrt.FUNCTION.apply(RealScalar.of(list.size()));
     int cols = Round.intValueExact(sqrt);
@@ -39,11 +43,12 @@ public enum ShowGridComponent {
   public static JComponent column(List<Show> list, Dimension dimension) {
     JPanel grid = new JPanel(new GridLayout(list.size(), 1));
     for (Show show : list) {
+      IO.println(show);
       ShowComponent showComponent = new ShowComponent();
       showComponent.setShow(show);
       showComponent.setPreferredSize(dimension);
       grid.add(showComponent);
     }
-    return grid;
+    return new JScrollPane(grid);
   }
 }

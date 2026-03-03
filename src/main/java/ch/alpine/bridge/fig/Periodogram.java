@@ -12,6 +12,7 @@ import ch.alpine.tensor.alg.Differences;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.fft.PeriodogramArray;
+import ch.alpine.tensor.fft.SpectrogramArrays;
 import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.sca.exp.Log;
 
@@ -35,7 +36,7 @@ public enum Periodogram {
       Tolerance.CHOP.requireClose(navigableSet.first(), navigableSet.last());
     }
     Tensor signal = points.get(Tensor.ALL, 1);
-    Tensor values = PeriodogramArray.of(windowLength, offset).apply(signal).maps(scaling);
+    Tensor values = new PeriodogramArray(SpectrogramArrays.FOURIER.operator()).config(windowLength, offset).apply(signal).maps(scaling);
     int h = values.length() / 2;
     return ListLinePlot.of(Subdivide.of(0, 0.5, h - 1), values.extract(0, h));
   }

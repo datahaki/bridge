@@ -22,7 +22,6 @@ import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.sca.Abs;
 import ch.alpine.tensor.sca.ply.Polynomial;
 import ch.alpine.tensor.sca.tri.Cos;
-import ch.alpine.tensor.sca.win.DirichletWindow;
 
 class SpectrogramTest {
   @Test
@@ -45,7 +44,7 @@ class SpectrogramTest {
       // show.getAxisY().setLabel("user defined");
       // if (count == 0)
       // show.getAxisY().setUnit(Unit.of("s^-1"));
-      Spectrogram.of(signal, Quantity.of(8000, "s^-1"));
+      Spectrogram.of(SpectrogramArrays.FOURIER.operator(), signal, Quantity.of(8000, "s^-1"));
     }
   }
 
@@ -54,10 +53,10 @@ class SpectrogramTest {
     Tensor vector = Tensor.of(IntStream.range(0, 2000) //
         .mapToDouble(i -> Math.cos(i * 0.25 + (i / 20.0) * (i / 20.0))) //
         .mapToObj(RealScalar::of));
-    Showable image = Spectrogram.of(vector, Quantity.of(1, "s"), DirichletWindow.FUNCTION, ColorDataGradients.VISIBLE_SPECTRUM);
+    Showable image = Spectrogram.of(SpectrogramArrays.FOURIER.operator(), vector, Quantity.of(1, "s"), ColorDataGradients.VISIBLE_SPECTRUM);
     new Show().add(image);
-    assertEquals(Dimensions.of(SpectrogramArrays.FOURIER.half_abs(vector)), Arrays.asList(32, 93));
-    Tensor tensor = SpectrogramArrays.FOURIER.apply(vector).maps(Abs.FUNCTION);
+    assertEquals(Dimensions.of(SpectrogramArrays.FOURIER.operator().half_abs(vector)), Arrays.asList(32, 93));
+    Tensor tensor = SpectrogramArrays.FOURIER.operator().apply(vector).maps(Abs.FUNCTION);
     assertEquals(Dimensions.of(tensor), List.of(93, 64));
   }
 }

@@ -578,7 +578,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("Spectrogram");
       Tensor signal = Subdivide.of(0.0, 100.0, 1000).maps(t -> Sin.FUNCTION.apply(t.multiply(t)));
-      Showable showable = Spectrogram.of(signal, Quantity.of(8000, "s^-1"));
+      Showable showable = Spectrogram.of(SpectrogramArrays.FOURIER.operator(), signal, Quantity.of(8000, "s^-1"));
       show.add(showable);
       return show;
     }
