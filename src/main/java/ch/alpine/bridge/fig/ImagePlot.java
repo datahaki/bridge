@@ -15,6 +15,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
+// TODO BRIDGE the aspect ratio pipeline is NO GOOD !
 public class ImagePlot extends ArrayShowable {
   public static ImagePlot of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
     return new ImagePlot(bufferedImage, cbb, flipY, aspectRatio);

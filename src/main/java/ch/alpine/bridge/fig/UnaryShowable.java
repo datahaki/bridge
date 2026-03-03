@@ -12,6 +12,7 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
+/** used by {@link Plot} and {@link ReImPlot} */
 public abstract class UnaryShowable extends BaseShowable {
   protected final ScalarUnaryOperator suo;
   protected final Clip domain;
