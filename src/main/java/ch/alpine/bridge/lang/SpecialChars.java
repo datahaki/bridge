@@ -59,13 +59,14 @@ public enum SpecialChars {
   SMILEY4("😮"),
   SMILEY5("😢"),
   ROSE("🌹"),
-  FLAG_DE("🇩🇪"),
   HEART_BLUE("💙"),
   BLAST("💥"),
   DNA("🧬"),
   TARGET("🎯"),
   POLICE("🚨"),
   ROCKET("🚀"),
+  FLAG_DE("🇩🇪"),
+  FLAG_US("🇺🇸"),
   //
   ;
 
