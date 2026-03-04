@@ -13,25 +13,20 @@ import ch.alpine.tensor.Tensor;
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/Polygon.html">Polygon</a> */
 public class PolygonPlot extends BasePointsPlot {
-  public enum Option {
-    FILL,
-    CLOSE
-  }
-
   /** @param points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}}
    * The special case when points == {} is also allowed.
    * @return instance of the visual row, that was added to this visual set
    * @throws Exception if not all entries in points are vectors of length 2 */
-  public static Showable of(Tensor points, Option... options) {
-    Set<Option> set = EnumSet.of(Option.CLOSE);
+  public static Showable of(Tensor points, PlotOption... options) {
+    Set<PlotOption> set = EnumSet.of(PlotOption.CLOSE);
     Stream.of(options).forEach(set::add);
     return new PolygonPlot(points, set);
   }
 
   // ---
-  private final Set<Option> set;
+  private final Set<PlotOption> set;
 
-  PolygonPlot(Tensor points, Set<Option> set) {
+  PolygonPlot(Tensor points, Set<PlotOption> set) {
     super(points);
     this.set = set;
   }
@@ -50,9 +45,9 @@ public class PolygonPlot extends BasePointsPlot {
         Point2D point2d = showableConfig.toPoint2D(row);
         path.lineTo(point2d.getX(), point2d.getY());
       });
-      if (set.contains(Option.CLOSE))
+      if (set.contains(PlotOption.CLOSE))
         path.closePath();
-      if (set.contains(Option.FILL))
+      if (set.contains(PlotOption.FILL))
         graphics.fill(path);
       else
         graphics.draw(path);

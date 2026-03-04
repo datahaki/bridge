@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import ch.alpine.bridge.fig.Plot.Option;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.alg.Subdivide;
@@ -33,7 +32,7 @@ public class ReImPlot extends UnaryShowable {
   /** @param suo
    * @param domain
    * @return */
-  public static Showable of(ScalarUnaryOperator suo, Clip domain, Option... options) {
+  public static Showable of(ScalarUnaryOperator suo, Clip domain, PlotOption... options) {
     return new ReImPlot(suo, domain, options);
   }
 
@@ -41,7 +40,7 @@ public class ReImPlot extends UnaryShowable {
   /** @param suo
    * @param domain may be null, in which case the plot is empty
    * @param whether area between function and axis is shaded */
-  private ReImPlot(ScalarUnaryOperator suo, Clip domain, Option... options) {
+  private ReImPlot(ScalarUnaryOperator suo, Clip domain, PlotOption... options) {
     super(suo, domain, options);
   }
 

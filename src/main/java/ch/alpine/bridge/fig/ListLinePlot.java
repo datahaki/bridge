@@ -3,7 +3,6 @@ package ch.alpine.bridge.fig;
 
 import java.util.EnumSet;
 
-import ch.alpine.bridge.fig.PolygonPlot.Option;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Transpose;
@@ -17,7 +16,7 @@ public enum ListLinePlot {
    * @return instance of the visual row, that was added to this visual set
    * @throws Exception if not all entries in points are vectors of length 2 */
   public static Showable of(Tensor points) {
-    return new PolygonPlot(points, EnumSet.noneOf(Option.class));
+    return new PolygonPlot(points, EnumSet.noneOf(PlotOption.class));
   }
 
   /** @param domain {x1, x2, ..., xn}

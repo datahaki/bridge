@@ -19,7 +19,7 @@ import ch.alpine.bridge.fig.MultiTsPlot;
 import ch.alpine.bridge.fig.ParametricPlot;
 import ch.alpine.bridge.fig.Periodogram;
 import ch.alpine.bridge.fig.Plot;
-import ch.alpine.bridge.fig.Plot.Option;
+import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.ReImPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
@@ -150,9 +150,9 @@ public enum Showcases implements ShowProvider {
       Clip clip = Clips.unit();
       Show show = new Show(ColorDataLists._109.strict()); // use RGB for line color
       show.setPlotLabel("Color Data Gradient Classic");
-      show.add(Plot.of(s -> f.apply(s).Get(0), clip, Option.STRICT)).setLabel("red");
-      show.add(Plot.of(s -> f.apply(s).Get(1), clip, Option.STRICT)).setLabel("green");
-      show.add(Plot.of(s -> f.apply(s).Get(2), clip, Option.STRICT)).setLabel("blue");
+      show.add(Plot.of(s -> f.apply(s).Get(0), clip, PlotOption.STRICT)).setLabel("red");
+      show.add(Plot.of(s -> f.apply(s).Get(1), clip, PlotOption.STRICT)).setLabel("green");
+      show.add(Plot.of(s -> f.apply(s).Get(2), clip, PlotOption.STRICT)).setLabel("blue");
       return show;
     }
   },
@@ -262,8 +262,8 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("Truncated Distribution");
       Clip clip = Clips.interval(-3, 3);
-      show.add(Plot.of(pdf_o::at, clip, Option.FILLING)).setLabel("orig. PDF");
-      show.add(Plot.of(pdf::at, clip, Option.FILLING)).setLabel("trunc. PDF");
+      show.add(Plot.of(pdf_o::at, clip, PlotOption.FILL)).setLabel("orig. PDF");
+      show.add(Plot.of(pdf::at, clip, PlotOption.FILL)).setLabel("trunc. PDF");
       show.add(Plot.of(cdf::p_lessEquals, clip)).setLabel("trunc. CDF");
       return show;
     }
@@ -276,7 +276,7 @@ public enum Showcases implements ShowProvider {
       InverseCDF inverseCDF = InverseCDF.of(distribution);
       Show show = new Show();
       show.setPlotLabel("Truncated Normal Distribution");
-      show.add(Plot.of(inverseCDF::quantile, Clips.unit(), Option.STRICT));
+      show.add(Plot.of(inverseCDF::quantile, Clips.unit(), PlotOption.STRICT));
       return show;
     }
   },
@@ -330,7 +330,7 @@ public enum Showcases implements ShowProvider {
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.of(3, 1));
       Tensor samples = RandomVariate.of(UniformDistribution.of(Clips.unit()), 100);
       samples.maps(randomFunction::evaluate); // for integral
-      show.add(Plot.of(randomFunction::evaluate, Clips.unit(), Option.STRICT)).setLabel("timeSeries");
+      show.add(Plot.of(randomFunction::evaluate, Clips.unit(), PlotOption.STRICT)).setLabel("timeSeries");
       TimeSeries timeSeries = randomFunction.timeSeries();
       TimeSeries integral = TimeSeriesIntegrate.of(timeSeries);
       Showable showable = show.add(TsPlot.of(integral));
@@ -509,7 +509,7 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
       show.setPlotLabel("Sine");
-      show.add(Plot.of(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2), Option.FILLING)).setLabel("sine");
+      show.add(Plot.of(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2), PlotOption.FILL)).setLabel("sine");
       return show;
     }
   },
@@ -518,9 +518,9 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("Gamma Distributions");
-      show.add(Plot.of(PDF.of(GammaDistribution.of(1, 2))::at, Clips.positive(20), Option.FILLING)).setLabel("alpha = 1");
-      show.add(Plot.of(PDF.of(GammaDistribution.of(4, 2))::at, Clips.positive(20), Option.FILLING)).setLabel("alpha = 4");
-      show.add(Plot.of(PDF.of(GammaDistribution.of(6, 2))::at, Clips.positive(20), Option.FILLING)).setLabel("alpha = 6");
+      show.add(Plot.of(PDF.of(GammaDistribution.of(1, 2))::at, Clips.positive(20), PlotOption.FILL)).setLabel("alpha = 1");
+      show.add(Plot.of(PDF.of(GammaDistribution.of(4, 2))::at, Clips.positive(20), PlotOption.FILL)).setLabel("alpha = 4");
+      show.add(Plot.of(PDF.of(GammaDistribution.of(6, 2))::at, Clips.positive(20), PlotOption.FILL)).setLabel("alpha = 6");
       return show;
     }
   },

@@ -17,18 +17,13 @@ import ch.alpine.tensor.sca.Sign;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Plot.html">Plot</a> */
 public class Plot extends UnaryShowable {
-  public enum Option {
-    FILLING,
-    STRICT
-  }
-
   private static final int RESOLUTION = 40;
   private static final int FILL_ALPHA = 64;
 
   /** @param suo
    * @param domain
    * @return */
-  public static Showable of(ScalarUnaryOperator suo, Clip domain, Option... options) {
+  public static Showable of(ScalarUnaryOperator suo, Clip domain, PlotOption... options) {
     return new Plot(suo, domain, options);
   }
 
@@ -36,7 +31,7 @@ public class Plot extends UnaryShowable {
   /** @param suo
    * @param domain may be null, in which case the plot is empty
    * @param whether area between function and axis is shaded */
-  private Plot(ScalarUnaryOperator suo, Clip domain, Option... options) {
+  private Plot(ScalarUnaryOperator suo, Clip domain, PlotOption... options) {
     super(suo, domain, options);
   }
 

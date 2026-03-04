@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import ch.alpine.bridge.fig.Plot.Option;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
@@ -16,12 +15,12 @@ import ch.alpine.tensor.sca.Clips;
 public abstract class UnaryShowable extends BaseShowable {
   protected final ScalarUnaryOperator suo;
   protected final Clip domain;
-  private final Set<Option> set = EnumSet.noneOf(Option.class);
+  private final Set<PlotOption> set = EnumSet.noneOf(PlotOption.class);
 
   /** @param suo
    * @param domain may be null, in which case the plot is empty
    * @param whether area between function and axis is shaded */
-  protected UnaryShowable(ScalarUnaryOperator suo, Clip domain, Option... options) {
+  protected UnaryShowable(ScalarUnaryOperator suo, Clip domain, PlotOption... options) {
     this.suo = suo;
     this.domain = Objects.requireNonNull(domain);
     Stream.of(options).forEach(set::add);
@@ -29,12 +28,12 @@ public abstract class UnaryShowable extends BaseShowable {
 
   protected final Optional<Clip> x_clip(ShowableConfig showableConfig) {
     Clip x_clip = showableConfig.getClip(0);
-    if (set.contains(Option.STRICT))
+    if (set.contains(PlotOption.STRICT))
       x_clip = Clips.optionalIntersection(x_clip, domain).orElse(null);
     return Optional.ofNullable(x_clip);
   }
 
   protected final boolean isFilling() {
-    return set.contains(Option.FILLING);
+    return set.contains(PlotOption.FILL);
   }
 }
