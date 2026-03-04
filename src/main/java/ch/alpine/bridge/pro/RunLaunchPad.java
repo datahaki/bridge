@@ -27,7 +27,7 @@ public class RunLaunchPad {
     return new WindowProvider() {
       @Override
       public Window getWindow() {
-        return new RunLaunchPad(list).jFrame;
+        return new RunLaunchPad(packageName, list.stream().sorted(COMPARATOR).toList()).jFrame;
       }
     };
   }
@@ -35,21 +35,21 @@ public class RunLaunchPad {
   private static final Comparator<InstanceRecord<?>> COMPARATOR = //
       new Comparator<InstanceRecord<?>>() {
         @Override
-        public int compare(InstanceRecord<?> o1, InstanceRecord<?> o2) {
-          return o1.toString().compareTo(o2.toString());
+        public int compare(InstanceRecord<?> ir1, InstanceRecord<?> ir2) {
+          return ir1.toString().compareTo(ir2.toString());
         }
       };
+  // ---
   private final JFrame jFrame = new JFrame();
-  private final ColumnPanel columnPanel = new ColumnPanel();
 
-  private RunLaunchPad(List<InstanceRecord<RunProvider>> list) {
-    List<InstanceRecord<RunProvider>> sorted = list.stream().sorted(COMPARATOR).toList();
-    // ---
-    String prev = "";
-    for (InstanceRecord<RunProvider> instanceRecord : sorted) {
+  private RunLaunchPad(String rootName, List<InstanceRecord<RunProvider>> list) {
+    final int length = rootName.length();
+    String prev = rootName;
+    ColumnPanel columnPanel = new ColumnPanel();
+    for (InstanceRecord<RunProvider> instanceRecord : list) {
       String packageName = instanceRecord.packageName();
       if (!prev.equals(packageName)) {
-        JLabel jLabel = new JLabel(packageName);
+        JLabel jLabel = new JLabel(packageName.substring(length).replace(".", " "));
         Font font = jLabel.getFont().deriveFont(Font.BOLD);
         jLabel.setFont(font);
         columnPanel.append(jLabel);
@@ -62,9 +62,10 @@ public class RunLaunchPad {
       jButton.addActionListener(_ -> instanceRecord.supplier().get().runStandalone());
       columnPanel.append(jButton);
     }
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JScrollPane jScrollPane = new JScrollPane(columnPanel);
     jScrollPane.getVerticalScrollBar().setUnitIncrement(25);
     jFrame.setContentPane(jScrollPane);
+    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    jFrame.setTitle(rootName + " [" + list.size() + "]");
   }
 }

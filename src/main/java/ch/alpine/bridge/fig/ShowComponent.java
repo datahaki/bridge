@@ -92,6 +92,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
       if (optional.isPresent()) {
         Tensor xy = optional.orElseThrow();
         CoordinateBoundingBox cbb = showableConfig.getCbb();
+        // TODO for ArrayShowable the zoom should be limited
         Scalar factor = Power.of(1.3, mouseWheelEvent.getWheelRotation());
         if (set_x.contains(Option.ZOOM)) {
           Clip xclip = cbb.clip(0);

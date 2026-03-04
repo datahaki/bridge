@@ -16,6 +16,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 // TODO BRIDGE the aspect ratio pipeline is NO GOOD !
+// why isnt this instance of BaseArrayPlot, because BarLegendPlot (design not ideal)
 public class ImagePlot extends ArrayShowable {
   public static ImagePlot of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
     return new ImagePlot(bufferedImage, cbb, flipY, aspectRatio);
@@ -50,6 +51,7 @@ public class ImagePlot extends ArrayShowable {
     Point2D dr = showableConfig.toPoint2D(Tensors.of( //
         cbb.clip(0).max(), //
         flipY ? cbb.clip(1).max() : cbb.clip(1).min()));
+    // TODO for ArrayShowable the zoom should be limited
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)

@@ -37,7 +37,8 @@ public enum RenderQuality {
    * suggestions by chatgpt
    * 
    * @param graphics */
-  public static void setQuality(Graphics graphics) {
-    setQuality((Graphics2D) graphics);
+  public static void setQuality(Graphics g) {
+    if (g instanceof Graphics2D graphics)
+      setQuality(graphics);
   }
 }

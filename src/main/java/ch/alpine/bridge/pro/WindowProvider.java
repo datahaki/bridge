@@ -26,7 +26,8 @@ public non-sealed interface WindowProvider extends RunProvider {
     ResourceLocator resourceLocator = ResourceLocator.of(getClass());
     WindowBounds.persistent(window, resourceLocator.properties(WindowBounds.class));
     if (window instanceof JFrame jFrame) {
-      jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
+      if (jFrame.getTitle().isEmpty())
+        jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
       AwtUtil.ctrlW(jFrame);
     }
     window.setVisible(true);
