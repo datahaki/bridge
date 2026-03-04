@@ -9,7 +9,6 @@ import java.awt.Window;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.fig.ShowComponent;
 import ch.alpine.bridge.fig.ShowComponent.Option;
@@ -41,7 +40,6 @@ class ShowComponentDemo implements WindowProvider {
     }
     jPanel.add(BorderLayout.CENTER, showComponent);
     jFrame.setContentPane(jPanel);
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     update();
   }
 

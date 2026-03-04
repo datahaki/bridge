@@ -5,6 +5,7 @@ import java.awt.Window;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.WindowBounds;
@@ -26,6 +27,7 @@ public non-sealed interface WindowProvider extends RunProvider {
     ResourceLocator resourceLocator = ResourceLocator.of(getClass());
     WindowBounds.persistent(window, resourceLocator.properties(WindowBounds.class));
     if (window instanceof JFrame jFrame) {
+      jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       if (jFrame.getTitle().isEmpty())
         jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
       AwtUtil.ctrlW(jFrame);

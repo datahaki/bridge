@@ -13,7 +13,6 @@ import java.util.TimerTask;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.GuiExtension;
@@ -51,7 +50,6 @@ class PartialDemo implements WindowProvider {
         timer.cancel();
       }
     });
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
     JPanel jGrid = new JPanel(new GridLayout(2, 1));
     jGrid.add(panelFieldsEditor.createJScrollPane());

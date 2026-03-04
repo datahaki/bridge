@@ -24,7 +24,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.fig.Show;
@@ -113,7 +112,6 @@ public class ShowDemo implements WindowProvider {
     }
     jPanel.add(BorderLayout.CENTER, jScrollPane);
     jFrame.setContentPane(jPanel);
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
   }
 
   @Override

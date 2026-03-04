@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.pro.WindowProvider;
 
@@ -82,7 +81,6 @@ class RangeSliderDemo implements WindowProvider {
     rangeSliderValueH2.setText(String.valueOf(rangeSliderH.getUpperValue()));
     // Create window frame.
     JFrame jFrame = new JFrame();
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setContentPane(jPanel);
     return jFrame;
   }

@@ -12,7 +12,6 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowComponent;
@@ -77,7 +76,6 @@ class ShowLiveDemo implements WindowProvider {
       }
     });
     jFrame.setContentPane(jPanel);
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
   }
 
   private void update() {

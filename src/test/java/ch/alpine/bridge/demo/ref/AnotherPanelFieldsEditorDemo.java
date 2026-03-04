@@ -6,7 +6,6 @@ import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.SimpleParam;
@@ -21,7 +20,6 @@ class AnotherPanelFieldsEditorDemo implements WindowProvider {
     simpleParam.lookAndFeels.updateComponentTreeUI();
     // ---
     JFrame jFrame = new JFrame();
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(simpleParam);
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, simpleParam);
     JPanel jGrid = new JPanel(new GridLayout(2, 1));

@@ -7,7 +7,6 @@ import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.OtherPackageParam;
@@ -25,7 +24,6 @@ class OtherPackageParamDemo implements WindowProvider {
     jGrid.add(objectPropertiesArea.createJComponent());
     // ---
     JFrame jFrame = new JFrame();
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(jGrid, BorderLayout.CENTER);
     jFrame.setContentPane(jPanel);

@@ -4,7 +4,6 @@ package ch.alpine.bridge.demo.ref;
 import java.awt.Window;
 
 import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.EmptyParam;
@@ -20,7 +19,6 @@ enum EmptyDemo implements WindowProvider {
     panelFieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     // ---
     JFrame jFrame = new JFrame();
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setContentPane(panelFieldsEditor.createJScrollPane());
     return jFrame;
   }

@@ -7,7 +7,6 @@ import java.nio.file.Path;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.WindowClosed;
 import ch.alpine.bridge.io.ResourceLocator;
@@ -26,7 +25,6 @@ class StoredExtensionDemo implements WindowProvider {
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, storedExtension);
     // ---
     JFrame jFrame = new JFrame();
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new GridLayout(2, 1));
     jPanel.add(panelFieldsEditor.createJScrollPane());
     jPanel.add(objectPropertiesArea.createJComponent());

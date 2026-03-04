@@ -13,9 +13,8 @@ Features include
 * data structures `BoundedPriorityQueue`, `DisjointSets`, ...
 * class discovery
 
-3rd party dependencies are
-
-* `FlatLaf`
+3rd party dependencies are: 
+[flatlaf](https://mvnrepository.com/artifact/com.formdev/flatlaf)
 
 ## 📊 Plots
 

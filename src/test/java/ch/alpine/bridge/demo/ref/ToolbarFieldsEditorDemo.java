@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.GuiExtension;
@@ -27,7 +26,6 @@ class ToolbarFieldsEditorDemo implements WindowProvider {
     fieldsEditor.addUniversalListener(() -> System.out.println("changed"));
     // ---
     JFrame jFrame = new JFrame();
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(new JScrollPane(jToolBar, //
         ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, //

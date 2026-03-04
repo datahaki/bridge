@@ -6,7 +6,6 @@ import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.FieldsEditorParam;
@@ -22,7 +21,6 @@ class PanelFieldsEditorDemo implements WindowProvider {
     jTabbedPane.addTab("nested", PanelFieldsEditor.nested(new GuiExtension()).createJScrollPane());
     jTabbedPane.addTab("splits", PanelFieldsEditor.splits(new GuiExtension()).createJScrollPane());
     jTabbedPane.addTab("single", PanelFieldsEditor.single(new GuiExtension()).createJScrollPane());
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     jFrame.setContentPane(jTabbedPane);
     return jFrame;
   }

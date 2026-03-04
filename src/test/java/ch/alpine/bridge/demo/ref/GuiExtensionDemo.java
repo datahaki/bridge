@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.ContainerDescent;
 import ch.alpine.bridge.pro.WindowProvider;
@@ -45,7 +44,6 @@ class GuiExtensionDemo implements WindowProvider {
     ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(panelFieldsEditor, guiExtension);
     jSplitPane.add(objectPropertiesArea.createJComponent());
     // ---
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel jPanel = new JPanel(new BorderLayout());
     jPanel.add(jSplitPane, BorderLayout.CENTER);
     {

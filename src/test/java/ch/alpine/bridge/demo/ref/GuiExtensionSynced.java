@@ -8,7 +8,6 @@ import java.awt.Window;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.data.GuiExtension;
@@ -24,7 +23,6 @@ class GuiExtensionSynced implements WindowProvider {
     rightFieldsEditor.addUniversalListener(() -> System.out.println("right changed"));
     // ---
     JFrame jFrame = new JFrame();
-    jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     JPanel content = new JPanel(new GridLayout(1, 2, 20, 0));
     for (PanelFieldsEditor fieldsEditor : new PanelFieldsEditor[] { left_FieldsEditor, rightFieldsEditor }) {
       ObjectPropertiesArea objectPropertiesArea = new ObjectPropertiesArea(fieldsEditor, guiExtension);
