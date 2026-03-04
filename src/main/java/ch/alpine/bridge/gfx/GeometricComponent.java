@@ -44,7 +44,7 @@ import ch.alpine.tensor.sca.pow.Sqrt;
 import ch.alpine.tensor.sca.tri.ArcTan;
 
 // TODO extend JCOmponent!
-public final class GeometricComponent {
+public final class GeometricComponent extends JComponent {
   private static final Scalar SCALE_FACTOR = Sqrt.FUNCTION.apply(RealScalar.TWO);
   private static final Font FONT_DEFAULT = new Font(Font.DIALOG, Font.PLAIN, 12);
   private static final Scalar WHEEL_ANGLE = Degree.of(15);
@@ -56,20 +56,19 @@ public final class GeometricComponent {
   }).unmodifiable();
   // ---
   /** public access to final JComponent: attach mouse listeners, get/set properties, ... */
-  public final JComponent jComponent = new JComponent() {
-    private final IntervalClock intervalClock = new IntervalClock();
+  private final IntervalClock intervalClock = new IntervalClock();
 
-    @Override
-    protected void paintComponent(Graphics _g) {
-      render((Graphics2D) _g, getSize());
-      // display frame rate only when rendering in component
-      Graphics graphics = _g.create();
-      graphics.setFont(FONT_DEFAULT);
-      graphics.setColor(Color.LIGHT_GRAY);
-      graphics.drawString(UnicodeString.of(Round._1.apply(intervalClock.hertz())), 0, 10);
-      graphics.dispose();
-    }
-  };
+  @Override
+  protected void paintComponent(Graphics _g) {
+    render((Graphics2D) _g, getSize());
+    // display frame rate only when rendering in component
+    Graphics graphics = _g.create();
+    graphics.setFont(FONT_DEFAULT);
+    graphics.setColor(Color.LIGHT_GRAY);
+    graphics.drawString(UnicodeString.of(Round._1.apply(intervalClock.hertz())), 0, 10);
+    graphics.dispose();
+  }
+
   // TODO ASCONA possibly use EnumMultimap with background... main .. hud
   private final List<RenderInterface> renderBackground = new CopyOnWriteArrayList<>();
   private final List<RenderInterface> renderInterfaces = new CopyOnWriteArrayList<>();
@@ -84,7 +83,7 @@ public final class GeometricComponent {
   private int buttonDrag = MouseEvent.BUTTON3;
 
   public GeometricComponent() {
-    jComponent.addMouseWheelListener(event -> {
+    addMouseWheelListener(event -> {
       final int delta = -event.getWheelRotation(); // either 1 or -1
       final int mods = event.getModifiersEx();
       final int mask = InputEvent.CTRL_DOWN_MASK; // 128 = 2^7
@@ -100,7 +99,7 @@ public final class GeometricComponent {
         scale.set(shift.Get(1), 1, 2);
         model2pixel = scale.dot(model2pixel);
       }
-      jComponent.repaint();
+      repaint();
     });
     {
       MouseInputListener mouseInputListener = new MouseInputAdapter() {
@@ -116,7 +115,7 @@ public final class GeometricComponent {
         public void mousePressed(MouseEvent mouseEvent) {
           if (mouseEvent.getButton() == buttonDrag) {
             down = toPixel(mouseEvent.getPoint());
-            Dimension dimension = jComponent.getSize();
+            Dimension dimension = getSize();
             center = toModel(AwtUtil.center(dimension));
           }
         }
@@ -134,7 +133,7 @@ public final class GeometricComponent {
               model2pixel.set(diff.get(0)::add, 0, 2);
               model2pixel.set(diff.get(1)::add, 1, 2);
             } else {
-              Dimension dimension = jComponent.getSize();
+              Dimension dimension = getSize();
               Tensor mid = toPixel(AwtUtil.center(dimension));
               Scalar ang = arcTan2(down.subtract(mid)).subtract(arcTan2(now.subtract(mid)));
               model2pixel = Dot.of( //
@@ -143,7 +142,7 @@ public final class GeometricComponent {
                   Se2Matrix.translation(center.negate()));
             }
             down = now;
-            jComponent.repaint();
+            repaint();
           }
         }
 
@@ -159,8 +158,8 @@ public final class GeometricComponent {
           center = null;
         }
       };
-      jComponent.addMouseMotionListener(mouseInputListener);
-      jComponent.addMouseListener(mouseInputListener);
+      addMouseMotionListener(mouseInputListener);
+      addMouseListener(mouseInputListener);
     }
   }
 
