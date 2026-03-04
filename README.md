@@ -17,7 +17,7 @@ Features include
 
 * `FlatLaf`
 
-## Plots
+## 📊 Plots
 
 ![MatrixPlot1](https://user-images.githubusercontent.com/4012178/200159269-ed3b0969-3660-4bf3-ade6-0844d799e1e2.png)
 
@@ -29,13 +29,13 @@ Features include
 
 ![Cepstrogram0Re](https://user-images.githubusercontent.com/4012178/201620914-60a8e91a-8a69-470f-9a7a-8c153aeea83b.png)
 
-## Dialogs
+## 💬 Dialogs
 
 ![LocalTime selection](https://user-images.githubusercontent.com/4012178/178134198-8b94131f-6163-408b-9b26-2bfb344d0da3.png)
 
 ![Font selection](https://user-images.githubusercontent.com/4012178/178134124-766d1067-8645-4060-8c06-33cb252e5c97.png)
 
-## Reflection
+## 🪞 Reflection
 
 For non-final fields of type `String`, `Boolean`, `Integer`, `File`, `Font`, `Color`, `LocalDate`, etc. of a class
 

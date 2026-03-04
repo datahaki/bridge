@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.awt;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
@@ -30,5 +31,13 @@ public enum RenderQuality {
     graphics.setRenderingHint( //
         RenderingHints.KEY_FRACTIONALMETRICS, //
         RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+  }
+
+  /** use for publishing quality
+   * suggestions by chatgpt
+   * 
+   * @param graphics */
+  public static void setQuality(Graphics graphics) {
+    setQuality((Graphics2D) graphics);
   }
 }

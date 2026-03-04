@@ -7,8 +7,10 @@ import java.util.Locale;
 /**
  * 
  */
-public enum GraphemeCounter {
+public enum GraphemeCount {
   ;
+  /** @param string
+   * @return */
   public static int of(String string) {
     BreakIterator breakIterator = BreakIterator.getCharacterInstance(Locale.ROOT);
     breakIterator.setText(string);

@@ -43,7 +43,6 @@ public enum ShowGridComponent {
   public static JComponent column(List<Show> list, Dimension dimension) {
     JPanel grid = new JPanel(new GridLayout(list.size(), 1));
     for (Show show : list) {
-      IO.println(show);
       ShowComponent showComponent = new ShowComponent();
       showComponent.setShow(show);
       showComponent.setPreferredSize(dimension);
