@@ -18,13 +18,15 @@ Features include
 
 ## 📊 Plots
 
-![MatrixPlot1](https://user-images.githubusercontent.com/4012178/200159269-ed3b0969-3660-4bf3-ade6-0844d799e1e2.png)
+![TruncatedDistribution0](https://user-images.githubusercontent.com/4012178/200159273-dfe78967-dc64-4cc5-a677-f931dc7700b9.png)
 
 ![ReImPlot0](https://user-images.githubusercontent.com/4012178/200159270-7e441eac-5ace-4070-830d-dfa3918eb464.png)
 
-![Spectrogram0](https://user-images.githubusercontent.com/4012178/200159271-29157014-c2f3-4aa9-817d-d8b7280e9ab5.png)
+![MatrixPlot1](https://user-images.githubusercontent.com/4012178/200159269-ed3b0969-3660-4bf3-ade6-0844d799e1e2.png)
 
-![TruncatedDistribution0](https://user-images.githubusercontent.com/4012178/200159273-dfe78967-dc64-4cc5-a677-f931dc7700b9.png)
+![DensityPlot1](https://github.com/user-attachments/assets/cdd1a270-30e2-4edb-bda5-7100260554ed)
+
+![Spectrogram0](https://user-images.githubusercontent.com/4012178/200159271-29157014-c2f3-4aa9-817d-d8b7280e9ab5.png)
 
 ![Cepstrogram0Re](https://user-images.githubusercontent.com/4012178/201620914-60a8e91a-8a69-470f-9a7a-8c153aeea83b.png)
 
