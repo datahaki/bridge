@@ -9,6 +9,7 @@ import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 
+import ch.alpine.bridge.awt.OffscreenRender;
 import ch.alpine.bridge.cgr.InstanceRecord;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.io.GitHubCI;
@@ -41,10 +42,7 @@ public class SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvid
   protected void check(WindowProvider windowProvider) {
     Window window = windowProvider.getWindow();
     window.setSize(WIDTH, HEIGHT);
-    BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = bufferedImage.createGraphics();
-    window.printAll(graphics);
-    graphics.dispose();
+    OffscreenRender.of(window, BufferedImage.TYPE_INT_ARGB);
   }
 
   protected void check(ManipulateProvider manipulateProvider) {
