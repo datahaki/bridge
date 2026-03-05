@@ -87,6 +87,7 @@ public class ShowDemo implements WindowProvider {
   }
 
   private ShowDemo() {
+    jScrollPane.getVerticalScrollBar().setUnitIncrement(50);
     JScrollBar jScrollBar = jScrollPane.getVerticalScrollBar();
     jScrollBar.setPreferredSize(new Dimension(30, 30));
     Runnable runnable = new Runnable() {

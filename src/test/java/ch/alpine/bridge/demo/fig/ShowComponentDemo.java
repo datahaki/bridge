@@ -22,7 +22,7 @@ class ShowComponentDemo implements WindowProvider {
   private final JFrame jFrame = new JFrame();
   private final ShowComponent showComponent = new ShowComponent();
   // ---
-  public Showcases showDemos = Showcases.ListLinePlot0;
+  public Showcases showDemos = Showcases.ListLinePlot1;
   public Font font = new JPanel().getFont();
   public Boolean xZoom = true;
   public Boolean xPan = true;

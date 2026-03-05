@@ -29,9 +29,11 @@ import ch.alpine.bridge.fig.StringPlot.StringItem;
 import ch.alpine.bridge.fig.TsPlot;
 import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.ComplexScalar;
+import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Range;
@@ -58,15 +60,12 @@ import ch.alpine.tensor.num.Softplus;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.pdf.CDF;
 import ch.alpine.tensor.pdf.Distribution;
-import ch.alpine.tensor.pdf.InverseCDF;
 import ch.alpine.tensor.pdf.PDF;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.TruncatedDistribution;
 import ch.alpine.tensor.pdf.c.GammaDistribution;
 import ch.alpine.tensor.pdf.c.LogNormalDistribution;
 import ch.alpine.tensor.pdf.c.NormalDistribution;
-import ch.alpine.tensor.pdf.c.TrapezoidalDistribution;
-import ch.alpine.tensor.pdf.c.TriangularDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.pdf.d.BinomialDistribution;
 import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
@@ -78,6 +77,7 @@ import ch.alpine.tensor.prc.WienerProcess;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityMagnitude;
+import ch.alpine.tensor.sca.Abs;
 import ch.alpine.tensor.sca.Arg;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
@@ -99,12 +99,35 @@ import ch.alpine.tensor.sca.tri.ArcCos;
 import ch.alpine.tensor.sca.tri.ArcSin;
 import ch.alpine.tensor.sca.tri.Cos;
 import ch.alpine.tensor.sca.tri.Sin;
-import ch.alpine.tensor.sca.win.WindowFunctions;
 import ch.alpine.tensor.tmp.ResamplingMethod;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  DensityJulia {
+    @Override
+    public Show getShow() {
+      Scalar MAX = RealScalar.of(50);
+      int MAX_ITERATIONS = 10;
+      Scalar c = ComplexScalar.of(1.1, 0.5);
+      ScalarBinaryOperator sbo = (re, im) -> {
+        Scalar z = ComplexScalar.of(re, im);
+        for (int count = 0; count < MAX_ITERATIONS; ++count) {
+          z = Sin.FUNCTION.apply(z).multiply(c);
+          if (Scalars.lessThan(MAX, Abs.FUNCTION.apply(Im.FUNCTION.apply(z))))
+            return DoubleScalar.INDETERMINATE;
+        }
+        return Arg.FUNCTION.apply(z);
+      };
+      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.interval(-2.5, +4.5), Clips.interval(-2.3, +2.3));
+      Show show = new Show();
+      DensityPlot densityPlot = DensityPlot.of(sbo, cbb, ColorDataGradients.HUE);
+      densityPlot.setPlotPoints(200);
+      show.add(densityPlot);
+      show.setPlotLabel("Density Plot Julia Set");
+      return show;
+    }
+  },
   DensityGamma {
     @Override
     public Show getShow() {
@@ -126,20 +149,6 @@ public enum Showcases implements ShowProvider {
       list.add(StringItem.of(Tensors.vector(2, 3), "23"));
       list.add(StringItem.of(Tensors.vector(4, 4), "text"));
       show.add(StringPlot.of(list));
-      return show;
-    }
-  },
-  ListLinePlot0 {
-    @Override
-    public Show getShow() {
-      Tensor rgba = ColorDataGradients.ALPINE.queryTableRgba().orElseThrow();
-      // System.out.println(Dimensions.of(rgba));
-      Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Color Data Gradient Alpine Table");
-      Tensor domain = Range.of(0, rgba.length());
-      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 0))).setLabel("red");
-      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 1))).setLabel("green");
-      show.add(ListLinePlot.of(domain, rgba.get(Tensor.ALL, 2))).setLabel("blue");
       return show;
     }
   },
@@ -185,24 +194,6 @@ public enum Showcases implements ShowProvider {
       Tensor points = Tensors.fromString("{{0,0}, {0.2, Infinity}, {0.3, 0.3}}");
       show.add(ListPlot.of(points));
       show.add(ListLinePlot.of(points));
-      return show;
-    }
-  },
-  WindowFunctions0 {
-    @Override
-    public Show getShow() {
-      WindowFunctions[] smoothingKernels = new WindowFunctions[] { //
-          WindowFunctions.GAUSSIAN, //
-          WindowFunctions.HAMMING, //
-          WindowFunctions.BLACKMAN, //
-          WindowFunctions.NUTTALL, //
-      };
-      Show show = new Show();
-      show.setPlotLabel("Window Functions");
-      for (WindowFunctions windowFunctions : smoothingKernels) {
-        Showable showable = show.add(Plot.of(windowFunctions.get(), Clips.absolute(0.5)));
-        showable.setLabel(windowFunctions.name());
-      }
       return show;
     }
   },
@@ -265,47 +256,6 @@ public enum Showcases implements ShowProvider {
       show.add(Plot.of(pdf_o::at, clip, PlotOption.FILL)).setLabel("orig. PDF");
       show.add(Plot.of(pdf::at, clip, PlotOption.FILL)).setLabel("trunc. PDF");
       show.add(Plot.of(cdf::p_lessEquals, clip)).setLabel("trunc. CDF");
-      return show;
-    }
-  },
-  PlotInverseCdfStrict {
-    @Override
-    public Show getShow() {
-      Distribution original = NormalDistribution.standard();
-      Distribution distribution = TruncatedDistribution.of(original, Clips.interval(-1, 2.5));
-      InverseCDF inverseCDF = InverseCDF.of(distribution);
-      Show show = new Show();
-      show.setPlotLabel("Truncated Normal Distribution");
-      show.add(Plot.of(inverseCDF::quantile, Clips.unit(), PlotOption.STRICT));
-      return show;
-    }
-  },
-  PlotPdfs {
-    @Override
-    public Show getShow() {
-      Distribution dist1 = NormalDistribution.of(2, 0.5);
-      Distribution dist2 = TriangularDistribution.with(2, 0.5);
-      Clip clip = Clips.interval(-3 + 2, 3 + 2);
-      Show show = new Show();
-      PDF pdf1 = PDF.of(dist1);
-      PDF pdf2 = PDF.of(dist2);
-      show.add(Plot.of(pdf1::at, clip));
-      show.add(Plot.of(pdf2::at, clip));
-      return show;
-    }
-  },
-  DISTR6 {
-    @Override
-    public Show getShow() {
-      Distribution dist1 = NormalDistribution.of(2, 1.2);
-      Distribution dist2 = TrapezoidalDistribution.with(2, 1.2, 2.4);
-      Clip clip = Clips.interval(-3 + 2, 3 + 2);
-      Show show = new Show();
-      show.setPlotLabel("Here");
-      PDF pdf1 = PDF.of(dist1);
-      PDF pdf2 = PDF.of(dist2);
-      show.add(Plot.of(pdf1::at, clip));
-      show.add(Plot.of(pdf2::at, clip));
       return show;
     }
   },
@@ -376,28 +326,6 @@ public enum Showcases implements ShowProvider {
         show.add(ListLinePlot.of(domain, domain.maps(suo).subtract(domain.maps(su2)))).setLabel("" + d);
         // show.add(Plot.of(s->suo.apply(s).subtract(su2.apply(s)), Clips.absoluteOne())).setLabel(""+d);
       }
-      return show;
-    }
-  },
-  POLY1 {
-    @Override
-    public Show getShow() {
-      int max = 6;
-      Show show = new Show();
-      show.setPlotLabel("Chebyshev Polynomials T");
-      for (int d = 0; d < max; ++d)
-        show.add(Plot.of(Chebyshev.T.of(d), Clips.absolute(1))).setLabel("" + d);
-      return show;
-    }
-  },
-  POLY2 {
-    @Override
-    public Show getShow() {
-      int max = 6;
-      Show show = new Show();
-      show.setPlotLabel("Chebyshev Polynomials U");
-      for (int d = 0; d < max; ++d)
-        show.add(Plot.of(Chebyshev.U.of(d), Clips.absolute(1))).setLabel("" + d);
       return show;
     }
   },
@@ -580,16 +508,6 @@ public enum Showcases implements ShowProvider {
       Tensor signal = Subdivide.of(0.0, 100.0, 1000).maps(t -> Sin.FUNCTION.apply(t.multiply(t)));
       Showable showable = Spectrogram.of(SpectrogramArrays.FOURIER.operator(), signal, Quantity.of(8000, "s^-1"));
       show.add(showable);
-      return show;
-    }
-  },
-  DensityPlot0(true) {
-    @Override
-    public Show getShow() {
-      Show show = new Show();
-      show.setPlotLabel("Density Plot");
-      ScalarBinaryOperator sbo = (x, y) -> x.multiply(y);
-      show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.positive(1), Clips.positive(2))));
       return show;
     }
   },
