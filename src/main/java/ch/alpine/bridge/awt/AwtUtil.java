@@ -42,6 +42,13 @@ public enum AwtUtil {
     return new FitIconLabel(icon);
   }
 
+  public static void addSeparator(JToolBar jToolBar) {
+    // some look and feels introduce a vertical line | as separator...
+    // jToolBar.addSeparator();
+    // jToolBar.add(new JLabel("\u2000"));
+    jToolBar.add(new JLabel("\u2000"));
+  }
+
   public static Color withAlpha(Color color, int alpha) {
     return new Color( //
         color.getRed(), //

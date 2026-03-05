@@ -50,9 +50,6 @@ public class ToolbarFieldsEditor extends FieldsEditor {
         jComponent.add(jLabel);
       }
       jComponent.add(component);
-      // some look and feels introduce a vertical line | as separator...
-      // jToolBar.addSeparator();
-      jComponent.add(new JLabel("\u2000"));
     }
   }
 

@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import ch.alpine.bridge.awt.ColumnPanel;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.Ceiling;
@@ -41,13 +42,13 @@ public enum ShowGridComponent {
   }
 
   public static JComponent column(List<Show> list, Dimension dimension) {
-    JPanel grid = new JPanel(new GridLayout(list.size(), 1));
+    JPanel jPanel = new ColumnPanel();
     for (Show show : list) {
       ShowComponent showComponent = new ShowComponent();
       showComponent.setShow(show);
       showComponent.setPreferredSize(dimension);
-      grid.add(showComponent);
+      jPanel.add(showComponent);
     }
-    return new JScrollPane(grid);
+    return new JScrollPane(jPanel);
   }
 }
