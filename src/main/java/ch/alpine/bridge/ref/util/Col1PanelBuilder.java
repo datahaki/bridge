@@ -17,7 +17,7 @@ final class Col1PanelBuilder implements PanelBuilder {
 
   @Override
   public void append(JComponent jComponent) {
-    ColumnPanel.append(jComponent);
+    ColumnPanel.add(jComponent);
   }
 
   @Override

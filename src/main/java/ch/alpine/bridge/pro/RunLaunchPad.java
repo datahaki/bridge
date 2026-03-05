@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.pro;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Window;
 import java.util.Comparator;
@@ -10,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -52,7 +54,7 @@ public class RunLaunchPad {
         JLabel jLabel = new JLabel(packageName.substring(length).replace(".", " "));
         Font font = jLabel.getFont().deriveFont(Font.BOLD);
         jLabel.setFont(font);
-        columnPanel.append(jLabel);
+        columnPanel.add(jLabel);
         prev = packageName;
       }
       RunProviderType rpt = RunProviderType.getType(instanceRecord.subcls());
@@ -60,9 +62,11 @@ public class RunLaunchPad {
       JButton jButton = new JButton(instanceRecord.friendly(), icon);
       jButton.setHorizontalAlignment(SwingConstants.LEFT);
       jButton.addActionListener(_ -> instanceRecord.supplier().get().runStandalone());
-      columnPanel.append(jButton);
+      columnPanel.add(jButton);
     }
-    JScrollPane jScrollPane = new JScrollPane(columnPanel);
+    JPanel jPanel = new JPanel(new BorderLayout());
+    jPanel.add(columnPanel, BorderLayout.NORTH);
+    JScrollPane jScrollPane = new JScrollPane(jPanel);
     jScrollPane.getVerticalScrollBar().setUnitIncrement(25);
     jFrame.setContentPane(jScrollPane);
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
