@@ -66,6 +66,14 @@ public class DensityPlot extends BarLegendPlot {
     }
   }
 
+  public ScalableImage getScalableImage() {
+    return cache.apply(cbb).scalableImage;
+  }
+
+  public ScalableImage getScalableImage(int resolution) {
+    return new Inner(cbb, resolution).scalableImage;
+  }
+
   private DensityPlot( //
       ScalarBinaryOperator sbo, //
       CoordinateBoundingBox cbb, //

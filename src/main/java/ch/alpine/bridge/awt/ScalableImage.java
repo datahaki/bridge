@@ -34,6 +34,9 @@ public class ScalableImage {
     return cache.apply(Tensors.vector(imageResize.ordinal(), width, height));
   }
 
+  /** @param imageResize
+   * @param factor
+   * @return */
   public BufferedImage getScaledInstance(ImageResize imageResize, Scalar factor) {
     Tensor wh = Tensors.vector(bufferedImage.getWidth(), bufferedImage.getHeight()).multiply(factor);
     return getScaledInstance(imageResize, //
