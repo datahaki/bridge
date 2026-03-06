@@ -27,6 +27,7 @@ import ch.alpine.bridge.fig.Spectrogram;
 import ch.alpine.bridge.fig.StringPlot;
 import ch.alpine.bridge.fig.StringPlot.StringItem;
 import ch.alpine.bridge.fig.TsPlot;
+import ch.alpine.bridge.fig.VectorPlot;
 import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.ComplexScalar;
 import ch.alpine.tensor.DoubleScalar;
@@ -42,6 +43,7 @@ import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.alg.UnitVector;
 import ch.alpine.tensor.api.ScalarBinaryOperator;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.api.TensorUnaryOperator;
 import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.fft.SpectrogramArrays;
 import ch.alpine.tensor.img.ColorDataGradient;
@@ -52,6 +54,7 @@ import ch.alpine.tensor.io.Import;
 import ch.alpine.tensor.itp.Interpolation;
 import ch.alpine.tensor.itp.LanczosInterpolation;
 import ch.alpine.tensor.itp.MitchellNetravaliKernel;
+import ch.alpine.tensor.lie.rot.Cross;
 import ch.alpine.tensor.mat.HilbertMatrix;
 import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.mat.sv.SingularValueList;
@@ -104,6 +107,34 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  VectorPlot1 {
+    @Override
+    public Show getShow() {
+      TensorUnaryOperator tuo = xy -> Cross.of(xy);
+      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.interval(-2.5, +4.5), Clips.interval(-2.3, +2.3));
+      Show show = new Show();
+      // DensityPlot densityPlot = DensityPlot.of(sbo, cbb, ColorDataGradients.HUE);
+      VectorPlot vectorPlot = VectorPlot.of(tuo, cbb);
+      // densityPlot.setPlotPoints(200);
+      show.add(vectorPlot);
+      show.setPlotLabel("VectorPlot Cross");
+      return show;
+    }
+  },
+  VectorPlot2 {
+    @Override
+    public Show getShow() {
+      TensorUnaryOperator tuo = xy -> Cross.of(xy).multiply(Quantity.of(1, "s^-1"));
+      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(Quantity.of(2.5, "m")), Clips.positive(Quantity.of(1.5, "m")));
+      Show show = new Show();
+      // DensityPlot densityPlot = DensityPlot.of(sbo, cbb, ColorDataGradients.HUE);
+      VectorPlot vectorPlot = VectorPlot.of(tuo, cbb);
+      // densityPlot.setPlotPoints(200);
+      show.add(vectorPlot);
+      show.setPlotLabel("VectorPlot Cross");
+      return show;
+    }
+  },
   DensityJulia {
     @Override
     public Show getShow() {
@@ -279,7 +310,8 @@ public enum Showcases implements ShowProvider {
       show.setPlotLabel("Wiener Process with Integral");
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.of(3, 1));
       Tensor samples = RandomVariate.of(UniformDistribution.of(Clips.unit()), 100);
-      samples.maps(randomFunction::evaluate); // for integral
+      samples.maps(randomFunction::evaluate); // for
+                                              // integral
       show.add(Plot.of(randomFunction::evaluate, Clips.unit(), PlotOption.STRICT)).setLabel("timeSeries");
       TimeSeries timeSeries = randomFunction.timeSeries();
       TimeSeries integral = TimeSeriesIntegrate.of(timeSeries);
