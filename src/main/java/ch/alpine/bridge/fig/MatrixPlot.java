@@ -1,9 +1,10 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-import ch.alpine.bridge.awt.ScalableImage;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Flatten;
 import ch.alpine.tensor.alg.Rescale;
@@ -11,6 +12,7 @@ import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.ext.PackageTestAccess;
 import ch.alpine.tensor.img.ColorDataGradients;
+import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.qty.DateTime;
@@ -41,8 +43,11 @@ public enum MatrixPlot {
         clip = symmetrize(clip);
     }
     Rescale rescale = new Rescale(matrix, clip);
-    ScalableImage scalableImage = new ScalableImage(ImageFormat.of(rescale.result().maps(colorDataGradient)));
-    return new BaseArrayPlot(scalableImage, StaticHelper.shift(matrix), new BarLegend(rescale.clip(), colorDataGradient));
+    BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
+    return ImagePlot.of(bufferedImage, ImageResize.DEGREE_0, //
+        StaticHelper.shift(matrix), //
+        new BarLegend(rescale.clip(), colorDataGradient), //
+        true, RealScalar.ONE);
   }
 
   /** @param matrix

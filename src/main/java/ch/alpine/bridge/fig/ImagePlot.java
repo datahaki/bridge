@@ -19,8 +19,21 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 // TODO BRIDGE the aspect ratio pipeline is NO GOOD !
 // why isnt this instance of BaseArrayPlot, because BarLegendPlot (design not ideal)
 public class ImagePlot extends BarLegendPlot {
-  public static ImagePlot of(BufferedImage bufferedImage, ImageResize imageResize, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
-    return new ImagePlot(new ScalableImage(bufferedImage), imageResize, cbb, null, flipY, aspectRatio);
+  /** @param bufferedImage
+   * @param imageResize
+   * @param cbb
+   * @param barLegend
+   * @param flipY
+   * @param aspectRatio
+   * @return */
+  public static ImagePlot of( //
+      BufferedImage bufferedImage, ImageResize imageResize, CoordinateBoundingBox cbb, BarLegend barLegend, boolean flipY, Scalar aspectRatio) {
+    return new ImagePlot(new ScalableImage(bufferedImage), imageResize, cbb, barLegend, flipY, aspectRatio);
+  }
+
+  public static ImagePlot of( //
+      BufferedImage bufferedImage, ImageResize imageResize, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
+    return of(bufferedImage, imageResize, cbb, null, flipY, aspectRatio);
   }
 
   public static ImagePlot of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
