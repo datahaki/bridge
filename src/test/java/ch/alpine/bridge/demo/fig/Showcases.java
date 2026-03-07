@@ -631,8 +631,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("Image Plot BICUBIC");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
-      Showable showable = show.add(ImagePlot.of(bufferedImage));
-      ((ImagePlot) showable).setImageResize(ImageResize.DEGREE_3);
+      show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_3));
       return show;
     }
   },
@@ -642,8 +641,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("Image Plot BILINEAR");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
-      Showable showable = show.add(ImagePlot.of(bufferedImage));
-      ((ImagePlot) showable).setImageResize(ImageResize.DEGREE_1);
+      show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_1));
       return show;
     }
   },
@@ -653,8 +651,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       show.setPlotLabel("Image Plot NEAREST");
       BufferedImage bufferedImage = ResourceData.bufferedImage("/ch/alpine/bridge/io/image/album_in.jpg");
-      Showable showable = show.add(ImagePlot.of(bufferedImage));
-      ((ImagePlot) showable).setImageResize(ImageResize.DEGREE_0);
+      show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_0));
       return show;
     }
   },

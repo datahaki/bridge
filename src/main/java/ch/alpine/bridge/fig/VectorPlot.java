@@ -16,7 +16,6 @@ import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.TensorUnaryOperator;
 import ch.alpine.tensor.chq.FiniteTensorQ;
 import ch.alpine.tensor.ext.Cache;
-import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorFormat;
 import ch.alpine.tensor.nrm.Vector2Norm;
@@ -64,13 +63,17 @@ public class VectorPlot extends BarLegendPlot {
               _uv.append(v);
             return isFinite;
           }));
-      Tensor norms = Tensor.of(_uv.stream().map(Vector2Norm::of));
-      Scalar h = dx.Get(1).subtract(dx.Get(0)); // TODO This does not account for dy !!!
-      Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
-      uv = _uv.multiply(h.divide(max.add(max)));
-      rescale = new Rescale(norms);
+      if (Tensors.isEmpty(xy)) {
+        uv = Tensors.empty();
+        rescale = new Rescale(Tensors.empty());
+      } else {
+        Tensor norms = Tensor.of(_uv.stream().map(Vector2Norm::of));
+        Scalar h = dx.Get(1).subtract(dx.Get(0)); // TODO This does not account for dy !!!
+        Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
+        uv = _uv.multiply(h.divide(max.add(max)));
+        rescale = new Rescale(norms);
+      }
       inner_clip = rescale.clip();
-      Integers.requireEquals(xy.length(), rescale.result().length());
     }
   }
 

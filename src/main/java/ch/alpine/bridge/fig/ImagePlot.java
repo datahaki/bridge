@@ -10,6 +10,7 @@ import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
@@ -17,34 +18,50 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 // TODO BRIDGE the aspect ratio pipeline is NO GOOD !
 // why isnt this instance of BaseArrayPlot, because BarLegendPlot (design not ideal)
-public class ImagePlot extends ImageShowable {
+public class ImagePlot extends BarLegendPlot {
+  public static ImagePlot of(BufferedImage bufferedImage, ImageResize imageResize, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
+    return new ImagePlot(new ScalableImage(bufferedImage), imageResize, cbb, null, flipY, aspectRatio);
+  }
+
   public static ImagePlot of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
-    return new ImagePlot(bufferedImage, cbb, flipY, aspectRatio);
+    return of(bufferedImage, ImageResize.DEGREE_1, cbb, flipY, aspectRatio);
   }
 
   public static ImagePlot of(BufferedImage bufferedImage, CoordinateBoundingBox cbb) {
     return of(bufferedImage, cbb, false, null);
   }
 
+  public static ImagePlot of(BufferedImage bufferedImage, ImageResize imageResize) {
+    return of(bufferedImage, imageResize, StaticHelper.shift(bufferedImage), true, RealScalar.ONE);
+  }
+
   public static ImagePlot of(BufferedImage bufferedImage) {
-    return of(bufferedImage, StaticHelper.shift(bufferedImage), true, RealScalar.ONE);
+    return of(bufferedImage, ImageResize.DEGREE_1);
   }
 
   // ---
   private final ScalableImage scalableImage;
+  private final ImageResize imageResize;
+  private final BarLegend barLegend;
   private final boolean flipY;
   private final Scalar aspectRatio;
 
-  private ImagePlot(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
+  protected ImagePlot( //
+      ScalableImage scalableImage, //
+      ImageResize imageResize, //
+      CoordinateBoundingBox cbb, //
+      BarLegend barLegend, boolean flipY, Scalar aspectRatio) {
     super(cbb);
-    this.scalableImage = new ScalableImage(bufferedImage);
+    Integers.requireEquals(cbb.dimensions(), 2);
+    this.scalableImage = scalableImage;
+    this.imageResize = imageResize;
+    this.barLegend = barLegend;
     this.flipY = flipY;
     this.aspectRatio = aspectRatio;
-    setImageResize(ImageResize.DEGREE_1);
   }
 
   @Override // from Showable
-  public void render(ShowableConfig showableConfig, Graphics2D graphics) {
+  public final void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Point2D ul = showableConfig.toPoint2D(Tensors.of( //
         cbb.clip(0).min(), //
         flipY ? cbb.clip(1).min() : cbb.clip(1).max()));
@@ -55,23 +72,23 @@ public class ImagePlot extends ImageShowable {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height)
-      graphics.drawImage(scalableImage.getScaledInstance(getImageResize(), width, height), //
+      graphics.drawImage(scalableImage.getScaledInstance(imageResize, width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
   }
 
   @Override
-  protected BarLegend barLegend() {
-    return null;
+  protected final BarLegend barLegend() {
+    return barLegend;
   }
 
   @Override // from Showable
-  public boolean flipYAxis() {
+  public final boolean flipYAxis() {
     return flipY;
   }
 
   @Override // from Showable
-  public Optional<Scalar> aspectRatioHint() {
+  public final Optional<Scalar> aspectRatioHint() {
     return Optional.ofNullable(aspectRatio);
   }
 }
