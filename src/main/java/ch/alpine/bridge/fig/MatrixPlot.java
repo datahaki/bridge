@@ -42,7 +42,7 @@ public enum MatrixPlot {
     }
     Rescale rescale = new Rescale(matrix, clip);
     ScalableImage scalableImage = new ScalableImage(ImageFormat.of(rescale.result().maps(colorDataGradient)));
-    return new BaseArrayPlot(colorDataGradient, scalableImage, BaseArrayPlot.shift(matrix), rescale.clip());
+    return new BaseArrayPlot(scalableImage, StaticHelper.shift(matrix), new BarLegend(rescale.clip(), colorDataGradient));
   }
 
   /** @param matrix

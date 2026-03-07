@@ -5,40 +5,57 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Objects;
+import java.util.Optional;
 
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
-import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
-import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.qty.QuantityUnit;
+import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.Clips;
 
-/* package */ abstract class BarLegendPlot extends ArrayShowable {
-  private final ScalarTensorFunction colorDataGradient;
+/* package */ abstract class BarLegendPlot extends BaseShowable {
+  protected final CoordinateBoundingBox cbb;
+  private boolean aspectRatioOneHint = true;
 
-  public BarLegendPlot(CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
-    super(cbb);
-    this.colorDataGradient = colorDataGradient;
+  public BarLegendPlot(CoordinateBoundingBox cbb) {
+    this.cbb = Objects.requireNonNull(cbb);
   }
 
   /** @return may also return null */
-  protected abstract Clip clip();
+  protected abstract BarLegend barLegend();
+
+  @Override // from Showable
+  public final Optional<CoordinateBoundingBox> fullPlotRange() {
+    return Optional.of(cbb);
+  }
+
+  public final boolean getAspectRatioOneHint() {
+    Unit unit0 = QuantityUnit.of(cbb.clip(0).width());
+    Unit unit1 = QuantityUnit.of(cbb.clip(1).width());
+    return aspectRatioOneHint //
+        && unit0.equals(unit1);
+  }
+
+  public final void setAspectRatioOne(boolean hint) {
+    aspectRatioOneHint = hint;
+  }
 
   @Override
   public final void tender(ShowableConfig showableConfig, Graphics graphics) {
-    Clip clip = clip();
-    if (Objects.nonNull(clip)) {
+    BarLegend barLegend = barLegend();
+    if (Objects.nonNull(barLegend)) {
       Rectangle rectangle = showableConfig.rectangle;
       int width = StaticHelper.GAP * 2;
       int pix = rectangle.x + rectangle.width + 1 + StaticHelper.GAP * 2;
-      graphics.drawImage(ImageFormat.of(Subdivide.decreasing(Clips.unit(), rectangle.height - 1).maps(Tensors::of).maps(colorDataGradient)), //
+      graphics.drawImage(ImageFormat.of(Subdivide.decreasing(Clips.unit(), rectangle.height - 1).maps(Tensors::of).maps(barLegend.colorDataGradient())), //
           pix, rectangle.y, width, rectangle.height, null);
       new AxisYF(ISO8601DateTimeFocus.INSTANCE).render( //
           showableConfig, //
           new Point(pix + width + StaticHelper.GAP - 2, rectangle.y), //
-          rectangle.height, graphics, clip);
+          rectangle.height, graphics, barLegend.clip());
     }
   }
 }

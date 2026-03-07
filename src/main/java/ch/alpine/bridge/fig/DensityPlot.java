@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.tensor.Scalar;
@@ -27,7 +28,7 @@ import ch.alpine.tensor.sca.Clip;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/DensityPlot.html">DensityPlot</a> */
 // TODO BRIDGE option to constrain area by initial Clip
-public class DensityPlot extends BarLegendPlot {
+public class DensityPlot extends ImageShowable {
   private static final Scalar RENDER_TIME_TARGET = Quantity.of(0.1, "s");
   private static final int RESOLUTION_DEFAULT = 80;
   private static final int RESOLUTION_MIN = 10;
@@ -78,7 +79,7 @@ public class DensityPlot extends BarLegendPlot {
       ScalarBinaryOperator sbo, //
       CoordinateBoundingBox cbb, //
       ScalarTensorFunction colorDataGradient) {
-    super(cbb, colorDataGradient);
+    super(cbb);
     this.sbo = sbo;
     this.colorDataGradient = colorDataGradient;
     setImageResize(ImageResize.DEGREE_3);
@@ -121,8 +122,10 @@ public class DensityPlot extends BarLegendPlot {
   }
 
   @Override
-  protected Clip clip() {
-    return inner_clip;
+  protected BarLegend barLegend() {
+    return Objects.nonNull(inner_clip) //
+        ? new BarLegend(inner_clip, colorDataGradient)
+        : null;
   }
 
   public void setPlotPoints(int resolution) {

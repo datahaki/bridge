@@ -5,9 +5,11 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Stroke;
+import java.awt.image.BufferedImage;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import ch.alpine.bridge.lang.UnicodeString;
@@ -139,5 +141,21 @@ import ch.alpine.tensor.tmp.TsEntry;
 
   public static int interval(FontMetrics fontMetrics) {
     return fontMetrics.getAscent() * 8 / 5;
+  }
+
+  private static final UnaryOperator<Clip> SHIFT_HALF = Clips.translation(Rational.HALF.negate());
+
+  protected static CoordinateBoundingBox shift(Tensor matrix) {
+    return shift(Unprotect.dimension1(matrix), matrix.length());
+  }
+
+  protected static CoordinateBoundingBox shift(BufferedImage bufferedImage) {
+    return shift(bufferedImage.getWidth(), bufferedImage.getHeight());
+  }
+
+  private static CoordinateBoundingBox shift(int dim0, int dim1) {
+    return CoordinateBoundingBox.of( //
+        SHIFT_HALF.apply(Clips.positive(dim0)), //
+        SHIFT_HALF.apply(Clips.positive(dim1)));
   }
 }

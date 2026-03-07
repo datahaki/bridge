@@ -4,9 +4,8 @@ package ch.alpine.bridge.fig;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
-import java.util.Optional;
+import java.util.Objects;
 
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -24,7 +23,7 @@ import ch.alpine.tensor.sca.Clip;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/VectorPlot.html">VectorPlot</a> */
-public class VectorPlot extends BaseShowable {
+public class VectorPlot extends BarLegendPlot {
   private static final int RESOLUTION_DEFAULT = 30;
 
   public static VectorPlot of(TensorUnaryOperator tuo, CoordinateBoundingBox cbb) {
@@ -36,7 +35,6 @@ public class VectorPlot extends BaseShowable {
   }
 
   private final TensorUnaryOperator tuo;
-  private final CoordinateBoundingBox cbb;
   private final ScalarTensorFunction colorDataGradient;
   private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
   // ---
@@ -58,15 +56,15 @@ public class VectorPlot extends BaseShowable {
       Tensor norms = Tensor.of(_uv.stream().map(Vector2Norm::of));
       Scalar h = dx.Get(1).subtract(dx.Get(0));
       Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
-      uv = _uv.multiply(h.multiply(RealScalar.of(0.5)).divide(max));
+      uv = _uv.multiply(h.divide(max));
       rescale = new Rescale(norms);
       inner_clip = rescale.clip();
     }
   }
 
   private VectorPlot(TensorUnaryOperator tuo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
+    super(cbb);
     this.tuo = tuo;
-    this.cbb = cbb;
     this.colorDataGradient = colorDataGradient;
   }
 
@@ -95,7 +93,9 @@ public class VectorPlot extends BaseShowable {
   }
 
   @Override
-  public Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Optional.of(cbb);
+  protected BarLegend barLegend() {
+    return Objects.nonNull(inner_clip) //
+        ? new BarLegend(inner_clip, colorDataGradient)
+        : null;
   }
 }

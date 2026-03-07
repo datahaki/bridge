@@ -25,14 +25,14 @@ public enum ArrayPlot {
     ScalableImage scalableImage = new ScalableImage( //
         ImageFormat.of(rescale.result().maps(colorDataGradient)));
     Clip clip = rescale.clip();
-    return new BaseArrayPlot(colorDataGradient, scalableImage, cbb, clip);
+    return new BaseArrayPlot(scalableImage, cbb, new BarLegend(clip, colorDataGradient));
   }
 
   /** @param matrix
    * @param colorDataGradient
    * @return */
   public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient) {
-    return of(matrix, BaseArrayPlot.shift(matrix), colorDataGradient);
+    return of(matrix, StaticHelper.shift(matrix), colorDataGradient);
   }
 
   /** @param matrix

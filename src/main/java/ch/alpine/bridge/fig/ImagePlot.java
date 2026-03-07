@@ -17,7 +17,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 // TODO BRIDGE the aspect ratio pipeline is NO GOOD !
 // why isnt this instance of BaseArrayPlot, because BarLegendPlot (design not ideal)
-public class ImagePlot extends ArrayShowable {
+public class ImagePlot extends ImageShowable {
   public static ImagePlot of(BufferedImage bufferedImage, CoordinateBoundingBox cbb, boolean flipY, Scalar aspectRatio) {
     return new ImagePlot(bufferedImage, cbb, flipY, aspectRatio);
   }
@@ -27,7 +27,7 @@ public class ImagePlot extends ArrayShowable {
   }
 
   public static ImagePlot of(BufferedImage bufferedImage) {
-    return of(bufferedImage, BaseArrayPlot.shift(bufferedImage), true, RealScalar.ONE);
+    return of(bufferedImage, StaticHelper.shift(bufferedImage), true, RealScalar.ONE);
   }
 
   // ---
@@ -58,6 +58,11 @@ public class ImagePlot extends ArrayShowable {
       graphics.drawImage(scalableImage.getScaledInstance(getImageResize(), width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), null);
+  }
+
+  @Override
+  protected BarLegend barLegend() {
+    return null;
   }
 
   @Override // from Showable

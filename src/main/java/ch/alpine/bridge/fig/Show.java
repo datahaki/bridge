@@ -90,8 +90,8 @@ public class Show implements Serializable {
    * @return given showable */
   public final Showable add(Showable showable) {
     showable.setColor(colorDataIndexed.getColor(showables.size()));
-    if (showable instanceof ArrayShowable arrayShowable && //
-        arrayShowable.getAspectRatioOneHint())
+    if (showable instanceof BarLegendPlot barLegendPlot && //
+        barLegendPlot.getAspectRatioOneHint())
       setAspectRatioOne();
     showables.add(showable);
     return showable;

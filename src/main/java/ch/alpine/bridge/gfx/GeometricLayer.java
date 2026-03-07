@@ -7,6 +7,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Optional;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -105,14 +106,16 @@ public final class GeometricLayer {
     return deque.peek().isAxisAligned();
   }
 
-  public Rectangle toRectangle(CoordinateBoundingBox cbb) {
+  public Optional<Rectangle> toRectangle(CoordinateBoundingBox cbb) {
     Point2D min = toPoint2D(cbb.min());
     Point2D max = toPoint2D(cbb.max());
-    return new Rectangle( //
-        (int) min.getX(), //
-        (int) max.getY(), //
-        (int) (max.getX() - min.getX()), //
-        (int) (min.getY() - max.getY()));
+    return isAxisAligned() //
+        ? Optional.of(new Rectangle( //
+            (int) min.getX(), //
+            (int) max.getY(), //
+            (int) (max.getX() - min.getX()), //
+            (int) (min.getY() - max.getY())))
+        : Optional.empty();
   }
 
   /** function allows to render lines with width defined in model coordinates
