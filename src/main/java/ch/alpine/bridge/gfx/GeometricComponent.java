@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -69,7 +68,6 @@ public final class GeometricComponent extends JComponent {
     graphics.dispose();
   }
 
-  // TODO ASCONA possibly use EnumMultimap with background... main .. hud
   private final List<RenderInterface> renderBackground = new CopyOnWriteArrayList<>();
   private final List<RenderInterface> renderInterfaces = new CopyOnWriteArrayList<>();
   // ---
@@ -187,15 +185,6 @@ public final class GeometricComponent extends JComponent {
   /** @param button for instance MouseEvent.BUTTON1 */
   public void setButtonDrag(int button) {
     buttonDrag = button;
-  }
-
-  /** function only clears render interfaces in the foreground.
-   * the background is unchanged
-   * 
-   * @param collection */
-  public void setRenderInterfaces(Collection<RenderInterface> collection) {
-    renderInterfaces.clear();
-    renderInterfaces.addAll(collection);
   }
 
   public void addRenderInterface(RenderInterface renderInterface) {
