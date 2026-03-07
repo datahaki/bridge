@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +17,7 @@ import ch.alpine.tensor.chq.FiniteTensorQ;
 import ch.alpine.tensor.ext.Cache;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorFormat;
+import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.nrm.Vector2Norm;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.red.Max;
@@ -36,6 +36,7 @@ public class VectorPlot extends BarLegendPlot {
     return new VectorPlot(tuo, cbb, colorDataGradient);
   }
 
+  // ---
   private final TensorUnaryOperator tuo;
   private final ScalarTensorFunction colorDataGradient;
   private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
@@ -54,20 +55,26 @@ public class VectorPlot extends BarLegendPlot {
       Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);
       int initialCapacity = dx.length() * dy.length();
       Tensor _uv = Tensors.reserve(initialCapacity);
+      Tensor norms = Tensors.reserve(initialCapacity);
       xy = Tensor.of(dy.stream() //
           .flatMap(y -> dx.stream().map(x -> Unprotect.using(List.of(x, y)))) //
           .filter(p -> {
             Tensor v = tuo.apply(p);
             boolean isFinite = FiniteTensorQ.of(v);
-            if (isFinite)
+            if (isFinite) {
+              Scalar norm = Vector2Norm.of(v);
+              if (Tolerance.CHOP.isZero(norm))
+                return false;
               _uv.append(v);
-            return isFinite;
+              norms.append(norm);
+              return true;
+            }
+            return false;
           }));
       if (Tensors.isEmpty(xy)) {
         uv = Tensors.empty();
         rescale = new Rescale(Tensors.empty());
       } else {
-        Tensor norms = Tensor.of(_uv.stream().map(Vector2Norm::of));
         Scalar h = dx.Get(1).subtract(dx.Get(0)); // TODO This does not account for dy !!!
         Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
         uv = _uv.multiply(h.divide(max.add(max)));
@@ -85,7 +92,6 @@ public class VectorPlot extends BarLegendPlot {
 
   @Override
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    graphics.setStroke(getStroke());
     CoordinateBoundingBox cbb = showableConfig.getCbb();
     Inner inner = cache.apply(cbb);
     Tensor result = inner.rescale.result();
@@ -93,8 +99,8 @@ public class VectorPlot extends BarLegendPlot {
     for (Tensor p : inner.xy) {
       Tensor delta = inner.uv.get(index);
       ArrowPlot arrowPlot = new ArrowPlot(p.subtract(delta), p.add(delta));
-      Color color = ColorFormat.toColor(colorDataGradient.apply(result.Get(index)));
-      arrowPlot.setColor(color);
+      arrowPlot.setStroke(getStroke());
+      arrowPlot.setColor(ColorFormat.toColor(colorDataGradient.apply(result.Get(index))));
       arrowPlot.render(showableConfig, graphics);
       ++index;
     }
