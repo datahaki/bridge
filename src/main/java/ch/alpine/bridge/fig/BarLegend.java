@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.fig;
 
 import ch.alpine.tensor.api.ScalarTensorFunction;

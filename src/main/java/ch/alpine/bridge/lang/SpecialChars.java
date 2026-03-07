@@ -16,6 +16,8 @@ public enum SpecialChars {
   WINDOW("🪟"),
   PENCIL("✏️"),
   RULER("📏"),
+  SUNRISE("🌅"),
+  SUBSET("🌄"),
   TRIANGLE("📐"),
   NOTEBOOK("📘"),
   JOURNAL("📓"),

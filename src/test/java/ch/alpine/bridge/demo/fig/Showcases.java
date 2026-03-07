@@ -115,7 +115,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       // DensityPlot densityPlot = DensityPlot.of(sbo, cbb, ColorDataGradients.HUE);
       VectorPlot vectorPlot = VectorPlot.of(tuo, cbb);
-      // densityPlot.setPlotPoints(200);
+      vectorPlot.setStroke(new BasicStroke(2f));
       show.add(vectorPlot);
       show.setPlotLabel("VectorPlot Cross");
       return show;
@@ -129,7 +129,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show();
       // DensityPlot densityPlot = DensityPlot.of(sbo, cbb, ColorDataGradients.HUE);
       VectorPlot vectorPlot = VectorPlot.of(tuo, cbb);
-      // densityPlot.setPlotPoints(200);
+      vectorPlot.setStroke(new BasicStroke(2f));
       show.add(vectorPlot);
       show.setPlotLabel("VectorPlot Cross");
       return show;

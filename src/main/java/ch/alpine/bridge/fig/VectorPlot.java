@@ -1,19 +1,22 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
+import java.util.List;
 import java.util.Objects;
 
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.TensorUnaryOperator;
+import ch.alpine.tensor.chq.FiniteTensorQ;
 import ch.alpine.tensor.ext.Cache;
+import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ColorFormat;
 import ch.alpine.tensor.nrm.Vector2Norm;
@@ -27,7 +30,7 @@ public class VectorPlot extends BarLegendPlot {
   private static final int RESOLUTION_DEFAULT = 30;
 
   public static VectorPlot of(TensorUnaryOperator tuo, CoordinateBoundingBox cbb) {
-    return of(tuo, cbb, ColorDataGradients.DENSITY);
+    return of(tuo, cbb, ColorDataGradients.EMBER);
   }
 
   public static VectorPlot of(TensorUnaryOperator tuo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
@@ -50,15 +53,24 @@ public class VectorPlot extends BarLegendPlot {
       // TODO BRIDGE resolution based on aspect ratio and cbb ?
       Tensor dx = Subdivide.intermediate_increasing(cbb.clip(0), resolution);
       Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);
-      xy = Tensor.of(dy.stream().parallel() //
-          .flatMap(y -> dx.stream().map(x -> Tensors.of(x, y))));
-      Tensor _uv = tuo.slash(xy);
+      int initialCapacity = dx.length() * dy.length();
+      Tensor _uv = Tensors.reserve(initialCapacity);
+      xy = Tensor.of(dy.stream() //
+          .flatMap(y -> dx.stream().map(x -> Unprotect.using(List.of(x, y)))) //
+          .filter(p -> {
+            Tensor v = tuo.apply(p);
+            boolean isFinite = FiniteTensorQ.of(v);
+            if (isFinite)
+              _uv.append(v);
+            return isFinite;
+          }));
       Tensor norms = Tensor.of(_uv.stream().map(Vector2Norm::of));
-      Scalar h = dx.Get(1).subtract(dx.Get(0));
+      Scalar h = dx.Get(1).subtract(dx.Get(0)); // TODO This does not account for dy !!!
       Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
-      uv = _uv.multiply(h.divide(max));
+      uv = _uv.multiply(h.divide(max.add(max)));
       rescale = new Rescale(norms);
       inner_clip = rescale.clip();
+      Integers.requireEquals(xy.length(), rescale.result().length());
     }
   }
 
@@ -77,13 +89,10 @@ public class VectorPlot extends BarLegendPlot {
     int index = 0;
     for (Tensor p : inner.xy) {
       Tensor delta = inner.uv.get(index);
-      Point2D p0 = showableConfig.toPoint2D(p);
-      Point2D p1 = showableConfig.toPoint2D(p.add(delta));
-      graphics.setColor(ColorFormat.toColor(colorDataGradient.apply(result.Get(index))));
-      Path2D.Double path = new Path2D.Double();
-      path.moveTo(p0.getX(), p0.getY());
-      path.lineTo(p1.getX(), p1.getY());
-      graphics.draw(path);
+      ArrowPlot arrowPlot = new ArrowPlot(p.subtract(delta), p.add(delta));
+      Color color = ColorFormat.toColor(colorDataGradient.apply(result.Get(index)));
+      arrowPlot.setColor(color);
+      arrowPlot.render(showableConfig, graphics);
       ++index;
     }
   }
