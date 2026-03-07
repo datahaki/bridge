@@ -41,6 +41,10 @@ public class DensityPlot extends BarLegendPlot {
     return new DensityPlot(sbo, cbb, colorDataGradient);
   }
 
+  public static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
+    return ArrayPlot.of(matrix, cbb, colorDataGradient, false);
+  }
+
   // ---
   private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
   private final ScalarBinaryOperator sbo;
