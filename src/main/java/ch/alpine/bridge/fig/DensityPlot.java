@@ -45,6 +45,15 @@ public class DensityPlot extends BarLegendPlot {
     return ArrayPlot.of(matrix, cbb, colorDataGradient, false);
   }
 
+  public static Tensor compute(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, int resolution) {
+    // TODO BRIDGE resolution based on aspect ratio and cbb ?
+    Tensor dx = Subdivide.intermediate_increasing(cbb.clip(0), resolution);
+    Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);
+    return Tensor.of(dy.stream().parallel() //
+        .map(Scalar.class::cast) //
+        .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
+  }
+
   // ---
   private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
   private final ScalarBinaryOperator sbo;
@@ -58,12 +67,7 @@ public class DensityPlot extends BarLegendPlot {
     private final Clip clip;
 
     public Inner(CoordinateBoundingBox cbb, int resolution) {
-      // TODO BRIDGE resolution based on aspect ratio and cbb ?
-      Tensor dx = Subdivide.intermediate_increasing(cbb.clip(0), resolution);
-      Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);
-      Tensor matrix = Tensor.of(dy.stream().parallel() //
-          .map(Scalar.class::cast) //
-          .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
+      Tensor matrix = compute(sbo, cbb, resolution);
       Rescale rescale = new Rescale(matrix);
       BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
       scalableImage = new ScalableImage(bufferedImage);
