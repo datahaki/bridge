@@ -1,11 +1,11 @@
 // code by jph
 package ch.alpine.bridge.lang;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import ch.alpine.tensor.ext.ArgMin;
 import ch.alpine.tensor.ext.Cache;
@@ -29,7 +29,7 @@ public enum EnumValue {
 
     private Inner(T[] array) {
       this.array = array;
-      names = Stream.of(array).map(Enum::name).map(String::toUpperCase).toArray(String[]::new);
+      names = Arrays.stream(array).map(Enum::name).map(String::toUpperCase).toArray(String[]::new);
       cache = Cache.of(this, Integers.requirePositive(array.length) * FACTOR);
     }
 
@@ -39,7 +39,7 @@ public enum EnumValue {
 
     @Override
     public T apply(String key) {
-      return array[ArgMin.of(Stream.of(names) //
+      return array[ArgMin.of(Arrays.stream(names) //
           .map(EditDistance.function(key)) //
           .toList())];
     }

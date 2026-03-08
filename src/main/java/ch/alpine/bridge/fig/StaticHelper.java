@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -94,7 +95,7 @@ import ch.alpine.tensor.tmp.TsEntry;
     Scalar decStep = Quantity.of( //
         Power.of(10, Ceiling.FUNCTION.apply(Log10.FUNCTION.apply(Unprotect.withoutUnit(scalar)))), //
         QuantityUnit.of(scalar));
-    return Stream.of(RATIOS) //
+    return Arrays.stream(RATIOS) //
         .map(decStep::multiply) //
         .filter(value -> Scalars.lessEquals(scalar, value)) //
         .findFirst() //

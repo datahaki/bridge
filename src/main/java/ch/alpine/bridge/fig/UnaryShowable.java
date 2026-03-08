@@ -1,11 +1,11 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.Clip;
@@ -20,10 +20,10 @@ public abstract class UnaryShowable extends BaseShowable {
   /** @param suo
    * @param domain may be null, in which case the plot is empty
    * @param whether area between function and axis is shaded */
-  protected UnaryShowable(ScalarUnaryOperator suo, Clip domain, PlotOption... options) {
+  protected UnaryShowable(ScalarUnaryOperator suo, Clip domain, PlotOption... plotOptions) {
     this.suo = suo;
     this.domain = Objects.requireNonNull(domain);
-    Stream.of(options).forEach(set::add);
+    Arrays.stream(plotOptions).forEach(set::add);
   }
 
   protected final Optional<Clip> x_clip(ShowableConfig showableConfig) {

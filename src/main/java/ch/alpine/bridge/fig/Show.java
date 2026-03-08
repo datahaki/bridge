@@ -53,7 +53,9 @@ public class Show implements Serializable {
     return new Insets(4 + fontSize, 70, 10 + fontSize, 10);
   }
 
-  /** @param dimension
+  /** Careful: the width, or height of the returned rectangle may be negative
+   * 
+   * @param dimension
    * @param fontSize for instance graphics.getFont().getSize()
    * @return */
   public static Rectangle defaultInsets(Dimension dimension, int fontSize) {
@@ -63,6 +65,13 @@ public class Show implements Serializable {
         insets.top, //
         dimension.width - insets.left - insets.right, //
         dimension.height - insets.top - insets.bottom);
+  }
+
+  public static Optional<Rectangle> optionalDefaultInsets(Dimension dimension, int fontSize) {
+    Rectangle rectangle = defaultInsets(dimension, fontSize);
+    return Optional.ofNullable(1 < rectangle.width && 1 < rectangle.height //
+        ? rectangle
+        : null);
   }
 
   // ---

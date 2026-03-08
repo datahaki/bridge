@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -70,7 +70,7 @@ class DateTimeIntervalTest {
 
   @Test
   void duractionIncreasting() {
-    Tensor tensor = Tensor.of(Stream.of(DateTimeInterval.values()).map(DateTimeInterval::durationHint).distinct());
+    Tensor tensor = Tensor.of(Arrays.stream(DateTimeInterval.values()).map(DateTimeInterval::durationHint).distinct());
     assertTrue(OrderedQ.of(tensor));
     assertEquals(tensor.length(), DateTimeInterval.values().length);
   }

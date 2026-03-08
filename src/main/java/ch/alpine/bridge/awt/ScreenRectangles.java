@@ -6,8 +6,8 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import ch.alpine.tensor.ext.Integers;
 
@@ -15,7 +15,7 @@ import ch.alpine.tensor.ext.Integers;
  * <a href="https://reference.wolfram.com/language/ref/ScreenRectangle.html">ScreenRectangle</a> */
 public record ScreenRectangles(List<Rectangle> rectangles) {
   public static ScreenRectangles create() {
-    return new ScreenRectangles(Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) //
+    return new ScreenRectangles(Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) //
         .map(GraphicsDevice::getDefaultConfiguration) //
         .map(GraphicsConfiguration::getBounds) //
         .toList());

@@ -4,9 +4,9 @@ package ch.alpine.bridge.lang;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,7 +30,7 @@ class SpecialCharsTest {
       if (!added)
         System.err.println("duplicate: " + specialChars);
     }
-    long count = Stream.of(SpecialChars.values()).map(SpecialChars::string).distinct().count();
+    long count = Arrays.stream(SpecialChars.values()).map(SpecialChars::string).distinct().count();
     assertEquals(count, SpecialChars.values().length);
   }
 }

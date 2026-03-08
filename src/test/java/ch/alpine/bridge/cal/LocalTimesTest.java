@@ -4,7 +4,7 @@ package ch.alpine.bridge.cal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalTime;
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,7 @@ class LocalTimesTest {
   @Test
   void testDifferent() {
     LocalTime localTime = LocalTime.of(23, 59, 59, 999_999_999);
-    long count = Stream.of(LocalTimes.values()).map(s -> s.floor(localTime)).distinct().count();
+    long count = Arrays.stream(LocalTimes.values()).map(s -> s.floor(localTime)).distinct().count();
     assertEquals(count, LocalTimes.values().length);
   }
 }

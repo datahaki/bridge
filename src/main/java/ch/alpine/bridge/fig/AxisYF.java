@@ -56,7 +56,7 @@ class AxisYF extends Axis {
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
-      Scalar plotHeight = RealScalar.of(rectangle.height - 1);
+      Scalar plotHeight = RealScalar.of(rectangle.height); // - 1
       Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize)));
       for ( //
           Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //

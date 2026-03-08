@@ -3,8 +3,8 @@ package ch.alpine.bridge.demo.fig;
 
 import java.awt.Dimension;
 import java.awt.Window;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -17,7 +17,7 @@ class ShowWindowDemo implements WindowProvider {
   @Override
   public Window getWindow() {
     JFrame jFrame = new JFrame();
-    List<Show> list = Stream.of(Showcases.values()).map(Showcases::getShow).toList();
+    List<Show> list = Arrays.stream(Showcases.values()).map(Showcases::getShow).toList();
     JScrollPane jScrollPane = new JScrollPane(ShowGridComponent.column(list, new Dimension(400, 400)));
     jFrame.setContentPane(jScrollPane);
     return jFrame;

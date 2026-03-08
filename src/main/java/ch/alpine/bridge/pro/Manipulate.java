@@ -49,8 +49,9 @@ public class Manipulate {
   private void receive(Container container_next) {
     Objects.requireNonNull(container_next);
     if (container_prev == container_next) {
+      // more advanced updates such as viewport revalidate
+      // can be done inside the supplier
       container_prev.repaint();
-      // SwingUtilities.invokeLater(geometricComponent.jComponent::repaint);
     } else {
       jPanel.removeAll();
       jPanel.add(BorderLayout.CENTER, container_prev = container_next);

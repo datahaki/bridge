@@ -50,7 +50,7 @@ class AxisY extends Axis {
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
-      Scalar plotHeight = RealScalar.of(rectangle.height - 1);
+      Scalar plotHeight = RealScalar.of(rectangle.height); // - 1
       // the "50" is instead of fontsize
       Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(Axis.RESERVE));
       for ( //

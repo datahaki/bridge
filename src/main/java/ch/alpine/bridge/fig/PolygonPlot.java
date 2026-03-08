@@ -4,9 +4,9 @@ package ch.alpine.bridge.fig;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import ch.alpine.tensor.Tensor;
 
@@ -17,9 +17,9 @@ public class PolygonPlot extends BasePointsPlot {
    * The special case when points == {} is also allowed.
    * @return instance of the visual row, that was added to this visual set
    * @throws Exception if not all entries in points are vectors of length 2 */
-  public static Showable of(Tensor points, PlotOption... options) {
+  public static Showable of(Tensor points, PlotOption... plotOptions) {
     Set<PlotOption> set = EnumSet.of(PlotOption.CLOSE);
-    Stream.of(options).forEach(set::add);
+    Arrays.stream(plotOptions).forEach(set::add);
     return new PolygonPlot(points, set);
   }
 

@@ -107,6 +107,14 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  Axes {
+    @Override
+    public Show getShow() {
+      Show show = new Show();
+      show.add(ListPlot.of(Tensors.fromString("{{0,1},{1,0}}")));
+      return show;
+    }
+  },
   VectorPlot1 {
     @Override
     public Show getShow() {
@@ -797,9 +805,7 @@ public enum Showcases implements ShowProvider {
       show.add(densityPlot);
       return show;
     }
-  }
-  //
-  ;
+  },;
 
   public final boolean extra;
 

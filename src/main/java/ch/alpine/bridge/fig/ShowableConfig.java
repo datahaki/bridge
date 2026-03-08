@@ -25,6 +25,10 @@ public class ShowableConfig {
   protected final Scalar pixel2x;
   protected final Scalar pixel2y;
 
+  /** Careful: rectangle width and height have to be greater than 1
+   * 
+   * @param rectangle
+   * @param cbb */
   public ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb) {
     this.rectangle = rectangle;
     this.cbb = cbb;

@@ -1,13 +1,13 @@
 // code by jph
 package ch.alpine.bridge.lang;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HexFormat;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -125,7 +125,7 @@ public enum FriendlyFormat {
   /** @param string for example: "GRAND_PIANO"
    * @return "GrandPiano" */
   public static String toCamelCase(String string) {
-    return Stream.of(string.split("_")) //
+    return Arrays.stream(string.split("_")) //
         .map(FriendlyFormat::headRest) //
         .collect(Collectors.joining());
   }
