@@ -28,6 +28,7 @@ public class Plot extends UnaryShowable {
   }
 
   // ---
+private final  Path2D.Double path = new Path2D.Double();
   /** @param suo
    * @param domain may be null, in which case the plot is empty
    * @param whether area between function and axis is shaded */
@@ -46,9 +47,9 @@ public class Plot extends UnaryShowable {
         graphics.setStroke(getStroke());
         final double x0 = showableConfig.x_pos(x_clip.min());
         final double x1 = showableConfig.x_pos(x_clip.max());
-        Path2D.Double path = new Path2D.Double();
         // TODO there is several interpolations concat here, also: enhance precision?
         // TODO BRIDGE values NaN, Inf are just skipped right now, see BrokenSUO
+        path.reset();
         path.moveTo(x0, showableConfig.y_pos(suo.apply(x_clip.min())));
         ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
         final int size = (int) ((x1 - x0) * segmentsPerPixel);

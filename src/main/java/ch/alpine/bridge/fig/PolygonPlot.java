@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -25,9 +26,11 @@ public class PolygonPlot extends BasePointsPlot {
 
   // ---
   private final Set<PlotOption> set;
+  private final Path2D.Double path;
 
   PolygonPlot(Tensor points, Set<PlotOption> set) {
     super(points);
+    path = new Path2D.Double(PathIterator.WIND_NON_ZERO, points.length());
     this.set = set;
   }
 
@@ -36,7 +39,7 @@ public class PolygonPlot extends BasePointsPlot {
     if (0 < points.length()) {
       graphics.setColor(getColor());
       graphics.setStroke(getStroke());
-      Path2D.Double path = new Path2D.Double();
+      path.reset();
       {
         Point2D point2d = showableConfig.toPoint2D(points.get(0));
         path.moveTo(point2d.getX(), point2d.getY());

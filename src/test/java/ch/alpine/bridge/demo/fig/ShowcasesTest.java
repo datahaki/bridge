@@ -21,11 +21,11 @@ class ShowcasesTest {
 
   @ParameterizedTest
   @EnumSource
-  void test(Showcases showDemos) throws IOException {
-    Show show = showDemos.getShow();
+  void test(Showcases showcases) throws IOException {
+    Show show = showcases.getShow();
     BufferedImage bufferedImage = show.image(new Dimension(400, 300));
     assertEquals(bufferedImage.getWidth(), 400);
     assertEquals(bufferedImage.getHeight(), 300);
-    Jpeg.put(bufferedImage, tempDir.resolve(showDemos.name() + ".jpg"), 0.9f);
+    Jpeg.put(bufferedImage, tempDir.resolve(showcases.name() + ".jpg"), 0.9f);
   }
 }

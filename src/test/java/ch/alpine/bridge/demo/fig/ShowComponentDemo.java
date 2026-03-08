@@ -13,15 +13,14 @@ import ch.alpine.bridge.ref.ann.ReflectionMarker;
 
 @ReflectionMarker
 class ShowComponentDemo implements ManipulateProvider {
-  private final ShowComponent showComponent = new ShowComponent();
-  // ---
-  public Showcases showDemos = Showcases.VectorPlot1;
+  public Showcases showDemos = Showcases.Axes;
   public Font font = new JPanel().getFont();
   public Boolean xZoom = true;
   public Boolean xPan = true;
   public Boolean yZoom = true;
   public Boolean yPan = true;
 
+  private final ShowComponent showComponent = new ShowComponent();
   @Override
   public Container getContainer() {
     showComponent.setFont(font);

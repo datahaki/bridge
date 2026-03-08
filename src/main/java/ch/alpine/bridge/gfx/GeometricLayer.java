@@ -4,6 +4,7 @@ package ch.alpine.bridge.gfx;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -80,7 +81,7 @@ public final class GeometricLayer {
   /** @param polygon
    * @return path that is not closed */
   public Path2D toPath2D(Tensor polygon) {
-    Path2D path2d = new Path2D.Double();
+    Path2D path2d = new Path2D.Double(PathIterator.WIND_NON_ZERO, polygon.length());
     if (Tensors.nonEmpty(polygon)) {
       Point2D point2d = toPoint2D(polygon.get(0));
       path2d.moveTo(point2d.getX(), point2d.getY());
@@ -89,6 +90,7 @@ public final class GeometricLayer {
         .skip(1) // first coordinate already used in moveTo
         .map(this::toPoint2D) //
         .forEach(point2d -> path2d.lineTo(point2d.getX(), point2d.getY()));
+    
     return path2d;
   }
 

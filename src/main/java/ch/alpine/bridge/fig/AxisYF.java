@@ -22,6 +22,7 @@ import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
+// TODO BRIDGE only used for BarLegend, ticks are draw to right instead of left
 class AxisYF extends Axis {
   public AxisYF(DateTimeFocus dateTimeFocus) {
     super(dateTimeFocus);

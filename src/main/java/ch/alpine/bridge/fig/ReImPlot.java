@@ -37,6 +37,9 @@ public class ReImPlot extends UnaryShowable {
   }
 
   // ---
+  private final Path2D.Double pathRe = new Path2D.Double();
+  private final Path2D.Double pathIm = new Path2D.Double();
+
   /** @param suo
    * @param domain may be null, in which case the plot is empty
    * @param whether area between function and axis is shaded */
@@ -50,11 +53,11 @@ public class ReImPlot extends UnaryShowable {
     if (optional.isPresent()) {
       Clip x_clip = optional.orElseThrow();
       int segmentsPerPixel = 1;
-      if (Sign.isPositive(x_clip.width())) {
+      if (Sign.isPositive(x_clip.width())) { // TODO this should not checking here!
         final double x0 = showableConfig.x_pos(x_clip.min());
         final double x1 = showableConfig.x_pos(x_clip.max());
-        Path2D.Double pathRe = new Path2D.Double();
-        Path2D.Double pathIm = new Path2D.Double();
+        pathRe.reset();
+        pathIm.reset();
         {
           ReIm reIm = ReIm.of(suo.apply(x_clip.min()));
           pathRe.moveTo(x0, showableConfig.y_pos(reIm.re()));

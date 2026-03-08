@@ -8,6 +8,7 @@ import java.io.Serializable;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.io.MathematicaFormat;
 import ch.alpine.tensor.jet.AppendOne;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.mat.Tolerance;
@@ -72,5 +73,10 @@ public final class AffineFrame2D implements Serializable {
   public boolean isAxisAligned() {
     return Tolerance.CHOP.isZero(matrix.Get(1, 0)) //
         && Tolerance.CHOP.isZero(matrix.Get(0, 1));
+  }
+  
+  @Override
+  public String toString() {
+    return MathematicaFormat.concise("AffineFrame2D", matrix);
   }
 }

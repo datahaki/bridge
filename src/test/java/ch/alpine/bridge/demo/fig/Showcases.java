@@ -20,6 +20,7 @@ import ch.alpine.bridge.fig.ParametricPlot;
 import ch.alpine.bridge.fig.Periodogram;
 import ch.alpine.bridge.fig.Plot;
 import ch.alpine.bridge.fig.PlotOption;
+import ch.alpine.bridge.fig.PolygonPlot;
 import ch.alpine.bridge.fig.ReImPlot;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
@@ -54,6 +55,7 @@ import ch.alpine.tensor.io.Import;
 import ch.alpine.tensor.itp.Interpolation;
 import ch.alpine.tensor.itp.LanczosInterpolation;
 import ch.alpine.tensor.itp.MitchellNetravaliKernel;
+import ch.alpine.tensor.lie.rot.CirclePoints;
 import ch.alpine.tensor.lie.rot.Cross;
 import ch.alpine.tensor.mat.HilbertMatrix;
 import ch.alpine.tensor.mat.re.LinearSolve;
@@ -111,7 +113,10 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.add(ListPlot.of(Tensors.fromString("{{0,1},{1,0}}")));
+      show.add(PolygonPlot.of(CirclePoints.of(8), PlotOption.FILL)).setAlpha(32);
+      show.add(PolygonPlot.of(CirclePoints.of(16)));
+      show.add(ListPlot.of(Tensors.fromString("{{-1,1},{1,-1}}")));
+      show.setAspectRatioOne();
       return show;
     }
   },
