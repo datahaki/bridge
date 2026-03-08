@@ -96,6 +96,9 @@ public class ShowDemo implements ManipulateProvider {
     jComponent.setPreferredSize(new Dimension(width, piy));
     JViewport jViewport = jScrollPane.getViewport();
     jViewport.setViewPosition(new Point(0, 0));
+    // chatgpt:
+    // "Whenever the contents of a JScrollPane change size
+    // then call revalidate() on the viewport view."
     jViewport.revalidate();
     return jScrollPane;
   }

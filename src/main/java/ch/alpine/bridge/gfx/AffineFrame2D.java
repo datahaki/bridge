@@ -13,6 +13,7 @@ import ch.alpine.tensor.jet.AppendOne;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.mat.re.Det;
+import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.sca.Abs;
 import ch.alpine.tensor.sca.pow.Sqrt;
 
@@ -54,6 +55,10 @@ public final class AffineFrame2D implements Serializable {
     return new AffineFrame2D(this.matrix.dot(matrix));
   }
 
+  public Tensor toModel(int x, int y) {
+    return LinearSolve.of(matrix, Tensors.vector(x, y, 1)).extract(0, 2);
+  }
+
   /** @return determinant of affine transform, for a standard,
    * right-hand coordinate system, the determinant is negative
    * because pixel coordinates are left handed */
@@ -74,7 +79,7 @@ public final class AffineFrame2D implements Serializable {
     return Tolerance.CHOP.isZero(matrix.Get(1, 0)) //
         && Tolerance.CHOP.isZero(matrix.Get(0, 1));
   }
-  
+
   @Override
   public String toString() {
     return MathematicaFormat.concise("AffineFrame2D", matrix);

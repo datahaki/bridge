@@ -14,6 +14,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 /** GeometricLayer transforms from model to pixel coordinates
  * 
@@ -90,7 +91,6 @@ public final class GeometricLayer {
         .skip(1) // first coordinate already used in moveTo
         .map(this::toPoint2D) //
         .forEach(point2d -> path2d.lineTo(point2d.getX(), point2d.getY()));
-    
     return path2d;
   }
 
@@ -118,6 +118,20 @@ public final class GeometricLayer {
             (int) (max.getX() - min.getX()), //
             (int) (min.getY() - max.getY())))
         : Optional.empty();
+  }
+
+  /** transforms point in pixel space to coordinates of model space
+   * 
+   * @param point
+   * @return tensor of length 2 */
+  public Optional<CoordinateBoundingBox> fromRectangle(Rectangle rectangle) {
+    if (isAxisAligned()) {
+      AffineFrame2D affineFrame2D = deque.peek();
+      return Optional.of(CoordinateBounds.of(Tensors.of( //
+          affineFrame2D.toModel(rectangle.x, rectangle.y), //
+          affineFrame2D.toModel(rectangle.x + rectangle.width, rectangle.y + rectangle.height))));
+    }
+    return Optional.empty();
   }
 
   /** function allows to render lines with width defined in model coordinates
