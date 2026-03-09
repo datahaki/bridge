@@ -20,7 +20,7 @@ public enum PhysicalConstants {
   ;
   private static final Map<String, Scalar> MAP = new HashMap<>();
   static {
-    Properties properties = ResourceData.properties("/ch/alpine/bridge/lang/physical_constants.properties");
+    Properties properties = ResourceData.properties("ch/alpine/bridge/lang/physical_constants.properties");
     for (String key : properties.stringPropertyNames())
       MAP.put(key, Scalars.fromString(properties.getProperty(key)));
   }

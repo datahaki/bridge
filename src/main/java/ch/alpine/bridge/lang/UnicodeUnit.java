@@ -58,7 +58,7 @@ import ch.alpine.tensor.sca.Sign;
     exponents.put("3", "\u00b3");
     exponents.put("-3", "\u207b\u00b3");
     // ---
-    Properties properties = ResourceData.properties("/ch/alpine/tensor/qty/si.properties");
+    Properties properties = ResourceData.properties("ch/alpine/tensor/qty/si.properties");
     Set<String> set = properties.stringPropertyNames();
     for (String key : set)
       if (key.startsWith("_")) { // inflator

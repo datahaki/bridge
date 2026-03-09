@@ -124,7 +124,7 @@ class ObjectPropertiesTest {
   }
 
   public static final ParamContainer INSTANCE = ObjectProperties.set(new ParamContainer(),
-      ResourceData.properties("/ch/alpine/bridge/io/ParamContainer.properties"));
+      ResourceData.properties("ch/alpine/bridge/io/ParamContainer.properties"));
 
   @Test
   void testParamContainerSimple() {
