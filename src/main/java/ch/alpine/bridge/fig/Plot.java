@@ -28,7 +28,8 @@ public class Plot extends UnaryShowable {
   }
 
   // ---
-private final  Path2D.Double path = new Path2D.Double();
+  private final Path2D.Double path = new Path2D.Double();
+
   /** @param suo
    * @param domain may be null, in which case the plot is empty
    * @param whether area between function and axis is shaded */

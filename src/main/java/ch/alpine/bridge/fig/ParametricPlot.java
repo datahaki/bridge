@@ -25,6 +25,7 @@ public class ParametricPlot extends BaseShowable {
   }
 
   // ---
+  private final Path2D.Double path = new Path2D.Double();
   private final ScalarTensorFunction stf;
   private final Clip domain;
 
@@ -38,9 +39,9 @@ public class ParametricPlot extends BaseShowable {
     if (Sign.isPositive(domain.width())) {
       graphics.setColor(getColor());
       graphics.setStroke(getStroke());
-      Path2D.Double path = new Path2D.Double();
       // TODO BRIDGE adaptive resolution (see SpiralDemo)
       Tensor points = Subdivide.increasing(domain, 3 * RESOLUTION).maps(stf);
+      path.reset();
       {
         Point2D point2d = showableConfig.toPoint2D(points.get(0));
         path.moveTo(point2d.getX(), point2d.getY());

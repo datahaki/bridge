@@ -19,8 +19,8 @@ class ShowComponentDemo implements ManipulateProvider {
   public Boolean xPan = true;
   public Boolean yZoom = true;
   public Boolean yPan = true;
-
   private final ShowComponent showComponent = new ShowComponent();
+
   @Override
   public Container getContainer() {
     showComponent.setFont(font);
