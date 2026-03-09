@@ -70,22 +70,26 @@ public class ObjectFields {
   // TODO BRIDGE possibilities 1) dynamic allocate list content using default constr,, or 2) truncate preallocated list based on file content
   private void visit(String _prefix, Object object) {
     if (Objects.nonNull(object))
-      for (Field field : list(object.getClass())) {
-        String prefix = _prefix + field.getName();
-        switch (classify(field)) {
-        case LEAF -> objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, new FieldValue(field).get(object));
-        case NODE -> {
-          objectFieldVisitor.push(prefix, field, null);
-          visit(prefix + ".", new FieldValue(field).get(object));
-          objectFieldVisitor.pop();
+      for (Field field : list(object.getClass()))
+        try {
+          String prefix = _prefix + field.getName();
+          switch (classify(field)) {
+          case LEAF -> objectFieldVisitor.accept(prefix, FieldWraps.INSTANCE.wrap(field), object, new FieldValue(field).get(object));
+          case NODE -> {
+            objectFieldVisitor.push(prefix, field, null);
+            visit(prefix + ".", new FieldValue(field).get(object));
+            objectFieldVisitor.pop();
+          }
+          case HOST -> iterate(prefix, field, List.of((Object[]) new FieldValue(field).get(object)));
+          case LIST -> iterate(prefix, field, (List<?>) new FieldValue(field).get(object));
+          default -> {
+            // skip
+          }
+          }
+        } catch (Exception exception) {
+          // TODO fieldSelectionArray ... should not cause crash but print error
+          throw new RuntimeException(field.toString());
         }
-        case HOST -> iterate(prefix, field, List.of((Object[]) new FieldValue(field).get(object)));
-        case LIST -> iterate(prefix, field, (List<?>) new FieldValue(field).get(object));
-        default -> {
-          // skip
-        }
-        }
-      }
   }
 
   private void iterate(String prefix, Field field, List<?> list) throws IllegalArgumentException {
