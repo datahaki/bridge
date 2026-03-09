@@ -8,14 +8,21 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.fft.SpectrogramArray;
+import ch.alpine.tensor.fft.SpectrogramArrays;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.Raster;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clips;
 
-/** inspired by
- * <a href="https://reference.wolfram.com/language/ref/Spectrogram.html">Spectrogram</a> */
+/** Remark:
+ * Cepstrogram is not implemented because already covered by Spectrogram
+ * {@link SpectrogramArrays#POWER}
+ * 
+ * <p>inspired by
+ * <a href="https://reference.wolfram.com/language/ref/Spectrogram.html">Spectrogram</a>
+ * <p>inspired by
+ * <a href="https://reference.wolfram.com/language/ref/Cepstrogram.html">Cepstrogram</a> */
 public enum Spectrogram {
   ;
   /** @param spectrogramArray for example SpectrogramArrays.FOURIER.operator()

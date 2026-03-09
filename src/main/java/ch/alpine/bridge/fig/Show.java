@@ -284,7 +284,6 @@ public class Show implements Serializable {
     }
   }
 
-  // ---
   private void renderFrameTitle(Graphics _g, Rectangle rectangle) {
     Graphics2D graphics = (Graphics2D) _g.create();
     if (isFramed()) {
@@ -323,14 +322,21 @@ public class Show implements Serializable {
       showableConfig = flipY //
           ? new ShowableConfigYF(rectangle, _cbb)
           : new ShowableConfig(rectangle, _cbb);
+      // ---
+      for (Showable showable : showables)
+        if (showable instanceof BackgroundPlotMarker) {
+          showable.render(showableConfig, graphics);
+          showable.tender(showableConfig, _g);
+        }
       if (gridLines) {
         GridDrawer gridDrawer = new GridDrawer(dateTimeFocus);
         gridDrawer.render(showableConfig, _g);
       }
-      for (Showable showable : showables) {
-        showable.render(showableConfig, graphics);
-        showable.tender(showableConfig, _g);
-      }
+      for (Showable showable : showables)
+        if (!(showable instanceof BackgroundPlotMarker)) {
+          showable.render(showableConfig, graphics);
+          showable.tender(showableConfig, _g);
+        }
     }
     return showableConfig;
   }

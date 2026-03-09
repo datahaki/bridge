@@ -18,7 +18,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * <a href="https://reference.wolfram.com/language/ref/ArrayPlot.html">ArrayPlot</a> */
 // TODO BRIDGE the aspect ratio pipeline is NO GOOD !
 // why isnt this instance of BaseArrayPlot, because BarLegendPlot (design not ideal)
-public class ImagePlot extends BarLegendPlot {
+public class ImagePlot extends BarLegendPlot implements BackgroundPlotMarker {
   /** @param bufferedImage
    * @param imageResize
    * @param cbb
