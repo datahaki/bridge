@@ -55,8 +55,8 @@ public class GridDrawer {
           unit1 = "[]";
         String xLabel = unit0 + "\u2192" + unit1;
         Graphics2D graphics = (Graphics2D) _g.create();
-        FontMetrics fontMetrics = graphics.getFontMetrics();
         RenderQuality.setQuality(graphics);
+        FontMetrics fontMetrics = graphics.getFontMetrics();
         graphics.setColor(StaticHelper.COLOR_FONT);
         graphics.drawString(xLabel, //
             rectangle.x - fontMetrics.stringWidth(xLabel) - 3 * StaticHelper.GAP, //

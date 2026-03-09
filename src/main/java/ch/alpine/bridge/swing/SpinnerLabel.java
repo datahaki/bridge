@@ -27,7 +27,10 @@ import ch.alpine.tensor.ext.Integers;
 
 /** selector in gui for easy scrolling through a list with mouse-wheel
  * and menu to the side upon mouse-click
- * extends from a non-editable text field therefore the name "label" */
+ * extends from a non-editable text field therefore the name "label"
+ * 
+ * @apiNote THE USE OF {@link SpinnerLabel} IN THE APPLICATION LAYER
+ * SHOULD BE AVOIDED */
 public abstract class SpinnerLabel<T> extends JTextField {
   /** JToggleButton background when selected is 184 207 229 selection color
    * subtracts 24 from each RGB value */
