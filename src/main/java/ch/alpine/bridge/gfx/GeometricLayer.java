@@ -83,6 +83,11 @@ public final class GeometricLayer {
    * @return path that is not closed */
   public Path2D toPath2D(Tensor polygon) {
     Path2D path2d = new Path2D.Double(PathIterator.WIND_NON_ZERO, polygon.length());
+    toPath2D(path2d, polygon);
+    return path2d;
+  }
+
+  public void toPath2D(Path2D path2d, Tensor polygon) {
     if (Tensors.nonEmpty(polygon)) {
       Point2D point2d = toPoint2D(polygon.get(0));
       path2d.moveTo(point2d.getX(), point2d.getY());
@@ -91,7 +96,6 @@ public final class GeometricLayer {
         .skip(1) // first coordinate already used in moveTo
         .map(this::toPoint2D) //
         .forEach(point2d -> path2d.lineTo(point2d.getX(), point2d.getY()));
-    return path2d;
   }
 
   /** @param polygon
