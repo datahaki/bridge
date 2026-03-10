@@ -20,9 +20,9 @@ class ClassFieldCheckTest {
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
     assertTrue(37 <= classFieldCheck.getInspected().size());
     assertTrue(classFieldCheck.getFailures().contains(FieldClipT.class));
-    List<FieldValueContainer> list = classFieldCheck.invalidFields();
+    List<FieldValueRecord> list = classFieldCheck.invalidFields();
     Set<String> set = list.stream() //
-        .map(FieldValueContainer::object) //
+        .map(FieldValueRecord::object) //
         .map(Object::getClass) //
         .map(Class::getSimpleName) //
         .distinct().collect(Collectors.toSet());

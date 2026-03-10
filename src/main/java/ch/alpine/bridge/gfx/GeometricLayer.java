@@ -87,6 +87,8 @@ public final class GeometricLayer {
     return path2d;
   }
 
+  /** @param path2d to which moveTo and lineTo directives are written
+   * @param polygon */
   public void toPath2D(Path2D path2d, Tensor polygon) {
     if (Tensors.nonEmpty(polygon)) {
       Point2D point2d = toPoint2D(polygon.get(0));

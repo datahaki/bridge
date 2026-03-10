@@ -50,7 +50,7 @@ public class ClassFieldCheck implements ClassVisitor {
   }
 
   /** @return invalid fields */
-  public List<FieldValueContainer> invalidFields() {
+  public List<FieldValueRecord> invalidFields() {
     return Collections.unmodifiableList(invalidFieldDetection.list());
   }
 }

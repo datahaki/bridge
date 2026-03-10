@@ -75,9 +75,11 @@ public final class AffineFrame2D implements Serializable {
     return matrix.copy();
   }
 
+  /** @return true if rotation by 0, 90, 180, 270 */
   public boolean isAxisAligned() {
-    return Tolerance.CHOP.isZero(matrix.Get(1, 0)) //
-        && Tolerance.CHOP.isZero(matrix.Get(0, 1));
+    boolean p1 = Tolerance.CHOP.isZero(matrix.Get(0, 1)) && Tolerance.CHOP.isZero(matrix.Get(1, 0));
+    boolean p2 = Tolerance.CHOP.isZero(matrix.Get(0, 0)) && Tolerance.CHOP.isZero(matrix.Get(1, 1));
+    return p1 || p2;
   }
 
   @Override

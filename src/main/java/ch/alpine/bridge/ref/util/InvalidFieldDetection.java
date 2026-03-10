@@ -29,7 +29,7 @@ import ch.alpine.tensor.sca.Clip;
 public class InvalidFieldDetection extends ObjectFieldIo {
   /** @param object
    * @return */
-  public static List<FieldValueContainer> of(Object object) {
+  public static List<FieldValueRecord> of(Object object) {
     InvalidFieldDetection invalidFieldCollection = new InvalidFieldDetection();
     ObjectFields.of(object, invalidFieldCollection);
     return invalidFieldCollection.list();
@@ -42,7 +42,7 @@ public class InvalidFieldDetection extends ObjectFieldIo {
   }
 
   // ---
-  private final List<FieldValueContainer> list = new LinkedList<>();
+  private final List<FieldValueRecord> list = new LinkedList<>();
 
   /** @param field
    * @param annotationClass
@@ -103,10 +103,10 @@ public class InvalidFieldDetection extends ObjectFieldIo {
       }
     }
     if (!valid)
-      list.add(new FieldValueContainer(key, fieldWrap, object, value));
+      list.add(new FieldValueRecord(key, fieldWrap, object, value));
   }
 
-  public List<FieldValueContainer> list() {
+  public List<FieldValueRecord> list() {
     return list;
   }
 }

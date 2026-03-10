@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import ch.alpine.bridge.cgr.ClassDiscovery;
 import ch.alpine.bridge.cgr.ClassPaths;
 import ch.alpine.bridge.ref.util.ClassFieldCheck;
-import ch.alpine.bridge.ref.util.FieldValueContainer;
+import ch.alpine.bridge.ref.util.FieldValueRecord;
 
 class ReflectionMarkerTest {
   @Test
@@ -26,8 +26,8 @@ class ReflectionMarkerTest {
       assertTrue(1 < list.size()); // the exact value doesn't matter
     }
     {
-      List<FieldValueContainer> list = classFieldCheck.invalidFields();
-      for (FieldValueContainer fvc : list) {
+      List<FieldValueRecord> list = classFieldCheck.invalidFields();
+      for (FieldValueRecord fvc : list) {
         fvc.field().toString();
       }
     }

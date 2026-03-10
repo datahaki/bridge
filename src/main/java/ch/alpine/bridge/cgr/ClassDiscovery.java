@@ -94,6 +94,9 @@ public class ClassDiscovery {
                   if (Objects.isNull(cls))
                     continue;
                   classVisitor.accept(item, cls);
+                  Class<?>[] decls = cls.getDeclaredClasses();
+                  for (Class<?> dec : decls)
+                    classVisitor.accept(item, dec);
                 } catch (Throwable throwable) {
                   // ---
                 }

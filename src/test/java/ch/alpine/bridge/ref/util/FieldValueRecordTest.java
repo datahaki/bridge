@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-class FieldValueContainerTest {
+class FieldValueRecordTest {
   @Test
   void testSimple() {
-    FieldValueContainer fvc = new FieldValueContainer("key", null, "object", "value");
+    FieldValueRecord fvc = new FieldValueRecord("key", null, "object", "value");
     assertEquals(fvc.key(), "key");
     assertEquals(fvc.object(), "object");
     assertEquals(fvc.value(), "value");

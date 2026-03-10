@@ -21,8 +21,7 @@ class InvalidFieldDetectionTest {
 
   @Test
   void testGuiExtension() {
-    // TODO BRIDGE DOC document specifially in class where invalid field assignments are intended
-    List<FieldValueContainer> list = InvalidFieldDetection.of(new GuiExtension());
+    List<FieldValueRecord> list = InvalidFieldDetection.of(new GuiExtension());
     list.forEach(System.out::println);
     assertFalse(list.isEmpty());
   }
