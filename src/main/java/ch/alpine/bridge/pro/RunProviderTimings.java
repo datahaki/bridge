@@ -13,6 +13,14 @@ import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.Timing;
 import ch.alpine.tensor.sca.Round;
 
+/** the motivation for {@link RunProviderTimings} is the following:
+ * 
+ * {@link InstanceDiscovery} involves invoking the default constructor.
+ * some implementation of {@link RunProvider} or subclasses perform
+ * computations in the default constructor which slows down {@link InstanceDiscovery}.
+ * 
+ * The {@link RunProviderTimings} prints a table sorted by duration
+ * of instance retrieval. */
 public enum RunProviderTimings {
   ;
   public static void of(String basePackage) {

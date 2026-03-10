@@ -1,7 +1,9 @@
 // code by jph
 package ch.alpine.bridge.pro;
 
-public enum RunProviderType {
+import java.util.Objects;
+
+enum RunProviderType {
   VOID(VoidProvider.class),
   SHOW(ShowProvider.class),
   MANIPULATE(ManipulateProvider.class),
@@ -14,9 +16,10 @@ public enum RunProviderType {
   }
 
   public static RunProviderType getType(Class<?> subcls) {
-    for (RunProviderType rpt : values())
-      if (rpt.cls.isAssignableFrom(subcls))
-        return rpt;
-    throw new RuntimeException();
+    Objects.requireNonNull(subcls);
+    for (RunProviderType runProviderType : values())
+      if (runProviderType.cls.isAssignableFrom(subcls))
+        return runProviderType;
+    throw new IllegalArgumentException(subcls.toString());
   }
 }
