@@ -3,7 +3,7 @@ package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,8 +23,19 @@ import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
   @Override
   @SuppressWarnings("unchecked")
   public List<Object> options(Object object) {
-    if (Objects.nonNull(fieldSelectionArray))
-      return Arrays.stream(fieldSelectionArray.value()).map(this::toValue).toList();
+    if (Objects.nonNull(fieldSelectionArray)) {
+      String[] strings = fieldSelectionArray.value();
+      List<Object> list = new ArrayList<>(strings.length);
+      for (String string : strings) {
+        Object value = toValue(string);
+        if (Objects.isNull(value))
+          // Exception is thrown when a string expression in
+          // FieldSelectioArray cannot be converted to a value
+          throw new IllegalArgumentException(object + " " + string);
+        list.add(value);
+      }
+      return list;
+    }
     if (Objects.nonNull(fieldSelectionCallback))
       try {
         Method method = getField().getDeclaringClass().getMethod(fieldSelectionCallback.value());

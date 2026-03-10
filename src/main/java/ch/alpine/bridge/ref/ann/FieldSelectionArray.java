@@ -18,6 +18,10 @@ public @interface FieldSelectionArray {
    * Example return values:
    * {"1[%]", "2[%]", "3[%]"}
    * 
+   * Careful:
+   * string expressions have to correspond to valid objects
+   * otherwise an exception is thrown during runtime
+   * 
    * @return array of string expressions that can be converted
    * to objects via {@link FieldWrap#toValue(String)} */
   String[] value();
