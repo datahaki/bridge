@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.ref.util;
 
+import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,13 +19,14 @@ public class ClassFieldCheck implements ClassVisitor {
 
   @Override // from ClassVisitor
   public void accept(String jarfile, Class<?> cls) {
-    ReflectionMarker reflectionMarker = cls.getAnnotation(ReflectionMarker.class);
-    if (Objects.nonNull(reflectionMarker)) {
+    if (cls.isAnnotationPresent(ReflectionMarker.class)) {
       Object object = null;
       try {
         /* get_Declared_Constructor() is needed to discover an
          * implicit, i.e. not implemented default constructor */
-        object = cls.getDeclaredConstructor().newInstance();
+        Constructor<?> constructor = cls.getDeclaredConstructor();
+        constructor.trySetAccessible();
+        object = constructor.newInstance();
       } catch (Exception exception) {
         // ---
       }

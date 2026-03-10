@@ -60,7 +60,7 @@ public class InvalidFieldDetection extends ObjectFieldIo {
     boolean valid = true;
     {
       valid &= require(field, FieldClip.class, Scalar.class, Clip.class, Integer.class);
-      valid &= require(field, FieldSlider.class, Scalar.class, Clip.class);
+      valid &= require(field, FieldSlider.class, Scalar.class, Clip.class, Integer.class);
       valid &= require(field, FieldFuse.class, Boolean.class);
       valid &= require(field, FieldExistingDirectory.class, File.class);
       valid &= require(field, FieldExistingFile.class, File.class);
@@ -83,15 +83,15 @@ public class InvalidFieldDetection extends ObjectFieldIo {
       if (Objects.nonNull(fieldSelectionCallback))
         try {
           Method method = object.getClass().getMethod(fieldSelectionCallback.value());
-          {
-            ReflectionMarker reflectionMarker = method.getAnnotation(ReflectionMarker.class);
-            if (Objects.isNull(reflectionMarker)) {
-              System.err.println("not annotated: " + method);
-              valid = false;
-            }
+          method.trySetAccessible();
+          if (!method.isAnnotationPresent(ReflectionMarker.class)) {
+            System.err.println("not annotated: " + method);
+            valid = false;
           }
-          valid &= method.invoke(object) instanceof List<?> list && list.stream().allMatch(Objects::nonNull);
+          valid &= method.invoke(object) instanceof List<?> list //
+              && list.stream().allMatch(Objects::nonNull);
         } catch (Exception exception) {
+          System.err.println("method crash: " + fieldSelectionCallback.value());
           valid = false;
         }
     }

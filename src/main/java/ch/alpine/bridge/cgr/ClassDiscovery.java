@@ -93,11 +93,8 @@ public class ClassDiscovery {
                   Class<?> cls = urlClassLoader.loadClass(className);
                   if (Objects.isNull(cls))
                     continue;
-                  classVisitor.accept(item, cls);
-                  Class<?>[] decls = cls.getDeclaredClasses();
-                  for (Class<?> dec : decls)
-                    classVisitor.accept(item, dec);
-                } catch (Throwable throwable) {
+                  recur(item, cls);
+                } catch (Throwable classNotFoundException) {
                   // ---
                 }
               }
@@ -113,5 +110,11 @@ public class ClassDiscovery {
     } catch (Exception exception) {
       throw new RuntimeException(exception);
     }
+  }
+
+  private void recur(String item, Class<?> cls) {
+    classVisitor.accept(item, cls);
+    for (Class<?> dec : cls.getDeclaredClasses())
+      recur(item, dec);
   }
 }
