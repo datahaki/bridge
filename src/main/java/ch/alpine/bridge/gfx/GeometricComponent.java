@@ -24,17 +24,13 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.Throw;
 import ch.alpine.tensor.alg.Append;
 import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.alg.Dot;
-import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.mat.DiagonalMatrix;
 import ch.alpine.tensor.mat.re.Det;
 import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.qty.Degree;
-import ch.alpine.tensor.red.EqualsReduce;
-import ch.alpine.tensor.red.Times;
 import ch.alpine.tensor.sca.Chop;
 import ch.alpine.tensor.sca.Round;
 import ch.alpine.tensor.sca.Sign;
@@ -42,17 +38,10 @@ import ch.alpine.tensor.sca.pow.Power;
 import ch.alpine.tensor.sca.pow.Sqrt;
 import ch.alpine.tensor.sca.tri.ArcTan;
 
-// TODO extend JCOmponent!
 public final class GeometricComponent extends JComponent {
   private static final Scalar SCALE_FACTOR = Sqrt.FUNCTION.apply(RealScalar.TWO);
   private static final Font FONT_DEFAULT = new Font(Font.DIALOG, Font.PLAIN, 12);
   private static final Scalar WHEEL_ANGLE = Degree.of(15);
-  /** initial model to pixel matrix */
-  private static final Tensor MODEL2PIXEL_INITIAL = Tensors.matrix(new Number[][] { //
-      { 1, 0, 300 }, //
-      { 0, -1, 300 }, //
-      { 0, 0, 1 }, //
-  }).unmodifiable();
   // ---
   /** public access to final JComponent: attach mouse listeners, get/set properties, ... */
   private final IntervalClock intervalClock = new IntervalClock();
@@ -72,7 +61,7 @@ public final class GeometricComponent extends JComponent {
   private final List<RenderInterface> renderInterfaces = new CopyOnWriteArrayList<>();
   // ---
   /** 3x3 affine matrix that maps model to pixel coordinates */
-  private Tensor model2pixel = MODEL2PIXEL_INITIAL.copy();
+  private Tensor model2pixel = PvmBuilder.rhs().setOffset(300, 300).digest();
   private Tensor mouseLocation = Array.zeros(2);
   private int mouseWheel = 0;
   private boolean isZoomable = true;
@@ -215,27 +204,6 @@ public final class GeometricComponent extends JComponent {
 
   public Tensor getModel2Pixel() {
     return model2pixel.copy();
-  }
-
-  /** @param pix
-   * @param piy */
-  public void setOffset(int pix, int piy) {
-    Throw.unless(model2pixel.Get(0, 2) instanceof RealScalar);
-    Throw.unless(model2pixel.Get(1, 2) instanceof RealScalar);
-    model2pixel.set(RealScalar.of(pix), 0, 2);
-    model2pixel.set(RealScalar.of(piy), 1, 2);
-  }
-
-  /** @param f for instance 60[m^-1] results in 60 pixels when multiplied by 1[m] */
-  public void setPerPixel(Scalar fx, Scalar fy) {
-    Sign.requirePositive(fx);
-    Sign.requirePositive(fy);
-    Scalar one = EqualsReduce.one(Tensors.of(fx, fy));
-    model2pixel = Transpose.of(Times.of(Tensors.of(fx, fy, one), Transpose.of(model2pixel)));
-  }
-
-  public void setPerPixel(Scalar f) {
-    setPerPixel(f, f);
   }
 
   private void render(Graphics2D graphics, Dimension dimension) {
