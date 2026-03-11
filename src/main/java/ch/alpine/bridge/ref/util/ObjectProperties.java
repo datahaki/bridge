@@ -37,6 +37,8 @@ import ch.alpine.tensor.io.Import;
  * value is retained. */
 public enum ObjectProperties {
   ;
+  public static final ThreadLocal<Boolean> LOAD_FAIL = ThreadLocal.withInitial(() -> false);
+  public static final ThreadLocal<Boolean> SAVE_FAIL = ThreadLocal.withInitial(() -> false);
   /** charset UTF-8 guarantees the storage and loading of special
    * characters such as Chinese characters.
    * As of Java 18, the default charset is UTF-8. */
@@ -62,10 +64,10 @@ public enum ObjectProperties {
    * is as they are visited by {@link ObjectFields}.
    * 
    * @param object
-   * @param file properties
+   * @param path properties
    * @throws IOException */
-  public static void save(Object object, Path file) throws IOException {
-    try (PrintWriter printWriter = new PrintWriter(Files.newBufferedWriter(file, CHARSET))) {
+  public static void save(Object object, Path path) throws IOException {
+    try (PrintWriter printWriter = new PrintWriter(Files.newBufferedWriter(path, CHARSET))) {
       ObjectFieldVisitor objectFieldVisitor = new ObjectFieldIo() {
         @Override // from ObjectFieldVisitor
         public void accept(String prefix, FieldWrap fieldWrap, Object object, Object value) {
@@ -83,37 +85,39 @@ public enum ObjectProperties {
    * is as they are visited by {@link ObjectFields}.
    * 
    * @param object
-   * @param file properties
+   * @param path properties
    * @return true if saving to given file was successful, false otherwise */
-  public static boolean trySave(Object object, Path file) {
+  public static boolean trySave(Object object, Path path) {
     try {
-      save(object, file);
+      save(object, path);
       return true;
     } catch (Exception exception) {
-      System.err.println("save fail: " + file);
+      if (SAVE_FAIL.get())
+        System.err.println("save fail: " + path);
     }
     return false;
   }
 
   // ---
   /** @param object
-   * @param file properties
+   * @param path properties
    * @return
    * @throws FileNotFoundException
    * @throws IOException
    * @see Properties */
-  public static void load(Object object, Path file) throws FileNotFoundException, IOException {
-    set(object, Import.properties(file));
+  public static void load(Object object, Path path) throws FileNotFoundException, IOException {
+    set(object, Import.properties(path));
   }
 
   /** @param object
-   * @param file properties
+   * @param path properties
    * @return object with fields updated from properties file if loading was successful */
-  public static <T> T tryLoad(T object, Path file) {
+  public static <T> T tryLoad(T object, Path path) {
     try {
-      load(object, file);
+      load(object, path);
     } catch (Exception exception) {
-      System.err.println("load fail: " + file);
+      if (LOAD_FAIL.get())
+        System.err.println("load fail: " + path);
     }
     return object;
   }

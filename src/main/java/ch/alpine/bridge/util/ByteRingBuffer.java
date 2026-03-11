@@ -10,12 +10,14 @@ import ch.alpine.tensor.ext.Integers;
  * capacity is chosen to be of the form 2^bits which allows to do fast
  * arithmetics */
 public class ByteRingBuffer {
+  private static final int MAX_BITS = 24;
+
   /** @param bits for instance bits == 8 will give a buffer with 256 bytes capacity
    * @return instance of {@link ByteRingBuffer} with capacity 2^bits
    * @throws Exception if bits is greater than 24 */
   public static ByteRingBuffer withSizeInBitResolution(int bits) {
     Integers.requirePositive(bits);
-    Integers.requireLessThan(bits, 25);
+    Integers.requireLessEquals(bits, MAX_BITS);
     return new ByteRingBuffer(bits);
   }
 
