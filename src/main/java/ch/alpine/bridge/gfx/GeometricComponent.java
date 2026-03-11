@@ -20,12 +20,12 @@ import javax.swing.event.MouseInputListener;
 import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.lang.UnicodeString;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Append;
-import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.alg.Dot;
 import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.mat.DiagonalMatrix;
@@ -42,7 +42,7 @@ import ch.alpine.tensor.sca.tri.ArcTan;
 public final class GeometricComponent extends JComponent {
   private static final Scalar SCALE_FACTOR = Sqrt.FUNCTION.apply(RealScalar.TWO);
   private static final Font FONT_DEFAULT = new Font(Font.DIALOG, Font.PLAIN, 12);
-  private static final Scalar WHEEL_ANGLE = Degree.of(15);
+  private static final Scalar WHEEL_ANGLE = Degree.of(Rational.of(90, 6));
   // ---
   /** public access to final JComponent: attach mouse listeners, get/set properties, ... */
   private final IntervalClock intervalClock = new IntervalClock();
@@ -51,7 +51,7 @@ public final class GeometricComponent extends JComponent {
   // ---
   /** 3x3 affine matrix that maps model to pixel coordinates */
   private Tensor model2pixel = PvmBuilder.rhs().setOffset(300, 300).digest();
-  private Tensor mouseLocation = Array.zeros(2);
+  private Point mouseLocation = new Point();
   private int mouseWheel = 0;
   private boolean isZoomable = true;
   private boolean isRotatable = true;
@@ -84,7 +84,7 @@ public final class GeometricComponent extends JComponent {
 
         @Override
         public void mouseMoved(MouseEvent mouseEvent) {
-          mouseLocation = toModel(mouseEvent.getPoint());
+          mouseLocation = mouseEvent.getPoint();
         }
 
         @Override
@@ -98,7 +98,7 @@ public final class GeometricComponent extends JComponent {
 
         @Override
         public void mouseDragged(MouseEvent mouseEvent) {
-          mouseLocation = toModel(mouseEvent.getPoint());
+          mouseLocation = mouseEvent.getPoint();
           if (Objects.nonNull(down)) {
             Tensor now = toPixel(mouseEvent.getPoint());
             // ---
@@ -202,8 +202,7 @@ public final class GeometricComponent extends JComponent {
 
   /** @return {px, py, angle} in model space */
   public Tensor getMouseSe2CState() {
-    Scalar scalar = RealScalar.of(mouseWheel).multiply(WHEEL_ANGLE);
-    return Append.of(mouseLocation, scalar);
+    return Append.of(toModel(mouseLocation), RealScalar.of(mouseWheel).multiply(WHEEL_ANGLE));
   }
 
   public void addRenderInterfaceBackground(RenderInterface renderInterface) {
