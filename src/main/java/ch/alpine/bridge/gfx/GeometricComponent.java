@@ -27,6 +27,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Append;
 import ch.alpine.tensor.alg.Array;
 import ch.alpine.tensor.alg.Dot;
+import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.mat.DiagonalMatrix;
 import ch.alpine.tensor.mat.re.Det;
 import ch.alpine.tensor.mat.re.LinearSolve;
@@ -45,18 +46,6 @@ public final class GeometricComponent extends JComponent {
   // ---
   /** public access to final JComponent: attach mouse listeners, get/set properties, ... */
   private final IntervalClock intervalClock = new IntervalClock();
-
-  @Override
-  protected void paintComponent(Graphics _g) {
-    render((Graphics2D) _g, getSize());
-    // display frame rate only when rendering in component
-    Graphics graphics = _g.create();
-    graphics.setFont(FONT_DEFAULT);
-    graphics.setColor(Color.LIGHT_GRAY);
-    graphics.drawString(UnicodeString.of(Round._1.apply(intervalClock.hertz())), 0, 10);
-    graphics.dispose();
-  }
-
   private final List<RenderInterface> renderBackground = new CopyOnWriteArrayList<>();
   private final List<RenderInterface> renderInterfaces = new CopyOnWriteArrayList<>();
   // ---
@@ -150,6 +139,37 @@ public final class GeometricComponent extends JComponent {
     }
   }
 
+  private Color background = Color.WHITE;
+
+  public void setColorBackground(Color background) {
+    this.background = background;
+  }
+
+  @Override
+  protected void paintComponent(Graphics _g) {
+    Dimension dimension = getSize();
+    if (Objects.nonNull(background)) {
+      _g.setColor(background);
+      _g.fillRect(0, 0, dimension.width, dimension.height);
+    }
+    {
+      Graphics2D graphics = (Graphics2D) _g;
+      RenderQuality.setQuality(graphics);
+      GeometricLayer geometricLayer = new GeometricLayer(model2pixel);
+      renderBackground.forEach(renderInterface -> renderInterface.render(geometricLayer, graphics));
+      Integers.requireEquals(1, geometricLayer.deque_size());
+      renderInterfaces.forEach(renderInterface -> renderInterface.render(geometricLayer, graphics));
+      Integers.requireEquals(1, geometricLayer.deque_size());
+    }
+    {
+      Graphics graphics = _g.create();
+      graphics.setFont(FONT_DEFAULT);
+      graphics.setColor(Color.LIGHT_GRAY);
+      graphics.drawString(UnicodeString.of(Round._1.apply(intervalClock.hertz())), 0, 10);
+      graphics.dispose();
+    }
+  }
+
   protected boolean isRotatable() {
     Scalar rx = model2pixel.Get(0, 0);
     Scalar ry = model2pixel.Get(0, 1);
@@ -204,16 +224,6 @@ public final class GeometricComponent extends JComponent {
 
   public Tensor getModel2Pixel() {
     return model2pixel.copy();
-  }
-
-  private void render(Graphics2D graphics, Dimension dimension) {
-    graphics.setColor(Color.WHITE);
-    graphics.fillRect(0, 0, dimension.width, dimension.height);
-    // ---
-    GeometricLayer geometricLayer = new GeometricLayer(model2pixel);
-    RenderQuality.setQuality(graphics);
-    renderBackground.forEach(renderInterface -> renderInterface.render(geometricLayer, graphics));
-    renderInterfaces.forEach(renderInterface -> renderInterface.render(geometricLayer, graphics));
   }
 
   private Tensor toModel(Point point) {

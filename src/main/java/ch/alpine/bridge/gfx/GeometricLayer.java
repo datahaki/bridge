@@ -27,6 +27,10 @@ public final class GeometricLayer {
     deque.push(new AffineFrame2D(model2pixel.copy()));
   }
 
+  public int deque_size() {
+    return deque.size();
+  }
+
   /** only the first 2 entries of x are taken into account
    * 
    * @param vector of the form {px, py, ...}
