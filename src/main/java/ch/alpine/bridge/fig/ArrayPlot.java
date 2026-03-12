@@ -23,7 +23,7 @@ public enum ArrayPlot {
    * @param colorDataGradient
    * @param flipY
    * @return */
-  /* package */ static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient, boolean flipY) {
+  public static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient, boolean flipY) {
     MatrixQ.require(matrix);
     Rescale rescale = new Rescale(matrix);
     BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
