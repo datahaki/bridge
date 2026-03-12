@@ -12,6 +12,7 @@ import ch.alpine.tensor.red.EqualsReduce;
 import ch.alpine.tensor.red.Times;
 import ch.alpine.tensor.sca.Sign;
 
+/** builder for projection-view-model matrix product */
 public record PvmBuilder(Tensor p, Tensor v, Tensor m) {
   private static final Tensor ID3 = IdentityMatrix.of(3).unmodifiable();
   private static final Tensor IN3 = Tensors.matrix(new Number[][] { //
