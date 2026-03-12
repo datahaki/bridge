@@ -106,8 +106,8 @@ public final class GeometricComponent extends JComponent {
             final int mask = InputEvent.CTRL_DOWN_MASK; // 128 = 2^7
             if ((mods & mask) == 0 || !isRotatable()) {
               Tensor diff = now.subtract(down);
-              model2pixel.set(diff.get(0)::add, 0, 2);
-              model2pixel.set(diff.get(1)::add, 1, 2);
+              model2pixel.set(diff.Get(0)::add, 0, 2);
+              model2pixel.set(diff.Get(1)::add, 1, 2);
             } else {
               Dimension dimension = getSize();
               Tensor mid = toPixel(AwtUtil.center(dimension));
@@ -226,10 +226,10 @@ public final class GeometricComponent extends JComponent {
   }
 
   private Tensor toModel(Point point) {
-    return LinearSolve.of(model2pixel, Tensors.vector(point.x, point.y, 1)).extract(0, 2);
+    return LinearSolve.of(model2pixel, toPixel(point)).extract(0, 2);
   }
 
   private static Tensor toPixel(Point point) {
-    return Tensors.vector(point.x, point.y);
+    return Tensors.vector(point.x, point.y, 1);
   }
 }
