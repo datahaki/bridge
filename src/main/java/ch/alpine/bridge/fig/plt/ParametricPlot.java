@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
@@ -7,6 +7,9 @@ import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.Optional;
 
+import ch.alpine.bridge.fig.BaseShowable;
+import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarTensorFunction;

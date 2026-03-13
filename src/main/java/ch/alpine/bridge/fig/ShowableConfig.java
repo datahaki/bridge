@@ -15,7 +15,7 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Sign;
 
 public class ShowableConfig {
-  final Rectangle rectangle;
+  public final Rectangle rectangle;
   private final CoordinateBoundingBox cbb;
   protected final Clip xRange;
   protected final Clip yRange;

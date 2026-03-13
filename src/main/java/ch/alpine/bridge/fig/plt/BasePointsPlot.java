@@ -1,8 +1,9 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.util.Optional;
 
+import ch.alpine.bridge.fig.BaseShowable;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.VectorQ;

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
@@ -9,6 +9,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import ch.alpine.bridge.awt.AwtUtil;
+import ch.alpine.bridge.fig.PlotOption;
+import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.alg.Subdivide;
@@ -89,7 +93,7 @@ public class ReImPlot extends UnaryShowable {
             pathRe.lineTo(x0, y0);
             pathIm.lineTo(x0, y0);
           }
-          graphics.setColor(StaticHelper.withAlpha(getColor(), ALPHA));
+          graphics.setColor(AwtUtil.withAlpha(getColor(), ALPHA));
           graphics.fill(pathRe);
           graphics.fill(pathIm);
         }

@@ -9,6 +9,8 @@ import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.fig.plt.ListLinePlot;
+import ch.alpine.bridge.fig.plt.Spectrogram;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;

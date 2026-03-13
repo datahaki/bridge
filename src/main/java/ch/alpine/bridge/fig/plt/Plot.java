@@ -1,11 +1,15 @@
 // code by legion
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 import java.util.Objects;
 import java.util.Optional;
 
+import ch.alpine.bridge.awt.AwtUtil;
+import ch.alpine.bridge.fig.PlotOption;
+import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
@@ -64,7 +68,7 @@ public class Plot extends UnaryShowable {
         if (isFilling()) {
           path.lineTo(x1, showableConfig.y_pos(suo.apply(x_clip.max()).zero()));
           path.lineTo(x0, showableConfig.y_pos(suo.apply(x_clip.min()).zero()));
-          graphics.setColor(StaticHelper.withAlpha(getColor(), FILL_ALPHA));
+          graphics.setColor(AwtUtil.withAlpha(getColor(), FILL_ALPHA));
           graphics.fill(path);
         }
       }

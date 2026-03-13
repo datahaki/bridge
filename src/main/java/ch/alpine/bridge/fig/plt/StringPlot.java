@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+import ch.alpine.bridge.fig.BaseShowable;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.opt.nd.CoordinateBounds;

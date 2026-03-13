@@ -6,6 +6,7 @@ package ch.alpine.bridge.fig;
  * @see ImportHelper
  * @see ExportHelper */
 /* package */ enum Extension {
+  // TODO redundant to TensorExtension...
   /** uncompressed loss-less image format, no alpha channel */
   BMP,
   GIF,

@@ -313,10 +313,7 @@ public final class Show implements Serializable {
           showable.render(showableConfig, graphics);
           showable.tender(showableConfig, _g);
         }
-      {
-        GridDrawer gridDrawer = new GridDrawer(showOptions);
-        gridDrawer.render(showableConfig, _g);
-      }
+      new GridDrawer(showOptions).render(showableConfig, _g);
       for (Showable showable : showables)
         if (!(showable instanceof BackgroundPlotMarker)) {
           showable.render(showableConfig, graphics);

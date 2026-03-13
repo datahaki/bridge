@@ -1,9 +1,10 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.awt.image.BufferedImage;
 import java.util.function.Function;
 
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;

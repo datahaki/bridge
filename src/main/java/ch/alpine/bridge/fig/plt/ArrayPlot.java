@@ -1,8 +1,10 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.awt.image.BufferedImage;
 
+import ch.alpine.bridge.fig.BarLegend;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Rescale;

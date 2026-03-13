@@ -16,6 +16,8 @@ import java.util.random.RandomGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.fig.plt.ListLinePlot;
+import ch.alpine.bridge.fig.plt.ListPlot;
 import ch.alpine.bridge.lang.SI;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RealScalar;

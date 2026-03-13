@@ -16,7 +16,7 @@ import javax.swing.JToolBar;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowComponent;
 import ch.alpine.bridge.fig.ShowComponent.Option;
-import ch.alpine.bridge.fig.TsPlot;
+import ch.alpine.bridge.fig.plt.TsPlot;
 import ch.alpine.bridge.pro.WindowProvider;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 import ch.alpine.bridge.ref.util.FieldsEditor;

@@ -15,7 +15,7 @@ import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.Clips;
 
-/* package */ abstract class BarLegendPlot extends BaseShowable {
+public abstract class BarLegendPlot extends BaseShowable {
   protected final CoordinateBoundingBox cbb;
   private boolean aspectRatioOneHint = true;
 

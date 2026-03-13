@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,6 +9,10 @@ import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.Optional;
 
+import ch.alpine.bridge.awt.AwtUtil;
+import ch.alpine.bridge.fig.BaseShowable;
+import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
@@ -41,7 +45,7 @@ public class DiscretePlot extends BaseShowable {
   @Override
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Tensor samples = Range.closed(domain);
-    Color color = StaticHelper.withAlpha(getColor(), 64);
+    Color color = AwtUtil.withAlpha(getColor(), 64);
     double radius = 2.5;
     graphics.setStroke(getStroke());
     for (Tensor _x : samples) {

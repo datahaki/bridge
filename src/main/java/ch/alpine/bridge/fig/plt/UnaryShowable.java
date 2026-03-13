@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -7,6 +7,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import ch.alpine.bridge.fig.BaseShowable;
+import ch.alpine.bridge.fig.PlotOption;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;

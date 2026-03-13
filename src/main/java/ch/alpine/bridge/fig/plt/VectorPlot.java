@@ -1,10 +1,13 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import java.awt.Graphics2D;
 import java.util.List;
 import java.util.Objects;
 
+import ch.alpine.bridge.fig.BarLegend;
+import ch.alpine.bridge.fig.BarLegendPlot;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
