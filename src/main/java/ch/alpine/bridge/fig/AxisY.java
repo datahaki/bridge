@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 import ch.alpine.bridge.awt.RenderQuality;
-import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -23,8 +22,8 @@ import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
 class AxisY extends Axis {
-  public AxisY(DateTimeFocus dateTimeFocus) {
-    super(dateTimeFocus);
+  public AxisY(ShowOptions showOptions) {
+    super(showOptions);
   }
 
   /** draw lines and numbers like this: _________________ */
@@ -43,7 +42,7 @@ class AxisY extends Axis {
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
-      dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
+      dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
         int y_pos = (int) showableConfig.y_pos(dateTime);
         navigableMap.put(y_pos, dateTime);
@@ -61,33 +60,31 @@ class AxisY extends Axis {
         navigableMap.put(y_pos, yValue);
       }
     }
-    if (gridLines) {
+    if (showOptions.contains(ShowOption.GRID)) {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
       for (int piy : navigableMap.keySet())
         graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width - 1, piy);
     }
-    if (ticks) {
-      {
-        graphics.setStroke(StaticHelper.STROKE_SOLID);
-        graphics.setColor(COLOR_HELPER);
-        graphics.drawLine(point.x, point.y, point.x, point.y + length - 1);
-        for (int piy : navigableMap.keySet())
-          graphics.drawLine(point.x - 2, piy, point.x - 1, piy);
-      }
-      {
-        graphics.setColor(StaticHelper.COLOR_FONT);
-        RenderQuality.setQuality(graphics);
-        for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
-          int piy = entry.getKey();
-          Scalar value = entry.getValue();
-          String yLabel = Objects.isNull(dateTimeFormatter) //
-              ? StaticHelper.format(value)
-              : ((DateTime) value).format(dateTimeFormatter);
-          graphics.drawString(yLabel, //
-              point.x - fontMetrics.stringWidth(yLabel) - 5, //
-              piy + fontMetrics.getAscent() / 2 - 1);
-        }
+    {
+      graphics.setStroke(StaticHelper.STROKE_SOLID);
+      graphics.setColor(COLOR_HELPER);
+      graphics.drawLine(point.x, point.y, point.x, point.y + length - 1);
+      for (int piy : navigableMap.keySet())
+        graphics.drawLine(point.x - 2, piy, point.x - 1, piy);
+    }
+    {
+      graphics.setColor(StaticHelper.COLOR_FONT);
+      RenderQuality.setQuality(graphics);
+      for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
+        int piy = entry.getKey();
+        Scalar value = entry.getValue();
+        String yLabel = Objects.isNull(dateTimeFormatter) //
+            ? StaticHelper.format(value)
+            : ((DateTime) value).format(dateTimeFormatter);
+        graphics.drawString(yLabel, //
+            point.x - fontMetrics.stringWidth(yLabel) - 5, //
+            piy + fontMetrics.getAscent() / 2 - 1);
       }
     }
   }

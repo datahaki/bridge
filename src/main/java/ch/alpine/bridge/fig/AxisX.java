@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 import ch.alpine.bridge.awt.RenderQuality;
-import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -24,8 +23,8 @@ import ch.alpine.tensor.sca.Clip;
 
 // TODO BRIDGE logarithmic scale
 class AxisX extends Axis {
-  public AxisX(DateTimeFocus dateTimeFocus) {
-    super(dateTimeFocus);
+  public AxisX(ShowOptions showOptions) {
+    super(showOptions);
   }
 
   @Override
@@ -43,7 +42,7 @@ class AxisX extends Axis {
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
-      dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
+      dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
         int x_pos = (int) showableConfig.x_pos(dateTime);
         navigableMap.put(x_pos, dateTime);
@@ -60,36 +59,34 @@ class AxisX extends Axis {
         navigableMap.put(x_pos, xValue);
       }
     }
-    if (gridLines) { // grid lines |
+    if (showOptions.contains(ShowOption.GRID)) { // grid lines |
       graphics.setColor(COLOR_GRIDLINES);
       graphics.setStroke(STROKE_GRIDLINES);
       for (int pix : navigableMap.keySet())
         graphics.drawLine(pix, rectangle.y, pix, rectangle.y + rectangle.height);
     }
-    if (ticks) {
-      {
-        graphics.setStroke(StaticHelper.STROKE_SOLID);
-        graphics.setColor(COLOR_HELPER);
-        graphics.drawLine( //
-            point.x, //
-            point.y, //
-            point.x + length - 1, //
-            point.y);
-        for (int pix : navigableMap.keySet())
-          graphics.drawLine(pix, point.y + 1, pix, point.y + 2);
-      }
-      {
-        graphics.setColor(StaticHelper.COLOR_FONT);
-        RenderQuality.setQuality(graphics);
-        for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
-          Scalar value = entry.getValue();
-          String xLabel = Objects.isNull(dateTimeFormatter) //
-              ? StaticHelper.format(value)
-              : ((DateTime) value).format(dateTimeFormatter);
-          graphics.drawString(xLabel, //
-              entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //
-              point.y + 3 + fontMetrics.getAscent());
-        }
+    {
+      graphics.setStroke(StaticHelper.STROKE_SOLID);
+      graphics.setColor(COLOR_HELPER);
+      graphics.drawLine( //
+          point.x, //
+          point.y, //
+          point.x + length - 1, //
+          point.y);
+      for (int pix : navigableMap.keySet())
+        graphics.drawLine(pix, point.y + 1, pix, point.y + 2);
+    }
+    {
+      graphics.setColor(StaticHelper.COLOR_FONT);
+      RenderQuality.setQuality(graphics);
+      for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
+        Scalar value = entry.getValue();
+        String xLabel = Objects.isNull(dateTimeFormatter) //
+            ? StaticHelper.format(value)
+            : ((DateTime) value).format(dateTimeFormatter);
+        graphics.drawString(xLabel, //
+            entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //
+            point.y + 3 + fontMetrics.getAscent());
       }
     }
   }

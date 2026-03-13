@@ -6,27 +6,22 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Objects;
 
 import ch.alpine.bridge.awt.RenderQuality;
-import ch.alpine.bridge.cal.DateTimeFocus;
-import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.sca.Clip;
 
 public class GridDrawer {
-  private final DateTimeFocus dateTimeFocus;
-  public boolean axesX = true;
-  public boolean axesY = true;
+  private final ShowOptions showOptions;
 
-  public GridDrawer(DateTimeFocus dateTimeFocus) {
-    this.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
+  public GridDrawer(ShowOptions showOptions) {
+    this.showOptions = showOptions;
   }
 
   public GridDrawer() {
-    this(ISO8601DateTimeFocus.INSTANCE);
+    this(new ShowOptions());
   }
 
   public void render(ShowableConfig showableConfig, Graphics _g) {
@@ -34,13 +29,13 @@ public class GridDrawer {
     Clip xRange = showableConfig.getClip(0);
     Clip yRange = showableConfig.getClip(1);
     // ---
-    if (axesX && !Scalars.isZero(xRange.width()))
-      new AxisX(dateTimeFocus).render( //
+    if (showOptions.contains(ShowOption.AXIS_X) && !Scalars.isZero(xRange.width()))
+      new AxisX(showOptions).render( //
           showableConfig, //
           new Point(rectangle.x, rectangle.y + rectangle.height - 1 + StaticHelper.GAP), //
           rectangle.width, _g, showableConfig.getClip(0));
-    if (axesY && !Scalars.isZero(yRange.width()))
-      new AxisY(dateTimeFocus).render( //
+    if (showOptions.contains(ShowOption.AXIS_Y) && !Scalars.isZero(yRange.width()))
+      new AxisY(showOptions).render( //
           showableConfig, //
           new Point(rectangle.x - StaticHelper.GAP, rectangle.y), //
           rectangle.height, _g, showableConfig.getClip(1));

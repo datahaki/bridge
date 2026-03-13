@@ -23,6 +23,7 @@ import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.PolygonPlot;
 import ch.alpine.bridge.fig.ReImPlot;
 import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.ShowOption;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.Spectrogram;
 import ch.alpine.bridge.fig.StringPlot;
@@ -645,6 +646,7 @@ public enum Showcases implements ShowProvider {
       show.setPlotLabel("Image Plot BICUBIC");
       BufferedImage bufferedImage = ResourceData.bufferedImage("ch/alpine/bridge/io/image/album_in.jpg");
       show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_3));
+      show.set(ShowOption.AXIS_X, false);
       return show;
     }
   },
@@ -655,6 +657,7 @@ public enum Showcases implements ShowProvider {
       show.setPlotLabel("Image Plot BILINEAR");
       BufferedImage bufferedImage = ResourceData.bufferedImage("ch/alpine/bridge/io/image/album_in.jpg");
       show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_1));
+      show.set(ShowOption.AXIS_Y, false);
       return show;
     }
   },
@@ -787,13 +790,14 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Image Plot With Units");
+      show.setPlotLabel("Image Plot With Units w/o gridlines");
       BufferedImage bufferedImage = ResourceData.bufferedImage("ch/alpine/bridge/io/image/album_in.jpg");
       CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(Quantity.of(3, "m")), Clips.absolute(Quantity.of(4, "s")));
       show.add(ImagePlot.of(bufferedImage, cbb));
       Tensor tensor = Tensors.fromString("{{1[m],2[s]},{1.6[m],3[s]},{2.3[m],-1.3[s]}}");
       show.add(ListLinePlot.of(tensor));
       show.add(ListPlot.of(tensor));
+      show.set(ShowOption.GRID, false);
       return show;
     }
   },

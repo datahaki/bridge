@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.io.ImageFormat;
@@ -52,7 +51,7 @@ import ch.alpine.tensor.sca.Clips;
       int pix = rectangle.x + rectangle.width + 1 + StaticHelper.GAP * 2;
       graphics.drawImage(ImageFormat.of(Subdivide.decreasing(Clips.unit(), rectangle.height - 1).maps(Tensors::of).maps(barLegend.colorDataGradient())), //
           pix, rectangle.y, width, rectangle.height, null);
-      new AxisYF(ISO8601DateTimeFocus.INSTANCE).render( //
+      new AxisYF(new ShowOptions()).render( //
           showableConfig, //
           new Point(pix + width + StaticHelper.GAP - 2, rectangle.y), //
           rectangle.height, graphics, barLegend.clip());

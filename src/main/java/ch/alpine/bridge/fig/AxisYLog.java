@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 import ch.alpine.bridge.awt.RenderQuality;
-import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -23,8 +22,8 @@ import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
 class AxisYLog extends Axis {
-  public AxisYLog(DateTimeFocus dateTimeFocus) {
-    super(dateTimeFocus);
+  public AxisYLog(ShowOptions showOptions) {
+    super(showOptions);
   }
 
   /** draw lines and numbers like this: _________________ */
@@ -43,7 +42,7 @@ class AxisYLog extends Axis {
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
-      dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
+      dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
         int y_pos = (int) showableConfig.y_pos(dateTime);
         navigableMap.put(y_pos, dateTime);
@@ -60,13 +59,13 @@ class AxisYLog extends Axis {
         navigableMap.put(y_pos, yValue);
       }
     }
-    if (gridLines) {
+    if (showOptions.contains(ShowOption.GRID)) {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
       for (int piy : navigableMap.keySet())
         graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width - 1, piy);
     }
-    if (ticks) {
+    if (showOptions.contains(ShowOption.AXIS_Y)) {
       {
         graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);

@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.Clip;
@@ -21,14 +20,11 @@ abstract class Axis {
   public static final Color COLOR_HELPER = new Color(192, 192, 192);
   static final Scalar RESERVE = RealScalar.of(50);
   // ---
-  final DateTimeFocus dateTimeFocus;
-  boolean gridLines = true;
-  boolean ticks = true;
+  final ShowOptions showOptions;
   private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
-  // TODO BRIDGE probably not good API design
-  public Axis(DateTimeFocus dateTimeFocus) {
-    this.dateTimeFocus = dateTimeFocus;
+  public Axis(ShowOptions showOptions) {
+    this.showOptions = showOptions;
   }
 
   final void render(ShowableConfig showableConfig, Point point, int length, Graphics _g, Clip clip) {

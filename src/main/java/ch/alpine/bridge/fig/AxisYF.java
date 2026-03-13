@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 import ch.alpine.bridge.awt.RenderQuality;
-import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -24,8 +23,8 @@ import ch.alpine.tensor.sca.Clip;
 
 // TODO BRIDGE only used for BarLegend, ticks are draw to right instead of left
 class AxisYF extends Axis {
-  public AxisYF(DateTimeFocus dateTimeFocus) {
-    super(dateTimeFocus);
+  public AxisYF(ShowOptions showOptions) {
+    super(showOptions);
   }
 
   /** draw lines and numbers like this: _________________ */
@@ -50,7 +49,7 @@ class AxisYF extends Axis {
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
-      dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
+      dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
         int y_pos = (int) (y_height - dateTime.subtract(clip.min()).multiply(y2pixel).number().doubleValue());
         navigableMap.put(y_pos, dateTime);
@@ -67,7 +66,7 @@ class AxisYF extends Axis {
         navigableMap.put(y_pos, yValue);
       }
     }
-    if (ticks) {
+    if (showOptions.contains(ShowOption.AXIS_Y)) {
       {
         graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);

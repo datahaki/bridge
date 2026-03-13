@@ -43,7 +43,7 @@ import ch.alpine.tensor.sca.Round;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
-public class Show implements Serializable {
+public final class Show implements Serializable {
   // TODO BRIDGE zoom does not work indefinitely yet!
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
 
@@ -76,13 +76,13 @@ public class Show implements Serializable {
 
   // ---
   private final List<Showable> showables = new ArrayList<>();
+  private final ShowOptions showOptions = new ShowOptions();
   private final ColorDataIndexed colorDataIndexed;
   // ---
   private CoordinateBoundingBox cbb = null;
   private DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
-  private boolean framed = true;
-  private boolean gridLines = true;
   private String plotLabel = "";
+  private Scalar aspectRatio = null;
 
   /** @param colorDataIndexed to assign a default color to a showable when
    * passed via {@link #add(Showable)} */
@@ -97,7 +97,7 @@ public class Show implements Serializable {
 
   /** @param showable
    * @return given showable */
-  public final Showable add(Showable showable) {
+  public Showable add(Showable showable) {
     showable.setColor(colorDataIndexed.getColor(showables.size()));
     if (showable instanceof BarLegendPlot barLegendPlot && //
         barLegendPlot.getAspectRatioOneHint())
@@ -107,30 +107,17 @@ public class Show implements Serializable {
   }
 
   /** @param string to appear above plot */
-  public final void setPlotLabel(String string) {
+  public void setPlotLabel(String string) {
     plotLabel = Objects.requireNonNull(string);
   }
 
   /** @return */
-  public final String getPlotLabel() {
+  public String getPlotLabel() {
     return plotLabel;
   }
 
-  // TODO BRIDGE offer more fine grain control: gridline and axes are currently coupled
-  public final void setGridLines(boolean gridLines) {
-    this.gridLines = gridLines;
-  }
-
-  public final boolean getGridLines() {
-    return gridLines;
-  }
-
-  public boolean isFramed() {
-    return framed;
-  }
-
-  public void setFramed(boolean framed) {
-    this.framed = framed;
+  public void set(ShowOption showOption, boolean status) {
+    showOptions.set(showOption, status);
   }
 
   /** @param cbb null is permitted in which case the function
@@ -168,8 +155,6 @@ public class Show implements Serializable {
   public boolean isEmpty() {
     return showables.isEmpty();
   }
-
-  private Scalar aspectRatio = null;
 
   /** @param xStep exact scalar, for instance 1
    * @param yStep
@@ -286,7 +271,7 @@ public class Show implements Serializable {
 
   private void renderFrameTitle(Graphics _g, Rectangle rectangle) {
     Graphics2D graphics = (Graphics2D) _g.create();
-    if (isFramed()) {
+    if (showOptions.contains(ShowOption.FRAMED)) {
       // draw box around ...
       graphics.setStroke(StaticHelper.STROKE_SOLID);
       graphics.setColor(Show.COLOR_FRAME);
@@ -328,8 +313,8 @@ public class Show implements Serializable {
           showable.render(showableConfig, graphics);
           showable.tender(showableConfig, _g);
         }
-      if (gridLines) {
-        GridDrawer gridDrawer = new GridDrawer(dateTimeFocus);
+      {
+        GridDrawer gridDrawer = new GridDrawer(showOptions);
         gridDrawer.render(showableConfig, _g);
       }
       for (Showable showable : showables)
