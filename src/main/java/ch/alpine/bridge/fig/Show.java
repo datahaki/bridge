@@ -257,7 +257,7 @@ public final class Show implements Serializable {
    * @param dimension of image
    * @throws IOException */
   public void export(Path path, Dimension dimension) throws IOException {
-    String string = PathName.of(path).extension();
+    String string = PathName.of(path).extension().toLowerCase();
     BufferedImage bufferedImage = image(dimension);
     switch (string) {
     case "jpg", "jpeg" -> Jpeg.put(bufferedImage, path, JPG_QUALITY);

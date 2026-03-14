@@ -28,7 +28,7 @@ class AxisX extends Axis {
   }
 
   @Override
-  void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
+  protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
     Rectangle rectangle = showableConfig.rectangle;
     graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();
@@ -60,8 +60,8 @@ class AxisX extends Axis {
       }
     }
     if (showOptions.contains(ShowOption.GRID)) { // grid lines |
-      graphics.setColor(COLOR_GRIDLINES);
       graphics.setStroke(STROKE_GRIDLINES);
+      graphics.setColor(COLOR_GRIDLINES);
       for (int pix : navigableMap.keySet())
         graphics.drawLine(pix, rectangle.y, pix, rectangle.y + rectangle.height);
     }

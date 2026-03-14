@@ -14,32 +14,32 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.Clip;
 
 abstract class Axis {
-  public static final Stroke STROKE_GRIDLINES = //
+  protected static final Stroke STROKE_GRIDLINES = //
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
-  public static final Color COLOR_GRIDLINES = new Color(224, 224, 224, 128);
-  public static final Color COLOR_HELPER = new Color(192, 192, 192);
-  static final Scalar RESERVE = RealScalar.of(50);
+  protected static final Color COLOR_GRIDLINES = new Color(230, 230, 230, 192);
+  protected static final Color COLOR_HELPER = new Color(192, 192, 192);
+  protected static final Scalar RESERVE = RealScalar.of(50);
   // ---
-  final ShowOptions showOptions;
+  protected final ShowOptions showOptions;
   private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
   public Axis(ShowOptions showOptions) {
     this.showOptions = showOptions;
   }
 
-  final void render(ShowableConfig showableConfig, Point point, int length, Graphics _g, Clip clip) {
+  protected final void render(ShowableConfig showableConfig, Point point, int length, Graphics _g, Clip clip) {
     Graphics2D graphics = (Graphics2D) _g.create();
     protected_render(showableConfig, point, length, graphics, clip);
     graphics.dispose();
   }
 
-  abstract void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip);
-
-  public void setFont(Font font) {
+  public final void setFont(Font font) {
     this.font = font;
   }
 
-  public Font getFont() {
+  public final Font getFont() {
     return font;
   }
+
+  protected abstract void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip);
 }
