@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 
 /** inspired by
@@ -32,7 +31,7 @@ public class Manipulate {
     jSplitPane.setRightComponent(jPanel);
     {
       JPanel editor = new JPanel(new BorderLayout());
-      editor.add(BorderLayout.NORTH, AwtUtil.createToolbar(jSplitPane));
+      editor.add(BorderLayout.NORTH, StaticHelper.createToolbar(jSplitPane));
       PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.nested(object);
       editor.add(BorderLayout.CENTER, panelFieldsEditor.createJScrollPane());
       jSplitPane.setLeftComponent(editor);

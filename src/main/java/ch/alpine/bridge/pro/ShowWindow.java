@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowGridComponent;
 
@@ -53,7 +52,7 @@ public enum ShowWindow {
     JPanel contentPane = new JPanel(new BorderLayout());
     JComponent jComponent = ShowGridComponent.of(list);
     contentPane.add(BorderLayout.CENTER, jComponent);
-    contentPane.add(BorderLayout.NORTH, AwtUtil.createToolbar(jComponent));
+    contentPane.add(BorderLayout.NORTH, StaticHelper.createToolbar(jComponent));
     return contentPane;
   }
 }
