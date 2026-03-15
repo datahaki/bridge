@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -26,38 +28,41 @@ enum StaticHelper {
    * @return toolbar with buttons for "copy" and "export" */
   public static JToolBar createToolbar(JComponent jComponent) {
     JToolBar jToolBar = new JToolBar();
+    jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
+    jToolBar.setFloatable(false);
     {
-      jToolBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-      jToolBar.setFloatable(false);
-      {
-        JButton jButton = new JButton("copy");
-        jButton.addActionListener(_ -> ImageClipboard.copy(OffscreenRender.of(jComponent, BufferedImage.TYPE_INT_ARGB)));
-        jToolBar.add(jButton);
+      JButton jButton = new JButton("copy");
+      jButton.addActionListener(_ -> ImageClipboard.copy(OffscreenRender.of(jComponent, BufferedImage.TYPE_INT_ARGB)));
+      jToolBar.add(jButton);
+    }
+    {
+      String packageName = StaticHelper.class.getPackageName();
+      List<String> list = new LinkedList<>();
+      StackWalker.getInstance().forEach(stackFrame -> {
+        if (!stackFrame.getClassName().startsWith(packageName))
+          list.add(stackFrame.getClassName());
+      });
+      final String titleClass;
+      if (list.isEmpty()) {
+        titleClass = "fig";
+      } else {
+        String string = list.getFirst();
+        int index = string.lastIndexOf('.');
+        if (0 < index)
+          string = string.substring(index + 1);
+        titleClass = string;
       }
-      {
-        JButton jButton = new JButton("export");
-        jButton.addActionListener(_ -> {
-          // TODO filename should have move info
-          String title = "fig_" + DateTime.of(LocalDate.now(), LocalTime.now().withNano(0));
-          {
-            Path path = HomeDirectory.Pictures.resolve(FriendlyFormat.sanitize(title + ".png"));
-            try (OutputStream outputStream = Files.newOutputStream(path)) {
-              ImageIO.write(OffscreenRender.of(jComponent, BufferedImage.TYPE_INT_ARGB), "png", outputStream);
-            } catch (Exception exception) {
-              exception.printStackTrace();
-            }
-          }
-          {
-            Path path = HomeDirectory.Pictures.resolve(FriendlyFormat.sanitize(title + ".jpg"));
-            try (OutputStream outputStream = Files.newOutputStream(path)) {
-              ImageIO.write(OffscreenRender.of(jComponent, BufferedImage.TYPE_3BYTE_BGR), "jpg", outputStream);
-            } catch (Exception exception) {
-              exception.printStackTrace();
-            }
-          }
-        });
-        jToolBar.add(jButton);
-      }
+      JButton jButton = new JButton("export");
+      jButton.addActionListener(_ -> {
+        String title = FriendlyFormat.sanitize(titleClass + "_" + DateTime.of(LocalDate.now(), LocalTime.now().withNano(0)));
+        Path path = HomeDirectory.Pictures.resolve(title + ".png");
+        try (OutputStream outputStream = Files.newOutputStream(path)) {
+          ImageIO.write(OffscreenRender.of(jComponent, BufferedImage.TYPE_INT_ARGB), "png", outputStream);
+        } catch (Exception exception) {
+          exception.printStackTrace();
+        }
+      });
+      jToolBar.add(jButton);
     }
     return jToolBar;
   }

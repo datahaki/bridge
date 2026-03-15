@@ -11,7 +11,7 @@ import ch.alpine.tensor.ext.Jpeg;
 public record BGR3AnimationWriter(AnimationWriter animationWriter) implements AnimationWriter {
   @Override // from AnimationWriter
   public void write(BufferedImage bufferedImage) throws Exception {
-    animationWriter.write(Jpeg.bgr(bufferedImage));
+    animationWriter.write(Jpeg.bgr(bufferedImage, BufferedImage.TYPE_3BYTE_BGR));
   }
 
   @Override // from AnimationWriter
