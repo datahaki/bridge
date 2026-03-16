@@ -43,26 +43,24 @@ public enum AwtUtil {
         alpha);
   }
 
+  /** @param jFrame */
   public static void ctrlW(JFrame jFrame) {
-    JRootPane rootPane = jFrame.getRootPane();
-    KeyStroke ctrlW = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
-    rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlW, "closeWindow");
-    rootPane.getActionMap().put("closeWindow", new AbstractAction() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        jFrame.dispose();
-      }
-    });
+    ctrlW(jFrame.getRootPane(), jFrame::dispose);
   }
 
+  /** @param jDialog */
   public static void ctrlW(JDialog jDialog) {
-    JRootPane rootPane = jDialog.getRootPane();
+    ctrlW(jDialog.getRootPane(), jDialog::dispose);
+  }
+
+  private static void ctrlW(JRootPane rootPane, Runnable runnable) {
     KeyStroke ctrlW = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
-    rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlW, "closeWindow");
-    rootPane.getActionMap().put("closeWindow", new AbstractAction() {
+    String actionMapKey = "closeWindow";
+    rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlW, actionMapKey);
+    rootPane.getActionMap().put(actionMapKey, new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        jDialog.dispose();
+        runnable.run();
       }
     });
   }

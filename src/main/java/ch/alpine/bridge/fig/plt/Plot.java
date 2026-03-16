@@ -46,32 +46,35 @@ public class Plot extends UnaryShowable {
     Optional<Clip> optional = x_clip(showableConfig);
     if (optional.isPresent()) {
       Clip x_clip = optional.orElseThrow();
-      int segmentsPerPixel = 1;
-      if (Sign.isPositive(x_clip.width())) {
-        graphics.setColor(getColor());
-        graphics.setStroke(getStroke());
-        final double x0 = showableConfig.x_pos(x_clip.min());
-        final double x1 = showableConfig.x_pos(x_clip.max());
-        // TODO there is several interpolations concat here, also: enhance precision?
-        // TODO BRIDGE values NaN, Inf are just skipped right now, see BrokenSUO
-        path.reset();
-        path.moveTo(x0, showableConfig.y_pos(suo.apply(x_clip.min())));
-        ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
-        final int size = (int) ((x1 - x0) * segmentsPerPixel);
-        final double dx = 1.0 / segmentsPerPixel;
-        double xc = x0;
-        for (int i = 1; i <= size; ++i) {
-          xc += dx;
-          path.lineTo(xc, showableConfig.y_pos(suo.apply(interpX.apply(Rational.of(i, size)))));
-        }
-        graphics.draw(path);
-        if (isFilling()) {
-          path.lineTo(x1, showableConfig.y_pos(suo.apply(x_clip.max()).zero()));
-          path.lineTo(x0, showableConfig.y_pos(suo.apply(x_clip.min()).zero()));
-          graphics.setColor(AwtUtil.withAlpha(getColor(), FILL_ALPHA));
-          graphics.fill(path);
-        }
-      }
+      if (Sign.isPositive(x_clip.width()))
+        render(showableConfig, graphics, x_clip);
+    }
+  }
+
+  private void render(ShowableConfig showableConfig, Graphics2D graphics, Clip x_clip) {
+    int segmentsPerPixel = 1;
+    graphics.setColor(getColor());
+    graphics.setStroke(getStroke());
+    final double x0 = showableConfig.x_pos(x_clip.min());
+    final double x1 = showableConfig.x_pos(x_clip.max());
+    // TODO there is several interpolations concat here, also: enhance precision?
+    // TODO BRIDGE values NaN, Inf are just skipped right now, see BrokenSUO
+    path.reset();
+    path.moveTo(x0, showableConfig.y_pos(suo.apply(x_clip.min())));
+    ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
+    final int size = (int) ((x1 - x0) * segmentsPerPixel);
+    final double dx = 1.0 / segmentsPerPixel;
+    double xc = x0;
+    for (int i = 1; i <= size; ++i) {
+      xc += dx;
+      path.lineTo(xc, showableConfig.y_pos(suo.apply(interpX.apply(Rational.of(i, size)))));
+    }
+    graphics.draw(path);
+    if (isFilling()) {
+      path.lineTo(x1, showableConfig.y_pos(suo.apply(x_clip.max()).zero()));
+      path.lineTo(x0, showableConfig.y_pos(suo.apply(x_clip.min()).zero()));
+      graphics.setColor(AwtUtil.withAlpha(getColor(), FILL_ALPHA));
+      graphics.fill(path);
     }
   }
 

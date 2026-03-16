@@ -21,6 +21,7 @@ import java.nio.file.Path;
  * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/URLFetch.html">URLFetch</a> */
 public class URLFetch implements AutoCloseable {
+  // TODO use HttpClient !?
   private static final int BUFFER_SIZE = 8192;
   // ---
   private final HttpURLConnection httpURLConnection;

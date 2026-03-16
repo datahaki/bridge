@@ -57,6 +57,7 @@ public enum SpecialChars {
   PUZZLE("🧩"),
   WHITE_HEAVY_CHECK_MARK("✅"),
   CROSS_MARK("❌"),
+  EXCLAMATION("❗"),
   FOLDER("📂"),
   SPARKLES("✨"),
   WHITE_MEDIUM_STAR("⭐"),

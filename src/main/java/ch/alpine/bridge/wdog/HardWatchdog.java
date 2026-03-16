@@ -29,7 +29,6 @@ public final class HardWatchdog implements Watchdog {
     lastNotify = System.nanoTime();
   }
 
-  /** resets timeout counter to zero */
   @Override // from Watchdog
   public void notifyWatchdog() {
     isBarking();

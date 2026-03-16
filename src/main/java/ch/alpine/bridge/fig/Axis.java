@@ -16,7 +16,7 @@ import ch.alpine.tensor.sca.Clip;
 abstract class Axis {
   protected static final Stroke STROKE_GRIDLINES = //
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
-  protected static final Color COLOR_GRIDLINES = new Color(230, 230, 230, 192);
+  protected static final Color COLOR_GRIDLINES = new Color(128, 128, 128, 64);
   protected static final Color COLOR_HELPER = new Color(192, 192, 192);
   protected static final Scalar RESERVE = RealScalar.of(50);
   // ---

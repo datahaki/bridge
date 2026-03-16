@@ -20,7 +20,7 @@ import ch.alpine.tensor.sca.Clip;
 
 /* package */ final class ScalarFieldWrap extends TensorFieldWrap {
   /** allow choosing of hours 0,1,...,23 */
-  private static final Scalar WIDTH_LIMIT = RealScalar.of(24);
+  private static final Scalar MAX_ENUMERABLE_RANGE = RealScalar.of(24);
   // ---
   private final FieldClips fieldClips;
 
@@ -28,7 +28,7 @@ import ch.alpine.tensor.sca.Clip;
    * @throws Exception if annotations are corrupt */
   public ScalarFieldWrap(Field field) {
     super(field);
-    FieldClip fieldClip = field.getAnnotation(FieldClip.class);
+    FieldClip fieldClip = getField().getAnnotation(FieldClip.class);
     fieldClips = Objects.nonNull(fieldClip) //
         ? FieldClips.wrap(fieldClip)
         : null;
@@ -57,7 +57,7 @@ import ch.alpine.tensor.sca.Clip;
     if (list.isEmpty() && Objects.nonNull(fieldClips)) {
       if (fieldClips.isFinite() && fieldClips.isInteger()) {
         Clip clip = fieldClips.clip();
-        if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
+        if (Scalars.lessEquals(clip.width(), MAX_ENUMERABLE_RANGE))
           return Range.closed(clip).stream().map(Scalar.class::cast).collect(Collectors.toList());
       }
       return Stream.of(fieldClips.min(), fieldClips.max()) //

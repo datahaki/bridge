@@ -55,8 +55,13 @@ public class ClassDiscovery {
           Class<?> cls = cldr.loadClass(className);
           if (Objects.nonNull(cls))
             classVisitor.accept(classpath_entry, cls);
-        } catch (Throwable ex) {
-          // ---
+        } catch (ClassNotFoundException e) {
+          // Expected: Some .class files may not be loadable
+        } catch (NoClassDefFoundError e) {
+          // Expected: Missing dependencies
+        } catch (Exception e) {
+          // Unexpected: Log for debugging
+          System.err.println("Unexpected error loading " + className + ": " + e);
         }
       }
     }
@@ -94,8 +99,13 @@ public class ClassDiscovery {
                   if (Objects.isNull(cls))
                     continue;
                   recur(item, cls);
-                } catch (Throwable classNotFoundException) {
-                  // ---
+                } catch (ClassNotFoundException e) {
+                  // Expected: Some .class files may not be loadable
+                } catch (NoClassDefFoundError e) {
+                  // Expected: Missing dependencies
+                } catch (Exception e) {
+                  // Unexpected: Log for debugging
+                  System.err.println("Unexpected error loading " + className + ": " + e);
                 }
               }
             }
