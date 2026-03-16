@@ -8,7 +8,9 @@ import java.util.Optional;
 import ch.alpine.bridge.fig.BaseShowable;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 public class ArrowPlot extends BaseShowable {
   // private static final double RADIUS = 2.5;
@@ -36,6 +38,6 @@ public class ArrowPlot extends BaseShowable {
 
   @Override
   public Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Optional.empty();
+    return Optional.of(CoordinateBounds.of(Tensors.of(src, dst)));
   }
 }
