@@ -7,5 +7,7 @@ public enum PlotOption {
   /** evaluation of functions restricted to initial domain */
   STRICT,
   /** line vs closed polygon */
-  CLOSE
+  CLOSE,
+  // TODO
+  BAR_LEGEND,
 }

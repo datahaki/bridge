@@ -209,12 +209,15 @@ public final class Show implements Serializable {
       }
     }
     renderFrameTitle(graphics, r);
-    Graphics2D g = (Graphics2D) graphics.create();
-    g.setClip(r.x, r.y, r.width, r.height);
-    RenderQuality.setQuality(g);
-    ShowableConfig showableConfig = renderShowables(graphics, g, r);
-    renderLegend(g, r);
-    g.dispose();
+    final ShowableConfig showableConfig;
+    {
+      Graphics2D g = (Graphics2D) graphics.create();
+      g.setClip(r.x, r.y, r.width, r.height);
+      RenderQuality.setQuality(g);
+      showableConfig = renderShowables(graphics, g, r);
+      renderLegend(g, r);
+      g.dispose();
+    }
     return showableConfig;
   }
 

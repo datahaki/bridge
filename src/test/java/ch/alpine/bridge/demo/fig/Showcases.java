@@ -12,6 +12,7 @@ import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowOption;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.plt.ArrayPlot;
+import ch.alpine.bridge.fig.plt.ArrowPlot;
 import ch.alpine.bridge.fig.plt.CandlestickChart;
 import ch.alpine.bridge.fig.plt.DensityPlot;
 import ch.alpine.bridge.fig.plt.DiscretePlot;
@@ -110,6 +111,16 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  Arrows {
+    @Override
+    public Show getShow() {
+      Show show = new Show();
+      show.add(new ArrowPlot(Tensors.vector(1, 0), Tensors.vector(3, 2)));
+      show.add(new ArrowPlot(Tensors.vector(2, 3), Tensors.vector(-1, -2)));
+      show.setAspectRatioOne();
+      return show;
+    }
+  },
   Axes {
     @Override
     public Show getShow() {
