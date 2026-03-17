@@ -39,6 +39,9 @@ import ch.alpine.tensor.sca.pow.Power;
 import ch.alpine.tensor.sca.pow.Sqrt;
 import ch.alpine.tensor.sca.tri.ArcTan;
 
+/**
+ * 
+ */
 public final class GeometricComponent extends JComponent {
   private static final Scalar SCALE_FACTOR = Sqrt.FUNCTION.apply(RealScalar.TWO);
   private static final Font FONT_DEFAULT = new Font(Font.DIALOG, Font.PLAIN, 12);
@@ -55,7 +58,6 @@ public final class GeometricComponent extends JComponent {
   private int mouseWheel = 0;
   private boolean isZoomable = true;
   private boolean isRotatable = true;
-  // private boolean printPositionOnClick = true;
   private int buttonDrag = MouseEvent.BUTTON3;
 
   public GeometricComponent() {

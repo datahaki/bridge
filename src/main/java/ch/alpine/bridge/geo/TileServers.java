@@ -35,7 +35,7 @@ public enum TileServers implements TileServer {
     return HomeDirectory.Database.mk_dirs(name());
   }
 
-  public MapImagesCache createCache() {
+  public MapImagesCache cache() {
     return new MapImagesCache(path(), this);
   }
 }

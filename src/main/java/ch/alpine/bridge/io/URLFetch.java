@@ -8,6 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -21,7 +24,16 @@ import java.nio.file.Path;
  * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/URLFetch.html">URLFetch</a> */
 public class URLFetch implements AutoCloseable {
-  // TODO use HttpClient !?
+  public static byte[] of(URI uri) throws IOException, InterruptedException {
+    HttpRequest httpRequest = HttpRequest.newBuilder() //
+        .uri(uri) //
+        .header("User-Agent", "TileDownloader/1.0") //
+        .GET().build();
+    return HttpClient.newHttpClient() //
+        .send(httpRequest, HttpResponse.BodyHandlers.ofByteArray()) //
+        .body();
+  }
+
   private static final int BUFFER_SIZE = 8192;
   // ---
   private final HttpURLConnection httpURLConnection;

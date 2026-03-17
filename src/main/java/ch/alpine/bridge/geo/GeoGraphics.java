@@ -15,6 +15,10 @@ import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clips;
 
+/** EXPERIMENTAL :: IN PROGRESS
+ * 
+ * longitude is non-linear in pixels, therefore it does not fit the
+ * current BaseShowable framework */
 class GeoGraphics extends BaseShowable implements BackgroundPlotMarker {
   public static Showable of(TilePixel tilePixel) {
     return new GeoGraphics(tilePixel);
@@ -32,7 +36,7 @@ class GeoGraphics extends BaseShowable implements BackgroundPlotMarker {
     Dimension dimension = rectangle.getSize();
     Point center = AwtUtil.center(dimension);
     TilePixel origin = tilePixel.shift(-center.x, -center.y);
-    MapImagesCache mapImagesCache = TileServers.OpenStreetMap.createCache();
+    MapImagesCache mapImagesCache = TileServers.OpenStreetMap.cache();
     for (int ix = 0; ix < dimension.width + 256; ix += 256)
       for (int iy = 0; iy < dimension.height + 256; iy += 256) {
         TilePixel shift = origin.shift(ix, iy);

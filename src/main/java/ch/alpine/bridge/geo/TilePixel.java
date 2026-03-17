@@ -19,30 +19,47 @@ import ch.alpine.tensor.sca.tri.ArcTanh;
 import ch.alpine.tensor.sca.tri.Sin;
 import ch.alpine.tensor.sca.tri.Sinh;
 
+/** address combination of tile and pixel on that tile
+ * 
+ * @param tile
+ * @param pix between 0 and 255
+ * @param piy between 0 and 255 */
 public record TilePixel(Tile tile, int pix, int piy) {
+  /** value of latitude outside of this domain cannot be mapped
+   * meaningfully to a tile pixel coordinate */
+  public static final Clip LAT_DOMAIN = Clips.absolute(ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(Pi.VALUE)));
   private static final int xFF = 255;
-  private static final IntUnaryOperator CLIP = Integers.clip(0, xFF);
+  private static final IntUnaryOperator PIXEL_CLIP = Integers.clip(0, xFF);
 
+  /** function decomposes pixel in world map
+   * to tile and pixel on that tile address
+   * 
+   * @param z
+   * @param nx
+   * @param ny
+   * @return */
   public static TilePixel of(int z, long nx, long ny) {
-    int tx = (int) (nx / 256);
-    int ty = (int) (ny / 256);
+    int mask = Tile.maxInclusive(z);
+    int tx = (int) (nx >> 8) & mask;
+    int ty = (int) (ny >> 8) & mask;
     return new TilePixel(new Tile(z, tx, ty), (int) (nx & xFF), (int) (ny & xFF));
   }
 
-  public static final Clip CLIP2 = Clips.absolute(ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(Pi.VALUE)));
-
-  /** 38.343373, -0.762800
-   * 
-   * @param z
-   * @param lat
-   * @param lon
+  /** @param z
+   * @param lat_lon for instance {38.343373[deg], -0.762800[deg]}
    * @return */
   public static TilePixel from(int z, Tensor lat_lon) {
     return from(z, lat_lon.Get(0), lat_lon.Get(1));
   }
 
+  /** formula taken from gemini
+   * 
+   * @param z
+   * @param lat
+   * @param lon
+   * @return */
   public static TilePixel from(int z, Scalar lat, Scalar lon) {
-    lat = CLIP2.apply(UnitSystem.SI().apply(lat));
+    lat = LAT_DOMAIN.apply(UnitSystem.SI().apply(lat));
     lon = UnitSystem.SI().apply(lon);
     Scalar ny = RealScalar.ONE.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.VALUE)).multiply(RealScalar.of(1 << z + 7));
     Scalar nx = lon.add(Pi.VALUE).divide(Pi.TWO).multiply(RealScalar.of(1 << z + 8));
@@ -50,16 +67,16 @@ public record TilePixel(Tile tile, int pix, int piy) {
   }
 
   public TilePixel {
-    Integers.requireEquals(CLIP.applyAsInt(pix), pix);
-    Integers.requireEquals(CLIP.applyAsInt(piy), piy);
+    Integers.requireEquals(PIXEL_CLIP.applyAsInt(pix), pix);
+    Integers.requireEquals(PIXEL_CLIP.applyAsInt(piy), piy);
   }
 
   public long absx() {
-    return tile.x() * 256 + pix;
+    return (tile.x() << 8) + pix;
   }
 
   public long absy() {
-    return tile.y() * 256 + piy;
+    return (tile.y() << 8) + piy;
   }
 
   /** @param dx pixel level
@@ -90,7 +107,9 @@ public record TilePixel(Tile tile, int pix, int piy) {
     return of(z + delta, nx, ny);
   }
 
-  /** @return {lat, lon} */
+  /** formula taken from gemini
+   * 
+   * @return {lat, lon} */
   public Tensor lat_lon() {
     int z = tile().z();
     int ymax = 1 << z + 8;

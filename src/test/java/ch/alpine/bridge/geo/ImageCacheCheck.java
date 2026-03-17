@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import javax.imageio.ImageIO;
+
 import ch.alpine.bridge.io.DeleteDirectory;
 import ch.alpine.tensor.Throw;
 
@@ -14,24 +16,33 @@ class ImageCacheCheck {
     for (File file : directory.toFile().listFiles()) {
       boolean status = depth < 2 || file.isFile();
       if (!status) {
-        System.err.println(file);
         try {
+          System.err.println("delete dir: " + file);
           DeleteDirectory.of(file.toPath(), 1, 10);
         } catch (Exception e) {
-          // TODO Auto-generated catch block
           e.printStackTrace();
         }
       }
       if (depth < 2) {
         Throw.unless(file.isDirectory());
         recur(file.toPath(), depth + 1);
+      } else {
+        Throw.unless(file.isFile());
+        try {
+          ImageIO.read(file);
+        } catch (Exception e) {
+          System.err.println("delete file: " + file);
+          Files.delete(file.toPath());
+        }
       }
     }
   }
 
   static void main() throws IOException {
-    Path path = TileServers.OpenTopoMap.path();
-    if (Files.isDirectory(path))
-      new ImageCacheCheck().recur(path, 0);
+    for (TileServers ts : TileServers.values()) {
+      Path path = ts.path();
+      if (Files.isDirectory(path))
+        new ImageCacheCheck().recur(path, 0);
+    }
   }
 }
