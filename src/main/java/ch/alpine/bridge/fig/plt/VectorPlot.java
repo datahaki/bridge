@@ -39,14 +39,6 @@ public class VectorPlot extends BarLegendPlot {
     return new VectorPlot(tuo, cbb, colorDataGradient);
   }
 
-  // ---
-  private final TensorUnaryOperator tuo;
-  private final ScalarTensorFunction colorDataGradient;
-  private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
-  // ---
-  private Clip inner_clip = null;
-  private int resolution = RESOLUTION_DEFAULT;
-
   private class Inner {
     private final Tensor xy;
     private final Tensor uv;
@@ -87,10 +79,25 @@ public class VectorPlot extends BarLegendPlot {
     }
   }
 
+  private final TensorUnaryOperator tuo;
+  private final ScalarTensorFunction colorDataGradient;
+  private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
+  // ---
+  private Clip inner_clip = null;
+  private int resolution = RESOLUTION_DEFAULT;
+
   private VectorPlot(TensorUnaryOperator tuo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     super(cbb);
     this.tuo = tuo;
     this.colorDataGradient = colorDataGradient;
+  }
+
+  public void setResolution(int resolution) {
+    this.resolution = resolution;
+  }
+
+  public int getResolution() {
+    return resolution;
   }
 
   @Override
