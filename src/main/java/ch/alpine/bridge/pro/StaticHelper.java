@@ -2,7 +2,6 @@
 package ch.alpine.bridge.pro;
 
 import java.awt.FlowLayout;
-import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +31,7 @@ enum StaticHelper {
     jToolBar.setFloatable(false);
     {
       JButton jButton = new JButton("copy");
-      jButton.addActionListener(_ -> ImageClipboard.copy(OffscreenRender.of(jComponent, BufferedImage.TYPE_INT_ARGB)));
+      jButton.addActionListener(_ -> ImageClipboard.copy(OffscreenRender.of(jComponent)));
       jToolBar.add(jButton);
     }
     {
@@ -57,7 +56,7 @@ enum StaticHelper {
         String title = FriendlyFormat.sanitize(titleClass + "_" + DateTime.of(LocalDate.now(), LocalTime.now().withNano(0)));
         Path path = HomeDirectory.Pictures.resolve(title + ".png");
         try (OutputStream outputStream = Files.newOutputStream(path)) {
-          ImageIO.write(OffscreenRender.of(jComponent, BufferedImage.TYPE_INT_ARGB), "png", outputStream);
+          ImageIO.write(OffscreenRender.of(jComponent), "png", outputStream);
         } catch (Exception exception) {
           exception.printStackTrace();
         }

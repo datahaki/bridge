@@ -2,18 +2,16 @@
 package ch.alpine.bridge.pro;
 
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Window;
-import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
+
+import javax.swing.JComponent;
 
 import ch.alpine.bridge.awt.OffscreenRender;
 import ch.alpine.bridge.cgr.InstanceRecord;
 import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.ShowGridComponent;
 import ch.alpine.bridge.io.GitHubCI;
-import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.qty.Timing;
 import ch.alpine.tensor.sca.Round;
 
@@ -42,35 +40,25 @@ public class SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvid
   protected void check(WindowProvider windowProvider) {
     Window window = windowProvider.getWindow();
     window.setSize(WIDTH, HEIGHT);
-    OffscreenRender.of(window, BufferedImage.TYPE_INT_ARGB);
+    OffscreenRender.of(window);
   }
 
+  /** @param manipulateProvider */
   protected void check(ManipulateProvider manipulateProvider) {
     Container jComponent = manipulateProvider.getContainer();
     jComponent.setSize(WIDTH, HEIGHT);
-    jComponent.doLayout(); // mandatory
-    int width = jComponent.getWidth();
-    Integers.requireEquals(width, WIDTH);
-    int height = jComponent.getHeight();
-    Integers.requireEquals(height, HEIGHT);
-    if (width == 0 || height == 0) {
-      throw new IllegalStateException("Component must have a size");
-    }
-    BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = bufferedImage.createGraphics();
-    jComponent.printAll(graphics);
-    graphics.dispose();
+    OffscreenRender.of(jComponent);
   }
 
+  /** @param showProvider */
   protected void check(ShowProvider showProvider) {
     Show show = showProvider.getShow();
-    Dimension dimension = new Dimension(800, 800);
-    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = bufferedImage.createGraphics();
-    show.render_autoIndent(graphics, new Rectangle(dimension));
-    graphics.dispose();
+    JComponent jComponent = ShowGridComponent.of(show);
+    jComponent.setSize(WIDTH, HEIGHT);
+    OffscreenRender.of(jComponent);
   }
 
+  /** @param voidProvider */
   protected void check(VoidProvider voidProvider) {
     voidProvider.runStandalone();
   }
