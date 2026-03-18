@@ -52,6 +52,10 @@ public record TilePixel(Tile tile, int pix, int piy) {
     return from(z, lat_lon.Get(0), lat_lon.Get(1));
   }
 
+  public TilePixel from(Tensor lat_lon) {
+    return from(tile.z(), lat_lon);
+  }
+
   /** formula taken from gemini
    * 
    * @param z

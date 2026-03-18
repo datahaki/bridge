@@ -16,9 +16,7 @@ import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.DateTime;
-import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
 // TODO BRIDGE logarithmic scale
@@ -48,17 +46,9 @@ class AxisX extends Axis {
         navigableMap.put(x_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
-    } else {
-      // TODO BRIDGE determine reserve, instead of 50 hardcode
-      Scalar dX = StaticHelper.getDecimalStep(clip.width().divide(RealScalar.of(rectangle.width)).multiply(Axis.RESERVE));
-      for ( //
-          Scalar xValue = Ceiling.toMultipleOf(dX).apply(clip.min()); //
-          Scalars.lessEquals(xValue, clip.max()); //
-          xValue = xValue.add(dX)) {
-        int x_pos = (int) showableConfig.x_pos(xValue);
-        navigableMap.put(x_pos, xValue);
-      }
-    }
+    } else
+      Ticks.stream(clip, Axis.RESERVE.divide(RealScalar.of(rectangle.width))) //
+          .forEach(tick -> navigableMap.put((int) showableConfig.x_pos(tick), tick));
     if (showOptions.contains(ShowOption.GRID)) { // grid lines |
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
@@ -82,7 +72,7 @@ class AxisX extends Axis {
       for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
         Scalar value = entry.getValue();
         String xLabel = Objects.isNull(dateTimeFormatter) //
-            ? StaticHelper.format(value)
+            ? Ticks.format(value)
             : ((DateTime) value).format(dateTimeFormatter);
         graphics.drawString(xLabel, //
             entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //

@@ -34,7 +34,7 @@ class AxisYLog extends Axis {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
-    int fontSize = StaticHelper.interval(fontMetrics);
+    int fontSize = interval(fontMetrics);
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(fontSize, rectangle.height)));
@@ -50,7 +50,7 @@ class AxisYLog extends Axis {
       }
     } else {
       Scalar plotHeight = RealScalar.of(rectangle.height - 1);
-      Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize)));
+      Scalar dY = Ticks.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize)));
       for ( //
           Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
           Scalars.lessEquals(yValue, clip.max()); //
@@ -80,7 +80,7 @@ class AxisYLog extends Axis {
           int piy = entry.getKey();
           Scalar value = entry.getValue();
           String yLabel = Objects.isNull(dateTimeFormatter) //
-              ? StaticHelper.format(value)
+              ? Ticks.format(value)
               : ((DateTime) value).format(dateTimeFormatter);
           graphics.drawString(yLabel, //
               point.x - fontMetrics.stringWidth(yLabel) - 5, //

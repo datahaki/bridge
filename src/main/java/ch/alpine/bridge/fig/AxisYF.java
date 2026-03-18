@@ -18,7 +18,6 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.DateTime;
-import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
 // TODO BRIDGE only used for BarLegend, ticks are draw to right instead of left
@@ -37,7 +36,7 @@ class AxisYF extends Axis {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
-    int fontSize = StaticHelper.interval(fontMetrics);
+    int fontSize = interval(fontMetrics);
     // ---
     // formula showableConfig.y_pos does not apply here, so we have to compute y_pos explicitly
     double y_height = rectangle.y + rectangle.height - 1;
@@ -55,17 +54,12 @@ class AxisYF extends Axis {
         navigableMap.put(y_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
-    } else {
-      Scalar plotHeight = RealScalar.of(rectangle.height); // - 1
-      Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(RealScalar.of(fontSize)));
-      for ( //
-          Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
-          Scalars.lessEquals(yValue, clip.max()); //
-          yValue = yValue.add(dY)) {
-        int y_pos = (int) (y_height - yValue.subtract(clip.min()).multiply(y2pixel).number().doubleValue());
-        navigableMap.put(y_pos, yValue);
-      }
-    }
+    } else
+      Ticks.stream(clip, RealScalar.of(fontSize).divide(RealScalar.of(rectangle.height))) //
+          .forEach(tick -> {
+            int y_pos = (int) (y_height - tick.subtract(clip.min()).multiply(y2pixel).number().doubleValue());
+            navigableMap.put(y_pos, tick);
+          });
     if (showOptions.contains(ShowOption.AXIS_Y)) {
       {
         graphics.setStroke(StaticHelper.STROKE_SOLID);
@@ -81,7 +75,7 @@ class AxisYF extends Axis {
           int piy = entry.getKey();
           Scalar value = entry.getValue();
           String yLabel = Objects.isNull(dateTimeFormatter) //
-              ? StaticHelper.format(value)
+              ? Ticks.format(value)
               : ((DateTime) value).format(dateTimeFormatter);
           graphics.drawString(yLabel, //
               point.x + 5, //

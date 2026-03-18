@@ -12,6 +12,7 @@ import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.bridge.fig.BaseShowable;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
+import ch.alpine.bridge.fig.Ticks;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -103,7 +104,9 @@ public class CandlestickChart extends BaseShowable {
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
-      Scalar dX = StaticHelper.getDecimalStep(clip.width().divide(RealScalar.of(rectangle_width)).multiply(RealScalar.of(MIN_SPACE)));
+      // TODO this is not covered by ShowDemo
+      // TODO use Ticks.stream
+      Scalar dX = Ticks.getDecimalStep(clip.width().divide(RealScalar.of(rectangle_width)).multiply(RealScalar.of(MIN_SPACE)));
       for ( //
           Scalar xValue = Ceiling.toMultipleOf(dX).apply(clip.min()); //
           Scalars.lessEquals(xValue, clip.max()); //

@@ -1,8 +1,6 @@
 // code by jph
 package ch.alpine.bridge.geo;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -52,7 +50,8 @@ public class GeoComponent extends JComponent {
         int dx = down.x - here.x;
         int dy = down.y - here.y;
         down = here;
-        tilePixel = tilePixel.shift(dx, dy);
+        int f = tilePixel.tile().z() / 3 + 1;
+        tilePixel = tilePixel.shift(dx * f, dy * f);
         repaint();
       }
 
@@ -82,17 +81,6 @@ public class GeoComponent extends JComponent {
         BufferedImage bufferedImage = mapImagesCache.getTile(shift.tile());
         graphics.drawImage(bufferedImage, ix - shift.pix(), iy - shift.piy(), null);
       }
-    { // draw crosshair
-      graphics.setStroke(new BasicStroke());
-      graphics.setColor(new Color(255, 0, 0, 128));
-      graphics.drawLine(center.x - 2, center.y, center.x + 2, center.y);
-      graphics.drawLine(center.x, center.y - 2, center.x, center.y + 2);
-      graphics.setColor(Color.BLACK);
-      graphics.drawString("z=" + tilePixel.tile().z(), 0 + 1, 20 + 1);
-      graphics.setColor(Color.WHITE);
-      graphics.drawString("z=" + tilePixel.tile().z(), 0, 20);
-    }
-    // ---
     renderMore(graphics);
   }
 

@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -18,6 +19,7 @@ abstract class Axis {
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
   protected static final Color COLOR_GRIDLINES = new Color(128, 128, 128, 64);
   protected static final Color COLOR_HELPER = new Color(192, 192, 192);
+  // TODO BRIDGE determine reserve, instead of 50 hardcode
   protected static final Scalar RESERVE = RealScalar.of(50);
   // ---
   protected final ShowOptions showOptions;
@@ -42,4 +44,8 @@ abstract class Axis {
   }
 
   protected abstract void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip);
+
+  protected static int interval(FontMetrics fontMetrics) {
+    return fontMetrics.getAscent() * 8 / 5;
+  }
 }

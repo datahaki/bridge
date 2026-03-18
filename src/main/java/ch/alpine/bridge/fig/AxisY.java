@@ -16,9 +16,7 @@ import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.DateTime;
-import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 
 class AxisY extends Axis {
@@ -34,7 +32,7 @@ class AxisY extends Axis {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
     DateTimeFormatter dateTimeFormatter = null;
-    int fontSize = StaticHelper.interval(fontMetrics);
+    int fontSize = interval(fontMetrics);
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(fontSize, rectangle.height)));
@@ -48,18 +46,9 @@ class AxisY extends Axis {
         navigableMap.put(y_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
-    } else {
-      Scalar plotHeight = RealScalar.of(rectangle.height); // - 1
-      // the "50" is instead of fontsize
-      Scalar dY = StaticHelper.getDecimalStep(clip.width().divide(plotHeight).multiply(Axis.RESERVE));
-      for ( //
-          Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
-          Scalars.lessEquals(yValue, clip.max()); //
-          yValue = yValue.add(dY)) {
-        int y_pos = (int) showableConfig.y_pos(yValue);
-        navigableMap.put(y_pos, yValue);
-      }
-    }
+    } else
+      Ticks.stream(clip, Axis.RESERVE.divide(RealScalar.of(rectangle.height))) //
+          .forEach(tick -> navigableMap.put((int) showableConfig.y_pos(tick), tick));
     if (showOptions.contains(ShowOption.GRID)) {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
@@ -80,7 +69,7 @@ class AxisY extends Axis {
         int piy = entry.getKey();
         Scalar value = entry.getValue();
         String yLabel = Objects.isNull(dateTimeFormatter) //
-            ? StaticHelper.format(value)
+            ? Ticks.format(value)
             : ((DateTime) value).format(dateTimeFormatter);
         graphics.drawString(yLabel, //
             point.x - fontMetrics.stringWidth(yLabel) - 5, //
