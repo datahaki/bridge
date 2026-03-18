@@ -80,7 +80,7 @@ public class MapImagesCache {
     }
   }
 
-  private Path path(Tile tile) {
+  public Path path(Tile tile) {
     final String string = String.format("%d_%d_%d.png", tile.z(), tile.x(), tile.y());
     final int hash = string.hashCode();
     final String hi = hexFormat.toHexDigits((byte) ((hash >> 6) & 0x3f));
