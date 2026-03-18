@@ -15,7 +15,7 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Sign;
 
 public class ShowableConfig {
-  public final Rectangle rectangle;
+  final Rectangle rectangle;
   private final CoordinateBoundingBox cbb;
   protected final Clip xRange;
   protected final Clip yRange;
@@ -41,6 +41,10 @@ public class ShowableConfig {
     Sign.requirePositive(y2pixel);
     pixel2x = xRange.width().divide(RealScalar.of(rectangle.width - 1));
     pixel2y = yRange.width().divide(RealScalar.of(rectangle.height - 1));
+  }
+
+  public final Rectangle rectangle() {
+    return rectangle;
   }
 
   public final double x_pos(Scalar x) {
@@ -85,5 +89,9 @@ public class ShowableConfig {
   /** @return may be null */
   public final CoordinateBoundingBox getCbb() {
     return cbb;
+  }
+
+  public final ShowableConfig reset() {
+    return new ShowableConfig(new Rectangle(0, 0, rectangle.width, rectangle.height), cbb);
   }
 }

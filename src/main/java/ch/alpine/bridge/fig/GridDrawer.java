@@ -23,7 +23,7 @@ public class GridDrawer {
   }
 
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    Rectangle rectangle = showableConfig.rectangle;
+    Rectangle rectangle = showableConfig.rectangle();
     Clip xRange = showableConfig.getClip(0);
     Clip yRange = showableConfig.getClip(1);
     // ---

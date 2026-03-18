@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
+import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 
@@ -32,7 +33,13 @@ abstract class Axis {
    * @param point
    * @param length
    * @param _g */
-  protected abstract void render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics);
+  protected final void render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
+    RenderQuality.smoothLine(graphics, false);
+    protected_render(showableConfig, point, length, graphics);
+    RenderQuality.smoothLine(graphics, true);
+  }
+
+  protected abstract void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics);
 
   public final void setFont(Font font) {
     this.font = font;

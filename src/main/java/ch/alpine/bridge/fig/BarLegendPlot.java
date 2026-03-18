@@ -46,7 +46,7 @@ public abstract class BarLegendPlot extends BaseShowable {
   public final void tender(ShowableConfig showableConfig, Graphics2D graphics) {
     BarLegend barLegend = barLegend();
     if (Objects.nonNull(barLegend)) {
-      Rectangle rectangle = showableConfig.rectangle;
+      Rectangle rectangle = showableConfig.rectangle();
       int width = StaticHelper.GAP * 2;
       int pix = rectangle.x + rectangle.width + 1 + StaticHelper.GAP * 2;
       graphics.drawImage(ImageFormat.of(Subdivide.decreasing(Clips.unit(), rectangle.height - 1).maps(Tensors::of).maps(barLegend.colorDataGradient())), //

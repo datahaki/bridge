@@ -1,7 +1,6 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -276,9 +275,11 @@ public final class Show implements Serializable {
   private void renderFrameTitle(Graphics2D graphics, Rectangle rectangle) {
     if (showOptions.contains(ShowOption.FRAMED)) {
       // draw box around ...
-      graphics.setStroke(new BasicStroke());
+      RenderQuality.smoothLine(graphics, false);
+      graphics.setStroke(StaticHelper.STROKE_SOLID);
       graphics.setColor(Show.COLOR_FRAME);
       graphics.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
+      RenderQuality.smoothLine(graphics, true);
     }
     {
       String string = getPlotLabel();
@@ -309,20 +310,25 @@ public final class Show implements Serializable {
           ? new ShowableConfigYF(rectangle, _cbb)
           : new ShowableConfig(rectangle, _cbb);
       // ---
+      // IO.println(showableConfig.rectangle());
       for (Showable showable : showables)
         if (showable instanceof BackgroundPlotMarker) {
           // TODO use graphics.create(x,y,...)
-          graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-          showable.render(showableConfig, graphics);
-          graphics.setClip(null);
+          Graphics2D g = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+          // graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+          showable.render(showableConfig.reset(), g);
+          // graphics.setClip(null);
+          g.dispose();
           showable.tender(showableConfig, graphics);
         }
       new GridDrawer(showOptions).render(showableConfig, graphics);
       for (Showable showable : showables)
         if (!(showable instanceof BackgroundPlotMarker)) {
-          graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-          showable.render(showableConfig, graphics);
-          graphics.setClip(null);
+          // graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+          Graphics2D g = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+          showable.render(showableConfig.reset(), g);
+          // graphics.setClip(null);
+          g.dispose();
           showable.tender(showableConfig, graphics);
         }
     }

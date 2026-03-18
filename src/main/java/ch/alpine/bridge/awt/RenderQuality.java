@@ -12,7 +12,7 @@ public enum RenderQuality {
    * 
    * @param graphics */
   public static void setQuality(Graphics2D graphics) {
-    line(graphics, false);
+    smoothLine(graphics, true);
     // ---
     graphics.setRenderingHint( //
         RenderingHints.KEY_ANTIALIASING, //
@@ -43,7 +43,7 @@ public enum RenderQuality {
 
   /** @param graphics
    * @param smooth */
-  public static void line(Graphics2D graphics, boolean smooth) {
+  public static void smoothLine(Graphics2D graphics, boolean smooth) {
     graphics.setRenderingHint( //
         RenderingHints.KEY_STROKE_CONTROL, //
         smooth //

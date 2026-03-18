@@ -62,7 +62,7 @@ public class CandlestickChart extends BaseShowable {
         // TODO BRIDGE TsPlot should also handle vectors
         // timeSeries.block(x_clip, false).stream() //
         // .forEach(tsEntry -> tsf.apply(tsEntry.value()));
-        NavigableSet<Scalar> navigableSet = asd(x_clip, showableConfig.rectangle.width);
+        NavigableSet<Scalar> navigableSet = asd(x_clip, showableConfig.rectangle().width);
         if (1 < navigableSet.size()) {
           // graphics.setColor(StaticHelper.withAlpha(getColor(), ALPHA));
           graphics.setColor(getColor());

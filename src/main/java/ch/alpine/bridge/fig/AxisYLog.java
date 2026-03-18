@@ -27,9 +27,9 @@ class AxisYLog extends Axis {
 
   /** draw lines and numbers like this: _________________ */
   @Override
-  protected void render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
+  protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
     Clip clip = showableConfig.yRange;
-    Rectangle rectangle = showableConfig.rectangle;
+    Rectangle rectangle = showableConfig.rectangle();
     graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();
     NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();

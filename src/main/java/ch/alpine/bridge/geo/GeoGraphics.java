@@ -32,7 +32,7 @@ class GeoGraphics extends BaseShowable implements BackgroundPlotMarker {
 
   @Override
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    Rectangle rectangle = showableConfig.rectangle;
+    Rectangle rectangle = showableConfig.rectangle();
     Dimension dimension = rectangle.getSize();
     Point center = AwtUtil.center(dimension);
     TilePixel origin = tilePixel.shift(-center.x, -center.y);
