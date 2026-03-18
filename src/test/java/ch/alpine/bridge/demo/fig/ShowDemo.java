@@ -20,7 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 
-import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.pro.ManipulateProvider;
 import ch.alpine.bridge.ref.ann.FieldClip;
@@ -78,7 +77,6 @@ public class ShowDemo implements ManipulateProvider {
         graphics.drawRect(0, 0, width - 1, height - 1);
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 9));
-        RenderQuality.setQuality(graphics);
         graphics.drawString(showcases.name(), 0, 10);
         graphics.dispose();
         list.add(bufferedImage);

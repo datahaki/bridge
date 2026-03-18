@@ -11,7 +11,6 @@ import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -22,13 +21,16 @@ import ch.alpine.tensor.sca.Clip;
 
 // TODO BRIDGE only used for BarLegend, ticks are draw to right instead of left
 class AxisYF extends Axis {
-  public AxisYF(ShowOptions showOptions) {
+  private final Clip clip;
+
+  public AxisYF(ShowOptions showOptions, Clip clip) {
     super(showOptions);
+    this.clip = clip;
   }
 
   /** draw lines and numbers like this: _________________ */
   @Override
-  protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
+  protected void render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
     if (Scalars.isZero(clip.width()))
       return;
     Rectangle rectangle = showableConfig.rectangle;
@@ -38,8 +40,9 @@ class AxisYF extends Axis {
     DateTimeFormatter dateTimeFormatter = null;
     int fontSize = interval(fontMetrics);
     // ---
-    // formula showableConfig.y_pos does not apply here, so we have to compute y_pos explicitly
-    double y_height = rectangle.y + rectangle.height - 1;
+    // formula showableConfig.y_pos does not apply here due to different clip
+    // so we have to compute y_pos explicitly
+    double y_height = showableConfig.yBaseline;
     Scalar y2pixel = RealScalar.of(rectangle.height - 1).divide(clip.width());
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
@@ -70,7 +73,6 @@ class AxisYF extends Axis {
       }
       {
         graphics.setColor(StaticHelper.COLOR_FONT);
-        RenderQuality.setQuality(graphics);
         for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
           int piy = entry.getKey();
           Scalar value = entry.getValue();

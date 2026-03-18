@@ -1,6 +1,7 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -178,46 +179,46 @@ public final class Show implements Serializable {
     return aspectRatio;
   }
 
+  private Rectangle aspect(CoordinateBoundingBox _cbb, Rectangle rectangle) {
+    Rectangle r = new Rectangle(rectangle);
+    Scalar aspect = aspectRatio;
+    if (Objects.isNull(aspect)) {
+      Set<Scalar> set = showables.stream() //
+          .map(Showable::aspectRatioHint) //
+          .flatMap(Optional::stream) //
+          .collect(Collectors.toSet());
+      if (set.size() == 1)
+        aspect = set.iterator().next();
+    }
+    if (Objects.nonNull(aspect)) {
+      Tensor a = Tensor.of(_cbb.stream().map(Clip::width));
+      a.set(aspect::multiply, 1);
+      Tensor b = Tensors.vector(rectangle.width, rectangle.height);
+      Optional<Tensor> optional = CbbFit.inside(a, b);
+      if (optional.isEmpty())
+        return null;
+      Tensor c = optional.orElseThrow();
+      r.width = Round.intValueExact(c.Get(0));
+      r.height = Round.intValueExact(c.Get(1));
+    }
+    return r;
+  }
+
   /** @param graphics
    * @param rectangle
    * @return null if input rectangle is unsuitable for drawing */
-  public ShowableConfig render(Graphics graphics, Rectangle rectangle) {
+  public ShowableConfig render(Graphics _g, Rectangle rectangle) {
     if (rectangle.width <= 1 || rectangle.height <= 1)
       return null;
-    CoordinateBoundingBox _cbb = deriveCbb();
-    Rectangle r = new Rectangle(rectangle);
-    if (Objects.nonNull(_cbb)) {
-      Scalar aspect = aspectRatio;
-      if (Objects.isNull(aspect)) {
-        Set<Scalar> set = showables.stream() //
-            .map(Showable::aspectRatioHint) //
-            .flatMap(Optional::stream) //
-            .collect(Collectors.toSet());
-        if (set.size() == 1)
-          aspect = set.iterator().next();
-      }
-      if (Objects.nonNull(aspect)) {
-        Tensor a = Tensor.of(_cbb.stream().map(Clip::width));
-        a.set(aspect::multiply, 1);
-        Tensor b = Tensors.vector(rectangle.width, rectangle.height);
-        Optional<Tensor> optional = CbbFit.inside(a, b);
-        if (optional.isEmpty())
-          return null;
-        Tensor c = optional.orElseThrow();
-        r.width = Round.intValueExact(c.Get(0));
-        r.height = Round.intValueExact(c.Get(1));
-      }
-    }
-    renderFrameTitle(graphics, r);
-    final ShowableConfig showableConfig;
-    {
-      Graphics2D g = (Graphics2D) graphics.create();
-      g.setClip(r.x, r.y, r.width, r.height);
-      RenderQuality.setQuality(g);
-      showableConfig = renderShowables(graphics, g, r);
-      renderLegend(g, r);
-      g.dispose();
-    }
+    Graphics2D graphics = (Graphics2D) _g.create();
+    RenderQuality.setQuality(graphics);
+    CoordinateBoundingBox cbb = deriveCbb();
+    if (Objects.nonNull(cbb))
+      rectangle = aspect(cbb, rectangle);
+    renderFrameTitle(graphics, rectangle);
+    ShowableConfig showableConfig = renderShowables(graphics, rectangle);
+    renderLegend(graphics, rectangle);
+    graphics.dispose();
     return showableConfig;
   }
 
@@ -272,28 +273,25 @@ public final class Show implements Serializable {
     }
   }
 
-  private void renderFrameTitle(Graphics _g, Rectangle rectangle) {
-    Graphics2D graphics = (Graphics2D) _g.create();
+  private void renderFrameTitle(Graphics2D graphics, Rectangle rectangle) {
     if (showOptions.contains(ShowOption.FRAMED)) {
       // draw box around ...
-      graphics.setStroke(StaticHelper.STROKE_SOLID);
+      graphics.setStroke(new BasicStroke());
       graphics.setColor(Show.COLOR_FRAME);
       graphics.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
     }
     {
       String string = getPlotLabel();
       if (!string.isEmpty()) {
-        Font font = _g.getFont().deriveFont(Font.BOLD);
+        Font font = graphics.getFont().deriveFont(Font.BOLD);
         graphics.setFont(font);
-        RenderQuality.setQuality(graphics);
         graphics.setColor(StaticHelper.COLOR_FONT);
         graphics.drawString(string, rectangle.x, rectangle.y - StaticHelper.GAP);
       }
     }
-    graphics.dispose();
   }
 
-  private ShowableConfig renderShowables(Graphics _g, Graphics2D graphics, Rectangle rectangle) {
+  private ShowableConfig renderShowables(Graphics2D graphics, Rectangle rectangle) {
     final ShowableConfig showableConfig;
     CoordinateBoundingBox _cbb = deriveCbb();
     if (Objects.isNull(_cbb)) {
@@ -313,14 +311,19 @@ public final class Show implements Serializable {
       // ---
       for (Showable showable : showables)
         if (showable instanceof BackgroundPlotMarker) {
+          // TODO use graphics.create(x,y,...)
+          graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
           showable.render(showableConfig, graphics);
-          showable.tender(showableConfig, _g);
+          graphics.setClip(null);
+          showable.tender(showableConfig, graphics);
         }
-      new GridDrawer(showOptions).render(showableConfig, _g);
+      new GridDrawer(showOptions).render(showableConfig, graphics);
       for (Showable showable : showables)
         if (!(showable instanceof BackgroundPlotMarker)) {
+          graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
           showable.render(showableConfig, graphics);
-          showable.tender(showableConfig, _g);
+          graphics.setClip(null);
+          showable.tender(showableConfig, graphics);
         }
     }
     return showableConfig;

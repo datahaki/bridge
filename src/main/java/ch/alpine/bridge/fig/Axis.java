@@ -5,14 +5,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.sca.Clip;
 
 abstract class Axis {
   protected static final Stroke STROKE_GRIDLINES = //
@@ -28,12 +26,13 @@ abstract class Axis {
   public Axis(ShowOptions showOptions) {
     this.showOptions = showOptions;
   }
+  // protected abstract NavigableMap<Integer, Scalar> navigableMap(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics);
 
-  protected final void render(ShowableConfig showableConfig, Point point, int length, Graphics _g, Clip clip) {
-    Graphics2D graphics = (Graphics2D) _g.create();
-    protected_render(showableConfig, point, length, graphics, clip);
-    graphics.dispose();
-  }
+  /** @param showableConfig
+   * @param point
+   * @param length
+   * @param _g */
+  protected abstract void render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics);
 
   public final void setFont(Font font) {
     this.font = font;
@@ -42,8 +41,6 @@ abstract class Axis {
   public final Font getFont() {
     return font;
   }
-
-  protected abstract void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip);
 
   protected static int interval(FontMetrics fontMetrics) {
     return fontMetrics.getAscent() * 8 / 5;

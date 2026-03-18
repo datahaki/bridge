@@ -109,6 +109,7 @@ public enum SpecialChars {
   BLAST("💥"),
   DNA("🧬"),
   CAMERA("📷"),
+  MONITOR("🖥️"),
   OPENBOOK("📖"),
   BOOKPILE("📚"),
   CAMERA_FLASH("📸"),

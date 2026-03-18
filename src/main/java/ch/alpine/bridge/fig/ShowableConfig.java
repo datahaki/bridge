@@ -19,7 +19,7 @@ public class ShowableConfig {
   private final CoordinateBoundingBox cbb;
   protected final Clip xRange;
   protected final Clip yRange;
-  private final double yBaseline;
+  final double yBaseline;
   private final Scalar x2pixel;
   protected final Scalar y2pixel;
   protected final Scalar pixel2x;

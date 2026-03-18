@@ -9,5 +9,7 @@ public enum ShowOption {
   /** computes ticks along y axis and draws axis with labels */
   AXIS_Y,
   /** gridlines requires {@link #AXIS_X} or {@link #AXIS_Y} to take effect */
-  GRID
+  GRID,
+  // BARLEGEND // TODO
+  // LEGEND // TODO
 }

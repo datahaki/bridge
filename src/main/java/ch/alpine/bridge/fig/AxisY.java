@@ -5,13 +5,13 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.time.format.DateTimeFormatter;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -26,7 +26,8 @@ class AxisY extends Axis {
 
   /** draw lines and numbers like this: _________________ */
   @Override
-  protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
+  protected void render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
+    Clip clip = showableConfig.yRange;
     Rectangle rectangle = showableConfig.rectangle;
     graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();
@@ -49,6 +50,7 @@ class AxisY extends Axis {
     } else
       Ticks.stream(clip, Axis.RESERVE.divide(RealScalar.of(rectangle.height))) //
           .forEach(tick -> navigableMap.put((int) showableConfig.y_pos(tick), tick));
+    graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
     if (showOptions.contains(ShowOption.GRID)) {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
@@ -64,7 +66,6 @@ class AxisY extends Axis {
     }
     {
       graphics.setColor(StaticHelper.COLOR_FONT);
-      RenderQuality.setQuality(graphics);
       for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
         int piy = entry.getKey();
         Scalar value = entry.getValue();

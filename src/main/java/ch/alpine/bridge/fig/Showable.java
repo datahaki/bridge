@@ -2,7 +2,6 @@
 package ch.alpine.bridge.fig;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.util.Optional;
@@ -19,7 +18,7 @@ public interface Showable {
 
   /** @param showableConfig
    * @param _g */
-  void tender(ShowableConfig showableConfig, Graphics _g);
+  void tender(ShowableConfig showableConfig, Graphics2D graphics);
 
   /** @return */
   Optional<CoordinateBoundingBox> fullPlotRange();

@@ -11,7 +11,6 @@ import java.util.NavigableMap;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -26,7 +25,8 @@ class AxisX extends Axis {
   }
 
   @Override
-  protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics, Clip clip) {
+  protected void render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
+    Clip clip = showableConfig.xRange;
     Rectangle rectangle = showableConfig.rectangle;
     graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();
@@ -68,7 +68,6 @@ class AxisX extends Axis {
     }
     {
       graphics.setColor(StaticHelper.COLOR_FONT);
-      RenderQuality.setQuality(graphics);
       for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
         Scalar value = entry.getValue();
         String xLabel = Objects.isNull(dateTimeFormatter) //
