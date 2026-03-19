@@ -38,19 +38,32 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
   private static final int RESOLUTION_DEFAULT = 80;
   private static final int RESOLUTION_MIN = 10;
 
+  /** @param sbo
+   * @param cbb
+   * @return */
   public static DensityPlot of(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb) {
     return of(sbo, cbb, ColorDataGradients.DENSITY);
   }
 
+  /** @param sbo
+   * @param cbb
+   * @param colorDataGradient
+   * @return */
   public static DensityPlot of(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     return new DensityPlot(sbo, cbb, colorDataGradient);
   }
 
+  /** non-evaluating
+   * 
+   * @param matrix
+   * @param cbb
+   * @param colorDataGradient
+   * @return */
   public static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     return ArrayPlot.of(matrix, cbb, colorDataGradient, false);
   }
 
-  public static Tensor compute(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, int resolution) {
+  private static Tensor compute(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, int resolution) {
     // TODO BRIDGE resolution based on aspect ratio and cbb ?
     Tensor dx = Subdivide.intermediate_increasing(cbb.clip(0), resolution);
     Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);

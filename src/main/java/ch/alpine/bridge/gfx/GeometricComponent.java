@@ -172,7 +172,6 @@ public final class GeometricComponent extends JComponent {
       _g.setColor(new Color(255, 255, 255, 128));
       _g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
       Show show = new Show();
-      
       show.set(ShowOption.AXIS_X, false);
       show.set(ShowOption.FRAMED, false);
       show.set(ShowOption.UNIT_MAPPING, false);

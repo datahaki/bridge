@@ -45,10 +45,11 @@ public record TilePixel(Tile tile, int pix, int piy) {
     return new TilePixel(new Tile(z, tx, ty), (int) (nx & xFF), (int) (ny & xFF));
   }
 
-  /** @param lat_lon for instance {38.343373[deg], -0.762800[deg]}
+  /** @param z
+   * @param lat_lon for instance {38.343373[deg], -0.762800[deg]}n
    * @return */
-  public TilePixel from(Tensor lat_lon) {
-    return from(tile.z(), lat_lon.Get(0), lat_lon.Get(1));
+  public static TilePixel from(int z, Tensor lat_lon) {
+    return from(z, lat_lon.Get(0), lat_lon.Get(1));
   }
 
   /** formula taken from gemini
@@ -62,7 +63,15 @@ public record TilePixel(Tile tile, int pix, int piy) {
     lon = UnitSystem.SI().apply(lon);
     Scalar ny = RealScalar.ONE.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.VALUE)).multiply(RealScalar.of(1 << z + 7));
     Scalar nx = lon.add(Pi.VALUE).divide(Pi.TWO).multiply(RealScalar.of(1 << z + 8));
-    return TilePixel.of(z, Floor.longValueExact(nx), Floor.longValueExact(ny));
+    return TilePixel.of(z, //
+        Floor.longValueExact(nx), //
+        Floor.longValueExact(ny));
+  }
+
+  /** @param lat_lon for instance {38.343373[deg], -0.762800[deg]}
+   * @return */
+  public TilePixel from(Tensor lat_lon) {
+    return from(tile.z(), lat_lon);
   }
 
   public TilePixel {
@@ -70,11 +79,13 @@ public record TilePixel(Tile tile, int pix, int piy) {
     Integers.requireEquals(PIXEL_CLIP.applyAsInt(piy), piy);
   }
 
-  public long absx() {
+  /** @return */
+  public long absX() {
     return (tile.x() << 8) + pix;
   }
 
-  public long absy() {
+  /** @return */
+  public long absY() {
     return (tile.y() << 8) + piy;
   }
 
@@ -84,18 +95,20 @@ public record TilePixel(Tile tile, int pix, int piy) {
   public TilePixel shift(long dx, long dy) {
     int z = tile.z();
     long mask = (1 << (z + 8)) - 1;
-    long nx = (absx() + dx) & mask;
-    long ny = (absy() + dy) & mask;
+    long nx = (absX() + dx) & mask;
+    long ny = (absY() + dy) & mask;
     return of(z, nx, ny);
   }
 
+  /** @param delta
+   * @return */
   public TilePixel zoom(int delta) {
     int z = tile.z();
     int nz = Math.min(Math.max(0, z + delta), 19); // TODO should depend on tileServer
     delta = nz - z;
     long mask = (1 << z + 8) - 1;
-    long nx = absx() & mask;
-    long ny = absy() & mask;
+    long nx = absX() & mask;
+    long ny = absY() & mask;
     if (0 <= delta) {
       nx <<= delta;
       ny <<= delta;
@@ -106,17 +119,15 @@ public record TilePixel(Tile tile, int pix, int piy) {
     return of(z + delta, nx, ny);
   }
 
-  /** formula taken from gemini
+  /** formula adapted from gemini
    * 
    * @return {lat, lon} */
   public Tensor lat_lon() {
     int z = tile().z();
-    int ymax = 1 << z + 8;
-    Scalar ang = Pi.VALUE.subtract(Rational.of(absy(), ymax).multiply(Pi.TWO));
-    Scalar lat = ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(ang));
-    // ---
-    int xmax = 1 << z + 8;
-    Scalar lon = Rational.of(absx(), xmax).subtract(Rational.HALF).multiply(Pi.TWO);
-    return Tensors.of(lat, lon);
+    int ymax = 1 << z + 7;
+    Scalar ang = Rational.of(ymax - absY(), ymax).multiply(Pi.VALUE);
+    return Tensors.of( //
+        ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(ang)), //
+        Rational.of(absX() - ymax, ymax).multiply(Pi.VALUE));
   }
 }

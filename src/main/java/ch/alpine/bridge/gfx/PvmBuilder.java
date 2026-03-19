@@ -16,19 +16,20 @@ import ch.alpine.tensor.sca.Sign;
 public record PvmBuilder(Tensor p, Tensor v, Tensor m) {
   private static final Tensor ID3 = IdentityMatrix.of(3).unmodifiable();
   private static final Tensor IN3 = Tensors.matrix(new Number[][] { //
-    { 1, 0, 0 }, //
-    { 0, -1, 0 }, //
-    { 0, 0, 1 }, //
-}).unmodifiable();
+      { 1, 0, 0 }, //
+      { 0, -1, 0 }, //
+      { 0, 0, 1 }, //
+  }).unmodifiable();
   private static final Tensor RO3 = Tensors.matrix(new Number[][] { //
-    { 0, 1, 0 }, //
-    { 1, 0, 0 }, //
-    { 0, 0, 1 }, //
-}).unmodifiable();
+      { 0, 1, 0 }, //
+      { 1, 0, 0 }, //
+      { 0, 0, 1 }, //
+  }).unmodifiable();
 
   public static PvmBuilder rhs() {
     return new PvmBuilder(ID3, IN3, ID3);
   }
+
   public static PvmBuilder rot() {
     return new PvmBuilder(ID3, RO3, ID3);
   }

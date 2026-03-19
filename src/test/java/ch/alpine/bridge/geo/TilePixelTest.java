@@ -1,6 +1,8 @@
 // code by jph
 package ch.alpine.bridge.geo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.RealScalar;
@@ -16,8 +18,9 @@ import ch.alpine.tensor.sca.Clip;
 class TilePixelTest {
   @Test
   void test() {
-    TilePixel tileCoordinate = TilePixel.from(0, RealScalar.of(0), RealScalar.of(0));
-    IO.println(tileCoordinate);
+    TilePixel tilePixel = TilePixel.from(0, RealScalar.of(0), RealScalar.of(0));
+    TilePixel tileExpec = new TilePixel(new Tile(0, 0, 0), 128, 128);
+    assertEquals(tileExpec, tilePixel);
   }
 
   @Test
