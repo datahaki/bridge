@@ -42,6 +42,7 @@ public class StringPlot extends BaseShowable {
       String string = stringItem.string;
       double width_half = fontMetrics.stringWidth(string) * 0.5;
       Point2D point2d = showableConfig.toPoint2D(stringItem.pos);
+      // TODO could use TextContour...
       graphics.drawString(string, //
           (float) (point2d.getX() - width_half), //
           (float) (point2d.getY() + delta_y));

@@ -1,12 +1,13 @@
 // code by jph
 package ch.alpine.bridge.gfx;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -19,7 +20,10 @@ import javax.swing.event.MouseInputListener;
 
 import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.RenderQuality;
-import ch.alpine.bridge.lang.UnicodeString;
+import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.ShowOption;
+import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.plt.ListLinePlot;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -27,30 +31,28 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Append;
 import ch.alpine.tensor.alg.Dot;
+import ch.alpine.tensor.ext.BoundedLinkedList;
+import ch.alpine.tensor.ext.Int;
 import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.mat.DiagonalMatrix;
 import ch.alpine.tensor.mat.re.Det;
 import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.qty.Degree;
 import ch.alpine.tensor.sca.Chop;
-import ch.alpine.tensor.sca.Round;
 import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.sca.pow.Power;
 import ch.alpine.tensor.sca.pow.Sqrt;
 import ch.alpine.tensor.sca.tri.ArcTan;
 
-/**
- * 
- */
 public final class GeometricComponent extends JComponent {
   private static final Scalar SCALE_FACTOR = Sqrt.FUNCTION.apply(RealScalar.TWO);
-  private static final Font FONT_DEFAULT = new Font(Font.DIALOG, Font.PLAIN, 12);
   private static final Scalar WHEEL_ANGLE = Degree.of(Rational.of(90, 6));
   // ---
   /** public access to final JComponent: attach mouse listeners, get/set properties, ... */
   private final IntervalClock intervalClock = new IntervalClock();
   private final List<RenderInterface> renderBackground = new CopyOnWriteArrayList<>();
   private final List<RenderInterface> renderInterfaces = new CopyOnWriteArrayList<>();
+  private final BoundedLinkedList<Scalar> bll = new BoundedLinkedList<>(96);
   // ---
   /** 3x3 affine matrix that maps model to pixel coordinates */
   private Tensor model2pixel = PvmBuilder.rhs().setOffset(300, 300).digest();
@@ -59,6 +61,7 @@ public final class GeometricComponent extends JComponent {
   private boolean isZoomable = true;
   private boolean isRotatable = true;
   private int buttonDrag = MouseEvent.BUTTON3;
+  private Color background = Color.WHITE;
 
   public GeometricComponent() {
     addMouseWheelListener(event -> {
@@ -141,8 +144,6 @@ public final class GeometricComponent extends JComponent {
     }
   }
 
-  private Color background = Color.WHITE;
-
   public void setColorBackground(Color background) {
     this.background = background;
   }
@@ -164,11 +165,21 @@ public final class GeometricComponent extends JComponent {
       Integers.requireEquals(1, geometricLayer.deque_size());
     }
     {
-      Graphics graphics = _g.create();
-      graphics.setFont(FONT_DEFAULT);
-      graphics.setColor(Color.LIGHT_GRAY);
-      graphics.drawString(UnicodeString.of(Round._1.apply(intervalClock.hertz())), 0, 10);
-      graphics.dispose();
+      bll.add(intervalClock.seconds());
+      Int i = new Int();
+      Tensor points = Tensor.of(bll.stream().map(s -> Tensors.of(RealScalar.of(i.getAndIncrement()), s)));
+      Rectangle rectangle = new Rectangle(50, dimension.height - 60, 120, 60);
+      _g.setColor(new Color(255, 255, 255, 128));
+      _g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+      Show show = new Show();
+      
+      show.set(ShowOption.AXIS_X, false);
+      show.set(ShowOption.FRAMED, false);
+      show.set(ShowOption.UNIT_MAPPING, false);
+      Showable showable = show.add(ListLinePlot.of(points));
+      showable.setAlpha(192);
+      showable.setStroke(new BasicStroke(0.5f));
+      show.render(_g, rectangle);
     }
   }
 

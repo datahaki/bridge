@@ -10,6 +10,7 @@ public enum ShowOption {
   AXIS_Y,
   /** gridlines requires {@link #AXIS_X} or {@link #AXIS_Y} to take effect */
   GRID,
+  UNIT_MAPPING,
   // BARLEGEND // TODO
   // LEGEND // TODO
 }

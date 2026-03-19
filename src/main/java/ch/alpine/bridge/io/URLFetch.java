@@ -24,13 +24,14 @@ import java.nio.file.Path;
  * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/URLFetch.html">URLFetch</a> */
 public class URLFetch implements AutoCloseable {
+  /** @param uri
+   * @return
+   * @throws IOException
+   * @throws InterruptedException */
   public static byte[] of(URI uri) throws IOException, InterruptedException {
-    HttpRequest httpRequest = HttpRequest.newBuilder() //
-        .uri(uri) //
-        .header("User-Agent", "TileDownloader/1.0") //
-        .GET().build();
-    return HttpClient.newHttpClient() //
-        .send(httpRequest, HttpResponse.BodyHandlers.ofByteArray()) //
+    return HttpClient.newHttpClient().send( //
+        HttpRequest.newBuilder().uri(uri).GET().build(), //
+        HttpResponse.BodyHandlers.ofByteArray()) //
         .body();
   }
 

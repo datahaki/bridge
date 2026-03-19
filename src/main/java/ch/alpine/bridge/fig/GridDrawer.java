@@ -38,7 +38,7 @@ public class GridDrawer {
           new Point(rectangle.x - StaticHelper.GAP, rectangle.y), //
           rectangle.height, graphics);
     // ---
-    {
+    if (showOptions.contains(ShowOption.UNIT_MAPPING)) {
       String unit0 = UnicodeString.of(QuantityUnit.of(xRange));
       String unit1 = UnicodeString.of(QuantityUnit.of(yRange));
       if (!unit0.isEmpty() || !unit1.isEmpty()) {

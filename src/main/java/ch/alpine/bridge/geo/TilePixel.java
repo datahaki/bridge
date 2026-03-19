@@ -45,15 +45,10 @@ public record TilePixel(Tile tile, int pix, int piy) {
     return new TilePixel(new Tile(z, tx, ty), (int) (nx & xFF), (int) (ny & xFF));
   }
 
-  /** @param z
-   * @param lat_lon for instance {38.343373[deg], -0.762800[deg]}
+  /** @param lat_lon for instance {38.343373[deg], -0.762800[deg]}
    * @return */
-  public static TilePixel from(int z, Tensor lat_lon) {
-    return from(z, lat_lon.Get(0), lat_lon.Get(1));
-  }
-
   public TilePixel from(Tensor lat_lon) {
-    return from(tile.z(), lat_lon);
+    return from(tile.z(), lat_lon.Get(0), lat_lon.Get(1));
   }
 
   /** formula taken from gemini
