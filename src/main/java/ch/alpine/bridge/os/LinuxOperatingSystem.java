@@ -38,8 +38,8 @@ import ch.alpine.bridge.swing.LookAndFeels;
   public void navigateTo(Path path) {
     try {
       new ProcessBuilder("nautilus", path.toAbsolutePath().toString()).start();
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
+    } catch (IOException ioException) {
+      throw new UncheckedIOException(ioException);
     }
   }
 }

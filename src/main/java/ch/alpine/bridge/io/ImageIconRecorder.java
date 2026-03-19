@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 import java.util.Objects;
 
 import javax.swing.ImageIcon;
@@ -13,27 +14,29 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.ImageFormat;
 
 public class ImageIconRecorder {
+  /** @param duration of a single frame
+   * @return */
+  public static ImageIconRecorder loop(Duration duration) {
+    return new ImageIconRecorder(duration, true);
+  }
+
   private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
   private final AnimatedGifWriter animatedGifWriter;
   private ImageIcon imageIcon = null;
 
-  public ImageIconRecorder(int period, boolean loop) {
+  public ImageIconRecorder(Duration duration, boolean loop) {
     try {
-      animatedGifWriter = AnimatedGifWriter.of(baos, period, loop);
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
+      animatedGifWriter = AnimatedGifWriter.of(baos, duration, loop);
+    } catch (IOException ioException) {
+      throw new UncheckedIOException(ioException);
     }
-  }
-
-  public ImageIconRecorder(int period) {
-    this(period, true);
   }
 
   public void write(BufferedImage bufferedImage) {
     try {
       animatedGifWriter.write(bufferedImage);
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
+    } catch (IOException ioException) {
+      throw new UncheckedIOException(ioException);
     }
   }
 
@@ -45,8 +48,8 @@ public class ImageIconRecorder {
     if (Objects.nonNull(animatedGifWriter))
       try {
         animatedGifWriter.close();
-      } catch (IOException e) {
-        throw new UncheckedIOException(e);
+      } catch (IOException ioException) {
+        throw new UncheckedIOException(ioException);
       }
     imageIcon = new ImageIcon(baos.toByteArray());
   }

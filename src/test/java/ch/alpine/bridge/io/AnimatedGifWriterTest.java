@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 
 import javax.swing.ImageIcon;
 
@@ -22,12 +23,12 @@ class AnimatedGifWriterTest {
   @Test
   void testColor() throws IOException {
     Path path = tempDir.resolve("file123.gif");
-    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, 100, true)) {
+    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, Duration.ofMillis(100), true)) {
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_INT_ARGB));
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_INT_ARGB));
     }
     assertTrue(Files.isRegularFile(path));
-    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, 120, true)) {
+    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, Duration.ofMillis(120), true)) {
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_INT_ARGB));
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_INT_ARGB));
     }
@@ -37,12 +38,12 @@ class AnimatedGifWriterTest {
   @Test
   void testColorNonLoop() throws IOException {
     Path path = tempDir.resolve("file234.gif");
-    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, 100, false)) {
+    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, Duration.ofMillis(100), false)) {
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_INT_ARGB));
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_INT_ARGB));
     }
     assertTrue(Files.isRegularFile(path));
-    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, 120, false)) {
+    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, Duration.ofMillis(120), false)) {
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_INT_ARGB));
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_INT_ARGB));
     }
@@ -52,7 +53,7 @@ class AnimatedGifWriterTest {
   @Test
   void testGray() throws IOException {
     Path path = tempDir.resolve("file345.gif");
-    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, 100, true)) {
+    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(path, Duration.ofMillis(100), true)) {
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_BYTE_GRAY));
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_BYTE_GRAY));
     }
@@ -62,7 +63,7 @@ class AnimatedGifWriterTest {
   @Test
   void testByteBuff() throws IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(baos, 200, true)) {
+    try (AnimatedGifWriter animatedGifWriter = AnimatedGifWriter.of(baos, Duration.ofMillis(200), true)) {
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_BYTE_GRAY));
       animatedGifWriter.write(new BufferedImage(2, 3, BufferedImage.TYPE_BYTE_GRAY));
     }
@@ -74,7 +75,7 @@ class AnimatedGifWriterTest {
   @Test
   void testEmpty() throws IOException {
     Path path = tempDir.resolve("file456.gif");
-    try (AnimatedGifWriter _ = AnimatedGifWriter.of(path, 100, true)) {
+    try (AnimatedGifWriter _ = AnimatedGifWriter.of(path, Duration.ofMillis(100), true)) {
       // ---
     }
     assertTrue(Files.isRegularFile(path));

@@ -4,14 +4,14 @@ package ch.alpine.bridge.io;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.ImageFormat;
 
 /** Example:
  * <pre>
- * try (AnimationWriter animationWriter = new GifAnimationWriter(path, 100, TimeUnit.MILLISECONDS)) {
+ * try (AnimationWriter animationWriter = new GifAnimationWriter(path, Duration.ofMillis(250))) {
  * animationWriter.append(bufferedImage);
  * ...
  * }
@@ -26,9 +26,8 @@ public class GifAnimationWriter implements AnimationWriter {
    * @param timeUnit
    * @return
    * @throws IOException */
-  public GifAnimationWriter(Path path, int period, TimeUnit timeUnit) throws IOException {
-    animatedGifWriter = //
-        AnimatedGifWriter.of(path, Math.toIntExact(TimeUnit.MILLISECONDS.convert(period, timeUnit)), true);
+  public GifAnimationWriter(Path path, Duration duration) throws IOException {
+    animatedGifWriter = AnimatedGifWriter.of(path, duration, true);
   }
 
   @Override // from AnimationWriter

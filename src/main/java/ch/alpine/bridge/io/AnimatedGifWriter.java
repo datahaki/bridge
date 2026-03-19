@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.Objects;
 
 import javax.imageio.IIOImage;
@@ -25,13 +26,13 @@ public class AnimatedGifWriter implements AutoCloseable {
    * @param loop whether for animation to loop indefinitely
    * @return
    * @throws Exception */
-  public static AnimatedGifWriter of(Path path, int period, boolean loop) throws IOException {
+  public static AnimatedGifWriter of(Path path, Duration duration, boolean loop) throws IOException {
     // deletion of existing file is mandatory:
     // if the gif output is smaller than the existing file
     // trailing bytes of the existing file are not removed
     if (Files.isRegularFile(path))
       Files.delete(path);
-    return of(Files.newOutputStream(path), period, loop);
+    return of(Files.newOutputStream(path), duration, loop);
   }
 
   /** @param outputStream
@@ -39,22 +40,22 @@ public class AnimatedGifWriter implements AutoCloseable {
    * @param loop
    * @return
    * @throws IOException */
-  public static AnimatedGifWriter of(OutputStream outputStream, int period, boolean loop) throws IOException {
-    return new AnimatedGifWriter(ImageIO.createImageOutputStream(outputStream), period, loop);
+  public static AnimatedGifWriter of(OutputStream outputStream, Duration duration, boolean loop) throws IOException {
+    return new AnimatedGifWriter(ImageIO.createImageOutputStream(outputStream), duration, loop);
   }
 
   // ---
   private final ImageOutputStream imageOutputStream;
-  private final int period;
+  private final int delayTime;
   private final boolean loop;
   private final ImageWriter imageWriter;
   private final ImageWriteParam imageWriteParam;
   /** assigned when first image is appended */
   private IIOMetadata iIOMetadata = null;
 
-  AnimatedGifWriter(ImageOutputStream imageOutputStream, int period, boolean loop) {
+  AnimatedGifWriter(ImageOutputStream imageOutputStream, Duration duration, boolean loop) {
     this.imageOutputStream = imageOutputStream;
-    this.period = period;
+    this.delayTime = Math.toIntExact(duration.toMillis() / 10);
     this.loop = loop;
     imageWriter = ImageIO.getImageWritersBySuffix("gif").next();
     imageWriteParam = imageWriter.getDefaultWriteParam();
@@ -67,7 +68,7 @@ public class AnimatedGifWriter implements AutoCloseable {
     String metadataFormatName = iIOMetadata.getNativeMetadataFormatName();
     IIOMetadataNode root = (IIOMetadataNode) iIOMetadata.getAsTree(metadataFormatName);
     IIOMetadataNode graphicsControlExtension = _node(root, "GraphicControlExtension");
-    graphicsControlExtension.setAttribute("delayTime", Integer.toString(period / 10));
+    graphicsControlExtension.setAttribute("delayTime", Integer.toString(delayTime));
     IIOMetadataNode applicationExtensions = _node(root, "ApplicationExtensions");
     IIOMetadataNode child = new IIOMetadataNode("ApplicationExtension");
     child.setAttribute("applicationID", "NETSCAPE");

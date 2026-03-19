@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -20,7 +20,7 @@ class AnimationWriterTest {
   @Test
   void testColor() throws Exception {
     Path path = tempDir.resolve("file.gif");
-    try (AnimationWriter animationWriter = new GifAnimationWriter(path, 100, TimeUnit.MILLISECONDS)) {
+    try (AnimationWriter animationWriter = new GifAnimationWriter(path, Duration.ofMillis(100))) {
       animationWriter.write(Array.zeros(3, 4));
       animationWriter.write(Array.zeros(3, 4));
     }
@@ -29,7 +29,7 @@ class AnimationWriterTest {
 
   @Test
   void testFailExtension() {
-    try (AnimationWriter _ = new GifAnimationWriter(null, 100, TimeUnit.MILLISECONDS)) { // extension unknown
+    try (AnimationWriter _ = new GifAnimationWriter(null, Duration.ofMillis(100))) { // extension unknown
       fail();
     } catch (Exception exception) {
       // ---

@@ -20,8 +20,8 @@ enum WindowsOperatingSystem implements OperatingSystem {
   public void navigateTo(Path path) {
     try {
       new ProcessBuilder("explorer.exe", "/select,\"" + path + "\"").start();
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
+    } catch (IOException ioException) {
+      throw new UncheckedIOException(ioException);
     }
   }
 }
