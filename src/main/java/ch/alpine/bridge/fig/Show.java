@@ -310,24 +310,19 @@ public final class Show implements Serializable {
           ? new ShowableConfigYF(rectangle, _cbb)
           : new ShowableConfig(rectangle, _cbb);
       // ---
-      // IO.println(showableConfig.rectangle());
+      ShowableConfig showableConfigClipped = showableConfig.clipped();
       for (Showable showable : showables)
         if (showable instanceof BackgroundPlotMarker) {
-          // TODO use graphics.create(x,y,...)
           Graphics2D g = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-          // graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-          showable.render(showableConfig.reset(), g);
-          // graphics.setClip(null);
+          showable.render(showableConfigClipped, g);
           g.dispose();
           showable.tender(showableConfig, graphics);
         }
       new GridDrawer(showOptions).render(showableConfig, graphics);
       for (Showable showable : showables)
         if (!(showable instanceof BackgroundPlotMarker)) {
-          // graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
           Graphics2D g = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-          showable.render(showableConfig.reset(), g);
-          // graphics.setClip(null);
+          showable.render(showableConfigClipped, g);
           g.dispose();
           showable.tender(showableConfig, graphics);
         }

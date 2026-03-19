@@ -2,7 +2,7 @@
 package ch.alpine.bridge.fig.plt;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
@@ -13,7 +13,6 @@ import ch.alpine.bridge.fig.BarLegendPlot;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -79,19 +78,9 @@ public class ImagePlot extends BarLegendPlot implements BackgroundPlotMarker {
 
   @Override // from Showable
   public final void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    Point2D ul = showableConfig.toPoint2D(Tensors.of( //
-        cbb.clip(0).min(), //
-        flipY ? cbb.clip(1).min() : cbb.clip(1).max()));
-    Point2D dr = showableConfig.toPoint2D(Tensors.of( //
-        cbb.clip(0).max(), //
-        flipY ? cbb.clip(1).max() : cbb.clip(1).min()));
-    // TODO for ArrayShowable the zoom should be limited
-    int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
-    int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
-    if (0 < width && 0 < height)
-      graphics.drawImage(scalableImage.getScaledInstance(imageResize, width, height), //
-          (int) ul.getX(), //
-          (int) ul.getY(), null);
+    Rectangle rectangle = showableConfig.rectangle();
+    if (0 < rectangle.width && 0 < rectangle.height)
+      graphics.drawImage(scalableImage.getScaledInstance(imageResize, rectangle.width, rectangle.height), 0, 0, null);
   }
 
   @Override

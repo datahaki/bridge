@@ -10,6 +10,7 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Sign;
@@ -30,6 +31,8 @@ public class ShowableConfig {
    * @param rectangle
    * @param cbb */
   public ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    Integers.requirePositiveOrZero(rectangle.width);
+    Integers.requirePositiveOrZero(rectangle.height);
     this.rectangle = rectangle;
     this.cbb = cbb;
     this.xRange = cbb.clip(0);
@@ -65,7 +68,6 @@ public class ShowableConfig {
     return rectangle.contains(point) //
         ? Optional.of(Tensors.of( //
             xRange.min().add(RealScalar.of(point.x - rectangle.x).multiply(pixel2x)), //
-            // yRange.min().add(RealScalar.of(yBaseline - point.y).multiply(pixel2y))
             y_val(point.y)))
         : Optional.empty();
   }
@@ -91,7 +93,7 @@ public class ShowableConfig {
     return cbb;
   }
 
-  public final ShowableConfig reset() {
+  public final ShowableConfig clipped() {
     return new ShowableConfig(new Rectangle(0, 0, rectangle.width, rectangle.height), cbb);
   }
 }
