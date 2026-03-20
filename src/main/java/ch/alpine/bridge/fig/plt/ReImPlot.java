@@ -82,7 +82,7 @@ public class ReImPlot extends UnaryShowable {
         graphics.draw(pathRe);
         graphics.setStroke(STROKE_IM);
         graphics.draw(pathIm);
-        if (isFilling()) {
+        if (set.contains(PlotOption.FILL)) {
           {
             double y1 = showableConfig.confY.pixel(suo.apply(x_clip.max()).zero());
             pathRe.lineTo(x1, y1);

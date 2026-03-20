@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import ch.alpine.bridge.fig.BarLegend;
 import ch.alpine.bridge.fig.BarLegendPlot;
+import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -102,7 +103,9 @@ public class VectorPlot extends BarLegendPlot {
 
   @Override
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    CoordinateBoundingBox cbb = showableConfig.getCbb();
+    CoordinateBoundingBox cbb = set.contains(PlotOption.STRICT) //
+        ? fullPlotRange().orElseThrow()
+        : showableConfig.getCbb();
     Inner inner = cache.apply(cbb);
     Tensor result = inner.rescale.result();
     int index = 0;

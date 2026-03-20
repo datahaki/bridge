@@ -70,7 +70,7 @@ public class Plot extends UnaryShowable {
       path.lineTo(xc, showableConfig.confY.pixel(suo.apply(interpX.apply(Rational.of(i, size)))));
     }
     graphics.draw(path);
-    if (isFilling()) {
+    if (set.contains(PlotOption.FILL)) {
       path.lineTo(x1, showableConfig.confY.pixel(suo.apply(x_clip.max()).zero()));
       path.lineTo(x0, showableConfig.confY.pixel(suo.apply(x_clip.min()).zero()));
       graphics.setColor(AwtUtil.withAlpha(getColor(), FILL_ALPHA));

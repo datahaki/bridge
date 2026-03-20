@@ -2,10 +2,8 @@
 package ch.alpine.bridge.fig.plt;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 import ch.alpine.bridge.fig.BaseShowable;
 import ch.alpine.bridge.fig.PlotOption;
@@ -18,7 +16,6 @@ import ch.alpine.tensor.sca.Clips;
 public abstract class UnaryShowable extends BaseShowable {
   protected final ScalarUnaryOperator suo;
   protected final Clip domain;
-  private final Set<PlotOption> set = EnumSet.noneOf(PlotOption.class);
 
   /** @param suo
    * @param domain may be null, in which case the plot is empty
@@ -34,9 +31,5 @@ public abstract class UnaryShowable extends BaseShowable {
     if (set.contains(PlotOption.STRICT))
       x_clip = Clips.optionalIntersection(x_clip, domain).orElse(null);
     return Optional.ofNullable(x_clip);
-  }
-
-  protected final boolean isFilling() {
-    return set.contains(PlotOption.FILL);
   }
 }

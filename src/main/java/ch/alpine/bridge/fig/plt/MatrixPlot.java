@@ -12,13 +12,11 @@ import ch.alpine.tensor.alg.Flatten;
 import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.chq.FiniteScalarQ;
-import ch.alpine.tensor.ext.PackageTestAccess;
 import ch.alpine.tensor.img.ColorDataGradients;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.io.ImageFormat;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.qty.DateTime;
-import ch.alpine.tensor.red.Max;
 import ch.alpine.tensor.red.MinMax;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
@@ -42,7 +40,7 @@ public enum MatrixPlot {
       if (clip.min() instanceof DateTime)
         System.err.println("bypass symmetrize");
       else
-        clip = symmetrize(clip);
+        clip = Clips.symmetrize(clip);
     }
     Rescale rescale = new Rescale(matrix, clip);
     BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
@@ -69,10 +67,5 @@ public enum MatrixPlot {
    * @return */
   public static Showable of(Tensor matrix, boolean symmetrize) {
     return of(matrix, ColorDataGradients.TEMPERATURE_LIGHT, symmetrize);
-  }
-
-  @PackageTestAccess
-  static Clip symmetrize(Clip clip) {
-    return Clips.absolute(Max.of(clip.min().negate(), clip.max()));
   }
 }

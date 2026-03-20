@@ -128,14 +128,16 @@ public enum Showcases implements ShowProvider {
   Relief2 {
     @Override
     public Show getShow() {
-      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.absolute(4.0), Clips.absolute(4.0));
-      Tensor matrix = mesheval((x, y) -> Sin.FUNCTION.apply(Vector2NormSquared.of(Tensors.of(x, y))), cbb, 40);
-      Show show = new Show();
-      show.setPlotLabel("ArrowPlot");
-      Showable showable = ReliefPlot.of(matrix, cbb, ColorDataGradients.ALPINE);
-      show.add(showable);
-      show.setAspectRatioOne();
-      return show;
+      int resx = 100;
+      Clip clip = Clips.absolute(3);
+      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(clip, clip);
+      Tensor matrix = mesheval((x, y) -> Sin.FUNCTION.apply(Vector2NormSquared.of(Tensors.of(x, y))), cbb, resx);
+      Show showR = new Show();
+      showR.setPlotLabel("ReliefPlot");
+      Showable showable = ReliefPlot.of(matrix, cbb, ColorDataGradients.DENSITY);
+      showR.add(showable);
+      showR.setAspectRatioOne();
+      return showR;
     }
   },
   Arrows {

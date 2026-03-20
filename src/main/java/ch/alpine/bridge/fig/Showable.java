@@ -45,6 +45,8 @@ public interface Showable {
   /** @return */
   Stroke getStroke();
 
+  void set(PlotOption plotOption, boolean status);
+
   /** @return */
   default Optional<Scalar> aspectRatioHint() {
     return Optional.empty();
