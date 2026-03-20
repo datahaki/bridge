@@ -11,22 +11,22 @@ public class ConfDecr extends ConfBase {
   }
 
   @Override
-  public final double x_pos(Scalar x) {
-    return xBaseline - x.subtract(xRange.min()).multiply(x2pixel).number().doubleValue();
+  public final double pixel(Scalar x) {
+    return xBaseline - x.subtract(clip.min()).multiply(model2pixel).number().doubleValue();
   }
 
   @Override
-  public Scalar value(int point_x) {
-    return xRange.min().add(RealScalar.of(xBaseline - point_x).multiply(pixel2x));
+  public Scalar model(int pixel) {
+    return clip.min().add(RealScalar.of(xBaseline - pixel).multiply(pixel2model));
   }
 
   @Override
   public ConfDecr clipped() {
-    return new ConfDecr(0, width, xRange);
+    return new ConfDecr(0, width, clip);
   }
 
   @Override
   public Scalar dx(Scalar dx) {
-    return dx.multiply(pixel2x).negate();
+    return dx.multiply(pixel2model).negate();
   }
 }

@@ -27,7 +27,6 @@ abstract class Axis {
   public Axis(ShowOptions showOptions) {
     this.showOptions = showOptions;
   }
-  // protected abstract NavigableMap<Integer, Scalar> navigableMap(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics);
 
   /** @param showableConfig
    * @param point

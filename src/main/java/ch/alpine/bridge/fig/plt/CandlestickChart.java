@@ -77,10 +77,10 @@ public class CandlestickChart extends BaseShowable {
                 .map(tsf).collect(MinMax.toClip());
             if (Objects.nonNull(clip)) {
               // TODO somewhat breaks design
-              double x0 = showableConfig.confX.x_pos(interval.min());
-              double x1 = showableConfig.confX.x_pos(interval.max());
-              double y0 = showableConfig.confY.x_pos(clip.max());
-              double y1 = showableConfig.confY.x_pos(clip.min());
+              double x0 = showableConfig.confX.pixel(interval.min());
+              double x1 = showableConfig.confX.pixel(interval.max());
+              double y0 = showableConfig.confY.pixel(clip.max());
+              double y1 = showableConfig.confY.pixel(clip.min());
               graphics.fillRect((int) x0, (int) y0, (int) (x1 - x0), (int) (y1 - y0 + 1));
             }
             prev = next;

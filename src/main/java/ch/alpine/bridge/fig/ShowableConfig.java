@@ -46,15 +46,15 @@ public final class ShowableConfig {
 
   public Point2D toPoint2D(Tensor vector) {
     return new Point2D.Double( //
-        confX.x_pos(vector.Get(0)), //
-        confY.x_pos(vector.Get(1)));
+        confX.pixel(vector.Get(0)), //
+        confY.pixel(vector.Get(1)));
   }
 
   public Optional<Tensor> toValue(Point point) {
     return rectangle.contains(point) // TODO
         ? Optional.of(Tensors.of( //
-            confX.value(point.x), //
-            confY.value(point.y)))
+            confX.model(point.x), //
+            confY.model(point.y)))
         : Optional.empty();
   }
 

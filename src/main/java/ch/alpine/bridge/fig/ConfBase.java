@@ -10,30 +10,30 @@ public abstract class ConfBase {
   final int x;
   final int xBaseline;
   final int width;
-  protected final Clip xRange;
-  final Scalar x2pixel;
-  protected final Scalar pixel2x;
+  final Clip clip;
+  final Scalar model2pixel;
+  final Scalar pixel2model;
 
   public ConfBase(int x, int width, Clip xRange, int xBaseline) {
     this.x = x;
     this.xBaseline = xBaseline;
     this.width = width;
-    this.xRange = xRange;
-    x2pixel = RealScalar.of(width - 1).divide(xRange.width());
-    Sign.requirePositive(x2pixel);
-    pixel2x = xRange.width().divide(RealScalar.of(width - 1));
+    this.clip = xRange;
+    model2pixel = RealScalar.of(width - 1).divide(xRange.width());
+    Sign.requirePositive(model2pixel);
+    pixel2model = xRange.width().divide(RealScalar.of(width - 1));
   }
 
-  public abstract double x_pos(Scalar x);
+  public abstract double pixel(Scalar x);
 
-  public abstract Scalar value(int point_x);
+  public abstract Scalar model(int pixel);
 
   public abstract ConfBase clipped();
 
   public abstract Scalar dx(Scalar dx);
 
   public final Clip clip() {
-    return xRange;
+    return clip;
   }
 
   public final int xBaseline() {

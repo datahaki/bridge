@@ -5,18 +5,11 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.time.format.DateTimeFormatter;
 import java.util.Map.Entry;
-import java.util.NavigableMap;
 import java.util.Objects;
-import java.util.TreeMap;
 
-import ch.alpine.bridge.cal.DateTimeInterval;
-import ch.alpine.tensor.Rational;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;
-import ch.alpine.tensor.sca.Clip;
 
 class AxisY extends Axis {
   public AxisY(ShowOptions showOptions) {
@@ -27,35 +20,13 @@ class AxisY extends Axis {
   @Override
   protected void protected_render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
     ConfBase confBase = showableConfig.confY;
-    // IO.println("AXIS Y " + point + " " + showableConfig.confY);
-    Clip clip = confBase.clip();
-    int length = confBase.width;
     Rectangle rectangle = showableConfig.rectangle();
     graphics.setFont(getFont());
-    FontMetrics fontMetrics = graphics.getFontMetrics();
-    NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
-    DateTimeFormatter dateTimeFormatter = null;
-    int fontSize = interval(fontMetrics);
-    if (clip.min() instanceof DateTime) {
-      DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(fontSize, length)));
-      DateTime startAttempt = dateTimeInterval.floor(clip.min());
-      DateTime dateTime = clip.isInside(startAttempt) //
-          ? startAttempt
-          : dateTimeInterval.plus(startAttempt);
-      dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
-      while (clip.isInside(dateTime)) {
-        int y_pos = (int) confBase.x_pos(dateTime);
-        navigableMap.put(y_pos, dateTime);
-        dateTime = dateTimeInterval.plus(dateTime);
-      }
-    } else
-      Ticks.stream(clip, Axis.RESERVE.divide(RealScalar.of(rectangle.height))) //
-          .forEach(tick -> navigableMap.put((int) confBase.x_pos(tick), tick));
+    TicksConfig ticksConfig = new TicksConfig(confBase, showOptions.dateTimeFocus);
     if (showOptions.contains(ShowOption.GRID)) {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
-      for (int piy : navigableMap.keySet())
+      for (int piy : ticksConfig.navigableMap.keySet())
         graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width - 1, piy);
     }
     {
@@ -65,18 +36,19 @@ class AxisY extends Axis {
           point.x, //
           point.y, //
           point.x, //
-          point.y + length - 1);
-      for (int piy : navigableMap.keySet())
+          point.y + confBase.width - 1);
+      for (int piy : ticksConfig.navigableMap.keySet())
         graphics.drawLine(point.x - 2, piy, point.x - 1, piy);
     }
     {
+      FontMetrics fontMetrics = graphics.getFontMetrics();
       graphics.setColor(StaticHelper.COLOR_FONT);
-      for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
+      for (Entry<Integer, Scalar> entry : ticksConfig.navigableMap.entrySet()) {
         int piy = entry.getKey();
         Scalar value = entry.getValue();
-        String yLabel = Objects.isNull(dateTimeFormatter) //
+        String yLabel = Objects.isNull(ticksConfig.dateTimeFormatter) //
             ? Ticks.format(value)
-            : ((DateTime) value).format(dateTimeFormatter);
+            : ((DateTime) value).format(ticksConfig.dateTimeFormatter);
         graphics.drawString(yLabel, //
             point.x - fontMetrics.stringWidth(yLabel) - 5, //
             piy + fontMetrics.getAscent() / 2 - 1);

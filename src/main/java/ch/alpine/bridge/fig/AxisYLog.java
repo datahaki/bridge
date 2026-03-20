@@ -45,7 +45,7 @@ class AxisYLog extends Axis {
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
-        int y_pos = (int) confBase.x_pos(dateTime);
+        int y_pos = (int) confBase.pixel(dateTime);
         navigableMap.put(y_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
@@ -56,7 +56,7 @@ class AxisYLog extends Axis {
           Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
           Scalars.lessEquals(yValue, clip.max()); //
           yValue = yValue.add(dY)) {
-        int y_pos = (int) confBase.x_pos(yValue);
+        int y_pos = (int) confBase.pixel(yValue);
         navigableMap.put(y_pos, yValue);
       }
     }

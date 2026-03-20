@@ -63,15 +63,15 @@ public class MultiTsPlot extends BaseShowable {
         ScalarTensorFunction suo = x -> tuo.apply(timeSeries.evaluate(x));
         Tensor v0 = suo.apply(clip.min());
         List<Path2D.Double> list = Stream.generate(Path2D.Double::new).limit(v0.length()).toList();
-        double x0 = showableConfig.confX.x_pos(clip.min());
+        double x0 = showableConfig.confX.pixel(clip.min());
         for (int i = 0; i < v0.length(); ++i)
-          list.get(i).moveTo(x0, showableConfig.confY.x_pos(v0.Get(i)));
+          list.get(i).moveTo(x0, showableConfig.confY.pixel(v0.Get(i)));
         timeSeries.block(clip, true).stream() //
             .forEach(tsEntry -> {
-              double x1 = showableConfig.confX.x_pos(tsEntry.key());
+              double x1 = showableConfig.confX.pixel(tsEntry.key());
               Tensor v1 = tuo.apply(tsEntry.value());
               for (int i = 0; i < v1.length(); ++i)
-                list.get(i).lineTo(x1, showableConfig.confY.x_pos(v1.Get(i)));
+                list.get(i).lineTo(x1, showableConfig.confY.pixel(v1.Get(i)));
             });
         graphics.setStroke(getStroke());
         for (int i = 0; i < v0.length(); ++i) {
