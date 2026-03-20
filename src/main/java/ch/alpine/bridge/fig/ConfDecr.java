@@ -24,4 +24,9 @@ public class ConfDecr extends ConfBase {
   public ConfDecr clipped() {
     return new ConfDecr(0, width, xRange);
   }
+
+  @Override
+  public Scalar dx(Scalar dx) {
+    return dx.negate().multiply(pixel2x);
+  }
 }

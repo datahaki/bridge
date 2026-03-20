@@ -131,7 +131,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
         if (Objects.nonNull(cbb)) {
           Point point = mouseEvent.getPoint();
           int dx = point.x - pressed.x;
-          int dy = pressed.y - point.y;
+          int dy = point.y - pressed.y;
           pressed = point;
           // ---
           if (set_x.contains(Option.PAN)) {

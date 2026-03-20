@@ -30,6 +30,8 @@ public abstract class ConfBase {
 
   public abstract ConfBase clipped();
 
+  public abstract Scalar dx(Scalar dx);
+
   public final Clip clip() {
     return xRange;
   }
@@ -40,9 +42,5 @@ public abstract class ConfBase {
 
   public final boolean contains(int point_x) {
     return x <= point_x && point_x - x < width;
-  }
-
-  public final Scalar dx(Scalar dx) {
-    return dx.multiply(pixel2x);
   }
 }

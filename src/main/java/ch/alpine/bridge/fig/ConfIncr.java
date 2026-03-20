@@ -24,4 +24,9 @@ public class ConfIncr extends ConfBase {
   public ConfIncr clipped() {
     return new ConfIncr(0, width, xRange);
   }
+
+  @Override
+  public Scalar dx(Scalar dx) {
+    return dx.multiply(pixel2x);
+  }
 }
