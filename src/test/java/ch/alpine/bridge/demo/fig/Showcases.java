@@ -115,6 +115,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
+      show.setPlotLabel("ArrowPlot");
       show.add(new ArrowPlot(Tensors.vector(1, 0), Tensors.vector(3, 2)));
       show.add(new ArrowPlot(Tensors.vector(2, 3), Tensors.vector(-1, -2)));
       show.setAspectRatioOne();
@@ -125,24 +126,11 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
+      show.setPlotLabel("PolygonPlot");
       show.add(PolygonPlot.of(CirclePoints.of(8), PlotOption.FILL)).setAlpha(32);
       show.add(PolygonPlot.of(CirclePoints.of(16)));
       show.add(ListPlot.of(Tensors.fromString("{{-1,1},{1,-1}}")));
       show.setAspectRatioOne();
-      return show;
-    }
-  },
-  VectorPlot1 {
-    @Override
-    public Show getShow() {
-      TensorUnaryOperator tuo = xy -> Cross.of(xy);
-      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.interval(-2.5, +2.5), Clips.interval(-2.3, +2.3));
-      Show show = new Show();
-      // DensityPlot densityPlot = DensityPlot.of(sbo, cbb, ColorDataGradients.HUE);
-      VectorPlot vectorPlot = VectorPlot.of(tuo, cbb);
-      vectorPlot.setStroke(new BasicStroke(2f));
-      show.add(vectorPlot);
-      show.setPlotLabel("VectorPlot Cross");
       return show;
     }
   },
@@ -155,8 +143,9 @@ public enum Showcases implements ShowProvider {
       // DensityPlot densityPlot = DensityPlot.of(sbo, cbb, ColorDataGradients.HUE);
       VectorPlot vectorPlot = VectorPlot.of(tuo, cbb);
       vectorPlot.setStroke(new BasicStroke(2f));
+      vectorPlot.setLabel("Cross w/ Units");
       show.add(vectorPlot);
-      show.setPlotLabel("VectorPlot Cross");
+      show.setPlotLabel("VectorPlot");
       return show;
     }
   },
@@ -192,6 +181,7 @@ public enum Showcases implements ShowProvider {
       show.add(DensityPlot.of(sbo, //
           CoordinateBoundingBox.of(Clips.absolute(3), Clips.absolute(3)), //
           ColorDataGradients.HUE));
+      show.setPlotLabel("Arg Gamma");
       return show;
     }
   },
@@ -205,6 +195,7 @@ public enum Showcases implements ShowProvider {
       list.add(StringItem.of(Tensors.vector(2, 3), "23"));
       list.add(StringItem.of(Tensors.vector(4, 4), "text"));
       show.add(StringPlot.of(list));
+      show.setPlotLabel("StringPlot");
       return show;
     }
   },
@@ -237,6 +228,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
+      show.setPlotLabel("ListLinePlot");
       show.add(ListLinePlot.of(Tensors.fromString("{{2[m],3[s]}, {3[m],0[s]}, {4[m],3[s]}, {5[m],1[s]}}"))).setLabel("first");
       show.add(ListLinePlot.of(Tensors.fromString("{{3[m],2[s]}, {4[m],2.5[s]}, {5[m],2[s]}}"))).setLabel("second");
       return show;
@@ -272,6 +264,7 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Tensor matrix = HilbertMatrix.of(40);
       Show show = new Show();
+      show.setPlotLabel("Plot & ListPlot");
       Tensor values = SingularValueList.of(matrix);
       show.add(ListPlot.of(Range.of(0, values.length()), values.maps(Log10.FUNCTION))).setLabel("singular values");
       Clip clip = Clips.absolute(5);
@@ -279,25 +272,6 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  // DISTR1 {
-  // @Override
-  // public Show getShow() {
-  // Distribution distribution = TrapezoidalDistribution.of(0.5, 1.5, 1.5, 2.5);
-  // PDF pdf = PDF.of(distribution);
-  // CDF cdf = CDF.of(distribution);
-  // Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
-  // show.setPlotLabel("Trapezoidal Distribution");
-  // Clip clip = Clips.interval(0, 4);
-  // show.add(Plot.of(pdf::at, clip));
-  // show.add(Plot.of(cdf::p_lessEquals, clip));
-  // Tensor sequence = Tensors.vector(0, 0, 1, 1);
-  // // Tensor domain = Subdivide.of(0, sequence.length() - 1, 100);
-  // ScalarTensorFunction sto = BSplineFunctionString.of(2, sequence);
-  // ScalarUnaryOperator suo = s -> (Scalar) sto.apply(s);
-  // show.add(Plot.of(suo, Clips.interval(0, 3)));
-  // return show;
-  // }
-  // },
   TruncatedDistribution0 {
     @Override
     public Show getShow() {

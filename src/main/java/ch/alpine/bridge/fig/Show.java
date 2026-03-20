@@ -3,8 +3,6 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -24,7 +22,6 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
-import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.tensor.RealScalar;
@@ -45,8 +42,6 @@ import ch.alpine.tensor.sca.Round;
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
 public final class Show implements Serializable {
   // TODO BRIDGE zoom does not work indefinitely yet!
-  private static final Color COLOR_FRAME = new Color(160, 160, 160);
-
   /** @param fontSize for instance graphics.getFont().getSize()
    * @return */
   private static Insets defaultInsets(int fontSize) {
@@ -81,7 +76,6 @@ public final class Show implements Serializable {
   // ---
   private CoordinateBoundingBox cbb = null;
   private DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
-  private String plotLabel = "";
   private Scalar aspectRatio = null;
 
   /** @param colorDataIndexed to assign a default color to a showable when
@@ -102,18 +96,20 @@ public final class Show implements Serializable {
     if (showable instanceof BarLegendPlot barLegendPlot && //
         barLegendPlot.getAspectRatioOneHint())
       setAspectRatioOne();
+    showable.disableOptions() //
+        .forEach(showOption -> showOptions.set(showOption, false));
     showables.add(showable);
     return showable;
   }
 
   /** @param string to appear above plot */
   public void setPlotLabel(String string) {
-    plotLabel = Objects.requireNonNull(string);
+    showOptions.plotLabel = Objects.requireNonNull(string);
   }
 
   /** @return */
   public String getPlotLabel() {
-    return plotLabel;
+    return showOptions.plotLabel;
   }
 
   public void set(ShowOption showOption, boolean status) {
@@ -178,47 +174,36 @@ public final class Show implements Serializable {
     return aspectRatio;
   }
 
-  private Rectangle aspect(CoordinateBoundingBox _cbb, Rectangle rectangle) {
-    Rectangle r = new Rectangle(rectangle);
-    Scalar aspect = aspectRatio;
-    if (Objects.isNull(aspect)) {
-      Set<Scalar> set = showables.stream() //
-          .map(Showable::aspectRatioHint) //
-          .flatMap(Optional::stream) //
-          .collect(Collectors.toSet());
-      if (set.size() == 1)
-        aspect = set.iterator().next();
-    }
-    if (Objects.nonNull(aspect)) {
-      Tensor a = Tensor.of(_cbb.stream().map(Clip::width));
-      a.set(aspect::multiply, 1);
-      Tensor b = Tensors.vector(rectangle.width, rectangle.height);
-      Optional<Tensor> optional = CbbFit.inside(a, b);
-      if (optional.isEmpty())
-        return null;
-      Tensor c = optional.orElseThrow();
-      r.width = Round.intValueExact(c.Get(0));
-      r.height = Round.intValueExact(c.Get(1));
-    }
-    return r;
-  }
-
   /** @param graphics
    * @param rectangle
    * @return null if input rectangle is unsuitable for drawing */
   public ShowableConfig render(Graphics _g, Rectangle rectangle) {
     if (rectangle.width <= 1 || rectangle.height <= 1)
       return null;
-    Graphics2D graphics = (Graphics2D) _g.create();
-    RenderQuality.setQuality(graphics);
     CoordinateBoundingBox cbb = deriveCbb();
-    if (Objects.nonNull(cbb))
-      rectangle = aspect(cbb, rectangle);
-    renderFrameTitle(graphics, rectangle);
-    ShowableConfig showableConfig = renderShowables(graphics, rectangle);
-    renderLegend(graphics, rectangle);
-    graphics.dispose();
-    return showableConfig;
+    if (Objects.nonNull(cbb)) {
+      Scalar aspect = aspectRatio;
+      if (Objects.isNull(aspect)) {
+        Set<Scalar> set = showables.stream() //
+            .map(Showable::aspectRatioHint) //
+            .flatMap(Optional::stream) //
+            .collect(Collectors.toSet());
+        if (set.size() == 1)
+          aspect = set.iterator().next();
+      }
+      if (Objects.nonNull(aspect)) {
+        Tensor a = Tensor.of(cbb.stream().map(Clip::width));
+        a.set(aspect::multiply, 1);
+        Tensor b = Tensors.vector(rectangle.width, rectangle.height);
+        Optional<Tensor> optional = CbbFit.inside(a, b);
+        if (optional.isEmpty())
+          return null;
+        Tensor c = optional.orElseThrow();
+        rectangle.width = Round.intValueExact(c.Get(0));
+        rectangle.height = Round.intValueExact(c.Get(1));
+      }
+    }
+    return new ShowRender(showables, showOptions, cbb).render(_g, rectangle);
   }
 
   /** @param graphics
@@ -269,95 +254,6 @@ public final class Show implements Serializable {
         ImageIO.write(bufferedImage, string, outputStream);
       }
     }
-    }
-  }
-
-  private void renderFrameTitle(Graphics2D graphics, Rectangle rectangle) {
-    if (showOptions.contains(ShowOption.FRAMED)) {
-      // draw box around ...
-      RenderQuality.smoothLine(graphics, false);
-      graphics.setStroke(StaticHelper.STROKE_SOLID);
-      graphics.setColor(Show.COLOR_FRAME);
-      graphics.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
-      RenderQuality.smoothLine(graphics, true);
-    }
-    {
-      String string = getPlotLabel();
-      if (!string.isEmpty()) {
-        Font font = graphics.getFont().deriveFont(Font.BOLD);
-        graphics.setFont(font);
-        graphics.setColor(StaticHelper.COLOR_FONT);
-        graphics.drawString(string, rectangle.x, rectangle.y - StaticHelper.GAP);
-      }
-    }
-  }
-
-  private ShowableConfig renderShowables(Graphics2D graphics, Rectangle rectangle) {
-    final ShowableConfig showableConfig;
-    CoordinateBoundingBox _cbb = deriveCbb();
-    if (Objects.isNull(_cbb)) {
-      showableConfig = null;
-      graphics.setColor(Color.DARK_GRAY);
-      FontMetrics fontMetrics = graphics.getFontMetrics();
-      String string = "no data";
-      double delta_y = (fontMetrics.getAscent() - fontMetrics.getDescent()) * 0.5;
-      graphics.drawString(string, //
-          rectangle.x + (rectangle.width - fontMetrics.stringWidth(string)) / 2, //
-          rectangle.y + (int) (rectangle.height * 0.5 + delta_y));
-    } else {
-      boolean flipY = showables.stream().anyMatch(Showable::flipYAxis);
-      showableConfig = flipY //
-          ? ShowableConfig.yIncr(rectangle, _cbb)
-          : ShowableConfig.yDecr(rectangle, _cbb);
-      // ---
-      ShowableConfig showableConfigClipped = showableConfig.clipped();
-      for (Showable showable : showables)
-        if (showable instanceof BackgroundPlotMarker) {
-          Graphics2D g = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-          showable.render(showableConfigClipped, g);
-          g.dispose();
-          showable.tender(showableConfig, graphics);
-        }
-      new GridDrawer(showOptions).render(showableConfig, graphics);
-      for (Showable showable : showables)
-        if (!(showable instanceof BackgroundPlotMarker)) {
-          Graphics2D g = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-          showable.render(showableConfigClipped, g);
-          g.dispose();
-          showable.tender(showableConfig, graphics);
-        }
-    }
-    return showableConfig;
-  }
-
-  private void renderLegend(Graphics2D graphics, Rectangle rectangle) {
-    FontMetrics fontMetrics = graphics.getFontMetrics();
-    int size = fontMetrics.getHeight();
-    int pix = rectangle.x + StaticHelper.GAP;
-    final int ystart = rectangle.y + 2 - fontMetrics.getDescent();
-    {
-      int piy = ystart;
-      graphics.setColor(new Color(255, 255, 255, 192));
-      for (Showable showable : showables) {
-        String string = showable.getLabel();
-        if (!string.isEmpty()) {
-          graphics.fillRect(pix, piy, fontMetrics.stringWidth(string), size);
-          // showarea.setColor(Color.RED);
-          // showarea.drawRect(pix, piy, fontMetrics.stringWidth(string), size);
-          piy += size;
-        }
-      }
-    }
-    {
-      int piy = ystart;
-      for (Showable showable : showables) {
-        String string = showable.getLabel();
-        if (!string.isEmpty()) {
-          piy += size;
-          graphics.setColor(showable.getColor());
-          graphics.drawString(string, pix, piy - 3);
-        }
-      }
     }
   }
 }

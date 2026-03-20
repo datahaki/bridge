@@ -11,6 +11,10 @@ public enum ShowOption {
   /** gridlines requires {@link #AXIS_X} or {@link #AXIS_Y} to take effect */
   GRID,
   UNIT_MAPPING,
+  /** Mathematica: "DataReversed"
+   * 
+   * whether y-axis should be decreasing from top to bottom */
+  DECR_Y,
   // BARLEGEND // TODO
   // LEGEND // TODO
 }

@@ -10,6 +10,8 @@ import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 
 class ShowOptions implements Serializable {
   private final Set<ShowOption> set = EnumSet.allOf(ShowOption.class);
+  String plotLabel = "";
+
   public DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
 
   public void set(ShowOption showOption, boolean status) {

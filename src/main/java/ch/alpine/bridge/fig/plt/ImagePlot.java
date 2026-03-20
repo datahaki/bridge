@@ -4,12 +4,15 @@ package ch.alpine.bridge.fig.plt;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.EnumSet;
 import java.util.Optional;
+import java.util.Set;
 
 import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.bridge.fig.BackgroundPlotMarker;
 import ch.alpine.bridge.fig.BarLegend;
 import ch.alpine.bridge.fig.BarLegendPlot;
+import ch.alpine.bridge.fig.ShowOption;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -100,12 +103,14 @@ public class ImagePlot extends BarLegendPlot implements BackgroundPlotMarker {
   }
 
   @Override // from Showable
-  public final boolean flipYAxis() {
-    return flipY;
-  }
-
-  @Override // from Showable
   public final Optional<Scalar> aspectRatioHint() {
     return Optional.ofNullable(aspectRatio);
+  }
+
+  @Override
+  public Set<ShowOption> disableOptions() {
+    return flipY //
+        ? EnumSet.of(ShowOption.DECR_Y)
+        : super.disableOptions();
   }
 }

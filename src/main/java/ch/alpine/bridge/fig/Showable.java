@@ -4,7 +4,9 @@ package ch.alpine.bridge.fig;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.EnumSet;
 import java.util.Optional;
+import java.util.Set;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.Scalar;
@@ -43,13 +45,6 @@ public interface Showable {
   /** @return */
   Stroke getStroke();
 
-  /** Mathematica: "DataReversed"
-   * 
-   * @return whether y-axis should be flipped */
-  default boolean flipYAxis() {
-    return false;
-  }
-
   /** @return */
   default Optional<Scalar> aspectRatioHint() {
     return Optional.empty();
@@ -61,5 +56,9 @@ public interface Showable {
     show.add(this);
     show.setPlotLabel(getClass().getSimpleName());
     return show;
+  }
+
+  default Set<ShowOption> disableOptions() {
+    return EnumSet.noneOf(ShowOption.class);
   }
 }
