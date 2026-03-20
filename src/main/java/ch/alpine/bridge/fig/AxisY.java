@@ -12,8 +12,8 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;
 
 class AxisY extends Axis {
-  public AxisY(ShowOptions showOptions) {
-    super(showOptions);
+  public AxisY(ConfBase confBase, ShowOptions showOptions) {
+    super(confBase, showOptions);
   }
 
   /** draw lines and numbers like this: _________________ */
@@ -22,11 +22,10 @@ class AxisY extends Axis {
     ConfBase confBase = showableConfig.confY;
     Rectangle rectangle = showableConfig.rectangle();
     graphics.setFont(getFont());
-    TicksConfig ticksConfig = new TicksConfig(confBase, showOptions.dateTimeFocus);
     if (showOptions.contains(ShowOption.GRID)) {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
-      for (int piy : ticksConfig.navigableMap.keySet())
+      for (int piy : navigableMap.keySet())
         graphics.drawLine(rectangle.x, piy, rectangle.x + rectangle.width - 1, piy);
     }
     {
@@ -37,18 +36,18 @@ class AxisY extends Axis {
           point.y, //
           point.x, //
           point.y + confBase.width - 1);
-      for (int piy : ticksConfig.navigableMap.keySet())
+      for (int piy : navigableMap.keySet())
         graphics.drawLine(point.x - 2, piy, point.x - 1, piy);
     }
     {
       FontMetrics fontMetrics = graphics.getFontMetrics();
       graphics.setColor(StaticHelper.COLOR_FONT);
-      for (Entry<Integer, Scalar> entry : ticksConfig.navigableMap.entrySet()) {
+      for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
         int piy = entry.getKey();
         Scalar value = entry.getValue();
-        String yLabel = Objects.isNull(ticksConfig.dateTimeFormatter) //
+        String yLabel = Objects.isNull(dateTimeFormatter) //
             ? Ticks.format(value)
-            : ((DateTime) value).format(ticksConfig.dateTimeFormatter);
+            : ((DateTime) value).format(dateTimeFormatter);
         graphics.drawString(yLabel, //
             point.x - fontMetrics.stringWidth(yLabel) - 5, //
             piy + fontMetrics.getAscent() / 2 - 1);

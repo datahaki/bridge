@@ -8,10 +8,17 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
+import java.time.format.DateTimeFormatter;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.bridge.cal.DateTimeInterval;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.qty.DateTime;
+import ch.alpine.tensor.sca.Clip;
 
 abstract class Axis {
   protected static final Stroke STROKE_GRIDLINES = //
@@ -21,11 +28,35 @@ abstract class Axis {
   // TODO BRIDGE determine reserve, instead of 50 hardcode
   protected static final Scalar RESERVE = RealScalar.of(50);
   // ---
+  protected final ConfBase confBase;
   protected final ShowOptions showOptions;
+  protected final NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
+  protected final DateTimeFormatter dateTimeFormatter;
   private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
-  public Axis(ShowOptions showOptions) {
+  public Axis(ConfBase confBase, ShowOptions showOptions) {
+    this.confBase = confBase;
     this.showOptions = showOptions;
+    Clip clip = confBase.clip();
+    if (clip.min() instanceof DateTime) {
+      // TODO BRIDGE 100 is a magic constant that should depend on font, and date formatter
+      DateTimeInterval dateTimeInterval = //
+          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(100, confBase.width)));
+      DateTime startAttempt = dateTimeInterval.floor(clip.min());
+      DateTime dateTime = clip.isInside(startAttempt) //
+          ? startAttempt
+          : dateTimeInterval.plus(startAttempt);
+      dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
+      while (clip.isInside(dateTime)) {
+        int x_pos = (int) confBase.pixel(dateTime);
+        navigableMap.put(x_pos, dateTime);
+        dateTime = dateTimeInterval.plus(dateTime);
+      }
+    } else {
+      Ticks.stream(clip, Axis.RESERVE.divide(RealScalar.of(confBase.width))) //
+          .forEach(tick -> navigableMap.put((int) confBase.pixel(tick), tick));
+      dateTimeFormatter = null;
+    }
   }
 
   /** @param showableConfig

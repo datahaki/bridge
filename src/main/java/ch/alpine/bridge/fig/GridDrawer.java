@@ -28,12 +28,12 @@ public class GridDrawer {
     Clip yRange = showableConfig.confY.clip();
     // ---
     if (showOptions.contains(ShowOption.AXIS_X) && !Scalars.isZero(xRange.width()))
-      new AxisX(showOptions).render( //
+      new AxisX(showableConfig.confX, showOptions).render( //
           showableConfig, //
           new Point(rectangle.x, rectangle.y + rectangle.height - 1 + StaticHelper.GAP), //
           graphics);
     if (showOptions.contains(ShowOption.AXIS_Y) && !Scalars.isZero(yRange.width()))
-      new AxisY(showOptions).render( //
+      new AxisY(showableConfig.confY, showOptions).render( //
           showableConfig, //
           new Point(rectangle.x - StaticHelper.GAP, rectangle.y), //
           graphics);

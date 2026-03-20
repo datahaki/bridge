@@ -51,7 +51,8 @@ public abstract class BarLegendPlot extends BaseShowable {
       int pix = rectangle.x + rectangle.width + 1 + StaticHelper.GAP * 2;
       graphics.drawImage(ImageFormat.of(Subdivide.decreasing(Clips.unit(), rectangle.height - 1).maps(Tensors::of).maps(barLegend.colorDataGradient())), //
           pix, rectangle.y, width, rectangle.height, null);
-      new AxisYF(new ShowOptions(), barLegend.clip()).render( //
+      ConfBase confBase = new ConfDecr(rectangle.y, rectangle.height, barLegend.clip());
+      new AxisYF(confBase, new ShowOptions()).render( //
           showableConfig, //
           new Point(pix + width + StaticHelper.GAP - 2, rectangle.y), //
           graphics);

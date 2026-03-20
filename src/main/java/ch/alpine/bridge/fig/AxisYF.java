@@ -4,66 +4,26 @@ package ch.alpine.bridge.fig;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.time.format.DateTimeFormatter;
 import java.util.Map.Entry;
-import java.util.NavigableMap;
 import java.util.Objects;
-import java.util.TreeMap;
 
-import ch.alpine.bridge.cal.DateTimeInterval;
-import ch.alpine.tensor.Rational;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.DateTime;
-import ch.alpine.tensor.sca.Clip;
 
 // TODO BRIDGE only used for BarLegend, ticks are draw to right instead of left
 class AxisYF extends Axis {
-  private final Clip clip;
-
-  public AxisYF(ShowOptions showOptions, Clip clip) {
-    super(showOptions);
-    this.clip = clip;
+  public AxisYF(ConfBase confBase, ShowOptions showOptions) {
+    super(confBase, showOptions);
   }
 
-  /** draw lines and numbers like this: _________________ */
   @Override
   protected void protected_render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
-    // IO.println("AXIS Y=========== " + point + " " + showableConfig.confY);
-    if (Scalars.isZero(clip.width()))
+    if (Scalars.isZero(confBase.clip.width()))
       return;
-    Rectangle rectangle = showableConfig.rectangle();
     graphics.setFont(getFont());
-    FontMetrics fontMetrics = graphics.getFontMetrics();
-    NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
-    DateTimeFormatter dateTimeFormatter = null;
-    int fontSize = interval(fontMetrics);
-    // ---
     // formula showableConfig.y_pos does not apply here due to different clip
     // so we have to compute y_pos explicitly
-    double y_height = showableConfig.confY.xBaseline();
-    Scalar y2pixel = RealScalar.of(rectangle.height - 1).divide(clip.width());
-    if (clip.min() instanceof DateTime) {
-      DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(fontSize, rectangle.height)));
-      DateTime startAttempt = dateTimeInterval.floor(clip.min());
-      DateTime dateTime = clip.isInside(startAttempt) //
-          ? startAttempt
-          : dateTimeInterval.plus(startAttempt);
-      dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
-      while (clip.isInside(dateTime)) {
-        int y_pos = (int) (y_height - dateTime.subtract(clip.min()).multiply(y2pixel).number().doubleValue());
-        navigableMap.put(y_pos, dateTime);
-        dateTime = dateTimeInterval.plus(dateTime);
-      }
-    } else
-      Ticks.stream(clip, RealScalar.of(fontSize).divide(RealScalar.of(rectangle.height))) //
-          .forEach(tick -> {
-            int y_pos = (int) (y_height - tick.subtract(clip.min()).multiply(y2pixel).number().doubleValue());
-            navigableMap.put(y_pos, tick);
-          });
     if (showOptions.contains(ShowOption.AXIS_Y)) {
       {
         int length = showableConfig.confY.width;
@@ -74,6 +34,7 @@ class AxisYF extends Axis {
           graphics.drawLine(point.x + 1, piy, point.x + 2, piy);
       }
       {
+        FontMetrics fontMetrics = graphics.getFontMetrics();
         graphics.setColor(StaticHelper.COLOR_FONT);
         for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
           int piy = entry.getKey();
