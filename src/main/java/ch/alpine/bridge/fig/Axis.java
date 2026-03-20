@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.time.format.DateTimeFormatter;
 import java.util.NavigableMap;
@@ -17,26 +18,27 @@ import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Clip;
 
 abstract class Axis {
-  protected static final Stroke STROKE_GRIDLINES = //
+  private static final Stroke STROKE_GRIDLINES = //
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
-  protected static final Color COLOR_GRIDLINES = new Color(128, 128, 128, 64);
-  protected static final Color COLOR_HELPER = new Color(192, 192, 192);
+  private static final Color COLOR_GRIDLINES = new Color(128, 128, 128, 64);
+  private static final Color COLOR_HELPER = new Color(192, 192, 192);
   // TODO BRIDGE determine reserve, instead of 50 hardcode
-  protected static final Scalar RESERVE = RealScalar.of(50);
+  private static final Scalar RESERVE = RealScalar.of(50);
   // ---
   protected final ConfBase confBase;
-  protected final ShowOptions showOptions;
+  protected final AxisOptions showOptions;
   protected final NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
   protected final DateTimeFormatter dateTimeFormatter;
   private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
-  public Axis(ConfBase confBase, ShowOptions showOptions) {
+  public Axis(ConfBase confBase, AxisOptions axisOptions) {
     this.confBase = confBase;
-    this.showOptions = showOptions;
+    this.showOptions = axisOptions;
     Clip clip = confBase.clip();
     if (clip.min() instanceof DateTime) {
       // TODO BRIDGE 100 is a magic constant that should depend on font, and date formatter
@@ -46,14 +48,14 @@ abstract class Axis {
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
-      dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
+      dateTimeFormatter = axisOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
         int x_pos = (int) confBase.pixel(dateTime);
         navigableMap.put(x_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
-      Ticks.stream(clip, Axis.RESERVE.divide(RealScalar.of(confBase.width))) //
+      Ticks.stream(clip, RESERVE.divide(RealScalar.of(confBase.width))) //
           .forEach(tick -> navigableMap.put((int) confBase.pixel(tick), tick));
       dateTimeFormatter = null;
     }
@@ -64,12 +66,35 @@ abstract class Axis {
    * @param length
    * @param _g */
   protected final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
+    if (Scalars.isZero(confBase.clip.width()))
+      return;
     RenderQuality.smoothLine(graphics, false);
-    protected_render(showableConfig, point, graphics);
+    Rectangle rectangle = showableConfig.rectangle();
+    if (showOptions.contains(AxisOption.GRID)) { // grid lines |
+      graphics.setStroke(STROKE_GRIDLINES);
+      graphics.setColor(COLOR_GRIDLINES);
+      for (int pixel : navigableMap.keySet())
+        drawGridLine(graphics, rectangle, pixel);
+    }
+    if (showOptions.contains(AxisOption.TICK)) {
+      graphics.setStroke(StaticHelper.STROKE_SOLID);
+      graphics.setColor(COLOR_HELPER);
+      drawAxisLine(graphics, point);
+      for (int piy : navigableMap.keySet())
+        drawAxisTick(graphics, point, piy);
+      graphics.setFont(getFont());
+      protected_render(graphics, point);
+    }
     RenderQuality.smoothLine(graphics, true);
   }
 
-  protected abstract void protected_render(ShowableConfig showableConfig, Point point, Graphics2D graphics);
+  protected abstract void drawGridLine(Graphics2D graphics, Rectangle rectangle, int pixel);
+
+  protected abstract void drawAxisLine(Graphics2D graphics, Point point);
+
+  protected abstract void drawAxisTick(Graphics2D graphics, Point point, int pixel);
+
+  protected abstract void protected_render(Graphics2D graphics, Point point);
 
   public final void setFont(Font font) {
     this.font = font;

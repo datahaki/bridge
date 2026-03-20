@@ -22,4 +22,18 @@ class ShowOptions implements Serializable {
   public boolean contains(ShowOption showOption) {
     return set.contains(showOption);
   }
+
+  public AxisOptions compileAxisX() {
+    AxisOptions axisOptions = new AxisOptions();
+    axisOptions.set(AxisOption.GRID, contains(ShowOption.GRID));
+    axisOptions.set(AxisOption.TICK, contains(ShowOption.AXIS_X));
+    return axisOptions;
+  }
+
+  public AxisOptions compileAxisY() {
+    AxisOptions axisOptions = new AxisOptions();
+    axisOptions.set(AxisOption.GRID, contains(ShowOption.GRID));
+    axisOptions.set(AxisOption.TICK, contains(ShowOption.AXIS_Y));
+    return axisOptions;
+  }
 }
