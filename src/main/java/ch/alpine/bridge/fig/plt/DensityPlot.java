@@ -63,7 +63,7 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
     return ArrayPlot.of(matrix, cbb, colorDataGradient, false);
   }
 
-  private static Tensor compute(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, int resolution) {
+  private static Tensor mesheval(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, int resolution) {
     // TODO BRIDGE resolution based on aspect ratio and cbb ?
     Tensor dx = Subdivide.intermediate_increasing(cbb.clip(0), resolution);
     Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);
@@ -85,7 +85,7 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
     private final Clip clip;
 
     public Inner(CoordinateBoundingBox cbb, int resolution) {
-      Tensor matrix = compute(sbo, cbb, resolution);
+      Tensor matrix = mesheval(sbo, cbb, resolution);
       Rescale rescale = new Rescale(matrix);
       BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
       scalableImage = new ScalableImage(bufferedImage);
@@ -101,10 +101,7 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
     return new Inner(cbb, resolution).scalableImage;
   }
 
-  private DensityPlot( //
-      ScalarBinaryOperator sbo, //
-      CoordinateBoundingBox cbb, //
-      ScalarTensorFunction colorDataGradient) {
+  private DensityPlot(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     super(cbb);
     this.sbo = sbo;
     this.colorDataGradient = colorDataGradient;

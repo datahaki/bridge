@@ -26,6 +26,7 @@ import ch.alpine.bridge.fig.plt.Periodogram;
 import ch.alpine.bridge.fig.plt.Plot;
 import ch.alpine.bridge.fig.plt.PolygonPlot;
 import ch.alpine.bridge.fig.plt.ReImPlot;
+import ch.alpine.bridge.fig.plt.ReliefPlot;
 import ch.alpine.bridge.fig.plt.Spectrogram;
 import ch.alpine.bridge.fig.plt.StringPlot;
 import ch.alpine.bridge.fig.plt.StringPlot.StringItem;
@@ -59,9 +60,11 @@ import ch.alpine.tensor.itp.LanczosInterpolation;
 import ch.alpine.tensor.itp.MitchellNetravaliKernel;
 import ch.alpine.tensor.lie.rot.CirclePoints;
 import ch.alpine.tensor.lie.rot.Cross;
+import ch.alpine.tensor.mat.GaussianMatrix;
 import ch.alpine.tensor.mat.HilbertMatrix;
 import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.mat.sv.SingularValueList;
+import ch.alpine.tensor.nrm.Vector2NormSquared;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.num.Softplus;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -111,6 +114,30 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  Relief {
+    @Override
+    public Show getShow() {
+      Show show = new Show();
+      show.setPlotLabel("ArrowPlot");
+      Showable showable = ReliefPlot.of(GaussianMatrix.of(40), CoordinateBoundingBox.of(Clips.unit(), Clips.unit()), ColorDataGradients.ALPINE);
+      show.add(showable);
+      show.setAspectRatioOne();
+      return show;
+    }
+  },
+  Relief2 {
+    @Override
+    public Show getShow() {
+      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.absolute(4.0), Clips.absolute(4.0));
+      Tensor matrix = mesheval((x, y) -> Sin.FUNCTION.apply(Vector2NormSquared.of(Tensors.of(x, y))), cbb, 40);
+      Show show = new Show();
+      show.setPlotLabel("ArrowPlot");
+      Showable showable = ReliefPlot.of(matrix, cbb, ColorDataGradients.ALPINE);
+      show.add(showable);
+      show.setAspectRatioOne();
+      return show;
+    }
+  },
   Arrows {
     @Override
     public Show getShow() {
@@ -809,5 +836,14 @@ public enum Showcases implements ShowProvider {
 
   private Showcases(boolean extra) {
     this.extra = extra;
+  }
+
+  private static Tensor mesheval(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, int resolution) {
+    // TODO BRIDGE resolution based on aspect ratio and cbb ?
+    Tensor dx = Subdivide.intermediate_increasing(cbb.clip(0), resolution);
+    Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);
+    return Tensor.of(dy.stream().parallel() //
+        .map(Scalar.class::cast) //
+        .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
   }
 }
