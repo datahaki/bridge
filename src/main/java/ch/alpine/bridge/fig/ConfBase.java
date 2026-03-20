@@ -39,8 +39,4 @@ public abstract class ConfBase {
   public final int xBaseline() {
     return xBaseline;
   }
-
-  public final boolean contains(int point_x) {
-    return x <= point_x && point_x - x < width;
-  }
 }
