@@ -135,14 +135,14 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
           pressed = point;
           // ---
           if (set_x.contains(Option.PAN)) {
-            Scalar shift = showableConfig.dx(RealScalar.of(-dx));
+            Scalar shift = showableConfig.confX.dx(RealScalar.of(-dx));
             Clip xRange = cbb.clip(0);
             cbb = CoordinateBoundingBox.of( //
                 Clips.interval(xRange.min().add(shift), xRange.max().add(shift)), //
                 cbb.clip(1));
           }
           if (set_y.contains(Option.PAN)) {
-            Scalar shift = showableConfig.dy(RealScalar.of(-dy));
+            Scalar shift = showableConfig.confY.dx(RealScalar.of(-dy));
             Clip yRange = cbb.clip(1);
             cbb = CoordinateBoundingBox.of( //
                 cbb.clip(0), //

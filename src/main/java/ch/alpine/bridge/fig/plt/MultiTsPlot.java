@@ -55,7 +55,7 @@ public class MultiTsPlot extends BaseShowable {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     if (timeSeries.isEmpty())
       return;
-    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), timeSeries.domain());
+    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.confX.clip(), timeSeries.domain());
     if (optional.isPresent()) {
       Clip clip = optional.orElseThrow();
       if (Sign.isPositive(clip.width())) {

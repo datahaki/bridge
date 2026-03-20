@@ -24,8 +24,8 @@ public class GridDrawer {
 
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle();
-    Clip xRange = showableConfig.getClip(0);
-    Clip yRange = showableConfig.getClip(1);
+    Clip xRange = showableConfig.confX.clip();
+    Clip yRange = showableConfig.confY.clip();
     // ---
     if (showOptions.contains(ShowOption.AXIS_X) && !Scalars.isZero(xRange.width()))
       new AxisX(showOptions).render( //

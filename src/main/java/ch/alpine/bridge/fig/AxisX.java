@@ -26,7 +26,7 @@ class AxisX extends Axis {
 
   @Override
   protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
-    Clip clip = showableConfig.xRange;
+    Clip clip = showableConfig.confX.clip();
     Rectangle rectangle = showableConfig.rectangle();
     graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();

@@ -42,7 +42,7 @@ class AxisYF extends Axis {
     // ---
     // formula showableConfig.y_pos does not apply here due to different clip
     // so we have to compute y_pos explicitly
-    double y_height = showableConfig.yBaseline;
+    double y_height = showableConfig.confY.xBaseline();
     Scalar y2pixel = RealScalar.of(rectangle.height - 1).divide(clip.width());
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //

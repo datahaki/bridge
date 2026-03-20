@@ -6,94 +6,76 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.Optional;
 
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
-import ch.alpine.tensor.sca.Clip;
-import ch.alpine.tensor.sca.Sign;
 
-public class ShowableConfig {
-  final Rectangle rectangle;
+public final class ShowableConfig {
+  public static ShowableConfig yDecr(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    return new ShowableConfig(rectangle, cbb, //
+        new ConfIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
+        new ConfDecr(rectangle.y, rectangle.height, cbb.clip(1)));
+  }
+
+  public static ShowableConfig yIncr(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    return new ShowableConfig(rectangle, cbb, //
+        new ConfIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
+        new ConfIncr(rectangle.y, rectangle.height, cbb.clip(1)));
+  }
+
+  // ---
+  private final Rectangle rectangle;
   private final CoordinateBoundingBox cbb;
-  protected final Clip xRange;
-  protected final Clip yRange;
-  final double yBaseline;
-  private final Scalar x2pixel;
-  protected final Scalar y2pixel;
-  protected final Scalar pixel2x;
-  protected final Scalar pixel2y;
+  public final ConfBase confX;
+  final ConfBase confY;
 
   /** Careful: rectangle width and height have to be greater than 1
    * 
    * @param rectangle
    * @param cbb */
-  public ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb) {
-    Integers.requirePositiveOrZero(rectangle.width);
-    Integers.requirePositiveOrZero(rectangle.height);
+  private ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, ConfBase confX, ConfBase confY) {
     this.rectangle = rectangle;
     this.cbb = cbb;
-    this.xRange = cbb.clip(0);
-    this.yRange = cbb.clip(1);
-    yBaseline = rectangle.y + rectangle.height - 1;
-    x2pixel = RealScalar.of(rectangle.width - 1).divide(xRange.width());
-    y2pixel = RealScalar.of(rectangle.height - 1).divide(yRange.width());
-    Sign.requirePositive(x2pixel);
-    Sign.requirePositive(y2pixel);
-    pixel2x = xRange.width().divide(RealScalar.of(rectangle.width - 1));
-    pixel2y = yRange.width().divide(RealScalar.of(rectangle.height - 1));
+    this.confX = confX;
+    this.confY = confY;
   }
 
-  public final Rectangle rectangle() {
+  public Rectangle rectangle() {
     return rectangle;
   }
 
-  public final double x_pos(Scalar x) {
-    return rectangle.x + x.subtract(xRange.min()).multiply(x2pixel).number().doubleValue();
+  public double x_pos(Scalar x) {
+    return confX.x_pos(x);
   }
 
   public double y_pos(Scalar y) {
-    return yBaseline - y.subtract(yRange.min()).multiply(y2pixel).number().doubleValue();
+    return confY.x_pos(y);
   }
 
-  public final Point2D toPoint2D(Tensor vector) {
+  public Point2D toPoint2D(Tensor vector) {
     return new Point2D.Double( //
         x_pos(vector.Get(0)), //
         y_pos(vector.Get(1)));
   }
 
-  public final Optional<Tensor> toValue(Point point) {
-    return rectangle.contains(point) //
+  public Optional<Tensor> toValue(Point point) {
+    return rectangle.contains(point) // TODO
         ? Optional.of(Tensors.of( //
-            xRange.min().add(RealScalar.of(point.x - rectangle.x).multiply(pixel2x)), //
-            y_val(point.y)))
+            confX.value(point.x), //
+            confY.value(point.y)))
         : Optional.empty();
   }
 
-  protected Scalar y_val(int point_y) {
-    return yRange.min().add(RealScalar.of(yBaseline - point_y).multiply(pixel2y));
-  }
-
-  public final Scalar dx(Scalar dx) {
-    return dx.multiply(pixel2x);
-  }
-
-  public Scalar dy(Scalar dy) {
-    return dy.multiply(pixel2y);
-  }
-
-  public final Clip getClip(int index) {
-    return cbb.clip(index);
-  }
-
   /** @return may be null */
-  public final CoordinateBoundingBox getCbb() {
+  public CoordinateBoundingBox getCbb() {
     return cbb;
   }
 
-  public final ShowableConfig clipped() {
-    return new ShowableConfig(new Rectangle(0, 0, rectangle.width, rectangle.height), cbb);
+  public ShowableConfig clipped() {
+    return new ShowableConfig( //
+        new Rectangle(0, 0, rectangle.width, rectangle.height), cbb, //
+        confX.clipped(), //
+        confY.clipped());
   }
 }

@@ -55,7 +55,7 @@ public class CandlestickChart extends BaseShowable {
     if (timeSeries.isEmpty())
       return;
     // TODO BRIDGE TsPlot should also handle vectors
-    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.getClip(0), timeSeries.domain());
+    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.confX.clip(), timeSeries.domain());
     if (optional.isPresent()) {
       Clip x_clip = optional.orElseThrow();
       if (Sign.isPositive(x_clip.width())) {

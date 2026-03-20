@@ -307,8 +307,8 @@ public final class Show implements Serializable {
     } else {
       boolean flipY = showables.stream().anyMatch(Showable::flipYAxis);
       showableConfig = flipY //
-          ? new ShowableConfigYF(rectangle, _cbb)
-          : new ShowableConfig(rectangle, _cbb);
+          ? ShowableConfig.yIncr(rectangle, _cbb)
+          : ShowableConfig.yDecr(rectangle, _cbb);
       // ---
       ShowableConfig showableConfigClipped = showableConfig.clipped();
       for (Showable showable : showables)
