@@ -27,8 +27,9 @@ class AxisYLog extends Axis {
 
   /** draw lines and numbers like this: _________________ */
   @Override
-  protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
-    Clip clip = showableConfig.confY.clip();
+  protected void protected_render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
+    ConfBase confBase = showableConfig.confY;
+    Clip clip = confBase.clip();
     Rectangle rectangle = showableConfig.rectangle();
     graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();
@@ -44,7 +45,7 @@ class AxisYLog extends Axis {
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
-        int y_pos = (int) showableConfig.y_pos(dateTime);
+        int y_pos = (int) confBase.x_pos(dateTime);
         navigableMap.put(y_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
@@ -55,7 +56,7 @@ class AxisYLog extends Axis {
           Scalar yValue = Ceiling.toMultipleOf(dY).apply(clip.min()); //
           Scalars.lessEquals(yValue, clip.max()); //
           yValue = yValue.add(dY)) {
-        int y_pos = (int) showableConfig.y_pos(yValue);
+        int y_pos = (int) confBase.x_pos(yValue);
         navigableMap.put(y_pos, yValue);
       }
     }
@@ -67,6 +68,7 @@ class AxisYLog extends Axis {
     }
     if (showOptions.contains(ShowOption.AXIS_Y)) {
       {
+        int length = showableConfig.confY.width;
         graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
         graphics.drawLine(point.x, point.y, point.x, point.y + length - 1);

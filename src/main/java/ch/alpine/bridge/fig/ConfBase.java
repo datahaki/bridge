@@ -39,4 +39,9 @@ public abstract class ConfBase {
   public final int xBaseline() {
     return xBaseline;
   }
+
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + " x=" + x + " width=" + width;
+  }
 }

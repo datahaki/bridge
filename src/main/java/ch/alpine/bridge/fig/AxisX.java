@@ -25,8 +25,10 @@ class AxisX extends Axis {
   }
 
   @Override
-  protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
-    Clip clip = showableConfig.confX.clip();
+  protected void protected_render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
+    ConfBase confBase = showableConfig.confX;
+    // IO.println("AXIS X " + point + " " + showableConfig.confX);
+    Clip clip = confBase.clip();
     Rectangle rectangle = showableConfig.rectangle();
     graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();
@@ -35,20 +37,20 @@ class AxisX extends Axis {
     if (clip.min() instanceof DateTime) {
       // TODO BRIDGE 100 is a magic constant that should depend on font, and date formatter
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(100, rectangle.width)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(100, confBase.width)));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
-        int x_pos = (int) showableConfig.x_pos(dateTime);
+        int x_pos = (int) confBase.x_pos(dateTime);
         navigableMap.put(x_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else
       Ticks.stream(clip, Axis.RESERVE.divide(RealScalar.of(rectangle.width))) //
-          .forEach(tick -> navigableMap.put((int) showableConfig.x_pos(tick), tick));
+          .forEach(tick -> navigableMap.put((int) confBase.x_pos(tick), tick));
     if (showOptions.contains(ShowOption.GRID)) { // grid lines |
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
@@ -61,7 +63,7 @@ class AxisX extends Axis {
       graphics.drawLine( //
           point.x, //
           point.y, //
-          point.x + length - 1, //
+          point.x + showableConfig.confX.width - 1, //
           point.y);
       for (int pix : navigableMap.keySet())
         graphics.drawLine(pix, point.y + 1, pix, point.y + 2);

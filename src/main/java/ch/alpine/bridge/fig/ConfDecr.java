@@ -27,6 +27,6 @@ public class ConfDecr extends ConfBase {
 
   @Override
   public Scalar dx(Scalar dx) {
-    return dx.negate().multiply(pixel2x);
+    return dx.multiply(pixel2x).negate();
   }
 }

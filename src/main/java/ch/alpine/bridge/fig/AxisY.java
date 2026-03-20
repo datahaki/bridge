@@ -25,8 +25,11 @@ class AxisY extends Axis {
 
   /** draw lines and numbers like this: _________________ */
   @Override
-  protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
-    Clip clip = showableConfig.confY.clip();
+  protected void protected_render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
+    ConfBase confBase = showableConfig.confY;
+    // IO.println("AXIS Y " + point + " " + showableConfig.confY);
+    Clip clip = confBase.clip();
+    int length = confBase.width;
     Rectangle rectangle = showableConfig.rectangle();
     graphics.setFont(getFont());
     FontMetrics fontMetrics = graphics.getFontMetrics();
@@ -35,20 +38,20 @@ class AxisY extends Axis {
     int fontSize = interval(fontMetrics);
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(fontSize, rectangle.height)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(fontSize, length)));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = showOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
-        int y_pos = (int) showableConfig.y_pos(dateTime);
+        int y_pos = (int) confBase.x_pos(dateTime);
         navigableMap.put(y_pos, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else
       Ticks.stream(clip, Axis.RESERVE.divide(RealScalar.of(rectangle.height))) //
-          .forEach(tick -> navigableMap.put((int) showableConfig.y_pos(tick), tick));
+          .forEach(tick -> navigableMap.put((int) confBase.x_pos(tick), tick));
     if (showOptions.contains(ShowOption.GRID)) {
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
@@ -58,7 +61,11 @@ class AxisY extends Axis {
     {
       graphics.setStroke(StaticHelper.STROKE_SOLID);
       graphics.setColor(COLOR_HELPER);
-      graphics.drawLine(point.x, point.y, point.x, point.y + length - 1);
+      graphics.drawLine( //
+          point.x, //
+          point.y, //
+          point.x, //
+          point.y + length - 1);
       for (int piy : navigableMap.keySet())
         graphics.drawLine(point.x - 2, piy, point.x - 1, piy);
     }

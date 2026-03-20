@@ -30,7 +30,8 @@ class AxisYF extends Axis {
 
   /** draw lines and numbers like this: _________________ */
   @Override
-  protected void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
+  protected void protected_render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
+    // IO.println("AXIS Y=========== " + point + " " + showableConfig.confY);
     if (Scalars.isZero(clip.width()))
       return;
     Rectangle rectangle = showableConfig.rectangle();
@@ -65,6 +66,7 @@ class AxisYF extends Axis {
           });
     if (showOptions.contains(ShowOption.AXIS_Y)) {
       {
+        int length = showableConfig.confY.width;
         graphics.setStroke(StaticHelper.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
         graphics.drawLine(point.x, point.y, point.x, point.y + length - 1);

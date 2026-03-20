@@ -33,13 +33,13 @@ abstract class Axis {
    * @param point
    * @param length
    * @param _g */
-  protected final void render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics) {
+  protected final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
     RenderQuality.smoothLine(graphics, false);
-    protected_render(showableConfig, point, length, graphics);
+    protected_render(showableConfig, point, graphics);
     RenderQuality.smoothLine(graphics, true);
   }
 
-  protected abstract void protected_render(ShowableConfig showableConfig, Point point, int length, Graphics2D graphics);
+  protected abstract void protected_render(ShowableConfig showableConfig, Point point, Graphics2D graphics);
 
   public final void setFont(Font font) {
     this.font = font;

@@ -57,13 +57,13 @@ public class TsPlot extends BaseShowable {
           Path2D path = new Path2D.Double();
           Tensor tsFirst = t.get(0);
           path.moveTo( //
-              showableConfig.x_pos(tsFirst.Get(0)), //
-              showableConfig.y_pos(tsf.apply(tsFirst.get(1))));
+              showableConfig.confX.x_pos(tsFirst.Get(0)), //
+              showableConfig.confY.x_pos(tsf.apply(tsFirst.get(1))));
           t.stream() //
               .skip(1) //
               .forEach(tsEntry -> path.lineTo( //
-                  showableConfig.x_pos(tsEntry.Get(0)), //
-                  showableConfig.y_pos(tsf.apply(tsEntry.get(1)))));
+                  showableConfig.confX.x_pos(tsEntry.Get(0)), //
+                  showableConfig.confY.x_pos(tsf.apply(tsEntry.get(1)))));
           graphics.draw(path);
         });
       }

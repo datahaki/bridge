@@ -31,12 +31,12 @@ public class GridDrawer {
       new AxisX(showOptions).render( //
           showableConfig, //
           new Point(rectangle.x, rectangle.y + rectangle.height - 1 + StaticHelper.GAP), //
-          rectangle.width, graphics);
+          graphics);
     if (showOptions.contains(ShowOption.AXIS_Y) && !Scalars.isZero(yRange.width()))
       new AxisY(showOptions).render( //
           showableConfig, //
           new Point(rectangle.x - StaticHelper.GAP, rectangle.y), //
-          rectangle.height, graphics);
+          graphics);
     // ---
     if (showOptions.contains(ShowOption.UNIT_MAPPING)) {
       String unit0 = UnicodeString.of(QuantityUnit.of(xRange));

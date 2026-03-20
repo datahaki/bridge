@@ -54,7 +54,7 @@ public abstract class BarLegendPlot extends BaseShowable {
       new AxisYF(new ShowOptions(), barLegend.clip()).render( //
           showableConfig, //
           new Point(pix + width + StaticHelper.GAP - 2, rectangle.y), //
-          rectangle.height, graphics);
+          graphics);
     }
   }
 }

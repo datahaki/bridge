@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.Optional;
 
-import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -28,7 +27,7 @@ public final class ShowableConfig {
   private final Rectangle rectangle;
   private final CoordinateBoundingBox cbb;
   public final ConfBase confX;
-  final ConfBase confY;
+  public final ConfBase confY;
 
   /** Careful: rectangle width and height have to be greater than 1
    * 
@@ -45,18 +44,10 @@ public final class ShowableConfig {
     return rectangle;
   }
 
-  public double x_pos(Scalar x) {
-    return confX.x_pos(x);
-  }
-
-  public double y_pos(Scalar y) {
-    return confY.x_pos(y);
-  }
-
   public Point2D toPoint2D(Tensor vector) {
     return new Point2D.Double( //
-        x_pos(vector.Get(0)), //
-        y_pos(vector.Get(1)));
+        confX.x_pos(vector.Get(0)), //
+        confY.x_pos(vector.Get(1)));
   }
 
   public Optional<Tensor> toValue(Point point) {
