@@ -33,7 +33,7 @@ public class GridDrawer {
           new Point(rectangle.x, rectangle.y + rectangle.height - 1 + StaticHelper.GAP), //
           graphics);
     if (showOptions.contains(ShowOption.AXIS_Y) && !Scalars.isZero(yRange.width()))
-      new AxisY(showableConfig.confY(), showOptions.compileAxisY()).render( //
+      new AxisYL(showableConfig.confY(), showOptions.compileAxisY()).render( //
           showableConfig, //
           new Point(rectangle.x - StaticHelper.GAP, rectangle.y), //
           graphics);

@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.fig.plt;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.List;
@@ -21,8 +20,10 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
+/** <p>inspired by
+ * <a href="https://reference.wolfram.com/language/ref/ReliefImage.html">ReliefImage</a> */
 public record ReliefImage(BufferedImage bufferedImage, CoordinateBoundingBox cbb, Clip clip, ScalarTensorFunction colorDataGradient) {
-  public static Tensor REF = Tensors.vector(-0.31622776601683794, 0.9486832980505138);
+  public static Tensor REF = Tensors.vector(0.9486832980505138, 0.31622776601683794);
 
   public static ReliefImage of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     MatrixQ.require(matrix);
@@ -32,18 +33,15 @@ public record ReliefImage(BufferedImage bufferedImage, CoordinateBoundingBox cbb
     List<Integer> list = Dimensions.of(matrix);
     Scalar h0 = RealScalar.of(list.get(0) - 1).divide(cbb.clip(0).width());
     Scalar h1 = RealScalar.of(list.get(1) - 1).divide(cbb.clip(1).width());
-    matrixGradient = matrixGradient.rescale(h0, h1).rescale();
+    Tensor result = matrixGradient.rescale(h0, h1).rescale().array().dot(REF);
     int[] data = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
     int index = 0;
     for (int j = 0; j < bufferedImage.getHeight(); ++j)
       for (int i = 0; i < bufferedImage.getWidth(); ++i) {
-        HueFromColor hueFromColor = HueFromColor.of(data[index]);
-        Tensor nrm = matrixGradient.Cross(j, i);
-        Scalar dot = (Scalar) nrm.dot(REF);
+        Scalar dot = result.Get(j, i);
         Scalar s1 = Clips.unit().apply(RealScalar.ONE.subtract(dot));
         Scalar s2 = Clips.unit().apply(RealScalar.ONE.add(dot));
-        Color modifHSV = hueFromColor.modifHSV(s1.number().doubleValue(), s2.number().doubleValue());
-        data[index] = modifHSV.getRGB();
+        data[index] = HueFromColor.of(data[index]).modifHSV(s1.number().doubleValue(), s2.number().doubleValue()).getRGB();
         ++index;
       }
     return new ReliefImage(bufferedImage, cbb, rescale.clip(), colorDataGradient);

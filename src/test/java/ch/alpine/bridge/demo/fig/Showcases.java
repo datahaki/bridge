@@ -42,6 +42,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.alg.Dimensions;
 import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.alg.Transpose;
@@ -120,7 +121,10 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show();
       show.setPlotLabel("ArrowPlot");
-      Showable showable = ReliefPlot.of(GaussianMatrix.of(40), CoordinateBoundingBox.of(Clips.unit(), Clips.unit()), ColorDataGradients.ALPINE);
+      Tensor matrix = GaussianMatrix.of(40).extract(0, 60);
+      List<Integer> list = Dimensions.of(matrix);
+      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(list.get(1)), Clips.positive(list.get(0)));
+      Showable showable = ReliefPlot.of(matrix, cbb, ColorDataGradients.ALPINE);
       show.add(showable);
       return show;
     }
@@ -128,11 +132,13 @@ public enum Showcases implements ShowProvider {
   Relief2 {
     @Override
     public Show getShow() {
-      int resx = 100;
-      Clip clip = Clips.absolute(3);
-      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(clip, clip);
+      int resx = 70 * 2;
+      int resy = 60 * 2;
+      Clip clipx = Clips.interval(-2, 5);
+      Clip clipy = Clips.interval(-4, 2);
+      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(clipx, clipy);
       ScalarBinaryOperator sbo = (x, y) -> Sin.FUNCTION.apply(Vector2NormSquared.of(Tensors.of(x, y)));
-      Tensor matrix = Meshgrid.of(cbb, resx).image(sbo);
+      Tensor matrix = new Meshgrid(cbb, resx, resy).image(sbo);
       Show showR = new Show();
       showR.setPlotLabel("ReliefPlot");
       Showable showable = ReliefPlot.of(matrix, cbb, ColorDataGradients.DENSITY);
