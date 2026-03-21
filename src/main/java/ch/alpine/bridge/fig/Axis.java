@@ -4,11 +4,13 @@ package ch.alpine.bridge.fig;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineMetrics;
+import java.awt.geom.AffineTransform;
 import java.time.format.DateTimeFormatter;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -16,7 +18,6 @@ import java.util.TreeMap;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.DateTime;
@@ -27,8 +28,7 @@ abstract class Axis {
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
   private static final Color COLOR_GRIDLINES = new Color(128, 128, 128, 64);
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
-  // TODO BRIDGE determine reserve, instead of 50 hardcode
-  private static final Scalar RESERVE = RealScalar.of(50);
+  private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(new AffineTransform(), true, true);
   // ---
   protected final ConfBase confBase;
   protected final AxisOptions showOptions;
@@ -50,12 +50,18 @@ abstract class Axis {
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = axisOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
       while (clip.isInside(dateTime)) {
-        int x_pos = (int) confBase.pixel(dateTime);
-        navigableMap.put(x_pos, dateTime);
+        int pixel = (int) confBase.pixel(dateTime);
+        navigableMap.put(pixel, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
-      Ticks.stream(clip, RESERVE.divide(RealScalar.of(confBase.width))) //
+      int val = 50;
+      int rem = confBase.width / 3;
+      if (this instanceof AxisY && rem < val) {
+        LineMetrics lineMetrics = font.getLineMetrics("Ag", FONT_RENDER_CONTEXT);
+        val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
+      }
+      Ticks.stream(clip, Rational.of(val, confBase.width)) //
           .forEach(tick -> navigableMap.put((int) confBase.pixel(tick), tick));
       dateTimeFormatter = null;
     }
@@ -82,7 +88,7 @@ abstract class Axis {
       drawAxisLine(graphics, point);
       for (int piy : navigableMap.keySet())
         drawAxisTick(graphics, point, piy);
-      graphics.setFont(getFont());
+      graphics.setFont(font);
       protected_render(graphics, point);
     }
     RenderQuality.smoothLine(graphics, true);
@@ -95,16 +101,4 @@ abstract class Axis {
   protected abstract void drawAxisTick(Graphics2D graphics, Point point, int pixel);
 
   protected abstract void protected_render(Graphics2D graphics, Point point);
-
-  public final void setFont(Font font) {
-    this.font = font;
-  }
-
-  public final Font getFont() {
-    return font;
-  }
-
-  protected static int interval(FontMetrics fontMetrics) {
-    return fontMetrics.getAscent() * 8 / 5;
-  }
 }
