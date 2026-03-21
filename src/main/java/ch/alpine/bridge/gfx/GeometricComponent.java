@@ -38,7 +38,6 @@ import ch.alpine.tensor.mat.DiagonalMatrix;
 import ch.alpine.tensor.mat.re.Det;
 import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.qty.Degree;
-import ch.alpine.tensor.qty.Timing;
 import ch.alpine.tensor.sca.Chop;
 import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.sca.pow.Power;
@@ -53,7 +52,7 @@ public final class GeometricComponent extends JComponent {
   private final IntervalClock intervalClock = new IntervalClock();
   private final List<RenderInterface> renderBackground = new CopyOnWriteArrayList<>();
   private final List<RenderInterface> renderInterfaces = new CopyOnWriteArrayList<>();
-  private final BoundedLinkedList<Tensor> bll = new BoundedLinkedList<>(96);
+  private final BoundedLinkedList<Tensor> boundedLinkedList = new BoundedLinkedList<>(96);
   // ---
   /** 3x3 affine matrix that maps model to pixel coordinates */
   private Tensor model2pixel = PvmBuilder.rhs().setOffset(300, 300).digest();
@@ -63,6 +62,7 @@ public final class GeometricComponent extends JComponent {
   private boolean isRotatable = true;
   private int buttonDrag = MouseEvent.BUTTON3;
   private Color background = Color.WHITE;
+  private boolean showTimings = false;
 
   public GeometricComponent() {
     addMouseWheelListener(event -> {
@@ -83,70 +83,72 @@ public final class GeometricComponent extends JComponent {
       }
       repaint();
     });
-    {
-      MouseInputListener mouseInputListener = new MouseInputAdapter() {
-        private Tensor down = null;
-        private Tensor center = null;
+    MouseInputListener mouseInputListener = new MouseInputAdapter() {
+      private Tensor down = null;
+      private Tensor center = null;
 
-        @Override
-        public void mouseMoved(MouseEvent mouseEvent) {
-          mouseLocation = mouseEvent.getPoint();
+      @Override
+      public void mouseMoved(MouseEvent mouseEvent) {
+        mouseLocation = mouseEvent.getPoint();
+      }
+
+      @Override
+      public void mousePressed(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton() == buttonDrag) {
+          down = toPixel(mouseEvent.getPoint());
+          Dimension dimension = getSize();
+          center = toModel(AwtUtil.center(dimension));
         }
+      }
 
-        @Override
-        public void mousePressed(MouseEvent mouseEvent) {
-          if (mouseEvent.getButton() == buttonDrag) {
-            down = toPixel(mouseEvent.getPoint());
+      @Override
+      public void mouseDragged(MouseEvent mouseEvent) {
+        mouseLocation = mouseEvent.getPoint();
+        if (Objects.nonNull(down)) {
+          Tensor now = toPixel(mouseEvent.getPoint());
+          // ---
+          final int mods = mouseEvent.getModifiersEx();
+          final int mask = InputEvent.CTRL_DOWN_MASK; // 128 = 2^7
+          if ((mods & mask) == 0 || !isRotatable()) {
+            Tensor diff = now.subtract(down);
+            model2pixel.set(diff.Get(0)::add, 0, 2);
+            model2pixel.set(diff.Get(1)::add, 1, 2);
+          } else {
             Dimension dimension = getSize();
-            center = toModel(AwtUtil.center(dimension));
+            Tensor mid = toPixel(AwtUtil.center(dimension));
+            Scalar ang = arcTan2(down.subtract(mid)).subtract(arcTan2(now.subtract(mid)));
+            model2pixel = Dot.of( //
+                model2pixel, //
+                Se2Matrix.of(Append.of(center, ang)), //
+                Se2Matrix.translation(center.negate()));
           }
+          down = now;
+          repaint();
         }
+      }
 
-        @Override
-        public void mouseDragged(MouseEvent mouseEvent) {
-          mouseLocation = mouseEvent.getPoint();
-          if (Objects.nonNull(down)) {
-            Tensor now = toPixel(mouseEvent.getPoint());
-            // ---
-            final int mods = mouseEvent.getModifiersEx();
-            final int mask = InputEvent.CTRL_DOWN_MASK; // 128 = 2^7
-            if ((mods & mask) == 0 || !isRotatable()) {
-              Tensor diff = now.subtract(down);
-              model2pixel.set(diff.Get(0)::add, 0, 2);
-              model2pixel.set(diff.Get(1)::add, 1, 2);
-            } else {
-              Dimension dimension = getSize();
-              Tensor mid = toPixel(AwtUtil.center(dimension));
-              Scalar ang = arcTan2(down.subtract(mid)).subtract(arcTan2(now.subtract(mid)));
-              model2pixel = Dot.of( //
-                  model2pixel, //
-                  Se2Matrix.of(Append.of(center, ang)), //
-                  Se2Matrix.translation(center.negate()));
-            }
-            down = now;
-            repaint();
-          }
-        }
+      /** @param vector of the form {x, y, ...}
+       * @return ArcTan[x, y] */
+      private static Scalar arcTan2(Tensor vector) {
+        return ArcTan.of(vector.Get(0), vector.Get(1));
+      }
 
-        /** @param vector of the form {x, y, ...}
-         * @return ArcTan[x, y] */
-        private static Scalar arcTan2(Tensor vector) {
-          return ArcTan.of(vector.Get(0), vector.Get(1));
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent mouseEvent) {
-          down = null;
-          center = null;
-        }
-      };
-      addMouseMotionListener(mouseInputListener);
-      addMouseListener(mouseInputListener);
-    }
+      @Override
+      public void mouseReleased(MouseEvent mouseEvent) {
+        down = null;
+        center = null;
+      }
+    };
+    addMouseMotionListener(mouseInputListener);
+    addMouseListener(mouseInputListener);
   }
 
   public void setColorBackground(Color background) {
     this.background = background;
+  }
+
+  public void showTimings() {
+    showTimings = true;
   }
 
   @Override
@@ -156,7 +158,7 @@ public final class GeometricComponent extends JComponent {
       _g.setColor(background);
       _g.fillRect(0, 0, dimension.width, dimension.height);
     }
-    Timing timing = Timing.started();
+    Scalar d_interv = intervalClock.seconds();
     {
       Graphics2D graphics = (Graphics2D) _g;
       RenderQuality.setQuality(graphics);
@@ -166,32 +168,37 @@ public final class GeometricComponent extends JComponent {
       renderInterfaces.forEach(renderInterface -> renderInterface.render(geometricLayer, graphics));
       Integers.requireEquals(1, geometricLayer.deque_size());
     }
-    Scalar dt = timing.seconds();
+    Scalar d_render = intervalClock.seconds();
+    boundedLinkedList.add(Tensors.of(d_render, d_interv));
+    if (showTimings)
+      timingPlot(_g, dimension);
+  }
+
+  private void timingPlot(Graphics _g, Dimension dimension) {
+    Rectangle rectangle = new Rectangle(40, dimension.height - 60, 120, 60);
+    _g.setColor(new Color(255, 255, 255, 128));
+    _g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    Show show = new Show();
+    show.set(ShowOption.AXIS_X, false);
+    show.set(ShowOption.FRAMED, false);
+    show.set(ShowOption.UNIT_MAPPING, false);
     {
-      bll.add(Tensors.of(intervalClock.seconds(), dt));
-      Rectangle rectangle = new Rectangle(50, dimension.height - 60, 120, 60);
-      _g.setColor(new Color(255, 255, 255, 128));
-      _g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-      Show show = new Show();
-      show.set(ShowOption.AXIS_X, false);
-      show.set(ShowOption.FRAMED, false);
-      show.set(ShowOption.UNIT_MAPPING, false);
-      {
-        Int i = new Int();
-        Tensor points = Tensor.of(bll.stream().map(row -> Tensors.of(RealScalar.of(i.getAndIncrement()), row.Get(0))));
-        Showable showable = show.add(ListLinePlot.of(points));
-        showable.setAlpha(192);
-        showable.setStroke(new BasicStroke(0.5f));
-      }
-      {
-        Int i = new Int();
-        Tensor points = Tensor.of(bll.stream().map(row -> Tensors.of(RealScalar.of(i.getAndIncrement()), row.Get(1))));
-        Showable showable = show.add(ListLinePlot.of(points));
-        showable.setAlpha(192);
-        showable.setStroke(new BasicStroke(0.5f));
-      }
-      show.render(_g, rectangle);
+      Int i = new Int();
+      Tensor points = Tensor.of(boundedLinkedList.stream().map(row -> Tensors.of(RealScalar.of(i.getAndIncrement()), row.Get(0))));
+      Showable showable = show.add(ListLinePlot.of(points));
+      showable.setAlpha(192);
+      showable.setStroke(new BasicStroke(0.5f));
+      showable.setLabel("render");
     }
+    {
+      Int i = new Int();
+      Tensor points = Tensor.of(boundedLinkedList.stream().map(row -> Tensors.of(RealScalar.of(i.getAndIncrement()), row.Get(1))));
+      Showable showable = show.add(ListLinePlot.of(points));
+      showable.setAlpha(192);
+      showable.setStroke(new BasicStroke(0.5f));
+      showable.setLabel("interv");
+    }
+    show.render(_g, rectangle);
   }
 
   protected boolean isRotatable() {

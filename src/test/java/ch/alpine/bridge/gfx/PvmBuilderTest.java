@@ -25,6 +25,14 @@ class PvmBuilderTest {
   }
 
   @Test
+  void testOriginal() {
+    Tensor HANGAR_MODEL2PIXEL = //
+        Tensors.fromString("{{7.5, 0, 100}, {0, -7.5, 800}, {0, 0, 1}}");
+    Tensor pvm = PvmBuilder.rhs().setOffset(100, 800).setPerPixel(7.5).digest();
+    assertEquals(HANGAR_MODEL2PIXEL, pvm);
+  }
+
+  @Test
   void testBlub() {
     PvmBuilder pvmBuilder = PvmBuilder.rhs();
     assertEquals(pvmBuilder.digest(), Tensors.fromString("{{1, 0, 0}, {0, -1, 0}, {0, 0, 1}}"));

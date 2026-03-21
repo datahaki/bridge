@@ -14,7 +14,7 @@ import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
-import ch.alpine.bridge.io.URLFetch;
+import ch.alpine.bridge.io.URLRead;
 import ch.alpine.tensor.ext.Cache;
 
 /**
@@ -69,7 +69,7 @@ public class MapImagesCache {
       URI uri = tileServer.uri(tile.z(), tile.x(), tile.y());
       if (debug_print)
         IO.println("download " + uri);
-      Files.write(path, URLFetch.of(uri));
+      Files.write(path, URLRead.of(uri));
     }
     try {
       return ImageIO.read(path.toFile());
