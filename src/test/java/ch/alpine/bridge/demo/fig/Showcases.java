@@ -121,7 +121,6 @@ public enum Showcases implements ShowProvider {
       show.setPlotLabel("ArrowPlot");
       Showable showable = ReliefPlot.of(GaussianMatrix.of(40), CoordinateBoundingBox.of(Clips.unit(), Clips.unit()), ColorDataGradients.ALPINE);
       show.add(showable);
-      show.setAspectRatioOne();
       return show;
     }
   },
@@ -136,7 +135,6 @@ public enum Showcases implements ShowProvider {
       showR.setPlotLabel("ReliefPlot");
       Showable showable = ReliefPlot.of(matrix, cbb, ColorDataGradients.DENSITY);
       showR.add(showable);
-      showR.setAspectRatioOne();
       return showR;
     }
   },
