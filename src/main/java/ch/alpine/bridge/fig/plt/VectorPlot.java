@@ -105,7 +105,7 @@ public class VectorPlot extends BarLegendPlot {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     CoordinateBoundingBox cbb = set.contains(PlotOption.STRICT) //
         ? fullPlotRange().orElseThrow()
-        : showableConfig.getCbb();
+        : showableConfig.cbb();
     Inner inner = cache.apply(cbb);
     Tensor result = inner.rescale.result();
     int index = 0;

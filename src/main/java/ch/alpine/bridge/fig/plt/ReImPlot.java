@@ -58,14 +58,14 @@ public class ReImPlot extends UnaryShowable {
       Clip x_clip = optional.orElseThrow();
       int segmentsPerPixel = 1;
       if (Sign.isPositive(x_clip.width())) { // TODO this should not checking here!
-        final double x0 = showableConfig.confX.pixel(x_clip.min());
-        final double x1 = showableConfig.confX.pixel(x_clip.max());
+        final double x0 = showableConfig.confX().pixel(x_clip.min());
+        final double x1 = showableConfig.confX().pixel(x_clip.max());
         pathRe.reset();
         pathIm.reset();
         {
           ReIm reIm = ReIm.of(suo.apply(x_clip.min()));
-          pathRe.moveTo(x0, showableConfig.confY.pixel(reIm.re()));
-          pathIm.moveTo(x0, showableConfig.confY.pixel(reIm.im()));
+          pathRe.moveTo(x0, showableConfig.confY().pixel(reIm.re()));
+          pathIm.moveTo(x0, showableConfig.confY().pixel(reIm.im()));
         }
         ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
         final int size = (int) ((x1 - x0) * segmentsPerPixel);
@@ -74,8 +74,8 @@ public class ReImPlot extends UnaryShowable {
         for (int i = 1; i <= size; ++i) {
           xc += dx;
           ReIm reIm = ReIm.of(suo.apply(interpX.apply(Rational.of(i, size))));
-          pathRe.lineTo(xc, showableConfig.confY.pixel(reIm.re()));
-          pathIm.lineTo(xc, showableConfig.confY.pixel(reIm.im()));
+          pathRe.lineTo(xc, showableConfig.confY().pixel(reIm.re()));
+          pathIm.lineTo(xc, showableConfig.confY().pixel(reIm.im()));
         }
         graphics.setColor(getColor());
         graphics.setStroke(STROKE_RE);
@@ -84,12 +84,12 @@ public class ReImPlot extends UnaryShowable {
         graphics.draw(pathIm);
         if (set.contains(PlotOption.FILL)) {
           {
-            double y1 = showableConfig.confY.pixel(suo.apply(x_clip.max()).zero());
+            double y1 = showableConfig.confY().pixel(suo.apply(x_clip.max()).zero());
             pathRe.lineTo(x1, y1);
             pathIm.lineTo(x1, y1);
           }
           {
-            double y0 = showableConfig.confY.pixel(suo.apply(x_clip.min()).zero());
+            double y0 = showableConfig.confY().pixel(suo.apply(x_clip.min()).zero());
             pathRe.lineTo(x0, y0);
             pathIm.lineTo(x0, y0);
           }

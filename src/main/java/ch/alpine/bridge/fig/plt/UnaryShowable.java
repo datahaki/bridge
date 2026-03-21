@@ -27,7 +27,7 @@ public abstract class UnaryShowable extends BaseShowable {
   }
 
   protected final Optional<Clip> x_clip(ShowableConfig showableConfig) {
-    Clip x_clip = showableConfig.confX.clip();
+    Clip x_clip = showableConfig.confX().clip();
     if (set.contains(PlotOption.STRICT))
       x_clip = Clips.optionalIntersection(x_clip, domain).orElse(null);
     return Optional.ofNullable(x_clip);

@@ -45,7 +45,7 @@ public class TsPlot extends BaseShowable {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     if (timeSeries.isEmpty())
       return;
-    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.confX.clip(), timeSeries.domain());
+    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.confX().clip(), timeSeries.domain());
     if (optional.isPresent()) {
       Clip clip2 = optional.orElseThrow();
       if (Sign.isPositive(clip2.width())) {
@@ -57,13 +57,13 @@ public class TsPlot extends BaseShowable {
           Path2D path = new Path2D.Double();
           Tensor tsFirst = t.get(0);
           path.moveTo( //
-              showableConfig.confX.pixel(tsFirst.Get(0)), //
-              showableConfig.confY.pixel(tsf.apply(tsFirst.get(1))));
+              showableConfig.confX().pixel(tsFirst.Get(0)), //
+              showableConfig.confY().pixel(tsf.apply(tsFirst.get(1))));
           t.stream() //
               .skip(1) //
               .forEach(tsEntry -> path.lineTo( //
-                  showableConfig.confX.pixel(tsEntry.Get(0)), //
-                  showableConfig.confY.pixel(tsf.apply(tsEntry.get(1)))));
+                  showableConfig.confX().pixel(tsEntry.Get(0)), //
+                  showableConfig.confY().pixel(tsf.apply(tsEntry.get(1)))));
           graphics.draw(path);
         });
       }

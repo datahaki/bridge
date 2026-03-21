@@ -109,7 +109,7 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
 
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    CoordinateBoundingBox cbb = showableConfig.getCbb();
+    CoordinateBoundingBox cbb = showableConfig.cbb();
     Point2D ul = showableConfig.toPoint2D(Tensors.of( //
         cbb.clip(0).min(), //
         cbb.clip(1).max()));

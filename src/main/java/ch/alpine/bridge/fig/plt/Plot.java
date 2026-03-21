@@ -55,24 +55,24 @@ public class Plot extends UnaryShowable {
     int segmentsPerPixel = 1;
     graphics.setColor(getColor());
     graphics.setStroke(getStroke());
-    final double x0 = showableConfig.confX.pixel(x_clip.min());
-    final double x1 = showableConfig.confX.pixel(x_clip.max());
+    final double x0 = showableConfig.confX().pixel(x_clip.min());
+    final double x1 = showableConfig.confX().pixel(x_clip.max());
     // TODO there is several interpolations concat here, also: enhance precision?
     // TODO BRIDGE values NaN, Inf are just skipped right now, see BrokenSUO
     path.reset();
-    path.moveTo(x0, showableConfig.confY.pixel(suo.apply(x_clip.min())));
+    path.moveTo(x0, showableConfig.confY().pixel(suo.apply(x_clip.min())));
     ScalarUnaryOperator interpX = LinearInterpolation.of(x_clip);
     final int size = (int) ((x1 - x0) * segmentsPerPixel);
     final double dx = 1.0 / segmentsPerPixel;
     double xc = x0;
     for (int i = 1; i <= size; ++i) {
       xc += dx;
-      path.lineTo(xc, showableConfig.confY.pixel(suo.apply(interpX.apply(Rational.of(i, size)))));
+      path.lineTo(xc, showableConfig.confY().pixel(suo.apply(interpX.apply(Rational.of(i, size)))));
     }
     graphics.draw(path);
     if (set.contains(PlotOption.FILL)) {
-      path.lineTo(x1, showableConfig.confY.pixel(suo.apply(x_clip.max()).zero()));
-      path.lineTo(x0, showableConfig.confY.pixel(suo.apply(x_clip.min()).zero()));
+      path.lineTo(x1, showableConfig.confY().pixel(suo.apply(x_clip.max()).zero()));
+      path.lineTo(x0, showableConfig.confY().pixel(suo.apply(x_clip.min()).zero()));
       graphics.setColor(AwtUtil.withAlpha(getColor(), FILL_ALPHA));
       graphics.fill(path);
     }

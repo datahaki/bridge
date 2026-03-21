@@ -38,6 +38,7 @@ import ch.alpine.tensor.mat.DiagonalMatrix;
 import ch.alpine.tensor.mat.re.Det;
 import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.qty.Degree;
+import ch.alpine.tensor.qty.Timing;
 import ch.alpine.tensor.sca.Chop;
 import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.sca.pow.Power;
@@ -52,7 +53,7 @@ public final class GeometricComponent extends JComponent {
   private final IntervalClock intervalClock = new IntervalClock();
   private final List<RenderInterface> renderBackground = new CopyOnWriteArrayList<>();
   private final List<RenderInterface> renderInterfaces = new CopyOnWriteArrayList<>();
-  private final BoundedLinkedList<Scalar> bll = new BoundedLinkedList<>(96);
+  private final BoundedLinkedList<Tensor> bll = new BoundedLinkedList<>(96);
   // ---
   /** 3x3 affine matrix that maps model to pixel coordinates */
   private Tensor model2pixel = PvmBuilder.rhs().setOffset(300, 300).digest();
@@ -155,6 +156,7 @@ public final class GeometricComponent extends JComponent {
       _g.setColor(background);
       _g.fillRect(0, 0, dimension.width, dimension.height);
     }
+    Timing timing = Timing.started();
     {
       Graphics2D graphics = (Graphics2D) _g;
       RenderQuality.setQuality(graphics);
@@ -164,10 +166,9 @@ public final class GeometricComponent extends JComponent {
       renderInterfaces.forEach(renderInterface -> renderInterface.render(geometricLayer, graphics));
       Integers.requireEquals(1, geometricLayer.deque_size());
     }
+    Scalar dt = timing.seconds();
     {
-      bll.add(intervalClock.seconds());
-      Int i = new Int();
-      Tensor points = Tensor.of(bll.stream().map(s -> Tensors.of(RealScalar.of(i.getAndIncrement()), s)));
+      bll.add(Tensors.of(intervalClock.seconds(), dt));
       Rectangle rectangle = new Rectangle(50, dimension.height - 60, 120, 60);
       _g.setColor(new Color(255, 255, 255, 128));
       _g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
@@ -175,9 +176,20 @@ public final class GeometricComponent extends JComponent {
       show.set(ShowOption.AXIS_X, false);
       show.set(ShowOption.FRAMED, false);
       show.set(ShowOption.UNIT_MAPPING, false);
-      Showable showable = show.add(ListLinePlot.of(points));
-      showable.setAlpha(192);
-      showable.setStroke(new BasicStroke(0.5f));
+      {
+        Int i = new Int();
+        Tensor points = Tensor.of(bll.stream().map(row -> Tensors.of(RealScalar.of(i.getAndIncrement()), row.Get(0))));
+        Showable showable = show.add(ListLinePlot.of(points));
+        showable.setAlpha(192);
+        showable.setStroke(new BasicStroke(0.5f));
+      }
+      {
+        Int i = new Int();
+        Tensor points = Tensor.of(bll.stream().map(row -> Tensors.of(RealScalar.of(i.getAndIncrement()), row.Get(1))));
+        Showable showable = show.add(ListLinePlot.of(points));
+        showable.setAlpha(192);
+        showable.setStroke(new BasicStroke(0.5f));
+      }
       show.render(_g, rectangle);
     }
   }

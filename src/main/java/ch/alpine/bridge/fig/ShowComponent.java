@@ -91,7 +91,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
       Optional<Tensor> optional = showableConfig.toValue(mouseWheelEvent.getPoint());
       if (optional.isPresent()) {
         Tensor xy = optional.orElseThrow();
-        CoordinateBoundingBox cbb = showableConfig.getCbb();
+        CoordinateBoundingBox cbb = showableConfig.cbb();
         // TODO for ArrayShowable the zoom should be limited
         Scalar factor = Power.of(1.3, mouseWheelEvent.getWheelRotation());
         if (set_x.contains(Option.ZOOM)) {
@@ -127,7 +127,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
   public synchronized void mouseDragged(MouseEvent mouseEvent) {
     if (Objects.nonNull(pressed)) {
       if (Objects.nonNull(showableConfig)) {
-        CoordinateBoundingBox cbb = showableConfig.getCbb();
+        CoordinateBoundingBox cbb = showableConfig.cbb();
         if (Objects.nonNull(cbb)) {
           Point point = mouseEvent.getPoint();
           int dx = point.x - pressed.x;
@@ -135,14 +135,14 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
           pressed = point;
           // ---
           if (set_x.contains(Option.PAN)) {
-            Scalar shift = showableConfig.confX.dx(RealScalar.of(-dx));
+            Scalar shift = showableConfig.confX().pixel2model().multiply(RealScalar.of(-dx));
             Clip xRange = cbb.clip(0);
             cbb = CoordinateBoundingBox.of( //
                 Clips.interval(xRange.min().add(shift), xRange.max().add(shift)), //
                 cbb.clip(1));
           }
           if (set_y.contains(Option.PAN)) {
-            Scalar shift = showableConfig.confY.dx(RealScalar.of(-dy));
+            Scalar shift = showableConfig.confY().pixel2model().multiply(RealScalar.of(-dy));
             Clip yRange = cbb.clip(1);
             cbb = CoordinateBoundingBox.of( //
                 cbb.clip(0), //

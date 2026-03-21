@@ -24,16 +24,16 @@ public class GridDrawer {
 
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle();
-    Clip xRange = showableConfig.confX.clip();
-    Clip yRange = showableConfig.confY.clip();
+    Clip xRange = showableConfig.confX().clip();
+    Clip yRange = showableConfig.confY().clip();
     // ---
     if (showOptions.contains(ShowOption.AXIS_X) && !Scalars.isZero(xRange.width()))
-      new AxisX(showableConfig.confX, showOptions.compileAxisX()).render( //
+      new AxisX(showableConfig.confX(), showOptions.compileAxisX()).render( //
           showableConfig, //
           new Point(rectangle.x, rectangle.y + rectangle.height - 1 + StaticHelper.GAP), //
           graphics);
     if (showOptions.contains(ShowOption.AXIS_Y) && !Scalars.isZero(yRange.width()))
-      new AxisY(showableConfig.confY, showOptions.compileAxisY()).render( //
+      new AxisY(showableConfig.confY(), showOptions.compileAxisY()).render( //
           showableConfig, //
           new Point(rectangle.x - StaticHelper.GAP, rectangle.y), //
           graphics);
