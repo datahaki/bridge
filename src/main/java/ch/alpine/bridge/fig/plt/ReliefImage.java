@@ -3,6 +3,7 @@ package ch.alpine.bridge.fig.plt;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.util.List;
 
 import ch.alpine.bridge.col.HueFromColor;
@@ -32,17 +33,18 @@ public record ReliefImage(BufferedImage bufferedImage, CoordinateBoundingBox cbb
     Scalar h0 = RealScalar.of(list.get(0) - 1).divide(cbb.clip(0).width());
     Scalar h1 = RealScalar.of(list.get(1) - 1).divide(cbb.clip(1).width());
     matrixGradient = matrixGradient.rescale(h0, h1).rescale();
-    // TODO use raster underlying BufImg
-    for (int i = 0; i < bufferedImage.getWidth(); ++i)
-      for (int j = 0; j < bufferedImage.getHeight(); ++j) {
-        int rgb = bufferedImage.getRGB(i, j);
-        HueFromColor hueFromColor = HueFromColor.of(new Color(rgb));
+    int[] data = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
+    int index = 0;
+    for (int j = 0; j < bufferedImage.getHeight(); ++j)
+      for (int i = 0; i < bufferedImage.getWidth(); ++i) {
+        HueFromColor hueFromColor = HueFromColor.of(data[index]);
         Tensor nrm = matrixGradient.Cross(j, i);
         Scalar dot = (Scalar) nrm.dot(REF);
         Scalar s1 = Clips.unit().apply(RealScalar.ONE.subtract(dot));
         Scalar s2 = Clips.unit().apply(RealScalar.ONE.add(dot));
         Color modifHSV = hueFromColor.modifHSV(s1.number().doubleValue(), s2.number().doubleValue());
-        bufferedImage.setRGB(i, j, modifHSV.getRGB());
+        data[index] = modifHSV.getRGB();
+        ++index;
       }
     return new ReliefImage(bufferedImage, cbb, rescale.clip(), colorDataGradient);
   }

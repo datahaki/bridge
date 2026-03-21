@@ -5,16 +5,14 @@ import ch.alpine.bridge.fig.BarLegend;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ReliefPlot.html">ReliefPlot</a> */
-public class ReliefPlot {
-  public static Tensor REF = Tensors.vector(-0.31622776601683794, 0.9486832980505138);
-
+public enum ReliefPlot {
+  ;
   public static Showable of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     ReliefImage reliefImage = ReliefImage.of(matrix, cbb, colorDataGradient);
     BarLegend barLegend = new BarLegend(reliefImage.clip(), colorDataGradient);

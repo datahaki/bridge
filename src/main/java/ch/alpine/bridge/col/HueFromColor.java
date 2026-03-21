@@ -11,9 +11,18 @@ public record HueFromColor(double hue, double sat, double val, double alpha) {
   /** @param color
    * @return */
   public static HueFromColor of(Color color) {
-    int r = color.getRed();
-    int g = color.getGreen();
-    int b = color.getBlue();
+    return of(color.getRGB());
+  }
+
+  public static HueFromColor of(int argb) {
+    int a = (argb >> 24) & 0xFF;
+    int r = (argb >> 16) & 0xFF;
+    int g = (argb >> 8) & 0xFF;
+    int b = argb & 0xFF;
+    return of(r, g, b, a);
+  }
+
+  public static HueFromColor of(int r, int g, int b, int alpha) {
     int min = Math.min(r, Math.min(g, b));
     int max = Math.max(r, Math.max(g, b));
     double del = max - min;
@@ -33,7 +42,7 @@ public record HueFromColor(double hue, double sat, double val, double alpha) {
         hue = 4 + (r - g) / del;
       hue /= 6;
     }
-    return new HueFromColor(hue, sat, max / 255.0, color.getAlpha() / 255.0);
+    return new HueFromColor(hue, sat, max / 255.0, alpha / 255.0);
   }
 
   public Color modifHSV(double s, double v) {

@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import ch.alpine.bridge.fig.Meshgrid;
 import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowOption;
@@ -130,7 +131,8 @@ public enum Showcases implements ShowProvider {
       int resx = 100;
       Clip clip = Clips.absolute(3);
       CoordinateBoundingBox cbb = CoordinateBoundingBox.of(clip, clip);
-      Tensor matrix = mesheval((x, y) -> Sin.FUNCTION.apply(Vector2NormSquared.of(Tensors.of(x, y))), cbb, resx);
+      ScalarBinaryOperator sbo = (x, y) -> Sin.FUNCTION.apply(Vector2NormSquared.of(Tensors.of(x, y)));
+      Tensor matrix = Meshgrid.of(cbb, resx).image(sbo);
       Show showR = new Show();
       showR.setPlotLabel("ReliefPlot");
       Showable showable = ReliefPlot.of(matrix, cbb, ColorDataGradients.DENSITY);
@@ -836,14 +838,5 @@ public enum Showcases implements ShowProvider {
 
   private Showcases(boolean extra) {
     this.extra = extra;
-  }
-
-  private static Tensor mesheval(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, int resolution) {
-    // TODO BRIDGE resolution based on aspect ratio and cbb ?
-    Tensor dx = Subdivide.intermediate_increasing(cbb.clip(0), resolution);
-    Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);
-    return Tensor.of(dy.stream().parallel() //
-        .map(Scalar.class::cast) //
-        .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
   }
 }

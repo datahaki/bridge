@@ -11,6 +11,7 @@ import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.bridge.fig.BackgroundPlotMarker;
 import ch.alpine.bridge.fig.BarLegend;
 import ch.alpine.bridge.fig.BarLegendPlot;
+import ch.alpine.bridge.fig.Meshgrid;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Scalar;
@@ -18,7 +19,6 @@ import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Rescale;
-import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarBinaryOperator;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.ext.Cache;
@@ -63,15 +63,6 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
     return ArrayPlot.of(matrix, cbb, colorDataGradient, false);
   }
 
-  private static Tensor mesheval(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, int resolution) {
-    // TODO BRIDGE resolution based on aspect ratio and cbb ?
-    Tensor dx = Subdivide.intermediate_increasing(cbb.clip(0), resolution);
-    Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);
-    return Tensor.of(dy.stream().parallel() //
-        .map(Scalar.class::cast) //
-        .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast).map(x -> sbo.apply(x, y)))));
-  }
-
   // ---
   private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
   private final ScalarBinaryOperator sbo;
@@ -85,7 +76,8 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
     private final Clip clip;
 
     public Inner(CoordinateBoundingBox cbb, int resolution) {
-      Tensor matrix = mesheval(sbo, cbb, resolution);
+      // TODO BRIDGE resolution based on aspect ratio and cbb ?
+      Tensor matrix = Meshgrid.of(cbb, resolution).image(sbo);
       Rescale rescale = new Rescale(matrix);
       BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
       scalableImage = new ScalableImage(bufferedImage);
