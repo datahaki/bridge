@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import ch.alpine.bridge.fig.BarLegend;
 import ch.alpine.bridge.fig.BarLegendPlot;
+import ch.alpine.bridge.fig.Meshgrid;
 import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Scalar;
@@ -14,7 +15,6 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Rescale;
-import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.api.TensorUnaryOperator;
 import ch.alpine.tensor.chq.FiniteTensorQ;
@@ -45,10 +45,9 @@ public class VectorPlot extends BarLegendPlot {
     private final Tensor uv;
     private final Rescale rescale;
 
-    public Inner(CoordinateBoundingBox cbb, int resolution) {
-      // TODO BRIDGE resolution based on aspect ratio and cbb ?
-      Tensor dx = Subdivide.intermediate_increasing(cbb.clip(0), resolution);
-      Tensor dy = Subdivide.intermediate_decreasing(cbb.clip(1), resolution);
+    public Inner(Meshgrid meshgrid) {
+      Tensor dx = meshgrid.dx();
+      Tensor dy = meshgrid.dy();
       int initialCapacity = dx.length() * dy.length();
       Tensor _uv = Tensors.reserve(initialCapacity);
       Tensor norms = Tensors.reserve(initialCapacity);
@@ -82,7 +81,7 @@ public class VectorPlot extends BarLegendPlot {
 
   private final TensorUnaryOperator tuo;
   private final ScalarTensorFunction colorDataGradient;
-  private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
+  private final Cache<Meshgrid, Inner> cache = Cache.of(Inner::new, 1);
   // ---
   private Clip inner_clip = null;
   private int resolution = RESOLUTION_DEFAULT;
@@ -106,7 +105,8 @@ public class VectorPlot extends BarLegendPlot {
     CoordinateBoundingBox cbb = set.contains(PlotOption.STRICT) //
         ? fullPlotRange().orElseThrow()
         : showableConfig.cbb();
-    Inner inner = cache.apply(cbb);
+    Meshgrid meshgrid = Meshgrid.of(cbb, StaticHelper.aspect(resolution, showableConfig.rectangle().getSize()));
+    Inner inner = cache.apply(meshgrid);
     Tensor result = inner.rescale.result();
     int index = 0;
     for (Tensor p : inner.xy) {
@@ -117,10 +117,6 @@ public class VectorPlot extends BarLegendPlot {
       arrowPlot.render(showableConfig, graphics);
       ++index;
     }
-  }
-
-  private Inner recompute(CoordinateBoundingBox cbb) {
-    return new Inner(cbb, resolution);
   }
 
   @Override

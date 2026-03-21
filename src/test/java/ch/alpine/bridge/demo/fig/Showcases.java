@@ -167,7 +167,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       TensorUnaryOperator tuo = xy -> Cross.of(xy).multiply(Quantity.of(1, "s^-1"));
-      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(Quantity.of(2.5, "m")), Clips.positive(Quantity.of(2.5, "m")));
+      CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(Quantity.of(5, "m")), Clips.positive(Quantity.of(3, "m")));
       Show show = new Show();
       // DensityPlot densityPlot = DensityPlot.of(sbo, cbb, ColorDataGradients.HUE);
       VectorPlot vectorPlot = VectorPlot.of(tuo, cbb);

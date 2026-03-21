@@ -64,7 +64,7 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
   }
 
   // ---
-  private final Cache<CoordinateBoundingBox, Inner> cache = Cache.of(this::recompute, 1);
+  private final Cache<Meshgrid, Inner> cache = Cache.of(this::recompute, 1);
   private final ScalarBinaryOperator sbo;
   private final ScalarTensorFunction colorDataGradient;
   // ---
@@ -75,22 +75,13 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
     private final ScalableImage scalableImage;
     private final Clip clip;
 
-    public Inner(CoordinateBoundingBox cbb, int resolution) {
-      // TODO BRIDGE resolution based on aspect ratio and cbb ?
-      Tensor matrix = Meshgrid.of(cbb, resolution).image(sbo);
-      Rescale rescale = new Rescale(matrix);
+    public Inner(Meshgrid meshgrid) {
+      Rescale rescale = new Rescale(meshgrid.image(sbo));
       BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
       scalableImage = new ScalableImage(bufferedImage);
+      // IO.println("w="+bufferedImage.getWidth()+" h="+bufferedImage.getHeight());
       clip = rescale.clip();
     }
-  }
-
-  public ScalableImage getScalableImage() {
-    return cache.apply(cbb).scalableImage;
-  }
-
-  public ScalableImage getScalableImage(int resolution) {
-    return new Inner(cbb, resolution).scalableImage;
   }
 
   private DensityPlot(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
@@ -111,22 +102,23 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height) {
+      Meshgrid meshgrid = Meshgrid.of(cbb, StaticHelper.aspect(resolution, showableConfig.rectangle().getSize()));
       graphics.drawImage( //
-          cache.apply(cbb).scalableImage.getScaledInstance(ImageResize.DEGREE_3, width, height), //
+          cache.apply(meshgrid).scalableImage.getScaledInstance(ImageResize.DEGREE_3, width, height), //
           (int) ul.getX(), //
           (int) ul.getY(), //
           null);
       // debug info
       graphics.setColor(new Color(128, 128, 128, 128));
-      graphics.drawString("" + resolution, //
+      graphics.drawString("" + meshgrid.width() + " " + meshgrid.height(), //
           (int) ul.getX(), //
           (int) ul.getY() + 12); // magic const dep on fontsize
     }
   }
 
-  private Inner recompute(CoordinateBoundingBox cbb) {
+  private Inner recompute(Meshgrid meshgrid) {
     Timing timing = Timing.started();
-    Inner inner = new Inner(cbb, resolution);
+    Inner inner = new Inner(meshgrid);
     resolution += Scalars.lessThan(timing.seconds(), RENDER_TIME_TARGET) //
         ? +7
         : -7;
@@ -145,5 +137,9 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
   public void setPlotPoints(int resolution) {
     this.resolution = resolution;
     cache.clear();
+  }
+
+  public ScalableImage getScalableImage(int res) {
+    return cache.apply(Meshgrid.of(cbb, res)).scalableImage;
   }
 }
