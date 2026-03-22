@@ -21,6 +21,7 @@ import ch.alpine.bridge.awt.AwtUtil;
 public class GeoComponent extends JComponent {
   private final Map<TileServers, MapImagesCache> cache = new IdentityHashMap<>();
   public TileServers tileServers = TileServers.OpenStreetMap;
+  /** center */
   public TilePixel tilePixel;
 
   public GeoComponent() {

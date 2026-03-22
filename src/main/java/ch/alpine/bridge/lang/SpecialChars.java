@@ -10,6 +10,7 @@ public enum SpecialChars {
   DIGIT_6("6️⃣"),
   DIGIT_7("7️⃣"),
   DIGIT_8("8️⃣"),
+  ABCBLOCK("🔤"),
   UNIVERSE("🌌"),
   OWLETS("🦉"),
   LAPTOP("💻"),

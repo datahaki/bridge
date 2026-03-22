@@ -15,7 +15,6 @@ import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.img.MatrixGradient;
 import ch.alpine.tensor.io.ImageFormat;
-import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
@@ -25,8 +24,11 @@ import ch.alpine.tensor.sca.Clips;
 public record ReliefImage(BufferedImage bufferedImage, CoordinateBoundingBox cbb, Clip clip, ScalarTensorFunction colorDataGradient) {
   public static Tensor REF = Tensors.vector(0.9486832980505138, 0.31622776601683794);
 
+  /** @param matrix
+   * @param cbb
+   * @param colorDataGradient
+   * @return */
   public static ReliefImage of(Tensor matrix, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
-    MatrixQ.require(matrix);
     Rescale rescale = new Rescale(matrix);
     BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
     MatrixGradient matrixGradient = MatrixGradient.of(matrix);

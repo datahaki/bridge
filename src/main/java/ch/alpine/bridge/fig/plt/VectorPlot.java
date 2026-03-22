@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig.plt;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.List;
 import java.util.Objects;
@@ -105,7 +106,10 @@ public class VectorPlot extends BarLegendPlot {
     CoordinateBoundingBox cbb = set.contains(PlotOption.STRICT) //
         ? fullPlotRange().orElseThrow()
         : showableConfig.cbb();
-    Meshgrid meshgrid = Meshgrid.of(cbb, StaticHelper.aspect(resolution, showableConfig.rectangle().getSize()));
+    Dimension dimension = showableConfig.rectangle().getSize();
+    dimension.width /= resolution;
+    dimension.height /= resolution;
+    Meshgrid meshgrid = Meshgrid.of(cbb, dimension);
     Inner inner = cache.apply(meshgrid);
     Tensor result = inner.rescale.result();
     int index = 0;
