@@ -18,7 +18,9 @@ import ch.alpine.bridge.swing.SpinnerMenu;
 
   /** @param fieldWrap
    * @param value during initialization
-   * @param supplier invoked when menu button "?" is pressed */
+   * @param supplier invoked when
+   * 1) mouse wheel is used over field, and
+   * 2) menu button "?" is pressed */
   public MenuPanel(FieldWrap fieldWrap, Object value, Supplier<List<Object>> supplier) {
     super(fieldWrap, value);
     JComponent jTextField = getTextFieldComponent();

@@ -2,10 +2,10 @@
 package ch.alpine.bridge.ref;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import ch.alpine.bridge.ref.ann.FieldClip;
 import ch.alpine.bridge.ref.ann.FieldClips;
@@ -14,8 +14,8 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.alg.Range;
-import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.Clips;
 
 /* package */ final class IntegerFieldWrap extends SelectableFieldWrap {
   /** allow choosing of hours 0,1,...,23 */
@@ -57,18 +57,27 @@ import ch.alpine.tensor.sca.Clip;
   @Override // from FieldWrap
   public List<Object> options(Object object) {
     List<Object> list = super.options(object);
-    if (list.isEmpty() && Objects.nonNull(fieldClips)) {
-      if (fieldClips.isFinite()) {
-        Clip clip = fieldClips.clip();
+    if (list.isEmpty())
+      try {
+        Integer value = (Integer) getField().get(object);
+        Clip clip = Objects.isNull(fieldClips) //
+            ? Clips.interval(value - 1, value + 1)
+            : fieldClips.clip();
         if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
-          return Range.closed(clip).stream() //
-              .map(Scalar.class::cast) //
-              .collect(Collectors.toList());
+          return Range.closed(clip).stream().collect(Collectors.toList());
+        Scalar[] scalars = new Scalar[] { //
+            clip.min(), //
+            RealScalar.of(value - 1), //
+            RealScalar.of(value), //
+            RealScalar.of(value + 1), //
+            clip.max() };
+        return Arrays.stream(scalars) //
+            .filter(clip::isInside) //
+            .distinct() //
+            .collect(Collectors.toList());
+      } catch (Exception exception) {
+        exception.printStackTrace();
       }
-      return Stream.of(fieldClips.min(), fieldClips.max()) //
-          .filter(FiniteScalarQ::of) //
-          .collect(Collectors.toList());
-    }
     return list;
   }
 
