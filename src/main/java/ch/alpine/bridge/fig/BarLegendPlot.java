@@ -45,7 +45,7 @@ public abstract class BarLegendPlot extends BaseShowable {
   @Override
   public final void tender(ShowableConfig showableConfig, Graphics2D graphics) {
     BarLegend barLegend = barLegend();
-    if (Objects.nonNull(barLegend)) {
+    if (Objects.nonNull(barLegend) && !set.contains(PlotOption.HIDE_BAR)) {
       Rectangle rectangle = showableConfig.rectangle();
       int width = StaticHelper.GAP * 2;
       int pix = rectangle.x + rectangle.width + 1 + StaticHelper.GAP * 2;

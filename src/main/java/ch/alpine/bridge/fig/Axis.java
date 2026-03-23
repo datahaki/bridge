@@ -24,6 +24,8 @@ import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Clip;
 
 abstract class Axis {
+  // TODO BRIDGE 100 is a magic constant that should depend on font, and date formatter
+  private static final int REF = 100;
   private static final Stroke STROKE_GRIDLINES = //
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);
   private static final Color COLOR_GRIDLINES = new Color(128, 128, 128, 64);
@@ -41,9 +43,8 @@ abstract class Axis {
     this.showOptions = axisOptions;
     Clip clip = confBase.clip();
     if (clip.min() instanceof DateTime) {
-      // TODO BRIDGE 100 is a magic constant that should depend on font, and date formatter
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(100, confBase.width)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(REF, confBase.width)));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt

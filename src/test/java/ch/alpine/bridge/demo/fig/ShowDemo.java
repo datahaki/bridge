@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -13,7 +12,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
@@ -63,21 +61,15 @@ public class ShowDemo implements ManipulateProvider {
     List<BufferedImage> list = new ArrayList<>();
     for (Showcases showcases : Showcases.values())
       try {
-        BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics2 = bi.createGraphics();
-        FontMetrics fontMetrics = graphics2.getFontMetrics();
         Dimension dimension = new Dimension(width, height);
-        Rectangle rectangle = Show.defaultInsets(dimension, fontMetrics);
-        graphics2.dispose();
-        if (showcases.extra)
-          rectangle.width -= 100;
-        if (noInset)
-          rectangle = new Rectangle(new Point(), dimension);
-        Show show = showcases.getShow();
-        Objects.requireNonNull(show);
-        BufferedImage bufferedImage = show.image(dimension, rectangle);
+        BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = bufferedImage.createGraphics();
-        // java.awt.Font[family=Dialog,name=Dialog,style=plain,size=12]
+        Show show = showcases.getShow();
+        Rectangle rectangle = new Rectangle(new Point(), dimension);
+        if (noInset)
+          show.render(graphics, rectangle);
+        else
+          show.render_autoIndent(graphics, rectangle);
         graphics.setColor(new Color(255, 175, 175, 64));
         graphics.drawRect(0, 0, width - 1, height - 1);
         graphics.setColor(Color.LIGHT_GRAY);

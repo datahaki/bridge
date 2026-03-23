@@ -577,7 +577,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  DensityPlot1(true) {
+  DensityPlot1 {
     @Override
     public Show getShow() {
       Show show = new Show();
@@ -587,7 +587,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  MatrixPlot0(true) {
+  MatrixPlot0 {
     @Override
     public Show getShow() {
       Show show = new Show();
@@ -596,7 +596,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  MatrixPlot1(true) {
+  MatrixPlot1 {
     @Override
     public Show getShow() {
       Show show = new Show();
@@ -607,7 +607,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  MatrixPlot2(true) {
+  MatrixPlot2 {
     @Override
     public Show getShow() {
       Show show = new Show();
@@ -721,7 +721,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  MatrixPlotDT(true) {
+  MatrixPlotDT {
     @Override
     public Show getShow() {
       Distribution dX = UniformDistribution.of( //
@@ -734,7 +734,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  MatrixPlotNonSym(true) {
+  MatrixPlotNonSym {
     @Override
     public Show getShow() {
       Distribution dX = DiscreteUniformDistribution.of(100, 111);
@@ -768,7 +768,7 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  ArrayPlot0(true) {
+  ArrayPlot0 {
     @Override
     public Show getShow() {
       Show show = new Show();
@@ -835,14 +835,4 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },;
-
-  public final boolean extra;
-
-  private Showcases() {
-    this(false);
-  }
-
-  private Showcases(boolean extra) {
-    this.extra = extra;
-  }
 }

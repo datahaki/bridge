@@ -8,6 +8,6 @@ public enum PlotOption {
   STRICT,
   /** line vs closed polygon */
   CLOSE,
-  // TODO
-  BAR_LEGEND,
+  /** do not show {@link BarLegend} */
+  HIDE_BAR,
 }

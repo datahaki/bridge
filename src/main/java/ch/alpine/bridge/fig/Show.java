@@ -8,6 +8,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -41,17 +42,18 @@ import ch.alpine.tensor.sca.Round;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
+// TODO BRIDGE zoom does not work indefinitely yet!
 public final class Show implements Serializable {
-  // TODO BRIDGE zoom does not work indefinitely yet!
-  /** @param fontSize for instance graphics.getFont().getSize()
+  /** function allows to draw grid
+   * 
+   * @param dimension
+   * @param fontMetrics
    * @return */
-  private static Insets defaultInsets(FontMetrics fontMetrics) {
-    int fontSize = fontMetrics.getAscent() + fontMetrics.getDescent();
-    return new Insets( //
-        fontSize + 1, // top showLabel + frame width
-        70, // left
-        1 + 10 + fontSize, // bottom
-        10); // right
+  public static Optional<Rectangle> optionalDefaultInsets(Dimension dimension, FontMetrics fontMetrics) {
+    Rectangle rectangle = defaultInsets(new Rectangle(new Point(), dimension), fontMetrics);
+    return Optional.ofNullable(1 < rectangle.width && 1 < rectangle.height //
+        ? rectangle
+        : null);
   }
 
   /** Careful: the width, or height of the returned rectangle may be negative
@@ -59,20 +61,18 @@ public final class Show implements Serializable {
    * @param dimension
    * @param fontSize for instance graphics.getFont().getSize()
    * @return */
-  public static Rectangle defaultInsets(Dimension dimension, FontMetrics fontMetrics) {
-    Insets insets = defaultInsets(fontMetrics);
+  private static Rectangle defaultInsets(Rectangle rectangle, FontMetrics fontMetrics) {
+    int fontSize = fontMetrics.getAscent() + fontMetrics.getDescent();
+    Insets insets = new Insets( //
+        fontSize + 1, // top showLabel + frame width
+        70, // left
+        1 + 10 + fontSize, // bottom
+        10); // right
     return new Rectangle( //
-        insets.left, //
-        insets.top, //
-        dimension.width - insets.left - insets.right, //
-        dimension.height - insets.top - insets.bottom);
-  }
-
-  public static Optional<Rectangle> optionalDefaultInsets(Dimension dimension, FontMetrics fontMetrics) {
-    Rectangle rectangle = defaultInsets(dimension, fontMetrics);
-    return Optional.ofNullable(1 < rectangle.width && 1 < rectangle.height //
-        ? rectangle
-        : null);
+        rectangle.x + insets.left, //
+        rectangle.y + insets.top, //
+        rectangle.width - insets.left - insets.right, //
+        rectangle.height - insets.top - insets.bottom);
   }
 
   // ---
@@ -133,9 +133,8 @@ public final class Show implements Serializable {
         : StaticHelper.nonZero(cbb);
   }
 
-  /** TODO current design is so that value is calculated only after drawing :-(
-   * 
-   * @return may be null */
+  /** @return may be null */
+  // TODO current design is so that value is calculated only after drawing :-(
   public CoordinateBoundingBox getCbb() {
     return cbb;
   }
@@ -220,9 +219,7 @@ public final class Show implements Serializable {
    * @return */
   public ShowableConfig render_autoIndent(Graphics graphics, Rectangle rectangle) {
     graphics.setFont(showOptions.font);
-    FontMetrics fontMetrics = graphics.getFontMetrics();
-    Rectangle r = defaultInsets(rectangle.getSize(), fontMetrics);
-    return render(graphics, new Rectangle(rectangle.x + r.x, rectangle.y + r.y, r.width, r.height));
+    return render(graphics, defaultInsets(rectangle, graphics.getFontMetrics()));
   }
 
   /** @param dimension
@@ -230,24 +227,9 @@ public final class Show implements Serializable {
   public BufferedImage image(Dimension dimension) {
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bufferedImage.createGraphics();
-    graphics.setFont(showOptions.font);
-    FontMetrics fontMetrics = graphics.getFontMetrics();
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
-    render(graphics, defaultInsets(dimension, fontMetrics));
-    graphics.dispose();
-    return bufferedImage;
-  }
-
-  /** @param dimension
-   * @param rectangle
-   * @return */
-  public BufferedImage image(Dimension dimension, Rectangle rectangle) {
-    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = bufferedImage.createGraphics();
-    graphics.setColor(Color.WHITE);
-    graphics.fillRect(0, 0, dimension.width, dimension.height);
-    render(graphics, rectangle);
+    render_autoIndent(graphics, new Rectangle(new Point(), dimension));
     graphics.dispose();
     return bufferedImage;
   }
