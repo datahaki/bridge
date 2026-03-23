@@ -32,6 +32,8 @@ public enum MatrixPlot {
    * @param symmetrize interval about zero
    * @return */
   public static Showable of(Tensor matrix, ScalarTensorFunction colorDataGradient, boolean symmetrize) {
+    if (matrix.length() == 0)
+      return EmptyPlot.INSTANCE;
     MatrixQ.require(matrix);
     Clip clip = Flatten.scalars(matrix) //
         .filter(FiniteScalarQ::of) //
@@ -66,6 +68,8 @@ public enum MatrixPlot {
   /** @param matrix
    * @return */
   public static Showable of(Tensor matrix, boolean symmetrize) {
-    return of(matrix, ColorDataGradients.TEMPERATURE_LIGHT, symmetrize);
+    return of(matrix, symmetrize //
+        ? ColorDataGradients.TEMPERATURE_LIGHT
+        : ColorDataGradients.JET, symmetrize);
   }
 }

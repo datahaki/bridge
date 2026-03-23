@@ -100,7 +100,7 @@ class ListLinePlotTest {
     Tensor values2 = RandomVariate.of(UniformDistribution.unit(), 15);
     Tensor values3 = RandomVariate.of(UniformDistribution.unit(), 10);
     Show show = new Show();
-    show.setPlotLabel("List Plot Demo");
+    show.setShowLabel("List Plot Demo");
     Tensor domain1 = RandomVariate.of(UniformDistribution.unit(), values1.length());
     ScalarUnaryOperator suoX = s -> Quantity.of(s.add(RealScalar.of(100)), "s");
     ScalarUnaryOperator suoY = s -> Quantity.of(s.add(RealScalar.of(300)), "m");

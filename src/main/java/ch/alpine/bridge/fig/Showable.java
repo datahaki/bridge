@@ -56,7 +56,7 @@ public interface Showable {
   default Show asShow() {
     Show show = new Show();
     show.add(this);
-    show.setPlotLabel(getClass().getSimpleName());
+    show.setShowLabel(getClass().getSimpleName());
     return show;
   }
 

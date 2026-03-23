@@ -120,7 +120,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("ArrowPlot");
+      show.setShowLabel("ArrowPlot");
       Tensor matrix = GaussianMatrix.of(40).extract(0, 60);
       List<Integer> list = Dimensions.of(matrix);
       CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(list.get(1)), Clips.positive(list.get(0)));
@@ -140,7 +140,7 @@ public enum Showcases implements ShowProvider {
       ScalarBinaryOperator sbo = (x, y) -> Sin.FUNCTION.apply(Vector2NormSquared.of(Tensors.of(x, y)));
       Tensor matrix = new Meshgrid(cbb, resx, resy).image(sbo);
       Show showR = new Show();
-      showR.setPlotLabel("ReliefPlot");
+      showR.setShowLabel("ReliefPlot");
       Showable showable = ReliefPlot.of(matrix, cbb, ColorDataGradients.DENSITY);
       showR.add(showable);
       return showR;
@@ -150,7 +150,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("ArrowPlot");
+      show.setShowLabel("ArrowPlot");
       show.add(new ArrowPlot(Tensors.vector(1, 0), Tensors.vector(3, 2)));
       show.add(new ArrowPlot(Tensors.vector(2, 3), Tensors.vector(-1, -2)));
       show.setAspectRatioOne();
@@ -161,7 +161,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("PolygonPlot");
+      show.setShowLabel("PolygonPlot");
       show.add(PolygonPlot.of(CirclePoints.of(8), PlotOption.FILL)).setAlpha(32);
       show.add(PolygonPlot.of(CirclePoints.of(16)));
       show.add(ListPlot.of(Tensors.fromString("{{-1,1},{1,-1}}")));
@@ -180,7 +180,7 @@ public enum Showcases implements ShowProvider {
       vectorPlot.setStroke(new BasicStroke(2f));
       vectorPlot.setLabel("Cross w/ Units");
       show.add(vectorPlot);
-      show.setPlotLabel("VectorPlot");
+      show.setShowLabel("VectorPlot");
       return show;
     }
   },
@@ -204,7 +204,7 @@ public enum Showcases implements ShowProvider {
       DensityPlot densityPlot = DensityPlot.of(sbo, cbb, ColorDataGradients.HUE);
       densityPlot.setPlotPoints(200);
       show.add(densityPlot);
-      show.setPlotLabel("Density Plot Julia Set");
+      show.setShowLabel("Density Plot Julia Set");
       return show;
     }
   },
@@ -216,7 +216,7 @@ public enum Showcases implements ShowProvider {
       show.add(DensityPlot.of(sbo, //
           CoordinateBoundingBox.of(Clips.absolute(3), Clips.absolute(3)), //
           ColorDataGradients.HUE));
-      show.setPlotLabel("Arg Gamma");
+      show.setShowLabel("Arg Gamma");
       return show;
     }
   },
@@ -230,7 +230,7 @@ public enum Showcases implements ShowProvider {
       list.add(StringItem.of(Tensors.vector(2, 3), "23"));
       list.add(StringItem.of(Tensors.vector(4, 4), "text"));
       show.add(StringPlot.of(list));
-      show.setPlotLabel("StringPlot");
+      show.setShowLabel("StringPlot");
       return show;
     }
   },
@@ -240,7 +240,7 @@ public enum Showcases implements ShowProvider {
       ColorDataGradient f = ColorDataGradients.CLASSIC;
       Clip clip = Clips.unit();
       Show show = new Show(ColorDataLists._109.strict()); // use RGB for line color
-      show.setPlotLabel("Color Data Gradient Classic");
+      show.setShowLabel("Color Data Gradient Classic");
       show.add(Plot.of(s -> f.apply(s).Get(0), clip, PlotOption.STRICT)).setLabel("red");
       show.add(Plot.of(s -> f.apply(s).Get(1), clip, PlotOption.STRICT)).setLabel("green");
       show.add(Plot.of(s -> f.apply(s).Get(2), clip, PlotOption.STRICT)).setLabel("blue");
@@ -251,7 +251,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._098.strict());
-      show.setPlotLabel("Cosine");
+      show.setShowLabel("Cosine");
       ScalarUnaryOperator suo = QuantityMagnitude.SI().in("rad");
       Showable showable = show.add(Plot.of(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Quantity.of(180, "deg"))));
       showable.setLabel("cosine");
@@ -263,7 +263,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("ListLinePlot");
+      show.setShowLabel("ListLinePlot");
       show.add(ListLinePlot.of(Tensors.fromString("{{2[m],3[s]}, {3[m],0[s]}, {4[m],3[s]}, {5[m],1[s]}}"))).setLabel("first");
       show.add(ListLinePlot.of(Tensors.fromString("{{3[m],2[s]}, {4[m],2.5[s]}, {5[m],2[s]}}"))).setLabel("second");
       return show;
@@ -273,7 +273,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("With Infinity");
+      show.setShowLabel("With Infinity");
       Tensor points = Tensors.fromString("{{0,0}, {0.2, Infinity}, {0.3, 0.3}}");
       show.add(ListPlot.of(points));
       show.add(ListLinePlot.of(points));
@@ -284,7 +284,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Wave Functions");
+      show.setShowLabel("Wave Functions");
       ScalarUnaryOperator[] suos = { //
           SawtoothWave.FUNCTION, //
           SquareWave.FUNCTION, //
@@ -299,7 +299,7 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Tensor matrix = HilbertMatrix.of(40);
       Show show = new Show();
-      show.setPlotLabel("Plot & ListPlot");
+      show.setShowLabel("Plot & ListPlot");
       Tensor values = SingularValueList.of(matrix);
       show.add(ListPlot.of(Range.of(0, values.length()), values.maps(Log10.FUNCTION))).setLabel("singular values");
       Clip clip = Clips.absolute(5);
@@ -316,7 +316,7 @@ public enum Showcases implements ShowProvider {
       CDF cdf = CDF.of(distribution);
       PDF pdf_o = PDF.of(original);
       Show show = new Show();
-      show.setPlotLabel("Truncated Distribution");
+      show.setShowLabel("Truncated Distribution");
       Clip clip = Clips.interval(-3, 3);
       show.add(Plot.of(pdf_o::at, clip, PlotOption.FILL)).setLabel("orig. PDF");
       show.add(Plot.of(pdf::at, clip, PlotOption.FILL)).setLabel("trunc. PDF");
@@ -328,7 +328,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Time Series");
+      show.setShowLabel("Time Series");
       TimeSeries timeSeries = TimeSeries.empty(ResamplingMethod.HOLD_VALUE_FROM_LEFT);
       timeSeries.insert(DateTime.of(2022, 11, 3, 10, 45), Quantity.of(4, "kW"));
       timeSeries.insert(DateTime.of(2022, 11, 3, 20, 35), Quantity.of(2, "kW"));
@@ -341,7 +341,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._058.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Wiener Process with Integral");
+      show.setShowLabel("Wiener Process with Integral");
       RandomFunction randomFunction = RandomFunction.of(WienerProcess.of(3, 1));
       Tensor samples = RandomVariate.of(UniformDistribution.of(Clips.unit()), 100);
       samples.maps(randomFunction::evaluate); // for
@@ -363,7 +363,7 @@ public enum Showcases implements ShowProvider {
       RandomProcess randomProcess = WienerProcess.of(mu, sigma);
       RandomFunction randomFunction = RandomFunction.of(randomProcess);
       Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Wiener Process with Drift");
+      show.setShowLabel("Wiener Process with Drift");
       show.add(Plot.of(randomFunction::evaluate, Clips.positive(Quantity.of(5, "s")))).setLabel("timeSeries");
       show.add(TsPlot.of(TimeSeries.empty(ResamplingMethod.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
       return show;
@@ -375,7 +375,7 @@ public enum Showcases implements ShowProvider {
       RandomProcess randomProcess = PoissonProcess.of(Quantity.of(3.4, "s^-1"));
       RandomFunction randomFunction = RandomFunction.of(randomProcess);
       Show show = new Show(ColorDataLists._003.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Poisson Process");
+      show.setShowLabel("Poisson Process");
       show.add(Plot.of(randomFunction::evaluate, Clips.positive(Quantity.of(10, "s")))).setLabel("timeSeries");
       return show;
     }
@@ -402,7 +402,7 @@ public enum Showcases implements ShowProvider {
       ScalarUnaryOperator suo = x -> Sin.FUNCTION.apply(x.multiply(x).negate().add(x));
       Tensor domain = Subdivide.of(-1, 1, 100);
       Show show = new Show();
-      show.setPlotLabel("Clenshaw Chebyshev");
+      show.setShowLabel("Clenshaw Chebyshev");
       for (ChebyshevNodes chebyshevNodes : ChebyshevNodes.values()) {
         Tensor coeffs = LinearSolve.of(chebyshevNodes.matrix(n), chebyshevNodes.of(n).maps(suo));
         // System.out.println(Pretty.of(coeffs.map(Round._3)));
@@ -417,7 +417,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
-      show.setPlotLabel(ListPlot.class.getSimpleName());
+      show.setShowLabel(ListPlot.class.getSimpleName());
       Distribution distribution = UniformDistribution.unit();
       show.add(ListPlot.of( //
           RandomVariate.of(distribution, 10), //
@@ -432,7 +432,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Unnamed");
+      show.setShowLabel("Unnamed");
       return show;
     }
   },
@@ -440,7 +440,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Unnamed");
+      show.setShowLabel("Unnamed");
       show.setCbb(CoordinateBoundingBox.of( //
           Clips.absolute(Quantity.of(4, "m*kg")), //
           Clips.absolute(Quantity.of(2, "s*A^-1"))));
@@ -457,7 +457,7 @@ public enum Showcases implements ShowProvider {
       Tensor signal = domain.maps(suo);
       Tensor points = Transpose.of(Tensors.of(domain, signal));
       Show show = new Show();
-      show.setPlotLabel("Periodogram");
+      show.setShowLabel("Periodogram");
       show.add(Periodogram.of(points));
       return show;
     }
@@ -466,7 +466,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("FlatlineX");
+      show.setShowLabel("FlatlineX");
       show.add(ListPlot.of(Tensors.fromString("{{0,1}, {10,1}}")));
       return show;
     }
@@ -475,7 +475,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("FlatlineY");
+      show.setShowLabel("FlatlineY");
       show.add(ListPlot.of(Tensors.fromString("{{0,1}, {0,10}}")));
       return show;
     }
@@ -484,7 +484,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("FlatlineX Quantity");
+      show.setShowLabel("FlatlineX Quantity");
       show.add(ListPlot.of(Tensors.fromString("{{0[m],1[s]}, {10[m],1[s]}}")));
       return show;
     }
@@ -493,7 +493,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("FlatlineY Quantity");
+      show.setShowLabel("FlatlineY Quantity");
       show.add(ListPlot.of(Tensors.fromString("{{0[m],1[s]}, {0[m],10[s]}}")));
       return show;
     }
@@ -502,7 +502,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._109.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Sine");
+      show.setShowLabel("Sine");
       show.add(Plot.of(s -> Sin.FUNCTION.apply(s).multiply(Quantity.of(3, "A")), Clips.absolute(2), PlotOption.FILL)).setLabel("sine");
       return show;
     }
@@ -511,7 +511,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Gamma Distributions");
+      show.setShowLabel("Gamma Distributions");
       show.add(Plot.of(PDF.of(GammaDistribution.of(1, 2))::at, Clips.positive(20), PlotOption.FILL)).setLabel("alpha = 1");
       show.add(Plot.of(PDF.of(GammaDistribution.of(4, 2))::at, Clips.positive(20), PlotOption.FILL)).setLabel("alpha = 4");
       show.add(Plot.of(PDF.of(GammaDistribution.of(6, 2))::at, Clips.positive(20), PlotOption.FILL)).setLabel("alpha = 6");
@@ -530,7 +530,7 @@ public enum Showcases implements ShowProvider {
       Distribution distribution = UniformDistribution.of(t_zero, t_fine);
       RandomVariate.of(distribution, 1000).maps(randomFunction::evaluate);
       Show show = new Show(ColorDataLists._001.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Wiener Process with Offset");
+      show.setShowLabel("Wiener Process with Offset");
       show.add(TsPlot.of(randomFunction.timeSeries())).setLabel("timeSeries");
       show.add(TsPlot.of(TimeSeries.empty(ResamplingMethod.HOLD_VALUE_FROM_LEFT))).setLabel("empty ts");
       return show;
@@ -548,7 +548,7 @@ public enum Showcases implements ShowProvider {
       Distribution distribution = UniformDistribution.of(t_zero, t_fine);
       RandomVariate.of(distribution, 1000).maps(randomFunction::evaluate);
       Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Candlestick Chart");
+      show.setShowLabel("Candlestick Chart");
       TimeSeries timeSeries = randomFunction.timeSeries();
       show.add(CandlestickChart.of(timeSeries)).setLabel("candles");
       show.add(TsPlot.of(timeSeries)).setLabel("timeSeries");
@@ -559,7 +559,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._097.strict());
-      show.setPlotLabel("ReImPlot");
+      show.setShowLabel("ReImPlot");
       Clip clip = Clips.absolute(4);
       show.add(ReImPlot.of(ArcSin.FUNCTION, clip)).setLabel("arc sin");
       show.add(ReImPlot.of(ArcCos.FUNCTION, clip)).setLabel("arc cos");
@@ -570,7 +570,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Spectrogram");
+      show.setShowLabel("Spectrogram");
       Tensor signal = Subdivide.of(0.0, 100.0, 1000).maps(t -> Sin.FUNCTION.apply(t.multiply(t)));
       Showable showable = Spectrogram.of(SpectrogramArrays.FOURIER.operator(), signal, Quantity.of(8000, "s^-1"));
       show.add(showable);
@@ -581,7 +581,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Density Plot");
+      show.setShowLabel("Density Plot");
       ScalarBinaryOperator sbo = (x, y) -> Im.FUNCTION.apply(Sqrt.FUNCTION.apply(Power.of(ComplexScalar.of(x, y), 3)));
       show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.absolute(2), Clips.absolute(2))));
       return show;
@@ -591,7 +591,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Matrix Plot");
+      show.setShowLabel("Matrix Plot");
       show.add(MatrixPlot.of(Tensors.fromString("{{1, 2, 1}, {3, 0, 1}, {0, 0, -1}}"), true));
       return show;
     }
@@ -600,7 +600,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Matrix Plot");
+      show.setShowLabel("Matrix Plot");
       Tensor matrix = Import.of("ch/alpine/bridge/fig/hb_west0381.csv");
       matrix = matrix.maps(Clips.absoluteOne());
       show.add(MatrixPlot.of(matrix));
@@ -611,7 +611,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Chebyshev Nodes");
+      show.setShowLabel("Chebyshev Nodes");
       Tensor matrix = ChebyshevNodes._1.matrix(64);
       show.add(MatrixPlot.of(matrix));
       return show;
@@ -621,7 +621,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Discrete Plot");
+      show.setShowLabel("Discrete Plot");
       show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(20, 0.3))::at, Clips.positive(20))).setLabel("0.3");
       show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(25, 0.5))::at, Clips.positive(25))).setLabel("0.5");
       return show;
@@ -635,7 +635,7 @@ public enum Showcases implements ShowProvider {
       PDF pdf = PDF.of(distribution);
       CDF cdf = CDF.of(distribution);
       Show show = new Show();
-      show.setPlotLabel(distribution.toString());
+      show.setShowLabel(distribution.toString());
       Clip clip = Clips.positive(n);
       show.add(DiscretePlot.of(pdf::at, clip)).setLabel("PDF");
       show.add(DiscretePlot.of(cdf::p_lessEquals, clip)).setLabel("CDF");
@@ -651,7 +651,7 @@ public enum Showcases implements ShowProvider {
       CDF cdf = CDF.of(distribution);
       PDF pdf_o = PDF.of(original);
       Show show = new Show();
-      show.setPlotLabel("Truncated Poisson Distribution[7]");
+      show.setShowLabel("Truncated Poisson Distribution[7]");
       Clip clip = Clips.positive(12);
       show.add(DiscretePlot.of(pdf::at, clip));
       show.add(DiscretePlot.of(cdf::p_lessEquals, clip));
@@ -663,7 +663,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Image Plot BICUBIC");
+      show.setShowLabel("Image Plot BICUBIC");
       BufferedImage bufferedImage = ResourceData.bufferedImage("ch/alpine/bridge/io/image/album_in.jpg");
       show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_3));
       show.set(ShowOption.AXIS_X, false);
@@ -674,7 +674,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Image Plot BILINEAR");
+      show.setShowLabel("Image Plot BILINEAR");
       BufferedImage bufferedImage = ResourceData.bufferedImage("ch/alpine/bridge/io/image/album_in.jpg");
       show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_1));
       show.set(ShowOption.AXIS_Y, false);
@@ -685,7 +685,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Image Plot NEAREST");
+      show.setShowLabel("Image Plot NEAREST");
       BufferedImage bufferedImage = ResourceData.bufferedImage("ch/alpine/bridge/io/image/album_in.jpg");
       show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_0));
       return show;
@@ -699,7 +699,7 @@ public enum Showcases implements ShowProvider {
           DateTime.of(1981, 3, 7, 12, 45));
       Tensor points = RandomVariate.of(distribution, 20, 2);
       Show show = new Show();
-      show.setPlotLabel("DateTime UnOp");
+      show.setShowLabel("DateTime UnOp");
       show.add(ListPlot.of(points));
       return show;
     }
@@ -716,7 +716,7 @@ public enum Showcases implements ShowProvider {
       for (int i = 0; i < 20; ++i)
         timeSeries.insert(RandomVariate.of(dX), RandomVariate.of(dY, 3).add(ofs));
       Show show = new Show();
-      show.setPlotLabel("MultiTs");
+      show.setShowLabel("MultiTs");
       show.add(MultiTsPlot.of(timeSeries, t -> t, ColorDataLists._094.strict()));
       return show;
     }
@@ -729,7 +729,7 @@ public enum Showcases implements ShowProvider {
           DateTime.of(1980, 5, 7, 12, 45));
       Tensor matrix = RandomVariate.of(dX, 10, 20);
       Show show = new Show();
-      show.setPlotLabel("MP DateTime");
+      show.setShowLabel("MP DateTime");
       show.add(MatrixPlot.of(matrix, ColorDataGradients.TEMPERATURE_LIGHT, false));
       return show;
     }
@@ -740,7 +740,7 @@ public enum Showcases implements ShowProvider {
       Distribution dX = DiscreteUniformDistribution.of(100, 111);
       Tensor matrix = RandomVariate.of(dX, 10, 20);
       Show show = new Show();
-      show.setPlotLabel("MP NonSymmetric");
+      show.setShowLabel("MP NonSymmetric");
       show.add(MatrixPlot.of(matrix, ColorDataGradients.CLASSIC, false));
       return show;
     }
@@ -749,7 +749,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
-      show.setPlotLabel("MitchellNetravaliKernel");
+      show.setShowLabel("MitchellNetravaliKernel");
       show.add(Plot.of(MitchellNetravaliKernel.standard(), Clips.absolute(2))).setLabel("1/3_1/3");
       show.add(Plot.of(MitchellNetravaliKernel.of(1, 1), Clips.absolute(2))).setLabel("1_1");
       show.setAspectRatioOne();
@@ -760,7 +760,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("ParametricPlot");
+      show.setShowLabel("ParametricPlot");
       show.add(ParametricPlot.of(s -> Tensors.of( //
           Sin.FUNCTION.apply(s).multiply(Rational.HALF), //
           Sin.FUNCTION.apply(s.add(s))), Clips.positive(Pi.TWO)));
@@ -772,7 +772,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Array Plot");
+      show.setShowLabel("Array Plot");
       show.add(ArrayPlot.of(Tensors.fromString("{{1, 0, 0, 0.3}, {1, 1, 0, 0.3}, {1, 0, 1, 0.7}}")));
       show.setAspectRatio(RealScalar.ONE, Rational.HALF);
       return show;
@@ -782,7 +782,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
-      show.setPlotLabel("Ramps");
+      show.setShowLabel("Ramps");
       Clip clip = Clips.absolute(5);
       show.add(Plot.of(Ramp.FUNCTION, clip)).setLabel("Ramp");
       show.add(Plot.of(Softplus.FUNCTION, clip)).setLabel("Softplus");
@@ -797,7 +797,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Cepstrogram");
+      show.setShowLabel("Cepstrogram");
       // Tensor signal = Subdivide.of(0.0, 100.0, 10000).maps(t->Sin.FUNCTION.apply(t.multiply(t)));
       Tensor signal = Tensor.of(IntStream.range(0, 10000) //
           .mapToObj(i -> Rational.of(i, 100).add(Rational.of(i * i, 1000_000))) //
@@ -810,7 +810,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("Image Plot With Units w/o gridlines");
+      show.setShowLabel("Image Plot With Units w/o gridlines");
       BufferedImage bufferedImage = ResourceData.bufferedImage("ch/alpine/bridge/io/image/album_in.jpg");
       CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(Quantity.of(3, "m")), Clips.absolute(Quantity.of(4, "s")));
       show.add(ImagePlot.of(bufferedImage, cbb));
@@ -825,7 +825,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show();
-      show.setPlotLabel("LanczosKernel");
+      show.setShowLabel("LanczosKernel");
       Tensor tensor = Tensors.fromString("{{0,0,0,0}, {0,1,2,0}, {0,0,-1,0}, {0,0,0,0}, {0,0,0,0}}");
       CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(3), Clips.positive(4));
       Interpolation interpolation = LanczosInterpolation.of(tensor);

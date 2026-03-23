@@ -103,7 +103,7 @@ public final class Show implements Serializable {
   }
 
   /** @param string to appear above plot */
-  public void setPlotLabel(String string) {
+  public void setShowLabel(String string) {
     showOptions.plotLabel = Objects.requireNonNull(string);
   }
 

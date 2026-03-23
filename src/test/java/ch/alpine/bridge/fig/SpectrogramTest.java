@@ -39,7 +39,7 @@ class SpectrogramTest {
       Tensor signal = domain.maps(polynomial).maps(Cos.FUNCTION);
       // Tensor points = Transpose.of(Tensors.of(domain, signal));
       Show show = new Show();
-      show.setPlotLabel("Spectrogram");
+      show.setShowLabel("Spectrogram");
       show.add(ListLinePlot.of(domain.maps(s -> Quantity.of(s, "s")), signal));
       // show.getAxisX().setUnit(Unit.of("ms"));
       // show.getAxisX().setLabel("time");
