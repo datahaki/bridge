@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -62,8 +63,12 @@ public class ShowDemo implements ManipulateProvider {
     List<BufferedImage> list = new ArrayList<>();
     for (Showcases showcases : Showcases.values())
       try {
+        BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics2 = bi.createGraphics();
+        FontMetrics fontMetrics = graphics2.getFontMetrics();
         Dimension dimension = new Dimension(width, height);
-        Rectangle rectangle = Show.defaultInsets(dimension, 12);
+        Rectangle rectangle = Show.defaultInsets(dimension, fontMetrics);
+        graphics2.dispose();
         if (showcases.extra)
           rectangle.width -= 100;
         if (noInset)

@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.Font;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.Set;
@@ -10,7 +11,8 @@ import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 
 class ShowOptions implements Serializable {
   private final Set<ShowOption> set = EnumSet.allOf(ShowOption.class);
-  String plotLabel = "";
+  Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
+  String showLabel = "";
   public DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
 
   public void set(ShowOption showOption, boolean status) {

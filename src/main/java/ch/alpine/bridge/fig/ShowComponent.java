@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -82,7 +83,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
     graphics.fillRect(0, 0, dimension.width, dimension.height);
     // TODO BRIDGE consider font when computing rectangle
     if (Objects.nonNull(show))
-      showableConfig = show.render(graphics, Show.defaultInsets(dimension, graphics.getFont().getSize()));
+      showableConfig = show.render_autoIndent(graphics, new Rectangle(new Point(), dimension));
   }
 
   @Override

@@ -31,11 +31,11 @@ record ShowRender(List<Showable> showables, ShowOptions showOptions, CoordinateB
       RenderQuality.smoothLine(graphics, true);
     }
     {
-      if (!showOptions.plotLabel.isEmpty()) {
-        Font font = graphics.getFont().deriveFont(Font.BOLD);
-        graphics.setFont(font);
+      if (!showOptions.showLabel.isEmpty()) {
+        graphics.setFont(graphics.getFont().deriveFont(Font.BOLD));
+        FontMetrics fontMetrics = graphics.getFontMetrics();
         graphics.setColor(StaticHelper.COLOR_FONT);
-        graphics.drawString(showOptions.plotLabel, rectangle.x, rectangle.y - StaticHelper.GAP);
+        graphics.drawString(showOptions.showLabel, rectangle.x, rectangle.y - fontMetrics.getDescent() - 1);
       }
     }
     final ShowableConfig showableConfig;

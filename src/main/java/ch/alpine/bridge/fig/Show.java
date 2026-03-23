@@ -3,6 +3,8 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -23,7 +25,6 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
-import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -44,8 +45,13 @@ public final class Show implements Serializable {
   // TODO BRIDGE zoom does not work indefinitely yet!
   /** @param fontSize for instance graphics.getFont().getSize()
    * @return */
-  private static Insets defaultInsets(int fontSize) {
-    return new Insets(4 + fontSize, 70, 10 + fontSize, 10);
+  private static Insets defaultInsets(FontMetrics fontMetrics) {
+    int fontSize = fontMetrics.getAscent() + fontMetrics.getDescent();
+    return new Insets( //
+        fontSize + 1, // top showLabel + frame width
+        70, // left
+        1 + 10 + fontSize, // bottom
+        10); // right
   }
 
   /** Careful: the width, or height of the returned rectangle may be negative
@@ -53,8 +59,8 @@ public final class Show implements Serializable {
    * @param dimension
    * @param fontSize for instance graphics.getFont().getSize()
    * @return */
-  public static Rectangle defaultInsets(Dimension dimension, int fontSize) {
-    Insets insets = defaultInsets(fontSize);
+  public static Rectangle defaultInsets(Dimension dimension, FontMetrics fontMetrics) {
+    Insets insets = defaultInsets(fontMetrics);
     return new Rectangle( //
         insets.left, //
         insets.top, //
@@ -62,8 +68,8 @@ public final class Show implements Serializable {
         dimension.height - insets.top - insets.bottom);
   }
 
-  public static Optional<Rectangle> optionalDefaultInsets(Dimension dimension, int fontSize) {
-    Rectangle rectangle = defaultInsets(dimension, fontSize);
+  public static Optional<Rectangle> optionalDefaultInsets(Dimension dimension, FontMetrics fontMetrics) {
+    Rectangle rectangle = defaultInsets(dimension, fontMetrics);
     return Optional.ofNullable(1 < rectangle.width && 1 < rectangle.height //
         ? rectangle
         : null);
@@ -75,7 +81,6 @@ public final class Show implements Serializable {
   private final ColorDataIndexed colorDataIndexed;
   // ---
   private CoordinateBoundingBox cbb = null;
-  private DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
   private Scalar aspectRatio = null;
 
   /** @param colorDataIndexed to assign a default color to a showable when
@@ -104,12 +109,16 @@ public final class Show implements Serializable {
 
   /** @param string to appear above plot */
   public void setShowLabel(String string) {
-    showOptions.plotLabel = Objects.requireNonNull(string);
+    showOptions.showLabel = Objects.requireNonNull(string);
   }
 
   /** @return */
-  public String getPlotLabel() {
-    return showOptions.plotLabel;
+  public String getShowLabel() {
+    return showOptions.showLabel;
+  }
+
+  public void setFont(Font font) {
+    showOptions.font = font;
   }
 
   public void set(ShowOption showOption, boolean status) {
@@ -141,11 +150,11 @@ public final class Show implements Serializable {
   }
 
   public void setDateTimeFocus(DateTimeFocus dateTimeFocus) {
-    this.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
+    showOptions.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
   }
 
   public DateTimeFocus getDateTimeFocus() {
-    return dateTimeFocus;
+    return showOptions.dateTimeFocus;
   }
 
   public boolean isEmpty() {
@@ -210,7 +219,9 @@ public final class Show implements Serializable {
    * @param rectangle
    * @return */
   public ShowableConfig render_autoIndent(Graphics graphics, Rectangle rectangle) {
-    Rectangle r = defaultInsets(rectangle.getSize(), graphics.getFont().getSize());
+    graphics.setFont(showOptions.font);
+    FontMetrics fontMetrics = graphics.getFontMetrics();
+    Rectangle r = defaultInsets(rectangle.getSize(), fontMetrics);
     return render(graphics, new Rectangle(rectangle.x + r.x, rectangle.y + r.y, r.width, r.height));
   }
 
@@ -219,9 +230,11 @@ public final class Show implements Serializable {
   public BufferedImage image(Dimension dimension) {
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bufferedImage.createGraphics();
+    graphics.setFont(showOptions.font);
+    FontMetrics fontMetrics = graphics.getFontMetrics();
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
-    render(graphics, defaultInsets(dimension, graphics.getFont().getSize()));
+    render(graphics, defaultInsets(dimension, fontMetrics));
     graphics.dispose();
     return bufferedImage;
   }
