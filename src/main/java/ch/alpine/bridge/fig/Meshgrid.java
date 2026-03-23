@@ -14,7 +14,9 @@ import ch.alpine.tensor.api.TensorUnaryOperator;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.N;
 
-/** @param cbb
+/** the name is inspired by MATLAB::meshgrid
+ * 
+ * @param cbb
  * @param width
  * @param height */
 public record Meshgrid(CoordinateBoundingBox cbb, int width, int height) implements Serializable {

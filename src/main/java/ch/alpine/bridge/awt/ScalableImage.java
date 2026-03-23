@@ -18,8 +18,11 @@ import ch.alpine.tensor.sca.Round;
  * When printing graphics always use the full resolution image for
  * maximum quality. */
 public class ScalableImage {
+  record Key(ImageResize imageResize, int width, int height) {
+  }
+
+  private final Cache<Key, BufferedImage> cache = Cache.of(this::compute, 1);
   private final BufferedImage bufferedImage;
-  private final Cache<Tensor, BufferedImage> cache = Cache.of(this::compute, 1);
 
   /** @param bufferedImage */
   public ScalableImage(BufferedImage bufferedImage) {
@@ -31,7 +34,7 @@ public class ScalableImage {
    * @param height
    * @return */
   public BufferedImage getScaledInstance(ImageResize imageResize, int width, int height) {
-    return cache.apply(Tensors.vector(imageResize.ordinal(), width, height));
+    return cache.apply(new Key(imageResize, width, height));
   }
 
   /** @param imageResize
@@ -44,12 +47,7 @@ public class ScalableImage {
         Round.intValueExact(wh.Get(1)));
   }
 
-  /** @param owh {ordinal, width, height}
-   * @return */
-  private BufferedImage compute(Tensor owh) {
-    int ordinal = Round.intValueExact(owh.Get(0));
-    int width = Round.intValueExact(owh.Get(1));
-    int height = Round.intValueExact(owh.Get(2));
-    return ImageResize.values()[ordinal].of(bufferedImage, width, height);
+  private BufferedImage compute(Key key) {
+    return key.imageResize.of(bufferedImage, key.width, key.height);
   }
 }
