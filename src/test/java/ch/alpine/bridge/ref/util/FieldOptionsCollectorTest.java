@@ -38,7 +38,7 @@ class FieldOptionsCollectorTest {
   @ReflectionMarker
   public static class DiscreteParam {
     @FieldClip(min = "-10", max = "100")
-    public Integer integer;
+    public Integer integer = 10;
 
     public Scalar integer() {
       return RealScalar.of(integer);
@@ -51,7 +51,7 @@ class FieldOptionsCollectorTest {
     DiscreteParam discreteParam = new DiscreteParam();
     FieldsAssignment fieldsAssignment = RandomFieldsAssignment.of(discreteParam);
     fieldsAssignment.stream().forEach(_ -> set.add(discreteParam.integer()));
-    assertEquals(set.size(), 2);
+    assertEquals(set.size(), 5);
     assertTrue(set.contains(RealScalar.of(-10)));
     assertTrue(set.contains(RealScalar.of(100)));
     fieldsAssignment.randomize(20).forEach(_ -> set.add(discreteParam.integer()));
@@ -64,7 +64,7 @@ class FieldOptionsCollectorTest {
     DiscreteParam discreteParam = new DiscreteParam();
     FieldsAssignment fieldsAssignment = FieldsAssignment.of(discreteParam);
     fieldsAssignment.stream().forEach(_ -> set.add(discreteParam.integer()));
-    assertEquals(set.size(), 2);
+    assertEquals(set.size(), 5);
     assertTrue(set.contains(RealScalar.of(-10)));
     assertTrue(set.contains(RealScalar.of(100)));
   }

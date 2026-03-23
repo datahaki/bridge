@@ -60,21 +60,23 @@ import ch.alpine.tensor.sca.Clips;
     if (list.isEmpty())
       try {
         Integer value = (Integer) getField().get(object);
-        Clip clip = Objects.isNull(fieldClips) //
-            ? Clips.interval(value - 1, value + 1)
-            : fieldClips.clip();
-        if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
-          return Range.closed(clip).stream().collect(Collectors.toList());
-        Scalar[] scalars = new Scalar[] { //
-            clip.min(), //
-            RealScalar.of(value - 1), //
-            RealScalar.of(value), //
-            RealScalar.of(value + 1), //
-            clip.max() };
-        return Arrays.stream(scalars) //
-            .filter(clip::isInside) //
-            .distinct() //
-            .collect(Collectors.toList());
+        if (Objects.nonNull(value)) {
+          Clip clip = Objects.isNull(fieldClips) //
+              ? Clips.interval(value - 1, value + 1)
+              : fieldClips.clip();
+          if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
+            return Range.closed(clip).stream().collect(Collectors.toList());
+          Scalar[] scalars = new Scalar[] { //
+              clip.min(), //
+              RealScalar.of(value - 1), //
+              RealScalar.of(value), //
+              RealScalar.of(value + 1), //
+              clip.max() };
+          return Arrays.stream(scalars) //
+              .filter(clip::isInside) //
+              .distinct() //
+              .collect(Collectors.toList());
+        }
       } catch (Exception exception) {
         exception.printStackTrace();
       }
