@@ -28,7 +28,11 @@ public record Meshgrid(CoordinateBoundingBox cbb, int width, int height) impleme
     return new Meshgrid(cbb, dimension.width, dimension.height);
   }
 
-  /** @param tuo that maps a vector {x, y} to a tensor
+  /** the function is called "image" because of the ordering of the return values:
+   * dim 0 has cbb.clip(1) decreasing
+   * dim 1 has cbb.clip(0) increasing
+   * 
+   * @param tuo that maps a vector {x, y} to a tensor
    * @return */
   public Tensor image(TensorUnaryOperator tuo) {
     Tensor dx = dx();

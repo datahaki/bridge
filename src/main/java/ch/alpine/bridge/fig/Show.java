@@ -44,38 +44,6 @@ import ch.alpine.tensor.sca.Round;
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
 // TODO BRIDGE zoom does not work indefinitely yet!
 public final class Show implements Serializable {
-  /** function allows to draw grid
-   * 
-   * @param dimension
-   * @param fontMetrics
-   * @return */
-  public static Optional<Rectangle> optionalDefaultInsets(Dimension dimension, FontMetrics fontMetrics) {
-    Rectangle rectangle = defaultInsets(new Rectangle(new Point(), dimension), fontMetrics);
-    return Optional.ofNullable(1 < rectangle.width && 1 < rectangle.height //
-        ? rectangle
-        : null);
-  }
-
-  /** Careful: the width, or height of the returned rectangle may be negative
-   * 
-   * @param dimension
-   * @param fontSize for instance graphics.getFont().getSize()
-   * @return */
-  private static Rectangle defaultInsets(Rectangle rectangle, FontMetrics fontMetrics) {
-    int fontSize = fontMetrics.getAscent() + fontMetrics.getDescent();
-    Insets insets = new Insets( //
-        fontSize + 1, // top showLabel + frame width
-        70, // left
-        1 + 10 + fontSize, // bottom
-        10); // right
-    return new Rectangle( //
-        rectangle.x + insets.left, //
-        rectangle.y + insets.top, //
-        rectangle.width - insets.left - insets.right, //
-        rectangle.height - insets.top - insets.bottom);
-  }
-
-  // ---
   private final List<Showable> showables = new ArrayList<>();
   private final ShowOptions showOptions = new ShowOptions();
   private final ColorDataIndexed colorDataIndexed;
@@ -250,5 +218,36 @@ public final class Show implements Serializable {
       }
     }
     }
+  }
+
+  /** function allows to draw grid
+   * 
+   * @param dimension
+   * @param fontMetrics
+   * @return */
+  public static Optional<Rectangle> optionalDefaultInsets(Dimension dimension, FontMetrics fontMetrics) {
+    Rectangle rectangle = defaultInsets(new Rectangle(new Point(), dimension), fontMetrics);
+    return Optional.ofNullable(1 < rectangle.width && 1 < rectangle.height //
+        ? rectangle
+        : null);
+  }
+
+  /** Careful: the width, or height of the returned rectangle may be negative
+   * 
+   * @param dimension
+   * @param fontSize for instance graphics.getFont().getSize()
+   * @return */
+  private static Rectangle defaultInsets(Rectangle rectangle, FontMetrics fontMetrics) {
+    int fontSize = fontMetrics.getAscent() + fontMetrics.getDescent();
+    Insets insets = new Insets( //
+        fontSize + 1, // top showLabel + frame width
+        70, // left
+        1 + 10 + fontSize, // bottom
+        10); // right
+    return new Rectangle( //
+        rectangle.x + insets.left, //
+        rectangle.y + insets.top, //
+        rectangle.width - insets.left - insets.right, //
+        rectangle.height - insets.top - insets.bottom);
   }
 }
