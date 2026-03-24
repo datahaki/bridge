@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import ch.alpine.bridge.fig.Rasterize;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.plt.ListLinePlot;
 import ch.alpine.tensor.io.Primitives;
@@ -30,7 +31,7 @@ class ZipDirectoryTest {
     {
       Show show = new Show();
       show.add(ListLinePlot.of(RandomVariate.of(UniformDistribution.of(2, 3), 10, 2)));
-      show.export(folder.resolve("image.png"), new Dimension(300, 200));
+      new Rasterize(show, new Dimension(300, 200)).export(folder.resolve("image.png"));
     }
     Path zipFile = tempDir.resolve("file.zip");
     assertFalse(Files.isRegularFile(zipFile));

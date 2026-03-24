@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import ch.alpine.bridge.fig.Rasterize;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.tensor.ext.HomeDirectory;
 
@@ -24,7 +25,7 @@ enum ShowcaseReadme {
         Showcases.MatrixPlot1 };
     for (Showcases showDemos : set) {
       Show show = showDemos.getShow();
-      show.export(folder.resolve(showDemos.name() + ".png"), new Dimension(480, 240));
+      new Rasterize(show, new Dimension(480, 240)).export(folder.resolve(showDemos.name() + ".png"));
     }
   }
 }

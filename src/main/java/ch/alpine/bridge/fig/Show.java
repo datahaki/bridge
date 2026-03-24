@@ -1,21 +1,14 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,16 +16,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.imageio.ImageIO;
-
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.chq.ExactScalarQ;
-import ch.alpine.tensor.ext.Jpeg;
-import ch.alpine.tensor.ext.PathName;
 import ch.alpine.tensor.img.ColorDataIndexed;
 import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -188,36 +177,6 @@ public final class Show implements Serializable {
   public ShowableConfig render_autoIndent(Graphics graphics, Rectangle rectangle) {
     graphics.setFont(showOptions.font);
     return render(graphics, defaultInsets(rectangle, graphics.getFontMetrics()));
-  }
-
-  /** @param dimension
-   * @return */
-  public BufferedImage image(Dimension dimension) {
-    BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = bufferedImage.createGraphics();
-    graphics.setColor(Color.WHITE);
-    graphics.fillRect(0, 0, dimension.width, dimension.height);
-    render_autoIndent(graphics, new Rectangle(new Point(), dimension));
-    graphics.dispose();
-    return bufferedImage;
-  }
-
-  private static final float JPG_QUALITY = 0.98f;
-
-  /** @param path
-   * @param dimension of image
-   * @throws IOException */
-  public void export(Path path, Dimension dimension) throws IOException {
-    String string = PathName.of(path).extension().toLowerCase();
-    BufferedImage bufferedImage = image(dimension);
-    switch (string) {
-    case "jpg", "jpeg" -> Jpeg.put(bufferedImage, path, JPG_QUALITY);
-    default -> {
-      try (OutputStream outputStream = Files.newOutputStream(path)) {
-        ImageIO.write(bufferedImage, string, outputStream);
-      }
-    }
-    }
   }
 
   /** function allows to draw grid

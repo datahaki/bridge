@@ -114,7 +114,7 @@ class ListLinePlotTest {
     show.add(ListLinePlot.of(domain4.maps(suoX), domain4.maps(suoY)));
     // ChartFactory.setChartTheme(ChartTheme.STANDARD);
     Path file = tempDir.resolve(ListPlot.class.getSimpleName() + "Some.png");
-    show.export(file, new Dimension(500, 300));
+    new Rasterize(show, new Dimension(500, 300)).export(file);
   }
 
   @Test
@@ -128,7 +128,7 @@ class ListLinePlotTest {
       show.add(ListLinePlot.of(domain, domain.maps(distribution::at)));
       show.add(ListLinePlot.of(domain, domain.maps(distribution::p_lessEquals)));
       show.add(ListLinePlot.of(domain, domain.maps(PDF.of(dist)::at)));
-      show.export(tempDir.resolve("hd.png"), new Dimension(640, 480));
+      new Rasterize(show, new Dimension(640, 480)).export(tempDir.resolve("hd.png"));
     }
   }
 
@@ -144,7 +144,7 @@ class ListLinePlotTest {
       Show show = new Show();
       show.add(ListLinePlot.of(domain, domain.maps(inv1::quantile)));
       show.add(ListLinePlot.of(domain, domain.maps(inv2::quantile)));
-      show.export(tempDir.resolve("hd_inv.png"), new Dimension(640, 480));
+      new Rasterize(show, new Dimension(640, 480)).export(tempDir.resolve("hd_inv.png"));
     }
   }
 
@@ -191,7 +191,7 @@ class ListLinePlotTest {
     show.add(ListLinePlot.of(Tensors.empty()));
     Path file = tempDir.resolve("filePass.png");
     assertFalse(Files.isRegularFile(file));
-    show.export(file, new Dimension(100, 100));
+    new Rasterize(show, new Dimension(100, 100)).export(file);
     assertTrue(Files.isRegularFile(file));
     assertTrue(Files.isWritable(file));
   }

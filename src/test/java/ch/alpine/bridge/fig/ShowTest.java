@@ -22,6 +22,6 @@ class ShowTest {
   void testHighResolution() {
     Show show = new Show();
     show.add(Plot.of(Sin.FUNCTION, Clips.absolute(Pi.TWO), PlotOption.FILL));
-    show.image(new Dimension(4000, 4000));
+    new Rasterize(show, new Dimension(4000, 4000)).image();
   }
 }

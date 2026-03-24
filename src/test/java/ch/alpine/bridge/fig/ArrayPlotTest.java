@@ -30,6 +30,6 @@ class ArrayPlotTest {
     BufferedImage bufferedImage = ImageFormat.of(raw.maps(ColorDataGradients.TEMPERATURE_WEATHER));
     Show show = new Show();
     show.add(ImagePlot.of(bufferedImage, CoordinateBoundingBox.of(Clips.unit(), Clips.unit())));
-    show.export(tempDir.resolve("file.png"), new Dimension(1000, 300));
+    new Rasterize(show, new Dimension(1000, 300)).export(tempDir.resolve("file.png"));
   }
 }
