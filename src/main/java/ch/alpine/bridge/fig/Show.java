@@ -197,11 +197,11 @@ public final class Show implements Serializable {
    * @param fontSize for instance graphics.getFont().getSize()
    * @return */
   private static Rectangle defaultInsets(Rectangle rectangle, FontMetrics fontMetrics) {
-    int fontSize = fontMetrics.getAscent() + fontMetrics.getDescent();
+    int fontAd = fontMetrics.getAscent() + fontMetrics.getDescent();
     Insets insets = new Insets( //
-        fontSize + 1, // top showLabel + frame width
+        fontAd + 1, // top showLabel + frame width
         70, // left
-        1 + 10 + fontSize, // bottom
+        1 + StaticHelper.GAP + StaticHelper.TICK + fontAd, // bottom
         10); // right
     return new Rectangle( //
         rectangle.x + insets.left, //

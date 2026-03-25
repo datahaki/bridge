@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+/** no options is active by default */
 public enum PlotOption {
   /** fill primitive */
   FILL,

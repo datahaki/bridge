@@ -20,6 +20,7 @@ import ch.alpine.tensor.sca.Clips;
   // ---
   public static final Stroke STROKE_SOLID = new BasicStroke();
   public static final int GAP = 5;
+  public static final int TICK = 3;
 
   private static Scalar delta(Scalar scalar) {
     // invoking scalar.zero() is needed when scalar is instance of DateTime

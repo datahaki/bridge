@@ -27,10 +27,11 @@ public class GridDrawer {
     Clip xRange = showableConfig.confX().clip();
     Clip yRange = showableConfig.confY().clip();
     // ---
+    final int piy = rectangle.y + rectangle.height - 1 + StaticHelper.GAP;
     if (showOptions.contains(ShowOption.AXIS_X) && !Scalars.isZero(xRange.width()))
       new AxisX(showableConfig.confX(), showOptions.compileAxisX()).render( //
           showableConfig, //
-          new Point(rectangle.x, rectangle.y + rectangle.height - 1 + StaticHelper.GAP), //
+          new Point(rectangle.x, piy), //
           graphics);
     if (showOptions.contains(ShowOption.AXIS_Y) && !Scalars.isZero(yRange.width()))
       new AxisYL(showableConfig.confY(), showOptions.compileAxisY()).render( //
@@ -51,7 +52,7 @@ public class GridDrawer {
         graphics.setColor(StaticHelper.COLOR_FONT);
         graphics.drawString(xLabel, //
             rectangle.x - fontMetrics.stringWidth(xLabel) - 3 * StaticHelper.GAP, //
-            rectangle.y + rectangle.height - 1 + StaticHelper.GAP + fontMetrics.getHeight());
+            piy + StaticHelper.TICK + fontMetrics.getAscent());
       }
     }
   }

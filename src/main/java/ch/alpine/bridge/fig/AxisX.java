@@ -42,7 +42,7 @@ class AxisX extends Axis {
           : ((DateTime) value).format(dateTimeFormatter);
       graphics.drawString(xLabel, //
           entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //
-          point.y + 3 + fontMetrics.getAscent());
+          point.y + StaticHelper.TICK + fontMetrics.getAscent());
     }
   }
 }

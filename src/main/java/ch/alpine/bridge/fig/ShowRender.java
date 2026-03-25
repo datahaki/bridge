@@ -15,6 +15,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 record ShowRender(List<Showable> showables, ShowOptions showOptions, CoordinateBoundingBox cbb) {
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
+  private static final Color LEGEND_BACK = new Color(255, 255, 255, 192);
 
   /** @param graphics
    * @param rectangle
@@ -70,14 +71,14 @@ record ShowRender(List<Showable> showables, ShowOptions showOptions, CoordinateB
           showable.tender(showableConfig, graphics);
         }
     }
-    {
+    if (showOptions.contains(ShowOption.LEGEND)) {
       FontMetrics fontMetrics = graphics.getFontMetrics();
       int size = fontMetrics.getHeight();
       int pix = rectangle.x + StaticHelper.GAP;
       final int ystart = rectangle.y + 2;
       {
         int piy = ystart;
-        graphics.setColor(new Color(255, 255, 255, 192));
+        graphics.setColor(LEGEND_BACK);
         for (Showable showable : showables) {
           String string = showable.getLabel();
           if (!string.isEmpty()) {

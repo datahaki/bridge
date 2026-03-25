@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+/** all options are active by default */
 public enum ShowOption {
   /** draws dark gray box around show area */
   FRAMED,
@@ -10,11 +11,12 @@ public enum ShowOption {
   AXIS_Y,
   /** gridlines requires {@link #AXIS_X} or {@link #AXIS_Y} to take effect */
   GRID,
+  /** show unit mapping, e.g. "s -> m/s" */
   UNIT_MAPPING,
   /** Mathematica: "DataReversed"
    * 
    * whether y-axis should be decreasing from top to bottom */
   DECR_Y,
-  // BARLEGEND // TODO
-  // LEGEND // TODO
+  /** hide legend */
+  LEGEND,
 }
