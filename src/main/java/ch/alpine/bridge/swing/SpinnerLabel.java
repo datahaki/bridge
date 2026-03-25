@@ -258,7 +258,7 @@ public abstract class SpinnerLabel<T> extends JTextField {
         .mapToInt(metrics::stringWidth) //
         .max().orElse(0);
     Dimension dimension = getPreferredSize();
-    dimension.width = max + 2 * metrics.charWidth('\u3000');
+    dimension.width = max + 4 * metrics.charWidth('\u3000');
     setPreferredSize(dimension);
     return dimension;
   }
