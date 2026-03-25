@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-/* package */ class EnumFieldWrap extends SelectableFieldWrap {
+class EnumFieldWrap extends SelectableFieldWrap {
   private final Object[] enumConstants;
 
   public EnumFieldWrap(Field field) {

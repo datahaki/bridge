@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 
 import ch.alpine.bridge.swing.SpinnerLabel;
 
-/* package */ final class EnumPanel extends FieldPanel {
+final class EnumPanel extends FieldPanel {
   private final SpinnerLabel<Object> spinnerLabel;
 
   public EnumPanel(FieldWrap fieldWrap, Object object, Supplier<List<Object>> supplier) {

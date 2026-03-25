@@ -10,7 +10,7 @@ import java.util.Objects;
  * 2022-06-22T23:57
  * 2022-06-22T21:38:47
  * 2022-06-22T18:10:03.694030904 */
-/* package */ class LocalDateTimeFieldWrap extends BaseFieldWrap {
+class LocalDateTimeFieldWrap extends BaseFieldWrap {
   public LocalDateTimeFieldWrap(Field field) {
     super(field);
   }

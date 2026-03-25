@@ -5,7 +5,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-/* package */ enum LocalDates {
+enum LocalDates {
   DAY(ChronoUnit.DAYS) {
     @Override
     public LocalDate floor(LocalDate localDate) {

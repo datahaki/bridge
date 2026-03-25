@@ -10,7 +10,7 @@ import java.util.Objects;
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
 import ch.alpine.bridge.ref.ann.FieldSelectionCallback;
 
-/* package */ abstract class SelectableFieldWrap extends BaseFieldWrap {
+abstract class SelectableFieldWrap extends BaseFieldWrap {
   private final FieldSelectionArray fieldSelectionArray;
   private final FieldSelectionCallback fieldSelectionCallback;
 

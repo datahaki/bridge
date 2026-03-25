@@ -8,7 +8,7 @@ import java.util.Objects;
 
 /** for strings that can be parsed into {@link LocalDate}, for instance
  * 2022-06-22 */
-/* package */ class LocalDateFieldWrap extends BaseFieldWrap {
+class LocalDateFieldWrap extends BaseFieldWrap {
   public LocalDateFieldWrap(Field field) {
     super(field);
   }

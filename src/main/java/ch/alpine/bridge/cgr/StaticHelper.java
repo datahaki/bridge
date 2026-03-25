@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.bridge.cgr;
 
-/* package */ enum StaticHelper {
+enum StaticHelper {
   ;
   public static boolean isInSubpackageOf(Class<?> clazz, String basePackage) {
     Package pkg = clazz.getPackage();

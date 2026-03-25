@@ -10,7 +10,7 @@ import java.util.Objects;
 
 import ch.alpine.bridge.swing.LookAndFeels;
 
-/* package */ enum LinuxOperatingSystem implements OperatingSystem {
+enum LinuxOperatingSystem implements OperatingSystem {
   Linux;
 
   @Override

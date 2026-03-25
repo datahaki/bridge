@@ -9,7 +9,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.WindowConstants;
 
-/* package */ class ColorPanel extends DialogPanel {
+class ColorPanel extends DialogPanel {
   private static final Color FALLBACK = Color.WHITE;
 
   public ColorPanel(FieldWrap fieldWrap, Object value) {

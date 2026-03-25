@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-/* package */ enum PaintThumb {
+enum PaintThumb {
   ;
   private static final Color GRAY = new Color(220, 220, 220);
 

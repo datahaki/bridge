@@ -11,7 +11,7 @@ import ch.alpine.bridge.ref.FieldWrap;
 
 /** toggle button substitution as substitution for checkbox for boolean fields
  * as using in {@link ToolbarFieldsEditor} */
-/* package */ class TogglePanel extends FieldPanel {
+class TogglePanel extends FieldPanel {
   private final JToggleButton jToggleButton;
 
   public TogglePanel(FieldWrap fieldWrap, String text, Boolean value) {

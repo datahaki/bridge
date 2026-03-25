@@ -12,7 +12,7 @@ import javax.swing.ScrollPaneConstants;
 /** EXPERIMENTAL BRIDGE currently not used
  * 
  * based on JList */
-/* package */ class ListPanel extends FieldPanel {
+class ListPanel extends FieldPanel {
   public static final int MAX_HEIGHT = 160;
   public static final int SCROLL_THRESHOLD = 8;
   // ---

@@ -19,7 +19,7 @@ import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
 // TODO BRIDGE implement properly
-/* package */ class RangePanel extends FieldPanel {
+class RangePanel extends FieldPanel {
   private static final int RESOLUTION = 1000;
   private static final int TICKS_MAX = 20;
   // ---

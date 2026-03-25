@@ -3,7 +3,7 @@ package ch.alpine.bridge.ref;
 
 /** strict parser of boolean value that only returns non-null
  * for input of either verbatim "false", or "true" */
-/* package */ enum BooleanParser {
+enum BooleanParser {
   ;
   /** "true" */
   public static final String TRUE = Boolean.TRUE.toString();

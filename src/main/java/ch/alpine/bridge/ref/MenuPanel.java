@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import ch.alpine.bridge.swing.SpinnerMenu;
 
-/* package */ class MenuPanel extends StringPanel {
+class MenuPanel extends StringPanel {
   private final JPanel jPanel = new JPanel(new BorderLayout());
   private final JButton jButton = new JButton(BUTTON_SEEK);
 

@@ -10,7 +10,7 @@ import javax.swing.JDialog;
 import ch.alpine.bridge.swing.DialogBuilder;
 import ch.alpine.bridge.swing.FontDialog;
 
-/* package */ class FontPanel extends DialogPanel {
+class FontPanel extends DialogPanel {
   private static final Font FALLBACK = new Font(Font.DIALOG, Font.PLAIN, 12);
 
   public FontPanel(FieldWrap fieldWrap, Font font) {

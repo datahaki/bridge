@@ -37,12 +37,12 @@ public final class AffineFrame2D implements Serializable {
   /** @param px
    * @param py
    * @return vector of length 2 */
-  /* package */ Tensor toVector(Tensor xy) {
+  Tensor toVector(Tensor xy) {
     return matrix.dot(AppendOne.FUNCTION.apply(xy)).extract(0, 2);
   }
 
   /** @return toPoint2D(0, 0) */
-  /* package */ Point2D originToPoint2D() {
+  Point2D originToPoint2D() {
     Tensor xy = Tensors.of( //
         matrix.Get(0, 2).zero(), //
         matrix.Get(1, 2).zero());

@@ -26,7 +26,7 @@ import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
 import ch.alpine.tensor.sca.Clip;
 
-/* package */ class FieldOptionsCollector extends ObjectFieldAll {
+class FieldOptionsCollector extends ObjectFieldAll {
   private final Map<String, List<String>> map = new LinkedHashMap<>();
   private final Map<String, Function<RandomGenerator, String>> distributions = new LinkedHashMap<>();
 

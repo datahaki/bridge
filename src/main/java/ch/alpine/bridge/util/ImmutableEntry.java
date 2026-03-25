@@ -3,7 +3,7 @@ package ch.alpine.bridge.util;
 
 import java.util.Map.Entry;
 
-/* package */ enum ImmutableEntry {
+enum ImmutableEntry {
   ;
   public static <K, V> Entry<K, V> of(K key, V value) {
     return new Entry<>() {

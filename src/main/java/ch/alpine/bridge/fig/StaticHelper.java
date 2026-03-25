@@ -14,7 +14,7 @@ import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
-/* package */ enum StaticHelper {
+enum StaticHelper {
   ;
   public static final Color COLOR_FONT = Color.DARK_GRAY;
   // ---

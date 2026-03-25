@@ -19,7 +19,7 @@ public class ParamContainer {
   // ---
   // ignore the following
   public transient Scalar _transient;
-  /* package */ Scalar _package;
+  Scalar _package;
   public int nono; // int's are ignored
   public final Scalar _final = RealScalar.ONE;
   protected Boolean _protected;

@@ -26,7 +26,7 @@ import ch.alpine.tensor.sca.pow.Sqrt;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TsEntry;
 
-/* package */ enum StaticHelper {
+enum StaticHelper {
   ;
   /** @param vector
    * @return null if given vector does not contain finite scalars */

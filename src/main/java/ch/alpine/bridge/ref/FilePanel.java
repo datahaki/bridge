@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
-/* package */ class FilePanel extends StringPanel {
+class FilePanel extends StringPanel {
   private final JPanel jPanel = new JPanel(new BorderLayout());
   private final JButton jButton = new JButton(BUTTON_SEEK);
 

@@ -16,7 +16,7 @@ import ch.alpine.tensor.qty.Unit;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Sign;
 
-/* package */ enum UnicodeUnit {
+enum UnicodeUnit {
   INSTANCE;
 
   /** replaces the multiplication star '*' between base units

@@ -6,7 +6,7 @@ import ch.alpine.tensor.qty.Quantity;
 
 /** measure length of intervals between invocations of methods
  * {@link #seconds()} and {@link #hertz()} */
-/* package */ class IntervalClock {
+class IntervalClock {
   /** started upon construction */
   private long tic = System.nanoTime();
 

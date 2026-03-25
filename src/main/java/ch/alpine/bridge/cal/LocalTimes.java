@@ -4,7 +4,7 @@ package ch.alpine.bridge.cal;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
-/* package */ enum LocalTimes {
+enum LocalTimes {
   NANOS(ChronoUnit.NANOS) {
     @Override
     public LocalTime floor(LocalTime localTime) {

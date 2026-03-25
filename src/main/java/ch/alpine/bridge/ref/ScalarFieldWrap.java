@@ -18,7 +18,7 @@ import ch.alpine.tensor.chq.FiniteScalarQ;
 import ch.alpine.tensor.io.StringScalar;
 import ch.alpine.tensor.sca.Clip;
 
-/* package */ final class ScalarFieldWrap extends TensorFieldWrap {
+final class ScalarFieldWrap extends TensorFieldWrap {
   /** allow choosing of hours 0,1,...,23 */
   private static final Scalar MAX_ENUMERABLE_RANGE = RealScalar.of(24);
   // ---

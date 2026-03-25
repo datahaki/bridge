@@ -8,7 +8,7 @@ import javax.swing.JTextArea;
 import ch.alpine.bridge.ref.util.FieldsEditor;
 import ch.alpine.bridge.ref.util.ObjectProperties;
 
-/* package */ class ObjectPropertiesArea {
+class ObjectPropertiesArea {
   private final JTextArea jTextArea = new JTextArea();
   private final Object object;
 

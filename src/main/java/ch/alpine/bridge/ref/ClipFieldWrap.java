@@ -16,7 +16,7 @@ import ch.alpine.tensor.chq.IntegerQ;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
-/* package */ class ClipFieldWrap extends SelectableFieldWrap {
+class ClipFieldWrap extends SelectableFieldWrap {
   private final FieldClips fieldClips;
 
   public ClipFieldWrap(Field field) {

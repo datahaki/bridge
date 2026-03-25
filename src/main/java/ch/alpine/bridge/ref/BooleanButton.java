@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-/* package */ final class BooleanButton extends FieldPanel {
+final class BooleanButton extends FieldPanel {
   private final JPanel jPanel = new JPanel(new BorderLayout());
 
   public BooleanButton(FieldWrap fieldWrap, String text) {

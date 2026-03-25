@@ -11,7 +11,7 @@ import ch.alpine.bridge.swing.FontStyle;
 
 /** for strings that can be parsed into {@link Font}, for instance
  * Font[DialogInput, PLAIN, 15] */
-/* package */ class FontFieldWrap extends BaseFieldWrap {
+class FontFieldWrap extends BaseFieldWrap {
   public FontFieldWrap(Field field) {
     super(field);
   }

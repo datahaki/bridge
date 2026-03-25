@@ -8,7 +8,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-/* package */ class BooleanCheckBox extends FieldPanel {
+class BooleanCheckBox extends FieldPanel {
   /** the insets of the checkbox are typically 4,4,4,4 or 2,2,2,2 */
   private final JCheckBox jCheckBox = new JCheckBox();
   private final JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));

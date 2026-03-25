@@ -10,7 +10,7 @@ import javax.swing.JDialog;
 import ch.alpine.bridge.swing.DialogBuilder;
 import ch.alpine.bridge.swing.LocalDateDialog;
 
-/* package */ class LocalDatePanel extends DialogPanel {
+class LocalDatePanel extends DialogPanel {
   public LocalDatePanel(FieldWrap fieldWrap, LocalDate localDate) {
     super(fieldWrap, localDate);
   }

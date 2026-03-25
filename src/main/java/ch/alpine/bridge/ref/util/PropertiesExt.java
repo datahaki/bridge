@@ -4,7 +4,7 @@ package ch.alpine.bridge.ref.util;
 import java.util.HexFormat;
 import java.util.Properties;
 
-/* package */ enum PropertiesExt {
+enum PropertiesExt {
   ;
   /** code extracted as-is from {@link Properties}
    * 

@@ -10,7 +10,7 @@ import java.util.random.RandomGenerator;
 import ch.alpine.bridge.swing.FontDialog;
 import ch.alpine.bridge.swing.FontStyle;
 
-/* package */ enum Randoms {
+enum Randoms {
   ;
   /** @param randomGenerator
    * @return any time of the day within 24 hrs */

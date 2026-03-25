@@ -14,7 +14,7 @@ import ch.alpine.bridge.ref.ann.FieldExistingFile;
 import ch.alpine.bridge.ref.ann.FieldFileExtension;
 import ch.alpine.bridge.ref.ann.FieldFileExtensions;
 
-/* package */ class FileFieldWrap extends BaseFieldWrap {
+class FileFieldWrap extends BaseFieldWrap {
   private final FieldExistingDirectory fieldExistingDirectory;
   private final FieldExistingFile fieldExistingFile;
   private final List<FileFilter> fileFilters;

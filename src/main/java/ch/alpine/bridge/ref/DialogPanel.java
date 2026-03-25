@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import ch.alpine.bridge.awt.WindowClosed;
 
-/* package */ abstract class DialogPanel extends StringPanel {
+abstract class DialogPanel extends StringPanel {
   private final JPanel jPanel = new JPanel(new BorderLayout());
   private final JButton jButton = new JButton(BUTTON_SEEK);
   /** For each instance of {@link ColorPanel}, a single JColorChooser may be opened

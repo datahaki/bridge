@@ -5,7 +5,7 @@ import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/* package */ class BufferedHtmlUtf8 extends HtmlUtf8 {
+class BufferedHtmlUtf8 extends HtmlUtf8 {
   private final StringBuilder stringBuilder = new StringBuilder();
 
   protected BufferedHtmlUtf8(Path path) {

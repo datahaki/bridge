@@ -13,7 +13,7 @@ import javax.swing.border.EmptyBorder;
 import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
-/* package */ final class Rec2PanelBuilder implements PanelBuilder {
+final class Rec2PanelBuilder implements PanelBuilder {
   private final Deque<PanelBuilder> deque = new ArrayDeque<>();
 
   public Rec2PanelBuilder() {

@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-/* package */ enum StaticHelper {
+enum StaticHelper {
   ;
   public static final int WINDOW_MARGIN_WIDTH = 20;
   public static final int WINDOW_MARGIN_HEIGHT = 60;

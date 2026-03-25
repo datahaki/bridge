@@ -10,7 +10,7 @@ import ch.alpine.tensor.sca.pow.Power;
 
 /** <p>Reference:
  * https://en.wikipedia.org/wiki/CIELAB_color_space */
-/* package */ enum Cielabf {
+enum Cielabf {
   ;
   private static final Scalar DELTA = Rational.of(6, 29);
   private static final Scalar DELTA3 = Power.of(DELTA, 3);

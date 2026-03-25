@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 /** EXPERIMENTAL BRIDGE currently not used */
-/* package */ class RadioPanel extends FieldPanel {
+class RadioPanel extends FieldPanel {
   private final JPanel jPanel;
   private final JComponent jComponent;
   private final Map<Object, JRadioButton> map = new HashMap<>();

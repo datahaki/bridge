@@ -43,7 +43,7 @@ public class FileBlock {
     this.folder = folder;
   }
 
-  /* package */ boolean isActive() {
+  boolean isActive() {
     try {
       Path path = folder.resolve(".FileBlock.lock");
       randomAccessFile = new RandomAccessFile(path.toFile(), "rw");

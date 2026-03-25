@@ -7,7 +7,7 @@ import ch.alpine.tensor.qty.QuantityMagnitude;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Round;
 
-/* package */ enum StaticHelper {
+enum StaticHelper {
   ;
   private static final ScalarUnaryOperator NANOS = QuantityMagnitude.SI().in("ns");
 

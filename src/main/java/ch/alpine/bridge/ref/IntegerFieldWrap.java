@@ -17,7 +17,7 @@ import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
-/* package */ final class IntegerFieldWrap extends SelectableFieldWrap {
+final class IntegerFieldWrap extends SelectableFieldWrap {
   /** allow choosing of hours 0,1,...,23 */
   private static final Scalar WIDTH_LIMIT = RealScalar.of(24);
   // ---

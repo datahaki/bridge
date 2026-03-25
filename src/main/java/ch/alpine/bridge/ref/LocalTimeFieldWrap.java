@@ -10,7 +10,7 @@ import java.util.Objects;
  * 23:59
  * 23:59:45
  * 23:59:45.694872200 */
-/* package */ class LocalTimeFieldWrap extends BaseFieldWrap {
+class LocalTimeFieldWrap extends BaseFieldWrap {
   public LocalTimeFieldWrap(Field field) {
     super(field);
   }

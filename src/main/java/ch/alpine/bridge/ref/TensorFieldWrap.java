@@ -7,7 +7,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.io.StringScalarQ;
 
-/* package */ class TensorFieldWrap extends SelectableFieldWrap {
+class TensorFieldWrap extends SelectableFieldWrap {
   public TensorFieldWrap(Field field) {
     super(field);
   }

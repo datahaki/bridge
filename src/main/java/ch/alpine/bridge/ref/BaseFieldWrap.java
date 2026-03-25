@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 /** base class for all implementations of {@link FieldWrap} */
-/* package */ abstract class BaseFieldWrap implements FieldWrap {
+abstract class BaseFieldWrap implements FieldWrap {
   private final Field field;
 
   /** @param field non-null */

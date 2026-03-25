@@ -11,7 +11,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.VectorQ;
 
-/* package */ class RectangleFieldWrap extends SelectableFieldWrap {
+class RectangleFieldWrap extends SelectableFieldWrap {
   public RectangleFieldWrap(Field field) {
     super(field);
   }

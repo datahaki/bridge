@@ -18,7 +18,7 @@ import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 
-/* package */ class SliderPanel extends FieldPanel {
+class SliderPanel extends FieldPanel {
   private static final int RESOLUTION = 1000;
   private static final int TICKS_MAX = 20;
   // ---
