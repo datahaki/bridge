@@ -13,4 +13,8 @@ public enum GitHubCI {
     if (isGitHubCI)
       IO.println(" [" + Level.INFO + "] " + object);
   }
+
+  public static boolean isRunner() {
+    return isGitHubCI;
+  }
 }

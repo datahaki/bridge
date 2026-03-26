@@ -6,10 +6,14 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import ch.alpine.bridge.io.GitHubCI;
+
 public enum OffscreenRender {
   ;
   public static BufferedImage of(Container container, int imageType) {
     Dimension dimension = container.getSize();
+    if (GitHubCI.isRunner())
+      IO.println("OffscreenRender: " + dimension);
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, imageType);
     Graphics2D graphics = bufferedImage.createGraphics();
     container.printAll(graphics);
