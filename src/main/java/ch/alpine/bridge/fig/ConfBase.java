@@ -20,7 +20,7 @@ public abstract class ConfBase implements Serializable {
     this.length = length;
     this.clip = clip;
     Scalar sw = RealScalar.of(length - 1);
-    model2pixel = suo.apply(sw.divide(clip.width()));
+    model2pixel = suo.apply(sw.divide(clip.width())); // FIXME div by zero !?
     pixel2model = suo.apply(clip.width().divide(sw));
   }
 

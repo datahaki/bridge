@@ -5,8 +5,8 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.Clip;
 
 class ConfDecr extends ConfBase {
-  public ConfDecr(int x, int width, Clip xRange) {
-    super(x + width - 1, width, xRange, Scalar::negate);
+  public ConfDecr(int ofs, int length, Clip clip) {
+    super(ofs + length - 1, length, clip, Scalar::negate);
   }
 
   @Override
