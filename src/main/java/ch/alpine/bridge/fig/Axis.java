@@ -44,7 +44,7 @@ abstract class Axis {
     Clip clip = confBase.clip();
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(REF, confBase.width)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(REF, confBase.length)));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
@@ -57,12 +57,12 @@ abstract class Axis {
       }
     } else {
       int val = 50;
-      int rem = confBase.width / 3;
+      int rem = confBase.length / 3;
       if (this instanceof AxisY && rem < val) {
         LineMetrics lineMetrics = font.getLineMetrics("Ag", FONT_RENDER_CONTEXT);
         val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
       }
-      Ticks.stream(clip, Rational.of(val, confBase.width)) //
+      Ticks.stream(clip, Rational.of(val, confBase.length)) //
           .forEach(tick -> navigableMap.put((int) confBase.pixel(tick), tick));
       dateTimeFormatter = null;
     }

@@ -11,6 +11,6 @@ class ConfDecr extends ConfBase {
 
   @Override
   public ConfDecr clipped() {
-    return new ConfDecr(0, width, clip);
+    return new ConfDecr(0, length, clip);
   }
 }

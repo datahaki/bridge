@@ -23,7 +23,7 @@ class AxisX extends Axis {
 
   @Override
   protected void drawAxisLine(Graphics2D graphics, Point point) {
-    graphics.drawLine(point.x, point.y, point.x + confBase.width - 1, point.y);
+    graphics.drawLine(point.x, point.y, point.x + confBase.length - 1, point.y);
   }
 
   @Override

@@ -10,16 +10,16 @@ import ch.alpine.tensor.sca.Clip;
 
 public abstract class ConfBase implements Serializable {
   final int ofs;
-  final int width;
+  final int length;
   final Clip clip;
   final Scalar model2pixel;
   final Scalar pixel2model;
 
-  public ConfBase(int ofs, int width, Clip clip, ScalarUnaryOperator suo) {
+  public ConfBase(int ofs, int length, Clip clip, ScalarUnaryOperator suo) {
     this.ofs = ofs;
-    this.width = width;
+    this.length = length;
     this.clip = clip;
-    Scalar sw = RealScalar.of(width - 1);
+    Scalar sw = RealScalar.of(length - 1);
     model2pixel = suo.apply(sw.divide(clip.width()));
     pixel2model = suo.apply(clip.width().divide(sw));
   }
