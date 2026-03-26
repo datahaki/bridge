@@ -9,11 +9,11 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.Clip;
 
 public abstract class ConfBase implements Serializable {
-  final int ofs;
-  final int length;
-  final Clip clip;
-  final Scalar model2pixel;
-  final Scalar pixel2model;
+  private final int ofs;
+  private final int length;
+  private final Clip clip;
+  private final Scalar model2pixel;
+  private final Scalar pixel2model;
 
   public ConfBase(int ofs, int length, Clip clip, ScalarUnaryOperator suo) {
     this.ofs = ofs;
@@ -26,6 +26,8 @@ public abstract class ConfBase implements Serializable {
 
   public abstract ConfBase clipped();
 
+  /** @param x
+   * @return pixel coordinate of x */
   public final double pixel(Scalar x) {
     return ofs + x.subtract(clip.min()).multiply(model2pixel).number().doubleValue();
   }
@@ -36,6 +38,10 @@ public abstract class ConfBase implements Serializable {
 
   public final Scalar pixel2model() {
     return pixel2model;
+  }
+
+  public int length() {
+    return length;
   }
 
   public final Clip clip() {

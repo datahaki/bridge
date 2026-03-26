@@ -2,6 +2,8 @@
 package ch.alpine.bridge.fig.plt;
 
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.NavigableSet;
 import java.util.Objects;
@@ -14,14 +16,13 @@ import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.bridge.fig.Ticks;
 import ch.alpine.tensor.Rational;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.Throw;
 import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.red.MinMax;
-import ch.alpine.tensor.sca.Ceiling;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.Sign;
@@ -55,7 +56,7 @@ public class CandlestickChart extends BaseShowable {
     if (timeSeries.isEmpty())
       return;
     // TODO BRIDGE TsPlot should also handle vectors
-    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.confX().clip(), timeSeries.domain());
+    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.cbb().clip(0), timeSeries.domain());
     if (optional.isPresent()) {
       Clip x_clip = optional.orElseThrow();
       if (Sign.isPositive(x_clip.width())) {
@@ -76,12 +77,14 @@ public class CandlestickChart extends BaseShowable {
                 .map(TsEntry::value) //
                 .map(tsf).collect(MinMax.toClip());
             if (Objects.nonNull(clip)) {
-              // TODO somewhat breaks design
-              double x0 = showableConfig.confX().pixel(interval.min());
-              double x1 = showableConfig.confX().pixel(interval.max());
-              double y0 = showableConfig.confY().pixel(clip.max());
-              double y1 = showableConfig.confY().pixel(clip.min());
-              graphics.fillRect((int) x0, (int) y0, (int) (x1 - x0), (int) (y1 - y0 + 1));
+              Point2D point0 = showableConfig.toPoint2D(Tensors.of(interval.min(), clip.max()));
+              double x0 = point0.getX();
+              double y0 = point0.getY();
+              Point2D point1 = showableConfig.toPoint2D(Tensors.of(interval.max(), clip.min()));
+              double x1 = point1.getX();
+              double y1 = point1.getY();
+              Throw.unless(y0 <= y1);
+              graphics.fill(new Rectangle2D.Double(x0, y0, x1 - x0, y1 - y0));
             }
             prev = next;
           }
@@ -93,9 +96,10 @@ public class CandlestickChart extends BaseShowable {
   // TODO BRIDGE refactor with showableConfig
   public static NavigableSet<Scalar> asd(Clip clip, int rectangle_width) {
     NavigableSet<Scalar> navigableMap = new TreeSet<>();
+    Scalar factor = Rational.of(MIN_SPACE, rectangle_width);
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(MIN_SPACE, rectangle_width)));
+          DateTimeInterval.findAboveEquals(clip.width().multiply(factor));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
@@ -104,17 +108,8 @@ public class CandlestickChart extends BaseShowable {
         navigableMap.add(dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
-    } else {
-      // TODO this is not covered by ShowDemo
-      // TODO use Ticks.stream
-      Scalar dX = Ticks.getDecimalStep(clip.width().divide(RealScalar.of(rectangle_width)).multiply(RealScalar.of(MIN_SPACE)));
-      for ( //
-          Scalar xValue = Ceiling.toMultipleOf(dX).apply(clip.min()); //
-          Scalars.lessEquals(xValue, clip.max()); //
-          xValue = xValue.add(dX)) {
-        navigableMap.add(xValue);
-      }
-    }
+    } else
+      Ticks.stream(clip, factor).forEach(navigableMap::add);
     return navigableMap;
   }
 

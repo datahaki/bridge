@@ -25,7 +25,9 @@ public enum Ticks {
   ;
   private static final Scalar[] RATIOS = { //
       Rational.of(1, 5), //
-      Rational.of(1, 2) };
+      Rational.of(1, 4), //
+      Rational.of(1, 2), //
+  };
 
   /** @param clip
    * @param factor e.g. 1) fontSize / plotHeight, or 2) Rational.of(50, dimension.width) ...
@@ -40,8 +42,7 @@ public enum Ticks {
 
   /** @param scalar positive
    * @return */
-  // TODO reduce visibility
-  public static Scalar getDecimalStep(Scalar scalar) {
+  private static Scalar getDecimalStep(Scalar scalar) {
     Sign.requirePositive(scalar);
     Scalar decStep = Quantity.of( //
         Power.of(10, Ceiling.FUNCTION.apply(Log10.FUNCTION.apply(Unprotect.withoutUnit(scalar)))), //

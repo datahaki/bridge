@@ -90,6 +90,8 @@ public enum SpecialChars {
   TWOHANDS("🙌"),
   SURPRISE("🎉"),
   GRADUATION("🎓"),
+  PANTHEON("🏛️"),
+  CERTIFICATE("🧾"),
   CRISTAL("🔮"),
   PALETTE("🎨"),
   MEDAL_1("🥇"),

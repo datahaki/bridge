@@ -555,6 +555,25 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
+  CandlestickHrs {
+    @Override
+    public Show getShow() {
+      Scalar mu = Quantity.of(-0.3e-10, "m*s^-1");
+      Scalar sigma = Quantity.of(1e-3, "m*s^-1/2");
+      Scalar t_zero = DateTime.of(2000, 3, 4, 22, 15);
+      Scalar t_fine = DateTime.of(2020, 3, 4, 22, 16);
+      RandomProcess randomProcess = WienerProcess.of(mu, sigma, t_zero.subtract(t_zero), Quantity.of(-3, "m"));
+      RandomFunction randomFunction = RandomFunction.of(randomProcess);
+      Distribution distribution = UniformDistribution.of(t_zero.subtract(t_zero), t_fine.subtract(t_zero));
+      RandomVariate.of(distribution, 1000).maps(randomFunction::evaluate);
+      Show show = new Show(ColorDataLists._097.strict().deriveWithAlpha(192));
+      show.setShowLabel("Candlestick Chart");
+      TimeSeries timeSeries = randomFunction.timeSeries();
+      show.add(CandlestickChart.of(timeSeries)).setLabel("candles");
+      show.add(TsPlot.of(timeSeries)).setLabel("timeSeries");
+      return show;
+    }
+  },
   ReImPlot0 {
     @Override
     public Show getShow() {

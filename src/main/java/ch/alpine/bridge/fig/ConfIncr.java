@@ -10,6 +10,6 @@ class ConfIncr extends ConfBase {
 
   @Override
   public ConfIncr clipped() {
-    return new ConfIncr(0, length, clip);
+    return new ConfIncr(0, length(), clip());
   }
 }
