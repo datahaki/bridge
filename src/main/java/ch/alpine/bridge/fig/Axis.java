@@ -76,7 +76,7 @@ abstract class Axis {
       return;
     RenderQuality.smoothLine(graphics, false);
     Rectangle rectangle = showableConfig.rectangle();
-    if (showOptions.contains(AxisOption.GRID)) { // grid lines |
+    if (showOptions.contains(AxisOption.GRID)) { // grid lines | or _
       graphics.setStroke(STROKE_GRIDLINES);
       graphics.setColor(COLOR_GRIDLINES);
       for (int pixel : navigableMap.keySet())
@@ -94,11 +94,21 @@ abstract class Axis {
     RenderQuality.smoothLine(graphics, true);
   }
 
+  /** @param graphics
+   * @param rectangle
+   * @param pixel */
   protected abstract void drawGridLine(Graphics2D graphics, Rectangle rectangle, int pixel);
 
+  /** @param graphics
+   * @param point */
   protected abstract void drawAxisLine(Graphics2D graphics, Point point);
 
+  /** @param graphics
+   * @param point
+   * @param pixel */
   protected abstract void drawAxisTick(Graphics2D graphics, Point point, int pixel);
 
+  /** @param graphics
+   * @param point */
   protected abstract void protected_render(Graphics2D graphics, Point point);
 }

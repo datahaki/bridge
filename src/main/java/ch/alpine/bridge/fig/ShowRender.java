@@ -54,22 +54,21 @@ record ShowRender(List<Showable> showables, ShowOptions showOptions, CoordinateB
           ? ShowableConfig.yDecr(rectangle, cbb)
           : ShowableConfig.yIncr(rectangle, cbb);
       // ---
-      ShowableConfig showableConfigClipped = showableConfig.clipped();
+      ShowableConfig showablePruned = showableConfig.pruned();
+      Graphics2D g_pruned = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
       for (Showable showable : showables)
         if (showable instanceof BackgroundPlotMarker) {
-          Graphics2D g = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-          showable.render(showableConfigClipped, g);
-          g.dispose();
+          showable.render(showablePruned, g_pruned);
           showable.tender(showableConfig, graphics);
         }
-      new GridDrawer(showOptions).render(showableConfig, graphics);
+      new GridDrawer(showOptions) // requires drawing outside of rectangle
+          .render(showableConfig, graphics);
       for (Showable showable : showables)
         if (!(showable instanceof BackgroundPlotMarker)) {
-          Graphics2D g = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-          showable.render(showableConfigClipped, g);
-          g.dispose();
+          showable.render(showablePruned, g_pruned);
           showable.tender(showableConfig, graphics);
         }
+      g_pruned.dispose();
     }
     if (showOptions.contains(ShowOption.LEGEND)) {
       FontMetrics fontMetrics = graphics.getFontMetrics();

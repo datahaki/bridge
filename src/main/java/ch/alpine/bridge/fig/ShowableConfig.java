@@ -50,11 +50,11 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Con
   }
 
   /** @return */
-  public ShowableConfig clipped() {
+  public ShowableConfig pruned() {
     return new ShowableConfig( //
         new Rectangle(0, 0, rectangle.width, rectangle.height), //
         cbb, //
-        confX.clipped(), //
-        confY.clipped());
+        confX.pruned(), //
+        confY.pruned());
   }
 }

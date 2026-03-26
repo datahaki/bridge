@@ -16,6 +16,6 @@ class AxisYL extends AxisY {
 
   @Override
   int stringx(int x, int width) {
-    return x - width - 5;
+    return x - width - GAP;
   }
 }

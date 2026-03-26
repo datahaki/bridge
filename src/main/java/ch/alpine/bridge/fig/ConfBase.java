@@ -6,6 +6,7 @@ import java.io.Serializable;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.sca.Clip;
 
 public abstract class ConfBase implements Serializable {
@@ -16,15 +17,17 @@ public abstract class ConfBase implements Serializable {
   private final Scalar pixel2model;
 
   public ConfBase(int ofs, int length, Clip clip, ScalarUnaryOperator suo) {
+    Integers.requireLessThan(1, length);
     this.ofs = ofs;
     this.length = length;
     this.clip = clip;
     Scalar sw = RealScalar.of(length - 1);
-    model2pixel = suo.apply(sw.divide(clip.width())); // FIXME div by zero !?
+    model2pixel = suo.apply(sw.divide(clip.width()));
     pixel2model = suo.apply(clip.width().divide(sw));
   }
 
-  public abstract ConfBase clipped();
+  /** @return this (ConfIncr or ConfDecr) but with ofs == 0 */
+  public abstract ConfBase pruned();
 
   /** @param x
    * @return pixel coordinate of x */

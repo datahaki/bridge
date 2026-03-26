@@ -12,6 +12,8 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;
 
 abstract class AxisY extends Axis {
+  static final int GAP = 5;
+
   public AxisY(ConfBase confBase, AxisOptions axisOptions) {
     super(confBase, axisOptions);
   }
@@ -42,5 +44,8 @@ abstract class AxisY extends Axis {
     }
   }
 
+  /** @param x
+   * @param width
+   * @return x-coordinate of where to draw the string */
   abstract int stringx(int x, int width);
 }
