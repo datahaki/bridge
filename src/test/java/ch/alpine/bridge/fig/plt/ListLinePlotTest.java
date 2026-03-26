@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.plt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,8 +16,9 @@ import java.util.random.RandomGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import ch.alpine.bridge.fig.plt.ListLinePlot;
-import ch.alpine.bridge.fig.plt.ListPlot;
+import ch.alpine.bridge.fig.Rasterize;
+import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.lang.SI;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RealScalar;
