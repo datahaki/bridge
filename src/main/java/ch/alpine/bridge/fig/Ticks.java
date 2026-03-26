@@ -32,7 +32,8 @@ public enum Ticks {
    * @return */
   public static Stream<Scalar> stream(Clip clip, Scalar factor) {
     Scalar step = getDecimalStep(clip.width().multiply(factor));
-    return Stream.iterate(Ceiling.toMultipleOf(step).apply(clip.min()), //
+    return Stream.iterate( //
+        Ceiling.toMultipleOf(step).apply(clip.min()), //
         Scalars.lessEquals(clip.max()), //
         step::add);
   }

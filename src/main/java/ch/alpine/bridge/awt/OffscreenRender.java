@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 public enum OffscreenRender {
   ;
   public static BufferedImage of(Container container, Dimension dimension, int imageType) {
+    IO.println("OffscreenRender=" + dimension);
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, imageType);
     Graphics2D graphics = bufferedImage.createGraphics();
     container.printAll(graphics);
