@@ -25,7 +25,6 @@ import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.red.MinMax;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
-import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TsEntry;
 
@@ -59,7 +58,7 @@ public class CandlestickChart extends BaseShowable {
     Optional<Clip> optional = Clips.optionalIntersection(showableConfig.cbb().clip(0), timeSeries.domain());
     if (optional.isPresent()) {
       Clip x_clip = optional.orElseThrow();
-      if (Sign.isPositive(x_clip.width())) {
+      if (x_clip.isNonDegenerate()) {
         // TODO BRIDGE TsPlot should also handle vectors
         // timeSeries.block(x_clip, false).stream() //
         // .forEach(tsEntry -> tsf.apply(tsEntry.value()));
@@ -99,7 +98,7 @@ public class CandlestickChart extends BaseShowable {
     Scalar factor = Rational.of(MIN_SPACE, rectangle_width);
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(factor));
+          DateTimeInterval.findAboveEquals(clip.length().multiply(factor));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt

@@ -33,8 +33,8 @@ public record ReliefImage(BufferedImage bufferedImage, CoordinateBoundingBox cbb
     BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
     MatrixGradient matrixGradient = MatrixGradient.of(matrix);
     List<Integer> list = Dimensions.of(matrix);
-    Scalar h0 = RealScalar.of(list.get(0) - 1).divide(cbb.clip(0).width());
-    Scalar h1 = RealScalar.of(list.get(1) - 1).divide(cbb.clip(1).width());
+    Scalar h0 = RealScalar.of(list.get(0) - 1).divide(cbb.clip(0).length());
+    Scalar h1 = RealScalar.of(list.get(1) - 1).divide(cbb.clip(1).length());
     Tensor result = matrixGradient.rescale(h0, h1).rescale().array().dot(REF);
     int[] data = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
     int index = 0;

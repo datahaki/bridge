@@ -33,7 +33,7 @@ public enum Ticks {
    * @param factor e.g. 1) fontSize / plotHeight, or 2) Rational.of(50, dimension.width) ...
    * @return */
   public static Stream<Scalar> stream(Clip clip, Scalar factor) {
-    Scalar step = getDecimalStep(clip.width().multiply(factor));
+    Scalar step = getDecimalStep(clip.length().multiply(factor));
     return Stream.iterate( //
         Ceiling.toMultipleOf(step).apply(clip.min()), //
         Scalars.lessEquals(clip.max()), //

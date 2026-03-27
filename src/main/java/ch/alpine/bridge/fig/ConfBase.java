@@ -22,8 +22,8 @@ public abstract class ConfBase implements Serializable {
     this.length = length;
     this.clip = clip;
     Scalar sw = RealScalar.of(length - 1);
-    model2pixel = suo.apply(sw.divide(clip.width()));
-    pixel2model = suo.apply(clip.width().divide(sw));
+    model2pixel = suo.apply(sw.divide(clip.length()));
+    pixel2model = suo.apply(clip.length().divide(sw));
   }
 
   /** @return this (ConfIncr or ConfDecr) but with ofs == 0 */

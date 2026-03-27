@@ -16,7 +16,6 @@ import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.opt.nd.CoordinateBounds;
 import ch.alpine.tensor.sca.Clip;
-import ch.alpine.tensor.sca.Sign;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/ParametricPlot.html">ParametricPlot</a> */
@@ -39,7 +38,7 @@ public class ParametricPlot extends BaseShowable {
 
   @Override
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    if (Sign.isPositive(domain.width())) {
+    if (domain.isNonDegenerate()) {
       graphics.setColor(getColor());
       graphics.setStroke(getStroke());
       // TODO BRIDGE adaptive resolution (see SpiralDemo)
@@ -59,7 +58,7 @@ public class ParametricPlot extends BaseShowable {
 
   @Override
   public Optional<CoordinateBoundingBox> fullPlotRange() {
-    if (Objects.nonNull(domain) && Sign.isPositive(domain.width()))
+    if (Objects.nonNull(domain) && domain.isNonDegenerate())
       return Optional.of(CoordinateBounds.of(Subdivide.increasing(domain, RESOLUTION).maps(stf)));
     return Optional.empty();
   }

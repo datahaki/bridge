@@ -21,7 +21,6 @@ import ch.alpine.tensor.alg.Range;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
-import ch.alpine.tensor.sca.Sign;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/DiscretePlot.html">DiscretePlot</a> */
@@ -62,7 +61,7 @@ public class DiscretePlot extends BaseShowable {
 
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
-    if (Objects.nonNull(domain) && Sign.isPositive(domain.width())) {
+    if (Objects.nonNull(domain) && domain.isNonDegenerate()) {
       Tensor samples = Range.of( //
           Scalars.bigIntegerValueExact(domain.min()), //
           Scalars.bigIntegerValueExact(domain.max()));

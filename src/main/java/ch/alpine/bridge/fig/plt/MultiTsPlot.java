@@ -18,7 +18,6 @@ import ch.alpine.tensor.img.ColorDataLists;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
-import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.tmp.TimeSeries;
 
 /** inspired by
@@ -58,7 +57,7 @@ public class MultiTsPlot extends BaseShowable {
     Optional<Clip> optional = Clips.optionalIntersection(showableConfig.confX().clip(), timeSeries.domain());
     if (optional.isPresent()) {
       Clip clip = optional.orElseThrow();
-      if (Sign.isPositive(clip.width())) {
+      if (clip.isNonDegenerate()) {
         clip = StaticHelper.extend(timeSeries, clip);
         ScalarTensorFunction suo = x -> tuo.apply(timeSeries.evaluate(x));
         Tensor v0 = suo.apply(clip.min());

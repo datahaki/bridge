@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Stroke;
 
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityUnit;
@@ -29,9 +28,9 @@ enum StaticHelper {
   }
 
   public static Clip nonZero(Clip clip) {
-    return Scalars.isZero(clip.width()) //
-        ? Clips.centered(clip.min(), delta(clip.min()))
-        : clip;
+    return clip.isNonDegenerate() //
+        ? clip
+        : Clips.centered(clip.min(), delta(clip.min()));
   }
 
   public static CoordinateBoundingBox nonZero(CoordinateBoundingBox cbb) {

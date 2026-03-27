@@ -21,7 +21,6 @@ import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.num.ReIm;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
-import ch.alpine.tensor.sca.Sign;
 
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ReImPlot.html">ReImPlot</a> */
@@ -101,7 +100,7 @@ public class ReImPlot extends UnaryShowable {
 
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
-    if (Sign.isPositive(domain.width())) {
+    if (domain.isNonDegenerate()) {
       Clip clip = StaticHelper.minMax(Subdivide.increasing(domain, RESOLUTION) //
           .stream() //
           .map(Scalar.class::cast) //

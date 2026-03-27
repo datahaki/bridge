@@ -64,7 +64,7 @@ final class IntegerFieldWrap extends SelectableFieldWrap {
           Clip clip = Objects.isNull(fieldClips) //
               ? Clips.interval(value - 1, value + 1)
               : fieldClips.clip();
-          if (Scalars.lessEquals(clip.width(), WIDTH_LIMIT))
+          if (Scalars.lessEquals(clip.length(), WIDTH_LIMIT))
             return Range.closed(clip).stream().collect(Collectors.toList());
           Scalar[] scalars = new Scalar[] { //
               clip.min(), //

@@ -14,7 +14,6 @@ import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
-import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.tmp.TimeSeries;
 
 /** inspired by
@@ -48,7 +47,7 @@ public class TsPlot extends BaseShowable {
     Optional<Clip> optional = Clips.optionalIntersection(showableConfig.confX().clip(), timeSeries.domain());
     if (optional.isPresent()) {
       Clip clip2 = optional.orElseThrow();
-      if (Sign.isPositive(clip2.width())) {
+      if (clip2.isNonDegenerate()) {
         // Clip clip = StaticHelper.extend(timeSeries, clip2);
         // ScalarUnaryOperator suo = x -> tsf.apply(timeSeries.evaluate(x));
         graphics.setColor(getColor());

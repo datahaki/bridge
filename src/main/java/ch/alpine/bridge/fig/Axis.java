@@ -19,7 +19,6 @@ import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Clip;
 
@@ -44,7 +43,7 @@ abstract class Axis {
     Clip clip = confBase.clip();
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.width().multiply(Rational.of(REF, confBase.length())));
+          DateTimeInterval.findAboveEquals(clip.length().multiply(Rational.of(REF, confBase.length())));
       DateTime startAttempt = dateTimeInterval.floor(clip.min());
       DateTime dateTime = clip.isInside(startAttempt) //
           ? startAttempt
@@ -72,26 +71,26 @@ abstract class Axis {
    * @param point
    * @param _g */
   protected final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
-    if (Scalars.isZero(confBase.clip().width()))
-      return;
-    RenderQuality.smoothLine(graphics, false);
-    Rectangle rectangle = showableConfig.rectangle();
-    if (showOptions.contains(AxisOption.GRID)) { // grid lines | or _
-      graphics.setStroke(STROKE_GRIDLINES);
-      graphics.setColor(COLOR_GRIDLINES);
-      for (int pixel : navigableMap.keySet())
-        drawGridLine(graphics, rectangle, pixel);
+    if (confBase.clip().isNonDegenerate()) {
+      RenderQuality.smoothLine(graphics, false);
+      Rectangle rectangle = showableConfig.rectangle();
+      if (showOptions.contains(AxisOption.GRID)) { // grid lines | or _
+        graphics.setStroke(STROKE_GRIDLINES);
+        graphics.setColor(COLOR_GRIDLINES);
+        for (int pixel : navigableMap.keySet())
+          drawGridLine(graphics, rectangle, pixel);
+      }
+      if (showOptions.contains(AxisOption.TICK)) {
+        graphics.setStroke(StaticHelper.STROKE_SOLID);
+        graphics.setColor(COLOR_HELPER);
+        drawAxisLine(graphics, point);
+        for (int piy : navigableMap.keySet())
+          drawAxisTick(graphics, point, piy);
+        graphics.setFont(font);
+        protected_render(graphics, point);
+      }
+      RenderQuality.smoothLine(graphics, true);
     }
-    if (showOptions.contains(AxisOption.TICK)) {
-      graphics.setStroke(StaticHelper.STROKE_SOLID);
-      graphics.setColor(COLOR_HELPER);
-      drawAxisLine(graphics, point);
-      for (int piy : navigableMap.keySet())
-        drawAxisTick(graphics, point, piy);
-      graphics.setFont(font);
-      protected_render(graphics, point);
-    }
-    RenderQuality.smoothLine(graphics, true);
   }
 
   /** @param graphics

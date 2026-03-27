@@ -20,7 +20,7 @@ class StaticHelperTest {
     DateTime scalar = DateTime.now();
     Clip clip = Clips.interval(scalar, scalar);
     clip = StaticHelper.nonZero(clip);
-    assertEquals(clip.width(), Quantity.of(2, "s"));
+    assertEquals(clip.length(), Quantity.of(2, "s"));
   }
 
   @Test
@@ -28,7 +28,7 @@ class StaticHelperTest {
     Scalar scalar = Quantity.of(4, "m");
     Clip clip = Clips.interval(scalar, scalar);
     clip = StaticHelper.nonZero(clip);
-    assertEquals(clip.width(), Quantity.of(2, "m"));
+    assertEquals(clip.length(), Quantity.of(2, "m"));
   }
 
   @Test

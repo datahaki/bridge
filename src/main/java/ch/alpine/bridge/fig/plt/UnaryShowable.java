@@ -28,10 +28,8 @@ public abstract class UnaryShowable extends BaseShowable {
 
   protected final Optional<Clip> x_clip(ShowableConfig showableConfig) {
     Clip x_clip = showableConfig.confX().clip();
-    if (set.contains(PlotOption.STRICT)) {
-      // TODO BRIDGE filter 0 < width but never width == 0
-      x_clip = Clips.optionalIntersection(x_clip, domain).orElse(null);
-    }
-    return Optional.ofNullable(x_clip);
+    return set.contains(PlotOption.STRICT) //
+        ? Clips.optionalIntersection(x_clip, domain).filter(Clip::isNonDegenerate)
+        : Optional.ofNullable(x_clip);
   }
 }

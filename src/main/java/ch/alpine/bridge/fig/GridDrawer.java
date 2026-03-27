@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import ch.alpine.bridge.lang.UnicodeString;
-import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.sca.Clip;
 
@@ -28,12 +27,12 @@ public class GridDrawer {
     Clip yRange = showableConfig.confY().clip();
     // ---
     final int piy = rectangle.y + rectangle.height - 1 + StaticHelper.GAP;
-    if (showOptions.contains(ShowOption.AXIS_X) && !Scalars.isZero(xRange.width()))
+    if (showOptions.contains(ShowOption.AXIS_X) && xRange.isNonDegenerate())
       new AxisX(showableConfig.confX(), showOptions.compileAxisX()).render( //
           showableConfig, //
           new Point(rectangle.x, piy), //
           graphics);
-    if (showOptions.contains(ShowOption.AXIS_Y) && !Scalars.isZero(yRange.width()))
+    if (showOptions.contains(ShowOption.AXIS_Y) && yRange.isNonDegenerate())
       new AxisYL(showableConfig.confY(), showOptions.compileAxisY()).render( //
           showableConfig, //
           new Point(rectangle.x - StaticHelper.GAP, rectangle.y), //

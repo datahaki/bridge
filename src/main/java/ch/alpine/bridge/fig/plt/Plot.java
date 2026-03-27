@@ -16,7 +16,6 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.itp.LinearInterpolation;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.sca.Clip;
-import ch.alpine.tensor.sca.Sign;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Plot.html">Plot</a> */
@@ -46,7 +45,7 @@ public class Plot extends UnaryShowable {
     Optional<Clip> optional = x_clip(showableConfig);
     if (optional.isPresent()) {
       Clip x_clip = optional.orElseThrow();
-      if (Sign.isPositive(x_clip.width()))
+      if (x_clip.isNonDegenerate())
         render(showableConfig, graphics, x_clip);
     }
   }
@@ -80,7 +79,7 @@ public class Plot extends UnaryShowable {
 
   @Override // from Showable
   public Optional<CoordinateBoundingBox> fullPlotRange() {
-    if (Sign.isPositive(domain.width())) {
+    if (domain.isNonDegenerate()) {
       Clip clip = StaticHelper.minMax(Subdivide.increasing(domain, RESOLUTION).maps(suo));
       if (Objects.nonNull(clip))
         return Optional.of(CoordinateBoundingBox.of(domain, clip));

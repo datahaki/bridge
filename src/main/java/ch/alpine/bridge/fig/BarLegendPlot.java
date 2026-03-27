@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.io.ImageFormat;
@@ -34,8 +33,8 @@ public abstract class BarLegendPlot extends BaseShowable {
   }
 
   public final boolean getAspectRatioOneHint() {
-    Unit unit0 = QuantityUnit.of(cbb.clip(0).width());
-    Unit unit1 = QuantityUnit.of(cbb.clip(1).width());
+    Unit unit0 = QuantityUnit.of(cbb.clip(0).length());
+    Unit unit1 = QuantityUnit.of(cbb.clip(1).length());
     return aspectRatioOneHint //
         && unit0.equals(unit1);
   }
@@ -54,7 +53,7 @@ public abstract class BarLegendPlot extends BaseShowable {
       graphics.drawImage(ImageFormat.of(Subdivide.decreasing(Clips.unit(), rectangle.height - 1).maps(Tensors::of).maps(barLegend.colorDataGradient())), //
           pix, rectangle.y, width, rectangle.height, null);
       Clip clip = barLegend.clip();
-      if (Scalars.nonZero(clip.width())) {
+      if (clip.isNonDegenerate()) {
         ConfBase confBase = new ConfDecr(rectangle.y, rectangle.height, clip);
         AxisOptions axisOptions = new AxisOptions();
         axisOptions.set(AxisOption.TICK, true);

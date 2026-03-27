@@ -157,7 +157,7 @@ public final class Show implements Serializable {
           aspect = set.iterator().next();
       }
       if (Objects.nonNull(aspect)) {
-        Tensor a = Tensor.of(cbb.stream().map(Clip::width));
+        Tensor a = Tensor.of(cbb.stream().map(Clip::length));
         a.set(aspect::multiply, 1);
         Tensor b = Tensors.vector(rectangle.width, rectangle.height);
         Optional<Tensor> optional = CbbFit.inside(a, b);

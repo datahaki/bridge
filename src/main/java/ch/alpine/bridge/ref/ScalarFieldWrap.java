@@ -57,7 +57,7 @@ final class ScalarFieldWrap extends TensorFieldWrap {
     if (list.isEmpty() && Objects.nonNull(fieldClips)) {
       if (fieldClips.isFinite() && fieldClips.isInteger()) {
         Clip clip = fieldClips.clip();
-        if (Scalars.lessEquals(clip.width(), MAX_ENUMERABLE_RANGE))
+        if (Scalars.lessEquals(clip.length(), MAX_ENUMERABLE_RANGE))
           return Range.closed(clip).stream().map(Scalar.class::cast).collect(Collectors.toList());
       }
       return Stream.of(fieldClips.min(), fieldClips.max()) //
