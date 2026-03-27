@@ -3,21 +3,21 @@ package ch.alpine.bridge.cgr;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.junit.jupiter.api.Test;
+
+import ch.alpine.tensor.ext.Int;
 
 class ClassDiscoveryTest {
   @Test
   void testSimple() throws Exception {
-    AtomicInteger count = new AtomicInteger();
+    Int myI = new Int();
     ClassVisitor classVisitor = new ClassVisitor() {
       @Override
       public void accept(String jarfile, Class<?> cls) {
-        count.getAndIncrement();
+        myI.getAndIncrement();
       }
     };
     ClassDiscovery.execute(ClassPaths.getDefault(), classVisitor);
-    assertTrue(1000 < count.intValue());
+    assertTrue(2000 < myI.intValue());
   }
 }

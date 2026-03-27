@@ -17,9 +17,6 @@ import javax.imageio.ImageIO;
 import ch.alpine.bridge.io.URLRead;
 import ch.alpine.tensor.ext.Cache;
 
-/**
- * 
- */
 public class MapImagesCache {
   private final BufferedImage fallback = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
   private final Cache<Tile, BufferedImage> cache = Cache.of(this::getSafe, 3 * 128);

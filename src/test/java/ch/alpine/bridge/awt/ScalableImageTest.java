@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.img.ImageResize;
 
 class ScalableImageTest {
@@ -26,5 +27,6 @@ class ScalableImageTest {
     assertSame(im4, im5);
     Image im6 = scalableImage.getScaledInstance(ImageResize.DEGREE_1, 200, 100);
     assertNotSame(im5, im6);
+    scalableImage.getScaledInstance(ImageResize.DEGREE_1, RealScalar.of(0.2));
   }
 }
