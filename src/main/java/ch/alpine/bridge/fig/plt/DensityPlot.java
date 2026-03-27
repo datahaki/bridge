@@ -79,15 +79,14 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
       Rescale rescale = new Rescale(meshgrid.image(sbo));
       BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
       scalableImage = new ScalableImage(bufferedImage);
-      // IO.println("w="+bufferedImage.getWidth()+" h="+bufferedImage.getHeight());
       clip = rescale.clip();
     }
   }
 
   private DensityPlot(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     super(cbb);
-    this.sbo = sbo;
-    this.colorDataGradient = colorDataGradient;
+    this.sbo = Objects.requireNonNull(sbo);
+    this.colorDataGradient = Objects.requireNonNull(colorDataGradient);
   }
 
   @Override // from Showable
