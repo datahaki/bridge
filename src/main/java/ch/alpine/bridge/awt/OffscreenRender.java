@@ -8,9 +8,9 @@ import java.awt.image.BufferedImage;
 
 public enum OffscreenRender {
   ;
-  /** @param container of non zero dimension
+  /** @param container of non zero dimension, may be Window, JComponent, ...
    * @param imageType
-   * @return
+   * @return BufferedImage with size of given containter
    * @throws Exception if given container has zero size */
   public static BufferedImage of(Container container, int imageType) {
     Dimension dimension = container.getSize();
@@ -21,8 +21,8 @@ public enum OffscreenRender {
     return bufferedImage;
   }
 
-  /** @param container of non zero dimension
-   * @return
+  /** @param container of non zero dimension, may be Window, JComponent, ...
+   * @return BufferedImage with size of given containter
    * @throws Exception if given container has zero size */
   public static BufferedImage of(Container container) {
     return of(container, BufferedImage.TYPE_INT_ARGB);

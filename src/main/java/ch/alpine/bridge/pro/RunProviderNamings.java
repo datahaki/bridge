@@ -8,7 +8,7 @@ import ch.alpine.bridge.cgr.InstanceRecord;
 
 public enum RunProviderNamings {
   ;
-  public static boolean of(String basePackage) {
+  public static boolean of(String basePackage) throws Exception {
     List<InstanceRecord<RunProvider>> list = //
         InstanceDiscovery.of(basePackage, RunProvider.class);
     boolean allValid = true;

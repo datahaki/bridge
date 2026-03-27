@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import ch.alpine.bridge.io.GitHubCI;
+import ch.alpine.tensor.ext.PackageTestAccess;
 
 /** implementation of class visitor to extract implementation of cls */
 public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<InstanceRecord<T>> consumer) implements ClassVisitor {
@@ -20,8 +21,9 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<In
    * 
    * @param basePackage for instance getClass().getPackageName()
    * @param cls
-   * @return */
-  public static <T> List<InstanceRecord<T>> of(String basePackage, Class<T> cls) {
+   * @return
+   * @throws Exception */
+  public static <T> List<InstanceRecord<T>> of(String basePackage, Class<T> cls) throws Exception {
     List<InstanceRecord<T>> list = new LinkedList<>();
     ClassDiscovery.execute(ClassPaths.getDefault(), //
         new InstanceDiscovery<>(basePackage, cls, list::add));
@@ -30,7 +32,7 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<In
 
   @Override // from ClassVisitor
   public void accept(String jarfile, Class<?> subcls) {
-    if (StaticHelper.isInSubpackageOf(subcls, basePackage) && //
+    if (isInSubpackageOf(subcls, basePackage) && //
         cls.isAssignableFrom(subcls)) { // this narrow is deliberate
       GitHubCI.println("Extracting candidates in: " + subcls.getName());
       for (Field field : subcls.getDeclaredFields())
@@ -83,5 +85,15 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<In
           // default constructor may not exist
         }
     }
+  }
+
+  @PackageTestAccess
+  static boolean isInSubpackageOf(Class<?> clazz, String basePackage) {
+    Package pkg = clazz.getPackage();
+    if (pkg == null)
+      return false;
+    String string = pkg.getName();
+    return string.equals(basePackage) //
+        || string.startsWith(basePackage + ".");
   }
 }

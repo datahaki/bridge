@@ -14,7 +14,7 @@ import ch.alpine.bridge.ref.util.FieldValueRecord;
 
 class ReflectionMarkerTest {
   @Test
-  void testReflection() {
+  void testReflection() throws Exception {
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
     {

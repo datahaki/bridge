@@ -4,9 +4,8 @@ package ch.alpine.bridge.awt;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Cache;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.sca.Round;
@@ -41,10 +40,9 @@ public class ScalableImage {
    * @param factor
    * @return */
   public BufferedImage getScaledInstance(ImageResize imageResize, Scalar factor) {
-    Tensor wh = Tensors.vector(bufferedImage.getWidth(), bufferedImage.getHeight()).multiply(factor);
-    return getScaledInstance(imageResize, //
-        Round.intValueExact(wh.Get(0)), //
-        Round.intValueExact(wh.Get(1)));
+    int w = Round.intValueExact(factor.multiply(RealScalar.of(bufferedImage.getWidth())));
+    int h = Round.intValueExact(factor.multiply(RealScalar.of(bufferedImage.getHeight())));
+    return getScaledInstance(imageResize, w, h);
   }
 
   private BufferedImage compute(Key key) {

@@ -30,7 +30,7 @@ import ch.alpine.tensor.img.ColorDataLists;
 
 // TODO BRIDGE introduce search field on top to filter demos
 public class RunLaunchPad {
-  public static WindowProvider create(String packageName) {
+  public static WindowProvider create(String packageName) throws Exception {
     List<InstanceRecord<RunProvider>> list = //
         InstanceDiscovery.of(packageName, RunProvider.class);
     return new WindowProvider() {

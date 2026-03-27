@@ -15,7 +15,7 @@ import ch.alpine.bridge.ref.data.FieldClipT;
 
 class ClassFieldCheckTest {
   @Test
-  void testSimple() {
+  void testSimple() throws Exception {
     ClassFieldCheck classFieldCheck = new ClassFieldCheck();
     ClassDiscovery.execute(ClassPaths.getDefault(), classFieldCheck);
     assertTrue(37 <= classFieldCheck.getInspected().size());

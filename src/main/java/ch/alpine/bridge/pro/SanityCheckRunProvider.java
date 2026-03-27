@@ -45,9 +45,9 @@ public class SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvid
 
   /** @param manipulateProvider */
   protected void check(ManipulateProvider manipulateProvider) {
-    Container jComponent = manipulateProvider.getContainer();
-    jComponent.setSize(WIDTH, HEIGHT);
-    OffscreenRender.of(jComponent);
+    Container container = manipulateProvider.getContainer();
+    container.setSize(WIDTH, HEIGHT);
+    OffscreenRender.of(container);
   }
 
   /** @param showProvider */

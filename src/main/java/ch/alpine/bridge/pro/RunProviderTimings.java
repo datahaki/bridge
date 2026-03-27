@@ -23,7 +23,7 @@ import ch.alpine.tensor.sca.Round;
  * of instance retrieval. */
 public enum RunProviderTimings {
   ;
-  public static void of(String basePackage) {
+  public static void of(String basePackage) throws Exception {
     List<InstanceRecord<RunProvider>> list = //
         InstanceDiscovery.of(basePackage, RunProvider.class);
     Map<InstanceRecord<RunProvider>, Scalar> map = new HashMap<>();
