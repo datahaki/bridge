@@ -91,7 +91,7 @@ public final class Show implements Serializable {
   }
 
   /** @return may be null */
-  // TODO current design is so that value is calculated only after drawing :-(
+  // TODO BRIDGE current design is so that value is calculated only after drawing :-(
   public CoordinateBoundingBox getCbb() {
     return cbb;
   }

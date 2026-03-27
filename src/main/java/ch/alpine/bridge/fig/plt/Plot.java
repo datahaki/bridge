@@ -57,7 +57,7 @@ public class Plot extends UnaryShowable {
     graphics.setStroke(getStroke());
     final double x0 = showableConfig.confX().pixel(x_clip.min());
     final double x1 = showableConfig.confX().pixel(x_clip.max());
-    // TODO there is several interpolations concat here, also: enhance precision?
+    // TODO BRIDGE there is several interpolations concat here, also: enhance precision?
     // TODO BRIDGE values NaN, Inf are just skipped right now, see BrokenSUO
     path.reset();
     path.moveTo(x0, showableConfig.confY().pixel(suo.apply(x_clip.min())));

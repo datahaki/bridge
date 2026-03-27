@@ -104,7 +104,8 @@ public record TilePixel(Tile tile, int pix, int piy) {
    * @return */
   public TilePixel zoom(int delta) {
     int z = tile.z();
-    int nz = Math.min(Math.max(0, z + delta), 19); // TODO should depend on tileServer
+    // TODO BRIDGE max z should depend on tileServer
+    int nz = Math.min(Math.max(0, z + delta), 19);
     delta = nz - z;
     long mask = (1 << z + 8) - 1;
     long nx = absX() & mask;

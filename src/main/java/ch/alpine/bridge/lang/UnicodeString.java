@@ -24,7 +24,7 @@ public enum UnicodeString {
         ? of(rational.numerator())
         : of(rational.numerator()) + OVER + of(rational.denominator());
     case Quantity quantity -> of(quantity.value()) + SPACE + of(quantity.unit());
-    // TODO DecimalScalar
+    // TODO BRIDGE DecimalScalar
     case DoubleScalar doubleScalar -> {
       String string = doubleScalar.toString();
       int index = string.indexOf('.');

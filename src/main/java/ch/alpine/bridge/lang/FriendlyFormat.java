@@ -45,11 +45,11 @@ public enum FriendlyFormat {
   /** @param scalar
    * @param unit atomic
    * @return */
-  // TODO needs documentation
+  // TODO BRIDGE needs documentation
   public static Scalar of(Scalar scalar, String unit) {
     if (unit.isEmpty() || //
         PREDICATE.test(unit)) {
-      // TODO require real scalar ?
+      // TODO BRIDGE require real scalar ?
       Scalar abs = Abs.FUNCTION.apply(scalar);
       Scalar log = Log10.FUNCTION.apply(abs);
       Scalar floor = Floor.toMultipleOf(RealScalar.of(3)).apply(log);

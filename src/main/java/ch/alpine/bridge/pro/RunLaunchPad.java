@@ -28,7 +28,7 @@ import ch.alpine.bridge.cgr.InstanceDiscovery;
 import ch.alpine.bridge.cgr.InstanceRecord;
 import ch.alpine.tensor.img.ColorDataLists;
 
-// TODO introduce search field on top to filter demos
+// TODO BRIDGE introduce search field on top to filter demos
 public class RunLaunchPad {
   public static WindowProvider create(String packageName) {
     List<InstanceRecord<RunProvider>> list = //
