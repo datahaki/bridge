@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.tensor.ComplexScalar;
+import ch.alpine.tensor.Complex;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -77,6 +77,6 @@ class UnicodeStringTest {
 
   @Test
   void testComplex() {
-    assertEquals(UnicodeString.of(ComplexScalar.I), "I");
+    assertEquals(UnicodeString.of(Complex.I), "I");
   }
 }

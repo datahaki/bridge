@@ -34,7 +34,7 @@ import ch.alpine.bridge.fig.plt.StringPlot.StringItem;
 import ch.alpine.bridge.fig.plt.TsPlot;
 import ch.alpine.bridge.fig.plt.VectorPlot;
 import ch.alpine.bridge.pro.ShowProvider;
-import ch.alpine.tensor.ComplexScalar;
+import ch.alpine.tensor.Complex;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
@@ -189,9 +189,9 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Scalar MAX = RealScalar.of(50);
       int MAX_ITERATIONS = 10;
-      Scalar c = ComplexScalar.of(1.1, 0.5);
+      Scalar c = Complex.of(1.1, 0.5);
       ScalarBinaryOperator sbo = (re, im) -> {
-        Scalar z = ComplexScalar.of(re, im);
+        Scalar z = Complex.of(re, im);
         for (int count = 0; count < MAX_ITERATIONS; ++count) {
           z = Sin.FUNCTION.apply(z).multiply(c);
           if (Scalars.lessThan(MAX, Abs.FUNCTION.apply(Im.FUNCTION.apply(z))))
@@ -212,7 +212,7 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show(); // use RGB for line color
-      ScalarBinaryOperator sbo = (re, im) -> Arg.FUNCTION.apply(Gamma.FUNCTION.apply(ComplexScalar.of(re, im)));
+      ScalarBinaryOperator sbo = (re, im) -> Arg.FUNCTION.apply(Gamma.FUNCTION.apply(Complex.of(re, im)));
       show.add(DensityPlot.of(sbo, //
           CoordinateBoundingBox.of(Clips.absolute(3), Clips.absolute(3)), //
           ColorDataGradients.HUE));
@@ -601,7 +601,7 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show();
       show.setShowLabel("Density Plot");
-      ScalarBinaryOperator sbo = (x, y) -> Im.FUNCTION.apply(Sqrt.FUNCTION.apply(Power.of(ComplexScalar.of(x, y), 3)));
+      ScalarBinaryOperator sbo = (x, y) -> Im.FUNCTION.apply(Sqrt.FUNCTION.apply(Power.of(Complex.of(x, y), 3)));
       show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.absolute(2), Clips.absolute(2))));
       return show;
     }
