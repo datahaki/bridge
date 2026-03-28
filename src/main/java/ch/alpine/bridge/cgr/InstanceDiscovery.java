@@ -34,7 +34,7 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<In
   public void accept(String jarfile, Class<?> subcls) {
     if (isInSubpackageOf(subcls, basePackage) && //
         cls.isAssignableFrom(subcls)) { // this narrow is deliberate
-      GitHubCI.println("Extracting candidates in: " + subcls.getName());
+      GitHubCI.INFO.println("Extracting candidates in: " + subcls.getName());
       for (Field field : subcls.getDeclaredFields())
         if (Modifier.isStatic(field.getModifiers())) {
           try {

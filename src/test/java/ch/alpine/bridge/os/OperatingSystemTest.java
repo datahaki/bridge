@@ -9,7 +9,7 @@ class OperatingSystemTest {
   @Test
   void test() {
     OperatingSystem operatingSystem = OperatingSystem.get();
-    GitHubCI.println(operatingSystem);
+    GitHubCI.INFO.println(operatingSystem);
     operatingSystem.lookAndFeels();
   }
 }
