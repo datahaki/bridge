@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.tensor.RealScalar;
@@ -38,7 +36,7 @@ public final class Show implements Serializable {
   private final ColorDataIndexed colorDataIndexed;
   // ---
   private CoordinateBoundingBox cbb = null;
-  private Scalar aspectRatio = null;
+  private AspectRatio aspectRatio = AspectRatio.self();
 
   /** @param colorDataIndexed to assign a default color to a showable when
    * passed via {@link #add(Showable)} */
@@ -122,7 +120,7 @@ public final class Show implements Serializable {
    * @see ExactScalarQ */
   public void setAspectRatio(Scalar xStep, Scalar yStep) {
     // TODO BRIDGE throw exception if axis X and Y are not compatible unit etc.
-    this.aspectRatio = ExactScalarQ.require(xStep.divide(yStep));
+    aspectRatio = AspectRatio.user(ExactScalarQ.require(xStep.divide(yStep)));
   }
 
   /** Remark: our implementation is inconsistent with Mathematica
@@ -131,12 +129,19 @@ public final class Show implements Serializable {
     setAspectRatio(RealScalar.ONE, RealScalar.ONE);
   }
 
-  public void setAspectRatioDontCare() {
-    aspectRatio = null;
+  public void setAspectRatioMaxFit() {
+    aspectRatio = AspectRatio.mfit();
   }
 
-  public Scalar getAspectRatio() {
-    return aspectRatio;
+  private Scalar ratio() {
+    return switch (aspectRatio.type()) {
+    case SELF -> showables.stream() //
+        .map(Showable::aspectRatioHint) //
+        .flatMap(Optional::stream) //
+        .findFirst().orElse(null);
+    case USER -> aspectRatio.ratio();
+    case MFIT -> null;
+    };
   }
 
   /** @param graphics
@@ -147,18 +152,10 @@ public final class Show implements Serializable {
       return null;
     CoordinateBoundingBox cbb = deriveCbb();
     if (Objects.nonNull(cbb)) {
-      Scalar aspect = aspectRatio;
-      if (Objects.isNull(aspect)) {
-        Set<Scalar> set = showables.stream() //
-            .map(Showable::aspectRatioHint) //
-            .flatMap(Optional::stream) //
-            .collect(Collectors.toSet());
-        if (set.size() == 1)
-          aspect = set.iterator().next();
-      }
-      if (Objects.nonNull(aspect)) {
+      Scalar ratio = ratio();
+      if (Objects.nonNull(ratio)) {
         Tensor a = Tensor.of(cbb.stream().map(Clip::length));
-        a.set(aspect::multiply, 1);
+        a.set(ratio::multiply, 1);
         Tensor b = Tensors.vector(rectangle.width, rectangle.height);
         Optional<Tensor> optional = CbbFit.inside(a, b);
         if (optional.isEmpty())
