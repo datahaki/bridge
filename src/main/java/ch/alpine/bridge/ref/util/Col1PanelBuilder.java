@@ -13,11 +13,11 @@ import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
 final class Col1PanelBuilder implements PanelBuilder {
-  private final ColumnPanel ColumnPanel = new ColumnPanel();
+  private final ColumnPanel columnPanel = new ColumnPanel();
 
   @Override
   public void append(JComponent jComponent) {
-    ColumnPanel.add(jComponent);
+    columnPanel.add(jComponent);
   }
 
   @Override
@@ -42,6 +42,6 @@ final class Col1PanelBuilder implements PanelBuilder {
 
   @Override
   public JPanel getJComponent() {
-    return ColumnPanel;
+    return columnPanel;
   }
 }

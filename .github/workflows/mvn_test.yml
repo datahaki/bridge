@@ -15,11 +15,6 @@ jobs:
       FORCE_COLOR: 1
       TERM: xterm-256color
     steps:
-      - name: ANSI test
-        run: |
-          printf "\033[31mRED TEXT\033[0m\n"
-          printf "\033[32mGREEN TEXT\033[0m\n"
-          
       - name: checkout main repo
         uses: actions/checkout@v5
 

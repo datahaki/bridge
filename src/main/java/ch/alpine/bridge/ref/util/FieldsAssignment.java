@@ -45,6 +45,7 @@ public class FieldsAssignment {
   protected final FieldOptionsCollector fieldOptionsCollector;
   private final Map<String, List<String>> map;
   private final List<String> keys;
+  /** contains number of available assignments per field */
   protected final int[] array;
   protected final Scalar total;
 
