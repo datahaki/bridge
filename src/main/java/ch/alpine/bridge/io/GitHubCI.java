@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import ch.alpine.tensor.ext.UserName;
 
 public enum GitHubCI {
-  INFO(Level.INFO, AnsiColor.GREEN),
+  INFO(Level.INFO, AnsiColor.BLUE),
   SEVERE(Level.SEVERE, AnsiColor.RED),
   //
   ;
@@ -20,7 +20,7 @@ public enum GitHubCI {
   private GitHubCI(Level level, AnsiColor ansiColor) {
     // this.level = level;
     // this.ansiColor = ansiColor;
-    bracket = " [" + ansiColor.wrap(level.getName()) + "] ";
+    bracket = " [" + AnsiStyle.BOLD.wrap(ansiColor.wrap(level.getName())) + "] ";
   }
 
   public void println(Object object) {

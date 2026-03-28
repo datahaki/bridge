@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import ch.alpine.bridge.io.GitHubCI;
 import ch.alpine.tensor.ext.PackageTestAccess;
 
 /** implementation of class visitor to extract implementation of cls */
@@ -34,7 +33,6 @@ public record InstanceDiscovery<T>(String basePackage, Class<T> cls, Consumer<In
   public void accept(String jarfile, Class<?> subcls) {
     if (isInSubpackageOf(subcls, basePackage) && //
         cls.isAssignableFrom(subcls)) { // this narrow is deliberate
-      GitHubCI.INFO.println("Extracting candidates in: " + subcls.getName());
       for (Field field : subcls.getDeclaredFields())
         if (Modifier.isStatic(field.getModifiers())) {
           try {

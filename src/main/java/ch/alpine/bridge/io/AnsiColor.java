@@ -20,7 +20,7 @@ public enum AnsiColor {
   private static final String RESET = "\u001B[0m";
   private final String ansi;
 
-  private AnsiColor(String ansi) {
+  AnsiColor(String ansi) {
     this.ansi = ansi;
   }
 
