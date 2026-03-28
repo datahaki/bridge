@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import ch.alpine.bridge.awt.AwtUtil;
+import ch.alpine.bridge.col.Colors;
 import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
@@ -91,7 +91,7 @@ public class ReImPlot extends UnaryShowable {
           pathRe.lineTo(x0, y0);
           pathIm.lineTo(x0, y0);
         }
-        graphics.setColor(AwtUtil.withAlpha(getColor(), ALPHA));
+        graphics.setColor(Colors.withAlpha(getColor(), ALPHA));
         graphics.fill(pathRe);
         graphics.fill(pathIm);
       }

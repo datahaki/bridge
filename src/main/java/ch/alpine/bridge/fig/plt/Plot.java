@@ -6,7 +6,7 @@ import java.awt.geom.Path2D;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.bridge.awt.AwtUtil;
+import ch.alpine.bridge.col.Colors;
 import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
@@ -72,7 +72,7 @@ public class Plot extends UnaryShowable {
     if (set.contains(PlotOption.FILL)) {
       path.lineTo(x1, showableConfig.confY().pixel(suo.apply(x_clip.max()).zero()));
       path.lineTo(x0, showableConfig.confY().pixel(suo.apply(x_clip.min()).zero()));
-      graphics.setColor(AwtUtil.withAlpha(getColor(), FILL_ALPHA));
+      graphics.setColor(Colors.withAlpha(getColor(), FILL_ALPHA));
       graphics.fill(path);
     }
   }

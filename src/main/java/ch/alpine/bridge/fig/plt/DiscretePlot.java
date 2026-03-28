@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.bridge.awt.AwtUtil;
+import ch.alpine.bridge.col.Colors;
 import ch.alpine.bridge.fig.BaseShowable;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
@@ -44,7 +44,7 @@ public class DiscretePlot extends BaseShowable {
   @Override
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Tensor samples = Range.closed(domain);
-    Color color = AwtUtil.withAlpha(getColor(), 64);
+    Color color = Colors.withAlpha(getColor(), 64);
     double radius = 2.5;
     graphics.setStroke(getStroke());
     for (Tensor _x : samples) {

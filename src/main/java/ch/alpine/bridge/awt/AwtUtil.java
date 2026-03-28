@@ -1,7 +1,6 @@
 // code by jph
 package ch.alpine.bridge.awt;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -33,14 +32,6 @@ public enum AwtUtil {
     // jToolBar.addSeparator();
     // jToolBar.add(new JLabel("\u2000"));
     jToolBar.add(new JLabel("\u2000"));
-  }
-
-  public static Color withAlpha(Color color, int alpha) {
-    return new Color( //
-        color.getRed(), //
-        color.getGreen(), //
-        color.getBlue(), //
-        alpha);
   }
 
   /** @param jFrame */

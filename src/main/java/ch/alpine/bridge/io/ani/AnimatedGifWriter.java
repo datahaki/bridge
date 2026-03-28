@@ -1,6 +1,6 @@
 // code template by elliot kroo
 // adapted by jph
-package ch.alpine.bridge.io;
+package ch.alpine.bridge.io.ani;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

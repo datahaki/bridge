@@ -10,7 +10,7 @@ import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Set;
 
-import ch.alpine.bridge.awt.AwtUtil;
+import ch.alpine.bridge.col.Colors;
 
 public abstract class BaseShowable implements Showable, Serializable {
   private String string = "";
@@ -45,7 +45,7 @@ public abstract class BaseShowable implements Showable, Serializable {
 
   @Override
   public void setAlpha(int alpha) {
-    setColor(AwtUtil.withAlpha(color, alpha));
+    setColor(Colors.withAlpha(color, alpha));
   }
 
   @Override

@@ -14,7 +14,9 @@ import ch.alpine.bridge.ref.ann.ReflectionMarker;
 class GeometricComponentTest implements ManipulateProvider {
   @Override
   public Container getContainer() {
-    return new GeometricComponent();
+    GeometricComponent geometricComponent = new GeometricComponent();
+    geometricComponent.showTimings();
+    return geometricComponent;
   }
 
   @Test

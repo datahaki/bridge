@@ -27,10 +27,18 @@ class TilePixelTest {
   void testAspe() {
     Scalar lat = Quantity.of(38.343373, "deg");
     Scalar lon = Quantity.of(-0.762800, "deg");
-    TilePixel tileCoordinate = TilePixel.from(17, lat, lon);
-    Tensor coords = tileCoordinate.lat_lon();
+    TilePixel tileP1 = TilePixel.from(17, lat, lon);
+    Tensor coords = tileP1.lat_lon();
     Tensor expect = Tensors.of(lat, lon).maps(UnitSystem.SI());
     Chop._05.requireClose(coords, expect);
+    TilePixel tileP2 = TilePixel.from(17, Tensors.of(lat, lon));
+    assertEquals(tileP1, tileP2);
+    TilePixel tileP3 = tileP2.from(Tensors.of(lat, lon));
+    assertEquals(tileP1, tileP3);
+    TilePixel tileP4 = tileP1.zoom(-1);
+    assertEquals(tileP4.tile().z(), 16);
+    TilePixel tileP5 = tileP4.zoom(+1);
+    assertEquals(tileP5.tile().z(), 17);
   }
 
   @Test

@@ -26,10 +26,12 @@ public record PvmBuilder(Tensor p, Tensor v, Tensor m) {
       { 0, 0, 1 }, //
   }).unmodifiable();
 
+  /** @return right hand side system */
   public static PvmBuilder rhs() {
     return new PvmBuilder(ID3, IN3, ID3);
   }
 
+  /** @return rotated by 90 degrees */
   public static PvmBuilder rot() {
     return new PvmBuilder(ID3, RO3, ID3);
   }

@@ -11,6 +11,7 @@ import ch.alpine.bridge.awt.OffscreenRender;
 import ch.alpine.bridge.cgr.InstanceRecord;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowGridComponent;
+import ch.alpine.bridge.io.AnsiStyle;
 import ch.alpine.bridge.io.GitHubCI;
 import ch.alpine.tensor.qty.Timing;
 import ch.alpine.tensor.sca.Round;
@@ -21,7 +22,7 @@ public class SanityCheckRunProvider implements Consumer<InstanceRecord<RunProvid
 
   @Override
   public final void accept(InstanceRecord<RunProvider> instanceRecord) {
-    GitHubCI.INFO.println("Checking RunProvider: " + instanceRecord);
+    GitHubCI.INFO.println("Running " + AnsiStyle.BOLD.wrap(instanceRecord));
     Timing timing = Timing.started();
     RunProvider runProvider = instanceRecord.supplier().get();
     switch (runProvider) {

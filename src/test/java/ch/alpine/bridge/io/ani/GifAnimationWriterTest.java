@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.io;
+package ch.alpine.bridge.io.ani;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

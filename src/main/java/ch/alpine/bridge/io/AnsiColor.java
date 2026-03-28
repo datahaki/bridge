@@ -4,8 +4,8 @@ package ch.alpine.bridge.io;
 public enum AnsiColor {
   NEUTRAL(null) {
     @Override
-    public String wrap(String string) {
-      return string;
+    public String wrap(Object object) {
+      return object.toString();
     }
   },
   RED("\u001B[31m"),
@@ -24,7 +24,7 @@ public enum AnsiColor {
     this.ansi = ansi;
   }
 
-  public String wrap(String string) {
-    return ansi + string + RESET;
+  public String wrap(Object object) {
+    return ansi + object + RESET;
   }
 }

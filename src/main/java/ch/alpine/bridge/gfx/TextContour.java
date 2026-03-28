@@ -8,6 +8,8 @@ import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 
+import ch.alpine.bridge.col.ColorPair;
+
 public record TextContour(Graphics2D graphics, FontRenderContext frc, Font font) {
   public static TextContour of(Graphics2D graphics) {
     return new TextContour(graphics, graphics.getFontRenderContext(), graphics.getFont());

@@ -13,7 +13,7 @@ public enum AnsiStyle {
     this.ansi = ansi;
   }
 
-  public String wrap(String string) {
-    return ansi + string + RESET;
+  public String wrap(Object object) {
+    return ansi + object + RESET;
   }
 }
