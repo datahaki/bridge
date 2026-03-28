@@ -10,6 +10,8 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
       fail-fast: false
     runs-on: ${{ matrix.os }}
+    env:
+      FORCE_COLOR: 1
     steps:
       - name: checkout main repo
         uses: actions/checkout@v5
