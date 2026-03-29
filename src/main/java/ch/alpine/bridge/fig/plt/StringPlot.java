@@ -49,7 +49,7 @@ public class StringPlot extends BaseShowable {
       Point2D point2d = showableConfig.toPoint2D(stringItem.pos);
       TextContour textContour = TextContour.of(graphics);
       textContour.draw( //
-          new ColorPair(stringItem.color, new Color(255, 255, 255, 128)), //
+          new ColorPair(stringItem.color, new Color(255, 255, 255, 192)), //
           string, //
           (float) (point2d.getX() - width_half), //
           (float) (point2d.getY() + delta_y));
