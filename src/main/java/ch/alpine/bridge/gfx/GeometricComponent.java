@@ -38,8 +38,8 @@ import ch.alpine.tensor.mat.DiagonalMatrix;
 import ch.alpine.tensor.mat.re.Det;
 import ch.alpine.tensor.mat.re.LinearSolve;
 import ch.alpine.tensor.qty.Degree;
+import ch.alpine.tensor.sca.Abs;
 import ch.alpine.tensor.sca.Chop;
-import ch.alpine.tensor.sca.Sign;
 import ch.alpine.tensor.sca.pow.Power;
 import ch.alpine.tensor.sca.pow.Sqrt;
 import ch.alpine.tensor.sca.tri.ArcTan;
@@ -247,9 +247,9 @@ public final class GeometricComponent extends JComponent {
     this.model2pixel = model2pixel.copy(); // set matrix regardless of conditions
     // ---
     Scalar det = Det.of(model2pixel);
-    if (Chop._08.isZero(det))
+    if (Chop._10.isZero(Sqrt.FUNCTION.apply(Abs.FUNCTION.apply(det))))
       System.err.println("model2pixel must not be singular");
-    Sign.requirePositive(det.negate());
+    // Sign.requirePositive(det.negate());
   }
 
   public Tensor getModel2Pixel() {

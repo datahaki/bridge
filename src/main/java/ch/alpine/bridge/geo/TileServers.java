@@ -31,11 +31,12 @@ public enum TileServers implements TileServer {
     return z_max;
   }
 
-  public Path path() {
-    return HomeDirectory.Database.mk_dirs(name());
-  }
-
+  @Override
   public MapImagesCache cache() {
     return new MapImagesCache(path(), this);
+  }
+
+  public Path path() {
+    return HomeDirectory.Database.mk_dirs(name());
   }
 }

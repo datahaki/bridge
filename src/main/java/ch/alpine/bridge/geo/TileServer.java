@@ -7,4 +7,6 @@ public interface TileServer {
   URI uri(int z, int x, int y);
 
   int z_max();
+  
+  MapImagesCache cache();
 }

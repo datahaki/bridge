@@ -18,11 +18,12 @@ import javax.swing.event.MouseInputListener;
 
 import ch.alpine.bridge.awt.AwtUtil;
 
+/** Careful: the field tilePixel has to be initialized */
 public class GeoComponent extends JComponent {
-  private final Map<TileServers, MapImagesCache> cache = new IdentityHashMap<>();
-  public TileServers tileServers = TileServers.OpenStreetMap;
+  private final Map<TileServer, MapImagesCache> cache = new IdentityHashMap<>();
   /** center */
   public TilePixel tilePixel;
+  public TileServer tileServer = TileServers.OpenStreetMap;
 
   public GeoComponent() {
     addMouseWheelListener(new MouseWheelListener() {
@@ -66,7 +67,7 @@ public class GeoComponent extends JComponent {
   }
 
   public MapImagesCache getCache() {
-    return cache.computeIfAbsent(tileServers, TileServers::cache);
+    return cache.computeIfAbsent(tileServer, TileServer::cache);
   }
 
   @Override
