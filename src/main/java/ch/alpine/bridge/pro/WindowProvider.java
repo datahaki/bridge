@@ -4,6 +4,7 @@ package ch.alpine.bridge.pro;
 import java.awt.Window;
 
 import javax.imageio.ImageIO;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -31,6 +32,12 @@ public non-sealed interface WindowProvider extends RunProvider {
       if (jFrame.getTitle().isEmpty())
         jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
       AwtUtil.ctrlW(jFrame);
+    }
+    if (window instanceof JDialog jDialog) {
+      jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+      if (jDialog.getTitle().isEmpty())
+        jDialog.setTitle(FriendlyFormat.defaultTitle(getClass()));
+      AwtUtil.ctrlW(jDialog);
     }
     window.setVisible(true);
     return window;

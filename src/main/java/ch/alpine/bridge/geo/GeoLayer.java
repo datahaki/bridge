@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.geo;
 
 import java.awt.Point;
