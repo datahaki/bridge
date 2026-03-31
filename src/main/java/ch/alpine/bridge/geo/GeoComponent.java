@@ -28,13 +28,13 @@ public class GeoComponent extends JComponent {
   public GeoComponent() {
     addMouseWheelListener(new MouseWheelListener() {
       @Override
-      public void mouseWheelMoved(MouseWheelEvent e) {
+      public void mouseWheelMoved(MouseWheelEvent event) {
         Dimension dimension = getSize();
         Point center = AwtUtil.center(dimension);
-        Point point = e.getPoint();
+        Point point = event.getPoint();
         int dx = point.x - center.x;
         int dy = point.y - center.y;
-        tilePixel = tilePixel.shift(dx, dy).zoom(-e.getWheelRotation()).shift(-dx, -dy);
+        tilePixel = tilePixel.shift(dx, dy).zoom(-event.getWheelRotation()).shift(-dx, -dy);
         repaint();
       }
     });
@@ -47,11 +47,11 @@ public class GeoComponent extends JComponent {
       }
 
       @Override
-      public void mouseDragged(MouseEvent e) {
-        Point here = e.getPoint();
-        int dx = down.x - here.x;
-        int dy = down.y - here.y;
-        down = here;
+      public void mouseDragged(MouseEvent event) {
+        Point point = event.getPoint();
+        int dx = down.x - point.x;
+        int dy = down.y - point.y;
+        down = point;
         int f = tilePixel.tile().z() / 3 + 1;
         tilePixel = tilePixel.shift(dx * f, dy * f);
         repaint();
@@ -76,6 +76,7 @@ public class GeoComponent extends JComponent {
     Dimension dimension = getSize();
     Point center = AwtUtil.center(dimension);
     TilePixel origin = tilePixel.shift(-center.x, -center.y);
+    GeoLayer geoLayer = new GeoLayer(origin);
     MapImagesCache mapImagesCache = getCache();
     for (int ix = 0; ix < dimension.width + 256; ix += 256)
       for (int iy = 0; iy < dimension.height + 256; iy += 256) {
@@ -83,13 +84,13 @@ public class GeoComponent extends JComponent {
         BufferedImage bufferedImage = mapImagesCache.getTile(shift.tile());
         graphics.drawImage(bufferedImage, ix - shift.pix(), iy - shift.piy(), null);
       }
-    renderMore(graphics);
+    renderMore(geoLayer, graphics);
   }
 
   /** override if necessary
    * 
    * @param graphics */
-  public void renderMore(Graphics2D graphics) {
+  public void renderMore(GeoLayer geoLayer, Graphics2D graphics) {
     // ---
   }
 }
