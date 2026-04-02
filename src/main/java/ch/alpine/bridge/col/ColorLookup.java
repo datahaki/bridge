@@ -3,10 +3,10 @@ package ch.alpine.bridge.col;
 
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarTensorFunction;
-import ch.alpine.tensor.img.ColorDataGradient;
-import ch.alpine.tensor.img.ColorDataIndexed;
-import ch.alpine.tensor.img.ColorFormat;
-import ch.alpine.tensor.img.StrictColorDataIndexed;
+import ch.alpine.tensor.col.ColorDataGradient;
+import ch.alpine.tensor.col.ColorDataIndexed;
+import ch.alpine.tensor.col.ColorFormat;
+import ch.alpine.tensor.col.StrictColorDataIndexed;
 import ch.alpine.tensor.sca.Clips;
 
 /** @see ColorDataIndexed */

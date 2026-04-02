@@ -26,7 +26,7 @@ import javax.swing.WindowConstants;
 import ch.alpine.bridge.awt.ColumnPanel;
 import ch.alpine.bridge.cgr.InstanceDiscovery;
 import ch.alpine.bridge.cgr.InstanceRecord;
-import ch.alpine.tensor.img.ColorDataLists;
+import ch.alpine.tensor.col.ColorDataLists;
 
 // TODO BRIDGE introduce search field on top to filter demos
 public class RunLaunchPad {

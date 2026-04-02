@@ -21,8 +21,8 @@ import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.col.ColorFormat;
 import ch.alpine.tensor.ext.PackageTestAccess;
-import ch.alpine.tensor.img.ColorFormat;
 import ch.alpine.tensor.red.Mean;
 
 public class SpinnerMenu<T> {
