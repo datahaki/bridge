@@ -35,7 +35,7 @@ public class Manipulate {
     {
       JPanel editor = new JPanel(new BorderLayout());
       editor.add(BorderLayout.NORTH, StaticHelper.createToolbar(jSplitPane));
-      PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.nested(object);
+      PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.single(object);
       editor.add(BorderLayout.CENTER, panelFieldsEditor.createJScrollPane());
       jSplitPane.setLeftComponent(editor);
       panelFieldsEditor.addUniversalListener(() -> receive(function.get()));
