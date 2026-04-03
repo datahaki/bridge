@@ -34,7 +34,7 @@ public class GeoComponent extends JComponent {
         Point point = event.getPoint();
         int dx = point.x - center.x;
         int dy = point.y - center.y;
-        tilePixel = tilePixel.shift(dx, dy).zoom(-event.getWheelRotation()).shift(-dx, -dy);
+        tilePixel = tilePixel.shift(dx, dy).zoomIncr(-event.getWheelRotation()).shift(-dx, -dy);
         repaint();
       }
     });

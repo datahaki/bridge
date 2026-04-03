@@ -35,9 +35,9 @@ class TilePixelTest {
     assertEquals(tileP1, tileP2);
     TilePixel tileP3 = tileP2.from(Tensors.of(lat, lon));
     assertEquals(tileP1, tileP3);
-    TilePixel tileP4 = tileP1.zoom(-1);
+    TilePixel tileP4 = tileP1.zoomIncr(-1);
     assertEquals(tileP4.tile().z(), 16);
-    TilePixel tileP5 = tileP4.zoom(+1);
+    TilePixel tileP5 = tileP4.zoomIncr(+1);
     assertEquals(tileP5.tile().z(), 17);
   }
 

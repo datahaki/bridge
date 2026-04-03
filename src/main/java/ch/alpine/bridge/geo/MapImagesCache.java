@@ -84,4 +84,8 @@ public class MapImagesCache {
     final String lo = hexFormat.toHexDigits((byte) (hash & 0x3f));
     return root.resolve(hi, lo, string);
   }
+
+  public boolean isAvailableOffline(Tile tile) {
+    return Files.isRegularFile(path(tile));
+  }
 }

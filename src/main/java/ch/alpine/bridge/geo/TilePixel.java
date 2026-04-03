@@ -100,9 +100,9 @@ public record TilePixel(Tile tile, int pix, int piy) {
     return of(z, nx, ny);
   }
 
-  /** @param delta
+  /** @param delta zoom increment, or decrement when negative
    * @return */
-  public TilePixel zoom(int delta) {
+  public TilePixel zoomIncr(int delta) {
     int z = tile.z();
     // TODO BRIDGE max z should depend on tileServer
     int nz = Math.min(Math.max(0, z + delta), 19);
