@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.geo;
 
+import java.util.Optional;
 import java.util.function.IntUnaryOperator;
 
 import ch.alpine.tensor.Rational;
@@ -102,22 +103,24 @@ public record TilePixel(Tile tile, int pix, int piy) {
 
   /** @param delta zoom increment, or decrement when negative
    * @return */
-  public TilePixel zoomIncr(int delta) {
+  public Optional<TilePixel> zoomIncr(final int del, int z_max) {
     int z = tile.z();
-    // TODO BRIDGE max z should depend on tileServer
-    int nz = Math.min(Math.max(0, z + delta), 19);
-    delta = nz - z;
-    long mask = (1 << z + 8) - 1;
-    long nx = absX() & mask;
-    long ny = absY() & mask;
-    if (0 <= delta) {
-      nx <<= delta;
-      ny <<= delta;
-    } else {
-      nx >>= -delta;
-      ny >>= -delta;
+    int nz = Math.min(Math.max(0, z + del), z_max);
+    int delta = nz - z;
+    if (delta == del) {
+      long mask = (1 << z + 8) - 1;
+      long nx = absX() & mask;
+      long ny = absY() & mask;
+      if (0 <= delta) {
+        nx <<= delta;
+        ny <<= delta;
+      } else {
+        nx >>= -delta;
+        ny >>= -delta;
+      }
+      return Optional.of(of(z + delta, nx, ny));
     }
-    return of(z + delta, nx, ny);
+    return Optional.empty();
   }
 
   /** formula adapted from gemini

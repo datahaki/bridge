@@ -6,6 +6,7 @@ import java.nio.file.Path;
 
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.ext.Integers;
+import ch.alpine.tensor.ext.PackageTestAccess;
 
 public enum TileServers implements TileServer {
   OpenStreetMap("https://tile.openstreetmap.org", 19),
@@ -14,10 +15,12 @@ public enum TileServers implements TileServer {
 
   private final String server;
   private final int z_max;
+  private final MapImagesCache mapImagesCache;
 
   TileServers(String server, int z_max) {
     this.server = server;
     this.z_max = z_max;
+    mapImagesCache = new MapImagesCache(path(), this);
   }
 
   @Override
@@ -33,10 +36,11 @@ public enum TileServers implements TileServer {
 
   @Override
   public MapImagesCache cache() {
-    return new MapImagesCache(path(), this);
+    return mapImagesCache;
   }
 
-  public Path path() {
+  @PackageTestAccess
+  Path path() {
     return HomeDirectory.Database.mk_dirs(name());
   }
 }

@@ -22,13 +22,13 @@ public class MapImagesCache {
   private final Cache<Tile, BufferedImage> cache = Cache.of(this::getSafe, 3 * 128);
   private final HexFormat hexFormat = HexFormat.of();
   private final Path root;
-  private final TileServer tileServer;
+  private final MapUri mapUri;
   public boolean debug_print = false;
   private int downloads = 0;
 
-  public MapImagesCache(Path root, TileServer tileServer) {
+  public MapImagesCache(Path root, MapUri mapUri) {
     this.root = root;
-    this.tileServer = tileServer;
+    this.mapUri = mapUri;
     {
       Graphics2D graphics = fallback.createGraphics();
       graphics.setColor(Color.RED);
@@ -63,7 +63,7 @@ public class MapImagesCache {
     if (!Files.isRegularFile(path)) {
       ++downloads;
       Files.createDirectories(path.getParent());
-      URI uri = tileServer.uri(tile.z(), tile.x(), tile.y());
+      URI uri = mapUri.uri(tile.z(), tile.x(), tile.y());
       if (debug_print)
         IO.println("download " + uri);
       Files.write(path, URLRead.of(uri));

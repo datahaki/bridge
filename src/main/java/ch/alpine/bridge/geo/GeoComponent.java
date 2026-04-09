@@ -11,6 +11,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
@@ -34,8 +35,12 @@ public class GeoComponent extends JComponent {
         Point point = event.getPoint();
         int dx = point.x - center.x;
         int dy = point.y - center.y;
-        tilePixel = tilePixel.shift(dx, dy).zoomIncr(-event.getWheelRotation()).shift(-dx, -dy);
-        repaint();
+        TilePixel s1 = tilePixel.shift(dx, dy);
+        Optional<TilePixel> optional = s1.zoomIncr(-event.getWheelRotation(), tileServer.z_max());
+        if (optional.isPresent()) {
+          tilePixel = optional.orElseThrow().shift(-dx, -dy);
+          repaint();
+        }
       }
     });
     MouseInputListener mouseInputListener = new MouseInputAdapter() {
@@ -82,7 +87,7 @@ public class GeoComponent extends JComponent {
       for (int iy = 0; iy < dimension.height + 256; iy += 256) {
         TilePixel shift = origin.shift(ix, iy);
         BufferedImage bufferedImage = mapImagesCache.getTile(shift.tile());
-        graphics.drawImage(bufferedImage, ix - shift.pix(), iy - shift.piy(), null);
+        _g.drawImage(bufferedImage, ix - shift.pix(), iy - shift.piy(), null);
       }
     renderMore(geoLayer, graphics);
   }

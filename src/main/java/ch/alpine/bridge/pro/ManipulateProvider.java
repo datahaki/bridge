@@ -18,7 +18,7 @@ import ch.alpine.bridge.swing.LookAndFeels;
  * 
  * @see ReflectionMarker */
 public non-sealed interface ManipulateProvider extends RunProvider {
-  /** @return */
+  /** @return not null */
   Container getContainer();
 
   /** @return
