@@ -1,9 +1,11 @@
 // code by jph
 package ch.alpine.bridge.geo;
 
+import java.io.Serializable;
+
 import ch.alpine.tensor.ext.Integers;
 
-public record Tile(int z, int x, int y) {
+public record Tile(int z, int x, int y) implements Serializable {
   public static int maxExclusive(int z) {
     return 1 << z;
   }

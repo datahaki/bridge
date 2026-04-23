@@ -25,6 +25,14 @@ public class GeoComponent extends JComponent {
   /** center */
   public TilePixel tilePixel;
   public TileServer tileServer = TileServers.OpenStreetMap;
+  
+  public TilePixel fromPoint(Point point) {
+    Dimension dimension = getSize();
+    Point center = AwtUtil.center(dimension);
+    int dx = point.x - center.x;
+    int dy = point.y - center.y;
+    return tilePixel.shift(dx, dy);
+  }
 
   public GeoComponent() {
     addMouseWheelListener(new MouseWheelListener() {
@@ -79,8 +87,7 @@ public class GeoComponent extends JComponent {
   protected final void paintComponent(Graphics _g) {
     Graphics2D graphics = (Graphics2D) _g;
     Dimension dimension = getSize();
-    Point center = AwtUtil.center(dimension);
-    TilePixel origin = tilePixel.shift(-center.x, -center.y);
+    TilePixel origin = fromPoint(new Point()); 
     GeoLayer geoLayer = new GeoLayer(origin);
     MapImagesCache mapImagesCache = getCache();
     for (int ix = 0; ix < dimension.width + 256; ix += 256)

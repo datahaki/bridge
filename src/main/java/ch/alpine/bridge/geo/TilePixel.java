@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.geo;
 
+import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.IntUnaryOperator;
 
@@ -25,7 +26,7 @@ import ch.alpine.tensor.sca.tri.Sinh;
  * @param tile
  * @param pix between 0 and 255
  * @param piy between 0 and 255 */
-public record TilePixel(Tile tile, int pix, int piy) {
+public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
   /** value of latitude outside of this domain cannot be mapped
    * meaningfully to a tile pixel coordinate */
   public static final Clip LAT_DOMAIN = Clips.absolute(ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(Pi.VALUE)));

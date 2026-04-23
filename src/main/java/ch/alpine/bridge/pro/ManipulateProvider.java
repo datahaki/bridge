@@ -21,7 +21,9 @@ public non-sealed interface ManipulateProvider extends RunProvider {
   /** @return not null */
   Container getContainer();
 
-  /** @return
+  /** non-blocking 
+   * 
+   * @return
    * @apiNote should not be used for testing */
   @Override
   default JFrame runStandalone() {
