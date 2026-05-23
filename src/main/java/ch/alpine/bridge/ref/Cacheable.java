@@ -1,6 +1,9 @@
 // code by jph
 package ch.alpine.bridge.ref;
 
+import ch.alpine.bridge.ref.ann.ReflectionMarker;
+
+@ReflectionMarker
 public abstract class Cacheable {
   @SuppressWarnings("unchecked")
   public final <T extends Cacheable> T copy() {

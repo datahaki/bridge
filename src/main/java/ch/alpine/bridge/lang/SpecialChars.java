@@ -165,6 +165,7 @@ public enum SpecialChars {
   DNA("🧬"),
   CAMERA("📷"),
   CAMERA_FLASH("📸"),
+  PRINTER("🖨️"),
   CAMCORDER("📹"),
   MOVIE_CAM("🎥"),
   CLAPPER_BOARD("🎬"),
