@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.geo;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.IntUnaryOperator;
@@ -134,5 +135,15 @@ public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
     return Tensors.of( //
         ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(ang)), //
         Rational.of(absX() - ymax, ymax).multiply(Pi.VALUE));
+  }
+
+  public Tensor encode() {
+    return Tensors.vector(tile.z(), absX(), absY());
+  }
+
+  public Point corner(int ix, int iy) {
+    int tix = ix << 8;
+    int tiy = iy << 8;
+    return new Point(tix - pix, tiy - piy);
   }
 }

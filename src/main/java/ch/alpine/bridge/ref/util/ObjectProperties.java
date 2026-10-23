@@ -67,6 +67,9 @@ public enum ObjectProperties {
    * @param path properties
    * @throws IOException */
   public static void save(Object object, Path path) throws IOException {
+    // IO.println("save");
+    // IO.println(object);
+    // IO.println(path);
     try (PrintWriter printWriter = new PrintWriter(Files.newBufferedWriter(path, CHARSET))) {
       ObjectFieldVisitor objectFieldVisitor = new ObjectFieldIo() {
         @Override // from ObjectFieldVisitor
@@ -106,6 +109,9 @@ public enum ObjectProperties {
    * @throws IOException
    * @see Properties */
   public static void load(Object object, Path path) throws FileNotFoundException, IOException {
+    // IO.println("load");
+    // IO.println(object);
+    // IO.println(path);
     set(object, Import.properties(path));
   }
 

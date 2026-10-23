@@ -30,7 +30,7 @@ public interface DialogBuilder<T> {
       if (optional.isPresent())
         jPanel.add(optional.orElseThrow(), BorderLayout.NORTH);
     }
-    jPanel.add(dialogBuilder.panelFieldsEditor().getJPanel(), BorderLayout.CENTER);
+    jPanel.add(dialogBuilder.panelFieldsEditor().getJComponent(), BorderLayout.CENTER);
     jPanel.add(new JLabel("\u3000"), BorderLayout.EAST);
     {
       JToolBar jToolBar = new JToolBar();

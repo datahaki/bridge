@@ -34,7 +34,7 @@ class PanelFieldsEditorTest {
     OtherPackageParam otherPackageParam = new OtherPackageParam();
     PanelFieldsEditor panelFieldsEditor = PanelFieldsEditor.splits(otherPackageParam);
     assertTrue(panelFieldsEditor.list().isEmpty());
-    JComponent jPanel = panelFieldsEditor.getJPanel();
+    JComponent jPanel = panelFieldsEditor.getJComponent();
     assertEquals(jPanel.getComponentCount(), 0);
   }
 

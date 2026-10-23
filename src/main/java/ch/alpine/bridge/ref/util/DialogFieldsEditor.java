@@ -61,7 +61,9 @@ public class DialogFieldsEditor extends JDialog {
     dialogFieldsEditor.setLocationRelativeTo(parentComponent);
     ScreenRectangles.create().placement(dialogFieldsEditor);
     // WindowClosed.runs(dialogFieldsEditor, () -> System.out.println("CLOSED ACTION"));
+    IO.println("set vis");
     dialogFieldsEditor.setVisible(true);
+    IO.println("blocked release");
     return dialogFieldsEditor.getSelection().map(obj -> (T) obj);
   }
 
@@ -138,7 +140,7 @@ public class DialogFieldsEditor extends JDialog {
   }
 
   private void cancel() {
-    ContainerDescent.setEnabled(panelFieldsEditor.getJPanel(), false);
+    ContainerDescent.setEnabled(panelFieldsEditor.getJComponent(), false);
     ObjectProperties.part(object, fallback);
     dispose();
   }

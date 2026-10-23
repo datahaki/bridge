@@ -32,6 +32,12 @@ public class PanelFieldsEditor extends FieldsEditor {
     return new PanelFieldsEditor(object, new Col1PanelBuilder());
   }
 
+  /** @param object
+   * @return */
+  public static PanelFieldsEditor toolbar(Object object) {
+    return new PanelFieldsEditor(object, new ToolbarBuilder());
+  }
+
   // ---
   private class Visitor extends ObjectFieldAll {
     @Override // from ObjectFieldVisitor
@@ -60,15 +66,16 @@ public class PanelFieldsEditor extends FieldsEditor {
   }
 
   /** @return without scroll pane */
-  public JComponent getJPanel() {
+  public JComponent getJComponent() {
     return panelBuilder.getJComponent();
   }
 
   /** @return new instance of scroll panel with panel embedded aligned
    * at the top of the viewport */
   public JScrollPane createJScrollPane() {
+    // TODO this does not work well for jToolBar
     JPanel jPanel = new JPanel(new BorderLayout());
-    jPanel.add(getJPanel(), BorderLayout.NORTH);
+    jPanel.add(getJComponent(), BorderLayout.NORTH);
     JScrollPane jScrollPane = new JScrollPane(jPanel);
     // JScrollPane jScrollPane = new JScrollPane(jPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
     // TODO BRIDGE min size

@@ -11,6 +11,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.swing.JComponent;
@@ -25,7 +26,7 @@ public class GeoComponent extends JComponent {
   /** center */
   public TilePixel tilePixel;
   public TileServer tileServer = TileServers.OpenStreetMap;
-  
+
   public TilePixel fromPoint(Point point) {
     Dimension dimension = getSize();
     Point center = AwtUtil.center(dimension);
@@ -86,16 +87,38 @@ public class GeoComponent extends JComponent {
   @Override
   protected final void paintComponent(Graphics _g) {
     Graphics2D graphics = (Graphics2D) _g;
-    Dimension dimension = getSize();
-    TilePixel origin = fromPoint(new Point()); 
-    GeoLayer geoLayer = new GeoLayer(origin);
     MapImagesCache mapImagesCache = getCache();
-    for (int ix = 0; ix < dimension.width + 256; ix += 256)
-      for (int iy = 0; iy < dimension.height + 256; iy += 256) {
-        TilePixel shift = origin.shift(ix, iy);
-        BufferedImage bufferedImage = mapImagesCache.getTile(shift.tile());
-        _g.drawImage(bufferedImage, ix - shift.pix(), iy - shift.piy(), null);
+    Dimension dimension = getSize();
+    TilePixel origin = fromPoint(new Point(0, 0));
+    boolean missing = false;
+    {
+      for (int pix = -origin.pix(); pix < dimension.width; pix += 256)
+        for (int piy = -origin.piy(); piy < dimension.height; piy += 256) {
+          BufferedImage bufferedImage = mapImagesCache.getTile(origin.shift(pix, piy).tile());
+          missing |= Objects.isNull(bufferedImage);
+        }
+    }
+    if (missing) {
+      // IO.println("missing");
+      Optional<TilePixel> optional = origin.zoomIncr(-1, 20);
+      if (optional.isPresent()) {
+        TilePixel coarse = optional.orElseThrow();
+        for (int ix = -coarse.pix(); ix < dimension.width / 2; ix += 256)
+          for (int iy = -coarse.piy(); iy < dimension.height / 2; iy += 256) {
+            TilePixel shift = coarse.shift(ix, iy);
+            BufferedImage bufferedImage = mapImagesCache.getTile(shift.tile());
+            graphics.drawImage(bufferedImage, ix * 2, iy * 2, 512, 512, null);
+          }
       }
+    }
+    {
+      for (int pix = -origin.pix(); pix < dimension.width; pix += 256)
+        for (int piy = -origin.piy(); piy < dimension.height; piy += 256) {
+          BufferedImage bufferedImage = mapImagesCache.getTile(origin.shift(pix, piy).tile());
+          graphics.drawImage(bufferedImage, pix, piy, null);
+        }
+    }
+    GeoLayer geoLayer = new GeoLayer(origin);
     renderMore(geoLayer, graphics);
   }
 

@@ -13,7 +13,7 @@ import java.net.URLConnection;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class URLReadTest {
+class URIReadTest {
   public static final boolean IS_ONLINE = isOnline();
 
   /** Reference:
@@ -39,18 +39,18 @@ class URLReadTest {
 
   @Test
   void testSimple() throws IOException, URISyntaxException, InterruptedException {
-    byte[] data = URLRead.of("http://www.hakenberg.de/favicon.ico");
+    byte[] data = URIRead.of("http://www.hakenberg.de/favicon.ico");
     assertEquals(data.length, 1406);
   }
 
   @Test
   void testNoFileFail() throws IOException, InterruptedException, URISyntaxException {
-    URLRead.of("http://www.hakenberg.de/doesnotexist.file.unknown");
+    URIRead.of("http://www.hakenberg.de/doesnotexist.file.unknown");
   }
 
   @Test
   void testInputStream() throws IOException, URISyntaxException, InterruptedException {
-    byte[] data = URLRead.of("http://www.hakenberg.de/_images/icon.bik.png");
+    byte[] data = URIRead.of("http://www.hakenberg.de/_images/icon.bik.png");
     assertEquals(data.length, 481);
   }
 }

@@ -22,6 +22,8 @@ class BooleanCheckBox extends FieldPanel {
     if (Objects.nonNull(value))
       jCheckBox.setSelected(value);
     jCheckBox.addActionListener(_ -> notifyListeners(fieldWrap.toString(jCheckBox.isSelected())));
+    // TODO the following ignores fieldName
+    jCheckBox.setText(fieldWrap.getField().getName());
     jPanel.add(jCheckBox);
   }
 

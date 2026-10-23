@@ -8,16 +8,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-/** Example:
- * <pre>
- * try (URLFetch urlFetch = new URLFetch(new URL("http://www.hakenberg.de/favicon.ico"))) {
- * urlFetch.downloadIfMissing(HomeDirectory.file("favicon.ico"));
- * }
- * </pre>
- * 
- * <p>inspired by
+/** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/URLRead.html">URLRead</a> */
-public enum URLRead {
+public enum URIRead {
   ;
   /** @param uri
    * @return
