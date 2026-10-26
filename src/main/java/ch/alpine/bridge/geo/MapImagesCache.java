@@ -7,7 +7,10 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HexFormat;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -15,51 +18,96 @@ import ch.alpine.bridge.io.URIRead;
 import ch.alpine.tensor.ext.Cache;
 
 public class MapImagesCache {
-  private final Cache<Tile, BufferedImage> cache = Cache.of(this::getSafe, 3 * 128);
+  private final Cache<Tile, TileImage> cache = Cache.of(this::getSafe, 3 * 128);
   private final HexFormat hexFormat = HexFormat.of();
   private final Path root;
   private final MapUri mapUri;
-  public boolean debug_print = false;
-  private int downloads = 0;
+  private final Deque<Tile> deque = new ArrayDeque<>();
+  private Thread thread = null;
+  private final Runnable runnable = new Runnable() {
+    @Override
+    public void run() {
+      while (!deque.isEmpty()) {
+        Tile tile;
+        synchronized (deque) {
+          tile = deque.pollFirst();
+        }
+        downloadTile(tile);
+      }
+      IO.println("thread stop");
+      thread = null;
+    }
+  };
 
   public MapImagesCache(Path root, MapUri mapUri) {
     this.root = root;
     this.mapUri = mapUri;
   }
 
+  void queue(Tile tile) {
+    synchronized (deque) {
+      deque.add(tile);
+    }
+    if (Objects.isNull(thread)) {
+      thread = new Thread(runnable);
+      IO.println("thread " + thread);
+      thread.start();
+    }
+  }
+
+  public void clearQueue() {
+    synchronized (deque) {
+      deque.clear();
+    }
+  }
+
   /** @param tile
    * @return buffered image that for open street/topo map is of type
    * {@link BufferedImage#TYPE_BYTE_INDEXED} */
-  public BufferedImage getTile(Tile tile) {
+  public TileImage getTile(Tile tile) {
     return cache.apply(tile);
   }
 
-  public int getDownloadCount() {
-    return downloads;
+
+  /** function checks if tile is available offline
+   * if not, attempts to download tile and store to database
+   * 
+   * @param tile
+   * @return image as in database, or null */
+  private TileImage getSafe(Tile tile) {
+    Path path = path(tile);
+    if (Files.isRegularFile(path))
+      try {
+        try {
+          synchronized (this) {
+            BufferedImage bufferedImage = ImageIO.read(path.toFile());
+            return new TileImage(bufferedImage, Files.size(path));
+          }
+        } catch (IOException exception) {
+          System.err.println(path);
+          Files.delete(path);
+          throw new UncheckedIOException(exception);
+        }
+      } catch (Exception exception) {
+        // System.err.println(tile + " " + path(tile));
+      }
+    queue(tile);
+    return null;
   }
 
-  private BufferedImage getSafe(Tile tile) {
+  private void downloadTile(Tile tile) {
     Path path = path(tile);
     try {
-      if (!Files.isRegularFile(path)) {
-        ++downloads;
-        Files.createDirectories(path.getParent());
-        URI uri = mapUri.uri(tile.z(), tile.x(), tile.y());
-        if (debug_print)
-          IO.println("uri " + uri);
-        Files.write(path, URIRead.of(uri));
-      }
-      try {
-        return ImageIO.read(path.toFile());
-      } catch (IOException exception) {
-        System.err.println(path);
-        Files.delete(path);
-        throw new UncheckedIOException(exception);
+      Files.createDirectories(path.getParent());
+      URI uri = mapUri.uri(tile.z(), tile.x(), tile.y());
+      byte[] data = URIRead.of(uri);
+      synchronized (this) {
+        Files.write(path, data);
+        IO.println("uri " + uri);
       }
     } catch (Exception exception) {
-      System.err.println(tile + " " + path(tile));
+      // System.err.println(tile + " " + path(tile));
     }
-    return null;
   }
 
   public Path path(Tile tile) {

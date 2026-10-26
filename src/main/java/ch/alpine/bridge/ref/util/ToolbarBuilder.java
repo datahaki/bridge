@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.ref.util;
 
 import java.awt.Font;
@@ -27,7 +28,7 @@ class ToolbarBuilder implements PanelBuilder {
 
   @Override
   public void item(String key, Field field, JComponent jComponent) {
-    // TODO BRIDGE design no good
+    // TODO design no good
     if (!field.getType().equals(Boolean.class)) {
       JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, null));
       jLabel.setToolTipText(FieldToolTip.of(field));

@@ -78,7 +78,7 @@ public class PanelFieldsEditor extends FieldsEditor {
     jPanel.add(getJComponent(), BorderLayout.NORTH);
     JScrollPane jScrollPane = new JScrollPane(jPanel);
     // JScrollPane jScrollPane = new JScrollPane(jPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-    // TODO BRIDGE min size
+    // TODO min size
     {
       JScrollBar jScrollBar = jScrollPane.getHorizontalScrollBar();
       FieldsEditorParam.GLOBAL.minSize(jScrollBar);

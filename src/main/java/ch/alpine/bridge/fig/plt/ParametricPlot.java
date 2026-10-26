@@ -41,7 +41,7 @@ public class ParametricPlot extends BaseShowable {
     if (domain.isNonDegenerate()) {
       graphics.setColor(getColor());
       graphics.setStroke(getStroke());
-      // TODO BRIDGE adaptive resolution (see SpiralDemo)
+      // TODO adaptive resolution (see SpiralDemo)
       Tensor points = Subdivide.increasing(domain, 3 * RESOLUTION).maps(stf);
       path.reset();
       {

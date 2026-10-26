@@ -10,8 +10,8 @@ import ch.alpine.tensor.ext.PackageTestAccess;
 
 public enum TileServers implements TileServer {
   OpenStreetMap("https://tile.openstreetmap.org", 19),
-  OpenTopoMap("https://a.tile.opentopomap.org", 17), 
-  OpenSeaMap("https://tiles.openseamap.org/seamark",16), //
+  OpenTopoMap("https://a.tile.opentopomap.org", 17),
+  OpenSeaMap("https://tiles.openseamap.org/seamark", 16), //
   ;
 
   private final String server;

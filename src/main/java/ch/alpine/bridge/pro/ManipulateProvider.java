@@ -21,7 +21,7 @@ public non-sealed interface ManipulateProvider extends RunProvider {
   /** @return not null */
   Container getContainer();
 
-  /** non-blocking 
+  /** non-blocking
    * 
    * @return
    * @apiNote should not be used for testing */

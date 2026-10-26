@@ -32,7 +32,7 @@ import ch.alpine.tensor.sca.Clip;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/DensityPlot.html">DensityPlot</a> */
-// TODO BRIDGE option to constrain area by initial Clip
+// TODO option to constrain area by initial Clip
 public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
   private static final Scalar RENDER_TIME_TARGET = Quantity.of(0.1, "s");
   private static final int RESOLUTION_DEFAULT = 80;

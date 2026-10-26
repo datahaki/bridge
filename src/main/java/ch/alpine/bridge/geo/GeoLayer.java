@@ -20,6 +20,10 @@ public record GeoLayer(TilePixel origin) {
         (int) (tilePixel.absY() - origin.absY()));
   }
 
+  public TilePixel fromPoint(Point point) {
+    return origin.shift(point.x, point.y);
+  }
+
   public Path2D toPath2D(Tensor polygon) {
     Path2D path2d = new Path2D.Double(PathIterator.WIND_NON_ZERO, polygon.length());
     toPath2D(path2d, polygon);

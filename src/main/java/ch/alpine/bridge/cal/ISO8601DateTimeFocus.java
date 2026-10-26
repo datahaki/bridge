@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
 /** uuuu-MM-dd'T'HH:mm:ss.SSSSSSSSS */
-// TODO BRIDGE usages no good, instead determine resolution dynamically
+// TODO usages no good, instead determine resolution dynamically
 public enum ISO8601DateTimeFocus implements DateTimeFocus {
   INSTANCE;
 

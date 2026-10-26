@@ -37,10 +37,11 @@ class GeoGraphics extends BaseShowable implements BackgroundPlotMarker {
     Point center = AwtUtil.center(dimension);
     TilePixel origin = tilePixel.shift(-center.x, -center.y);
     MapImagesCache mapImagesCache = TileServers.OpenStreetMap.cache();
+    // TODO this cannot be redundant to GeoComponent draw routine
     for (int ix = 0; ix < dimension.width + 256; ix += 256)
       for (int iy = 0; iy < dimension.height + 256; iy += 256) {
         TilePixel shift = origin.shift(ix, iy);
-        graphics.drawImage(mapImagesCache.getTile(shift.tile()), ix - shift.pix(), iy - shift.piy(), null);
+        graphics.drawImage(mapImagesCache.getTile(shift.tile()).bufferedImage(), ix - shift.pix(), iy - shift.piy(), null);
       }
   }
 

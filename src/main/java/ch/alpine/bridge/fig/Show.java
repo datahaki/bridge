@@ -29,7 +29,7 @@ import ch.alpine.tensor.sca.Round;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
-// TODO BRIDGE zoom does not work indefinitely yet!
+// TODO zoom does not work indefinitely yet!
 public final class Show implements Serializable {
   private final List<Showable> showables = new ArrayList<>();
   private final ShowOptions showOptions = new ShowOptions();
@@ -89,7 +89,7 @@ public final class Show implements Serializable {
   }
 
   /** @return may be null */
-  // TODO BRIDGE current design is so that value is calculated only after drawing :-(
+  // TODO current design is so that value is calculated only after drawing :-(
   public CoordinateBoundingBox getCbb() {
     return cbb;
   }
@@ -119,7 +119,7 @@ public final class Show implements Serializable {
    * @param yStep
    * @see ExactScalarQ */
   public void setAspectRatio(Scalar xStep, Scalar yStep) {
-    // TODO BRIDGE throw exception if axis X and Y are not compatible unit etc.
+    // TODO throw exception if axis X and Y are not compatible unit etc.
     aspectRatio = AspectRatio.user(ExactScalarQ.require(xStep.divide(yStep)));
   }
 

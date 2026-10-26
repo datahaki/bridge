@@ -71,7 +71,7 @@ public class VectorPlot extends BarLegendPlot {
         uv = Tensors.empty();
         rescale = new Rescale(Tensors.empty());
       } else {
-        // TODO BRIDGE This does not account for dy !!!
+        // TODO This does not account for dy !!!
         Scalar h = dx.Get(1).subtract(dx.Get(0));
         Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
         uv = _uv.multiply(h.divide(max.add(max)));

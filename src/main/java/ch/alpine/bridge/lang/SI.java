@@ -5,7 +5,7 @@ import ch.alpine.tensor.qty.Unit;
 
 /** names inspired by Mathematica, see names.properties
  * 
- * EXPERIMENTAL BRIDGE file should be auto generated */
+ * EXPERIMENTAL file should be auto generated */
 public enum SI {
   ;
   public static final UnitHub METERS = UnitHub.si("m");

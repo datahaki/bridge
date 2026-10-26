@@ -23,7 +23,7 @@ import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Clip;
 
 abstract class Axis {
-  // TODO BRIDGE 100 is a magic constant that should depend on font, and date formatter
+  // TODO 100 is a magic constant that should depend on font, and date formatter
   private static final int REF = 100;
   private static final Stroke STROKE_GRIDLINES = //
       new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 2 }, 0);

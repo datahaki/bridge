@@ -25,7 +25,7 @@ class MenuPanel extends StringPanel {
     super(fieldWrap, value);
     JComponent jTextField = getTextFieldComponent();
     jTextField.addMouseWheelListener(mouseWheelEvent -> {
-      // TODO BRIDGE IMPL not clean due to object vs. string
+      // TODO IMPL not clean due to object vs. string
       List<String> list = supplier.get().stream().map(Object::toString).toList();
       String string = getText();
       // System.out.println(string + " in " + list);

@@ -87,6 +87,7 @@ import ch.alpine.tensor.prc.RandomFunction;
 import ch.alpine.tensor.prc.RandomProcess;
 import ch.alpine.tensor.prc.WienerProcess;
 import ch.alpine.tensor.qty.DateTime;
+import ch.alpine.tensor.qty.Degree;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.QuantityMagnitude;
 import ch.alpine.tensor.sca.Abs;
@@ -253,7 +254,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show(ColorDataLists._098.strict());
       show.setShowLabel("Cosine");
       ScalarUnaryOperator suo = QuantityMagnitude.SI().in("rad");
-      Showable showable = show.add(Plot.of(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Quantity.of(180, "deg"))));
+      Showable showable = show.add(Plot.of(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Quantity.of(180, Degree.UNIT))));
       showable.setLabel("cosine");
       showable.setStroke(new BasicStroke(0.5f));
       return show;

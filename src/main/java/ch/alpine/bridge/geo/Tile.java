@@ -2,7 +2,11 @@
 package ch.alpine.bridge.geo;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
+import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Integers;
 
 public record Tile(int z, int x, int y) implements Serializable {
@@ -33,5 +37,25 @@ public record Tile(int z, int x, int y) implements Serializable {
     int max = maxInclusive(z);
     Integers.requireEquals(x, Math.min(Math.max(0, x), max));
     Integers.requireEquals(y, Math.min(Math.max(0, y), max));
+  }
+  // TODO provide function that returns CBB
+
+  public Tensor cbb_lat_lon() {
+    return Tensors.of( //
+        new TilePixel(this, 0, 0).lat_lon(), //
+        new TilePixel(this, 0, 256).lat_lon(), //
+        new TilePixel(this, 256, 256).lat_lon(), //
+        new TilePixel(this, 256, 0).lat_lon());
+  }
+
+  public Collection<? extends Tile> children() {
+    int z1 = z + 1;
+    int x2 = x * 2;
+    int y2 = y * 2;
+    return List.of( //
+        new Tile(z1, x2 + 0, y2 + 0), //
+        new Tile(z1, x2 + 1, y2 + 0), //
+        new Tile(z1, x2 + 0, y2 + 1), //
+        new Tile(z1, x2 + 1, y2 + 1));
   }
 }

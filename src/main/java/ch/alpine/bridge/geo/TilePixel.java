@@ -76,11 +76,10 @@ public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
   public TilePixel from(Tensor lat_lon) {
     return from(tile.z(), lat_lon);
   }
-
-  public TilePixel {
-    Integers.requireEquals(PIXEL_CLIP.applyAsInt(pix), pix);
-    Integers.requireEquals(PIXEL_CLIP.applyAsInt(piy), piy);
-  }
+  // public TilePixel {
+  // Integers.requireEquals(PIXEL_CLIP.applyAsInt(pix), pix);
+  // Integers.requireEquals(PIXEL_CLIP.applyAsInt(piy), piy);
+  // }
 
   /** @return */
   public long absX() {

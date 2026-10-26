@@ -8,11 +8,27 @@ import java.util.HexFormat;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.mat.Tolerance;
+import ch.alpine.tensor.num.Pi;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.opt.nd.CoordinateBounds;
+
 class TileTest {
   @Test
   void test() {
     assertEquals(HexFormat.of().toHexDigits(63), "0000003f");
     assertEquals(HexFormat.of().toHexDigits(63L), "000000000000003f");
+  }
+
+  @Test
+  void testLatLon() {
+    Tile tile = new Tile(0, 0, 0);
+    Tensor polygon = tile.cbb_lat_lon();
+    CoordinateBoundingBox cbb = CoordinateBounds.of(polygon);
+    Tolerance.CHOP.requireClose(cbb.clip(0).length(), RealScalar.of(2.968844459490665));
+    Tolerance.CHOP.requireClose(cbb.clip(1).length(), Pi.TWO);
   }
 
   @Test

@@ -54,12 +54,12 @@ public class CandlestickChart extends BaseShowable {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     if (timeSeries.isEmpty())
       return;
-    // TODO BRIDGE TsPlot should also handle vectors
+    // TODO TsPlot should also handle vectors
     Optional<Clip> optional = Clips.optionalIntersection(showableConfig.cbb().clip(0), timeSeries.domain());
     if (optional.isPresent()) {
       Clip x_clip = optional.orElseThrow();
       if (x_clip.isNonDegenerate()) {
-        // TODO BRIDGE TsPlot should also handle vectors
+        // TODO TsPlot should also handle vectors
         // timeSeries.block(x_clip, false).stream() //
         // .forEach(tsEntry -> tsf.apply(tsEntry.value()));
         NavigableSet<Scalar> navigableSet = asd(x_clip, showableConfig.rectangle().width);
@@ -92,7 +92,7 @@ public class CandlestickChart extends BaseShowable {
     }
   }
 
-  // TODO BRIDGE refactor with showableConfig
+  // TODO refactor with showableConfig
   public static NavigableSet<Scalar> asd(Clip clip, int rectangle_width) {
     NavigableSet<Scalar> navigableMap = new TreeSet<>();
     Scalar factor = Rational.of(MIN_SPACE, rectangle_width);

@@ -81,7 +81,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
     Dimension dimension = getSize();
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, dimension.width, dimension.height);
-    // TODO BRIDGE consider font when computing rectangle
+    // TODO consider font when computing rectangle
     if (Objects.nonNull(show))
       showableConfig = show.render_autoIndent(graphics, new Rectangle(new Point(), dimension));
   }
@@ -93,7 +93,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
       if (optional.isPresent()) {
         Tensor xy = optional.orElseThrow();
         CoordinateBoundingBox cbb = showableConfig.cbb();
-        // TODO BRIDGE for ArrayShowable the zoom should be limited
+        // TODO for ArrayShowable the zoom should be limited
         Scalar factor = Power.of(1.3, mouseWheelEvent.getWheelRotation());
         if (set_x.contains(Option.ZOOM)) {
           Clip xclip = cbb.clip(0);

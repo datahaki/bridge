@@ -10,6 +10,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.mat.Tolerance;
+import ch.alpine.tensor.qty.Degree;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Chop;
@@ -25,8 +26,8 @@ class TilePixelTest {
 
   @Test
   void testAspe() {
-    Scalar lat = Quantity.of(38.343373, "deg");
-    Scalar lon = Quantity.of(-0.762800, "deg");
+    Scalar lat = Quantity.of(38.343373, Degree.UNIT);
+    Scalar lon = Quantity.of(-0.762800, Degree.UNIT);
     TilePixel tileP1 = TilePixel.from(17, lat, lon);
     Tensor coords = tileP1.lat_lon();
     Tensor expect = Tensors.of(lat, lon).maps(UnitSystem.SI());
