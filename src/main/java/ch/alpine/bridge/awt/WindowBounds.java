@@ -54,10 +54,14 @@ public class WindowBounds {
   private final Point shift = new Point();
 
   private void private_attach(Window window, Path path) {
+    // IO.println("ALL VIS "+getBoundsAllVisible());
     window.setBounds(getBoundsAllVisible());
+    // IO.println("BNDS="+window.getBounds());
     WindowBounds windowBounds = this;
     WindowClosed.runs(window, () -> {
       Rectangle rectangle = window.getBounds();
+      // IO.println("RECT="+rectangle);
+      // IO.println("POIN="+shift);
       rectangle.x -= shift.x;
       rectangle.y -= shift.y;
       windowBounds.rectangle = rectangle;
@@ -74,6 +78,7 @@ public class WindowBounds {
       public void componentShown(ComponentEvent componentEvent) {
         try {
           shown = window.getLocationOnScreen();
+          // IO.println("SHWN="+shown);
         } catch (IllegalComponentStateException illegalComponentStateException) {
           String message = illegalComponentStateException.getMessage();
           if (!message.equals("component must be showing on the screen to determine its location"))

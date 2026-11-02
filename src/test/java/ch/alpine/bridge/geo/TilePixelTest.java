@@ -25,16 +25,25 @@ class TilePixelTest {
   }
 
   @Test
-  void testAspe() {
-    Scalar lat = Quantity.of(38.343373, Degree.UNIT);
+  void testAspe9() {
     Scalar lon = Quantity.of(-0.762800, Degree.UNIT);
-    TilePixel tileP1 = TilePixel.from(17, lat, lon);
-    Tensor coords = tileP1.lat_lon();
-    Tensor expect = Tensors.of(lat, lon).maps(UnitSystem.SI());
+    Scalar lat = Quantity.of(38.343373, Degree.UNIT);
+    TilePixel tileP1 = TilePixel.from(9, lon, lat);
+    assertEquals(tileP1.tile().x(), 254);
+    assertEquals(tileP1.tile().y(), 196);
+  }
+
+  @Test
+  void testAspe() {
+    Scalar lon = Quantity.of(-0.762800, Degree.UNIT);
+    Scalar lat = Quantity.of(38.343373, Degree.UNIT);
+    TilePixel tileP1 = TilePixel.from(17, lon, lat);
+    Tensor coords = tileP1.lon_lat();
+    Tensor expect = Tensors.of(lon, lat).maps(UnitSystem.SI());
     Chop._05.requireClose(coords, expect);
-    TilePixel tileP2 = TilePixel.from(17, Tensors.of(lat, lon));
+    TilePixel tileP2 = TilePixel.from(17, Tensors.of(lon, lat));
     assertEquals(tileP1, tileP2);
-    TilePixel tileP3 = tileP2.from(Tensors.of(lat, lon));
+    TilePixel tileP3 = tileP2.from(Tensors.of(lon, lat));
     assertEquals(tileP1, tileP3);
     TilePixel tileP4 = tileP1.zoomIncr(-1, 19).orElseThrow();
     assertEquals(tileP4.tile().z(), 16);
@@ -50,7 +59,7 @@ class TilePixelTest {
 
   @Test
   void testInvLat() {
-    Tensor coords = new TilePixel(new Tile(0, 0, 0), 128, 128).lat_lon();
+    Tensor coords = new TilePixel(new Tile(0, 0, 0), 128, 128).lon_lat();
     Tolerance.CHOP.requireAllZero(coords); // lon
   }
 }

@@ -30,6 +30,7 @@ public enum ShowWindow {
    * @param list
    * @return */
   public static JDialog asDialog(List<Show> list) {
+    // FIXME handle case if list is empty
     /* false -> non-modal == non-blocking */
     JDialog jDialog = new JDialog(JOptionPane.getFrameForComponent(null), false);
     jDialog.setContentPane(createContainer(list));

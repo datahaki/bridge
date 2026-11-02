@@ -144,8 +144,8 @@ public class GeoComponent extends JComponent {
           TileImage tileImage = mapImagesCache.getTile(tile);
           if (Objects.nonNull(tileImage)) {
             graphics.drawImage(tileImage.bufferedImage(), pix, piy, null);
-            if (pngSize)
-              textContour.draw(tile + " " + tileImage.length(), 128 + pix, 128 + piy);
+            // if (pngSize)
+            textContour.draw(tile + " " + tileImage.length(), 128 + pix, 128 + piy);
           }
         }
     }
@@ -163,18 +163,18 @@ public class GeoComponent extends JComponent {
       ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
       FontMetrics fontMetrics = graphics.getFontMetrics();
       { // lon along "X - axis"
-        Scalar min = suo.apply(tilePixel.shift(-center.x, 0).lat_lon().Get(1));
-        Scalar max = suo.apply(tilePixel.shift(+center.x, 0).lat_lon().Get(1));
+        Scalar min = suo.apply(tilePixel.shift(-center.x, 0).lon_lat().Get(0));
+        Scalar max = suo.apply(tilePixel.shift(+center.x, 0).lon_lat().Get(0));
         while (Scalars.lessThan(max, min))
           max = max.add(Quantity.of(360, "deg"));
         Clip clip = Clips.interval(min, max);
         if (Scalars.nonZero(clip.length())) {
           List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.width)).toList();
-          Tensor lat_lon = tilePixel.lat_lon().maps(suo);
+          Tensor lon_lat = tilePixel.lon_lat().maps(suo);
           int height = fontMetrics.getDescent();
           for (Scalar tick : list) {
-            lat_lon.set(tick, 1);
-            Point point = geoLayer.toPoint(lat_lon);
+            lon_lat.set(tick, 0);
+            Point point = geoLayer.toPoint(lon_lat);
             int x = point.x;
             if (gridlines) {
               graphics.setColor(gridLineColor);
@@ -189,19 +189,19 @@ public class GeoComponent extends JComponent {
         }
       }
       { // lat along "Y - axis"
-        Scalar max = suo.apply(tilePixel.shift(0, -center.y).lat_lon().Get(0));
-        Scalar min = suo.apply(tilePixel.shift(0, +center.y).lat_lon().Get(0));
+        Scalar max = suo.apply(tilePixel.shift(0, -center.y).lon_lat().Get(1));
+        Scalar min = suo.apply(tilePixel.shift(0, +center.y).lon_lat().Get(1));
         while (Scalars.lessThan(max, min))
           max = max.add(Quantity.of(180, "deg"));
         Clip clip = Clips.interval(min, max);
         List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.height)).toList();
-        Tensor lat_lon = tilePixel.lat_lon().maps(suo);
+        Tensor lat_lon = tilePixel.lon_lat().maps(suo);
         // establish longest string, e.g. "47.15"
         OptionalInt optionalInt = list.stream().map(Ticks::format).mapToInt(fontMetrics::stringWidth).max();
         if (optionalInt.isPresent()) {
           int width = optionalInt.getAsInt() + 5;
           for (Scalar tick : list) {
-            lat_lon.set(tick, 0);
+            lat_lon.set(tick, 1);
             Point point = geoLayer.toPoint(lat_lon);
             int x = dimension.width - width;
             int y = point.y;

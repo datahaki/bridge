@@ -51,8 +51,8 @@ public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
   /** @param z
    * @param lat_lon for instance {38.343373[deg], -0.762800[deg]}n
    * @return */
-  public static TilePixel from(int z, Tensor lat_lon) {
-    return from(z, lat_lon.Get(0), lat_lon.Get(1));
+  public static TilePixel from(int z, Tensor lon_lat) {
+    return from(z, lon_lat.Get(0), lon_lat.Get(1));
   }
 
   /** formula taken from gemini
@@ -61,20 +61,18 @@ public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
    * @param lat
    * @param lon
    * @return */
-  public static TilePixel from(int z, Scalar lat, Scalar lon) {
+  public static TilePixel from(int z, Scalar lon, Scalar lat) {
     lat = LAT_DOMAIN.apply(UnitSystem.SI().apply(lat));
     lon = UnitSystem.SI().apply(lon);
-    Scalar ny = RealScalar.ONE.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.VALUE)).multiply(RealScalar.of(1 << z + 7));
     Scalar nx = lon.add(Pi.VALUE).divide(Pi.TWO).multiply(RealScalar.of(1 << z + 8));
-    return TilePixel.of(z, //
-        Floor.longValueExact(nx), //
-        Floor.longValueExact(ny));
+    Scalar ny = RealScalar.ONE.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.VALUE)).multiply(RealScalar.of(1 << z + 7));
+    return TilePixel.of(z, Floor.longValueExact(nx), Floor.longValueExact(ny));
   }
 
   /** @param lat_lon for instance {38.343373[deg], -0.762800[deg]}
    * @return */
-  public TilePixel from(Tensor lat_lon) {
-    return from(tile.z(), lat_lon);
+  public TilePixel from(Tensor lon_lat) {
+    return from(tile.z(), lon_lat);
   }
   // public TilePixel {
   // Integers.requireEquals(PIXEL_CLIP.applyAsInt(pix), pix);
@@ -127,13 +125,15 @@ public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
   /** formula adapted from gemini
    * 
    * @return {lat, lon} */
-  public Tensor lat_lon() {
+  public Tensor lon_lat() {
     int z = tile().z();
     int ymax = 1 << z + 7;
     Scalar ang = Rational.of(ymax - absY(), ymax).multiply(Pi.VALUE);
     return Tensors.of( //
-        ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(ang)), //
-        Rational.of(absX() - ymax, ymax).multiply(Pi.VALUE));
+        Rational.of(absX() - ymax, ymax).multiply(Pi.VALUE) //
+        , //
+        ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(ang)) //
+    );
   }
 
   public Tensor encode() {

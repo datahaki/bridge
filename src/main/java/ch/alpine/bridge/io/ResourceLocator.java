@@ -8,6 +8,7 @@ import java.nio.file.Path;
 
 import ch.alpine.bridge.ref.util.ObjectProperties;
 import ch.alpine.tensor.ext.HomeDirectory;
+import ch.alpine.tensor.io.MathematicaFormat;
 
 /** manage operations of ObjectProperties on a local installation
  * suitable for singleton parameter files, for instance editor */
@@ -69,5 +70,10 @@ public class ResourceLocator {
    * @return file in given base directory with given name */
   public Path resolve(String name) {
     return base.resolve(name);
+  }
+
+  @Override
+  public String toString() {
+    return MathematicaFormat.concise(super.toString(), base);
   }
 }

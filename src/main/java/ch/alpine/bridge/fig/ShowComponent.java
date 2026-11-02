@@ -18,7 +18,6 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -131,24 +130,22 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
         CoordinateBoundingBox cbb = showableConfig.cbb();
         if (Objects.nonNull(cbb)) {
           Point point = mouseEvent.getPoint();
-          int dx = point.x - pressed.x;
-          int dy = point.y - pressed.y;
-          pressed = point;
           // ---
           if (set_x.contains(Option.PAN)) {
-            Scalar shift = showableConfig.confX().pixel2model().multiply(RealScalar.of(-dx));
+            Scalar shift = showableConfig.confX().shift(pressed.x, point.x);
             Clip xRange = cbb.clip(0);
             cbb = CoordinateBoundingBox.of( //
                 Clips.interval(xRange.min().add(shift), xRange.max().add(shift)), //
                 cbb.clip(1));
           }
           if (set_y.contains(Option.PAN)) {
-            Scalar shift = showableConfig.confY().pixel2model().multiply(RealScalar.of(-dy));
+            Scalar shift = showableConfig.confY().shift(pressed.y, point.y);
             Clip yRange = cbb.clip(1);
             cbb = CoordinateBoundingBox.of( //
                 cbb.clip(0), //
                 Clips.interval(yRange.min().add(shift), yRange.max().add(shift)));
           }
+          pressed = point;
           // ---
           show.setCbb(cbb);
           repaint();
