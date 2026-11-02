@@ -10,7 +10,7 @@ public class GeoShow implements ShowProvider {
   @Override
   public Show getShow() {
     Show show = new Show();
-    TilePixel tilePixel = TilePixel.from(7, Quantity.of(38.343373, Degree.UNIT), Quantity.of(-0.762800, Degree.UNIT));
+    TilePixel tilePixel = TilePixel.from(7, 256, Quantity.of(38.343373, Degree.UNIT), Quantity.of(-0.762800, Degree.UNIT));
     show.add(GeoGraphics.of(tilePixel));
     return show;
   }

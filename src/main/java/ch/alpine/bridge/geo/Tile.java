@@ -42,10 +42,10 @@ public record Tile(int z, int x, int y) implements Serializable {
 
   public Tensor cbb_lat_lon() {
     return Tensors.of( //
-        new TilePixel(this, 0, 0).lon_lat(), //
-        new TilePixel(this, 0, 256).lon_lat(), //
-        new TilePixel(this, 256, 256).lon_lat(), //
-        new TilePixel(this, 256, 0).lon_lat());
+        new TilePixel(this, 256, 0, 0).lon_lat(), //
+        new TilePixel(this, 256, 0, 256).lon_lat(), //
+        new TilePixel(this, 256, 256, 256).lon_lat(), //
+        new TilePixel(this, 256, 256, 0).lon_lat());
   }
 
   public Collection<? extends Tile> children() {

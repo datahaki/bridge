@@ -1,17 +1,15 @@
 // code by jph
 package ch.alpine.bridge.geo;
 
-import java.awt.Point;
 import java.io.Serializable;
 import java.util.Optional;
-import java.util.function.IntUnaryOperator;
 
+import ch.alpine.bridge.lang.IntQuotientRemainder;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
@@ -25,14 +23,12 @@ import ch.alpine.tensor.sca.tri.Sinh;
 /** address combination of tile and pixel on that tile
  * 
  * @param tile
- * @param pix between 0 and 255
- * @param piy between 0 and 255 */
-public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
+ * @param pix between 0 and (wid-1)
+ * @param piy between 0 and (wid-1) */
+public record TilePixel(Tile tile, int wid, int pix, int piy) implements Serializable {
   /** value of latitude outside of this domain cannot be mapped
    * meaningfully to a tile pixel coordinate */
   public static final Clip LAT_DOMAIN = Clips.absolute(ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(Pi.VALUE)));
-  private static final int xFF = 255;
-  private static final IntUnaryOperator PIXEL_CLIP = Integers.clip(0, xFF);
 
   /** function decomposes pixel in world map
    * to tile and pixel on that tile address
@@ -41,18 +37,18 @@ public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
    * @param nx
    * @param ny
    * @return */
-  public static TilePixel of(int z, long nx, long ny) {
-    int mask = Tile.maxInclusive(z);
-    int tx = (int) (nx >> 8) & mask;
-    int ty = (int) (ny >> 8) & mask;
-    return new TilePixel(new Tile(z, tx, ty), (int) (nx & xFF), (int) (ny & xFF));
+  public static TilePixel of(int z, int wid, long nx, long ny) {
+    IntQuotientRemainder iqrx = IntQuotientRemainder.from(nx, wid);
+    IntQuotientRemainder iqry = IntQuotientRemainder.from(ny, wid);
+    Tile tile = new Tile(z, iqrx.div(), iqry.div());
+    return new TilePixel(tile, wid, iqrx.rem(), iqry.rem());
   }
 
   /** @param z
-   * @param lat_lon for instance {38.343373[deg], -0.762800[deg]}n
+   * @param lon_lat for instance {-0.762800[deg], 38.343373[deg]}
    * @return */
-  public static TilePixel from(int z, Tensor lon_lat) {
-    return from(z, lon_lat.Get(0), lon_lat.Get(1));
+  public static TilePixel from(int z, int wid, Tensor lon_lat) {
+    return from(z, wid, lon_lat.Get(0), lon_lat.Get(1));
   }
 
   /** formula taken from gemini
@@ -61,18 +57,21 @@ public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
    * @param lat
    * @param lon
    * @return */
-  public static TilePixel from(int z, Scalar lon, Scalar lat) {
-    lat = LAT_DOMAIN.apply(UnitSystem.SI().apply(lat));
+  public static TilePixel from(int z, int wid, Scalar lon, Scalar lat) {
     lon = UnitSystem.SI().apply(lon);
-    Scalar nx = lon.add(Pi.VALUE).divide(Pi.TWO).multiply(RealScalar.of(1 << z + 8));
-    Scalar ny = RealScalar.ONE.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.VALUE)).multiply(RealScalar.of(1 << z + 7));
-    return TilePixel.of(z, Floor.longValueExact(nx), Floor.longValueExact(ny));
+    lat = LAT_DOMAIN.apply(UnitSystem.SI().apply(lat));
+    int base = 1 << z;
+    Scalar factor = RealScalar.of(base * wid);
+    Scalar nx = lon.add(Pi.VALUE).divide(Pi.TWO).multiply(factor);
+    Scalar ny = Rational.HALF.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.TWO)) //
+        .multiply(factor);
+    return TilePixel.of(z, wid, Floor.longValueExact(nx), Floor.longValueExact(ny));
   }
 
-  /** @param lat_lon for instance {38.343373[deg], -0.762800[deg]}
+  /** @param lon_lat for instance {-0.762800[deg], 38.343373[deg]}
    * @return */
   public TilePixel from(Tensor lon_lat) {
-    return from(tile.z(), lon_lat);
+    return from(tile.z(), wid, lon_lat);
   }
   // public TilePixel {
   // Integers.requireEquals(PIXEL_CLIP.applyAsInt(pix), pix);
@@ -81,12 +80,12 @@ public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
 
   /** @return */
   public long absX() {
-    return (tile.x() << 8) + pix;
+    return (tile.x() * wid) + pix;
   }
 
   /** @return */
   public long absY() {
-    return (tile.y() << 8) + piy;
+    return (tile.y() * wid) + piy;
   }
 
   /** @param dx pixel level
@@ -94,55 +93,37 @@ public record TilePixel(Tile tile, int pix, int piy) implements Serializable {
    * @return */
   public TilePixel shift(long dx, long dy) {
     int z = tile.z();
-    long mask = (1 << (z + 8)) - 1;
-    long nx = (absX() + dx) & mask;
-    long ny = (absY() + dy) & mask;
-    return of(z, nx, ny);
+    long base = (1 << z) * wid;
+    long nx = Math.floorMod(absX() + dx, base);
+    long ny = Math.floorMod(absY() + dy, base);
+    return of(z, wid, nx, ny);
   }
 
   /** @param delta zoom increment, or decrement when negative
    * @return */
-  public Optional<TilePixel> zoomIncr(final int del, int z_max) {
-    int z = tile.z();
-    int nz = Math.min(Math.max(0, z + del), z_max);
-    int delta = nz - z;
-    if (delta == del) {
-      long mask = (1 << z + 8) - 1;
-      long nx = absX() & mask;
-      long ny = absY() & mask;
-      if (0 <= delta) {
-        nx <<= delta;
-        ny <<= delta;
-      } else {
-        nx >>= -delta;
-        ny >>= -delta;
-      }
-      return Optional.of(of(z + delta, nx, ny));
-    }
+  public Optional<TilePixel> zoomIncr(final int wid_delta, int z_max) {
+    Tensor lon_lat = lon_lat();
+    IntQuotientRemainder iqr = IntQuotientRemainder.from(wid + wid_delta, 256);
+    int z = tile.z() + iqr.div() - 1;
+    if (0 <= z && z <= z_max)
+      return Optional.of(from(z, 256 + iqr.rem(), lon_lat));
     return Optional.empty();
   }
 
   /** formula adapted from gemini
    * 
-   * @return {lat, lon} */
+   * @return {lon, lat} */
   public Tensor lon_lat() {
     int z = tile().z();
-    int ymax = 1 << z + 7;
-    Scalar ang = Rational.of(ymax - absY(), ymax).multiply(Pi.VALUE);
+    int ymax = (1 << z) * wid;
+    Scalar ang = Rational.of(ymax - absY() * 2, ymax).multiply(Pi.VALUE);
     return Tensors.of( //
-        Rational.of(absX() - ymax, ymax).multiply(Pi.VALUE) //
-        , //
+        Rational.of(absX() * 2 - ymax, ymax).multiply(Pi.VALUE), //
         ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(ang)) //
     );
   }
 
   public Tensor encode() {
-    return Tensors.vector(tile.z(), absX(), absY());
-  }
-
-  public Point corner(int ix, int iy) {
-    int tix = ix << 8;
-    int tiy = iy << 8;
-    return new Point(tix - pix, tiy - piy);
+    return Tensors.vector(tile.z(), wid, absX(), absY());
   }
 }

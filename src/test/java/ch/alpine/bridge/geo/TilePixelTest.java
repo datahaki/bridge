@@ -19,8 +19,8 @@ import ch.alpine.tensor.sca.Clip;
 class TilePixelTest {
   @Test
   void test() {
-    TilePixel tilePixel = TilePixel.from(0, RealScalar.of(0), RealScalar.of(0));
-    TilePixel tileExpec = new TilePixel(new Tile(0, 0, 0), 128, 128);
+    TilePixel tilePixel = TilePixel.from(0, 256, RealScalar.of(0), RealScalar.of(0));
+    TilePixel tileExpec = new TilePixel(new Tile(0, 0, 0), 256, 128, 128);
     assertEquals(tileExpec, tilePixel);
   }
 
@@ -28,7 +28,7 @@ class TilePixelTest {
   void testAspe9() {
     Scalar lon = Quantity.of(-0.762800, Degree.UNIT);
     Scalar lat = Quantity.of(38.343373, Degree.UNIT);
-    TilePixel tileP1 = TilePixel.from(9, lon, lat);
+    TilePixel tileP1 = TilePixel.from(9, 256, lon, lat);
     assertEquals(tileP1.tile().x(), 254);
     assertEquals(tileP1.tile().y(), 196);
   }
@@ -37,11 +37,11 @@ class TilePixelTest {
   void testAspe() {
     Scalar lon = Quantity.of(-0.762800, Degree.UNIT);
     Scalar lat = Quantity.of(38.343373, Degree.UNIT);
-    TilePixel tileP1 = TilePixel.from(17, lon, lat);
+    TilePixel tileP1 = TilePixel.from(17, 256, lon, lat);
     Tensor coords = tileP1.lon_lat();
     Tensor expect = Tensors.of(lon, lat).maps(UnitSystem.SI());
     Chop._05.requireClose(coords, expect);
-    TilePixel tileP2 = TilePixel.from(17, Tensors.of(lon, lat));
+    TilePixel tileP2 = TilePixel.from(17, 256, Tensors.of(lon, lat));
     assertEquals(tileP1, tileP2);
     TilePixel tileP3 = tileP2.from(Tensors.of(lon, lat));
     assertEquals(tileP1, tileP3);
@@ -59,7 +59,7 @@ class TilePixelTest {
 
   @Test
   void testInvLat() {
-    Tensor coords = new TilePixel(new Tile(0, 0, 0), 128, 128).lon_lat();
+    Tensor coords = new TilePixel(new Tile(0, 0, 0), 256, 128, 128).lon_lat();
     Tolerance.CHOP.requireAllZero(coords); // lon
   }
 }
