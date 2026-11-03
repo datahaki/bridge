@@ -14,7 +14,7 @@ import ch.alpine.tensor.qty.DateTime;
 abstract class AxisY extends Axis {
   static final int GAP = 5;
 
-  public AxisY(ConfBase confBase, AxisOptions axisOptions) {
+  public AxisY(ConfIf confBase, AxisOptions axisOptions) {
     super(confBase, axisOptions);
   }
 

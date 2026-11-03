@@ -9,6 +9,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -25,13 +26,19 @@ import javax.swing.event.MouseInputListener;
 
 import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.bridge.fig.GridDrawer;
+import ch.alpine.bridge.fig.Show;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.bridge.fig.Ticks;
 import ch.alpine.bridge.gfx.TextContour;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.opt.nd.CoordinateBounds;
 import ch.alpine.tensor.qty.Degree;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitConvert;
@@ -117,39 +124,57 @@ public class GeoComponent extends JComponent {
     boolean missing = false;
     final int wid = tilePixel.wid();
     {
-      for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
-        for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
-          TilePixel shift = origin.shift(pix, piy);
-          TileImage tileImage = mapImagesCache.getTile(shift.tile());
-          missing |= Objects.isNull(tileImage);
-        }
-    }
-    if (missing) {
-      Optional<TilePixel> optional = origin.widIncr(-256, tileServer.z_max());
-      if (optional.isPresent()) {
-        TilePixel coarse = optional.orElseThrow();
-        for (int ix = -coarse.pix(); ix < dimension.width / 2; ix += wid)
-          for (int iy = -coarse.piy(); iy < dimension.height / 2; iy += wid) {
-            TilePixel shift = coarse.shift(ix, iy);
+      FontMetrics fontMetrics = graphics.getFontMetrics();
+      Rectangle rectangle = Show.optionalDefaultInsets(dimension, fontMetrics).orElseThrow();
+      graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+      {
+        for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
+          for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
+            TilePixel shift = origin.shift(pix, piy);
             TileImage tileImage = mapImagesCache.getTile(shift.tile());
-            if (Objects.nonNull(tileImage))
-              graphics.drawImage(tileImage.bufferedImage(), ix * 2, iy * 2, wid * 2, wid * 2, null);
+            missing |= Objects.isNull(tileImage);
           }
       }
-    }
-    {
-//      graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 10));
-//      TextContour textContour = TextContour.of(graphics);
-      for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
-        for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
-          Tile tile = origin.shift(pix, piy).tile();
-          TileImage tileImage = mapImagesCache.getTile(tile);
-          if (Objects.nonNull(tileImage)) {
-            graphics.drawImage(tileImage.bufferedImage(), pix, piy, wid, wid, null);
-            // if (pngSize)
-//            textContour.draw(tile + " " + tileImage.length(), pix, piy);
-          }
+      if (missing) {
+        Optional<TilePixel> optional = origin.widIncr(-256, tileServer.z_max());
+        if (optional.isPresent()) {
+          TilePixel coarse = optional.orElseThrow();
+          for (int ix = -coarse.pix(); ix < dimension.width / 2; ix += wid)
+            for (int iy = -coarse.piy(); iy < dimension.height / 2; iy += wid) {
+              TilePixel shift = coarse.shift(ix, iy);
+              TileImage tileImage = mapImagesCache.getTile(shift.tile());
+              if (Objects.nonNull(tileImage))
+                graphics.drawImage(tileImage.bufferedImage(), ix * 2, iy * 2, wid * 2, wid * 2, null);
+            }
         }
+      }
+      {
+        // graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 10));
+        // TextContour textContour = TextContour.of(graphics);
+        for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
+          for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
+            Tile tile = origin.shift(pix, piy).tile();
+            TileImage tileImage = mapImagesCache.getTile(tile);
+            if (Objects.nonNull(tileImage)) {
+              graphics.drawImage(tileImage.bufferedImage(), pix, piy, wid, wid, null);
+              // if (pngSize)
+              // textContour.draw(tile + " " + tileImage.length(), pix, piy);
+            }
+          }
+      }
+      graphics.setClip(null);
+      if (2 < origin.tile().z()) {
+        Point p00 = rectangle.getLocation();
+        Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
+        TilePixel tp00 = origin.shift(p00.x, p00.y);
+        TilePixel tp11 = origin.shift(p11.x, p11.y);
+        Tensor lon_lat0 = tp00.lon_lat();
+        Tensor lon_lat1 = tp11.lon_lat();
+        ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
+        CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(suo));
+        // the choice of yDecr is mostly correct but not entirely general
+        new GridDrawer().render(ShowableConfig.geo(rectangle, cbb, origin), graphics);
+      }
     }
     if (missing) {
       graphics.setColor(new Color(255, 0, 0, 128 + 64));
@@ -164,7 +189,7 @@ public class GeoComponent extends JComponent {
     if (ticks && 2 < tilePixel.tile().z()) {
       ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
       FontMetrics fontMetrics = graphics.getFontMetrics();
-      { // lon along "X - axis"
+      if (false) { // lon along "X - axis"
         Scalar min = suo.apply(tilePixel.shift(-center.x, 0).lon_lat().Get(0));
         Scalar max = suo.apply(tilePixel.shift(+center.x, 0).lon_lat().Get(0));
         while (Scalars.lessThan(max, min))
@@ -190,26 +215,26 @@ public class GeoComponent extends JComponent {
           }
         }
       }
-      { // lat along "Y - axis"
+      if (false) { // lat along "Y - axis"
         Scalar max = suo.apply(tilePixel.shift(0, -center.y).lon_lat().Get(1));
         Scalar min = suo.apply(tilePixel.shift(0, +center.y).lon_lat().Get(1));
         while (Scalars.lessThan(max, min))
           max = max.add(Quantity.of(180, "deg"));
         Clip clip = Clips.interval(min, max);
         List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.height)).toList();
-        Tensor lat_lon = tilePixel.lon_lat().maps(suo);
+        Tensor lon_lat = tilePixel.lon_lat().maps(suo);
         // establish longest string, e.g. "47.15"
         OptionalInt optionalInt = list.stream().map(Ticks::format).mapToInt(fontMetrics::stringWidth).max();
         if (optionalInt.isPresent()) {
           int width = optionalInt.getAsInt() + 5;
           for (Scalar tick : list) {
-            lat_lon.set(tick, 1);
-            Point point = geoLayer.toPoint(lat_lon);
+            lon_lat.set(tick, 1);
+            Point point = geoLayer.toPoint(lon_lat);
             int x = dimension.width - width;
             int y = point.y;
             if (gridlines) {
               graphics.setColor(gridLineColor);
-              lat_lon.set(tick, 0);
+              lon_lat.set(tick, 0);
               graphics.drawLine(0, point.y, dimension.width, point.y);
             }
             graphics.setStroke(new BasicStroke()); // thickness of outline
@@ -228,7 +253,7 @@ public class GeoComponent extends JComponent {
       int r = 3;
       graphics.drawLine(center.x - r, center.y, center.x + r, center.y);
       graphics.drawLine(center.x, center.y - r, center.x, center.y + r);
-      textContour.draw("z=" + tilePixel.tile().z()+" wid="+tilePixel.wid(), 2, 20);
+      textContour.draw("z=" + tilePixel.tile().z() + " wid=" + tilePixel.wid(), 2, 20);
     }
     renderMore(geoLayer, graphics);
   }

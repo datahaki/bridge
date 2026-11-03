@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.Optional;
 
+import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -16,14 +17,14 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * @param cbb
  * @param confX
  * @param confY */
-public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, ConfBase confX, ConfBase confY) {
+public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, ConfIf confX, ConfIf confY) {
   /** @param rectangle
    * @param cbb
    * @return */
   public static ShowableConfig yDecr(Rectangle rectangle, CoordinateBoundingBox cbb) {
     return new ShowableConfig(rectangle, cbb, //
-        new ConfIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
-        new ConfDecr(rectangle.y, rectangle.height, cbb.clip(1)));
+        new ConfLinIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
+        new ConfLinDecr(rectangle.y, rectangle.height, cbb.clip(1)));
   }
 
   /** @param rectangle
@@ -31,8 +32,14 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Con
    * @return */
   public static ShowableConfig yIncr(Rectangle rectangle, CoordinateBoundingBox cbb) {
     return new ShowableConfig(rectangle, cbb, //
-        new ConfIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
-        new ConfIncr(rectangle.y, rectangle.height, cbb.clip(1)));
+        new ConfLinIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
+        new ConfLinIncr(rectangle.y, rectangle.height, cbb.clip(1)));
+  }
+
+  public static ShowableConfig geo(Rectangle rectangle, CoordinateBoundingBox cbb, TilePixel origin) {
+    return new ShowableConfig(rectangle, cbb, //
+        new ConfLinIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
+        new ConfLatDecr(rectangle.y, rectangle.height, cbb.clip(1), origin));
   }
 
   public Point2D toPoint2D(Tensor vector) {

@@ -12,14 +12,14 @@ import ch.alpine.tensor.sca.Clips;
 class ConfIncrTest {
   @Test
   void testPixel() {
-    ConfIncr confIncr = new ConfIncr(5, 10, Clips.interval(0, 100));
+    ConfLinIncr confIncr = new ConfLinIncr(5, 10, Clips.interval(0, 100));
     Tolerance.CHOP.requireClose(RealScalar.of(5 + 0), RealScalar.of(confIncr.pixel(RealScalar.of(0))));
     Tolerance.CHOP.requireClose(RealScalar.of(5 + 9), RealScalar.of(confIncr.pixel(RealScalar.of(100))));
   }
 
   @Test
   void testFail() {
-    assertThrows(Exception.class, () -> new ConfIncr(3, 1, Clips.unit()));
-    assertThrows(Exception.class, () -> new ConfIncr(3, 2, Clips.interval(3, 3)));
+    assertThrows(Exception.class, () -> new ConfLinIncr(3, 1, Clips.unit()));
+    assertThrows(Exception.class, () -> new ConfLinIncr(3, 2, Clips.interval(3, 3)));
   }
 }

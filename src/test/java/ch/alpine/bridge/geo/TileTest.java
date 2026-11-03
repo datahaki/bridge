@@ -29,7 +29,6 @@ class TileTest {
     CoordinateBoundingBox cbb = CoordinateBounds.of(polygon);
     Tolerance.CHOP.requireClose(cbb.clip(0).length(), Pi.TWO);
     Tolerance.CHOP.requireClose(cbb.clip(1).length(), RealScalar.of(2.968844459490665));
-    
   }
 
   @Test

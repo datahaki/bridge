@@ -10,7 +10,7 @@ import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.sca.Clip;
 
 /** affine-linear axis */
-public abstract class ConfBase implements ConfIf, Serializable {
+abstract class ConfLin implements ConfIf, Serializable {
   private final int ofs;
   private final int length;
   private final Clip clip;
@@ -21,7 +21,7 @@ public abstract class ConfBase implements ConfIf, Serializable {
    * @param length
    * @param clip
    * @param suo */
-  public ConfBase(int ofs, int length, Clip clip, ScalarUnaryOperator suo) {
+  public ConfLin(int ofs, int length, Clip clip, ScalarUnaryOperator suo) {
     Integers.requireLessThan(1, length);
     this.ofs = ofs;
     this.length = length;
@@ -31,7 +31,7 @@ public abstract class ConfBase implements ConfIf, Serializable {
     pixel2model = suo.apply(clip.length().divide(sw));
   }
 
-  /** @return in pixel */
+  @Override
   public final int length() {
     return length;
   }
@@ -41,8 +41,6 @@ public abstract class ConfBase implements ConfIf, Serializable {
     return clip;
   }
 
-  /** @param x
-   * @return pixel coordinate of x */
   @Override
   public final double pixel(Scalar x) {
     return ofs + x.subtract(clip.min()).multiply(model2pixel).number().doubleValue();

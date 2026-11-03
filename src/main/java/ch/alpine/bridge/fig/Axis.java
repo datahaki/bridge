@@ -31,13 +31,13 @@ abstract class Axis {
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
   private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(new AffineTransform(), true, true);
   // ---
-  protected final ConfBase confBase;
+  protected final ConfIf confBase;
   protected final AxisOptions showOptions;
   protected final NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
   protected final DateTimeFormatter dateTimeFormatter;
   private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
-  public Axis(ConfBase confBase, AxisOptions axisOptions) {
+  public Axis(ConfIf confBase, AxisOptions axisOptions) {
     this.confBase = confBase;
     this.showOptions = axisOptions;
     Clip clip = confBase.clip();

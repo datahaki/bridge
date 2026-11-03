@@ -54,7 +54,7 @@ public abstract class BarLegendPlot extends BaseShowable {
           pix, rectangle.y, width, rectangle.height, null);
       Clip clip = barLegend.clip();
       if (clip.isNonDegenerate()) {
-        ConfBase confBase = new ConfDecr(rectangle.y, rectangle.height, clip);
+        ConfIf confBase = new ConfLinDecr(rectangle.y, rectangle.height, clip);
         AxisOptions axisOptions = new AxisOptions();
         axisOptions.set(AxisOption.TICK, true);
         new AxisYR(confBase, axisOptions).render( //

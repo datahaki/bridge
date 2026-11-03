@@ -34,6 +34,7 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
    * to tile and pixel on that tile address
    * 
    * @param z
+   * @param wid
    * @param nx
    * @param ny
    * @return */
@@ -45,6 +46,7 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
   }
 
   /** @param z
+   * @param wid
    * @param lon_lat for instance {-0.762800[deg], 38.343373[deg]}
    * @return */
   public static TilePixel from(int z, int wid, Tensor lon_lat) {
@@ -54,8 +56,9 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
   /** formula taken from gemini
    * 
    * @param z
-   * @param lat
+   * @param wid
    * @param lon
+   * @param lat
    * @return */
   public static TilePixel from(int z, int wid, Scalar lon, Scalar lat) {
     lon = UnitSystem.SI().apply(lon);
@@ -73,10 +76,6 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
   public TilePixel from(Tensor lon_lat) {
     return from(tile.z(), wid, lon_lat);
   }
-  // public TilePixel {
-  // Integers.requireEquals(PIXEL_CLIP.applyAsInt(pix), pix);
-  // Integers.requireEquals(PIXEL_CLIP.applyAsInt(piy), piy);
-  // }
 
   /** @return */
   public long absX() {
