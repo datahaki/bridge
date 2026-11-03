@@ -6,10 +6,11 @@ import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 
-public record GeoLayer(TilePixel origin) {
+public record GeoLayer(TilePixel origin, ShowableConfig showableConfig) {
   public Point toPoint(Tensor lat_lon) {
     return toPoint(origin.from(lat_lon));
   }

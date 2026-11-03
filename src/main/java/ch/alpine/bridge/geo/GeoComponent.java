@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -113,6 +114,20 @@ public class GeoComponent extends JComponent {
   public MapImagesCache getCache() {
     return cache.computeIfAbsent(tileServer, TileServer::cache);
   }
+  // ShowableConfig getShowableConfig() {
+  // FontMetrics fontMetrics = graphics.getFontMetrics();
+  // Rectangle rectangle = Show.optionalDefaultInsets(dimension, fontMetrics).orElseThrow();
+  // Point p00 = rectangle.getLocation();
+  // Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
+  // TilePixel tp00 = origin.shift(p00.x, p00.y);
+  // TilePixel tp11 = origin.shift(p11.x, p11.y);
+  // Tensor lon_lat0 = tp00.lon_lat();
+  // Tensor lon_lat1 = tp11.lon_lat();
+  // ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
+  // CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(suo));
+  // // the choice of yDecr is mostly correct but not entirely general
+  // ShowableConfig.geo(rectangle, cbb, origin);
+  // }
 
   @Override
   protected final void paintComponent(Graphics _g) {
@@ -123,9 +138,11 @@ public class GeoComponent extends JComponent {
     TilePixel origin = fromPoint(new Point(0, 0));
     boolean missing = false;
     final int wid = tilePixel.wid();
+    ShowableConfig showableConfig = null;
     {
       FontMetrics fontMetrics = graphics.getFontMetrics();
       Rectangle rectangle = Show.optionalDefaultInsets(dimension, fontMetrics).orElseThrow();
+      Shape shape = graphics.getClip();
       graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
       {
         for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
@@ -162,7 +179,7 @@ public class GeoComponent extends JComponent {
             }
           }
       }
-      graphics.setClip(null);
+      graphics.setClip(shape);
       if (2 < origin.tile().z()) {
         Point p00 = rectangle.getLocation();
         Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
@@ -173,7 +190,8 @@ public class GeoComponent extends JComponent {
         ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
         CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(suo));
         // the choice of yDecr is mostly correct but not entirely general
-        new GridDrawer().render(ShowableConfig.geo(rectangle, cbb, origin), graphics);
+        showableConfig = ShowableConfig.geo(rectangle, cbb, origin);
+        new GridDrawer().render(showableConfig, graphics);
       }
     }
     if (missing) {
@@ -185,7 +203,7 @@ public class GeoComponent extends JComponent {
     graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
     TextContour textContour = TextContour.of(graphics);
     final Point center = AwtUtil.center(dimension);
-    GeoLayer geoLayer = new GeoLayer(origin);
+    GeoLayer geoLayer = new GeoLayer(origin, showableConfig);
     if (ticks && 2 < tilePixel.tile().z()) {
       ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
       FontMetrics fontMetrics = graphics.getFontMetrics();
