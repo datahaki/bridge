@@ -5,6 +5,7 @@ import java.awt.Container;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.WindowBounds;
@@ -36,7 +37,7 @@ public non-sealed interface ManipulateProvider extends RunProvider {
     WindowBounds.persistent(jFrame, resourceLocator.properties(WindowBounds.class));
     WindowClosed.runs(jFrame, () -> resourceLocator.trySave(this)); // store field values
     AwtUtil.ctrlW(jFrame);
-    jFrame.setVisible(true);
+    SwingUtilities.invokeLater(() -> jFrame.setVisible(true));
     return jFrame;
   }
 }

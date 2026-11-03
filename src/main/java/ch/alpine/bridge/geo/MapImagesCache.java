@@ -39,11 +39,10 @@ public class MapImagesCache {
             break;
           Iterator<Tile> iterator = set.iterator();
           tile = iterator.next();
-          // iterator.remove();
         }
         Path path = path(tile);
         if (Files.isRegularFile(path))
-          IO.println("skip");
+          System.err.println("skip " + tile);
         else
           try {
             Files.createDirectories(path.getParent());
@@ -54,14 +53,14 @@ public class MapImagesCache {
               IO.println("uri " + uri);
             }
           } catch (Exception exception) {
-            System.err.println(tile);
+            // System.err.println(tile);
           }
         synchronized (set) {
           set.remove(tile);
         }
       }
       synchronized (runnable) {
-        IO.println("stop " + thread);
+        // IO.println("stop " + thread);
         thread = null;
       }
     }

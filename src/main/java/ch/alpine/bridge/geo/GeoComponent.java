@@ -68,7 +68,7 @@ public class GeoComponent extends JComponent {
         int dx = point.x - center.x;
         int dy = point.y - center.y;
         TilePixel s1 = tilePixel.shift(dx, dy);
-        Optional<TilePixel> optional = s1.zoomIncr(-64 * event.getWheelRotation(), tileServer.z_max());
+        Optional<TilePixel> optional = s1.widIncr(-64 * event.getWheelRotation(), tileServer.z_max());
         if (optional.isPresent()) {
           tilePixel = optional.orElseThrow().shift(-dx, -dy);
           repaint();
@@ -110,21 +110,22 @@ public class GeoComponent extends JComponent {
   @Override
   protected final void paintComponent(Graphics _g) {
     Graphics2D graphics = (Graphics2D) _g;
+    RenderQuality.setQuality(graphics);
     MapImagesCache mapImagesCache = getCache();
     Dimension dimension = getSize();
     TilePixel origin = fromPoint(new Point(0, 0));
     boolean missing = false;
     final int wid = tilePixel.wid();
-    // IO.println(tilePixel);
     {
       for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
         for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
-          TileImage tileImage = mapImagesCache.getTile(origin.shift(pix, piy).tile());
+          TilePixel shift = origin.shift(pix, piy);
+          TileImage tileImage = mapImagesCache.getTile(shift.tile());
           missing |= Objects.isNull(tileImage);
         }
     }
     if (missing) {
-      Optional<TilePixel> optional = origin.zoomIncr(-1, 20);
+      Optional<TilePixel> optional = origin.widIncr(-256, tileServer.z_max());
       if (optional.isPresent()) {
         TilePixel coarse = optional.orElseThrow();
         for (int ix = -coarse.pix(); ix < dimension.width / 2; ix += wid)
@@ -137,9 +138,8 @@ public class GeoComponent extends JComponent {
       }
     }
     {
-      graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 10));
-      RenderQuality.setQuality(graphics);
-      TextContour textContour = TextContour.of(graphics);
+//      graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 10));
+//      TextContour textContour = TextContour.of(graphics);
       for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
         for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
           Tile tile = origin.shift(pix, piy).tile();
@@ -147,7 +147,7 @@ public class GeoComponent extends JComponent {
           if (Objects.nonNull(tileImage)) {
             graphics.drawImage(tileImage.bufferedImage(), pix, piy, wid, wid, null);
             // if (pngSize)
-            textContour.draw(tile + " " + tileImage.length(), pix, piy);
+//            textContour.draw(tile + " " + tileImage.length(), pix, piy);
           }
         }
     }
@@ -228,7 +228,7 @@ public class GeoComponent extends JComponent {
       int r = 3;
       graphics.drawLine(center.x - r, center.y, center.x + r, center.y);
       graphics.drawLine(center.x, center.y - r, center.x, center.y + r);
-      textContour.draw("z=" + tilePixel.tile().z(), 2, 20);
+      textContour.draw("z=" + tilePixel.tile().z()+" wid="+tilePixel.wid(), 2, 20);
     }
     renderMore(geoLayer, graphics);
   }

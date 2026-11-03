@@ -44,6 +44,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Dimensions;
 import ch.alpine.tensor.alg.Range;
+import ch.alpine.tensor.alg.Reverse;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.alg.UnitVector;
@@ -117,6 +118,20 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  PoligonOrientation {
+    @Override
+    public Show getShow() {
+      Show show = new Show();
+      show.setShowLabel("PolygonPlot");
+      Tensor poly = CirclePoints.of(5);
+      TensorUnaryOperator tuo = Tensors.vector(2, 0)::add;
+      Tensor reve = Reverse.of(tuo.slash(poly));
+      show.add(PolygonPlot.of(poly, PlotOption.FILL)).setAlpha(32);
+      show.add(PolygonPlot.of(reve, PlotOption.FILL)).setAlpha(32);
+      show.setAspectRatioOne();
+      return show;
+    }
+  },
   Relief {
     @Override
     public Show getShow() {

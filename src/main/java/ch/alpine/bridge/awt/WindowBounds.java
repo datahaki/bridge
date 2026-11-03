@@ -7,8 +7,6 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -60,42 +58,6 @@ public class WindowBounds {
     window.setBounds(getBoundsAllVisible());
     // IO.println("BNDS="+window.getBounds());
     WindowBounds windowBounds = this;
-    window.addWindowListener(new WindowListener() {
-      @Override
-      public void windowOpened(WindowEvent e) {
-        IO.println(e);
-      }
-
-      @Override
-      public void windowIconified(WindowEvent e) {
-        // TODO Auto-generated method stub
-      }
-
-      @Override
-      public void windowDeiconified(WindowEvent e) {
-        // TODO Auto-generated method stub
-      }
-
-      @Override
-      public void windowDeactivated(WindowEvent e) {
-        // TODO Auto-generated method stub
-      }
-
-      @Override
-      public void windowClosing(WindowEvent e) {
-        // TODO Auto-generated method stub
-      }
-
-      @Override
-      public void windowClosed(WindowEvent e) {
-        // TODO Auto-generated method stub
-      }
-
-      @Override
-      public void windowActivated(WindowEvent e) {
-        // TODO Auto-generated method stub
-      }
-    });
     WindowClosed.runs(window, () -> {
       Rectangle rectangle = window.getBounds();
       // IO.println("RECT="+rectangle);

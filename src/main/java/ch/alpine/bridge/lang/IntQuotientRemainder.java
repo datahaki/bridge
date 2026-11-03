@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.lang;
 
 public record IntQuotientRemainder(int div, int rem) {

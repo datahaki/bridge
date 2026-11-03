@@ -101,12 +101,14 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
 
   /** @param delta zoom increment, or decrement when negative
    * @return */
-  public Optional<TilePixel> zoomIncr(final int wid_delta, int z_max) {
+  public Optional<TilePixel> widIncr(final int wid_delta, int z_max) {
     Tensor lon_lat = lon_lat();
     IntQuotientRemainder iqr = IntQuotientRemainder.from(wid + wid_delta, 256);
     int z = tile.z() + iqr.div() - 1;
     if (0 <= z && z <= z_max)
       return Optional.of(from(z, 256 + iqr.rem(), lon_lat));
+    if (z == -1 && 0 < iqr.rem())
+      return Optional.of(from(0, iqr.rem(), lon_lat));
     return Optional.empty();
   }
 

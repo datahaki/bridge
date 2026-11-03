@@ -40,7 +40,8 @@ public record Tile(int z, int x, int y) implements Serializable {
   }
   // TODO provide function that returns CBB
 
-  public Tensor cbb_lat_lon() {
+  /** @return polygon with positive area */
+  public Tensor cbb_lon_lat() {
     return Tensors.of( //
         new TilePixel(this, 256, 0, 0).lon_lat(), //
         new TilePixel(this, 256, 0, 256).lon_lat(), //

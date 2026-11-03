@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowGridComponent;
 
@@ -35,6 +36,7 @@ public enum ShowWindow {
     JDialog jDialog = new JDialog(JOptionPane.getFrameForComponent(null), false);
     jDialog.setContentPane(createContainer(list));
     jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    AwtUtil.ctrlW(jDialog);
     return jDialog;
   }
 
@@ -46,6 +48,7 @@ public enum ShowWindow {
     JFrame jFrame = new JFrame();
     jFrame.setContentPane(createContainer(list));
     jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    AwtUtil.ctrlW(jFrame);
     return jFrame;
   }
 

@@ -6,6 +6,7 @@ import java.awt.Window;
 import javax.imageio.ImageIO;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import ch.alpine.bridge.awt.AwtUtil;
@@ -39,7 +40,7 @@ public non-sealed interface WindowProvider extends RunProvider {
         jDialog.setTitle(FriendlyFormat.defaultTitle(getClass()));
       AwtUtil.ctrlW(jDialog);
     }
-    window.setVisible(true);
+    SwingUtilities.invokeLater(() -> window.setVisible(true));
     return window;
   }
 }
