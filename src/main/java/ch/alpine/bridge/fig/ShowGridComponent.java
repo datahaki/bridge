@@ -3,7 +3,6 @@ package ch.alpine.bridge.fig;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -38,7 +37,7 @@ public enum ShowGridComponent {
   }
 
   public static JComponent of(Show... shows) {
-    return of(Arrays.asList(shows));
+    return of(List.of(shows));
   }
 
   public static JComponent column(List<Show> list, Dimension dimension) {
