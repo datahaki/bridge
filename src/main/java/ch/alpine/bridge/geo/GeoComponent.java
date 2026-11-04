@@ -27,8 +27,6 @@ import javax.swing.event.MouseInputListener;
 
 import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.RenderQuality;
-import ch.alpine.bridge.fig.GridDrawer;
-import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.bridge.fig.Ticks;
 import ch.alpine.bridge.gfx.TextContour;
@@ -129,6 +127,25 @@ public class GeoComponent extends JComponent {
   // ShowableConfig.geo(rectangle, cbb, origin);
   // }
 
+  private ShowableConfig createSC(Graphics _g) {
+    Dimension dimension = getSize();
+    Rectangle rectangle = new Rectangle(new Point(0, 0), dimension);
+    TilePixel origin = fromPoint(new Point(0, 0));
+    if (2 < origin.tile().z()) {
+      Point p00 = rectangle.getLocation();
+      Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
+      TilePixel tp00 = origin.shift(p00.x, p00.y);
+      TilePixel tp11 = origin.shift(p11.x, p11.y);
+      Tensor lon_lat0 = tp00.lon_lat();
+      Tensor lon_lat1 = tp11.lon_lat();
+      ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
+      CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(suo));
+      // the choice of yDecr is mostly correct but not entirely general
+      return ShowableConfig.geo(rectangle, cbb, origin);
+    }
+    return ShowableConfig.empty(rectangle);
+  }
+
   @Override
   protected final void paintComponent(Graphics _g) {
     Graphics2D graphics = (Graphics2D) _g;
@@ -138,11 +155,10 @@ public class GeoComponent extends JComponent {
     TilePixel origin = fromPoint(new Point(0, 0));
     boolean missing = false;
     final int wid = tilePixel.wid();
-    ShowableConfig showableConfig = null;
+    final ShowableConfig showableConfig = createSC(_g);
     {
-      FontMetrics fontMetrics = graphics.getFontMetrics();
-      Rectangle rectangle = Show.optionalDefaultInsets(dimension, fontMetrics).orElseThrow();
       Shape shape = graphics.getClip();
+      Rectangle rectangle = showableConfig.rectangle();
       graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
       {
         for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
@@ -180,19 +196,6 @@ public class GeoComponent extends JComponent {
           }
       }
       graphics.setClip(shape);
-      if (2 < origin.tile().z()) {
-        Point p00 = rectangle.getLocation();
-        Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
-        TilePixel tp00 = origin.shift(p00.x, p00.y);
-        TilePixel tp11 = origin.shift(p11.x, p11.y);
-        Tensor lon_lat0 = tp00.lon_lat();
-        Tensor lon_lat1 = tp11.lon_lat();
-        ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
-        CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(suo));
-        // the choice of yDecr is mostly correct but not entirely general
-        showableConfig = ShowableConfig.geo(rectangle, cbb, origin);
-        new GridDrawer().render(showableConfig, graphics);
-      }
     }
     if (missing) {
       graphics.setColor(new Color(255, 0, 0, 128 + 64));
@@ -207,7 +210,7 @@ public class GeoComponent extends JComponent {
     if (ticks && 2 < tilePixel.tile().z()) {
       ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
       FontMetrics fontMetrics = graphics.getFontMetrics();
-      if (false) { // lon along "X - axis"
+      if (true) { // lon along "X - axis"
         Scalar min = suo.apply(tilePixel.shift(-center.x, 0).lon_lat().Get(0));
         Scalar max = suo.apply(tilePixel.shift(+center.x, 0).lon_lat().Get(0));
         while (Scalars.lessThan(max, min))
@@ -217,6 +220,7 @@ public class GeoComponent extends JComponent {
           List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.width)).toList();
           Tensor lon_lat = tilePixel.lon_lat().maps(suo);
           int height = fontMetrics.getDescent();
+          graphics.setStroke(new BasicStroke()); // thickness of outline
           for (Scalar tick : list) {
             lon_lat.set(tick, 0);
             Point point = geoLayer.toPoint(lon_lat);
@@ -226,14 +230,13 @@ public class GeoComponent extends JComponent {
               graphics.drawLine(x, 0, x, dimension.height);
             }
             int y = dimension.height - 20;
-            graphics.setStroke(new BasicStroke()); // thickness of outline
             graphics.setColor(Color.BLACK);
             graphics.drawLine(x, y - 10, x, dimension.height);
             textContour.draw(" " + Ticks.format(tick), x, dimension.height - height - 2);
           }
         }
       }
-      if (false) { // lat along "Y - axis"
+      if (true) { // lat along "Y - axis"
         Scalar max = suo.apply(tilePixel.shift(0, -center.y).lon_lat().Get(1));
         Scalar min = suo.apply(tilePixel.shift(0, +center.y).lon_lat().Get(1));
         while (Scalars.lessThan(max, min))
@@ -245,6 +248,7 @@ public class GeoComponent extends JComponent {
         OptionalInt optionalInt = list.stream().map(Ticks::format).mapToInt(fontMetrics::stringWidth).max();
         if (optionalInt.isPresent()) {
           int width = optionalInt.getAsInt() + 5;
+          graphics.setStroke(new BasicStroke()); // thickness of outline
           for (Scalar tick : list) {
             lon_lat.set(tick, 1);
             Point point = geoLayer.toPoint(lon_lat);
@@ -255,7 +259,6 @@ public class GeoComponent extends JComponent {
               lon_lat.set(tick, 0);
               graphics.drawLine(0, point.y, dimension.width, point.y);
             }
-            graphics.setStroke(new BasicStroke()); // thickness of outline
             graphics.setColor(Color.BLACK);
             graphics.drawLine(x, y, dimension.width, y);
             String string = Ticks.format(tick);

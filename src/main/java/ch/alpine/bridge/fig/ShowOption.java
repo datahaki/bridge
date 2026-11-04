@@ -10,6 +10,7 @@ public enum ShowOption {
   /** computes ticks along y axis and draws axis with labels */
   AXIS_Y,
   /** gridlines requires {@link #AXIS_X} or {@link #AXIS_Y} to take effect */
+  // TODO option to draw grid even without axis_x
   GRID,
   /** show unit mapping, e.g. "s -> m/s" */
   UNIT_MAPPING,

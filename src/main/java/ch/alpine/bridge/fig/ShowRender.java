@@ -8,23 +8,24 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.List;
-import java.util.Objects;
 
 import ch.alpine.bridge.awt.RenderQuality;
-import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
-record ShowRender(List<Showable> showables, ShowOptions showOptions, CoordinateBoundingBox cbb) {
+/**
+ * 
+ */
+public record ShowRender(List<Showable> showables, ShowOptions showOptions, ShowableConfig showableConfig) {
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
   private static final Color LEGEND_BACK = new Color(255, 255, 255, 192);
 
   /** @param graphics
-   * @param rectangle
    * @return null if input rectangle is unsuitable for drawing */
-  public ShowableConfig render(Graphics _g, Rectangle rectangle) {
+  public void render(Graphics _g) {
     Graphics2D graphics = (Graphics2D) _g.create();
     RenderQuality.setQuality(graphics);
+    Rectangle rectangle = showableConfig.rectangle();
     if (showOptions.contains(ShowOption.FRAMED)) {
-      // draw box around ...
+      /** draw frame/box around plot */
       RenderQuality.smoothLine(graphics, false);
       graphics.setStroke(StaticHelper.STROKE_SOLID);
       graphics.setColor(COLOR_FRAME);
@@ -33,27 +34,24 @@ record ShowRender(List<Showable> showables, ShowOptions showOptions, CoordinateB
     }
     {
       if (!showOptions.showLabel.isEmpty()) {
+        /** draw title/show label on top */
         graphics.setFont(graphics.getFont().deriveFont(Font.BOLD));
         FontMetrics fontMetrics = graphics.getFontMetrics();
         graphics.setColor(StaticHelper.COLOR_FONT);
         graphics.drawString(showOptions.showLabel, rectangle.x, rectangle.y - fontMetrics.getDescent() - 1);
+        graphics.setFont(graphics.getFont().deriveFont(Font.PLAIN));
       }
     }
-    final ShowableConfig showableConfig;
-    if (Objects.isNull(cbb)) {
-      showableConfig = null;
+    if (showableConfig.isEmpty()) {
       graphics.setColor(Color.DARK_GRAY);
       FontMetrics fontMetrics = graphics.getFontMetrics();
       String string = "no data";
       double delta_y = (fontMetrics.getAscent() - fontMetrics.getDescent()) * 0.5;
+      // TODO extract functionality
       graphics.drawString(string, //
           rectangle.x + (rectangle.width - fontMetrics.stringWidth(string)) / 2, //
           rectangle.y + (int) (rectangle.height * 0.5 + delta_y));
     } else {
-      showableConfig = showOptions.contains(ShowOption.DECR_Y) //
-          ? ShowableConfig.yDecr(rectangle, cbb)
-          : ShowableConfig.yIncr(rectangle, cbb);
-      // ---
       ShowableConfig showablePruned = showableConfig.pruned();
       Graphics2D g_pruned = (Graphics2D) graphics.create(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
       for (Showable showable : showables)
@@ -71,6 +69,7 @@ record ShowRender(List<Showable> showables, ShowOptions showOptions, CoordinateB
       g_pruned.dispose();
     }
     if (showOptions.contains(ShowOption.LEGEND)) {
+      // TODO treat case: no data but legend !?
       FontMetrics fontMetrics = graphics.getFontMetrics();
       int size = fontMetrics.getHeight();
       int pix = rectangle.x + StaticHelper.GAP;
@@ -101,6 +100,5 @@ record ShowRender(List<Showable> showables, ShowOptions showOptions, CoordinateB
       }
     }
     graphics.dispose();
-    return showableConfig;
   }
 }

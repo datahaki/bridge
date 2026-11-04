@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+import java.util.Objects;
 import java.util.Optional;
 
 import ch.alpine.bridge.geo.TilePixel;
@@ -18,6 +19,10 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * @param confX
  * @param confY */
 public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, ConfIf confX, ConfIf confY) {
+  public static ShowableConfig empty(Rectangle rectangle) {
+    return new ShowableConfig(rectangle, null, null, null);
+  }
+
   /** @param rectangle
    * @param cbb
    * @return */
@@ -63,5 +68,9 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Con
         cbb, //
         confX.pruned(), //
         confY.pruned());
+  }
+
+  public boolean isEmpty() {
+    return Objects.isNull(cbb);
   }
 }

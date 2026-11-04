@@ -31,6 +31,13 @@ import ch.alpine.tensor.sca.Round;
  * <a href="https://reference.wolfram.com/language/ref/Show.html">Show</a> */
 // TODO zoom does not work indefinitely yet!
 public final class Show implements Serializable {
+  public static Show plain() {
+    Show show = new Show();
+    for (ShowOption showOption : ShowOption.values())
+      show.set(showOption, false);
+    return show;
+  }
+
   private final List<Showable> showables = new ArrayList<>();
   private final ShowOptions showOptions = new ShowOptions();
   private final ColorDataIndexed colorDataIndexed;
@@ -165,7 +172,15 @@ public final class Show implements Serializable {
         rectangle.height = Round.intValueExact(c.Get(1));
       }
     }
-    return new ShowRender(showables, showOptions, cbb).render(_g, rectangle);
+    ShowableConfig showableConfig = Objects.isNull(cbb) //
+        ? ShowableConfig.empty(rectangle)
+        : showOptions.config(rectangle, cbb);
+    showRender(showableConfig).render(_g);
+    return showableConfig;
+  }
+
+  public ShowRender showRender(ShowableConfig showableConfig) {
+    return new ShowRender(showables, showOptions, showableConfig);
   }
 
   /** @param graphics
