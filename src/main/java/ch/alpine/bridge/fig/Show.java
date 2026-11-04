@@ -175,12 +175,12 @@ public final class Show implements Serializable {
     ShowableConfig showableConfig = Objects.isNull(cbb) //
         ? ShowableConfig.empty(rectangle)
         : showOptions.config(rectangle, cbb);
-    showRender(showableConfig).render(_g);
+    showRender(_g, showableConfig);
     return showableConfig;
   }
 
-  public ShowRender showRender(ShowableConfig showableConfig) {
-    return new ShowRender(showables, showOptions, showableConfig);
+  public void showRender(Graphics _g, ShowableConfig showableConfig) {
+    new ShowRender(showables, showOptions, showableConfig).render(_g);
   }
 
   /** @param graphics

@@ -11,10 +11,7 @@ import java.util.List;
 
 import ch.alpine.bridge.awt.RenderQuality;
 
-/**
- * 
- */
-public record ShowRender(List<Showable> showables, ShowOptions showOptions, ShowableConfig showableConfig) {
+record ShowRender(List<Showable> showables, ShowOptions showOptions, ShowableConfig showableConfig) {
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
   private static final Color LEGEND_BACK = new Color(255, 255, 255, 192);
 

@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.geo;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -122,6 +123,12 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
         Rational.of(absX() * 2 - ymax, ymax).multiply(Pi.VALUE), //
         ArcTan.FUNCTION.apply(Sinh.FUNCTION.apply(ang)) //
     );
+  }
+
+  public Point offsetTo(TilePixel tilePixel) {
+    return new Point( //
+        (int) (tilePixel.absX() - absX()), //
+        (int) (tilePixel.absY() - absY()));
   }
 
   public Tensor encode() {

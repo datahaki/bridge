@@ -64,6 +64,10 @@ public class GeoComponent extends JComponent {
     return tilePixel.shift(dx, dy);
   }
 
+  public TilePixel origin() {
+    return fromPoint(new Point(0, 0));
+  }
+
   public GeoComponent() {
     addMouseWheelListener(new MouseWheelListener() {
       @Override
@@ -112,24 +116,13 @@ public class GeoComponent extends JComponent {
   public MapImagesCache getCache() {
     return cache.computeIfAbsent(tileServer, TileServer::cache);
   }
-  // ShowableConfig getShowableConfig() {
-  // FontMetrics fontMetrics = graphics.getFontMetrics();
-  // Rectangle rectangle = Show.optionalDefaultInsets(dimension, fontMetrics).orElseThrow();
-  // Point p00 = rectangle.getLocation();
-  // Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
-  // TilePixel tp00 = origin.shift(p00.x, p00.y);
-  // TilePixel tp11 = origin.shift(p11.x, p11.y);
-  // Tensor lon_lat0 = tp00.lon_lat();
-  // Tensor lon_lat1 = tp11.lon_lat();
-  // ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
-  // CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(suo));
-  // // the choice of yDecr is mostly correct but not entirely general
-  // ShowableConfig.geo(rectangle, cbb, origin);
-  // }
 
-  private ShowableConfig createSC(Graphics _g) {
+  private ShowableConfig createShowableConfig(Graphics _g) {
     Dimension dimension = getSize();
-    Rectangle rectangle = new Rectangle(new Point(0, 0), dimension);
+    // FontMetrics fontMetrics = _g.getFontMetrics();
+    Rectangle rectangle;
+    rectangle = new Rectangle(new Point(0, 0), dimension);
+    // rectangle = Show.optionalDefaultInsets(dimension, fontMetrics).orElseThrow();
     TilePixel origin = fromPoint(new Point(0, 0));
     if (2 < origin.tile().z()) {
       Point p00 = rectangle.getLocation();
@@ -155,7 +148,7 @@ public class GeoComponent extends JComponent {
     TilePixel origin = fromPoint(new Point(0, 0));
     boolean missing = false;
     final int wid = tilePixel.wid();
-    final ShowableConfig showableConfig = createSC(_g);
+    final ShowableConfig showableConfig = createShowableConfig(_g);
     {
       Shape shape = graphics.getClip();
       Rectangle rectangle = showableConfig.rectangle();
@@ -206,9 +199,9 @@ public class GeoComponent extends JComponent {
     graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
     TextContour textContour = TextContour.of(graphics);
     final Point center = AwtUtil.center(dimension);
-    GeoLayer geoLayer = new GeoLayer(origin, showableConfig);
     if (ticks && 2 < tilePixel.tile().z()) {
       ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
+      graphics.setStroke(new BasicStroke()); // thickness of outline
       FontMetrics fontMetrics = graphics.getFontMetrics();
       if (true) { // lon along "X - axis"
         Scalar min = suo.apply(tilePixel.shift(-center.x, 0).lon_lat().Get(0));
@@ -218,13 +211,9 @@ public class GeoComponent extends JComponent {
         Clip clip = Clips.interval(min, max);
         if (Scalars.nonZero(clip.length())) {
           List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.width)).toList();
-          Tensor lon_lat = tilePixel.lon_lat().maps(suo);
           int height = fontMetrics.getDescent();
-          graphics.setStroke(new BasicStroke()); // thickness of outline
           for (Scalar tick : list) {
-            lon_lat.set(tick, 0);
-            Point point = geoLayer.toPoint(lon_lat);
-            int x = point.x;
+            int x = (int) Math.round(showableConfig.confX().pixel(tick));
             if (gridlines) {
               graphics.setColor(gridLineColor);
               graphics.drawLine(x, 0, x, dimension.height);
@@ -243,21 +232,16 @@ public class GeoComponent extends JComponent {
           max = max.add(Quantity.of(180, "deg"));
         Clip clip = Clips.interval(min, max);
         List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.height)).toList();
-        Tensor lon_lat = tilePixel.lon_lat().maps(suo);
         // establish longest string, e.g. "47.15"
         OptionalInt optionalInt = list.stream().map(Ticks::format).mapToInt(fontMetrics::stringWidth).max();
         if (optionalInt.isPresent()) {
           int width = optionalInt.getAsInt() + 5;
-          graphics.setStroke(new BasicStroke()); // thickness of outline
           for (Scalar tick : list) {
-            lon_lat.set(tick, 1);
-            Point point = geoLayer.toPoint(lon_lat);
             int x = dimension.width - width;
-            int y = point.y;
+            int y = (int) Math.round(showableConfig.confY().pixel(tick));
             if (gridlines) {
               graphics.setColor(gridLineColor);
-              lon_lat.set(tick, 0);
-              graphics.drawLine(0, point.y, dimension.width, point.y);
+              graphics.drawLine(0, y, dimension.width, y);
             }
             graphics.setColor(Color.BLACK);
             graphics.drawLine(x, y, dimension.width, y);
@@ -276,13 +260,13 @@ public class GeoComponent extends JComponent {
       graphics.drawLine(center.x, center.y - r, center.x, center.y + r);
       textContour.draw("z=" + tilePixel.tile().z() + " wid=" + tilePixel.wid(), 2, 20);
     }
-    renderMore(geoLayer, graphics);
+    renderMore(graphics, showableConfig);
   }
 
   /** override if necessary
    * 
    * @param graphics */
-  public void renderMore(GeoLayer geoLayer, Graphics2D graphics) {
+  public void renderMore(Graphics2D graphics, ShowableConfig showableConfig) {
     // ---
   }
 }
