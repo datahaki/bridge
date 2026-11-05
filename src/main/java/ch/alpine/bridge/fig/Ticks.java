@@ -58,7 +58,7 @@ public enum Ticks {
     Scalar display = Unprotect.withoutUnit(value);
     Scalar scalar = IntegerQ.of(display) //
         ? display
-        : N.DOUBLE.apply(display);
+        : N.DOUBLE.apply(display); // prevent fractions
     return UnicodeString.of(scalar);
   }
 }

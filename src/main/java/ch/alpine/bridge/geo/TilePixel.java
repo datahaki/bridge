@@ -46,14 +46,6 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
     return new TilePixel(tile, wid, iqrx.rem(), iqry.rem());
   }
 
-  /** @param z
-   * @param wid
-   * @param lon_lat for instance {-0.762800[deg], 38.343373[deg]}
-   * @return */
-  public static TilePixel from(int z, int wid, Tensor lon_lat) {
-    return from(z, wid, lon_lat.Get(0), lon_lat.Get(1));
-  }
-
   /** formula taken from gemini
    * 
    * @param z
@@ -70,6 +62,14 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
     Scalar ny = Rational.HALF.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.TWO)) //
         .multiply(factor);
     return TilePixel.of(z, wid, Floor.longValueExact(nx), Floor.longValueExact(ny));
+  }
+
+  /** @param z
+   * @param wid
+   * @param lon_lat for instance {-0.762800[deg], 38.343373[deg]}
+   * @return */
+  public static TilePixel from(int z, int wid, Tensor lon_lat) {
+    return from(z, wid, lon_lat.Get(0), lon_lat.Get(1));
   }
 
   /** @param lon_lat for instance {-0.762800[deg], 38.343373[deg]}
@@ -114,7 +114,7 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
 
   /** formula adapted from gemini
    * 
-   * @return {lon, lat} */
+   * @return {lon, lat} in radians */
   public Tensor lon_lat() {
     int z = tile().z();
     int ymax = (1 << z) * wid;

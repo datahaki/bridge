@@ -7,13 +7,16 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.Integers;
+import ch.alpine.tensor.qty.QuantityUnit;
+import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.sca.Clip;
 
 /** affine-linear axis */
-abstract class ConfLin implements ConfIf, Serializable {
+abstract class ConfLin implements ConfBase, Serializable {
   private final int ofs;
   private final int length;
   private final Clip clip;
+  private final ScalarUnaryOperator unitConvert;
   private final Scalar model2pixel;
   private final Scalar pixel2model;
 
@@ -27,6 +30,7 @@ abstract class ConfLin implements ConfIf, Serializable {
     this.length = length;
     this.clip = clip;
     Scalar sw = RealScalar.of(length - 1);
+    unitConvert = UnitConvert.SI().to(QuantityUnit.of(clip));
     model2pixel = suo.apply(sw.divide(clip.length()));
     pixel2model = suo.apply(clip.length().divide(sw));
   }
@@ -43,7 +47,7 @@ abstract class ConfLin implements ConfIf, Serializable {
 
   @Override
   public final double pixel(Scalar x) {
-    return ofs + x.subtract(clip.min()).multiply(model2pixel).number().doubleValue();
+    return ofs + unitConvert.apply(x).subtract(clip.min()).multiply(model2pixel).number().doubleValue();
   }
 
   @Override

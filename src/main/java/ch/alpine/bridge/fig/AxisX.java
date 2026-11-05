@@ -12,7 +12,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;
 
 class AxisX extends Axis {
-  public AxisX(ConfIf confBase, AxisOptions axisOptions) {
+  public AxisX(ConfBase confBase, AxisOptions axisOptions) {
     super(confBase, axisOptions);
   }
 

@@ -18,7 +18,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * @param cbb
  * @param confX
  * @param confY */
-public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, ConfIf confX, ConfIf confY) {
+public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, ConfBase confX, ConfBase confY) {
   public static ShowableConfig empty(Rectangle rectangle) {
     return new ShowableConfig(rectangle, null, null, null);
   }

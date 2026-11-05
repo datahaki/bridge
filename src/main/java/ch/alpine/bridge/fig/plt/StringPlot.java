@@ -58,6 +58,8 @@ public class StringPlot extends BaseShowable {
 
   @Override
   public Optional<CoordinateBoundingBox> fullPlotRange() {
-    return Optional.of(CoordinateBounds.of(Tensor.of(list.stream().map(StringItem::pos))));
+    return list.isEmpty() //
+        ? Optional.empty()
+        : Optional.of(CoordinateBounds.of(Tensor.of(list.stream().map(StringItem::pos))));
   }
 }

@@ -12,7 +12,7 @@ public enum TileServers implements TileServer {
   OpenStreetMap("https://tile.openstreetmap.org", 19),
   OpenTopoMap("https://a.tile.opentopomap.org", 17),
   OpenSeaMap("https://tiles.openseamap.org/seamark", 16), //
-  ;
+  Hash("https://tile.openstreetmap.org", 19),;
 
   private final String server;
   private final int z_max;

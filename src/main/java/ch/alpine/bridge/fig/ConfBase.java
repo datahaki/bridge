@@ -4,7 +4,7 @@ package ch.alpine.bridge.fig;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.Clip;
 
-public interface ConfIf {
+public interface ConfBase {
   Clip clip();
 
   /** @return in pixel */
@@ -22,5 +22,5 @@ public interface ConfIf {
   Scalar shift(int pixel0, int pixel1);
 
   /** @return this (ConfIncr or ConfDecr) but with ofs == 0 */
-  ConfIf pruned();
+  ConfBase pruned();
 }

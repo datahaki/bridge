@@ -75,6 +75,7 @@ public class DeleteDirectory {
   }
 
   private void visitRecursively(Path path, int depth, boolean delete) throws IOException {
+    // TODO use Files.find
     if (max_nested < depth) // enforce depth limit, abort criteria 1)
       throw new RuntimeException("directory tree exceeds permitted depth");
     ++fileCount;

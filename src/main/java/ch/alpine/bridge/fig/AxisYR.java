@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 class AxisYR extends AxisY {
-  public AxisYR(ConfIf confBase, AxisOptions axisOptions) {
+  public AxisYR(ConfBase confBase, AxisOptions axisOptions) {
     super(confBase, axisOptions);
   }
 

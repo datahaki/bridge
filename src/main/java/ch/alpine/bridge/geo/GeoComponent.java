@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -150,10 +149,10 @@ public class GeoComponent extends JComponent {
     final int wid = tilePixel.wid();
     final ShowableConfig showableConfig = createShowableConfig(_g);
     {
-      Shape shape = graphics.getClip();
-      Rectangle rectangle = showableConfig.rectangle();
-      graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-      {
+      // Shape shape = graphics.getClip();
+      // Rectangle rectangle = showableConfig.rectangle();
+      // graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+      { // check if all available
         for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
           for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
             TilePixel shift = origin.shift(pix, piy);
@@ -188,7 +187,7 @@ public class GeoComponent extends JComponent {
             }
           }
       }
-      graphics.setClip(shape);
+      // graphics.setClip(shape);
     }
     if (missing) {
       graphics.setColor(new Color(255, 0, 0, 128 + 64));

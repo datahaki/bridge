@@ -172,6 +172,7 @@ public final class Show implements Serializable {
         rectangle.height = Round.intValueExact(c.Get(1));
       }
     }
+    // TODO what if cbb.vol == 0 !?
     ShowableConfig showableConfig = Objects.isNull(cbb) //
         ? ShowableConfig.empty(rectangle)
         : showOptions.config(rectangle, cbb);
