@@ -13,12 +13,14 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
@@ -145,53 +147,55 @@ public class GeoComponent extends JComponent {
     MapImagesCache mapImagesCache = getCache();
     Dimension dimension = getSize();
     TilePixel origin = fromPoint(new Point(0, 0));
-    boolean missing = false;
     final int wid = tilePixel.wid();
     final ShowableConfig showableConfig = createShowableConfig(_g);
     {
       // Shape shape = graphics.getClip();
       // Rectangle rectangle = showableConfig.rectangle();
       // graphics.setClip(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-      { // check if all available
+      // check if all available
+      Set<Tile> missing = new HashSet<>();
+      if (0 < origin.tile().z())
         for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
           for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
             TilePixel shift = origin.shift(pix, piy);
             TileImage tileImage = mapImagesCache.getTile(shift.tile());
-            missing |= Objects.isNull(tileImage);
+            if (Objects.isNull(tileImage))
+              missing.add(shift.tile().parent());
           }
-      }
-      if (missing) {
+      {
         Optional<TilePixel> optional = origin.widIncr(-256, tileServer.z_max());
         if (optional.isPresent()) {
           TilePixel coarse = optional.orElseThrow();
+          // IO.println(coarse.pix());
           for (int ix = -coarse.pix(); ix < dimension.width / 2; ix += wid)
             for (int iy = -coarse.piy(); iy < dimension.height / 2; iy += wid) {
               TilePixel shift = coarse.shift(ix, iy);
-              TileImage tileImage = mapImagesCache.getTile(shift.tile());
-              if (Objects.nonNull(tileImage))
-                graphics.drawImage(tileImage.bufferedImage(), ix * 2, iy * 2, wid * 2, wid * 2, null);
+              Tile tile = shift.tile();
+              if (missing.contains(tile)) {
+                TileImage tileImage = mapImagesCache.getTile(tile);
+                if (Objects.nonNull(tileImage))
+                  graphics.drawImage(tileImage.bufferedImage(), ix * 2, iy * 2, wid * 2, wid * 2, null);
+              }
             }
         }
       }
-      {
-        // graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 10));
-        // TextContour textContour = TextContour.of(graphics);
-        for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
-          for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
-            Tile tile = origin.shift(pix, piy).tile();
-            TileImage tileImage = mapImagesCache.getTile(tile);
-            if (Objects.nonNull(tileImage)) {
-              graphics.drawImage(tileImage.bufferedImage(), pix, piy, wid, wid, null);
-              // if (pngSize)
-              // textContour.draw(tile + " " + tileImage.length(), pix, piy);
-            }
+      // graphics.setFont(new Font(Font.DIALOG, Font.PLAIN, 10));
+      // TextContour textContour = TextContour.of(graphics);
+      for (int pix = -origin.pix(); pix < dimension.width; pix += wid)
+        for (int piy = -origin.piy(); piy < dimension.height; piy += wid) {
+          Tile tile = origin.shift(pix, piy).tile();
+          TileImage tileImage = mapImagesCache.getTile(tile);
+          if (Objects.nonNull(tileImage)) {
+            graphics.drawImage(tileImage.bufferedImage(), pix, piy, wid, wid, null);
+            // if (pngSize)
+            // textContour.draw(tile + " " + tileImage.length(), pix, piy);
           }
+        }
+      if (!missing.isEmpty()) {
+        graphics.setColor(new Color(255, 0, 0, 128 + 64));
+        graphics.drawRect(1, 1, dimension.width - 3, dimension.height - 3);
       }
-      // graphics.setClip(shape);
-    }
-    if (missing) {
-      graphics.setColor(new Color(255, 0, 0, 128 + 64));
-      graphics.drawRect(1, 1, dimension.width - 3, dimension.height - 3);
     }
     RenderQuality.setQuality(graphics);
     RenderQuality.smoothLine(graphics, false);

@@ -154,7 +154,9 @@ public final class Show implements Serializable {
   /** @param graphics
    * @param rectangle
    * @return null if input rectangle is unsuitable for drawing */
-  public ShowableConfig render(Graphics _g, Rectangle rectangle) {
+  // TODO should return value be null or .empty !!?!??!
+  public ShowableConfig render(Graphics _g, Rectangle _r) {
+    Rectangle rectangle = new Rectangle(_r);
     if (rectangle.width <= 1 || rectangle.height <= 1)
       return null;
     CoordinateBoundingBox cbb = deriveCbb();
@@ -170,6 +172,8 @@ public final class Show implements Serializable {
         Tensor c = optional.orElseThrow();
         rectangle.width = Round.intValueExact(c.Get(0));
         rectangle.height = Round.intValueExact(c.Get(1));
+        if (rectangle.width <= 1 || rectangle.height <= 1)
+          return null;
       }
     }
     // TODO what if cbb.vol == 0 !?

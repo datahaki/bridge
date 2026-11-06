@@ -59,4 +59,8 @@ public record Tile(int z, int x, int y) implements Serializable {
         new Tile(z1, x2 + 0, y2 + 1), //
         new Tile(z1, x2 + 1, y2 + 1));
   }
+
+  public Tile parent() {
+    return new Tile(z - 1, x / 2, y / 2);
+  }
 }
