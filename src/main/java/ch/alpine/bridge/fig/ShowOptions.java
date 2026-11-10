@@ -9,6 +9,7 @@ import java.util.Set;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
+import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 class ShowOptions implements Serializable {
@@ -18,6 +19,13 @@ class ShowOptions implements Serializable {
   public DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
 
   public ShowableConfig config(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    if (!contains(ShowOption.NON_LAT)) {
+      IO.println("EARTH");
+      IO.println(rectangle);
+      // FIXME
+      TilePixel tilePixel = TilePixel.from(8, 256, cbb.clip(0).min(), cbb.clip(0).max());
+      return ShowableConfig.geo(rectangle, cbb, tilePixel);
+    }
     return contains(ShowOption.DECR_Y) //
         ? ShowableConfig.yDecr(rectangle, cbb)
         : ShowableConfig.yIncr(rectangle, cbb);

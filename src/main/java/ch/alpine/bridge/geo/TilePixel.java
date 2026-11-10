@@ -24,6 +24,7 @@ import ch.alpine.tensor.sca.tri.Sinh;
 /** address combination of tile and pixel on that tile
  * 
  * @param tile
+ * @param wid
  * @param pix between 0 and (wid-1)
  * @param piy between 0 and (wid-1) */
 public record TilePixel(Tile tile, int wid, int pix, int piy) implements Serializable {
@@ -99,7 +100,7 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
     return of(z, wid, nx, ny);
   }
 
-  /** @param delta zoom increment, or decrement when negative
+  /** @param wid_delta increment of width, or decrement when negative
    * @return */
   public Optional<TilePixel> widIncr(final int wid_delta, int z_max) {
     Tensor lon_lat = lon_lat();
@@ -133,5 +134,9 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
 
   public Tensor encode() {
     return Tensors.vector(tile.z(), wid, absX(), absY());
+  }
+
+  public Scalar fractionalResolution() {
+    return RealScalar.of(tile.z()).add(Rational.of(wid - 256, 256));
   }
 }

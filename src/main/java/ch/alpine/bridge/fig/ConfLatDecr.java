@@ -40,7 +40,6 @@ record ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) implements 
 
   @Override
   public Scalar shift(int pixel0, int pixel1) {
-    // TODO
-    return null;
+    throw new UnsupportedOperationException();
   }
 }

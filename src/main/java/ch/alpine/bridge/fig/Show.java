@@ -160,7 +160,7 @@ public final class Show implements Serializable {
     if (rectangle.width <= 1 || rectangle.height <= 1)
       return null;
     CoordinateBoundingBox cbb = deriveCbb();
-    if (Objects.nonNull(cbb)) {
+    if (Objects.nonNull(cbb) && showOptions.contains(ShowOption.NON_LAT)) {
       Scalar ratio = ratio();
       if (Objects.nonNull(ratio)) {
         Tensor a = Tensor.of(cbb.stream().map(Clip::length));
@@ -175,7 +175,8 @@ public final class Show implements Serializable {
         if (rectangle.width <= 1 || rectangle.height <= 1)
           return null;
       }
-    }
+    } else
+      IO.println("bypass ratio");
     // TODO what if cbb.vol == 0 !?
     ShowableConfig showableConfig = Objects.isNull(cbb) //
         ? ShowableConfig.empty(rectangle)

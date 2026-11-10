@@ -10,7 +10,11 @@ import java.util.Optional;
 import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.qty.Degree;
+import ch.alpine.tensor.qty.UnitConvert;
 
 /** Careful: rectangle width and height have to be greater than 1
  * 
@@ -19,6 +23,8 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * @param confX
  * @param confY */
 public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, ConfBase confX, ConfBase confY) {
+  private static final ScalarUnaryOperator TO_DEGREE = UnitConvert.SI().to(Degree.UNIT);
+
   public static ShowableConfig empty(Rectangle rectangle) {
     return new ShowableConfig(rectangle, null, null, null);
   }
@@ -42,9 +48,11 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Con
   }
 
   public static ShowableConfig geo(Rectangle rectangle, CoordinateBoundingBox cbb, TilePixel origin) {
-    return new ShowableConfig(rectangle, cbb, //
-        new ConfLinIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
-        new ConfLatDecr(rectangle.y, rectangle.height, cbb.clip(1), origin));
+    CoordinateBoundingBox cbb_deg = CoordinateBoundingBox.of(cbb.stream() //
+        .map(clip -> Unprotect.warp(clip, TO_DEGREE)));
+    return new ShowableConfig(rectangle, cbb_deg, //
+        new ConfLinIncr(rectangle.x, rectangle.width, cbb_deg.clip(0)), //
+        new ConfLatDecr(rectangle.y, rectangle.height, cbb_deg.clip(1), origin));
   }
 
   public Point2D toPoint2D(Tensor vector) {

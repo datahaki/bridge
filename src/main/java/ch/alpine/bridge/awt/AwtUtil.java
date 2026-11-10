@@ -4,6 +4,7 @@ package ch.alpine.bridge.awt;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -45,7 +46,7 @@ public enum AwtUtil {
   }
 
   private static void ctrlW(JRootPane rootPane, Runnable runnable) {
-    KeyStroke ctrlW = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
+    KeyStroke ctrlW = KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK);
     String actionMapKey = "closeWindow";
     rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlW, actionMapKey);
     rootPane.getActionMap().put(actionMapKey, new AbstractAction() {

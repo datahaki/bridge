@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
 
+/** collection of variable size components aligned in a single column */
 public final class ColumnPanel extends JPanel {
   private final GridBagConstraints gridBagConstraints = new GridBagConstraints();
 

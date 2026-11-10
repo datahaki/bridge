@@ -10,9 +10,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.OptionalInt;
 import java.util.Set;
 
 import javax.swing.JComponent;
+import javax.swing.Timer;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
@@ -32,6 +33,7 @@ import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.bridge.fig.Ticks;
 import ch.alpine.bridge.gfx.TextContour;
 import ch.alpine.tensor.Rational;
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.Tensor;
@@ -44,18 +46,54 @@ import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
+import ch.alpine.tensor.sca.Round;
 
 /** Careful: the field tilePixel has to be initialized */
 public class GeoComponent extends JComponent {
+  private static final int REPEAT_MS = 50;
+  private static final int ZOOM_RES = 5;
+  // ---
   private final Map<TileServer, MapImagesCache> cache = new IdentityHashMap<>();
   /** center */
-  public TilePixel tilePixel;
+  private TilePixel tilePixel;
   public TileServer tileServer = TileServers.OpenStreetMap;
   public Boolean crosshair = true;
   public Boolean ticks = true;
   public Boolean gridlines = true;
   public Boolean pngSize = true;
   public Color gridLineColor = new Color(128, 128, 128, 64);
+  private int timer_interp_c;
+  private int z_dest;
+  private final ActionListener actionListener = new ActionListener() {
+    Point last;
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      Dimension dimension = getSize();
+      Point center = AwtUtil.center(dimension);
+      Point point = getMousePosition();
+      if (Objects.isNull(point)) {
+        point = last;
+      } else
+        last = point;
+      if (Objects.nonNull(point)) {
+        int dx = point.x - center.x;
+        int dy = point.y - center.y;
+        Scalar delta = RealScalar.of(z_dest).subtract(tilePixel.fractionalResolution());
+        TilePixel s1 = tilePixel.shift(dx, dy);
+        Scalar d_wid = delta.multiply(Rational.of(256, timer_interp_c));
+        int intValueExact = Round.intValueExact(d_wid);
+        Optional<TilePixel> optional = s1.widIncr(intValueExact, tileServer.z_max());
+        if (optional.isPresent()) {
+          tilePixel = optional.orElseThrow().shift(-dx, -dy);
+          repaint();
+        }
+      }
+      if (--timer_interp_c <= 0)
+        timer.stop();
+    }
+  };
+  private final Timer timer = new Timer(REPEAT_MS, actionListener);
 
   public TilePixel fromPoint(Point point) {
     Dimension dimension = getSize();
@@ -70,39 +108,31 @@ public class GeoComponent extends JComponent {
   }
 
   public GeoComponent() {
-    addMouseWheelListener(new MouseWheelListener() {
-      @Override
-      public void mouseWheelMoved(MouseWheelEvent event) {
-        Dimension dimension = getSize();
-        Point center = AwtUtil.center(dimension);
-        Point point = event.getPoint();
-        int dx = point.x - center.x;
-        int dy = point.y - center.y;
-        TilePixel s1 = tilePixel.shift(dx, dy);
-        Optional<TilePixel> optional = s1.widIncr(-64 * event.getWheelRotation(), tileServer.z_max());
-        if (optional.isPresent()) {
-          tilePixel = optional.orElseThrow().shift(-dx, -dy);
-          repaint();
-        }
-      }
+    addMouseWheelListener(event -> {
+      z_dest -= event.getWheelRotation();
+      z_dest = Math.min(Math.max(0, z_dest), tileServer.z_max());
+      timer_interp_c = ZOOM_RES;
+      timer.restart();
     });
     MouseInputListener mouseInputListener = new MouseInputAdapter() {
       private Point down;
 
       @Override
-      public void mousePressed(MouseEvent e) {
-        down = e.getPoint();
+      public void mousePressed(MouseEvent event) {
+        down = event.getPoint();
       }
 
       @Override
       public void mouseDragged(MouseEvent event) {
         Point point = event.getPoint();
-        int dx = down.x - point.x;
-        int dy = down.y - point.y;
+        if (Objects.nonNull(down)) { // down may be null in rare cases
+          int dx = down.x - point.x;
+          int dy = down.y - point.y;
+          int f = tilePixel.tile().z() / 3 + 1;
+          setTilePixel(tilePixel.shift(dx * f, dy * f));
+          repaint();
+        }
         down = point;
-        int f = tilePixel.tile().z() / 3 + 1;
-        tilePixel = tilePixel.shift(dx * f, dy * f);
-        repaint();
       }
 
       @Override
@@ -121,9 +151,7 @@ public class GeoComponent extends JComponent {
   private ShowableConfig createShowableConfig(Graphics _g) {
     Dimension dimension = getSize();
     // FontMetrics fontMetrics = _g.getFontMetrics();
-    Rectangle rectangle;
-    rectangle = new Rectangle(new Point(0, 0), dimension);
-    // rectangle = Show.optionalDefaultInsets(dimension, fontMetrics).orElseThrow();
+    Rectangle rectangle = new Rectangle(new Point(0, 0), dimension);
     TilePixel origin = fromPoint(new Point(0, 0));
     if (2 < origin.tile().z()) {
       Point p00 = rectangle.getLocation();
@@ -132,8 +160,7 @@ public class GeoComponent extends JComponent {
       TilePixel tp11 = origin.shift(p11.x, p11.y);
       Tensor lon_lat0 = tp00.lon_lat();
       Tensor lon_lat1 = tp11.lon_lat();
-      ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
-      CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(suo));
+      CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1));
       // the choice of yDecr is mostly correct but not entirely general
       return ShowableConfig.geo(rectangle, cbb, origin);
     }
@@ -143,7 +170,6 @@ public class GeoComponent extends JComponent {
   @Override
   protected final void paintComponent(Graphics _g) {
     Graphics2D graphics = (Graphics2D) _g;
-    RenderQuality.setQuality(graphics);
     MapImagesCache mapImagesCache = getCache();
     Dimension dimension = getSize();
     TilePixel origin = fromPoint(new Point(0, 0));
@@ -261,7 +287,7 @@ public class GeoComponent extends JComponent {
       int r = 3;
       graphics.drawLine(center.x - r, center.y, center.x + r, center.y);
       graphics.drawLine(center.x, center.y - r, center.x, center.y + r);
-      textContour.draw("z=" + tilePixel.tile().z() + " wid=" + tilePixel.wid(), 2, 20);
+      textContour.draw("z=" + tilePixel.fractionalResolution(), 2, 20);
     }
     renderMore(graphics, showableConfig);
   }
@@ -271,5 +297,14 @@ public class GeoComponent extends JComponent {
    * @param graphics */
   public void renderMore(Graphics2D graphics, ShowableConfig showableConfig) {
     // ---
+  }
+
+  public TilePixel getTilePixel() {
+    return tilePixel;
+  }
+
+  public void setTilePixel(TilePixel tilePixel) {
+    z_dest = tilePixel.tile().z();
+    this.tilePixel = tilePixel;
   }
 }

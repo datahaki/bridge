@@ -16,6 +16,7 @@ import ch.alpine.tensor.sca.Round;
  * Careful: functionality is suitable for on-screen display.
  * When printing graphics always use the full resolution image for
  * maximum quality. */
+// TODO is this functionality really useful? does it make a difference in speed?
 public class ScalableImage {
   record Key(ImageResize imageResize, int width, int height) {
   }

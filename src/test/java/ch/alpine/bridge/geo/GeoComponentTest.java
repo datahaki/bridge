@@ -15,7 +15,7 @@ class GeoComponentTest implements ManipulateProvider {
   @Override
   public Container getContainer() {
     GeoComponent geoComponent = new GeoComponent();
-    geoComponent.tilePixel = new TilePixel(new Tile(4, 8, 8), 256, 128, 230);
+    geoComponent.setTilePixel(new TilePixel(new Tile(4, 8, 8), 256, 128, 230));
     return geoComponent;
   }
 
