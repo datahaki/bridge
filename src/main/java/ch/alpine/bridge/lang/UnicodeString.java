@@ -25,15 +25,22 @@ public enum UnicodeString {
         : of(rational.numerator()) + OVER + of(rational.denominator());
     case Quantity quantity -> of(quantity.value()) + SPACE + of(quantity.unit());
     // TODO DecimalScalar
-    case DoubleScalar doubleScalar -> {
-      String string = doubleScalar.toString();
-      int index = string.indexOf('.');
-      yield 0 <= index //
-          ? of(new BigInteger(string.substring(0, index))) + string.substring(index)
-          : string; // Infinity, NaN
-    }
+    case DoubleScalar doubleScalar -> helper(doubleScalar);
     default -> scalar.toString();
     };
+  }
+
+  private static String helper(DoubleScalar doubleScalar) {
+    String string = doubleScalar.toString();
+    String prefix = "";
+    if (string.startsWith("-")) {
+      string = string.substring(1);
+      prefix = "-";
+    }
+    int index = string.indexOf('.');
+    return prefix + (0 <= index //
+        ? of(new BigInteger(string.substring(0, index))) + string.substring(index)
+        : string); // Infinity, NaN
   }
 
   /** @param bigInteger

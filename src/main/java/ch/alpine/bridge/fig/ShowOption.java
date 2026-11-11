@@ -20,5 +20,5 @@ public enum ShowOption {
   DECR_Y,
   /** hide legend */
   LEGEND,
-  NON_LAT,
+  // NON_LAT,
 }

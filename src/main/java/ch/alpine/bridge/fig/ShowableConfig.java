@@ -10,9 +10,9 @@ import java.util.Optional;
 import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.opt.nd.CoordinateBounds;
 import ch.alpine.tensor.qty.Degree;
 import ch.alpine.tensor.qty.UnitConvert;
 
@@ -47,14 +47,24 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Con
         new ConfLinIncr(rectangle.y, rectangle.height, cbb.clip(1)));
   }
 
-  public static ShowableConfig geo(Rectangle rectangle, CoordinateBoundingBox cbb, TilePixel origin) {
-    CoordinateBoundingBox cbb_deg = CoordinateBoundingBox.of(cbb.stream() //
-        .map(clip -> Unprotect.warp(clip, TO_DEGREE)));
-    return new ShowableConfig(rectangle, cbb_deg, //
-        new ConfLinIncr(rectangle.x, rectangle.width, cbb_deg.clip(0)), //
-        new ConfLatDecr(rectangle.y, rectangle.height, cbb_deg.clip(1), origin));
+  public static ShowableConfig geo(Rectangle rectangle, TilePixel origin) {
+    Point p00 = rectangle.getLocation();
+    Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
+    TilePixel tp00 = origin.shift(p00.x, p00.y);
+    TilePixel tp11 = origin.shift(p11.x, p11.y);
+    Tensor lon_lat0 = tp00.lon_lat();
+    Tensor lon_lat1 = tp11.lon_lat();
+    CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(TO_DEGREE));
+    return geo(rectangle, cbb, origin);
   }
 
+  public static ShowableConfig geo(Rectangle rectangle, CoordinateBoundingBox cbb, TilePixel origin) {
+    return new ShowableConfig(rectangle, cbb, //
+        new ConfLinIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
+        new ConfLatDecr(rectangle.y, rectangle.height, cbb.clip(1), origin));
+  }
+
+  // ---
   public Point2D toPoint2D(Tensor vector) {
     return new Point2D.Double( //
         confX.pixel(vector.Get(0)), //

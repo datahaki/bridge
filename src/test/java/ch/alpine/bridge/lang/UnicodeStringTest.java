@@ -3,14 +3,18 @@ package ch.alpine.bridge.lang;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.math.BigInteger;
+
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.Complex;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.sca.N;
 
 class UnicodeStringTest {
   // private static final String T = "\u2009";
@@ -27,6 +31,21 @@ class UnicodeStringTest {
     assertEquals(UnicodeString.of(Quantity.of(4, "s^-3")), "4 s\u207b\u00b3");
     assertEquals(UnicodeString.of(Quantity.of(5, "s^4")), "5 s^4");
     assertEquals(UnicodeString.of(Quantity.of(5, "s^-4")), "5 s^-4");
+  }
+
+  @Test
+  void testSignRational() {
+    Scalar scalar = Rational.of(-1, 10);
+    Scalar numeric = N.DOUBLE.apply(scalar);
+    String string = UnicodeString.of(numeric);
+    assertEquals(string, "-0.1");
+  }
+
+  @Test
+  void testBigInteger() {
+    BigInteger bigInteger = new BigInteger("-1");
+    String string = UnicodeString.of(bigInteger);
+    assertEquals(string, "-1");
   }
 
   @Test

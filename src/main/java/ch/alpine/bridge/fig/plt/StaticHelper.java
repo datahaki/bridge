@@ -7,16 +7,19 @@ import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.api.TensorScalarFunction;
 import ch.alpine.tensor.api.TensorUnaryOperator;
 import ch.alpine.tensor.chq.FiniteScalarQ;
+import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.red.MinMax;
 import ch.alpine.tensor.sca.Clip;
@@ -100,5 +103,11 @@ enum StaticHelper {
     return new Dimension( //
         Round.intValueExact(factor.multiply(RealScalar.of(dimension.width))), //
         Round.intValueExact(factor.multiply(RealScalar.of(dimension.height))));
+  }
+
+  public static Tensor pair(Tensor vx, Tensor vy) {
+    int n = Integers.requireEquals(vx.length(), vy.length());
+    return Tensor.of(IntStream.range(0, n) //
+        .mapToObj(i -> Tensors.of(vx.Get(i), vy.Get(i))));
   }
 }

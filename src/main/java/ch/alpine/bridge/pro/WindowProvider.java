@@ -27,20 +27,22 @@ public non-sealed interface WindowProvider extends RunProvider {
     LookAndFeels.autoDetect();
     Window window = getWindow();
     ResourceLocator resourceLocator = ResourceLocator.of(getClass());
-    WindowBounds.persistent(window, resourceLocator.properties(WindowBounds.class));
-    if (window instanceof JFrame jFrame) {
-      jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-      if (jFrame.getTitle().isEmpty())
-        jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
-      AwtUtil.ctrlW(jFrame);
-    }
-    if (window instanceof JDialog jDialog) {
-      jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-      if (jDialog.getTitle().isEmpty())
-        jDialog.setTitle(FriendlyFormat.defaultTitle(getClass()));
-      AwtUtil.ctrlW(jDialog);
-    }
-    SwingUtilities.invokeLater(() -> window.setVisible(true));
+    SwingUtilities.invokeLater(() -> {
+      WindowBounds.persistent(window, resourceLocator.properties(WindowBounds.class));
+      if (window instanceof JFrame jFrame) {
+        jFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        if (jFrame.getTitle().isEmpty())
+          jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
+        AwtUtil.ctrlW(jFrame);
+      }
+      if (window instanceof JDialog jDialog) {
+        jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        if (jDialog.getTitle().isEmpty())
+          jDialog.setTitle(FriendlyFormat.defaultTitle(getClass()));
+        AwtUtil.ctrlW(jDialog);
+      }
+      window.setVisible(true);
+    });
     return window;
   }
 }

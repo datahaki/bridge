@@ -6,8 +6,6 @@ import java.util.EnumSet;
 import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.alg.Transpose;
 
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/ListLinePlot.html">ListLinePlot</a> */
@@ -25,6 +23,6 @@ public enum ListLinePlot {
    * @param values {y1, y2, ..., yn}
    * @return */
   public static Showable of(Tensor domain, Tensor tensor) {
-    return of(Transpose.of(Tensors.of(domain, tensor)));
+    return of(StaticHelper.pair(domain, tensor));
   }
 }

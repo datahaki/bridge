@@ -19,16 +19,14 @@ class ShowOptions implements Serializable {
   public DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
 
   public ShowableConfig config(Rectangle rectangle, CoordinateBoundingBox cbb) {
-    if (!contains(ShowOption.NON_LAT)) {
-      IO.println("EARTH");
-      IO.println(rectangle);
-      // FIXME
-      TilePixel tilePixel = TilePixel.from(8, 256, cbb.clip(0).min(), cbb.clip(0).max());
-      return ShowableConfig.geo(rectangle, cbb, tilePixel);
-    }
     return contains(ShowOption.DECR_Y) //
         ? ShowableConfig.yDecr(rectangle, cbb)
         : ShowableConfig.yIncr(rectangle, cbb);
+  }
+
+  public ShowableConfig geo(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    TilePixel origin = TilePixel.geo(rectangle, cbb);
+    return ShowableConfig.geo(rectangle, cbb, origin);
   }
 
   public void set(ShowOption showOption, boolean status) {

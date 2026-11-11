@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ import java.util.OptionalInt;
 import java.util.Set;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
@@ -36,11 +38,7 @@ import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
-import ch.alpine.tensor.Tensor;
-import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
-import ch.alpine.tensor.opt.nd.CoordinateBounds;
 import ch.alpine.tensor.qty.Degree;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitConvert;
@@ -65,29 +63,22 @@ public class GeoComponent extends JComponent {
   private int timer_interp_c;
   private int z_dest;
   private final ActionListener actionListener = new ActionListener() {
-    Point last;
-
     @Override
     public void actionPerformed(ActionEvent e) {
+      Point point = MouseInfo.getPointerInfo().getLocation();
+      SwingUtilities.convertPointFromScreen(point, GeoComponent.this);
       Dimension dimension = getSize();
       Point center = AwtUtil.center(dimension);
-      Point point = getMousePosition();
-      if (Objects.isNull(point)) {
-        point = last;
-      } else
-        last = point;
-      if (Objects.nonNull(point)) {
-        int dx = point.x - center.x;
-        int dy = point.y - center.y;
-        Scalar delta = RealScalar.of(z_dest).subtract(tilePixel.fractionalResolution());
-        TilePixel s1 = tilePixel.shift(dx, dy);
-        Scalar d_wid = delta.multiply(Rational.of(256, timer_interp_c));
-        int intValueExact = Round.intValueExact(d_wid);
-        Optional<TilePixel> optional = s1.widIncr(intValueExact, tileServer.z_max());
-        if (optional.isPresent()) {
-          tilePixel = optional.orElseThrow().shift(-dx, -dy);
-          repaint();
-        }
+      int dx = point.x - center.x;
+      int dy = point.y - center.y;
+      Scalar delta = RealScalar.of(z_dest).subtract(tilePixel.fractionalResolution());
+      TilePixel s1 = tilePixel.shift(dx, dy);
+      Scalar d_wid = delta.multiply(Rational.of(256, timer_interp_c));
+      int intValueExact = Round.intValueExact(d_wid);
+      Optional<TilePixel> optional = s1.widIncr(intValueExact, tileServer.z_max());
+      if (optional.isPresent()) {
+        tilePixel = optional.orElseThrow().shift(-dx, -dy);
+        repaint();
       }
       if (--timer_interp_c <= 0)
         timer.stop();
@@ -154,15 +145,8 @@ public class GeoComponent extends JComponent {
     Rectangle rectangle = new Rectangle(new Point(0, 0), dimension);
     TilePixel origin = fromPoint(new Point(0, 0));
     if (2 < origin.tile().z()) {
-      Point p00 = rectangle.getLocation();
-      Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
-      TilePixel tp00 = origin.shift(p00.x, p00.y);
-      TilePixel tp11 = origin.shift(p11.x, p11.y);
-      Tensor lon_lat0 = tp00.lon_lat();
-      Tensor lon_lat1 = tp11.lon_lat();
-      CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1));
       // the choice of yDecr is mostly correct but not entirely general
-      return ShowableConfig.geo(rectangle, cbb, origin);
+      return ShowableConfig.geo(rectangle, origin);
     }
     return ShowableConfig.empty(rectangle);
   }

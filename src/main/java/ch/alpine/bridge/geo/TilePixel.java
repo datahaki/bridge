@@ -2,6 +2,7 @@
 package ch.alpine.bridge.geo;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.num.Pi;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
@@ -71,6 +73,20 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
    * @return */
   public static TilePixel from(int z, int wid, Tensor lon_lat) {
     return from(z, wid, lon_lat.Get(0), lon_lat.Get(1));
+  }
+
+  public static TilePixel geo(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    Clip clip0 = cbb.clip(0);
+    Clip clip1 = cbb.clip(1);
+    for (int z = 0; z < 19; ++z) {
+      TilePixel tp0 = TilePixel.from(z + 1, 256, Tensors.of(clip0.min(), clip1.max()));
+      TilePixel tp1 = TilePixel.from(z + 1, 256, Tensors.of(clip0.max(), clip1.min()));
+      int dx = (int) (tp1.absX() - tp0.absX());
+      if (rectangle.width < dx) {
+        return TilePixel.from(z, 256, Tensors.of(clip0.min(), clip1.max()));
+      }
+    }
+    return null;
   }
 
   /** @param lon_lat for instance {-0.762800[deg], 38.343373[deg]}

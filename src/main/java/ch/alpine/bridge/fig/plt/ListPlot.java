@@ -11,7 +11,6 @@ import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.alg.Transpose;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 
 /** <p>inspired by
@@ -29,7 +28,7 @@ public class ListPlot extends BasePointsPlot {
    * @param values {y1, y2, ..., yn}
    * @return */
   public static Showable of(Tensor domain, Tensor tensor) {
-    return of(Transpose.of(Tensors.of(domain, tensor)));
+    return of(StaticHelper.pair(domain, tensor));
   }
 
   public static Showable of(ScalarUnaryOperator suo, Tensor vector) {

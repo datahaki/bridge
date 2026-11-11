@@ -160,7 +160,7 @@ public final class Show implements Serializable {
     if (rectangle.width <= 1 || rectangle.height <= 1)
       return null;
     CoordinateBoundingBox cbb = deriveCbb();
-    if (Objects.nonNull(cbb) && showOptions.contains(ShowOption.NON_LAT)) {
+    if (Objects.nonNull(cbb)) {
       Scalar ratio = ratio();
       if (Objects.nonNull(ratio)) {
         Tensor a = Tensor.of(cbb.stream().map(Clip::length));
@@ -175,11 +175,14 @@ public final class Show implements Serializable {
         if (rectangle.width <= 1 || rectangle.height <= 1)
           return null;
       }
-    } else
-      IO.println("bypass ratio");
+    }
+    if (Objects.isNull(cbb)) {
+      return ShowableConfig.empty(rectangle);
+    }
+    boolean anyMatch = showables.stream().anyMatch(s -> s instanceof GeoGraphics);
     // TODO what if cbb.vol == 0 !?
-    ShowableConfig showableConfig = Objects.isNull(cbb) //
-        ? ShowableConfig.empty(rectangle)
+    ShowableConfig showableConfig = anyMatch //
+        ? showOptions.geo(rectangle, cbb)
         : showOptions.config(rectangle, cbb);
     showRender(_g, showableConfig);
     return showableConfig;
