@@ -59,7 +59,8 @@ public final class Show implements Serializable {
   /** @param showable
    * @return given showable */
   public Showable add(Showable showable) {
-    showable.setColor(colorDataIndexed.getColor(showables.size()));
+    int index = (int) showables.stream().filter(s -> !(s instanceof BackgroundPlotMarker)).count();
+    showable.setColor(colorDataIndexed.getColor(index));
     if (showable instanceof BarLegendPlot barLegendPlot && //
         barLegendPlot.getAspectRatioOneHint())
       setAspectRatioOne();
