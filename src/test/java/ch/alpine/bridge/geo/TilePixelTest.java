@@ -9,9 +9,11 @@ import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.qty.Degree;
 import ch.alpine.tensor.qty.Quantity;
+import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Chop;
 import ch.alpine.tensor.sca.Clip;
@@ -58,8 +60,18 @@ class TilePixelTest {
   }
 
   @Test
-  void testInvLat() {
+  void testZeros() {
     Tensor coords = new TilePixel(new Tile(0, 0, 0), 256, 128, 128).lon_lat();
     Tolerance.CHOP.requireAllZero(coords); // lon
+  }
+
+  @Test
+  void testHiLo() {
+    ScalarUnaryOperator TO_DEGREE = UnitConvert.SI().to(Degree.UNIT);
+    Tensor coordsHi = new TilePixel(new Tile(19, 0, 0), 256, 0, 0).lon_lat();
+    // IO.println(coordsHi.maps(TO_DEGREE));
+    Tensor coordsLo = new TilePixel(new Tile(0, 0, 0), 256, 0, 256).lon_lat();
+    // IO.println(coordsLo.maps(TO_DEGREE));
+    Chop._10.requireClose(coordsHi.Get(1), coordsLo.Get(1).negate());
   }
 }

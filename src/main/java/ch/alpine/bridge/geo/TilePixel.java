@@ -56,6 +56,7 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
    * @param lon
    * @param lat
    * @return */
+  // TODO there are some values of lat for which no tile exist !
   public static TilePixel from(int z, int wid, Scalar lon, Scalar lat) {
     lon = UnitSystem.SI().apply(lon);
     lat = LAT_DOMAIN.apply(UnitSystem.SI().apply(lat));

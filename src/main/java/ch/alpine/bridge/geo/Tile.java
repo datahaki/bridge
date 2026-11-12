@@ -9,6 +9,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Integers;
 
+/** the tiles cover latitudes in Clips.absolute ( 85.0511287798066[deg] ) */
 public record Tile(int z, int x, int y) implements Serializable {
   /** Example: for z == 3 the values for x and y are in the interval
    * [0, 1, ..., 8)
