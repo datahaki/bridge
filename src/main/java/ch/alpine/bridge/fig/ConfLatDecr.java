@@ -16,8 +16,8 @@ record ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) implements 
   @Override
   public double pixel(Scalar x) {
     // TODO computation wasteful since only Y component is needed
-    TilePixel tilePixel = origin.from(Tensors.of(x.zero(), x));
-    return (int) (tilePixel.absY() - origin.absY());
+    return origin.from(Tensors.of(x.zero(), x)) //
+        .map(tilePixel -> tilePixel.absY() - origin.absY()).orElse(0L);
   }
 
   @Override

@@ -8,6 +8,8 @@ import java.util.List;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Integers;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.sca.Clips;
 
 /** the tiles cover latitudes in Clips.absolute ( 85.0511287798066[deg] ) */
 public record Tile(int z, int x, int y) implements Serializable {
@@ -35,11 +37,20 @@ public record Tile(int z, int x, int y) implements Serializable {
    * @param y
    * @throws Exception if x and y are outside valid range defined by z */
   public Tile {
+    // TODO check z upper bound == where long arithmetic fails
     int max = maxInclusive(z);
     Integers.requireEquals(x, Math.min(Math.max(0, x), max));
     Integers.requireEquals(y, Math.min(Math.max(0, y), max));
   }
-  // TODO provide function that returns CBB
+
+  /** @return */
+  public CoordinateBoundingBox cbb() {
+    Tensor ul = new TilePixel(this, 256, 0, 0).lon_lat();
+    Tensor dr = new TilePixel(this, 256, 256, 256).lon_lat();
+    return CoordinateBoundingBox.of( //
+        Clips.interval(ul.Get(0), dr.Get(0)), //
+        Clips.interval(dr.Get(1), ul.Get(1)));
+  }
 
   /** @return polygon with positive area */
   public Tensor cbb_lon_lat() {

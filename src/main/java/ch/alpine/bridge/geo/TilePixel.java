@@ -56,44 +56,48 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
    * @param lon
    * @param lat
    * @return */
-  // TODO there are some values of lat for which no tile exist !
-  public static TilePixel from(int z, int wid, Scalar lon, Scalar lat) {
+  public static Optional<TilePixel> from(int z, int wid, Scalar lon, Scalar lat) {
     lon = UnitSystem.SI().apply(lon);
     lat = LAT_DOMAIN.apply(UnitSystem.SI().apply(lat));
-    int base = 1 << z;
-    Scalar factor = RealScalar.of(base * wid);
-    Scalar nx = lon.add(Pi.VALUE).divide(Pi.TWO).multiply(factor);
-    Scalar ny = Rational.HALF.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.TWO)) //
-        .multiply(factor);
-    return TilePixel.of(z, wid, Floor.longValueExact(nx), Floor.longValueExact(ny));
+    if (LAT_DOMAIN.isInside(lat)) {
+      int base = 1 << z;
+      Scalar factor = RealScalar.of(base * wid);
+      Scalar nx = lon.add(Pi.VALUE).divide(Pi.TWO).multiply(factor);
+      Scalar ny = Rational.HALF.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.TWO)) //
+          .multiply(factor);
+      return Optional.of(TilePixel.of(z, wid, Floor.longValueExact(nx), Floor.longValueExact(ny)));
+    }
+    return Optional.empty();
   }
 
   /** @param z
    * @param wid
    * @param lon_lat for instance {-0.762800[deg], 38.343373[deg]}
    * @return */
-  public static TilePixel from(int z, int wid, Tensor lon_lat) {
+  public static Optional<TilePixel> from(int z, int wid, Tensor lon_lat) {
     return from(z, wid, lon_lat.Get(0), lon_lat.Get(1));
-  }
-
-  public static TilePixel geo(Rectangle rectangle, CoordinateBoundingBox cbb) {
-    Clip clip0 = cbb.clip(0);
-    Clip clip1 = cbb.clip(1);
-    for (int z = 0; z < 19; ++z) {
-      TilePixel tp0 = TilePixel.from(z + 1, 256, Tensors.of(clip0.min(), clip1.max()));
-      TilePixel tp1 = TilePixel.from(z + 1, 256, Tensors.of(clip0.max(), clip1.min()));
-      int dx = (int) (tp1.absX() - tp0.absX());
-      if (rectangle.width < dx) {
-        return TilePixel.from(z, 256, Tensors.of(clip0.min(), clip1.max()));
-      }
-    }
-    return null;
   }
 
   /** @param lon_lat for instance {-0.762800[deg], 38.343373[deg]}
    * @return */
-  public TilePixel from(Tensor lon_lat) {
+  public Optional<TilePixel> from(Tensor lon_lat) {
     return from(tile.z(), wid, lon_lat);
+  }
+
+  public static Optional<TilePixel> geo(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    Clip clip0 = cbb.clip(0);
+    Clip clip1 = cbb.clip(1);
+    for (int z = 0; z < 19; ++z) {
+      Optional<TilePixel> otp0 = TilePixel.from(z + 1, 256, Tensors.of(clip0.min(), clip1.max()));
+      Optional<TilePixel> otp1 = TilePixel.from(z + 1, 256, Tensors.of(clip0.max(), clip1.min()));
+      if (otp0.isPresent() && otp1.isPresent()) {
+        int dx = (int) (otp1.orElseThrow().absX() - otp0.orElseThrow().absX());
+        if (rectangle.width < dx) {
+          return TilePixel.from(z, 256, Tensors.of(clip0.min(), clip1.max()));
+        }
+      }
+    }
+    return Optional.empty();
   }
 
   /** @return */
@@ -124,9 +128,9 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
     IntQuotientRemainder iqr = IntQuotientRemainder.from(wid + wid_delta, 256);
     int z = tile.z() + iqr.div() - 1;
     if (0 <= z && z <= z_max)
-      return Optional.of(from(z, 256 + iqr.rem(), lon_lat));
+      return from(z, 256 + iqr.rem(), lon_lat);
     if (z == -1 && 0 < iqr.rem())
-      return Optional.of(from(0, iqr.rem(), lon_lat));
+      return from(0, iqr.rem(), lon_lat);
     return Optional.empty();
   }
 

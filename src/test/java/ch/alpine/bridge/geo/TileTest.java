@@ -26,9 +26,11 @@ class TileTest {
   void testLatLon() {
     Tile tile = new Tile(0, 0, 0);
     Tensor polygon = tile.cbb_lon_lat();
-    CoordinateBoundingBox cbb = CoordinateBounds.of(polygon);
-    Tolerance.CHOP.requireClose(cbb.clip(0).length(), Pi.TWO);
-    Tolerance.CHOP.requireClose(cbb.clip(1).length(), RealScalar.of(2.968844459490665));
+    CoordinateBoundingBox cbb1 = CoordinateBounds.of(polygon);
+    Tolerance.CHOP.requireClose(cbb1.clip(0).length(), Pi.TWO);
+    Tolerance.CHOP.requireClose(cbb1.clip(1).length(), RealScalar.of(2.968844459490665));
+    CoordinateBoundingBox cbb2 = tile.cbb();
+    assertEquals(cbb1, cbb2);
   }
 
   @Test

@@ -92,6 +92,8 @@ class UnicodeStringTest {
   @Test
   void testNaN() {
     assertEquals(UnicodeString.of(DoubleScalar.INDETERMINATE), "NaN");
+    assertEquals(UnicodeString.of(DoubleScalar.POSITIVE_INFINITY), "Infinity");
+    assertEquals(UnicodeString.of(DoubleScalar.NEGATIVE_INFINITY), "-Infinity");
   }
 
   @Test

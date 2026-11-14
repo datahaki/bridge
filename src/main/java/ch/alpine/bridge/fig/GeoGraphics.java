@@ -32,7 +32,8 @@ public class GeoGraphics extends BaseShowable {
 
   @Override
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    TilePixel origin = TilePixel.geo(showableConfig.rectangle(), showableConfig.cbb());
+    // TODO handle empty case
+    TilePixel origin = TilePixel.geo(showableConfig.rectangle(), showableConfig.cbb()).orElseThrow();
     Rectangle rectangle = showableConfig.rectangle();
     Dimension dimension = rectangle.getSize();
     int wid = origin.wid();
