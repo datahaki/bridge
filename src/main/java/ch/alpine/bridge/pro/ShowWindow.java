@@ -16,6 +16,7 @@ import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowGridComponent;
 
+// TODO ideally this class is in package .fig
 public enum ShowWindow {
   ;
   /** non-blocking
@@ -33,6 +34,7 @@ public enum ShowWindow {
   public static JDialog asDialog(List<Show> list) {
     // FIXME handle case if list is empty
     /* false -> non-modal == non-blocking */
+    // TODO ideally allow for more dialog options
     JDialog jDialog = new JDialog(JOptionPane.getFrameForComponent(null), false);
     jDialog.setContentPane(createContainer(list));
     jDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

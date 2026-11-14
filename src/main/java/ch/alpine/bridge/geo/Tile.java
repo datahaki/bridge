@@ -2,7 +2,6 @@
 package ch.alpine.bridge.geo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 import ch.alpine.tensor.Tensor;
@@ -61,7 +60,7 @@ public record Tile(int z, int x, int y) implements Serializable {
         new TilePixel(this, 256, 256, 0).lon_lat());
   }
 
-  public Collection<? extends Tile> children() {
+  public List<Tile> children() {
     int z1 = z + 1;
     int x2 = x * 2;
     int y2 = y * 2;

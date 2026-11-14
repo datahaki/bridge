@@ -132,7 +132,21 @@ public class MapImagesCache {
     return Files.isRegularFile(path(tile));
   }
 
-  private Path path(Tile tile) {
+  public Path path(Tile tile) {
     return TileFiles.path(root, tile);
+  }
+
+  public void blockUntilDone() {
+    while (true) {
+      synchronized (set) {
+        if (set.isEmpty())
+          break;
+      }
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
+    }
   }
 }
