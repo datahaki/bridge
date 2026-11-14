@@ -13,13 +13,6 @@ import ch.alpine.tensor.sca.Clip;
 record ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) implements ConfBase {
   private static final ScalarUnaryOperator TO_DEGREE = UnitConvert.SI().to(Degree.UNIT);
 
-  public ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) {
-    this.ofs = ofs;
-    this.length = length;
-    this.clip = clip;
-    this.origin = origin;
-  }
-
   @Override
   public double pixel(Scalar x) {
     // TODO computation wasteful since only Y component is needed
