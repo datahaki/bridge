@@ -5,13 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import ch.alpine.bridge.lang.Unitless;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.mat.Tolerance;
-import ch.alpine.tensor.qty.Degree;
-import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Chop;
 import ch.alpine.tensor.sca.Clip;
@@ -26,8 +25,8 @@ class TilePixelTest {
 
   @Test
   void testAspe9() {
-    Scalar lon = Quantity.of(-0.762800, Degree.UNIT);
-    Scalar lat = Quantity.of(38.343373, Degree.UNIT);
+    Scalar lon = Unitless.DEGREES.asIs(-0.762800);
+    Scalar lat = Unitless.DEGREES.asIs(38.343373);
     TilePixel tileP1 = TilePixel.from(9, 256, lon, lat).orElseThrow();
     assertEquals(tileP1.tile().x(), 254);
     assertEquals(tileP1.tile().y(), 196);
@@ -35,8 +34,8 @@ class TilePixelTest {
 
   @Test
   void testAspe() {
-    Scalar lon = Quantity.of(-0.762800, Degree.UNIT);
-    Scalar lat = Quantity.of(38.343373, Degree.UNIT);
+    Scalar lon = Unitless.DEGREES.asIs(-0.762800);
+    Scalar lat = Unitless.DEGREES.asIs(38.343373);
     TilePixel tileP1 = TilePixel.from(17, 256, lon, lat).orElseThrow();
     Tensor coords = tileP1.lon_lat();
     Tensor expect = Tensors.of(lon, lat).maps(UnitSystem.SI());

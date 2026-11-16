@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 
+import ch.alpine.bridge.lang.Unitless;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -15,7 +16,6 @@ import ch.alpine.tensor.chq.DeterminateScalarQ;
 import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.qty.DateTime;
-import ch.alpine.tensor.qty.Degree;
 import ch.alpine.tensor.qty.Quantity;
 import ch.alpine.tensor.qty.UnitSystem;
 import ch.alpine.tensor.sca.Mod;
@@ -29,7 +29,7 @@ public record Sunpoint(Scalar lambda_s, Scalar delta) implements Serializable {
   private static final Mod MOD_LON = Mod.function(Pi.TWO, Pi.VALUE.negate());
   private static final Mod MOD_LAT = Mod.function(Pi.VALUE, Pi.HALF.negate());
   private static final Scalar RAD_PER_SEC = UnitSystem.SI().apply(Quantity.of(-15, "deg*h^-1"));
-  private static final Scalar AXIAL_TILT = Degree.of(23.44);
+  private static final Scalar AXIAL_TILT = Unitless.DEGREES.of(23.44);
 
   public static Sunpoint now() {
     return of(LocalDateTime.now(ZoneOffset.UTC));
@@ -38,11 +38,14 @@ public record Sunpoint(Scalar lambda_s, Scalar delta) implements Serializable {
   /** @param localDateTime should be in UTC !
    * @return */
   public static Sunpoint of(LocalDateTime localDateTime) {
-    int solar = localDateTime.getDayOfYear() - 81;
-    Scalar angle = RealScalar.of(360 / 365.25 * solar);
     LocalDate localDate = localDateTime.toLocalDate();
     LocalTime localTime = localDateTime.toLocalTime();
     Scalar diff = DateTime.of(localDate, localTime).subtract(DateTime.of(localDate, LocalTime.NOON));
+    // Day 81 corresponds roughly to March 21, the vernal (spring) equinox.
+    int solar = localDateTime.getDayOfYear() - 81;
+    // Converts the day offset into an orbital angle (in degrees) representing
+    // Earth's position along its yearly orbit around the Sun, accounting for leap years via 365.25.
+    Scalar angle = Unitless.TURNS.of(solar / 365.25);
     return new Sunpoint( //
         MOD_LON.apply(diff.multiply(RAD_PER_SEC)), //
         AXIAL_TILT.multiply(Sin.FUNCTION.apply(angle)));

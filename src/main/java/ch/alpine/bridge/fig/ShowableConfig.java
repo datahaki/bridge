@@ -8,13 +8,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ch.alpine.bridge.geo.TilePixel;
+import ch.alpine.bridge.lang.Unitless;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.opt.nd.CoordinateBounds;
-import ch.alpine.tensor.qty.Degree;
-import ch.alpine.tensor.qty.UnitConvert;
 
 /** Careful: rectangle width and height have to be greater than 1
  * 
@@ -23,7 +22,7 @@ import ch.alpine.tensor.qty.UnitConvert;
  * @param confX
  * @param confY */
 public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, ConfBase confX, ConfBase confY) {
-  private static final ScalarUnaryOperator TO_DEGREE = UnitConvert.SI().to(Degree.UNIT);
+  private static final ScalarUnaryOperator TO_DEGREE = Unitless.DEGREES.unitConvert();
 
   public static ShowableConfig empty(Rectangle rectangle) {
     return new ShowableConfig(rectangle, null, null, null);

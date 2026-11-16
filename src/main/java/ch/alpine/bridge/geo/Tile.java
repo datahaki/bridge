@@ -52,7 +52,7 @@ public record Tile(int z, int x, int y) implements Serializable {
   }
 
   /** @return polygon with positive area */
-  public Tensor cbb_lon_lat() {
+  public Tensor cbb_lon_lat() { // TODO rename
     return Tensors.of( //
         new TilePixel(this, 256, 0, 0).lon_lat(), //
         new TilePixel(this, 256, 0, 256).lon_lat(), //

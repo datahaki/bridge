@@ -34,14 +34,13 @@ import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.bridge.fig.Ticks;
 import ch.alpine.bridge.gfx.TextContour;
+import ch.alpine.bridge.lang.Unitless;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.qty.Degree;
 import ch.alpine.tensor.qty.Quantity;
-import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.Round;
@@ -213,7 +212,7 @@ public class GeoComponent extends JComponent {
     TextContour textContour = TextContour.of(graphics);
     final Point center = AwtUtil.center(dimension);
     if (ticks && 2 < tilePixel.tile().z()) {
-      ScalarUnaryOperator suo = UnitConvert.SI().to(Degree.UNIT);
+      ScalarUnaryOperator suo = Unitless.DEGREES.unitConvert();
       graphics.setStroke(new BasicStroke()); // thickness of outline
       FontMetrics fontMetrics = graphics.getFontMetrics();
       if (true) { // lon along "X - axis"
