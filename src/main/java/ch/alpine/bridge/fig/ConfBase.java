@@ -22,5 +22,6 @@ public interface ConfBase {
   Scalar shift(int pixel0, int pixel1);
 
   /** @return this (ConfIncr or ConfDecr) but with ofs == 0 */
+  @Deprecated
   ConfBase pruned();
 }

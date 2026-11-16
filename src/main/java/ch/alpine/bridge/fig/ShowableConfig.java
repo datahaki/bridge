@@ -63,6 +63,17 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Con
         new ConfLatDecr(rectangle.y, rectangle.height, cbb.clip(1), origin));
   }
 
+  public static ShowableConfig geo(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    TilePixel origin = TilePixel.geo(rectangle, cbb).orElseThrow(); // TODO handle other case
+    return geo(rectangle, cbb, origin);
+  }
+  
+  public static ShowableConfig log(Rectangle rectangle, CoordinateBoundingBox cbb) {
+    return new ShowableConfig(rectangle, cbb, //
+        new ConfLinIncr(rectangle.x, rectangle.width, cbb.clip(0)), //
+        ConfLogDecr.exp(rectangle.y, rectangle.height, cbb.clip(1)));
+  }
+
   // ---
   public Point2D toPoint2D(Tensor vector) {
     return new Point2D.Double( //
@@ -79,6 +90,7 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Con
   }
 
   /** @return */
+  @Deprecated
   public ShowableConfig pruned() {
     return new ShowableConfig( //
         new Rectangle(0, 0, rectangle.width, rectangle.height), //

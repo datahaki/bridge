@@ -102,7 +102,7 @@ public final class Show implements Serializable {
     return cbb;
   }
 
-  private CoordinateBoundingBox deriveCbb() {
+  public CoordinateBoundingBox deriveCbb() {
     if (Objects.isNull(getCbb()))
       showables.stream() //
           .flatMap(showable -> showable.fullPlotRange().stream()) //
@@ -183,7 +183,7 @@ public final class Show implements Serializable {
     boolean anyMatch = showables.stream().anyMatch(s -> s instanceof GeoGraphics);
     // TODO what if cbb.vol == 0 !?
     ShowableConfig showableConfig = anyMatch //
-        ? showOptions.geo(rectangle, cbb)
+        ? ShowableConfig.geo(rectangle, cbb)
         : showOptions.config(rectangle, cbb);
     showRender(_g, showableConfig);
     return showableConfig;
@@ -218,7 +218,7 @@ public final class Show implements Serializable {
    * @param dimension
    * @param fontSize for instance graphics.getFont().getSize()
    * @return */
-  private static Rectangle defaultInsets(Rectangle rectangle, FontMetrics fontMetrics) {
+  public static Rectangle defaultInsets(Rectangle rectangle, FontMetrics fontMetrics) {
     int fontAd = fontMetrics.getAscent() + fontMetrics.getDescent();
     Insets insets = new Insets( //
         fontAd + 1, // top showLabel + frame width

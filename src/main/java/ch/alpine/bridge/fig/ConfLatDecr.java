@@ -5,13 +5,10 @@ import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.bridge.lang.Unitless;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
-import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.Clip;
 
 /** used for geo component mercator projection */
 record ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) implements ConfBase {
-  private static final ScalarUnaryOperator TO_DEGREE = Unitless.DEGREES.unitConvert();
-
   @Override
   public double pixel(Scalar x) {
     // TODO computation wasteful since only Y component is needed
@@ -22,7 +19,7 @@ record ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) implements 
   @Override
   public Scalar model(int pixel) {
     // TODO computation wasteful since only Y component is needed
-    return TO_DEGREE.apply(origin.shift(0, pixel).lon_lat().Get(1));
+    return Unitless.DEGREES.unitConvert().apply(origin.shift(0, pixel).lon_lat().Get(1));
   }
 
   @Override

@@ -24,10 +24,6 @@ class ShowOptions implements Serializable {
         : ShowableConfig.yIncr(rectangle, cbb);
   }
 
-  public ShowableConfig geo(Rectangle rectangle, CoordinateBoundingBox cbb) {
-    TilePixel origin = TilePixel.geo(rectangle, cbb).orElseThrow(); // TODO handle other case
-    return ShowableConfig.geo(rectangle, cbb, origin);
-  }
 
   public void set(ShowOption showOption, boolean status) {
     if (status)

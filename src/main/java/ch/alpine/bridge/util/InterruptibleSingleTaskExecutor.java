@@ -15,7 +15,7 @@ public class InterruptibleSingleTaskExecutor {
 
   /** Submits a new task. If a task is currently running, it will be interrupted,
    * and the new task will take its place. */
-  public Future<?> submit(Runnable task) {
+  public Future<?> submit(Runnable runnable) {
     synchronized (lock) {
       // If an active task exists and is not finished, interrupt it
       if (activeTaskFuture != null && !activeTaskFuture.isDone()) {
@@ -27,12 +27,12 @@ public class InterruptibleSingleTaskExecutor {
         try {
           // Periodically check Thread.interrupted() inside your task logic
           // if your task performs long-running CPU or blocking operations.
-          task.run();
-        } catch (Throwable t) {
-          if (Thread.currentThread().isInterrupted() || t instanceof InterruptedException) {
+          runnable.run();
+        } catch (Throwable throwable) {
+          if (Thread.currentThread().isInterrupted() || throwable instanceof InterruptedException) {
             System.out.println("Previous task was successfully interrupted.");
           } else {
-            t.printStackTrace();
+            throwable.printStackTrace();
           }
         }
       });

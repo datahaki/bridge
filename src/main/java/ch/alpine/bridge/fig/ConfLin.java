@@ -13,12 +13,12 @@ import ch.alpine.tensor.sca.Clip;
 
 /** affine-linear axis */
 abstract class ConfLin implements ConfBase, Serializable {
-  private final int ofs;
-  private final int length;
-  private final Clip clip;
-  private final ScalarUnaryOperator unitConvert;
-  private final Scalar model2pixel;
-  private final Scalar pixel2model;
+  protected final int ofs;
+  protected final int length;
+  protected final Clip clip;
+  protected final ScalarUnaryOperator unitConvert;
+  protected final Scalar model2pixel;
+  protected final Scalar pixel2model;
 
   /** @param ofs start of drawing area
    * @param length
