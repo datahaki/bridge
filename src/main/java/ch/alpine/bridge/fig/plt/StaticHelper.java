@@ -105,8 +105,14 @@ enum StaticHelper {
         Round.intValueExact(factor.multiply(RealScalar.of(dimension.height))));
   }
 
+  /** function is useful for listplot
+   * 
+   * @param vx
+   * @param vy
+   * @return Transpose( [ vx ; vy ] ) */
   public static Tensor pair(Tensor vx, Tensor vy) {
     int n = Integers.requireEquals(vx.length(), vy.length());
+    Integers.requirePositiveOrZero(n);
     return Tensor.of(IntStream.range(0, n) //
         .mapToObj(i -> Tensors.of(vx.Get(i), vy.Get(i))));
   }

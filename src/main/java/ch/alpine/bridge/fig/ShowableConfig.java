@@ -67,7 +67,7 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Con
     TilePixel origin = TilePixel.geo(rectangle, cbb).orElseThrow(); // TODO handle other case
     return geo(rectangle, cbb, origin);
   }
-  
+
   public static ShowableConfig log(Rectangle rectangle, CoordinateBoundingBox cbb) {
     return new ShowableConfig(rectangle, cbb, //
         new ConfLinIncr(rectangle.x, rectangle.width, cbb.clip(0)), //

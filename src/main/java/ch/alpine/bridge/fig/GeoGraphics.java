@@ -20,13 +20,15 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 public class GeoGraphics extends BaseShowable {
   public static Showable create() {
-    return new GeoGraphics();
+    return new GeoGraphics(TileServers.OpenStreetMap);
   }
 
-  public TileServer tileServer = TileServers.OpenStreetMap;
-  private MapImagesCache mapImagesCache;
+  // ---
+  private final TileServer tileServer;
+  private final MapImagesCache mapImagesCache;
 
-  private GeoGraphics() {
+  private GeoGraphics(TileServer tileServer) {
+    this.tileServer = tileServer;
     mapImagesCache = tileServer.cache();
   }
 

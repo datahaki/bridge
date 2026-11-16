@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.ext.Serialization;
@@ -20,7 +18,7 @@ class UnitHubTest {
   }
 
   @Test
-  void testSerializable() throws ClassNotFoundException, IOException {
+  void testSerializable() {
     UnitHub unitHub = UnitHub.si("s*m^-1");
     Serialization.copy(unitHub);
     // assertThrows(Exception.class, () -> Serialization.copy(unitHub));

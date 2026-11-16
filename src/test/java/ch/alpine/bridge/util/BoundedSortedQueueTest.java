@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +17,7 @@ import ch.alpine.tensor.ext.Serialization;
 
 class BoundedSortedQueueTest {
   @Test
-  void testSimpleMin() throws ClassNotFoundException, IOException {
+  void testSimpleMin() {
     BoundedSortedQueue<Double, String> boundedSortedQueue = Serialization.copy(BoundedSortedQueue.min(3));
     boundedSortedQueue.offer(0.7, "7");
     boundedSortedQueue.offer(0.0, "0");
@@ -51,7 +50,7 @@ class BoundedSortedQueueTest {
   }
 
   @Test
-  void testSimpleMax() throws ClassNotFoundException, IOException {
+  void testSimpleMax() {
     BoundedSortedQueue<Double, String> boundedSortedQueue = Serialization.copy(BoundedSortedQueue.max(3));
     boundedSortedQueue.offer(0.7, "7");
     boundedSortedQueue.offer(0.0, "0");

@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,7 +27,7 @@ import ch.alpine.tensor.num.RandomPermutation;
 
 class BoundedPriorityQueueTest {
   @Test
-  void testMin() throws ClassNotFoundException, IOException {
+  void testMin() {
     @SuppressWarnings("unchecked")
     Queue<Integer> queue = Serialization.copy(BoundedPriorityQueue.min(2, //
         (Comparator<Integer> & Serializable) Integer::compare));
@@ -46,7 +45,7 @@ class BoundedPriorityQueueTest {
   }
 
   @Test
-  void testMax() throws ClassNotFoundException, IOException {
+  void testMax() {
     @SuppressWarnings("unchecked")
     Queue<Integer> queue = Serialization.copy(BoundedPriorityQueue.max(2, //
         (Comparator<Integer> & Serializable) Integer::compare));

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
-import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 class ShowOptions implements Serializable {
@@ -23,7 +22,6 @@ class ShowOptions implements Serializable {
         ? ShowableConfig.yDecr(rectangle, cbb)
         : ShowableConfig.yIncr(rectangle, cbb);
   }
-
 
   public void set(ShowOption showOption, boolean status) {
     if (status)

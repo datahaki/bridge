@@ -6,7 +6,6 @@ import java.nio.file.Path;
 
 import ch.alpine.tensor.ext.HomeDirectory;
 import ch.alpine.tensor.ext.Integers;
-import ch.alpine.tensor.ext.PackageTestAccess;
 
 public enum TileServers implements TileServer {
   OpenStreetMap("https://tile.openstreetmap.org", 19),
@@ -40,8 +39,7 @@ public enum TileServers implements TileServer {
     return mapImagesCache;
   }
 
-  @PackageTestAccess
-  Path path() {
+  public Path path() {
     return HomeDirectory.Database.mk_dirs(name());
   }
 }
