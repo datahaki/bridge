@@ -28,7 +28,7 @@ import ch.alpine.tensor.sca.tri.Tan;
 public record Sunpoint(Scalar lambda_s, Scalar delta) implements Serializable {
   private static final Mod MOD_LON = Mod.function(Pi.TWO, Pi.VALUE.negate());
   private static final Mod MOD_LAT = Mod.function(Pi.VALUE, Pi.HALF.negate());
-  private static final Scalar RAD_PER_SEC = UnitSystem.SI().apply(Quantity.of(-15, "deg*h^-1"));
+  private static final Scalar RAD_PER_SEC = UnitSystem.SI().apply(Quantity.of(-360, "deg*days^-1"));
   private static final Scalar AXIAL_TILT = Unitless.DEGREES.of(23.44);
 
   public static Sunpoint now() {
