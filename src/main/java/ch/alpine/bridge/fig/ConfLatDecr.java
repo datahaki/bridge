@@ -2,7 +2,7 @@
 package ch.alpine.bridge.fig;
 
 import ch.alpine.bridge.geo.TilePixel;
-import ch.alpine.bridge.lang.Unitless;
+import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.sca.Clip;

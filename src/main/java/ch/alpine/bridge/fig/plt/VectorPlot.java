@@ -8,9 +8,9 @@ import java.util.Objects;
 
 import ch.alpine.bridge.fig.BarLegend;
 import ch.alpine.bridge.fig.BarLegendPlot;
-import ch.alpine.bridge.fig.Meshgrid;
 import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.ShowableConfig;
+import ch.alpine.bridge.math.Meshgrid;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.math;
 
 import java.util.Arrays;
 import java.util.stream.Stream;

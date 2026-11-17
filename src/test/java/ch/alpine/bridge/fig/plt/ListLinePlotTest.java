@@ -19,7 +19,7 @@ import org.junit.jupiter.api.io.TempDir;
 import ch.alpine.bridge.fig.Rasterize;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
-import ch.alpine.bridge.lang.SI;
+import ch.alpine.bridge.math.SI;
 import ch.alpine.tensor.DoubleScalar;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Tensor;

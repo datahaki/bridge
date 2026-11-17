@@ -17,6 +17,7 @@ import java.util.TreeMap;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
+import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.lang;
+package ch.alpine.bridge.math;
 
 public record IntQuotientRemainder(int div, int rem) {
   public static IntQuotientRemainder from(long x, int y) {

@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.lang;
+package ch.alpine.bridge.math;
 
 import ch.alpine.tensor.qty.Unit;
 

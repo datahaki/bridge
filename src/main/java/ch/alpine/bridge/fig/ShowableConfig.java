@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import ch.alpine.bridge.geo.TilePixel;
-import ch.alpine.bridge.lang.Unitless;
+import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;

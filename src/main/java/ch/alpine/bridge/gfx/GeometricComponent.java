@@ -24,7 +24,7 @@ import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowOption;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.plt.ListLinePlot;
-import ch.alpine.bridge.lang.Unitless;
+import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;

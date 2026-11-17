@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.Optional;
 
-import ch.alpine.bridge.lang.IntQuotientRemainder;
+import ch.alpine.bridge.math.IntQuotientRemainder;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;

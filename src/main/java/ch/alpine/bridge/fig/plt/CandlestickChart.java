@@ -14,7 +14,7 @@ import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.bridge.fig.BaseShowable;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
-import ch.alpine.bridge.fig.Ticks;
+import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
