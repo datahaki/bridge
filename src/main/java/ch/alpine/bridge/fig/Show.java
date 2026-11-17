@@ -56,6 +56,11 @@ public final class Show implements Serializable {
     this(ColorDataLists._097.cyclic());
   }
 
+  public Show(String string) {
+    this();
+    setShowLabel(string);
+  }
+
   /** @param showable
    * @return given showable */
   public Showable add(Showable showable) {

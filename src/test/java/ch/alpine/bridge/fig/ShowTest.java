@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.bridge.fig.plt.Plot;
+import ch.alpine.tensor.col.ColorDataIndexed;
 import ch.alpine.tensor.num.Pi;
 import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.tri.Sin;
@@ -15,7 +16,8 @@ import ch.alpine.tensor.sca.tri.Sin;
 class ShowTest {
   @Test
   void testFailNull() {
-    assertThrows(Exception.class, () -> new Show(null));
+    assertThrows(Exception.class, () -> new Show((ColorDataIndexed) null));
+    assertThrows(Exception.class, () -> new Show((String) null));
   }
 
   @Test

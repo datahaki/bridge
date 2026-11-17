@@ -14,13 +14,15 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.io.ImageFormat;
 
 public class ImageIconRecorder {
+  private static final int INITIAL_BUFFER_SIZE = 8192;
+
   /** @param duration of a single frame
    * @return */
   public static ImageIconRecorder loop(Duration duration) {
     return new ImageIconRecorder(duration, true);
   }
 
-  private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream baos = new ByteArrayOutputStream(INITIAL_BUFFER_SIZE);
   private final AnimatedGifWriter animatedGifWriter;
   private ImageIcon imageIcon = null;
 
