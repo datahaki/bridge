@@ -31,7 +31,9 @@ import javax.swing.event.MouseInputListener;
 
 import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.bridge.fig.ShowOptions;
 import ch.alpine.bridge.fig.ShowableConfig;
+import ch.alpine.bridge.fig.grd.AxisMap;
 import ch.alpine.bridge.gfx.TextContour;
 import ch.alpine.bridge.math.Ticks;
 import ch.alpine.bridge.math.Unitless;
@@ -144,8 +146,10 @@ public class GeoComponent extends JComponent {
     Rectangle rectangle = new Rectangle(new Point(0, 0), dimension);
     TilePixel origin = fromPoint(new Point(0, 0));
     if (2 < origin.tile().z()) {
+      ShowOptions showOptions = new ShowOptions();
+      showOptions.axisOptionsY.axisMap = AxisMap.LAT;
       // the choice of yDecr is mostly correct but not entirely general
-      return ShowableConfig.geo(rectangle, origin);
+      return showOptions.geo(rectangle, origin);
     }
     return ShowableConfig.empty(rectangle);
   }

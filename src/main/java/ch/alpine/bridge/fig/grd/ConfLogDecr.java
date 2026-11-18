@@ -28,10 +28,10 @@ public class ConfLogDecr implements ConfBase {
   private final Scalar pixel2model;
 
   private ConfLogDecr(int ofs, int length, Clip clip) {
+    Integers.requireLessThan(1, length);
     this.ofs = ofs;
     this.length = length;
     this.clip = clip;
-    Integers.requireLessThan(1, length);
     Scalar sw = RealScalar.of(length - 1);
     ScalarUnaryOperator suo = Scalar::negate;
     model2pixel = suo.apply(sw.divide(clip.length()));
@@ -41,8 +41,18 @@ public class ConfLogDecr implements ConfBase {
   }
 
   @Override
-  public double pixel(Scalar x) {
-    return ofs + Log.FUNCTION.apply(x).subtract(clip.min()).multiply(model2pixel).number().doubleValue();
+  public int length() {
+    return length;
+  }
+
+  @Override
+  public Clip clip() {
+    return clip;
+  }
+
+  @Override
+  public double pixel(Scalar value) {
+    return ofs + Log.FUNCTION.apply(value).subtract(clip.min()).multiply(model2pixel).number().doubleValue();
   }
 
   @Override
@@ -58,16 +68,6 @@ public class ConfLogDecr implements ConfBase {
   @Override
   public Scalar shift(int pixel0, int pixel1) {
     throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public int length() {
-    return length;
-  }
-
-  @Override
-  public Clip clip() {
-    return clip;
   }
 
   @Override

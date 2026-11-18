@@ -9,8 +9,8 @@ import java.util.stream.IntStream;
 
 import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.Show;
-import ch.alpine.bridge.fig.ShowOption;
 import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.fig.plt.ArrayPlot;
 import ch.alpine.bridge.fig.plt.ArrowPlot;
 import ch.alpine.bridge.fig.plt.CandlestickChart;
@@ -134,7 +134,7 @@ public enum Showcases implements ShowProvider {
   Relief {
     @Override
     public Show getShow() {
-      Show show = new Show("ArrowPlot");
+      Show show = new Show("ReliefPlot");
       Tensor matrix = GaussianMatrix.of(40).extract(0, 60);
       List<Integer> list = Dimensions.of(matrix);
       CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(list.get(1)), Clips.positive(list.get(0)));
@@ -671,7 +671,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show("Image Plot BICUBIC");
       BufferedImage bufferedImage = ResourceData.bufferedImage("ch/alpine/bridge/io/image/album_in.jpg");
       show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_3));
-      show.set(ShowOption.AXIS_X, false);
+      show.showOptions.axisOptionsX.set(AxisOption.TICK, false);
       return show;
     }
   },
@@ -681,7 +681,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show("Image Plot BILINEAR");
       BufferedImage bufferedImage = ResourceData.bufferedImage("ch/alpine/bridge/io/image/album_in.jpg");
       show.add(ImagePlot.of(bufferedImage, ImageResize.DEGREE_1));
-      show.set(ShowOption.AXIS_Y, false);
+      show.showOptions.axisOptionsY.set(AxisOption.TICK, false);
       return show;
     }
   },
@@ -813,7 +813,8 @@ public enum Showcases implements ShowProvider {
       Tensor tensor = Tensors.fromString("{{1[m],2[s]},{1.6[m],3[s]},{2.3[m],-1.3[s]}}");
       show.add(ListLinePlot.of(tensor));
       show.add(ListPlot.of(tensor));
-      show.set(ShowOption.GRID, false);
+      show.showOptions.axisOptionsX.set(AxisOption.GRID, false);
+      show.showOptions.axisOptionsY.set(AxisOption.GRID, false);
       return show;
     }
   },

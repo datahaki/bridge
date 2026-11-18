@@ -10,6 +10,7 @@ import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowComponent;
 import ch.alpine.bridge.fig.ShowComponent.Option;
 import ch.alpine.bridge.fig.ShowOption;
+import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.pro.ManipulateProvider;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
 
@@ -19,8 +20,9 @@ class ShowComponentDemo implements ManipulateProvider {
   public Font font = new JPanel().getFont();
   public Boolean framed = true;
   public Boolean axis_x = true;
+  public Boolean grid_x = true;
   public Boolean axis_y = true;
-  public Boolean grid = true;
+  public Boolean grid_y = true;
   public Boolean xZoom = true;
   public Boolean xPan = true;
   public Boolean yZoom = true;
@@ -32,9 +34,10 @@ class ShowComponentDemo implements ManipulateProvider {
     showComponent.setFont(font);
     Show show = showDemos.getShow();
     show.set(ShowOption.FRAMED, framed);
-    show.set(ShowOption.AXIS_X, axis_x);
-    show.set(ShowOption.AXIS_Y, axis_y);
-    show.set(ShowOption.GRID, grid);
+    show.showOptions.axisOptionsX.set(AxisOption.TICK, axis_x);
+    show.showOptions.axisOptionsX.set(AxisOption.GRID, grid_x);
+    show.showOptions.axisOptionsY.set(AxisOption.TICK, axis_y);
+    show.showOptions.axisOptionsY.set(AxisOption.GRID, grid_y);
     showComponent.setShow(show);
     showComponent.setOptionX(Option.PAN, xPan);
     showComponent.setOptionX(Option.ZOOM, xZoom);

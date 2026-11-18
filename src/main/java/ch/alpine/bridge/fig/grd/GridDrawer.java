@@ -13,34 +13,26 @@ import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.sca.Clip;
 
-public class GridDrawer {
-  private final ShowOptions showOptions;
-
-  public GridDrawer(ShowOptions showOptions) {
-    this.showOptions = showOptions;
-  }
-
-  public GridDrawer() {
-    this(new ShowOptions());
-  }
-
+public record GridDrawer(ShowOptions showOptions) {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle();
     Clip xRange = showableConfig.confX().clip();
     Clip yRange = showableConfig.confY().clip();
     // ---
     final int piy = rectangle.y + rectangle.height - 1 + ShowOptions.GAP;
-    if (showOptions.contains(ShowOption.AXIS_X) && xRange.isNonDegenerate())
-      new AxisX(showableConfig.confX(), showOptions.compileAxisX()).render( //
+    if (showOptions.axisOptionsX.contains(AxisOption.TICK) && xRange.isNonDegenerate())
+      new AxisX(showableConfig.confX(), showOptions.axisOptionsX).render( //
           showableConfig, //
           new Point(rectangle.x, piy), //
           graphics);
-    if (showOptions.contains(ShowOption.AXIS_Y) && yRange.isNonDegenerate())
-      new AxisYL(showableConfig.confY(), showOptions.compileAxisY()).render( //
+    if (showOptions.axisOptionsY.contains(AxisOption.TICK) && yRange.isNonDegenerate())
+      new AxisYL(showableConfig.confY(), showOptions.axisOptionsY).render( //
           showableConfig, //
           new Point(rectangle.x - ShowOptions.GAP, rectangle.y), //
           graphics);
     // ---
+    {
+    }
     if (showOptions.contains(ShowOption.UNIT_MAPPING)) {
       String unit0 = UnicodeString.of(QuantityUnit.of(xRange));
       String unit1 = UnicodeString.of(QuantityUnit.of(yRange));

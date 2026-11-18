@@ -4,6 +4,7 @@ package ch.alpine.bridge.fig.grd;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+/** y-axis with labels right of axis */
 public class AxisYR extends AxisY {
   public AxisYR(ConfBase confBase, AxisOptions axisOptions) {
     super(confBase, axisOptions);

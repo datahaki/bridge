@@ -4,9 +4,7 @@ package ch.alpine.bridge.fig;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import java.util.EnumSet;
 import java.util.Optional;
-import java.util.Set;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.tensor.Scalar;
@@ -60,7 +58,6 @@ public interface Showable {
     return show;
   }
 
-  default Set<ShowOption> disableOptions() {
-    return EnumSet.noneOf(ShowOption.class);
+  default void modifyOptions(ShowOptions showOptions) {
   }
 }

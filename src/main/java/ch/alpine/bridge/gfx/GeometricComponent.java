@@ -23,6 +23,7 @@ import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowOption;
 import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.fig.plt.ListLinePlot;
 import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.Rational;
@@ -179,7 +180,7 @@ public final class GeometricComponent extends JComponent {
     _g.setColor(new Color(255, 255, 255, 128));
     _g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     Show show = new Show();
-    show.set(ShowOption.AXIS_X, false);
+    show.showOptions.axisOptionsX.set(AxisOption.TICK, false);
     show.set(ShowOption.FRAMED, false);
     show.set(ShowOption.UNIT_MAPPING, false);
     {

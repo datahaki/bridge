@@ -7,9 +7,11 @@ import java.util.Set;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
+import ch.alpine.tensor.sca.Clip;
 
 public class AxisOptions implements Serializable {
-  private final Set<AxisOption> set = EnumSet.noneOf(AxisOption.class);
+  private final Set<AxisOption> set = EnumSet.allOf(AxisOption.class);
+  public AxisMap axisMap = AxisMap.LIN;
   public DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
 
   public void set(AxisOption axisOption, boolean status) {
@@ -21,5 +23,11 @@ public class AxisOptions implements Serializable {
 
   public boolean contains(AxisOption axisOption) {
     return set.contains(axisOption);
+  }
+
+  public ConfBase conf(boolean flip, int ofs, int length, Clip clip) {
+    return flip ^ contains(AxisOption.INCR) //
+        ? new ConfLinIncr(ofs, length, clip)
+        : new ConfLinDecr(ofs, length, clip);
   }
 }

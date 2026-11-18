@@ -10,10 +10,11 @@ import ch.alpine.tensor.sca.Clip;
 /** used for geo component mercator projection */
 public record ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) implements ConfBase {
   @Override
-  public double pixel(Scalar x) {
+  public double pixel(Scalar value) {
     // TODO computation wasteful since only Y component is needed
-    return origin.from(Tensors.of(x.zero(), x)) //
-        .map(tilePixel -> tilePixel.absY() - origin.absY()).orElse(0L);
+    return origin.from(Tensors.of(value.zero(), value)) //
+        .map(tilePixel -> tilePixel.absY() - origin.absY()) //
+        .orElse(0L);
   }
 
   @Override

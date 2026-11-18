@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -39,7 +38,7 @@ public final class Show implements Serializable {
   }
 
   private final List<Showable> showables = new ArrayList<>();
-  private final ShowOptions showOptions = new ShowOptions();
+  public final ShowOptions showOptions = new ShowOptions();
   private final ColorDataIndexed colorDataIndexed;
   // ---
   private CoordinateBoundingBox cbb = null;
@@ -69,8 +68,7 @@ public final class Show implements Serializable {
     if (showable instanceof BarLegendPlot barLegendPlot && //
         barLegendPlot.getAspectRatioOneHint())
       setAspectRatioOne();
-    showable.disableOptions() //
-        .forEach(showOption -> showOptions.set(showOption, false));
+    showable.modifyOptions(showOptions);
     showables.add(showable);
     return showable;
   }
@@ -114,14 +112,6 @@ public final class Show implements Serializable {
           .reduce(CoordinateBounds::cover) //
           .ifPresent(this::setCbb);
     return getCbb();
-  }
-
-  public void setDateTimeFocus(DateTimeFocus dateTimeFocus) {
-    showOptions.dateTimeFocus = Objects.requireNonNull(dateTimeFocus);
-  }
-
-  public DateTimeFocus getDateTimeFocus() {
-    return showOptions.dateTimeFocus;
   }
 
   public boolean isEmpty() {
@@ -182,14 +172,10 @@ public final class Show implements Serializable {
           return null;
       }
     }
-    if (Objects.isNull(cbb)) {
+    if (Objects.isNull(cbb))
       return ShowableConfig.empty(rectangle);
-    }
-    boolean anyMatch = showables.stream().anyMatch(s -> s instanceof GeoGraphics);
     // TODO what if cbb.vol == 0 !?
-    ShowableConfig showableConfig = anyMatch //
-        ? ShowableConfig.geo(rectangle, cbb)
-        : showOptions.config(rectangle, cbb);
+    ShowableConfig showableConfig = showOptions.config(rectangle, cbb);
     showRender(_g, showableConfig);
     return showableConfig;
   }

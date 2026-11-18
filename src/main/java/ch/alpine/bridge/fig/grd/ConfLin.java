@@ -46,8 +46,8 @@ abstract class ConfLin implements ConfBase, Serializable {
   }
 
   @Override
-  public final double pixel(Scalar x) {
-    return ofs + unitConvert.apply(x).subtract(clip.min()).multiply(model2pixel).number().doubleValue();
+  public final double pixel(Scalar value) {
+    return ofs + unitConvert.apply(value).subtract(clip.min()).multiply(model2pixel).number().doubleValue();
   }
 
   @Override
