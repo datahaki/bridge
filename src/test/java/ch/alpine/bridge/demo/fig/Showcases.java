@@ -10,6 +10,7 @@ import java.util.stream.IntStream;
 import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
+import ch.alpine.bridge.fig.grd.AxisMap;
 import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.fig.plt.ArrayPlot;
 import ch.alpine.bridge.fig.plt.ArrowPlot;
@@ -101,6 +102,7 @@ import ch.alpine.tensor.sca.SawtoothWave;
 import ch.alpine.tensor.sca.SquareWave;
 import ch.alpine.tensor.sca.TriangleWave;
 import ch.alpine.tensor.sca.erf.Erfc;
+import ch.alpine.tensor.sca.exp.Exp;
 import ch.alpine.tensor.sca.exp.Log10;
 import ch.alpine.tensor.sca.exp.LogisticSigmoid;
 import ch.alpine.tensor.sca.gam.Gamma;
@@ -118,6 +120,15 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  LogAxis {
+    @Override
+    public Show getShow() {
+      Show show = new Show("Log Y");
+      show.add(Plot.of(Exp.FUNCTION, Clips.absoluteOne()));
+      show.showOptions.axisOptionsY.axisMap = AxisMap.LOG;
+      return show;
+    }
+  },
   PoligonOrientation {
     @Override
     public Show getShow() {

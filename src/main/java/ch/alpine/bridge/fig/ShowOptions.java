@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.Set;
 
+import ch.alpine.bridge.fig.grd.AxisMap;
 import ch.alpine.bridge.fig.grd.AxisOptions;
 import ch.alpine.bridge.fig.grd.ConfLatDecr;
 import ch.alpine.bridge.fig.grd.ConfLin;
@@ -52,7 +53,7 @@ public class ShowOptions implements Serializable {
     Tensor lon_lat1 = tp11.lon_lat();
     CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(TO_DEGREE));
     return new ShowableConfig(rectangle, cbb, //
-        ConfLin.create(rectangle.x, rectangle.width, cbb.clip(0), true), //
+        ConfLin.create(rectangle.x, rectangle.width, cbb.clip(0), AxisMap.LIN, true), //
         new ConfLatDecr(rectangle.y, rectangle.height, cbb.clip(1), origin));
   }
 

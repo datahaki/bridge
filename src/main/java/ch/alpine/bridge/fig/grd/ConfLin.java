@@ -13,17 +13,19 @@ import ch.alpine.tensor.sca.Clip;
 
 /** affine-linear axis */
 public class ConfLin implements ConfBase, Serializable {
-  public static ConfBase create(int ofs, int length, Clip clip, boolean incr) {
-    Scalar beg = incr ? clip.min() : clip.max();
-    Scalar end = incr ? clip.max() : clip.min();
-    return new ConfLin(ofs, length, clip, beg, end);
+  public static ConfBase create(int ofs, int length, Clip clip, AxisMap axisMap, boolean incr) {
+    Scalar beg = axisMap.fwd.apply(incr ? clip.min() : clip.max());
+    Scalar end = axisMap.fwd.apply(incr ? clip.max() : clip.min());
+    return new ConfLin(ofs, length, clip, beg, end, axisMap);
   }
 
+  // ---
   protected final int ofs;
   protected final int length;
   protected final Clip clip;
   private final Scalar beg;
   private final Scalar end;
+  private final AxisMap axisMap;
   protected final ScalarUnaryOperator unitConvert;
   protected final Scalar model2pixel;
   protected final Scalar pixel2model;
@@ -33,13 +35,14 @@ public class ConfLin implements ConfBase, Serializable {
    * @param clip
    * @param beg model value at pixel ofs
    * @param end model value at pixel ofs + length - 1 */
-  private ConfLin(int ofs, int length, Clip clip, Scalar beg, Scalar end) {
+  private ConfLin(int ofs, int length, Clip clip, Scalar beg, Scalar end, AxisMap axisMap) {
     Integers.requireLessThan(1, length);
     this.ofs = ofs;
     this.length = length;
     this.clip = clip;
     this.beg = beg;
     this.end = end;
+    this.axisMap = axisMap;
     Scalar sw = RealScalar.of(length - 1);
     unitConvert = UnitConvert.SI().to(QuantityUnit.of(clip));
     model2pixel = sw.divide(end.subtract(beg));
@@ -58,18 +61,18 @@ public class ConfLin implements ConfBase, Serializable {
 
   @Override
   public double pixel(Scalar value) {
-    Scalar val = unitConvert.apply(value);
+    Scalar val = axisMap.fwd.apply(unitConvert.apply(value));
     return ofs + val.subtract(beg).multiply(model2pixel).number().doubleValue();
   }
 
   @Override
   public Scalar model(int pixel) {
-    return beg.add(RealScalar.of(pixel - ofs).multiply(pixel2model));
+    return axisMap.inv.apply(beg.add(RealScalar.of(pixel - ofs).multiply(pixel2model)));
   }
 
   @Override
   public ConfBase pruned() {
-    return new ConfLin(0, length, clip, beg, end);
+    return new ConfLin(0, length, clip, beg, end, axisMap);
   }
 
   @Override
