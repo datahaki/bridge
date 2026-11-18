@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.util.List;
 
 import ch.alpine.bridge.awt.RenderQuality;
+import ch.alpine.bridge.fig.grd.GridDrawer;
 
 record ShowRender(List<Showable> showables, ShowOptions showOptions, ShowableConfig showableConfig) {
   private static final Color COLOR_FRAME = new Color(160, 160, 160);
@@ -24,7 +25,7 @@ record ShowRender(List<Showable> showables, ShowOptions showOptions, ShowableCon
     if (showOptions.contains(ShowOption.FRAMED)) {
       /** draw frame/box around plot */
       RenderQuality.smoothLine(graphics, false);
-      graphics.setStroke(StaticHelper.STROKE_SOLID);
+      graphics.setStroke(ShowOptions.STROKE_SOLID);
       graphics.setColor(COLOR_FRAME);
       graphics.drawRect(rectangle.x - 1, rectangle.y - 1, rectangle.width + 1, rectangle.height + 1);
       RenderQuality.smoothLine(graphics, true);
@@ -34,7 +35,7 @@ record ShowRender(List<Showable> showables, ShowOptions showOptions, ShowableCon
         /** draw title/show label on top */
         graphics.setFont(graphics.getFont().deriveFont(Font.BOLD));
         FontMetrics fontMetrics = graphics.getFontMetrics();
-        graphics.setColor(StaticHelper.COLOR_FONT);
+        graphics.setColor(ShowOptions.COLOR_FONT);
         graphics.drawString(showOptions.showLabel, rectangle.x, rectangle.y - fontMetrics.getDescent() - 1);
         graphics.setFont(graphics.getFont().deriveFont(Font.PLAIN));
       }
@@ -69,7 +70,7 @@ record ShowRender(List<Showable> showables, ShowOptions showOptions, ShowableCon
       // TODO treat case: no data but legend !?
       FontMetrics fontMetrics = graphics.getFontMetrics();
       int size = fontMetrics.getHeight();
-      int pix = rectangle.x + StaticHelper.GAP;
+      int pix = rectangle.x + ShowOptions.GAP;
       final int ystart = rectangle.y + 2;
       {
         int piy = ystart;

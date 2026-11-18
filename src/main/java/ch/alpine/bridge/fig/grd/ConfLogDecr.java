@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.grd;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -13,7 +13,7 @@ import ch.alpine.tensor.sca.exp.Exp;
 import ch.alpine.tensor.sca.exp.Log;
 
 /** used for geo component mercator projection */
-class ConfLogDecr implements ConfBase {
+public class ConfLogDecr implements ConfBase {
   public static ConfLogDecr exp(int ofs, int length, Clip clip) {
     Scalar min = Log.FUNCTION.apply(clip.min());
     Scalar max = Log.FUNCTION.apply(clip.max());

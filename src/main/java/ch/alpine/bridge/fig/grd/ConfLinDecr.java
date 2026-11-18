@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.grd;
 
 import ch.alpine.bridge.fig.plt.ListLinePlot;
 import ch.alpine.bridge.fig.plt.ListPlot;
@@ -15,7 +15,7 @@ import ch.alpine.tensor.sca.Clip;
  * @see Plot
  * @see ListPlot
  * @see ListLinePlot */
-class ConfLinDecr extends ConfLin {
+public class ConfLinDecr extends ConfLin {
   /** @param ofs
    * @param length is 2 or greater
    * @param clip with width non-zero */

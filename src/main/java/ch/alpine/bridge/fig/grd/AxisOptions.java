@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.grd;
 
 import java.io.Serializable;
 import java.util.EnumSet;
@@ -8,7 +8,7 @@ import java.util.Set;
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
 
-class AxisOptions implements Serializable {
+public class AxisOptions implements Serializable {
   private final Set<AxisOption> set = EnumSet.noneOf(AxisOption.class);
   public DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
 

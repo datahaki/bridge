@@ -1,17 +1,28 @@
 // code by jph
 package ch.alpine.bridge.fig;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.Set;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.ISO8601DateTimeFocus;
+import ch.alpine.bridge.fig.grd.AxisOption;
+import ch.alpine.bridge.fig.grd.AxisOptions;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
-class ShowOptions implements Serializable {
+public class ShowOptions implements Serializable {
+  public static final Color COLOR_FONT = Color.DARK_GRAY;
+  // ---
+  public static final Stroke STROKE_SOLID = new BasicStroke();
+  public static final int GAP = 5;
+  public static final int TICK = 3;
+  // ---
   private final Set<ShowOption> set = EnumSet.allOf(ShowOption.class);
   Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
   String showLabel = "";

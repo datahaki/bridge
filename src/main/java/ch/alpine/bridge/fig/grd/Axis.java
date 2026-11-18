@@ -1,5 +1,5 @@
 // code by legion
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.grd;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -17,6 +17,8 @@ import java.util.TreeMap;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
+import ch.alpine.bridge.fig.ShowOptions;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
@@ -71,7 +73,7 @@ abstract class Axis {
   /** @param showableConfig
    * @param point
    * @param _g */
-  protected final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
+  public final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
     if (confBase.clip().isNonDegenerate()) {
       RenderQuality.smoothLine(graphics, false);
       Rectangle rectangle = showableConfig.rectangle();
@@ -82,7 +84,7 @@ abstract class Axis {
           drawGridLine(graphics, rectangle, pixel);
       }
       if (showOptions.contains(AxisOption.TICK)) {
-        graphics.setStroke(StaticHelper.STROKE_SOLID);
+        graphics.setStroke(ShowOptions.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
         drawAxisLine(graphics, point);
         for (int piy : navigableMap.keySet())

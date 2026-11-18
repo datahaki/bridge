@@ -1,11 +1,14 @@
 // code by legion
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.grd;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import ch.alpine.bridge.fig.ShowOption;
+import ch.alpine.bridge.fig.ShowOptions;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.sca.Clip;
@@ -26,7 +29,7 @@ public class GridDrawer {
     Clip xRange = showableConfig.confX().clip();
     Clip yRange = showableConfig.confY().clip();
     // ---
-    final int piy = rectangle.y + rectangle.height - 1 + StaticHelper.GAP;
+    final int piy = rectangle.y + rectangle.height - 1 + ShowOptions.GAP;
     if (showOptions.contains(ShowOption.AXIS_X) && xRange.isNonDegenerate())
       new AxisX(showableConfig.confX(), showOptions.compileAxisX()).render( //
           showableConfig, //
@@ -35,7 +38,7 @@ public class GridDrawer {
     if (showOptions.contains(ShowOption.AXIS_Y) && yRange.isNonDegenerate())
       new AxisYL(showableConfig.confY(), showOptions.compileAxisY()).render( //
           showableConfig, //
-          new Point(rectangle.x - StaticHelper.GAP, rectangle.y), //
+          new Point(rectangle.x - ShowOptions.GAP, rectangle.y), //
           graphics);
     // ---
     if (showOptions.contains(ShowOption.UNIT_MAPPING)) {
@@ -48,10 +51,10 @@ public class GridDrawer {
           unit1 = "[]";
         String xLabel = unit0 + "\u2192" + unit1;
         FontMetrics fontMetrics = graphics.getFontMetrics();
-        graphics.setColor(StaticHelper.COLOR_FONT);
+        graphics.setColor(ShowOptions.COLOR_FONT);
         graphics.drawString(xLabel, //
-            rectangle.x - fontMetrics.stringWidth(xLabel) - 3 * StaticHelper.GAP, //
-            piy + StaticHelper.TICK + fontMetrics.getAscent());
+            rectangle.x - fontMetrics.stringWidth(xLabel) - 3 * ShowOptions.GAP, //
+            piy + ShowOptions.TICK + fontMetrics.getAscent());
       }
     }
   }

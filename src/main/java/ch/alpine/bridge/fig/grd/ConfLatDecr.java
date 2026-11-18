@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.grd;
 
 import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.bridge.math.Unitless;
@@ -8,7 +8,7 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.sca.Clip;
 
 /** used for geo component mercator projection */
-record ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) implements ConfBase {
+public record ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) implements ConfBase {
   @Override
   public double pixel(Scalar x) {
     // TODO computation wasteful since only Y component is needed

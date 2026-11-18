@@ -228,7 +228,7 @@ public final class Show implements Serializable {
     Insets insets = new Insets( //
         fontAd + 1, // top showLabel + frame width
         70, // left
-        1 + StaticHelper.GAP + StaticHelper.TICK + fontAd, // bottom
+        1 + ShowOptions.GAP + ShowOptions.TICK + fontAd, // bottom
         10); // right
     return new Rectangle( //
         rectangle.x + insets.left, //

@@ -1,5 +1,5 @@
 // code by legion
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.grd;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.util.Map.Entry;
 import java.util.Objects;
 
+import ch.alpine.bridge.fig.ShowOptions;
 import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;
@@ -33,7 +34,7 @@ abstract class AxisY extends Axis {
   protected final void protected_render(Graphics2D graphics, Point point) {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     double delta_y = (fontMetrics.getAscent() - fontMetrics.getDescent()) * 0.5;
-    graphics.setColor(StaticHelper.COLOR_FONT);
+    graphics.setColor(ShowOptions.COLOR_FONT);
     for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
       Scalar value = entry.getValue();
       String yLabel = Objects.isNull(dateTimeFormatter) //

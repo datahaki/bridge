@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.fig;
+package ch.alpine.bridge.fig.grd;
 
 import ch.alpine.bridge.fig.plt.ImagePlot;
 import ch.alpine.tensor.io.MathematicaFormat;
@@ -11,7 +11,7 @@ import ch.alpine.tensor.sca.Clip;
  * this axis is used to indicate pixel coordinates of images
  * 
  * @see ImagePlot */
-class ConfLinIncr extends ConfLin {
+public class ConfLinIncr extends ConfLin {
   /** @param ofs
    * @param length is 2 or greater
    * @param clip with width non-zero */

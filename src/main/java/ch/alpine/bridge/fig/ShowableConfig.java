@@ -7,6 +7,11 @@ import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.Optional;
 
+import ch.alpine.bridge.fig.grd.ConfBase;
+import ch.alpine.bridge.fig.grd.ConfLatDecr;
+import ch.alpine.bridge.fig.grd.ConfLinDecr;
+import ch.alpine.bridge.fig.grd.ConfLinIncr;
+import ch.alpine.bridge.fig.grd.ConfLogDecr;
 import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.Tensor;
@@ -90,7 +95,6 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Con
   }
 
   /** @return */
-  @Deprecated
   public ShowableConfig pruned() {
     return new ShowableConfig( //
         new Rectangle(0, 0, rectangle.width, rectangle.height), //
