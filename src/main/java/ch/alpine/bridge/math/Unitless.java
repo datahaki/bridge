@@ -15,6 +15,7 @@ import ch.alpine.tensor.qty.UnitSystem;
  * 
  * <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/Degree.html">Degree</a> */
+// TODO should be merged with SI and UnitHub
 public enum Unitless {
   /** the equivalent conversion formula in Mathematica is
    * QuantityMagnitude[Quantity[1, "Degrees"], "Radians"] */

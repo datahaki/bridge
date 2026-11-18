@@ -4,6 +4,7 @@ import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.exp.Exp;
 import ch.alpine.tensor.sca.exp.Log;
 
+// TODO should be an interface
 public enum AxisMap {
   LIN(t -> t, t -> t),
   LOG(Log.FUNCTION, Exp.FUNCTION),
