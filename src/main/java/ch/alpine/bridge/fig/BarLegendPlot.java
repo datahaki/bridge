@@ -7,11 +7,11 @@ import java.awt.Rectangle;
 import java.util.Objects;
 import java.util.Optional;
 
+import ch.alpine.bridge.fig.grd.AxisConfig;
 import ch.alpine.bridge.fig.grd.AxisMaps;
 import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.fig.grd.AxisOptions;
 import ch.alpine.bridge.fig.grd.AxisYR;
-import ch.alpine.bridge.fig.grd.AxisConfig;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.io.ImageFormat;

@@ -8,6 +8,8 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.UnitConvert;
+import ch.alpine.tensor.red.Max;
+import ch.alpine.tensor.red.Min;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
 
@@ -38,7 +40,12 @@ public record AxisConfig( //
    * @param incr
    * @return */
   public static AxisConfig create(int ofs, int length, AxisMap axisMap, Clip model_clip, boolean incr) {
-    Clip range_clip = Clips.operator(axisMap::model2range).apply(model_clip);
+    Clip range_clip;
+    {
+      Scalar r1 = axisMap.model2range(model_clip.min());
+      Scalar r2 = axisMap.model2range(model_clip.max());
+      range_clip = Clips.interval(Min.of(r1, r2), Max.of(r1, r2));
+    }
     Scalar range_beg = incr ? range_clip.min() : range_clip.max();
     Scalar range_end = incr ? range_clip.max() : range_clip.min();
     Scalar sw = RealScalar.of(length - 1);

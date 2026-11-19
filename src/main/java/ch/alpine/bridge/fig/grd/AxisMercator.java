@@ -1,20 +1,28 @@
 // code by jph
 package ch.alpine.bridge.fig.grd;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.Serializable;
 
 import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 /** used for geo component mercator projection */
 public record AxisMercator(TilePixel origin) implements AxisMap, Serializable {
+  private static final ScalarUnaryOperator TO_DEGREE = Unitless.DEGREES.unitConvert();
+
   @Override
-  public Scalar model2range(Scalar value) {
+  public Scalar model2range(Scalar model) {
     // TODO computation wasteful since only Y component is needed
-    TilePixel tilePixel = origin.from(Tensors.of(value.zero(), value)).orElseThrow(); //
+    TilePixel tilePixel = origin.from(Tensors.of(model.zero(), model)).orElseThrow(); //
     return RealScalar.of(tilePixel.absY() - origin.absY());
   }
 
@@ -28,5 +36,15 @@ public record AxisMercator(TilePixel origin) implements AxisMap, Serializable {
   @Override
   public TickOption tickOption() {
     return TickOption.MODEL;
+  }
+
+  public CoordinateBoundingBox cbb(Rectangle rectangle) {
+    Point p00 = rectangle.getLocation();
+    Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
+    TilePixel tp00 = origin.shift(p00.x, p00.y);
+    TilePixel tp11 = origin.shift(p11.x, p11.y);
+    Tensor lon_lat0 = tp00.lon_lat();
+    Tensor lon_lat1 = tp11.lon_lat();
+    return CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(TO_DEGREE));
   }
 }
