@@ -28,8 +28,8 @@ public class ArrowPlot extends BaseShowable {
     graphics.setColor(getColor());
     graphics.setStroke(getStroke());
     line.setLine( //
-        showableConfig.toPoint2D(src), //
-        showableConfig.toPoint2D(dst));
+        showableConfig.model2point(src), //
+        showableConfig.model2point(dst));
     graphics.draw(line);
     // graphics.setStroke(new BasicStroke());
     // double radius = RADIUS;

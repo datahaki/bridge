@@ -25,7 +25,7 @@ public class AxisOptions implements Serializable {
     return set.contains(axisOption);
   }
 
-  public ConfBase conf(boolean flip, int ofs, int length, Clip clip) {
-    return ConfLin.create(ofs, length, clip, axisMap, flip ^ contains(AxisOption.INCR));
+  public AxisConfig conf(boolean flip, int ofs, int length, Clip clip) {
+    return AxisConfig.create(ofs, length, axisMap, clip, flip ^ contains(AxisOption.INCR));
   }
 }

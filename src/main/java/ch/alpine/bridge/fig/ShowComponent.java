@@ -42,7 +42,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
       @Override
       public void mouseClicked(MouseEvent mouseEvent) {
         if (Objects.nonNull(showableConfig)) {
-          Optional<Tensor> optional = showableConfig.toValue(mouseEvent.getPoint());
+          Optional<Tensor> optional = showableConfig.point2model(mouseEvent.getPoint());
           optional.ifPresent(IO::println);
           // if (optional.isPresent()) {
           // System.out.println(optional);
@@ -88,7 +88,7 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
   @Override
   public synchronized void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
     if (Objects.nonNull(showableConfig)) {
-      Optional<Tensor> optional = showableConfig.toValue(mouseWheelEvent.getPoint());
+      Optional<Tensor> optional = showableConfig.point2model(mouseWheelEvent.getPoint());
       if (optional.isPresent()) {
         Tensor xy = optional.orElseThrow();
         CoordinateBoundingBox cbb = showableConfig.cbb();

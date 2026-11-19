@@ -53,7 +53,7 @@ public class ListPlot extends BasePointsPlot {
     if (0 < points.length()) {
       graphics.setColor(getColor());
       for (Tensor row : points) {
-        Point2D point2d = showableConfig.toPoint2D(row);
+        Point2D point2d = showableConfig.model2point(row);
         graphics.setStroke(new BasicStroke());
         graphics.fill(new Ellipse2D.Double(point2d.getX() - radius, point2d.getY() - radius, 2 * radius, 2 * radius));
         // below: diamond <>

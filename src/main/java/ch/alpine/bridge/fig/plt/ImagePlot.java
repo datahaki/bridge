@@ -81,10 +81,10 @@ public class ImagePlot extends BarLegendPlot implements BackgroundPlotMarker {
 
   @Override // from Showable
   public final void render(ShowableConfig showableConfig, Graphics2D graphics) {
-    Point2D ul = showableConfig.toPoint2D(Tensors.of( //
+    Point2D ul = showableConfig.model2point(Tensors.of( //
         cbb.clip(0).min(), //
         flipY ? cbb.clip(1).min() : cbb.clip(1).max()));
-    Point2D dr = showableConfig.toPoint2D(Tensors.of( //
+    Point2D dr = showableConfig.model2point(Tensors.of( //
         cbb.clip(0).max(), //
         flipY ? cbb.clip(1).max() : cbb.clip(1).min()));
     // TODO for ArrayShowable the zoom should be limited

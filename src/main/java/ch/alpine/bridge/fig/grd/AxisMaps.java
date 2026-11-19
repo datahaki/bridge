@@ -8,24 +8,34 @@ import ch.alpine.tensor.sca.exp.Log;
 public enum AxisMaps implements AxisMap {
   LIN {
     @Override
-    public Scalar fwd(Scalar model) {
+    public Scalar model2range(Scalar model) {
       return model;
     }
 
     @Override
-    public Scalar inv(Scalar range) {
+    public Scalar range2model(Scalar range) {
       return range;
+    }
+
+    @Override
+    public TickOption tickOption() {
+      return TickOption.RANGE;
     }
   },
   LOG {
     @Override
-    public Scalar fwd(Scalar model) {
+    public Scalar model2range(Scalar model) {
       return Log.FUNCTION.apply(model);
     }
 
     @Override
-    public Scalar inv(Scalar range) {
+    public Scalar range2model(Scalar range) {
       return Exp.FUNCTION.apply(range);
+    }
+
+    @Override
+    public TickOption tickOption() {
+      return TickOption.RANGE;
     }
   }
 }

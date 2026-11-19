@@ -14,7 +14,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;
 
 class AxisX extends Axis {
-  public AxisX(ConfBase confBase, AxisOptions axisOptions) {
+  public AxisX(AxisConfig confBase, AxisOptions axisOptions) {
     super(confBase, axisOptions);
   }
 
@@ -25,7 +25,7 @@ class AxisX extends Axis {
 
   @Override
   protected void drawAxisLine(Graphics2D graphics, Point point) {
-    graphics.drawLine(point.x, point.y, point.x + confBase.length() - 1, point.y);
+    graphics.drawLine(point.x, point.y, point.x + confBase.pixel_len() - 1, point.y);
   }
 
   @Override

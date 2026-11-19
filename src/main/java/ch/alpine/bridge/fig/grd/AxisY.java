@@ -16,7 +16,7 @@ import ch.alpine.tensor.qty.DateTime;
 abstract class AxisY extends Axis {
   static final int GAP = 5;
 
-  public AxisY(ConfBase confBase, AxisOptions axisOptions) {
+  public AxisY(AxisConfig confBase, AxisOptions axisOptions) {
     super(confBase, axisOptions);
   }
 
@@ -27,7 +27,7 @@ abstract class AxisY extends Axis {
 
   @Override
   protected final void drawAxisLine(Graphics2D graphics, Point point) {
-    graphics.drawLine(point.x, point.y, point.x, point.y + confBase.length() - 1);
+    graphics.drawLine(point.x, point.y, point.x, point.y + confBase.pixel_len() - 1);
   }
 
   @Override

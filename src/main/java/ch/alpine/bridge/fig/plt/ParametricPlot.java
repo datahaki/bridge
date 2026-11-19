@@ -45,11 +45,11 @@ public class ParametricPlot extends BaseShowable {
       Tensor points = Subdivide.increasing(domain, 3 * RESOLUTION).maps(stf);
       path.reset();
       {
-        Point2D point2d = showableConfig.toPoint2D(points.get(0));
+        Point2D point2d = showableConfig.model2point(points.get(0));
         path.moveTo(point2d.getX(), point2d.getY());
       }
       points.stream().skip(1).forEach(row -> {
-        Point2D point2d = showableConfig.toPoint2D(row);
+        Point2D point2d = showableConfig.model2point(row);
         path.lineTo(point2d.getX(), point2d.getY());
       });
       graphics.draw(path);

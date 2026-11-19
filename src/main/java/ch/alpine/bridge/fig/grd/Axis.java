@@ -14,6 +14,7 @@ import java.awt.geom.AffineTransform;
 import java.time.format.DateTimeFormatter;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.function.ToDoubleFunction;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
@@ -34,47 +35,55 @@ abstract class Axis {
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
   private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(new AffineTransform(), true, true);
   // ---
-  protected final ConfBase confBase;
+  protected final AxisConfig confBase;
   protected final AxisOptions showOptions;
   protected final NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
   protected final DateTimeFormatter dateTimeFormatter;
+  private final Clip value_clip;
+  private final ToDoubleFunction<Scalar> value2pixel;
   private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
-  public Axis(ConfBase confBase, AxisOptions axisOptions) {
+  public Axis(AxisConfig confBase, AxisOptions axisOptions) {
     this.confBase = confBase;
     this.showOptions = axisOptions;
-    Clip clip = confBase.view_clip();
-    if (clip.min() instanceof DateTime) {
+    TickOption tickOption = confBase.axisMap().tickOption();
+    value_clip = tickOption.equals(TickOption.RANGE) //
+        ? confBase.range_clip()
+        : confBase.model_clip();
+    value2pixel = tickOption.equals(TickOption.RANGE) //
+        ? confBase::range2pixel
+        : confBase::model2pixel;
+    if (value_clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(clip.length().multiply(Rational.of(REF, confBase.length())));
-      DateTime startAttempt = dateTimeInterval.floor(clip.min());
-      DateTime dateTime = clip.isInside(startAttempt) //
+          DateTimeInterval.findAboveEquals(value_clip.length().multiply(Rational.of(REF, confBase.pixel_len())));
+      DateTime startAttempt = dateTimeInterval.floor(value_clip.min());
+      DateTime dateTime = value_clip.isInside(startAttempt) //
           ? startAttempt
           : dateTimeInterval.plus(startAttempt);
       dateTimeFormatter = axisOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
-      while (clip.isInside(dateTime)) {
-        int pixel = (int) confBase.pixel(dateTime);
+      while (value_clip.isInside(dateTime)) {
+        int pixel = (int) value2pixel.applyAsDouble(dateTime);
         navigableMap.put(pixel, dateTime);
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else {
       int val = 50;
-      int rem = confBase.length() / 3;
+      int rem = confBase.pixel_len() / 3;
       if (this instanceof AxisY && rem < val) {
         LineMetrics lineMetrics = font.getLineMetrics("Ag", FONT_RENDER_CONTEXT);
         val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
       }
-      Ticks.stream(clip, Rational.of(val, confBase.length())) //
-          .forEach(tick -> navigableMap.put((int) confBase.pixel(tick), tick));
+      Ticks.stream(value_clip, Rational.of(val, confBase.pixel_len())) //
+          .forEach(tick -> navigableMap.put((int) value2pixel.applyAsDouble(tick), tick));
       dateTimeFormatter = null;
     }
   }
 
   /** @param showableConfig
    * @param point
-   * @param _g */
+   * @param graphics */
   public final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
-    if (confBase.view_clip().isNonDegenerate()) {
+    if (value_clip.isNonDegenerate()) {
       RenderQuality.smoothLine(graphics, false);
       Rectangle rectangle = showableConfig.rectangle();
       if (showOptions.contains(AxisOption.GRID)) { // grid lines | or _

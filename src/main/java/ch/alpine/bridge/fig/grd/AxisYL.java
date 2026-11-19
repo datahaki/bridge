@@ -6,7 +6,7 @@ import java.awt.Point;
 
 /** y-axis with labels left of axis */
 class AxisYL extends AxisY {
-  public AxisYL(ConfBase confBase, AxisOptions axisOptions) {
+  public AxisYL(AxisConfig confBase, AxisOptions axisOptions) {
     super(confBase, axisOptions);
   }
 

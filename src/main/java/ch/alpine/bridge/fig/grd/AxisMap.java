@@ -4,7 +4,9 @@ package ch.alpine.bridge.fig.grd;
 import ch.alpine.tensor.Scalar;
 
 public interface AxisMap {
-  Scalar fwd(Scalar model);
+  Scalar model2range(Scalar model);
 
-  Scalar inv(Scalar range);
+  Scalar range2model(Scalar range);
+
+  TickOption tickOption();
 }

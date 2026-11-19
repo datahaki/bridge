@@ -11,8 +11,7 @@ import ch.alpine.bridge.fig.grd.AxisMaps;
 import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.fig.grd.AxisOptions;
 import ch.alpine.bridge.fig.grd.AxisYR;
-import ch.alpine.bridge.fig.grd.ConfBase;
-import ch.alpine.bridge.fig.grd.ConfLin;
+import ch.alpine.bridge.fig.grd.AxisConfig;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.io.ImageFormat;
@@ -60,7 +59,7 @@ public abstract class BarLegendPlot extends BaseShowable {
           pix, rectangle.y, width, rectangle.height, null);
       Clip clip = barLegend.clip();
       if (clip.isNonDegenerate()) {
-        ConfBase confBase = ConfLin.create(rectangle.y, rectangle.height, clip, AxisMaps.LIN, false);
+        AxisConfig confBase = AxisConfig.create(rectangle.y, rectangle.height, AxisMaps.LIN, clip, false);
         AxisOptions axisOptions = new AxisOptions();
         axisOptions.set(AxisOption.TICK, true);
         new AxisYR(confBase, axisOptions).render( //

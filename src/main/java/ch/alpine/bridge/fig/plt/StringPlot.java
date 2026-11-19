@@ -46,7 +46,7 @@ public class StringPlot extends BaseShowable {
       double delta_y = (fontMetrics.getAscent() - fontMetrics.getDescent()) * 0.5;
       String string = stringItem.string;
       double width_half = fontMetrics.stringWidth(string) * 0.5;
-      Point2D point2d = showableConfig.toPoint2D(stringItem.pos);
+      Point2D point2d = showableConfig.model2point(stringItem.pos);
       TextContour textContour = TextContour.of(graphics);
       textContour.draw( //
           new ColorPair(stringItem.color, new Color(255, 255, 255, 192)), //

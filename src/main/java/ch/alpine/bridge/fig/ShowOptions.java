@@ -13,8 +13,7 @@ import java.util.Set;
 
 import ch.alpine.bridge.fig.grd.AxisMaps;
 import ch.alpine.bridge.fig.grd.AxisOptions;
-import ch.alpine.bridge.fig.grd.ConfLatDecr;
-import ch.alpine.bridge.fig.grd.ConfLin;
+import ch.alpine.bridge.fig.grd.AxisConfig;
 import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.Tensor;
@@ -53,8 +52,9 @@ public class ShowOptions implements Serializable {
     Tensor lon_lat1 = tp11.lon_lat();
     CoordinateBoundingBox cbb = CoordinateBounds.of(Tensors.of(lon_lat0, lon_lat1).maps(TO_DEGREE));
     return new ShowableConfig(rectangle, cbb, //
-        ConfLin.create(rectangle.x, rectangle.width, cbb.clip(0), AxisMaps.LIN, true), //
-        new ConfLatDecr(rectangle.y, rectangle.height, cbb.clip(1), origin));
+        AxisConfig.create(rectangle.x, rectangle.width, AxisMaps.LIN, cbb.clip(0), true), //
+        // new ConfLatDecr(rectangle.y, rectangle.height, cbb.clip(1), origin) // FIXME
+        null);
   }
 
   public void set(ShowOption showOption, boolean status) {

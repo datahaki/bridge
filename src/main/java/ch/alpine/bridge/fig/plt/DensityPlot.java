@@ -92,10 +92,10 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
   @Override // from Showable
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     CoordinateBoundingBox cbb = showableConfig.cbb();
-    Point2D ul = showableConfig.toPoint2D(Tensors.of( //
+    Point2D ul = showableConfig.model2point(Tensors.of( //
         cbb.clip(0).min(), //
         cbb.clip(1).max()));
-    Point2D dr = showableConfig.toPoint2D(Tensors.of( //
+    Point2D dr = showableConfig.model2point(Tensors.of( //
         cbb.clip(0).max(), //
         cbb.clip(1).min()));
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;

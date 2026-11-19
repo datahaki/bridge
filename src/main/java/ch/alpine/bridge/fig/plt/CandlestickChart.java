@@ -76,10 +76,10 @@ public class CandlestickChart extends BaseShowable {
                 .map(TsEntry::value) //
                 .map(tsf).collect(MinMax.toClip());
             if (Objects.nonNull(clip)) {
-              Point2D point0 = showableConfig.toPoint2D(Tensors.of(interval.min(), clip.max()));
+              Point2D point0 = showableConfig.model2point(Tensors.of(interval.min(), clip.max()));
               double x0 = point0.getX();
               double y0 = point0.getY();
-              Point2D point1 = showableConfig.toPoint2D(Tensors.of(interval.max(), clip.min()));
+              Point2D point1 = showableConfig.model2point(Tensors.of(interval.max(), clip.min()));
               double x1 = point1.getX();
               double y1 = point1.getY();
               Throw.unless(y0 <= y1);

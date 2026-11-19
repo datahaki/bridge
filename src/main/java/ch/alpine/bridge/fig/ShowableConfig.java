@@ -7,7 +7,7 @@ import java.awt.geom.Point2D;
 import java.util.Objects;
 import java.util.Optional;
 
-import ch.alpine.bridge.fig.grd.ConfBase;
+import ch.alpine.bridge.fig.grd.AxisConfig;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
@@ -18,22 +18,30 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * @param cbb
  * @param confX
  * @param confY */
-public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, ConfBase confX, ConfBase confY) {
+public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, AxisConfig confX, AxisConfig confY) {
   public static ShowableConfig empty(Rectangle rectangle) {
     return new ShowableConfig(rectangle, null, null, null);
   }
 
-  public Point2D toPoint2D(Tensor vector) {
+  public Point2D model2point(Tensor vector) {
     return new Point2D.Double( //
-        confX.pixel(vector.Get(0)), //
-        confY.pixel(vector.Get(1)));
+        confX.model2pixel(vector.Get(0)), //
+        confY.model2pixel(vector.Get(1)));
   }
 
-  public Optional<Tensor> toValue(Point point) {
+  public Optional<Tensor> point2model(Point point) {
     return rectangle.contains(point) //
         ? Optional.of(Tensors.of( //
-            confX.model(point.x), //
-            confY.model(point.y)))
+            confX.pixel2model(point.x), //
+            confY.pixel2model(point.y)))
+        : Optional.empty();
+  }
+
+  public Optional<Tensor> point2range(Point point) {
+    return rectangle.contains(point) //
+        ? Optional.of(Tensors.of( //
+            confX.pixel2range(point.x), //
+            confY.pixel2range(point.y)))
         : Optional.empty();
   }
 
