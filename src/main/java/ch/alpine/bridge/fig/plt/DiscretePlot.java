@@ -41,7 +41,6 @@ public class DiscretePlot extends BaseShowable {
     this.domain = domain;
   }
 
-  // TODO take {x,y} pairs also!
   @Override
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Tensor samples = Range.closed(domain);
