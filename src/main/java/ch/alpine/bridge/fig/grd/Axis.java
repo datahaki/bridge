@@ -43,7 +43,7 @@ abstract class Axis {
   public Axis(ConfBase confBase, AxisOptions axisOptions) {
     this.confBase = confBase;
     this.showOptions = axisOptions;
-    Clip clip = confBase.clip();
+    Clip clip = confBase.view_clip();
     if (clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
           DateTimeInterval.findAboveEquals(clip.length().multiply(Rational.of(REF, confBase.length())));
@@ -74,7 +74,7 @@ abstract class Axis {
    * @param point
    * @param _g */
   public final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
-    if (confBase.clip().isNonDegenerate()) {
+    if (confBase.view_clip().isNonDegenerate()) {
       RenderQuality.smoothLine(graphics, false);
       Rectangle rectangle = showableConfig.rectangle();
       if (showOptions.contains(AxisOption.GRID)) { // grid lines | or _

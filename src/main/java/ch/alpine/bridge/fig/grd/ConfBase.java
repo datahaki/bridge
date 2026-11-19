@@ -9,7 +9,10 @@ public interface ConfBase {
   int length();
 
   /** @return visible range of model space */
-  Clip clip();
+  Clip domain_clip();
+
+  /** @return visible range of model space */
+  Clip view_clip();
 
   /** @param value in model space
    * @return pixel coordinate of value according to grid */

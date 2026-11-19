@@ -14,8 +14,8 @@ import ch.alpine.tensor.sca.Clip;
 /** affine-linear axis */
 public class ConfLin implements ConfBase, Serializable {
   public static ConfBase create(int ofs, int length, Clip clip, AxisMap axisMap, boolean incr) {
-    Scalar beg = axisMap.fwd.apply(incr ? clip.min() : clip.max());
-    Scalar end = axisMap.fwd.apply(incr ? clip.max() : clip.min());
+    Scalar beg = axisMap.fwd(incr ? clip.min() : clip.max());
+    Scalar end = axisMap.fwd(incr ? clip.max() : clip.min());
     return new ConfLin(ofs, length, clip, beg, end, axisMap);
   }
 
@@ -31,7 +31,7 @@ public class ConfLin implements ConfBase, Serializable {
   protected final Scalar pixel2model;
 
   /** @param ofs start of drawing area
-   * @param length greather equals 2
+   * @param length greater equals 2
    * @param clip
    * @param beg model value at pixel ofs
    * @param end model value at pixel ofs + length - 1 */
@@ -55,19 +55,24 @@ public class ConfLin implements ConfBase, Serializable {
   }
 
   @Override
-  public Clip clip() {
+  public Clip domain_clip() {
+    return clip;
+  }
+
+  @Override
+  public Clip view_clip() {
     return clip;
   }
 
   @Override
   public double pixel(Scalar value) {
-    Scalar val = axisMap.fwd.apply(unitConvert.apply(value));
+    Scalar val = axisMap.fwd(unitConvert.apply(value));
     return ofs + val.subtract(beg).multiply(model2pixel).number().doubleValue();
   }
 
   @Override
   public Scalar model(int pixel) {
-    return axisMap.inv.apply(beg.add(RealScalar.of(pixel - ofs).multiply(pixel2model)));
+    return axisMap.inv(beg.add(RealScalar.of(pixel - ofs).multiply(pixel2model)));
   }
 
   @Override

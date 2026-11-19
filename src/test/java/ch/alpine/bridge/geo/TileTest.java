@@ -25,7 +25,7 @@ class TileTest {
   @Test
   void testLatLon() {
     Tile tile = new Tile(0, 0, 0);
-    Tensor polygon = tile.cbb_lon_lat();
+    Tensor polygon = tile.quad();
     CoordinateBoundingBox cbb1 = CoordinateBounds.of(polygon);
     Tolerance.CHOP.requireClose(cbb1.clip(0).length(), Pi.TWO);
     Tolerance.CHOP.requireClose(cbb1.clip(1).length(), RealScalar.of(2.968844459490665));

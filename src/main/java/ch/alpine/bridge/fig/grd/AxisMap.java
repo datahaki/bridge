@@ -1,20 +1,10 @@
+// code by jph
 package ch.alpine.bridge.fig.grd;
 
-import ch.alpine.tensor.api.ScalarUnaryOperator;
-import ch.alpine.tensor.sca.exp.Exp;
-import ch.alpine.tensor.sca.exp.Log;
+import ch.alpine.tensor.Scalar;
 
-// TODO should be an interface
-public enum AxisMap {
-  LIN(t -> t, t -> t),
-  LOG(Log.FUNCTION, Exp.FUNCTION),
-  LAT(null, null);
+public interface AxisMap {
+  Scalar fwd(Scalar model);
 
-  public final ScalarUnaryOperator fwd;
-  public final ScalarUnaryOperator inv;
-
-  private AxisMap(ScalarUnaryOperator fwd, ScalarUnaryOperator inv) {
-    this.fwd = fwd;
-    this.inv = inv;
-  }
+  Scalar inv(Scalar range);
 }

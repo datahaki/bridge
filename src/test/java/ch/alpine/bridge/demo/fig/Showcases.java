@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
-import ch.alpine.bridge.fig.grd.AxisMap;
+import ch.alpine.bridge.fig.grd.AxisMaps;
 import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.fig.plt.ArrayPlot;
 import ch.alpine.bridge.fig.plt.ArrowPlot;
@@ -124,8 +124,8 @@ public enum Showcases implements ShowProvider {
     @Override
     public Show getShow() {
       Show show = new Show("Log Y");
-      show.add(Plot.of(Exp.FUNCTION, Clips.absoluteOne()));
-      show.showOptions.axisOptionsY.axisMap = AxisMap.LOG;
+      show.add(Plot.of(Exp.FUNCTION, Clips.interval(-10, 10)));
+      show.showOptions.axisOptionsY.axisMap = AxisMaps.LOG;
       return show;
     }
   },

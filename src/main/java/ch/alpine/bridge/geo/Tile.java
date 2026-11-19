@@ -8,7 +8,7 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
-import ch.alpine.tensor.sca.Clips;
+import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 /** the tiles cover latitudes in Clips.absolute ( 85.0511287798066[deg] ) */
 public record Tile(int z, int x, int y) implements Serializable {
@@ -44,15 +44,13 @@ public record Tile(int z, int x, int y) implements Serializable {
 
   /** @return */
   public CoordinateBoundingBox cbb() {
-    Tensor ul = new TilePixel(this, 256, 0, 0).lon_lat();
-    Tensor dr = new TilePixel(this, 256, 256, 256).lon_lat();
-    return CoordinateBoundingBox.of( //
-        Clips.interval(ul.Get(0), dr.Get(0)), //
-        Clips.interval(dr.Get(1), ul.Get(1)));
+    return CoordinateBounds.of( //
+        new TilePixel(this, 256, 0, 256).lon_lat(), //
+        new TilePixel(this, 256, 256, 0).lon_lat());
   }
 
-  /** @return polygon with positive area */
-  public Tensor cbb_lon_lat() { // TODO rename
+  /** @return quad with lon_lat with ccw */
+  public Tensor quad() {
     return Tensors.of( //
         new TilePixel(this, 256, 0, 0).lon_lat(), //
         new TilePixel(this, 256, 0, 256).lon_lat(), //

@@ -11,7 +11,7 @@ import ch.alpine.tensor.sca.Clip;
 
 public class AxisOptions implements Serializable {
   private final Set<AxisOption> set = EnumSet.allOf(AxisOption.class);
-  public AxisMap axisMap = AxisMap.LIN;
+  public AxisMap axisMap = AxisMaps.LIN;
   public DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
 
   public void set(AxisOption axisOption, boolean status) {

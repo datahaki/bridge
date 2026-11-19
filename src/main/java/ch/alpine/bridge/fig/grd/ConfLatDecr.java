@@ -1,6 +1,8 @@
 // code by jph
 package ch.alpine.bridge.fig.grd;
 
+import java.io.Serializable;
+
 import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.Scalar;
@@ -8,7 +10,34 @@ import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.sca.Clip;
 
 /** used for geo component mercator projection */
-public record ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) implements ConfBase {
+public class ConfLatDecr implements ConfBase, Serializable {
+  public int ofs;
+  public int length;
+  public Clip clip;
+  public TilePixel origin;
+
+  public ConfLatDecr(int ofs, int length, Clip clip, TilePixel origin) {
+    this.ofs = ofs;
+    this.length = length;
+    this.clip = clip;
+    this.origin = origin;
+  }
+
+  @Override
+  public int length() {
+    return length;
+  }
+
+  @Override
+  public Clip domain_clip() {
+    return clip;
+  }
+
+  @Override
+  public Clip view_clip() {
+    return clip;
+  }
+
   @Override
   public double pixel(Scalar value) {
     // TODO computation wasteful since only Y component is needed

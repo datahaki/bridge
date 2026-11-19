@@ -48,6 +48,8 @@ public class FieldClips implements Predicate<Scalar> {
         : QuantityUnit.of(max);
     compatible = CompatibleUnitQ.SI().with(unit);
     convert = UnitConvert.SI().to(unit);
+    // for now, do not simplify the line below,
+    // as min and max may have different units
     clip = Clips.interval(convert.apply(min), convert.apply(max));
     interp = LinearInterpolation.of(clip);
   }

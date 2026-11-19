@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import ch.alpine.bridge.fig.grd.AxisMap;
 import ch.alpine.bridge.geo.MapImagesCache;
 import ch.alpine.bridge.geo.Tile;
 import ch.alpine.bridge.geo.TileImage;
@@ -103,6 +102,7 @@ public class GeoGraphics extends BaseShowable {
 
   @Override
   public void modifyOptions(ShowOptions showOptions) {
-    showOptions.axisOptionsY.axisMap = AxisMap.LAT;
+    // FIXME
+    // showOptions.axisOptionsY.axisMap = AxisMaps.LAT;
   }
 }

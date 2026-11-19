@@ -16,8 +16,8 @@ import ch.alpine.tensor.sca.Clip;
 public record GridDrawer(ShowOptions showOptions) {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     Rectangle rectangle = showableConfig.rectangle();
-    Clip xRange = showableConfig.confX().clip();
-    Clip yRange = showableConfig.confY().clip();
+    Clip xRange = showableConfig.confX().view_clip();
+    Clip yRange = showableConfig.confY().view_clip();
     // ---
     final int piy = rectangle.y + rectangle.height - 1 + ShowOptions.GAP;
     if (showOptions.axisOptionsX.contains(AxisOption.TICK) && xRange.isNonDegenerate())

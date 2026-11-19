@@ -80,7 +80,7 @@ enum StaticHelper {
     return clip;
   }
 
-  private static final UnaryOperator<Clip> SHIFT_HALF = Clips.translation(Rational.HALF.negate());
+  private static final UnaryOperator<Clip> SHIFT_HALF = Clips.operator(Rational.HALF.negate()::add);
 
   protected static CoordinateBoundingBox shift(Tensor matrix) {
     return shift(Unprotect.dimension1(matrix), matrix.length());
