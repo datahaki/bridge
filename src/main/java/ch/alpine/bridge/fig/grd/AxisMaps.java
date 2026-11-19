@@ -2,8 +2,11 @@
 package ch.alpine.bridge.fig.grd;
 
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.exp.Exp;
 import ch.alpine.tensor.sca.exp.Log;
+import ch.alpine.tensor.sca.exp.Log10;
+import ch.alpine.tensor.sca.pow.Power;
 
 public enum AxisMaps implements AxisMap {
   LIN {
@@ -31,6 +34,24 @@ public enum AxisMaps implements AxisMap {
     @Override
     public Scalar range2model(Scalar range) {
       return Exp.FUNCTION.apply(range);
+    }
+
+    @Override
+    public TickOption tickOption() {
+      return TickOption.RANGE;
+    }
+  },
+  LOG10 {
+    private static final ScalarUnaryOperator POW10 = Power.function(10);
+
+    @Override
+    public Scalar model2range(Scalar model) {
+      return Log10.FUNCTION.apply(model);
+    }
+
+    @Override
+    public Scalar range2model(Scalar range) {
+      return POW10.apply(range);
     }
 
     @Override

@@ -120,6 +120,15 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  Log10Axis {
+    @Override
+    public Show getShow() {
+      Show show = new Show("Log10 Y");
+      show.add(Plot.of(Exp.FUNCTION, Clips.interval(-10, 10)));
+      show.showOptions.axisOptionsY.axisMap = AxisMaps.LOG10;
+      return show;
+    }
+  },
   LogAxis {
     @Override
     public Show getShow() {
