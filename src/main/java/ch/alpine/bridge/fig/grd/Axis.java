@@ -20,13 +20,17 @@ import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.bridge.fig.ShowOptions;
 import ch.alpine.bridge.fig.ShowableConfig;
+import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.chq.IntegerQ;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Clip;
+import ch.alpine.tensor.sca.N;
 
-abstract class Axis {
+public abstract class Axis {
   // TODO 100 is a magic constant that should depend on font, and date formatter
   private static final int REF = 100;
   private static final Stroke STROKE_GRIDLINES = //
@@ -103,6 +107,19 @@ abstract class Axis {
       }
       RenderQuality.smoothLine(graphics, true);
     }
+  }
+  
+
+  public String format(Scalar value) {
+    return formatValue(confBase.axisMap().range2model(value));
+  }
+
+  public static String formatValue(Scalar value) {
+    Scalar display = Unprotect.withoutUnit(value);
+    Scalar scalar = IntegerQ.of(display) //
+        ? display
+        : N.DOUBLE.apply(display); // prevent fractions
+    return UnicodeString.of(scalar);
   }
 
   /** @param graphics

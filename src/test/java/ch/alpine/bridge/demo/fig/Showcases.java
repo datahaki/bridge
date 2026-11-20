@@ -2,6 +2,7 @@
 package ch.alpine.bridge.demo.fig;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +12,7 @@ import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.grd.AxisMaps;
+import ch.alpine.bridge.fig.grd.AxisMercator;
 import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.fig.plt.ArrayPlot;
 import ch.alpine.bridge.fig.plt.ArrowPlot;
@@ -18,6 +20,7 @@ import ch.alpine.bridge.fig.plt.CandlestickChart;
 import ch.alpine.bridge.fig.plt.DensityPlot;
 import ch.alpine.bridge.fig.plt.DiscretePlot;
 import ch.alpine.bridge.fig.plt.ImagePlot;
+import ch.alpine.bridge.fig.plt.ListDiscretePlot;
 import ch.alpine.bridge.fig.plt.ListLinePlot;
 import ch.alpine.bridge.fig.plt.ListPlot;
 import ch.alpine.bridge.fig.plt.MatrixPlot;
@@ -29,10 +32,14 @@ import ch.alpine.bridge.fig.plt.PolygonPlot;
 import ch.alpine.bridge.fig.plt.ReImPlot;
 import ch.alpine.bridge.fig.plt.ReliefPlot;
 import ch.alpine.bridge.fig.plt.Spectrogram;
+import ch.alpine.bridge.fig.plt.GeoPlot;
 import ch.alpine.bridge.fig.plt.StringPlot;
 import ch.alpine.bridge.fig.plt.StringPlot.StringItem;
 import ch.alpine.bridge.fig.plt.TsPlot;
 import ch.alpine.bridge.fig.plt.VectorPlot;
+import ch.alpine.bridge.geo.Tile;
+import ch.alpine.bridge.geo.TilePixel;
+import ch.alpine.bridge.geo.TileServers;
 import ch.alpine.bridge.math.Meshgrid;
 import ch.alpine.bridge.math.Unitless;
 import ch.alpine.bridge.pro.ShowProvider;
@@ -60,6 +67,7 @@ import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.fft.SpectrogramArrays;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.io.Import;
+import ch.alpine.tensor.io.MatrixForm;
 import ch.alpine.tensor.itp.Interpolation;
 import ch.alpine.tensor.itp.LanczosInterpolation;
 import ch.alpine.tensor.itp.MitchellNetravaliKernel;
@@ -120,6 +128,28 @@ import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TimeSeriesIntegrate;
 
 public enum Showcases implements ShowProvider {
+  GeoGraphics {
+    @Override
+    public Show getShow() {
+      Show show = new Show("some map");
+      show.add(GeoPlot.of(TileServers.OpenStreetMap));
+      Tensor points = Tensors.matrixDouble(Helper.array).maps(Unitless.DEGREES.unitConvert());
+      IO.println(MatrixForm.of(points));
+      show.add(PolygonPlot.of(points, PlotOption.FILL)).setAlpha(64);
+      show.showOptions.axisOptionsY.axisMap = new AxisMercator(new TilePixel(new Tile(4, 5, 7), 256, 0, 0));
+      // units of Y Axis no good
+      return show;
+    }
+  },
+  RandomDiscretePlot {
+    @Override
+    public Show getShow() {
+      Show show = new Show("vertical lines");
+      Tensor points = RandomVariate.of(UniformDistribution.of(-3, 10), 30, 2);
+      show.add(ListDiscretePlot.of(points)).setColor(Color.DARK_GRAY);
+      return show;
+    }
+  },
   Log10Axis {
     @Override
     public Show getShow() {

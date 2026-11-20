@@ -17,9 +17,6 @@ import ch.alpine.tensor.Tensors;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/DiscretePlot.html">DiscretePlot</a> */
 public class ListDiscretePlot extends BasePointsPlot {
-  /** @param suo
-   * @param domain may be null, in which case the plot is empty
-   * @return */
   /** @param points of the form {{x1, y1}, {x2, y2}, ..., {xn, yn}}
    * The special case when points == {} is also allowed.
    * @return instance of the visual row, that was added to this visual set

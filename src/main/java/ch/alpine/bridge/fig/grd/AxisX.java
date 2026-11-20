@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 import ch.alpine.bridge.fig.ShowOptions;
-import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;
 
@@ -40,7 +39,7 @@ class AxisX extends Axis {
     for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
       Scalar value = entry.getValue();
       String xLabel = Objects.isNull(dateTimeFormatter) //
-          ? Ticks.format(value)
+          ? format(value)
           : ((DateTime) value).format(dateTimeFormatter);
       graphics.drawString(xLabel, //
           entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //

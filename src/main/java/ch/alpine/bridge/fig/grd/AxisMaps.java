@@ -42,7 +42,7 @@ public enum AxisMaps implements AxisMap {
     }
   },
   LOG10 {
-    private static final ScalarUnaryOperator POW10 = Power.function(10);
+    private static final ScalarUnaryOperator POW10 = x -> Power.of(10, x);
 
     @Override
     public Scalar model2range(Scalar model) {

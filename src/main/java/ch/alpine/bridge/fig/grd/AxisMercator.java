@@ -22,6 +22,7 @@ public record AxisMercator(TilePixel origin) implements AxisMap, Serializable {
   @Override
   public Scalar model2range(Scalar model) {
     // TODO computation wasteful since only Y component is needed
+    // TODO model may be out of model_clip !
     TilePixel tilePixel = origin.from(Tensors.of(model.zero(), model)).orElseThrow(); //
     return RealScalar.of(tilePixel.absY() - origin.absY());
   }

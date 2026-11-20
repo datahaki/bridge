@@ -62,6 +62,7 @@ public final class Show implements Serializable {
 
   /** @param showable
    * @return given showable */
+  // TODO rename to "include" or something
   public Showable add(Showable showable) {
     int index = (int) showables.stream().filter(s -> !(s instanceof BackgroundPlotMarker)).count();
     showable.setColor(colorDataIndexed.getColor(index));

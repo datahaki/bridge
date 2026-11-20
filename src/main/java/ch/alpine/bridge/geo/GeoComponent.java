@@ -33,6 +33,7 @@ import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.fig.ShowOptions;
 import ch.alpine.bridge.fig.ShowableConfig;
+import ch.alpine.bridge.fig.grd.Axis;
 import ch.alpine.bridge.fig.grd.AxisMercator;
 import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.gfx.TextContour;
@@ -239,7 +240,7 @@ public class GeoComponent extends JComponent {
             int y = dimension.height - 20;
             graphics.setColor(Color.BLACK);
             graphics.drawLine(x, y - 10, x, dimension.height);
-            textContour.draw(" " + Ticks.format(tick), x, dimension.height - height - 2);
+            textContour.draw(" " + Axis.formatValue(tick), x, dimension.height - height - 2);
           }
         }
       }
@@ -251,7 +252,7 @@ public class GeoComponent extends JComponent {
         Clip clip = Clips.interval(min, max);
         List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.height)).toList();
         // establish longest string, e.g. "47.15"
-        OptionalInt optionalInt = list.stream().map(Ticks::format).mapToInt(fontMetrics::stringWidth).max();
+        OptionalInt optionalInt = list.stream().map(Axis::formatValue).mapToInt(fontMetrics::stringWidth).max();
         if (optionalInt.isPresent()) {
           int width = optionalInt.getAsInt() + 5;
           for (Scalar tick : list) {
@@ -263,7 +264,7 @@ public class GeoComponent extends JComponent {
             }
             graphics.setColor(Color.BLACK);
             graphics.drawLine(x, y, dimension.width, y);
-            String string = Ticks.format(tick);
+            String string = Axis.formatValue(tick);
             textContour.draw(string, dimension.width - width, y - 2);
           }
         }
