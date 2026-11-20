@@ -21,12 +21,12 @@ public record GridDrawer(ShowOptions showOptions) {
     // ---
     final int piy = rectangle.y + rectangle.height - 1 + ShowOptions.GAP;
     if (showOptions.axisOptionsX.contains(AxisOption.TICK) && xRange.isNonDegenerate())
-      new AxisX(showableConfig.confX(), showOptions.axisOptionsX).render( //
+      new AxisX(showOptions.axisOptionsX).render( //
           showableConfig, //
           new Point(rectangle.x, piy), //
           graphics);
     if (showOptions.axisOptionsY.contains(AxisOption.TICK) && yRange.isNonDegenerate())
-      new AxisYL(showableConfig.confY(), showOptions.axisOptionsY).render( //
+      new AxisYL(showOptions.axisOptionsY).render( //
           showableConfig, //
           new Point(rectangle.x - ShowOptions.GAP, rectangle.y), //
           graphics);

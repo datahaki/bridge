@@ -5,16 +5,18 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
 import ch.alpine.bridge.fig.ShowOptions;
+import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.qty.DateTime;
 
 class AxisX extends Axis {
-  public AxisX(AxisConfig confBase, AxisOptions axisOptions) {
-    super(confBase, axisOptions);
+  public AxisX(AxisOptions axisOptions) {
+    super(axisOptions);
   }
 
   @Override
@@ -23,8 +25,8 @@ class AxisX extends Axis {
   }
 
   @Override
-  protected void drawAxisLine(Graphics2D graphics, Point point) {
-    graphics.drawLine(point.x, point.y, point.x + confBase.pixel_len() - 1, point.y);
+  protected void drawAxisLine(Graphics2D graphics, Point point, int pixel_len) {
+    graphics.drawLine(point.x, point.y, point.x + pixel_len - 1, point.y);
   }
 
   @Override
@@ -33,7 +35,7 @@ class AxisX extends Axis {
   }
 
   @Override
-  protected void protected_render(Graphics2D graphics, Point point) {
+  protected void protected_render(Graphics2D graphics, Point point, Map<Integer, Scalar> navigableMap) {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     graphics.setColor(ShowOptions.COLOR_FONT);
     for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
@@ -45,5 +47,10 @@ class AxisX extends Axis {
           entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //
           point.y + ShowOptions.TICK + fontMetrics.getAscent());
     }
+  }
+
+  @Override
+  protected final AxisConfig axisConfig(ShowableConfig showableConfig) {
+    return showableConfig.confX();
   }
 }

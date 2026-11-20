@@ -6,8 +6,8 @@ import java.awt.Point;
 
 /** y-axis with labels right of axis */
 public class AxisYR extends AxisY {
-  public AxisYR(AxisConfig confBase, AxisOptions axisOptions) {
-    super(confBase, axisOptions);
+  public AxisYR(AxisOptions axisOptions) {
+    super(axisOptions);
   }
 
   @Override

@@ -12,7 +12,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
 import java.awt.geom.AffineTransform;
 import java.time.format.DateTimeFormatter;
-import java.util.NavigableMap;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.ToDoubleFunction;
 
@@ -39,27 +39,32 @@ public abstract class Axis {
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
   private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(new AffineTransform(), true, true);
   // ---
-  protected final AxisConfig confBase;
-  protected final AxisOptions showOptions;
-  protected final NavigableMap<Integer, Scalar> navigableMap = new TreeMap<>();
-  protected final DateTimeFormatter dateTimeFormatter;
-  private final Clip value_clip;
-  private final ToDoubleFunction<Scalar> value2pixel;
+  protected AxisOptions axisOptions;
+  protected DateTimeFormatter dateTimeFormatter;
   private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
-  public Axis(AxisConfig confBase, AxisOptions axisOptions) {
-    this.confBase = confBase;
-    this.showOptions = axisOptions;
-    TickOption tickOption = confBase.axisMap().tickOption();
+  public Axis(AxisOptions axisOptions) {
+    this.axisOptions = axisOptions;
+  }
+
+  /** @param showableConfig
+   * @param point
+   * @param graphics */
+  public final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
+    AxisConfig axisConfig = axisConfig(showableConfig);
+    Map<Integer, Scalar> navigableMap = new TreeMap<>();
+    Clip value_clip;
+    ToDoubleFunction<Scalar> value2pixel;
+    TickOption tickOption = axisConfig.axisMap().tickOption();
     value_clip = tickOption.equals(TickOption.RANGE) //
-        ? confBase.range_clip()
-        : confBase.model_clip();
+        ? axisConfig.range_clip()
+        : axisConfig.model_clip();
     value2pixel = tickOption.equals(TickOption.RANGE) //
-        ? confBase::range2pixel
-        : confBase::model2pixel;
+        ? axisConfig::range2pixel
+        : axisConfig::model2pixel;
     if (value_clip.min() instanceof DateTime) {
       DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(value_clip.length().multiply(Rational.of(REF, confBase.pixel_len())));
+          DateTimeInterval.findAboveEquals(value_clip.length().multiply(Rational.of(REF, axisConfig.pixel_len())));
       DateTime startAttempt = dateTimeInterval.floor(value_clip.min());
       DateTime dateTime = value_clip.isInside(startAttempt) //
           ? startAttempt
@@ -72,43 +77,38 @@ public abstract class Axis {
       }
     } else {
       int val = 50;
-      int rem = confBase.pixel_len() / 3;
+      int rem = axisConfig.pixel_len() / 3;
       if (this instanceof AxisY && rem < val) {
         LineMetrics lineMetrics = font.getLineMetrics("Ag", FONT_RENDER_CONTEXT);
         val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
       }
-      Ticks.stream(value_clip, Rational.of(val, confBase.pixel_len())) //
+      Ticks.stream(value_clip, Rational.of(val, axisConfig.pixel_len())) //
           .forEach(tick -> navigableMap.put((int) value2pixel.applyAsDouble(tick), tick));
       dateTimeFormatter = null;
     }
-  }
-
-  /** @param showableConfig
-   * @param point
-   * @param graphics */
-  public final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
     if (value_clip.isNonDegenerate()) {
       RenderQuality.smoothLine(graphics, false);
       Rectangle rectangle = showableConfig.rectangle();
-      if (showOptions.contains(AxisOption.GRID)) { // grid lines | or _
+      if (axisOptions.contains(AxisOption.GRID)) { // grid lines | or _
         graphics.setStroke(STROKE_GRIDLINES);
         graphics.setColor(COLOR_GRIDLINES);
         for (int pixel : navigableMap.keySet())
           drawGridLine(graphics, rectangle, pixel);
       }
-      if (showOptions.contains(AxisOption.TICK)) {
+      if (axisOptions.contains(AxisOption.TICK)) {
         graphics.setStroke(ShowOptions.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
-        drawAxisLine(graphics, point);
+        drawAxisLine(graphics, point, axisConfig.pixel_len());
         for (int piy : navigableMap.keySet())
           drawAxisTick(graphics, point, piy);
         graphics.setFont(font);
-        protected_render(graphics, point);
+        protected_render(graphics, point, navigableMap);
       }
       RenderQuality.smoothLine(graphics, true);
     }
   }
-  
+
+  protected abstract AxisConfig axisConfig(ShowableConfig showableConfig);
 
   public String format(Scalar value) {
     return formatValue(value); // confBase.axisMap().range2model(value));
@@ -129,7 +129,7 @@ public abstract class Axis {
 
   /** @param graphics
    * @param point */
-  protected abstract void drawAxisLine(Graphics2D graphics, Point point);
+  protected abstract void drawAxisLine(Graphics2D graphics, Point point, int pixel_len);
 
   /** @param graphics
    * @param point
@@ -138,5 +138,5 @@ public abstract class Axis {
 
   /** @param graphics
    * @param point */
-  protected abstract void protected_render(Graphics2D graphics, Point point);
+  protected abstract void protected_render(Graphics2D graphics, Point point, Map<Integer, Scalar> navigableMap);
 }

@@ -59,11 +59,14 @@ public abstract class BarLegendPlot extends BaseShowable {
           pix, rectangle.y, width, rectangle.height, null);
       Clip clip = barLegend.clip();
       if (clip.isNonDegenerate()) {
-        AxisConfig confBase = AxisConfig.create(rectangle.y, rectangle.height, AxisMaps.LIN, clip, false);
         AxisOptions axisOptions = new AxisOptions();
         axisOptions.set(AxisOption.TICK, true);
-        new AxisYR(confBase, axisOptions).render( //
-            showableConfig, //
+        new AxisYR(axisOptions).render( //
+            new ShowableConfig( //
+                rectangle, //
+                CoordinateBoundingBox.of(Clips.unit(), clip), //
+                null, //
+                AxisConfig.create(rectangle.y, rectangle.height, AxisMaps.LIN, clip, false)), //
             new Point(pix + width + ShowOptions.GAP - 2, rectangle.y), //
             graphics);
       }
