@@ -35,9 +35,15 @@ public non-sealed interface ManipulateProvider extends RunProvider {
     jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
     WindowBounds.persistent(jFrame, resourceLocator.properties(WindowBounds.class));
     WindowClosed.runs(jFrame, () -> resourceLocator.trySave(this)); // store field values
+    WindowClosed.runs(jFrame, this::closeOperation); // store field values
     AwtUtil.ctrlW(jFrame);
     // SwingUtilities.invokeLater(() -> jFrame.setVisible(true));
     jFrame.setVisible(true);
     return jFrame;
+  }
+
+  /** invoked when window closes, allows app to perform clean up
+   * e.g. thread stop */
+  default void closeOperation() {
   }
 }
