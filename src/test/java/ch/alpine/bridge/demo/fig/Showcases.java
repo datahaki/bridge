@@ -1,4 +1,4 @@
-// code by jph
+// code by jpholy
 package ch.alpine.bridge.demo.fig;
 
 import java.awt.BasicStroke;
@@ -49,6 +49,7 @@ import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Scalars;
+import ch.alpine.tensor.Slash;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.alg.Dimensions;
@@ -217,7 +218,7 @@ public enum Showcases implements ShowProvider {
       Tensor poly = CirclePoints.of(5);
       TensorUnaryOperator tuo = Tensors.vector(2, 0)::add;
       show.add(PolygonPlot.of(poly, PlotOption.FILL)).setAlpha(32);
-      Tensor reve = Reverse.of(tuo.slash(poly));
+      Tensor reve = Reverse.of(Slash.of(poly, tuo));
       show.add(PolygonPlot.of(reve, PlotOption.FILL)).setAlpha(32);
       show.setAspectRatioOne();
       return show;
