@@ -6,29 +6,23 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import ch.alpine.bridge.fig.Showable;
-import ch.alpine.tensor.RealScalar;
-import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.alg.Differences;
 import ch.alpine.tensor.alg.Subdivide;
-import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.fft.PeriodogramArray;
 import ch.alpine.tensor.fft.SpectrogramArrays;
 import ch.alpine.tensor.mat.Tolerance;
-import ch.alpine.tensor.sca.exp.Log;
 
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/Periodogram.html">Periodogram</a> */
 public enum Periodogram {
   ;
-  private static final Scalar _10 = RealScalar.of(10.0);
-
   /** @param visualSet with a single visual row
    * @param scaling of magnitude
    * @param windowLength for instance 512
    * @param offset for instance 128
    * @return */
-  public static Showable of(Tensor points, ScalarUnaryOperator scaling, int windowLength, int offset) {
+  public static Showable of(Tensor points, int windowLength, int offset) {
     windowLength = Math.min(points.length(), windowLength);
     {
       Tensor domain = points.get(Tensor.ALL, 0);
@@ -37,7 +31,7 @@ public enum Periodogram {
       Tolerance.CHOP.requireClose(navigableSet.first(), navigableSet.last());
     }
     Tensor signal = points.get(Tensor.ALL, 1);
-    Tensor values = new PeriodogramArray(SpectrogramArrays.FOURIER.operator()).config(windowLength, offset).apply(signal).maps(scaling);
+    Tensor values = new PeriodogramArray(SpectrogramArrays.FOURIER.operator()).config(windowLength, offset).apply(signal);
     int h = values.length() / 2;
     return ListLinePlot.of(Subdivide.of(0, 0.5, h - 1), values.extract(0, h));
   }
@@ -49,6 +43,6 @@ public enum Periodogram {
    * @param visualSet
    * @return */
   public static Showable of(Tensor points) {
-    return of(points, Log.base(_10).andThen(_10::multiply), 512, 128);
+    return of(points, 512, 128);
   }
 }

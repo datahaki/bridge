@@ -19,6 +19,7 @@ import ch.alpine.bridge.fig.plt.ArrowPlot;
 import ch.alpine.bridge.fig.plt.CandlestickChart;
 import ch.alpine.bridge.fig.plt.DensityPlot;
 import ch.alpine.bridge.fig.plt.DiscretePlot;
+import ch.alpine.bridge.fig.plt.GeoPlot;
 import ch.alpine.bridge.fig.plt.ImagePlot;
 import ch.alpine.bridge.fig.plt.ListDiscretePlot;
 import ch.alpine.bridge.fig.plt.ListLinePlot;
@@ -32,7 +33,6 @@ import ch.alpine.bridge.fig.plt.PolygonPlot;
 import ch.alpine.bridge.fig.plt.ReImPlot;
 import ch.alpine.bridge.fig.plt.ReliefPlot;
 import ch.alpine.bridge.fig.plt.Spectrogram;
-import ch.alpine.bridge.fig.plt.GeoPlot;
 import ch.alpine.bridge.fig.plt.StringPlot;
 import ch.alpine.bridge.fig.plt.StringPlot.StringItem;
 import ch.alpine.bridge.fig.plt.TsPlot;
@@ -107,11 +107,8 @@ import ch.alpine.tensor.sca.Clips;
 import ch.alpine.tensor.sca.Im;
 import ch.alpine.tensor.sca.Ramp;
 import ch.alpine.tensor.sca.SawtoothWave;
-import ch.alpine.tensor.sca.SquareWave;
-import ch.alpine.tensor.sca.TriangleWave;
 import ch.alpine.tensor.sca.erf.Erfc;
 import ch.alpine.tensor.sca.exp.Exp;
-import ch.alpine.tensor.sca.exp.Log10;
 import ch.alpine.tensor.sca.exp.LogisticSigmoid;
 import ch.alpine.tensor.sca.gam.Gamma;
 import ch.alpine.tensor.sca.ply.Chebyshev;
@@ -144,7 +141,7 @@ public enum Showcases implements ShowProvider {
   RandomDiscretePlot {
     @Override
     public Show getShow() {
-      Show show = new Show("vertical lines");
+      Show show = new Show("ListDiscretePlot");
       Tensor points = RandomVariate.of(UniformDistribution.of(-3, 10), 30, 2);
       show.add(ListDiscretePlot.of(points)).setColor(Color.DARK_GRAY);
       return show;
@@ -153,8 +150,12 @@ public enum Showcases implements ShowProvider {
   Log10Axis {
     @Override
     public Show getShow() {
-      Show show = new Show("Log10 Y");
-      show.add(Plot.of(Exp.FUNCTION, Clips.interval(-10, 10)));
+      Tensor matrix = HilbertMatrix.of(40);
+      Show show = new Show("Plot, ListPlot, y-Log10");
+      Tensor values = SingularValueList.of(matrix);
+      show.add(ListPlot.of(Range.of(0, values.length()), values)).setLabel("singular values");
+      Clip clip = Clips.absolute(5);
+      show.add(Plot.of(Erfc.FUNCTION, clip)).setLabel("Erfc");
       show.showOptions.axisOptionsY.axisMap = AxisMaps.LOG10;
       return show;
     }
@@ -165,19 +166,6 @@ public enum Showcases implements ShowProvider {
       Show show = new Show("Log Y");
       show.add(Plot.of(Exp.FUNCTION, Clips.interval(-10, 10)));
       show.showOptions.axisOptionsY.axisMap = AxisMaps.LOG;
-      return show;
-    }
-  },
-  PoligonOrientation {
-    @Override
-    public Show getShow() {
-      Show show = new Show("PolygonPlot");
-      Tensor poly = CirclePoints.of(5);
-      TensorUnaryOperator tuo = Tensors.vector(2, 0)::add;
-      Tensor reve = Reverse.of(tuo.slash(poly));
-      show.add(PolygonPlot.of(poly, PlotOption.FILL)).setAlpha(32);
-      show.add(PolygonPlot.of(reve, PlotOption.FILL)).setAlpha(32);
-      show.setAspectRatioOne();
       return show;
     }
   },
@@ -226,6 +214,11 @@ public enum Showcases implements ShowProvider {
       show.add(PolygonPlot.of(CirclePoints.of(8), PlotOption.FILL)).setAlpha(32);
       show.add(PolygonPlot.of(CirclePoints.of(16)));
       show.add(ListPlot.of(Tensors.fromString("{{-1,1},{1,-1}}")));
+      Tensor poly = CirclePoints.of(5);
+      TensorUnaryOperator tuo = Tensors.vector(2, 0)::add;
+      show.add(PolygonPlot.of(poly, PlotOption.FILL)).setAlpha(32);
+      Tensor reve = Reverse.of(tuo.slash(poly));
+      show.add(PolygonPlot.of(reve, PlotOption.FILL)).setAlpha(32);
       show.setAspectRatioOne();
       return show;
     }
@@ -333,31 +326,6 @@ public enum Showcases implements ShowProvider {
       Tensor points = Tensors.fromString("{{0,0}, {0.2, Infinity}, {0.3, 0.3}}");
       show.add(ListPlot.of(points));
       show.add(ListLinePlot.of(points));
-      return show;
-    }
-  },
-  WaveFunctions0 {
-    @Override
-    public Show getShow() {
-      Show show = new Show("Wave Functions");
-      ScalarUnaryOperator[] suos = { //
-          SawtoothWave.FUNCTION, //
-          SquareWave.FUNCTION, //
-          TriangleWave.FUNCTION };
-      for (ScalarUnaryOperator suo : suos)
-        show.add(Plot.of(suo, Clips.absolute(2)));
-      return show;
-    }
-  },
-  PlotAndList {
-    @Override
-    public Show getShow() {
-      Tensor matrix = HilbertMatrix.of(40);
-      Show show = new Show("Plot & ListPlot");
-      Tensor values = SingularValueList.of(matrix);
-      show.add(ListPlot.of(Range.of(0, values.length()), values.maps(Log10.FUNCTION))).setLabel("singular values");
-      Clip clip = Clips.absolute(5);
-      show.add(Plot.of(Erfc.FUNCTION, clip)).setLabel("Erfc");
       return show;
     }
   },
@@ -508,6 +476,7 @@ public enum Showcases implements ShowProvider {
       Tensor points = Transpose.of(Tensors.of(domain, signal));
       Show show = new Show("Periodogram");
       show.add(Periodogram.of(points));
+      show.showOptions.axisOptionsY.axisMap = AxisMaps.dB;
       return show;
     }
   },

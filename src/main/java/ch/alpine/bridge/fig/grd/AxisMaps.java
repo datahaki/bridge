@@ -1,8 +1,8 @@
 // code by jph
 package ch.alpine.bridge.fig.grd;
 
+import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.sca.exp.Exp;
 import ch.alpine.tensor.sca.exp.Log;
 import ch.alpine.tensor.sca.exp.Log10;
@@ -42,8 +42,6 @@ public enum AxisMaps implements AxisMap {
     }
   },
   LOG10 {
-    private static final ScalarUnaryOperator POW10 = x -> Power.of(10, x);
-
     @Override
     public Scalar model2range(Scalar model) {
       return Log10.FUNCTION.apply(model);
@@ -51,7 +49,25 @@ public enum AxisMaps implements AxisMap {
 
     @Override
     public Scalar range2model(Scalar range) {
-      return POW10.apply(range);
+      return Power.of(10, range);
+    }
+
+    @Override
+    public TickOption tickOption() {
+      return TickOption.RANGE;
+    }
+  },
+  dB {
+    private static final Scalar _20 = RealScalar.of(20.0);
+
+    @Override
+    public Scalar model2range(Scalar model) {
+      return Log10.FUNCTION.apply(model).multiply(_20);
+    }
+
+    @Override
+    public Scalar range2model(Scalar range) {
+      return Power.of(10, range.divide(_20));
     }
 
     @Override

@@ -111,7 +111,7 @@ public abstract class Axis {
   
 
   public String format(Scalar value) {
-    return formatValue(confBase.axisMap().range2model(value));
+    return formatValue(value); // confBase.axisMap().range2model(value));
   }
 
   public static String formatValue(Scalar value) {
