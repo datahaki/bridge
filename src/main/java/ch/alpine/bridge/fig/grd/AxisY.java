@@ -7,12 +7,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import ch.alpine.bridge.fig.ShowOptions;
 import ch.alpine.bridge.fig.ShowableConfig;
-import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.qty.DateTime;
 
 abstract class AxisY extends Axis {
   static final int GAP = 5;
@@ -32,15 +29,15 @@ abstract class AxisY extends Axis {
   }
 
   @Override
-  protected final void protected_render(Graphics2D graphics, Point point, Map<Integer, Scalar> navigableMap) {
+  protected final void protected_render(Graphics2D graphics, Point point, Map<Integer, String> map) {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     double delta_y = (fontMetrics.getAscent() - fontMetrics.getDescent()) * 0.5;
     graphics.setColor(ShowOptions.COLOR_FONT);
-    for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
-      Scalar value = entry.getValue();
-      String yLabel = Objects.isNull(dateTimeFormatter) //
-          ? format(value)
-          : ((DateTime) value).format(dateTimeFormatter);
+    for (Entry<Integer, String> entry : map.entrySet()) {
+      String yLabel = entry.getValue();
+      // String yLabel = Objects.isNull(dateTimeFormatter) //
+      // ? format(value)
+      // : ((DateTime) value).format(dateTimeFormatter);
       graphics.drawString(yLabel, //
           stringx(point.x, fontMetrics.stringWidth(yLabel)), //
           (int) (entry.getKey() + delta_y));

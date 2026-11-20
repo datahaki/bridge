@@ -9,4 +9,6 @@ public interface AxisMap {
   Scalar range2model(Scalar range);
 
   TickOption tickOption();
+
+  String format(Scalar ticks);
 }

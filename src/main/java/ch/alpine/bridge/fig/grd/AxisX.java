@@ -7,12 +7,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import ch.alpine.bridge.fig.ShowOptions;
 import ch.alpine.bridge.fig.ShowableConfig;
-import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.qty.DateTime;
 
 class AxisX extends Axis {
   public AxisX(AxisOptions axisOptions) {
@@ -35,14 +32,14 @@ class AxisX extends Axis {
   }
 
   @Override
-  protected void protected_render(Graphics2D graphics, Point point, Map<Integer, Scalar> navigableMap) {
+  protected void protected_render(Graphics2D graphics, Point point, Map<Integer, String> map) {
     FontMetrics fontMetrics = graphics.getFontMetrics();
     graphics.setColor(ShowOptions.COLOR_FONT);
-    for (Entry<Integer, Scalar> entry : navigableMap.entrySet()) {
-      Scalar value = entry.getValue();
-      String xLabel = Objects.isNull(dateTimeFormatter) //
-          ? format(value)
-          : ((DateTime) value).format(dateTimeFormatter);
+    for (Entry<Integer, String> entry : map.entrySet()) {
+      String xLabel = entry.getValue();
+      // String xLabel = Objects.isNull(dateTimeFormatter) //
+      // ? format(value)
+      // : ((DateTime) value).format(dateTimeFormatter);
       graphics.drawString(xLabel, //
           entry.getKey() - fontMetrics.stringWidth(xLabel) / 2, //
           point.y + ShowOptions.TICK + fontMetrics.getAscent());

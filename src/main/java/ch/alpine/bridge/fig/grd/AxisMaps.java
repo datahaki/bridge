@@ -22,7 +22,12 @@ public enum AxisMaps implements AxisMap {
 
     @Override
     public TickOption tickOption() {
-      return TickOption.RANGE;
+      return TickOption.MODEL;
+    }
+
+    @Override
+    public String format(Scalar model) {
+      return TickToString.formatValue(model);
     }
   },
   LOG {
@@ -40,6 +45,11 @@ public enum AxisMaps implements AxisMap {
     public TickOption tickOption() {
       return TickOption.RANGE;
     }
+
+    @Override
+    public String format(Scalar range) {
+      return "exp " + TickToString.formatValue(range);
+    }
   },
   LOG10 {
     @Override
@@ -55,6 +65,11 @@ public enum AxisMaps implements AxisMap {
     @Override
     public TickOption tickOption() {
       return TickOption.RANGE;
+    }
+
+    @Override
+    public String format(Scalar range) {
+      return TickToString.formatValue(range2model(range));
     }
   },
   dB {
@@ -73,6 +88,11 @@ public enum AxisMaps implements AxisMap {
     @Override
     public TickOption tickOption() {
       return TickOption.RANGE;
+    }
+
+    @Override
+    public String format(Scalar range) {
+      return TickToString.formatValue(range2model(range)) + " dB";
     }
   }
 }

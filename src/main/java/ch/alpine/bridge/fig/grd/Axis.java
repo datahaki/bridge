@@ -12,23 +12,17 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
 import java.awt.geom.AffineTransform;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.function.ToDoubleFunction;
 
 import ch.alpine.bridge.awt.RenderQuality;
 import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.bridge.fig.ShowOptions;
 import ch.alpine.bridge.fig.ShowableConfig;
-import ch.alpine.bridge.lang.UnicodeString;
 import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.Rational;
-import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Unprotect;
-import ch.alpine.tensor.chq.IntegerQ;
 import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.sca.Clip;
-import ch.alpine.tensor.sca.N;
 
 public abstract class Axis {
   // TODO 100 is a magic constant that should depend on font, and date formatter
@@ -39,8 +33,7 @@ public abstract class Axis {
   private static final Color COLOR_HELPER = new Color(192, 192, 192);
   private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(new AffineTransform(), true, true);
   // ---
-  protected AxisOptions axisOptions;
-  protected DateTimeFormatter dateTimeFormatter;
+  protected final AxisOptions axisOptions;
   private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
   public Axis(AxisOptions axisOptions) {
@@ -52,75 +45,54 @@ public abstract class Axis {
    * @param graphics */
   public final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
     AxisConfig axisConfig = axisConfig(showableConfig);
-    Map<Integer, Scalar> navigableMap = new TreeMap<>();
-    Clip value_clip;
-    ToDoubleFunction<Scalar> value2pixel;
-    TickOption tickOption = axisConfig.axisMap().tickOption();
-    value_clip = tickOption.equals(TickOption.RANGE) //
-        ? axisConfig.range_clip()
-        : axisConfig.model_clip();
-    value2pixel = tickOption.equals(TickOption.RANGE) //
-        ? axisConfig::range2pixel
-        : axisConfig::model2pixel;
-    if (value_clip.min() instanceof DateTime) {
-      DateTimeInterval dateTimeInterval = //
-          DateTimeInterval.findAboveEquals(value_clip.length().multiply(Rational.of(REF, axisConfig.pixel_len())));
-      DateTime startAttempt = dateTimeInterval.floor(value_clip.min());
-      DateTime dateTime = value_clip.isInside(startAttempt) //
-          ? startAttempt
-          : dateTimeInterval.plus(startAttempt);
-      dateTimeFormatter = axisOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
-      while (value_clip.isInside(dateTime)) {
-        int pixel = (int) value2pixel.applyAsDouble(dateTime);
-        navigableMap.put(pixel, dateTime);
-        dateTime = dateTimeInterval.plus(dateTime);
+    Clip ticks_clip = axisConfig.ticks_clip();
+    if (ticks_clip.isNonDegenerate()) {
+      Map<Integer, String> map = new HashMap<>();
+      if (ticks_clip.min() instanceof DateTime) {
+        DateTimeInterval dateTimeInterval = //
+            DateTimeInterval.findAboveEquals(ticks_clip.length().multiply(Rational.of(REF, axisConfig.pixel_len())));
+        DateTime startAttempt = dateTimeInterval.floor(ticks_clip.min());
+        DateTime dateTime = ticks_clip.isInside(startAttempt) //
+            ? startAttempt
+            : dateTimeInterval.plus(startAttempt);
+        DateTimeFormatter dateTimeFormatter = axisOptions.dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
+        while (ticks_clip.isInside(dateTime)) {
+          int pixel = (int) axisConfig.ticks2pixel(dateTime);
+          map.put(pixel, dateTime.format(dateTimeFormatter));
+          dateTime = dateTimeInterval.plus(dateTime);
+        }
+      } else {
+        int val = 50;
+        int rem = axisConfig.pixel_len() / 3;
+        if (this instanceof AxisY && rem < val) {
+          LineMetrics lineMetrics = font.getLineMetrics("Ag", FONT_RENDER_CONTEXT);
+          val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
+        }
+        Ticks.stream(ticks_clip, Rational.of(val, axisConfig.pixel_len())) //
+            .forEach(tick -> map.put((int) axisConfig.ticks2pixel(tick), axisConfig.format(tick)));
       }
-    } else {
-      int val = 50;
-      int rem = axisConfig.pixel_len() / 3;
-      if (this instanceof AxisY && rem < val) {
-        LineMetrics lineMetrics = font.getLineMetrics("Ag", FONT_RENDER_CONTEXT);
-        val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
-      }
-      Ticks.stream(value_clip, Rational.of(val, axisConfig.pixel_len())) //
-          .forEach(tick -> navigableMap.put((int) value2pixel.applyAsDouble(tick), tick));
-      dateTimeFormatter = null;
-    }
-    if (value_clip.isNonDegenerate()) {
       RenderQuality.smoothLine(graphics, false);
       Rectangle rectangle = showableConfig.rectangle();
       if (axisOptions.contains(AxisOption.GRID)) { // grid lines | or _
         graphics.setStroke(STROKE_GRIDLINES);
         graphics.setColor(COLOR_GRIDLINES);
-        for (int pixel : navigableMap.keySet())
+        for (int pixel : map.keySet())
           drawGridLine(graphics, rectangle, pixel);
       }
       if (axisOptions.contains(AxisOption.TICK)) {
         graphics.setStroke(ShowOptions.STROKE_SOLID);
         graphics.setColor(COLOR_HELPER);
         drawAxisLine(graphics, point, axisConfig.pixel_len());
-        for (int piy : navigableMap.keySet())
+        for (int piy : map.keySet())
           drawAxisTick(graphics, point, piy);
         graphics.setFont(font);
-        protected_render(graphics, point, navigableMap);
+        protected_render(graphics, point, map);
       }
       RenderQuality.smoothLine(graphics, true);
     }
   }
 
   protected abstract AxisConfig axisConfig(ShowableConfig showableConfig);
-
-  public String format(Scalar value) {
-    return formatValue(value); // confBase.axisMap().range2model(value));
-  }
-
-  public static String formatValue(Scalar value) {
-    Scalar display = Unprotect.withoutUnit(value);
-    Scalar scalar = IntegerQ.of(display) //
-        ? display
-        : N.DOUBLE.apply(display); // prevent fractions
-    return UnicodeString.of(scalar);
-  }
 
   /** @param graphics
    * @param rectangle
@@ -138,5 +110,5 @@ public abstract class Axis {
 
   /** @param graphics
    * @param point */
-  protected abstract void protected_render(Graphics2D graphics, Point point, Map<Integer, Scalar> navigableMap);
+  protected abstract void protected_render(Graphics2D graphics, Point point, Map<Integer, String> map);
 }

@@ -65,7 +65,7 @@ public abstract class BarLegendPlot extends BaseShowable {
             new ShowableConfig( //
                 rectangle, //
                 CoordinateBoundingBox.of(Clips.unit(), clip), //
-                null, //
+                null, // x-axis is not used
                 AxisConfig.create(rectangle.y, rectangle.height, AxisMaps.LIN, clip, false)), //
             new Point(pix + width + ShowOptions.GAP - 2, rectangle.y), //
             graphics);

@@ -11,6 +11,7 @@ import ch.alpine.tensor.sca.Clip;
 
 public class AxisOptions implements Serializable {
   private final Set<AxisOption> set = EnumSet.allOf(AxisOption.class);
+  // TODO axisMap here is circular... probably should be member of ShowOptions as axisMapX and axisMapY
   public AxisMap axisMap = AxisMaps.LIN;
   public DateTimeFocus dateTimeFocus = ISO8601DateTimeFocus.INSTANCE;
 

@@ -95,4 +95,20 @@ public record AxisConfig( //
   public Scalar shift(int pixel0, int pixel1) {
     return RealScalar.of(pixel0 - pixel1).multiply(pixel2range);
   }
+
+  public Clip ticks_clip() {
+    return axisMap.tickOption().equals(TickOption.RANGE) //
+        ? range_clip()
+        : model_clip();
+  }
+
+  public double ticks2pixel(Scalar ticks) {
+    return axisMap.tickOption().equals(TickOption.RANGE) //
+        ? range2pixel(ticks)
+        : model2pixel(ticks);
+  }
+
+  public String format(Scalar ticks) {
+    return axisMap.format(ticks);
+  }
 }

@@ -39,6 +39,11 @@ public record AxisMercator(TilePixel origin) implements AxisMap, Serializable {
     return TickOption.MODEL;
   }
 
+  @Override
+  public String format(Scalar ticks) {
+    return TickToString.formatValue(ticks);
+  }
+
   public CoordinateBoundingBox cbb(Rectangle rectangle) {
     Point p00 = rectangle.getLocation();
     Point p11 = new Point(rectangle.x + rectangle.width, rectangle.y + rectangle.height);
