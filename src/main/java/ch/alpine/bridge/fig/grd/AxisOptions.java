@@ -26,6 +26,11 @@ public class AxisOptions implements Serializable {
     return set.contains(axisOption);
   }
 
+  /** @param flip whether pixel increment aligns with model increment
+   * @param ofs
+   * @param length
+   * @param clip
+   * @return */
   public AxisConfig config(boolean flip, int ofs, int length, Clip clip) {
     return AxisConfig.create(ofs, length, axisMap, clip, flip ^ contains(AxisOption.INCR));
   }

@@ -48,6 +48,6 @@ class AxisX extends Axis {
 
   @Override
   protected final AxisConfig axisConfig(ShowableConfig showableConfig) {
-    return showableConfig.confX();
+    return showableConfig.axisConfigX();
   }
 }

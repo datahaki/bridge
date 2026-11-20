@@ -46,7 +46,7 @@ abstract class AxisY extends Axis {
 
   @Override
   protected final AxisConfig axisConfig(ShowableConfig showableConfig) {
-    return showableConfig.confY();
+    return showableConfig.axisConfigY();
   }
 
   /** @param x

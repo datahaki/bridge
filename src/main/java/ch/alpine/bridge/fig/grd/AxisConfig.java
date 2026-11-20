@@ -1,11 +1,23 @@
 // code by jph
 package ch.alpine.bridge.fig.grd;
 
+import java.awt.Font;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineMetrics;
+import java.awt.geom.AffineTransform;
 import java.io.Serializable;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
+import ch.alpine.bridge.cal.DateTimeFocus;
+import ch.alpine.bridge.cal.DateTimeInterval;
+import ch.alpine.bridge.math.Ticks;
+import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
+import ch.alpine.tensor.qty.DateTime;
 import ch.alpine.tensor.qty.QuantityUnit;
 import ch.alpine.tensor.qty.UnitConvert;
 import ch.alpine.tensor.red.Max;
@@ -33,13 +45,17 @@ public record AxisConfig( //
     Scalar range2pixel, //
     Scalar pixel2range //
 ) implements Serializable {
-  /** @param ofs
-   * @param length
+  // TODO 100 is a magic constant that should depend on font, and date formatter
+  private static final int REF = 100;
+  private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(new AffineTransform(), true, true);
+
+  /** @param pixel_ofs
+   * @param pixel_len
    * @param axisMap
    * @param model_clip
    * @param incr
    * @return */
-  public static AxisConfig create(int ofs, int length, AxisMap axisMap, Clip model_clip, boolean incr) {
+  public static AxisConfig create(int pixel_ofs, int pixel_len, AxisMap axisMap, Clip model_clip, boolean incr) {
     Clip range_clip;
     {
       Scalar r1 = axisMap.model2range(model_clip.min());
@@ -48,15 +64,11 @@ public record AxisConfig( //
     }
     Scalar range_beg = incr ? range_clip.min() : range_clip.max();
     Scalar range_end = incr ? range_clip.max() : range_clip.min();
-    Scalar sw = RealScalar.of(length - 1);
+    Scalar sw = RealScalar.of(pixel_len - 1);
     ScalarUnaryOperator unitConvert = UnitConvert.SI().to(QuantityUnit.of(model_clip));
     Scalar range2pixel = sw.divide(range_end.subtract(range_beg));
     Scalar pixel2range = range_end.subtract(range_beg).divide(sw);
-    return new AxisConfig(ofs, length, axisMap, model_clip, range_clip, range_beg, range_end, unitConvert, range2pixel, pixel2range);
-  }
-
-  static AxisConfig linear(int ofs, int length, Clip model_clip, boolean incr) {
-    return create(ofs, length, AxisMaps.LIN, model_clip, incr);
+    return new AxisConfig(pixel_ofs, pixel_len, axisMap, model_clip, range_clip, range_beg, range_end, unitConvert, range2pixel, pixel2range);
   }
 
   /** @param model in model space
@@ -110,5 +122,36 @@ public record AxisConfig( //
 
   public String format(Scalar ticks) {
     return axisMap.format(ticks);
+  }
+
+  public Map<Integer, String> getTicksMap(boolean vertical, Font font, DateTimeFocus dateTimeFocus) {
+    Map<Integer, String> map = new HashMap<>();
+    Clip ticks_clip = ticks_clip();
+    if (ticks_clip.isNonDegenerate()) {
+      if (ticks_clip.min() instanceof DateTime) {
+        DateTimeInterval dateTimeInterval = //
+            DateTimeInterval.findAboveEquals(ticks_clip.length().multiply(Rational.of(REF, pixel_len())));
+        DateTime startAttempt = dateTimeInterval.floor(ticks_clip.min());
+        DateTime dateTime = ticks_clip.isInside(startAttempt) //
+            ? startAttempt
+            : dateTimeInterval.plus(startAttempt);
+        DateTimeFormatter dateTimeFormatter = dateTimeFocus.focus(dateTimeInterval.getSmallestDefined());
+        while (ticks_clip.isInside(dateTime)) {
+          int pixel = (int) ticks2pixel(dateTime);
+          map.put(pixel, dateTime.format(dateTimeFormatter));
+          dateTime = dateTimeInterval.plus(dateTime);
+        }
+      } else {
+        int val = 50;
+        int rem = pixel_len() / 3;
+        if (vertical && rem < val) {
+          LineMetrics lineMetrics = font.getLineMetrics("Ag", FONT_RENDER_CONTEXT);
+          val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
+        }
+        Ticks.stream(ticks_clip, Rational.of(val, pixel_len())) //
+            .forEach(ticks -> map.put((int) ticks2pixel(ticks), format(ticks)));
+      }
+    }
+    return map;
   }
 }

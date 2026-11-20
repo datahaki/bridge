@@ -40,8 +40,8 @@ public record AxisMercator(TilePixel origin) implements AxisMap, Serializable {
   }
 
   @Override
-  public String format(Scalar ticks) {
-    return TickToString.formatValue(ticks);
+  public String format(Scalar model) {
+    return TickToString.formatValue(model);
   }
 
   public CoordinateBoundingBox cbb(Rectangle rectangle) {

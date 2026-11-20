@@ -11,13 +11,9 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import ch.alpine.bridge.fig.grd.AxisOptions;
-import ch.alpine.bridge.math.Unitless;
-import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 
 public class ShowOptions implements Serializable {
-  private static final ScalarUnaryOperator TO_DEGREE = Unitless.DEGREES.unitConvert();
-  // ---
   public static final Color COLOR_FONT = Color.DARK_GRAY;
   // ---
   public static final Stroke STROKE_SOLID = new BasicStroke();

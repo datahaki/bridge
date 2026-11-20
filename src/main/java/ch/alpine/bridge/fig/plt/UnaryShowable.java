@@ -27,7 +27,7 @@ public abstract class UnaryShowable extends BaseShowable {
   }
 
   protected final Optional<Clip> x_clip(ShowableConfig showableConfig) {
-    Clip x_clip = showableConfig.confX().model_clip();
+    Clip x_clip = showableConfig.axisConfigX().model_clip();
     return set.contains(PlotOption.STRICT) //
         ? Clips.optionalIntersection(x_clip, domain).filter(Clip::isNonDegenerate)
         : Optional.ofNullable(x_clip);

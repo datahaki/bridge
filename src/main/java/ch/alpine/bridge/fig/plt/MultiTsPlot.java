@@ -54,7 +54,7 @@ public class MultiTsPlot extends BaseShowable {
   public void render(ShowableConfig showableConfig, Graphics2D graphics) {
     if (timeSeries.isEmpty())
       return;
-    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.confX().model_clip(), timeSeries.domain());
+    Optional<Clip> optional = Clips.optionalIntersection(showableConfig.axisConfigX().model_clip(), timeSeries.domain());
     if (optional.isPresent()) {
       Clip clip = optional.orElseThrow();
       if (clip.isNonDegenerate()) {
@@ -62,15 +62,15 @@ public class MultiTsPlot extends BaseShowable {
         ScalarTensorFunction suo = x -> tuo.apply(timeSeries.evaluate(x));
         Tensor v0 = suo.apply(clip.min());
         List<Path2D.Double> list = Stream.generate(Path2D.Double::new).limit(v0.length()).toList();
-        double x0 = showableConfig.confX().model2pixel(clip.min());
+        double x0 = showableConfig.axisConfigX().model2pixel(clip.min());
         for (int i = 0; i < v0.length(); ++i)
-          list.get(i).moveTo(x0, showableConfig.confY().model2pixel(v0.Get(i)));
+          list.get(i).moveTo(x0, showableConfig.axisConfigY().model2pixel(v0.Get(i)));
         timeSeries.block(clip, true).stream() //
             .forEach(tsEntry -> {
-              double x1 = showableConfig.confX().model2pixel(tsEntry.key());
+              double x1 = showableConfig.axisConfigX().model2pixel(tsEntry.key());
               Tensor v1 = tuo.apply(tsEntry.value());
               for (int i = 0; i < v1.length(); ++i)
-                list.get(i).lineTo(x1, showableConfig.confY().model2pixel(v1.Get(i)));
+                list.get(i).lineTo(x1, showableConfig.axisConfigY().model2pixel(v1.Get(i)));
             });
         graphics.setStroke(getStroke());
         for (int i = 0; i < v0.length(); ++i) {

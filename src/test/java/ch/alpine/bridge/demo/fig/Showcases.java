@@ -133,7 +133,7 @@ public enum Showcases implements ShowProvider {
       Tensor points = Tensors.matrixDouble(Helper.array).maps(Unitless.DEGREES.unitConvert());
       IO.println(MatrixForm.of(points));
       show.add(PolygonPlot.of(points, PlotOption.FILL)).setAlpha(64);
-      show.showOptions.axisOptionsY.axisMap = new AxisMercator(new TilePixel(new Tile(4, 5, 7), 256, 0, 0));
+      show.showOptions.axisOptionsY.axisMap = new AxisMercator(new TilePixel(new Tile(6, 5, 7), 256, 0, 0));
       // units of Y Axis no good
       return show;
     }

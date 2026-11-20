@@ -132,14 +132,14 @@ public class ShowComponent extends JComponent implements MouseMotionListener, Mo
           Point point = mouseEvent.getPoint();
           // ---
           if (set_x.contains(Option.PAN)) {
-            Scalar shift = showableConfig.confX().shift(pressed.x, point.x);
+            Scalar shift = showableConfig.axisConfigX().shift(pressed.x, point.x);
             Clip xRange = cbb.clip(0);
             cbb = CoordinateBoundingBox.of( //
                 Clips.operator(shift::add).apply(xRange), //
                 cbb.clip(1));
           }
           if (set_y.contains(Option.PAN)) {
-            Scalar shift = showableConfig.confY().shift(pressed.y, point.y);
+            Scalar shift = showableConfig.axisConfigY().shift(pressed.y, point.y);
             Clip yRange = cbb.clip(1);
             cbb = CoordinateBoundingBox.of( //
                 cbb.clip(0), //

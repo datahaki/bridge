@@ -16,32 +16,37 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
  * 
  * @param rectangle
  * @param cbb
- * @param confX
- * @param confY */
-public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, AxisConfig confX, AxisConfig confY) {
+ * @param axisConfigX
+ * @param axisConfigY */
+public record ShowableConfig( //
+    Rectangle rectangle, //
+    CoordinateBoundingBox cbb, //
+    AxisConfig axisConfigX, //
+    AxisConfig axisConfigY //
+) {
   public static ShowableConfig empty(Rectangle rectangle) {
     return new ShowableConfig(rectangle, null, null, null);
   }
 
   public Point2D model2point(Tensor vector) {
     return new Point2D.Double( //
-        confX.model2pixel(vector.Get(0)), //
-        confY.model2pixel(vector.Get(1)));
+        axisConfigX.model2pixel(vector.Get(0)), //
+        axisConfigY.model2pixel(vector.Get(1)));
   }
 
   public Optional<Tensor> point2model(Point point) {
     return rectangle.contains(point) //
         ? Optional.of(Tensors.of( //
-            confX.pixel2model(point.x), //
-            confY.pixel2model(point.y)))
+            axisConfigX.pixel2model(point.x), //
+            axisConfigY.pixel2model(point.y)))
         : Optional.empty();
   }
 
   public Optional<Tensor> point2range(Point point) {
     return rectangle.contains(point) //
         ? Optional.of(Tensors.of( //
-            confX.pixel2range(point.x), //
-            confY.pixel2range(point.y)))
+            axisConfigX.pixel2range(point.x), //
+            axisConfigY.pixel2range(point.y)))
         : Optional.empty();
   }
 
@@ -50,8 +55,8 @@ public record ShowableConfig(Rectangle rectangle, CoordinateBoundingBox cbb, Axi
     return new ShowableConfig( //
         new Rectangle(0, 0, rectangle.width, rectangle.height), //
         cbb, //
-        confX.pruned(), //
-        confY.pruned());
+        axisConfigX.pruned(), //
+        axisConfigY.pruned());
   }
 
   public boolean isEmpty() {

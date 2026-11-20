@@ -232,7 +232,7 @@ public class GeoComponent extends JComponent {
           List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.width)).toList();
           int height = fontMetrics.getDescent();
           for (Scalar tick : list) {
-            int x = (int) Math.round(showableConfig.confX().model2pixel(tick));
+            int x = (int) Math.round(showableConfig.axisConfigX().model2pixel(tick));
             if (gridlines) {
               graphics.setColor(gridLineColor);
               graphics.drawLine(x, 0, x, dimension.height);
@@ -257,7 +257,7 @@ public class GeoComponent extends JComponent {
           int width = optionalInt.getAsInt() + 5;
           for (Scalar tick : list) {
             int x = dimension.width - width;
-            int y = (int) Math.round(showableConfig.confY().model2pixel(tick));
+            int y = (int) Math.round(showableConfig.axisConfigY().model2pixel(tick));
             if (gridlines) {
               graphics.setColor(gridLineColor);
               graphics.drawLine(0, y, dimension.width, y);

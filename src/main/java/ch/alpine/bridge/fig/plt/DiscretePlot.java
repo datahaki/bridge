@@ -51,7 +51,7 @@ public class DiscretePlot extends BaseShowable {
       Scalar x = (Scalar) _x;
       Scalar y = suo.apply(x);
       Point2D point2d = showableConfig.model2point(Tensors.of(x, y));
-      double y0 = showableConfig.confY().model2pixel(y.zero());
+      double y0 = showableConfig.axisConfigY().model2pixel(y.zero());
       graphics.setColor(color);
       graphics.draw(new Line2D.Double(point2d.getX(), y0, point2d.getX(), point2d.getY()));
       graphics.setColor(getColor());
