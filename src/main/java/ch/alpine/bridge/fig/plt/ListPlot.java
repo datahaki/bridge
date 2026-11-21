@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
-import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Slash;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
@@ -32,9 +32,7 @@ public class ListPlot extends BasePointsPlot {
   }
 
   public static Showable of(ScalarUnaryOperator suo, Tensor vector) {
-    return of(Tensor.of(vector.stream() //
-        .map(Scalar.class::cast) //
-        .map(scalar -> Tensors.of(scalar, suo.apply(scalar)))));
+    return of(Slash.vector(vector, scalar -> Tensors.of(scalar, suo.apply(scalar))));
   }
 
   // ---

@@ -53,7 +53,8 @@ public class VectorPlot extends BarLegendPlot {
       Tensor _uv = Tensors.reserve(initialCapacity);
       Tensor norms = Tensors.reserve(initialCapacity);
       xy = Tensor.of(dy.stream() //
-          .flatMap(y -> dx.stream().map(x -> Unprotect.using(List.of(x, y)))) //
+          .flatMap(y -> dx.stream() //
+              .map(x -> Unprotect.using(List.of(x, y)))) //
           .filter(p -> {
             Tensor v = tuo.apply(p);
             boolean isFinite = FiniteTensorQ.of(v);
