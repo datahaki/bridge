@@ -7,7 +7,6 @@ import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import ch.alpine.tensor.Rational;
@@ -113,7 +112,6 @@ enum StaticHelper {
   public static Tensor pair(Tensor vx, Tensor vy) {
     int n = Integers.requireEquals(vx.length(), vy.length());
     Integers.requirePositiveOrZero(n);
-    return Tensor.of(IntStream.range(0, n) //
-        .mapToObj(i -> Tensors.of(vx.Get(i), vy.Get(i))));
+    return Tensors.vector(i -> Tensors.of(vx.Get(i), vy.Get(i)), n);
   }
 }

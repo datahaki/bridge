@@ -160,7 +160,7 @@ public final class Show implements Serializable {
     if (Objects.nonNull(cbb)) {
       Scalar ratio = ratio();
       if (Objects.nonNull(ratio)) {
-        Tensor a = Tensor.of(cbb.stream().map(Clip::length));
+        Tensor a = Tensor.of(cbb.stream().map(Clip::length), cbb.dimensions());
         a.set(ratio::multiply, 1);
         Tensor b = Tensors.vector(rectangle.width, rectangle.height);
         Optional<Tensor> optional = CbbFit.inside(a, b);

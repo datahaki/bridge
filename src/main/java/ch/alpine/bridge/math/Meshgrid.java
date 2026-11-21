@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Slash;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Unprotect;
 import ch.alpine.tensor.alg.Subdivide;
@@ -36,24 +37,25 @@ public record Meshgrid(CoordinateBoundingBox cbb, int width, int height) impleme
    * @return */
   public Tensor image(TensorUnaryOperator tuo) {
     Tensor dx = dx();
-    return Tensor.of(dy().stream().parallel() //
-        .map(y -> Tensor.of(dx.stream() //
-            .map(x -> tuo.apply(Unprotect.using(List.of(x, y)))) //
-        )));
+    return Tensor.of(dy().stream() //
+        .parallel() //
+        .map(y -> Slash.of(dx, x -> tuo.apply(Unprotect.using(List.of(x, y))))));
   }
 
   public Tensor image(ScalarBinaryOperator sbo) {
     Tensor dx = dx();
-    return Tensor.of(dy().stream().map(Scalar.class::cast).parallel() //
-        .map(y -> Tensor.of(dx.stream().map(Scalar.class::cast) //
-            .map(x -> sbo.apply(x, y)) //
-        )));
+    return Tensor.of(dy().stream() //
+        .map(Scalar.class::cast) //
+        .parallel() //
+        .map(y -> Slash.vector(dx, x -> sbo.apply(x, y))));
   }
 
+  /** @return vector */
   public Tensor dx() {
     return Subdivide.intermediate_increasing(cbb.clip(0), width).maps(N.DOUBLE);
   }
 
+  /** @return vector */
   public Tensor dy() {
     return Subdivide.intermediate_decreasing(cbb.clip(1), height).maps(N.DOUBLE);
   }

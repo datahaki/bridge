@@ -3,10 +3,11 @@ package ch.alpine.bridge.lang;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.Slash;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.api.ScalarUnaryOperator;
 import ch.alpine.tensor.ext.Integers;
 import ch.alpine.tensor.mat.MatrixQ;
@@ -55,13 +56,12 @@ public class ColumnsWithoutUnits {
         .toList();
     QuantityMagnitude quantityMagnitude = QuantityMagnitude.of(unitSystem);
     magnitudes = units.stream().map(quantityMagnitude::in).toList();
-    result = Tensor.of(matrix.stream().map(this::row));
+    result = Slash.of(matrix, this::row);
   }
 
   private Tensor row(Tensor vector) {
     Integers.requireEquals(vector.length(), magnitudes.size());
-    return Tensor.of(IntStream.range(0, vector.length()) //
-        .mapToObj(index -> magnitudes.get(index).apply(vector.Get(index))));
+    return Tensors.vector(index -> magnitudes.get(index).apply(vector.Get(index)), vector.length());
   }
 
   /** @return list of units that were used to determine the magnitude of
