@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class ShowGridComponentTest {
   @Test
   void test() {
-    List<Rectangle> list = ShowGridComponent.rectangles(5, new Dimension(200, 300));
+    List<Rectangle> list = GraphicsGrid.rectangles(5, new Dimension(200, 300));
     IO.println(list);
   }
 }

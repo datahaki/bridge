@@ -9,7 +9,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.io.MathematicaFormat;
-import ch.alpine.tensor.jet.AppendOne;
+import ch.alpine.tensor.jet.AffineAppend;
 import ch.alpine.tensor.mat.MatrixQ;
 import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.mat.re.Det;
@@ -28,7 +28,7 @@ public final class AffineFrame2D implements Serializable {
   }
 
   public Point2D toPoint2D(Tensor xy) {
-    Tensor r = matrix.dot(AppendOne.FUNCTION.apply(xy));
+    Tensor r = matrix.dot(AffineAppend.M1.apply(xy));
     return new Point2D.Double( //
         r.Get(0).number().doubleValue(), //
         r.Get(1).number().doubleValue());
@@ -38,7 +38,7 @@ public final class AffineFrame2D implements Serializable {
    * @param py
    * @return vector of length 2 */
   Tensor toVector(Tensor xy) {
-    return matrix.dot(AppendOne.FUNCTION.apply(xy)).extract(0, 2);
+    return matrix.dot(AffineAppend.M1.apply(xy)).extract(0, 2);
   }
 
   /** @return toPoint2D(0, 0) */
