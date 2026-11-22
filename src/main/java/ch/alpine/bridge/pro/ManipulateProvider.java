@@ -5,10 +5,12 @@ import java.awt.Container;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.WindowBounds;
 import ch.alpine.bridge.awt.WindowClosed;
+import ch.alpine.bridge.io.FileBlock;
 import ch.alpine.bridge.io.ResourceLocator;
 import ch.alpine.bridge.lang.FriendlyFormat;
 import ch.alpine.bridge.ref.ann.ReflectionMarker;
@@ -30,20 +32,22 @@ public non-sealed interface ManipulateProvider extends RunProvider {
     ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
     ResourceLocator resourceLocator = ResourceLocator.of(getClass());
+    if (FileBlock.of(resourceLocator.resolve("")))
+      return null;
     resourceLocator.tryLoad(this); // assign field values from properties file
     JFrame jFrame = Manipulate.asFrame(this, this::getContainer);
     jFrame.setTitle(FriendlyFormat.defaultTitle(getClass()));
     WindowBounds.persistent(jFrame, resourceLocator.properties(WindowBounds.class));
     WindowClosed.runs(jFrame, () -> resourceLocator.trySave(this)); // store field values
-    WindowClosed.runs(jFrame, this::closeOperation); // store field values
+    WindowClosed.runs(jFrame, this::windowClosed); // store field values
     AwtUtil.ctrlW(jFrame);
-    // SwingUtilities.invokeLater(() -> jFrame.setVisible(true));
-    jFrame.setVisible(true);
+    SwingUtilities.invokeLater(() -> jFrame.setVisible(true));
+    // jFrame.setVisible(true);
     return jFrame;
   }
 
   /** invoked when window closes, allows app to perform clean up
    * e.g. thread stop */
-  default void closeOperation() {
+  default void windowClosed() {
   }
 }
