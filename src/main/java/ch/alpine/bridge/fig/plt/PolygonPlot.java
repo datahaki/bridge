@@ -13,6 +13,10 @@ import ch.alpine.bridge.fig.PlotOption;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
 import ch.alpine.tensor.Tensor;
+import ch.alpine.tensor.Tensors;
+import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
+import ch.alpine.tensor.sca.Clip;
 
 /** <p>inspired by
  * <a href="https://reference.wolfram.com/language/ref/Polygon.html">Polygon</a> */
@@ -25,6 +29,24 @@ public class PolygonPlot extends BasePointsPlot {
     Set<PlotOption> set = EnumSet.of(PlotOption.CLOSE);
     Arrays.stream(plotOptions).forEach(set::add);
     return new PolygonPlot(points, set);
+  }
+
+  public static Showable of(CoordinateBoundingBox cbb, PlotOption... plotOptions) {
+    return of(polygon(cbb), plotOptions);
+  }
+
+  /** @param cbb
+   * @return polygon defined by the corners of the first two dimensions of given
+   * coordinateBoundingBox starting with the min,min corner and visiting ccw
+   * so that PolygonArea gives a non-negative number */
+  public static Tensor polygon(CoordinateBoundingBox cbb) {
+    Clip clipX = cbb.clip(0);
+    Clip clipY = cbb.clip(1);
+    return Unprotect.byRef( //
+        Tensors.of(clipX.min(), clipY.min()), //
+        Tensors.of(clipX.max(), clipY.min()), //
+        Tensors.of(clipX.max(), clipY.max()), //
+        Tensors.of(clipX.min(), clipY.max()));
   }
 
   // ---
