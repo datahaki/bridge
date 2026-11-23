@@ -57,11 +57,11 @@ public record TilePixel(Tile tile, int wid, int pix, int piy) implements Seriali
    * @param lat
    * @return */
   public static Optional<TilePixel> from(int z, int wid, Scalar lon, Scalar lat) {
-    lon = UnitSystem.SI().apply(lon);
-    lat = LAT_DOMAIN.apply(UnitSystem.SI().apply(lat));
+    lat = UnitSystem.SI().apply(lat);
     if (LAT_DOMAIN.isInside(lat)) {
       int base = 1 << z;
       Scalar factor = RealScalar.of(base * wid);
+      lon = UnitSystem.SI().apply(lon);
       Scalar nx = lon.add(Pi.VALUE).divide(Pi.TWO).multiply(factor);
       Scalar ny = Rational.HALF.subtract(ArcTanh.FUNCTION.apply(Sin.FUNCTION.apply(lat)).divide(Pi.TWO)) //
           .multiply(factor);

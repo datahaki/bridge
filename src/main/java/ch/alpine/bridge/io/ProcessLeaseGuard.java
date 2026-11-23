@@ -27,7 +27,7 @@ public class ProcessLeaseGuard {
 
   /** Represents an acquired cross-JVM lock lease.
    * The caller is responsible for calling {@link #close()} when the lock should be released. */
-  public static final class Lease implements Closeable {
+  public static class Lease implements Closeable {
     private final FileChannel fileChannel;
     private final FileLock fileLock;
     private final AtomicBoolean closed = new AtomicBoolean(false);
@@ -38,7 +38,9 @@ public class ProcessLeaseGuard {
     }
 
     public boolean isOpen() {
-      return !closed.get() && fileChannel.isOpen() && fileLock.isValid();
+      return !closed.get() //
+          && fileChannel.isOpen() //
+          && fileLock.isValid();
     }
 
     @Override

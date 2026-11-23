@@ -31,6 +31,15 @@ class TileTest {
     Tolerance.CHOP.requireClose(cbb1.clip(1).length(), RealScalar.of(2.968844459490665));
     CoordinateBoundingBox cbb2 = tile.cbb();
     assertEquals(cbb1, cbb2);
+    assertEquals(tile.children().size(), 4);
+  }
+
+  @Test
+  void testParent() {
+    Tile par = new Tile(0, 0, 0);
+    for (Tile tile : par.children())
+      assertEquals(tile.parent(), par);
+    assertThrows(Exception.class, () -> par.parent());
   }
 
   @Test

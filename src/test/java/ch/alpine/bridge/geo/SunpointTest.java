@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
 import ch.alpine.tensor.mat.Tolerance;
+import ch.alpine.tensor.qty.Quantity;
 
 class SunpointTest {
   @Test
@@ -23,5 +24,12 @@ class SunpointTest {
     // assertEquals(0.0, sunpoint.declination().number().doubleValue(), 1e-5);
     Tolerance.CHOP.requireZero(sunpoint.lambda_s());
     Tolerance.CHOP.requireZero(sunpoint.delta());
+  }
+
+  @Test
+  void testNow() {
+    Sunpoint sunpoint = Sunpoint.now();
+    sunpoint.fromLongitude(Quantity.of(270, "deg"));
+    sunpoint.fromLongitude(Quantity.of(.2, ""));
   }
 }

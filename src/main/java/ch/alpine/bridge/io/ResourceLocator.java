@@ -74,6 +74,6 @@ public class ResourceLocator {
 
   @Override
   public String toString() {
-    return MathematicaFormat.concise(super.toString(), base);
+    return MathematicaFormat.concise("ResourceLocator", base);
   }
 }

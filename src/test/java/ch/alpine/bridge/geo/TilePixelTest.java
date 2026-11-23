@@ -2,6 +2,9 @@
 package ch.alpine.bridge.geo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -48,6 +51,14 @@ class TilePixelTest {
     assertEquals(tileP4.tile().z(), 16);
     TilePixel tileP5 = tileP4.widIncr(+256, 19).orElseThrow();
     assertEquals(tileP5.tile().z(), 17);
+  }
+
+  @Test
+  void testNoCanDo() {
+    Scalar lon = Unitless.DEGREES.asIs(-0.762800);
+    Scalar lat = Unitless.DEGREES.asIs(87.343373);
+    Optional<TilePixel> optional = TilePixel.from(17, 256, lon, lat);
+    assertTrue(optional.isEmpty());
   }
 
   @Test

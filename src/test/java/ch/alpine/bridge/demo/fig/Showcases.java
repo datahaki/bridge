@@ -220,6 +220,7 @@ public enum Showcases implements ShowProvider {
       show.add(PolygonPlot.of(poly, PlotOption.FILL)).setAlpha(32);
       Tensor reve = Reverse.of(Slash.of(poly, tuo));
       show.add(PolygonPlot.of(reve, PlotOption.FILL)).setAlpha(32);
+      show.add(PolygonPlot.of(poly));
       show.setAspectRatioOne();
       return show;
     }

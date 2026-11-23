@@ -5,10 +5,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-/** brutal way of task managing */
+/** CAREFUL: brutal way of task managing */
 public class InterruptibleSingleTaskExecutor {
   // Underlying single-thread executor to ensure sequential execution
-  private final ExecutorService internalExecutor = Executors.newSingleThreadExecutor();
+  private final ExecutorService executorService = Executors.newSingleThreadExecutor();
   // Reference to the currently running task's Future
   private Future<?> activeTaskFuture;
   private final Object lock = new Object();
@@ -23,7 +23,7 @@ public class InterruptibleSingleTaskExecutor {
         activeTaskFuture.cancel(true); // true = Thread.interrupt() if running
       }
       // Submit the new task to the single-thread executor
-      activeTaskFuture = internalExecutor.submit(() -> {
+      activeTaskFuture = executorService.submit(() -> {
         try {
           // Periodically check Thread.interrupted() inside your task logic
           // if your task performs long-running CPU or blocking operations.
@@ -46,7 +46,7 @@ public class InterruptibleSingleTaskExecutor {
       if (activeTaskFuture != null) {
         activeTaskFuture.cancel(true);
       }
-      internalExecutor.shutdownNow();
+      executorService.shutdownNow();
     }
   }
 }

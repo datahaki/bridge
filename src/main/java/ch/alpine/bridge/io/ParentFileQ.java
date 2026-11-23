@@ -3,6 +3,7 @@ package ch.alpine.bridge.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 
 public enum ParentFileQ {
@@ -24,7 +25,7 @@ public enum ParentFileQ {
         child = child.getParentFile();
       }
     } catch (IOException ioException) {
-      throw new RuntimeException(ioException);
+      throw new UncheckedIOException(ioException);
     }
     return false;
   }

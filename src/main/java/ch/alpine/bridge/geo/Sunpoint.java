@@ -51,9 +51,9 @@ public record Sunpoint(Scalar lambda_s, Scalar delta) implements Serializable {
         AXIAL_TILT.multiply(Sin.FUNCTION.apply(angle)));
   }
 
-  public Scalar fromLongitude(Scalar lambda) {
+  public Scalar fromLongitude(Scalar lon) {
     Scalar x = Tan.FUNCTION.apply(delta);
-    Scalar y = Cos.FUNCTION.apply(lambda.subtract(lambda_s)).negate();
+    Scalar y = Cos.FUNCTION.apply(lon.subtract(lambda_s)).negate();
     Scalar result = MOD_LAT.apply(ArcTan.of(x, y));
     Scalar expect = ArcTan.FUNCTION.apply(y.divide(x));
     Tolerance.CHOP.requireClose(result, expect);
