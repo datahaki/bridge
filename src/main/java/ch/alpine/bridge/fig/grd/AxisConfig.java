@@ -148,6 +148,7 @@ public record AxisConfig( //
           LineMetrics lineMetrics = font.getLineMetrics("Ag", FONT_RENDER_CONTEXT);
           val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
         }
+        // TODO for log10 only use decimal steps for ticks, but more for gridline...
         Ticks.stream(ticks_clip, Rational.of(val, pixel_len())) //
             .forEach(ticks -> map.put((int) ticks2pixel(ticks), format(ticks)));
       }

@@ -32,6 +32,7 @@ public non-sealed interface ManipulateProvider extends RunProvider {
     ImageIO.setUseCache(false);
     LookAndFeels.autoDetect();
     ResourceLocator resourceLocator = ResourceLocator.of(getClass());
+    // FIXME this is not the right lock! as window close should release lock!
     if (FileBlock.of(resourceLocator.resolve("")))
       return null;
     resourceLocator.tryLoad(this); // assign field values from properties file
