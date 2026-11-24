@@ -71,7 +71,6 @@ import ch.alpine.tensor.io.Import;
 import ch.alpine.tensor.io.MatrixForm;
 import ch.alpine.tensor.itp.Interpolation;
 import ch.alpine.tensor.itp.LanczosInterpolation;
-import ch.alpine.tensor.itp.MitchellNetravaliKernel;
 import ch.alpine.tensor.lie.rot.CirclePoints;
 import ch.alpine.tensor.lie.rot.Cross;
 import ch.alpine.tensor.mat.GaussianMatrix;
@@ -87,13 +86,11 @@ import ch.alpine.tensor.pdf.Distribution;
 import ch.alpine.tensor.pdf.PDF;
 import ch.alpine.tensor.pdf.RandomVariate;
 import ch.alpine.tensor.pdf.TruncatedDistribution;
-import ch.alpine.tensor.pdf.c.GammaDistribution;
 import ch.alpine.tensor.pdf.c.LogNormalDistribution;
 import ch.alpine.tensor.pdf.c.NormalDistribution;
 import ch.alpine.tensor.pdf.c.UniformDistribution;
 import ch.alpine.tensor.pdf.d.BinomialDistribution;
 import ch.alpine.tensor.pdf.d.DiscreteUniformDistribution;
-import ch.alpine.tensor.pdf.d.PoissonDistribution;
 import ch.alpine.tensor.prc.PoissonProcess;
 import ch.alpine.tensor.prc.RandomFunction;
 import ch.alpine.tensor.prc.RandomProcess;
@@ -116,8 +113,6 @@ import ch.alpine.tensor.sca.gam.Gamma;
 import ch.alpine.tensor.sca.ply.Chebyshev;
 import ch.alpine.tensor.sca.ply.ChebyshevNodes;
 import ch.alpine.tensor.sca.ply.ClenshawChebyshev;
-import ch.alpine.tensor.sca.pow.Power;
-import ch.alpine.tensor.sca.pow.Sqrt;
 import ch.alpine.tensor.sca.tri.ArcCos;
 import ch.alpine.tensor.sca.tri.ArcSin;
 import ch.alpine.tensor.sca.tri.Cos;
@@ -536,16 +531,6 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  Filling2 {
-    @Override
-    public Show getShow() {
-      Show show = new Show("Gamma Distributions");
-      show.add(Plot.of(PDF.of(GammaDistribution.of(1, 2))::at, Clips.positive(20), PlotOption.FILL)).setLabel("alpha = 1");
-      show.add(Plot.of(PDF.of(GammaDistribution.of(4, 2))::at, Clips.positive(20), PlotOption.FILL)).setLabel("alpha = 4");
-      show.add(Plot.of(PDF.of(GammaDistribution.of(6, 2))::at, Clips.positive(20), PlotOption.FILL)).setLabel("alpha = 6");
-      return show;
-    }
-  },
   Ts_WP3 {
     @Override
     public Show getShow() {
@@ -623,15 +608,6 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  DensityPlot1 {
-    @Override
-    public Show getShow() {
-      Show show = new Show("Spectrogram");
-      ScalarBinaryOperator sbo = (x, y) -> Im.FUNCTION.apply(Sqrt.FUNCTION.apply(Power.of(Complex.of(x, y), 3)));
-      show.add(DensityPlot.of(sbo, CoordinateBoundingBox.of(Clips.absolute(2), Clips.absolute(2))));
-      return show;
-    }
-  },
   MatrixPlot0 {
     @Override
     public Show getShow() {
@@ -659,15 +635,6 @@ public enum Showcases implements ShowProvider {
       return show;
     }
   },
-  DiscretePlot0 {
-    @Override
-    public Show getShow() {
-      Show show = new Show("Discrete Plot");
-      show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(20, 0.3))::at, Clips.positive(20))).setLabel("0.3");
-      show.add(DiscretePlot.of(PDF.of(BinomialDistribution.of(25, 0.5))::at, Clips.positive(25))).setLabel("0.5");
-      return show;
-    }
-  },
   DiscretePlot1 {
     @Override
     public Show getShow() {
@@ -680,22 +647,6 @@ public enum Showcases implements ShowProvider {
       Clip clip = Clips.positive(n);
       show.add(DiscretePlot.of(pdf::at, clip)).setLabel("PDF");
       show.add(DiscretePlot.of(cdf::p_lessEquals, clip)).setLabel("CDF");
-      return show;
-    }
-  },
-  DiscretePlot2 {
-    @Override
-    public Show getShow() {
-      Distribution original = PoissonDistribution.of(7);
-      Distribution distribution = TruncatedDistribution.of(original, Clips.interval(5, 10));
-      PDF pdf = PDF.of(distribution);
-      CDF cdf = CDF.of(distribution);
-      PDF pdf_o = PDF.of(original);
-      Show show = new Show("Truncated Poisson Distribution[7]");
-      Clip clip = Clips.positive(12);
-      show.add(DiscretePlot.of(pdf::at, clip));
-      show.add(DiscretePlot.of(cdf::p_lessEquals, clip));
-      show.add(DiscretePlot.of(pdf_o::at, clip));
       return show;
     }
   },
@@ -776,17 +727,6 @@ public enum Showcases implements ShowProvider {
       Tensor matrix = RandomVariate.of(dX, 10, 20);
       Show show = new Show("MP NonSymmetric");
       show.add(MatrixPlot.of(matrix, ColorDataGradients.CLASSIC, false));
-      return show;
-    }
-  },
-  MitchellNet0 {
-    @Override
-    public Show getShow() {
-      Show show = new Show(ColorDataLists._098.strict().deriveWithAlpha(192));
-      show.setShowLabel("MitchellNetravaliKernel");
-      show.add(Plot.of(MitchellNetravaliKernel.standard(), Clips.absolute(2))).setLabel("1/3_1/3");
-      show.add(Plot.of(MitchellNetravaliKernel.of(1, 1), Clips.absolute(2))).setLabel("1_1");
-      show.setAspectRatioOne();
       return show;
     }
   },
