@@ -49,7 +49,6 @@ public non-sealed interface ManipulateProvider extends RunProvider {
       SwingUtilities.invokeLater(() -> jFrame.setVisible(true));
       return jFrame;
     }
-    System.err.println("already running");
     return null;
   }
 
