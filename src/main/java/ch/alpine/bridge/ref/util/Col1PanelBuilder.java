@@ -14,6 +14,7 @@ import ch.alpine.bridge.ref.ann.FieldLabels;
 
 final class Col1PanelBuilder implements PanelBuilder {
   private final ColumnPanel columnPanel = new ColumnPanel();
+  int depth = 0;
 
   @Override
   public void append(JComponent jComponent) {
@@ -24,7 +25,8 @@ final class Col1PanelBuilder implements PanelBuilder {
   public void push(String key, Field field, Integer index) {
     JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, index));
     jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
-    append(jLabel);
+    append(FieldsEditorParam.GLOBAL.createInset(depth, jLabel));
+    ++depth;
   }
 
   @Override
@@ -33,14 +35,14 @@ final class Col1PanelBuilder implements PanelBuilder {
     if (!field.getType().equals(Boolean.class)) {
       JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, null));
       jLabel.setToolTipText(FieldToolTip.of(field));
-      append(jLabel);
+      append(FieldsEditorParam.GLOBAL.createInset(depth, jLabel));
     }
-    append(jComponent);
+    append(FieldsEditorParam.GLOBAL.createInset(depth, jComponent));
   }
 
   @Override
   public void pop() {
-    // ---
+    --depth;
   }
 
   @Override

@@ -97,7 +97,7 @@ public class ProcessLeaseGuard {
       System.err.println("Another instance is already active (lock: " + path + "). Exiting.");
     } else {
       Runnable runnable = () -> JOptionPane.showMessageDialog(null, //
-          "The window is already open in another session.\n" + path, //
+          path, //
           "Process Already Active", JOptionPane.INFORMATION_MESSAGE);
       SwingUtilities.invokeLater(runnable);
     }

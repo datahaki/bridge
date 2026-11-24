@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.ref;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -10,8 +11,10 @@ import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.JTextComponent;
 
 import ch.alpine.bridge.ref.ann.FieldSelectionArray;
@@ -80,6 +83,16 @@ public class FieldsEditorParam {
         jComponent.setPreferredSize(dimension);
       }
     }
+  }
+
+  public JComponent createInset(int depth, JComponent jComponent) {
+    if (0 < depth) {
+      JPanel jPanel = new JPanel(new BorderLayout());
+      jPanel.setBorder(new EmptyBorder(0, insetLeft * depth, 0, 0));
+      jPanel.add(jComponent, BorderLayout.CENTER);
+      return jPanel;
+    }
+    return jComponent;
   }
 
   /** @param jComponent */
