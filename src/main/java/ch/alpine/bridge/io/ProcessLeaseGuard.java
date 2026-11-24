@@ -1,4 +1,5 @@
 // code by gemini
+// adapted by jph
 package ch.alpine.bridge.io;
 
 import java.awt.GraphicsEnvironment;
@@ -113,7 +114,7 @@ public class ProcessLeaseGuard {
     try {
       FileLock fileLock;
       try {
-        fileLock = fileChannel.tryLock();
+        fileLock = fileChannel.tryLock(0L, 1L, false);
       } catch (OverlappingFileLockException e) {
         fileLock = null;
       }

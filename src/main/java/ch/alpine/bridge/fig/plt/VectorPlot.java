@@ -41,50 +41,50 @@ public class VectorPlot extends BarLegendPlot {
     return new VectorPlot(tuo, cbb, colorDataGradient);
   }
 
-  private class Inner {
-    private final Tensor xy;
-    private final Tensor uv;
-    private final Rescale rescale;
+  private record Inner(Tensor xy, Tensor uv, Rescale rescale) {
+  }
 
-    public Inner(Meshgrid meshgrid) {
-      Tensor dx = meshgrid.dx();
-      Tensor dy = meshgrid.dy();
-      int initialCapacity = dx.length() * dy.length();
-      Tensor _uv = Tensors.reserve(initialCapacity);
-      Tensor norms = Tensors.reserve(initialCapacity);
-      xy = Tensor.of(dy.stream() //
-          .flatMap(y -> dx.stream() //
-              .map(x -> Unprotect.using(List.of(x, y)))) //
-          .filter(p -> {
-            Tensor v = tuo.apply(p);
-            boolean isFinite = FiniteTensorQ.of(v);
-            if (isFinite) {
-              Scalar norm = Vector2Norm.of(v);
-              if (Tolerance.CHOP.isZero(norm))
-                return false;
-              _uv.append(v);
-              norms.append(norm);
-              return true;
-            }
-            return false;
-          }));
-      if (Tensors.isEmpty(xy)) {
-        uv = Tensors.empty();
-        rescale = new Rescale(Tensors.empty());
-      } else {
-        // TODO This does not account for dy !!!
-        Scalar h = dx.Get(1).subtract(dx.Get(0));
-        Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
-        uv = _uv.multiply(h.divide(max.add(max)));
-        rescale = new Rescale(norms);
-      }
-      inner_clip = rescale.clip();
+  private Inner compute(Meshgrid meshgrid) {
+    Tensor dx = meshgrid.dx();
+    Tensor dy = meshgrid.dy();
+    int initialCapacity = dx.length() * dy.length();
+    Tensor _uv = Tensors.reserve(initialCapacity);
+    Tensor norms = Tensors.reserve(initialCapacity);
+    Tensor xy = Tensor.of(dy.stream() //
+        .flatMap(y -> dx.stream() //
+            .map(x -> Unprotect.using(List.of(x, y)))) //
+        .filter(p -> {
+          Tensor v = tuo.apply(p);
+          boolean isFinite = FiniteTensorQ.of(v);
+          if (isFinite) {
+            Scalar norm = Vector2Norm.of(v);
+            if (Tolerance.CHOP.isZero(norm))
+              return false;
+            _uv.append(v);
+            norms.append(norm);
+            return true;
+          }
+          return false;
+        }));
+    Tensor uv;
+    Rescale rescale;
+    if (Tensors.isEmpty(xy)) {
+      uv = Tensors.empty();
+      rescale = new Rescale(Tensors.empty());
+    } else {
+      // TODO This does not account for dy !!!
+      Scalar h = dx.Get(1).subtract(dx.Get(0));
+      Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
+      uv = _uv.multiply(h.divide(max.add(max)));
+      rescale = new Rescale(norms);
     }
+    inner_clip = rescale.clip();
+    return new Inner(xy, uv, rescale);
   }
 
   private final TensorUnaryOperator tuo;
   private final ScalarTensorFunction colorDataGradient;
-  private final Cache<Meshgrid, Inner> cache = Cache.of(Inner::new, 1);
+  private final Cache<Meshgrid, Inner> cache = Cache.of(this::compute, 1);
   // ---
   private Clip inner_clip = null;
   private int resolution = RESOLUTION_DEFAULT;

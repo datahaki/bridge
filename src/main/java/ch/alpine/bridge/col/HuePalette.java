@@ -2,6 +2,7 @@
 package ch.alpine.bridge.col;
 
 import java.awt.Color;
+import java.util.stream.IntStream;
 
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -10,8 +11,8 @@ import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
 import ch.alpine.tensor.chq.FiniteTensorQ;
 import ch.alpine.tensor.col.ColorDataIndexed;
-import ch.alpine.tensor.col.ColorDataLists;
 import ch.alpine.tensor.col.ColorFormat;
+import ch.alpine.tensor.col.StrictColorDataIndexed;
 import ch.alpine.tensor.ext.ArgMin;
 import ch.alpine.tensor.ext.Hue;
 import ch.alpine.tensor.nrm.Vector2Norm;
@@ -45,8 +46,6 @@ public class HuePalette implements ColorDataIndexed {
   // { 0.40, 0.55, 0.25 };
   // { 0.45, 0.50, 0.35 };
   private static final Tensor WEIGHTS = Tensors.vector(0.45, 0.50, 0.4);
-  /** luma */
-  public static final HuePalette LUMA = of(ColorDataLists._250.cyclic());
 
   public static HuePalette of(ColorDataIndexed colorDataIndexed) {
     return new HuePalette(colorDataIndexed, WEIGHTS);
@@ -95,10 +94,19 @@ public class HuePalette implements ColorDataIndexed {
     return ColorFormat.toVector(getColor(index));
   }
 
+  public Color getColor(int index, Scalar sat, Scalar val, double alpha) {
+    return getColor(index, sat.number().doubleValue(), val.number().doubleValue(), alpha);
+  }
+
   public Color getColor(int index, double sat, double val, double alpha) {
     int mod = Math.floorMod(index, length());
     // TODO need reference for fancy formula below!
     return Hue.of(hue.Get(mod).number().doubleValue(), sat, val * Math.pow(value.Get(mod).number().doubleValue(), sat), alpha);
+  }
+
+  public ColorDataIndexed create(Scalar sat, Scalar val) {
+    return StrictColorDataIndexed.of(IntStream.range(0, length()) //
+        .mapToObj(i -> getColor(i, sat, val, 1)).toArray(Color[]::new));
   }
 
   @Override

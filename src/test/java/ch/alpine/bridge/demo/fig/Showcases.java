@@ -105,6 +105,7 @@ import ch.alpine.tensor.sca.Abs;
 import ch.alpine.tensor.sca.Arg;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
+import ch.alpine.tensor.sca.Floor;
 import ch.alpine.tensor.sca.Im;
 import ch.alpine.tensor.sca.Ramp;
 import ch.alpine.tensor.sca.SawtoothWave;
@@ -270,6 +271,18 @@ public enum Showcases implements ShowProvider {
       show.add(DensityPlot.of(sbo, //
           CoordinateBoundingBox.of(Clips.absolute(3), Clips.absolute(3)), //
           ColorDataGradients.HUE));
+      return show;
+    }
+  },
+  DensityInteger {
+    @Override
+    public Show getShow() {
+      Show show = new Show("DensityInteger");
+      ScalarBinaryOperator sbo = (re, im) -> //
+      Floor.FUNCTION.apply(Im.FUNCTION.apply(Gamma.FUNCTION.apply(Complex.of(re, im))));
+      show.add(DensityPlot.of(sbo, //
+          CoordinateBoundingBox.of(Clips.absolute(3), Clips.absolute(3)), //
+          ColorDataLists._097.cyclic()));
       return show;
     }
   },

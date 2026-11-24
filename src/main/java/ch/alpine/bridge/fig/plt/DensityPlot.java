@@ -22,6 +22,7 @@ import ch.alpine.tensor.alg.Rescale;
 import ch.alpine.tensor.api.ScalarBinaryOperator;
 import ch.alpine.tensor.api.ScalarTensorFunction;
 import ch.alpine.tensor.col.ColorDataGradients;
+import ch.alpine.tensor.col.ColorDataIndexed;
 import ch.alpine.tensor.ext.Cache;
 import ch.alpine.tensor.img.ImageResize;
 import ch.alpine.tensor.io.ImageFormat;
@@ -64,24 +65,15 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
   }
 
   // ---
+  private record Inner(ScalableImage scalableImage, Clip clip) {
+  }
+
   private final Cache<Meshgrid, Inner> cache = Cache.of(this::recompute, 1);
   private final ScalarBinaryOperator sbo;
   private final ScalarTensorFunction colorDataGradient;
   // ---
   private Clip inner_clip = null;
   private int resolution = RESOLUTION_DEFAULT;
-
-  private class Inner {
-    private final ScalableImage scalableImage;
-    private final Clip clip;
-
-    public Inner(Meshgrid meshgrid) {
-      Rescale rescale = new Rescale(meshgrid.image(sbo));
-      BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
-      scalableImage = new ScalableImage(bufferedImage);
-      clip = rescale.clip();
-    }
-  }
 
   private DensityPlot(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
     super(cbb);
@@ -117,13 +109,25 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
 
   private Inner recompute(Meshgrid meshgrid) {
     Timing timing = Timing.started();
-    Inner inner = new Inner(meshgrid);
+    Inner inner = compute(meshgrid);
     resolution += Scalars.lessThan(timing.seconds(), RENDER_TIME_TARGET) //
         ? +7
         : -7;
     resolution = Math.max(RESOLUTION_MIN, resolution);
     inner_clip = inner.clip;
     return inner;
+  }
+
+  private Inner compute(Meshgrid meshgrid) {
+    // TODO control whether to rescale differently, but how?
+    if (colorDataGradient instanceof ColorDataIndexed) {
+      Tensor tensor = meshgrid.image(sbo);
+      BufferedImage bufferedImage = ImageFormat.of(tensor.maps(colorDataGradient));
+      return new Inner(new ScalableImage(bufferedImage), null);
+    }
+    Rescale rescale = new Rescale(meshgrid.image(sbo));
+    BufferedImage bufferedImage = ImageFormat.of(rescale.result().maps(colorDataGradient));
+    return new Inner(new ScalableImage(bufferedImage), rescale.clip());
   }
 
   @Override
