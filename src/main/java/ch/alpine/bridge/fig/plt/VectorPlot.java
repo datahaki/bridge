@@ -45,13 +45,13 @@ public class VectorPlot extends BarLegendPlot {
   }
 
   private Inner compute(Meshgrid meshgrid) {
-    Tensor dx = meshgrid.dx();
-    Tensor dy = meshgrid.dy();
-    int initialCapacity = dx.length() * dy.length();
+    Tensor px = meshgrid.px_incr();
+    Tensor py = meshgrid.py_decr();
+    int initialCapacity = px.length() * py.length();
     Tensor _uv = Tensors.reserve(initialCapacity);
     Tensor norms = Tensors.reserve(initialCapacity);
-    Tensor xy = Tensor.of(dy.stream() //
-        .flatMap(y -> dx.stream() //
+    Tensor xy = Tensor.of(py.stream() //
+        .flatMap(y -> px.stream() //
             .map(x -> Unprotect.using(List.of(x, y)))) //
         .filter(p -> {
           Tensor v = tuo.apply(p);
@@ -73,7 +73,7 @@ public class VectorPlot extends BarLegendPlot {
       rescale = new Rescale(Tensors.empty());
     } else {
       // TODO This does not account for dy !!!
-      Scalar h = dx.Get(1).subtract(dx.Get(0));
+      Scalar h = px.Get(1).subtract(px.Get(0));
       Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
       uv = _uv.multiply(h.divide(max.add(max)));
       rescale = new Rescale(norms);

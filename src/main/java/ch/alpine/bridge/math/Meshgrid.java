@@ -36,27 +36,29 @@ public record Meshgrid(CoordinateBoundingBox cbb, int width, int height) impleme
    * @param tuo that maps a vector {x, y} to a tensor
    * @return */
   public Tensor image(TensorUnaryOperator tuo) {
-    Tensor dx = dx();
-    return Tensor.of(dy().stream() //
+    Tensor px = px_incr();
+    Tensor py = py_decr();
+    return Tensor.of(py.stream() //
         .parallel() //
-        .map(y -> Slash.of(dx, x -> tuo.apply(Unprotect.using(List.of(x, y))))));
+        .map(y -> Slash.of(px, x -> tuo.apply(Unprotect.using(List.of(x, y))))), py.length());
   }
 
   public Tensor image(ScalarBinaryOperator sbo) {
-    Tensor dx = dx();
-    return Tensor.of(dy().stream() //
+    Tensor px = px_incr();
+    Tensor py = py_decr();
+    return Tensor.of(py.stream() //
         .map(Scalar.class::cast) //
         .parallel() //
-        .map(y -> Slash.vector(dx, x -> sbo.apply(x, y))));
+        .map(y -> Slash.vector(px, x -> sbo.apply(x, y))), py.length());
   }
 
   /** @return vector */
-  public Tensor dx() {
+  public Tensor px_incr() {
     return Subdivide.intermediate_increasing(cbb.clip(0), width).maps(N.DOUBLE);
   }
 
   /** @return vector */
-  public Tensor dy() {
+  public Tensor py_decr() {
     return Subdivide.intermediate_decreasing(cbb.clip(1), height).maps(N.DOUBLE);
   }
 }

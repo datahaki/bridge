@@ -11,16 +11,13 @@ import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
-import ch.alpine.bridge.awt.ColoredEmptyBorder;
 import ch.alpine.bridge.awt.ColumnPanel;
 import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldLabels;
-import ch.alpine.tensor.col.ColorDataIndexed;
-import ch.alpine.tensor.col.ColorDataLists;
 
 final class Col1PanelBuilder implements PanelBuilder {
-  private static final ColorDataIndexed CDI = ColorDataLists._097.cyclic();
   private final Deque<ColumnPanel> deque = new ArrayDeque<>();
 
   public Col1PanelBuilder() {
@@ -35,7 +32,7 @@ final class Col1PanelBuilder implements PanelBuilder {
   @Override
   public void push(String key, Field field, Integer index) {
     ColumnPanel columnPanel = new ColumnPanel();
-    columnPanel.setBorder(new ColoredEmptyBorder(3, FieldsEditorParam.GLOBAL.insetLeft, 0, 0, CDI.getColor(deque.size() - 1)));
+    columnPanel.setBorder(new EmptyBorder(3, FieldsEditorParam.GLOBAL.insetLeft, 0, 0));
     JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, index));
     jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
     columnPanel.add(jLabel);

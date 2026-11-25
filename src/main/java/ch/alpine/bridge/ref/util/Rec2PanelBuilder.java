@@ -25,7 +25,6 @@ final class Rec2PanelBuilder implements PanelBuilder {
     throw new IllegalStateException();
   }
 
-  /** @param jComponent that spreads over the entire width */
   @Override
   public void push(String key, Field field, Integer index) {
     JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, index));
@@ -39,10 +38,7 @@ final class Rec2PanelBuilder implements PanelBuilder {
   }
 
   /** append a row consisting of two components of equal height:
-   * jComponent1 is shown to the left, and jComponent2 to the right
-   * 
-   * @param jComponent1
-   * @param jComponent2 */
+   * jComponent1 is shown to the left, and jComponent2 to the right */
   @Override
   public void item(String key, Field field, JComponent jComponent2) {
     deque.peek().item(key, field, jComponent2);
