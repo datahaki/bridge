@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 
 import ch.alpine.bridge.geo.TilePixel;
+import ch.alpine.bridge.math.Ticks;
 import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -42,6 +43,11 @@ public record AxisMercator(TilePixel origin) implements AxisMap, Serializable {
   @Override
   public String format(Scalar model) {
     return TickToString.formatValue(model);
+  }
+
+  @Override
+  public Ticks ticks() {
+    return Ticks.DENSE;
   }
 
   public CoordinateBoundingBox cbb(Rectangle rectangle) {

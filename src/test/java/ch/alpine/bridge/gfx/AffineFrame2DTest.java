@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.gfx;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

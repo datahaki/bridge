@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.io;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

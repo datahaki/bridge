@@ -108,7 +108,7 @@ public class CandlestickChart extends BaseShowable {
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else
-      Ticks.stream(clip, factor).forEach(navigableMap::add);
+      Ticks.DENSE.stream(clip, factor).forEach(navigableMap::add);
     return navigableMap;
   }
 

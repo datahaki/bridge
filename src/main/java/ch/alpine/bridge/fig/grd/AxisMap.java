@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig.grd;
 
+import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.Scalar;
 
 public interface AxisMap {
@@ -11,4 +12,6 @@ public interface AxisMap {
   TickOption tickOption();
 
   String format(Scalar ticks);
+
+  Ticks ticks();
 }

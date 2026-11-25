@@ -229,7 +229,7 @@ public class GeoComponent extends JComponent {
           max = max.add(Quantity.of(360, "deg"));
         Clip clip = Clips.interval(min, max);
         if (Scalars.nonZero(clip.length())) {
-          List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.width)).toList();
+          List<Scalar> list = Ticks.DENSE.stream(clip, Rational.of(100, dimension.width)).toList();
           int height = fontMetrics.getDescent();
           for (Scalar tick : list) {
             int x = (int) Math.round(showableConfig.axisConfigX().model2pixel(tick));
@@ -250,7 +250,7 @@ public class GeoComponent extends JComponent {
         while (Scalars.lessThan(max, min))
           max = max.add(Quantity.of(180, "deg"));
         Clip clip = Clips.interval(min, max);
-        List<Scalar> list = Ticks.stream(clip, Rational.of(100, dimension.height)).toList();
+        List<Scalar> list = Ticks.DENSE.stream(clip, Rational.of(100, dimension.height)).toList();
         // establish longest string, e.g. "47.15"
         OptionalInt optionalInt = list.stream().map(TickToString::formatValue).mapToInt(fontMetrics::stringWidth).max();
         if (optionalInt.isPresent()) {

@@ -1,6 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig.grd;
 
+import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.exp.Exp;
@@ -29,6 +30,11 @@ public enum AxisMaps implements AxisMap {
     public String format(Scalar model) {
       return TickToString.formatValue(model);
     }
+
+    @Override
+    public Ticks ticks() {
+      return Ticks.DENSE;
+    }
   },
   LOG {
     @Override
@@ -50,6 +56,11 @@ public enum AxisMaps implements AxisMap {
     public String format(Scalar range) {
       return "exp " + TickToString.formatValue(range);
     }
+
+    @Override
+    public Ticks ticks() {
+      return Ticks.DENSE;
+    }
   },
   LOG10 {
     @Override
@@ -70,6 +81,11 @@ public enum AxisMaps implements AxisMap {
     @Override
     public String format(Scalar range) {
       return TickToString.formatValue(range2model(range));
+    }
+
+    @Override
+    public Ticks ticks() {
+      return Ticks.DENSE;
     }
   },
   dB {
@@ -93,6 +109,11 @@ public enum AxisMaps implements AxisMap {
     @Override
     public String format(Scalar range) {
       return TickToString.formatValue(range2model(range)) + " dB";
+    }
+
+    @Override
+    public Ticks ticks() {
+      return Ticks.DENSE;
     }
   }
 }

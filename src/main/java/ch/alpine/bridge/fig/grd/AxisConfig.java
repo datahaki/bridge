@@ -12,7 +12,6 @@ import java.util.Map;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
-import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -149,7 +148,7 @@ public record AxisConfig( //
           val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
         }
         // TODO for log10 only use decimal steps for ticks, but more for gridline...
-        Ticks.stream(ticks_clip, Rational.of(val, pixel_len())) //
+        axisMap.ticks().stream(ticks_clip, Rational.of(val, pixel_len())) //
             .forEach(ticks -> map.put((int) ticks2pixel(ticks), format(ticks)));
       }
     }

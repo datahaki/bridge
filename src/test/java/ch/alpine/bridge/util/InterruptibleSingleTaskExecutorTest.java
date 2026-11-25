@@ -1,3 +1,4 @@
+// code by jph
 package ch.alpine.bridge.util;
 
 import org.junit.jupiter.api.Test;
