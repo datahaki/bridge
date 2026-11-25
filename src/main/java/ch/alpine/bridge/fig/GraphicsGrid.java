@@ -35,13 +35,21 @@ public enum GraphicsGrid {
     return rectangles(n, new Rectangle(new Point(), dimension));
   }
 
-  // TODO name is bad
-  public static List<Rectangle> rectanglesCol(int n, Rectangle rectangle) {
+  public static List<Rectangle> column(int n, Rectangle rectangle) {
     List<Rectangle> list = new ArrayList<>(n);
     Dimension dimension = rectangle.getSize();
     dimension.height /= n;
     for (int i = 0; i < n; ++i)
       list.add(new Rectangle(new Point(rectangle.x, rectangle.y + (i * dimension.height)), dimension));
+    return list;
+  }
+
+  public static List<Rectangle> row(int n, Rectangle rectangle) {
+    List<Rectangle> list = new ArrayList<>(n);
+    Dimension dimension = rectangle.getSize();
+    dimension.width /= n;
+    for (int i = 0; i < n; ++i)
+      list.add(new Rectangle(new Point(rectangle.x + (i * dimension.width), rectangle.y), dimension));
     return list;
   }
 }
