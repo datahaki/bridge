@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
+import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.awt.ScalableImage;
 import ch.alpine.bridge.fig.BackgroundPlotMarker;
 import ch.alpine.bridge.fig.BarLegend;
@@ -93,7 +94,7 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
     int width = (int) Math.floor(dr.getX() - ul.getX()) + 1;
     int height = (int) Math.floor(dr.getY() - ul.getY()) + 1;
     if (0 < width && 0 < height) {
-      Meshgrid meshgrid = Meshgrid.of(cbb, StaticHelper.aspect(resolution, showableConfig.rectangle().getSize()));
+      Meshgrid meshgrid = Meshgrid.of(cbb, AwtUtil.aspect(resolution, showableConfig.rectangle().getSize()));
       graphics.drawImage( //
           cache.apply(meshgrid).scalableImage.getScaledInstance(ImageResize.DEGREE_3, width, height), //
           (int) ul.getX(), //

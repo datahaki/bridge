@@ -17,6 +17,12 @@ import javax.swing.JRootPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import ch.alpine.tensor.Rational;
+import ch.alpine.tensor.RealScalar;
+import ch.alpine.tensor.Scalar;
+import ch.alpine.tensor.sca.Round;
+import ch.alpine.tensor.sca.pow.Sqrt;
+
 /** Abstract Window Toolkit Utilities */
 public enum AwtUtil {
   ;
@@ -55,5 +61,17 @@ public enum AwtUtil {
         runnable.run();
       }
     });
+  }
+
+  /** @param resolution
+   * @param dimension
+   * @return */
+  public static Dimension aspect(int resolution, Dimension dimension) {
+    Scalar factor = Sqrt.FUNCTION.apply(Rational.of( //
+        resolution * resolution, // target
+        Math.multiplyExact(dimension.width, dimension.height)));
+    return new Dimension( //
+        Round.intValueExact(factor.multiply(RealScalar.of(dimension.width))), //
+        Round.intValueExact(factor.multiply(RealScalar.of(dimension.height))));
   }
 }

@@ -1,7 +1,6 @@
 // code by gjoel, jph
 package ch.alpine.bridge.fig.plt;
 
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.NavigableSet;
 import java.util.Objects;
@@ -10,7 +9,6 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import ch.alpine.tensor.Rational;
-import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Tensors;
@@ -23,8 +21,6 @@ import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.red.MinMax;
 import ch.alpine.tensor.sca.Clip;
 import ch.alpine.tensor.sca.Clips;
-import ch.alpine.tensor.sca.Round;
-import ch.alpine.tensor.sca.pow.Sqrt;
 import ch.alpine.tensor.tmp.TimeSeries;
 import ch.alpine.tensor.tmp.TsEntry;
 
@@ -93,15 +89,6 @@ enum StaticHelper {
     return CoordinateBoundingBox.of( //
         SHIFT_HALF.apply(Clips.positive(dim0)), //
         SHIFT_HALF.apply(Clips.positive(dim1)));
-  }
-
-  public static Dimension aspect(int resolution, Dimension dimension) {
-    Scalar factor = Sqrt.FUNCTION.apply(Rational.of( //
-        resolution * resolution, // target
-        Math.multiplyExact(dimension.width, dimension.height)));
-    return new Dimension( //
-        Round.intValueExact(factor.multiply(RealScalar.of(dimension.width))), //
-        Round.intValueExact(factor.multiply(RealScalar.of(dimension.height))));
   }
 
   /** function is useful for listplot
