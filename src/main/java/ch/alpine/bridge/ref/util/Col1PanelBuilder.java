@@ -11,9 +11,9 @@ import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import ch.alpine.bridge.awt.ColumnPanel;
+import ch.alpine.bridge.awt.LeftGrayLineBorder;
 import ch.alpine.bridge.ref.FieldsEditorParam;
 import ch.alpine.bridge.ref.ann.FieldLabels;
 
@@ -31,11 +31,13 @@ final class Col1PanelBuilder implements PanelBuilder {
 
   @Override
   public void push(String key, Field field, Integer index) {
+    {
+      JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, index));
+      jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
+      deque.peek().add(jLabel);
+    }
     ColumnPanel columnPanel = new ColumnPanel();
-    columnPanel.setBorder(new EmptyBorder(3, FieldsEditorParam.GLOBAL.insetLeft, 0, 0));
-    JLabel jLabel = FieldsEditorParam.GLOBAL.createLabel(FieldLabels.of(key, field, index));
-    jLabel.setFont(jLabel.getFont().deriveFont(Font.BOLD));
-    columnPanel.add(jLabel);
+    columnPanel.setBorder(new LeftGrayLineBorder(3, FieldsEditorParam.GLOBAL.insetLeft, 0, 0));
     deque.push(columnPanel);
   }
 
