@@ -19,7 +19,7 @@ import ch.alpine.bridge.ref.data.GuiExtension;
 import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.mat.re.Pivots;
 
-class GuiExtensionDemo implements WindowProvider {
+public class GuiExtensionDemo implements WindowProvider {
   @Override
   public JFrame getWindow() {
     GuiExtension guiExtension = new GuiExtension();

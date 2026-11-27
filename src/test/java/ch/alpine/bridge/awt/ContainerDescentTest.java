@@ -1,5 +1,5 @@
 // code by jph
-package ch.alpine.bridge.demo.ref;
+package ch.alpine.bridge.awt;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.random.RandomGenerator;
@@ -9,7 +9,7 @@ import javax.swing.JRootPane;
 
 import org.junit.jupiter.api.Test;
 
-import ch.alpine.bridge.awt.ContainerDescent;
+import ch.alpine.bridge.demo.ref.GuiExtensionDemo;
 
 class ContainerDescentTest {
   @Test

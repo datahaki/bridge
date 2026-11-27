@@ -28,6 +28,10 @@ public record Meshgrid(CoordinateBoundingBox cbb, int width, int height) impleme
   public static Meshgrid of(CoordinateBoundingBox cbb, Dimension dimension) {
     return new Meshgrid(cbb, dimension.width, dimension.height);
   }
+  // public static Meshgrid of(Dimension dimension) {
+  // CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(dimension.width), Clips.positive(dimension.height));
+  // return of(cbb, dimension);
+  // }
 
   /** the function is called "image" because of the ordering of the return values:
    * dim 0 has cbb.clip(1) decreasing
