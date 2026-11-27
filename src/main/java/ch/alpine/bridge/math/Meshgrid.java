@@ -9,6 +9,7 @@ import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Slash;
 import ch.alpine.tensor.Tensor;
 import ch.alpine.tensor.Unprotect;
+import ch.alpine.tensor.alg.Dimensions;
 import ch.alpine.tensor.alg.Subdivide;
 import ch.alpine.tensor.api.ScalarBinaryOperator;
 import ch.alpine.tensor.api.TensorUnaryOperator;
@@ -25,20 +26,19 @@ public record Meshgrid(CoordinateBoundingBox cbb, int width, int height) impleme
     return new Meshgrid(cbb, res, res);
   }
 
+  /** @param cbb
+   * @param dimension of the "image" produced by {@link #image(ScalarBinaryOperator)}
+   * @return */
   public static Meshgrid of(CoordinateBoundingBox cbb, Dimension dimension) {
     return new Meshgrid(cbb, dimension.width, dimension.height);
   }
-  // public static Meshgrid of(Dimension dimension) {
-  // CoordinateBoundingBox cbb = CoordinateBoundingBox.of(Clips.positive(dimension.width), Clips.positive(dimension.height));
-  // return of(cbb, dimension);
-  // }
 
   /** the function is called "image" because of the ordering of the return values:
    * dim 0 has cbb.clip(1) decreasing
    * dim 1 has cbb.clip(0) increasing
    * 
    * @param tuo that maps a vector {x, y} to a tensor
-   * @return */
+   * @return tensor with {@link Dimensions} height x width */
   public Tensor image(TensorUnaryOperator tuo) {
     Tensor px = px_incr();
     Tensor py = py_decr();
@@ -56,12 +56,13 @@ public record Meshgrid(CoordinateBoundingBox cbb, int width, int height) impleme
         .map(y -> Slash.vector(px, x -> sbo.apply(x, y))), py.length());
   }
 
-  /** @return vector */
+  /** @return vector of {@link Tensor#length()} width */
   public Tensor px_incr() {
+    // TODO N.DOUBLE should be configurable!
     return Subdivide.intermediate_increasing(cbb.clip(0), width).maps(N.DOUBLE);
   }
 
-  /** @return vector */
+  /** @return vector of {@link Tensor#length()} height */
   public Tensor py_decr() {
     return Subdivide.intermediate_decreasing(cbb.clip(1), height).maps(N.DOUBLE);
   }
