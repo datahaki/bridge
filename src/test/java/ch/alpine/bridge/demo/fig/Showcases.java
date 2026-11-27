@@ -314,7 +314,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show(ColorDataLists._098.strict());
       show.setShowLabel("Cosine");
       ScalarUnaryOperator suo = QuantityMagnitude.SI().in("rad");
-      Showable showable = show.add(Plot.of(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Unitless.DEGREES.asIs(180))));
+      Showable showable = show.add(Plot.of(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Unitless.DEGREES.equipWithUnit(180))));
       showable.setLabel("cosine");
       showable.setStroke(new BasicStroke(0.5f));
       return show;

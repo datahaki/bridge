@@ -26,6 +26,8 @@ import ch.alpine.tensor.mat.Tolerance;
 import ch.alpine.tensor.nrm.Vector2Norm;
 import ch.alpine.tensor.opt.nd.CoordinateBoundingBox;
 import ch.alpine.tensor.red.Max;
+import ch.alpine.tensor.red.Min;
+import ch.alpine.tensor.sca.Abs;
 import ch.alpine.tensor.sca.Clip;
 
 /** inspired by
@@ -41,6 +43,8 @@ public class VectorPlot extends BarLegendPlot {
     return new VectorPlot(tuo, cbb, colorDataGradient);
   }
 
+  /** @param xy origins of arrows
+   * @param uv arrows */
   private record Inner(Tensor xy, Tensor uv, Rescale rescale) {
   }
 
@@ -72,10 +76,10 @@ public class VectorPlot extends BarLegendPlot {
       uv = Tensors.empty();
       rescale = new Rescale(Tensors.empty());
     } else {
-      // TODO This does not account for dy !!!
-      Scalar h = px.Get(1).subtract(px.Get(0));
+      Scalar dx = Abs.between(px.Get(0), px.Get(1));
+      Scalar dy = Abs.between(py.Get(0), py.Get(1));
       Scalar max = (Scalar) norms.stream().reduce(Max::of).orElseThrow();
-      uv = _uv.multiply(h.divide(max.add(max)));
+      uv = _uv.multiply(Min.of(dx, dy).divide(max.add(max)));
       rescale = new Rescale(norms);
     }
     inner_clip = rescale.clip();

@@ -100,8 +100,11 @@ public class HuePalette implements ColorDataIndexed {
 
   public Color getColor(int index, double sat, double val, double alpha) {
     int mod = Math.floorMod(index, length());
-    // TODO need reference for fancy formula below!
-    return Hue.of(hue.Get(mod).number().doubleValue(), sat, val * Math.pow(value.Get(mod).number().doubleValue(), sat), alpha);
+    return Hue.of( //
+        hue.Get(mod).number().doubleValue(), //
+        sat, //
+        val * Math.pow(value.Get(mod).number().doubleValue(), sat), //
+        alpha);
   }
 
   public ColorDataIndexed create(Scalar sat, Scalar val) {

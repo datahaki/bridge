@@ -16,7 +16,7 @@ import ch.alpine.bridge.awt.AwtUtil;
 import ch.alpine.bridge.fig.Show;
 import ch.alpine.bridge.fig.ShowGridComponent;
 
-// TODO ideally this class is in package .fig
+// TODO ideally this class is in package .fig, but currently relies on StaticHelper.createToolbar
 public enum ShowWindow {
   ;
   /** non-blocking

@@ -28,7 +28,6 @@ import ch.alpine.bridge.cgr.InstanceDiscovery;
 import ch.alpine.bridge.cgr.InstanceRecord;
 import ch.alpine.tensor.col.ColorDataLists;
 
-// TODO introduce search field on top to filter demos
 public class RunLaunchPad {
   public static WindowProvider create(String packageName) throws Exception {
     List<InstanceRecord<RunProvider>> list = //

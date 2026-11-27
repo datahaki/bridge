@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 
 public enum FileNames {
   ;
-  /** @param start
-   * @return */
+  /** @param start directory
+   * @return stream of files (not directories) in start directory and in all sub directories */
   public static Stream<Path> all(Path start) {
     try {
       Path root = start.toAbsolutePath().normalize();

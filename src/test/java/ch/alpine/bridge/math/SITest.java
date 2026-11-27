@@ -11,8 +11,8 @@ import ch.alpine.tensor.qty.Quantity;
 class SITest {
   @Test
   void testConvert() {
-    assertEquals(SI.PERCENT.convert(Quantity.of(3, "")), Quantity.of(300, "%"));
-    assertEquals(SI.METERS_PER_SECOND.convert(Quantity.of(-90, "km*h^-1")), Quantity.of(-25, "m*s^-1"));
+    assertEquals(SI.PERCENT.unitConvert(Quantity.of(3, "")), Quantity.of(300, "%"));
+    assertEquals(SI.METERS_PER_SECOND.unitConvert(Quantity.of(-90, "km*h^-1")), Quantity.of(-25, "m*s^-1"));
   }
 
   @Test

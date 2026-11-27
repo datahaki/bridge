@@ -23,7 +23,6 @@ import ch.alpine.tensor.sca.Clips;
 
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/MatrixPlot.html">MatrixPlot</a> */
-// TODO option to render values over the graphics
 public enum MatrixPlot {
   ;
   private static final boolean SYMMETRIZE_DEFAULT = false;

@@ -42,7 +42,9 @@ public enum Unitless {
     return of(RealScalar.of(number));
   }
 
-  /** @param scalar
+  /** this is equipWithUnit followed by unitSystem apply
+   * 
+   * @param scalar
    * @return */
   public Scalar of(Scalar scalar) {
     return UnitSystem.SI().apply(Quantity.of(scalar, unit));
@@ -52,7 +54,7 @@ public enum Unitless {
    * 
    * @param number
    * @return */
-  public Scalar asIs(Number number) {
+  public Scalar equipWithUnit(Number number) {
     return Quantity.of(number, unit);
   }
 
@@ -60,7 +62,7 @@ public enum Unitless {
    * 
    * @param scalar
    * @return */
-  public Scalar asIs(Scalar scalar) {
+  public Scalar equipWithUnit(Scalar scalar) {
     return Quantity.of(scalar, unit);
   }
 

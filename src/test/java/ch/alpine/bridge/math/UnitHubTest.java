@@ -24,6 +24,6 @@ class UnitHubTest {
     // assertThrows(Exception.class, () -> Serialization.copy(unitHub));
     assertEquals(unitHub.zero(), Quantity.of(0, "m^-1*s"));
     assertTrue(unitHub.toString().startsWith("UnitHub["));
-    unitHub.magnitude(Quantity.of(3, "h*km^-1"));
+    unitHub.quantityMagnitude(Quantity.of(3, "h*km^-1"));
   }
 }

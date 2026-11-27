@@ -28,8 +28,8 @@ class TilePixelTest {
 
   @Test
   void testAspe9() {
-    Scalar lon = Unitless.DEGREES.asIs(-0.762800);
-    Scalar lat = Unitless.DEGREES.asIs(38.343373);
+    Scalar lon = Unitless.DEGREES.equipWithUnit(-0.762800);
+    Scalar lat = Unitless.DEGREES.equipWithUnit(38.343373);
     TilePixel tileP1 = TilePixel.from(9, 256, lon, lat).orElseThrow();
     assertEquals(tileP1.tile().x(), 254);
     assertEquals(tileP1.tile().y(), 196);
@@ -37,8 +37,8 @@ class TilePixelTest {
 
   @Test
   void testAspe() {
-    Scalar lon = Unitless.DEGREES.asIs(-0.762800);
-    Scalar lat = Unitless.DEGREES.asIs(38.343373);
+    Scalar lon = Unitless.DEGREES.equipWithUnit(-0.762800);
+    Scalar lat = Unitless.DEGREES.equipWithUnit(38.343373);
     TilePixel tileP1 = TilePixel.from(17, 256, lon, lat).orElseThrow();
     Tensor coords = tileP1.lon_lat();
     Tensor expect = Tensors.of(lon, lat).maps(UnitSystem.SI());
@@ -55,8 +55,8 @@ class TilePixelTest {
 
   @Test
   void testNoCanDo() {
-    Scalar lon = Unitless.DEGREES.asIs(-0.762800);
-    Scalar lat = Unitless.DEGREES.asIs(87.343373);
+    Scalar lon = Unitless.DEGREES.equipWithUnit(-0.762800);
+    Scalar lat = Unitless.DEGREES.equipWithUnit(87.343373);
     Optional<TilePixel> optional = TilePixel.from(17, 256, lon, lat);
     assertTrue(optional.isEmpty());
   }

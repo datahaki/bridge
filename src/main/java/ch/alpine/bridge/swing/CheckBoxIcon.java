@@ -8,11 +8,13 @@ import ch.alpine.bridge.ref.util.PanelFieldsEditor;
 import ch.alpine.tensor.ext.ResourceData;
 import ch.alpine.tensor.img.ImageResize;
 
-/** Careful: the enum entries are used as part of resource locations
+/** Careful:
+ * the enum names are used as part of resource locations
+ * 
+ * somoe images are not suitable for DARK schema
  * 
  * {@link PanelFieldsEditor} */
 public enum CheckBoxIcon {
-  // TODO these images are bad when using DARK
   METRO,
   /** green checkmark in a thin black rectangle */
   BALLIT,

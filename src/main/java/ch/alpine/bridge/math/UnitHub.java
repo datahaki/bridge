@@ -40,14 +40,14 @@ public class UnitHub implements Serializable {
   // ---
   private final Unit unit;
   private final Scalar zero;
-  private final ScalarUnaryOperator convert;
-  private final ScalarUnaryOperator magnitude;
+  private final ScalarUnaryOperator unitConvert;
+  private final ScalarUnaryOperator quantityMagnitude;
 
   private UnitHub(UnitSystem unitSystem, Unit unit) {
     this.unit = unit;
-    zero = quantity(RealScalar.ZERO);
-    convert = UnitConvert.of(unitSystem).to(unit);
-    magnitude = QuantityMagnitude.of(unitSystem).in(unit);
+    zero = equipWithUnit(RealScalar.ZERO);
+    unitConvert = UnitConvert.of(unitSystem).to(unit);
+    quantityMagnitude = QuantityMagnitude.of(unitSystem).in(unit);
   }
 
   public Unit unit() {
@@ -56,14 +56,30 @@ public class UnitHub implements Serializable {
 
   /** @param scalar not a quantity
    * @return Quantity.of(scalar, unit) */
-  public Scalar quantity(Scalar scalar) {
+  public Scalar equipWithUnit(Scalar scalar) {
     return Quantity.of(scalar, unit);
   }
 
   /** @param scalar not a quantity
    * @return Quantity.of(scalar, unit) */
-  public Scalar quantity(Number number) {
+  public Scalar equipWithUnit(Number number) {
     return Quantity.of(number, unit);
+  }
+
+  /** EXPERIMENTAL
+   * 
+   * Example: PERCENT.unitConvert(0.5) == 50 %
+   * 
+   * @return op that maps unitless scalars to quantity with given unit */
+  public ScalarUnaryOperator unitConvert() {
+    return unitConvert;
+  }
+
+  /** EXPERIMENTAL
+   * 
+   * @return */
+  public ScalarUnaryOperator quantityMagnitude() {
+    return quantityMagnitude;
   }
 
   /** @return Quantity[0, unit] */
@@ -73,26 +89,26 @@ public class UnitHub implements Serializable {
 
   /** @param scalar with a compatible unit
    * @return quantity with this unit */
-  public Scalar convert(Scalar scalar) {
-    return convert.apply(scalar);
+  public Scalar unitConvert(Scalar scalar) {
+    return unitConvert.apply(scalar);
   }
 
   /** @param scalar with a compatible unit
    * @return scalar with unit dropped after conversion to this unit */
-  public Scalar magnitude(Scalar scalar) {
-    return magnitude.apply(scalar);
+  public Scalar quantityMagnitude(Scalar scalar) {
+    return quantityMagnitude.apply(scalar);
   }
 
   /** @param scalar
    * @return */
   public double doubleValue(Scalar scalar) {
-    return magnitude(scalar).number().doubleValue();
+    return quantityMagnitude(scalar).number().doubleValue();
   }
 
   /** @param scalar
    * @return */
   public float floatValue(Scalar scalar) {
-    return magnitude(scalar).number().floatValue();
+    return quantityMagnitude(scalar).number().floatValue();
   }
 
   /** @param scalar with a compatible unit
@@ -100,13 +116,13 @@ public class UnitHub implements Serializable {
    * and projection to integer
    * @throws Exception if rounding results in an integer value outside the 64-bit range */
   public long longValue(Scalar scalar) {
-    return Round.longValueExact(magnitude(scalar));
+    return Round.longValueExact(quantityMagnitude(scalar));
   }
 
   /** @param scalar
    * @return */
   public long longValueExact(Scalar scalar) {
-    return Scalars.longValueExact(magnitude(scalar));
+    return Scalars.longValueExact(quantityMagnitude(scalar));
   }
 
   /** @param scalar with a compatible unit
@@ -114,17 +130,17 @@ public class UnitHub implements Serializable {
    * and projection to integer
    * @throws Exception if rounding results in an integer value outside the 32-bit range */
   public int intValue(Scalar scalar) {
-    return Round.intValueExact(magnitude(scalar));
+    return Round.intValueExact(quantityMagnitude(scalar));
   }
 
   /** @param scalar
    * @return */
   public int intValueFloor(Scalar scalar) {
-    return Scalars.intValueExact(Floor.FUNCTION.apply(magnitude(scalar)));
+    return Scalars.intValueExact(Floor.FUNCTION.apply(quantityMagnitude(scalar)));
   }
 
   public int intValueExact(Scalar scalar) {
-    return Scalars.intValueExact(magnitude(scalar));
+    return Scalars.intValueExact(quantityMagnitude(scalar));
   }
 
   /** @param scalar with a compatible unit

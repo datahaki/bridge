@@ -57,9 +57,9 @@ class ListLinePlotTest {
     Showable showable = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
     showable.setLabel("empty");
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5).maps(SI.SECONDS::quantity), Tensors.vector(2, 2.2, -1.6)));
+    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5).maps(SI.SECONDS::equipWithUnit), Tensors.vector(2, 2.2, -1.6)));
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(0, 2, 5).maps(SI.SECONDS::quantity), Tensors.vector(1, 2, 1.6)));
+    show.add(ListLinePlot.of(Tensors.vector(0, 2, 5).maps(SI.SECONDS::equipWithUnit), Tensors.vector(1, 2, 1.6)));
     show.add(ListLinePlot.of(Tensors.empty()));
     // CascadeHelper.draw(ListPlot.of(show));
   }
@@ -70,9 +70,9 @@ class ListLinePlotTest {
     Showable showable = show.add(ListLinePlot.of(Tensors.empty(), Tensors.empty()));
     showable.setLabel("empty");
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).maps(SI.METERS::quantity)));
+    show.add(ListLinePlot.of(Tensors.vector(1, 2, 5), Tensors.vector(2, 2.2, -1.6).maps(SI.METERS::equipWithUnit)));
     show.add(ListLinePlot.of(Tensors.empty()));
-    show.add(ListLinePlot.of(Tensors.vector(3, 5), Tensors.vector(1, 2.6).maps(SI.METERS::quantity)));
+    show.add(ListLinePlot.of(Tensors.vector(3, 5), Tensors.vector(1, 2.6).maps(SI.METERS::equipWithUnit)));
     // CascadeHelper.draw(ListPlot.of(show));
   }
 
