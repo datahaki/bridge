@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
-import ch.alpine.tensor.Throw;
 import ch.alpine.tensor.ext.Serialization;
 import ch.alpine.tensor.io.StringScalar;
 import ch.alpine.tensor.num.Pi;
@@ -64,7 +63,7 @@ class UnitHubTest {
 
   @Test
   void testStringScalarFail() {
-    assertThrows(Throw.class, () -> SI.DEGREES.equipWithUnitNormalize(StringScalar.of("abc")));
+    assertThrows(Exception.class, () -> SI.DEGREES.equipWithUnitNormalize(StringScalar.of("abc")));
   }
 
   @Test
