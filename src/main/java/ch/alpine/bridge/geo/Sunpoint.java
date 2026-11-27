@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 
-import ch.alpine.bridge.math.Unitless;
+import ch.alpine.bridge.math.SI;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -29,7 +29,7 @@ public record Sunpoint(Scalar lambda_s, Scalar delta) implements Serializable {
   private static final Mod MOD_LON = Mod.function(Pi.TWO, Pi.VALUE.negate());
   private static final Mod MOD_LAT = Mod.function(Pi.VALUE, Pi.HALF.negate());
   private static final Scalar RAD_PER_SEC = UnitSystem.SI().apply(Quantity.of(-360, "deg*days^-1"));
-  private static final Scalar AXIAL_TILT = Unitless.DEGREES.of(23.44);
+  private static final Scalar AXIAL_TILT = SI.DEGREES.equipWithUnitNormalize(23.44);
 
   public static Sunpoint now() {
     return of(LocalDateTime.now(ZoneOffset.UTC));
@@ -45,7 +45,7 @@ public record Sunpoint(Scalar lambda_s, Scalar delta) implements Serializable {
     int solar = localDateTime.getDayOfYear() - 81;
     // Converts the day offset into an orbital angle (in degrees) representing
     // Earth's position along its yearly orbit around the Sun, accounting for leap years via 365.25.
-    Scalar angle = Unitless.TURNS.of(solar / 365.25);
+    Scalar angle = SI.TURNS.equipWithUnitNormalize(solar / 365.25);
     return new Sunpoint( //
         MOD_LON.apply(diff.multiply(RAD_PER_SEC)), //
         AXIAL_TILT.multiply(Sin.FUNCTION.apply(angle)));

@@ -38,12 +38,14 @@ public class UnitHub implements Serializable {
   }
 
   // ---
+  private final UnitSystem unitSystem;
   private final Unit unit;
   private final Scalar zero;
   private final ScalarUnaryOperator unitConvert;
   private final ScalarUnaryOperator quantityMagnitude;
 
   private UnitHub(UnitSystem unitSystem, Unit unit) {
+    this.unitSystem = unitSystem;
     this.unit = unit;
     zero = equipWithUnit(RealScalar.ZERO);
     unitConvert = UnitConvert.of(unitSystem).to(unit);
@@ -66,18 +68,44 @@ public class UnitHub implements Serializable {
     return Quantity.of(number, unit);
   }
 
-  /** EXPERIMENTAL
+  /** Example: 180 is interpreted as 180[deg] and mapped to pi
    * 
-   * Example: PERCENT.unitConvert(0.5) == 50 %
+   * @param number with interpretation with given unit
+   * @return corresponding unitless scalar */
+  public Scalar equipWithUnitNormalize(Number number) {
+    return unitSystem.apply(equipWithUnit(number));
+  }
+
+  /** this is equipWithUnit followed by unitSystem apply
+   * 
+   * @param scalar
+   * @return */
+  public Scalar equipWithUnitNormalize(Scalar scalar) {
+    return unitSystem.apply(equipWithUnit(scalar));
+  }
+
+  /** Example: PERCENT.unitConvert(0.5) == 50 %
+   * 
+   * @param scalar with a compatible unit
+   * @return quantity with this unit */
+  public Scalar unitConvert(Scalar scalar) {
+    return unitConvert.apply(scalar);
+  }
+
+  /** Example: PERCENT.unitConvert(0.5) == 50 %
    * 
    * @return op that maps unitless scalars to quantity with given unit */
   public ScalarUnaryOperator unitConvert() {
     return unitConvert;
   }
 
-  /** EXPERIMENTAL
-   * 
-   * @return */
+  /** @param scalar with a compatible unit
+   * @return scalar with unit dropped after conversion to this unit */
+  public Scalar quantityMagnitude(Scalar scalar) {
+    return quantityMagnitude.apply(scalar);
+  }
+
+  /** @return */
   public ScalarUnaryOperator quantityMagnitude() {
     return quantityMagnitude;
   }
@@ -85,18 +113,6 @@ public class UnitHub implements Serializable {
   /** @return Quantity[0, unit] */
   public Scalar zero() {
     return zero;
-  }
-
-  /** @param scalar with a compatible unit
-   * @return quantity with this unit */
-  public Scalar unitConvert(Scalar scalar) {
-    return unitConvert.apply(scalar);
-  }
-
-  /** @param scalar with a compatible unit
-   * @return scalar with unit dropped after conversion to this unit */
-  public Scalar quantityMagnitude(Scalar scalar) {
-    return quantityMagnitude.apply(scalar);
   }
 
   /** @param scalar

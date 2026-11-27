@@ -37,8 +37,8 @@ import ch.alpine.bridge.fig.grd.AxisMercator;
 import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.fig.grd.TickToString;
 import ch.alpine.bridge.gfx.TextContour;
+import ch.alpine.bridge.math.SI;
 import ch.alpine.bridge.math.Ticks;
-import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -219,7 +219,7 @@ public class GeoComponent extends JComponent {
     TextContour textContour = TextContour.of(graphics);
     final Point center = AwtUtil.center(dimension);
     if (ticks && 2 < tilePixel.tile().z()) {
-      ScalarUnaryOperator suo = Unitless.DEGREES.unitConvert();
+      ScalarUnaryOperator suo = SI.DEGREES.unitConvert();
       graphics.setStroke(new BasicStroke()); // thickness of outline
       FontMetrics fontMetrics = graphics.getFontMetrics();
       if (true) { // lon along "X - axis"

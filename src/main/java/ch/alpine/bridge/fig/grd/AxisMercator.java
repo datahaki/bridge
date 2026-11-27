@@ -6,8 +6,8 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 
 import ch.alpine.bridge.geo.TilePixel;
+import ch.alpine.bridge.math.SI;
 import ch.alpine.bridge.math.Ticks;
-import ch.alpine.bridge.math.Unitless;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -18,7 +18,7 @@ import ch.alpine.tensor.opt.nd.CoordinateBounds;
 
 /** used for geo component mercator projection */
 public record AxisMercator(TilePixel origin) implements AxisMap, Serializable {
-  private static final ScalarUnaryOperator TO_DEGREE = Unitless.DEGREES.unitConvert();
+  private static final ScalarUnaryOperator TO_DEGREE = SI.DEGREES.unitConvert();
 
   @Override
   public Scalar model2range(Scalar model) {
@@ -32,7 +32,7 @@ public record AxisMercator(TilePixel origin) implements AxisMap, Serializable {
   public Scalar range2model(Scalar range) {
     int pixel = range.number().intValue();
     // TODO computation wasteful since only Y component is needed
-    return Unitless.DEGREES.unitConvert().apply(origin.shift(0, pixel).lon_lat().Get(1));
+    return SI.DEGREES.unitConvert(origin.shift(0, pixel).lon_lat().Get(1));
   }
 
   @Override

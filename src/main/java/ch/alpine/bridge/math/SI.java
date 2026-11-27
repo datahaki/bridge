@@ -3,18 +3,20 @@ package ch.alpine.bridge.math;
 
 import ch.alpine.tensor.qty.Unit;
 
-/** names inspired by Mathematica, see names.properties
- * 
- * EXPERIMENTAL file should be auto generated */
+/** names inspired by Mathematica, see names.properties */
 public enum SI {
   ;
+  public static final UnitHub PERCENT = UnitHub.si("%");
+  public static final UnitHub PERMILLE = UnitHub.si("‰");
+  public static final UnitHub DEGREES = UnitHub.si("deg");
+  public static final UnitHub TURNS = UnitHub.si("turns");
+  // ---
   public static final UnitHub METERS = UnitHub.si("m");
   public static final UnitHub METERS_PER_SECOND = UnitHub.si("m*s^-1");
   public static final UnitHub MILLISECONDS = UnitHub.si("ms");
   public static final UnitHub MINUTES = UnitHub.si("m");
   public static final UnitHub NANOSECONDS = UnitHub.si("ns");
   public static final UnitHub DIMENSIONLESS = UnitHub.si(Unit.ONE);
-  public static final UnitHub PERCENT = UnitHub.si("%");
   public static final UnitHub PER_MINUTE = UnitHub.si("min^-1");
   public static final UnitHub SECONDS = UnitHub.si("s");
   public static final UnitHub PER_SECOND = UnitHub.si("s^-1");

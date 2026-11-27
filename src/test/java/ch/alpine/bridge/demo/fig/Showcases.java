@@ -41,7 +41,7 @@ import ch.alpine.bridge.geo.Tile;
 import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.bridge.geo.TileServers;
 import ch.alpine.bridge.math.Meshgrid;
-import ch.alpine.bridge.math.Unitless;
+import ch.alpine.bridge.math.SI;
 import ch.alpine.bridge.pro.ShowProvider;
 import ch.alpine.tensor.Complex;
 import ch.alpine.tensor.DoubleScalar;
@@ -127,7 +127,7 @@ public enum Showcases implements ShowProvider {
     public Show getShow() {
       Show show = new Show("some map");
       show.add(GeoPlot.of(TileServers.OpenStreetMap));
-      Tensor points = Tensors.matrixDouble(Helper.array).maps(Unitless.DEGREES.unitConvert());
+      Tensor points = Tensors.matrixDouble(Helper.array).maps(SI.DEGREES.unitConvert());
       IO.println(MatrixForm.of(points));
       show.add(PolygonPlot.of(points, PlotOption.FILL)).setAlpha(64);
       show.showOptions.axisOptionsY.axisMap = new AxisMercator(new TilePixel(new Tile(6, 5, 7), 256, 0, 0));
@@ -314,7 +314,7 @@ public enum Showcases implements ShowProvider {
       Show show = new Show(ColorDataLists._098.strict());
       show.setShowLabel("Cosine");
       ScalarUnaryOperator suo = QuantityMagnitude.SI().in("rad");
-      Showable showable = show.add(Plot.of(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(Unitless.DEGREES.equipWithUnit(180))));
+      Showable showable = show.add(Plot.of(s -> Cos.FUNCTION.apply(suo.apply(s)), Clips.absolute(SI.DEGREES.equipWithUnit(180))));
       showable.setLabel("cosine");
       showable.setStroke(new BasicStroke(0.5f));
       return show;

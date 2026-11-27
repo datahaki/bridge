@@ -25,7 +25,7 @@ import ch.alpine.bridge.fig.ShowOption;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.grd.AxisOption;
 import ch.alpine.bridge.fig.plt.ListLinePlot;
-import ch.alpine.bridge.math.Unitless;
+import ch.alpine.bridge.math.SI;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -47,7 +47,7 @@ import ch.alpine.tensor.sca.tri.ArcTan;
 
 public final class GeometricComponent extends JComponent {
   private static final Scalar SCALE_FACTOR = Sqrt.FUNCTION.apply(RealScalar.TWO);
-  private static final Scalar WHEEL_ANGLE = Unitless.DEGREES.of(Rational.of(90, 6));
+  private static final Scalar WHEEL_ANGLE = SI.DEGREES.equipWithUnitNormalize(Rational.of(90, 6));
   // ---
   /** public access to final JComponent: attach mouse listeners, get/set properties, ... */
   private final IntervalClock intervalClock = new IntervalClock();
