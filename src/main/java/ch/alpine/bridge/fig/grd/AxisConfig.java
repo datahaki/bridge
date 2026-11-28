@@ -8,10 +8,12 @@ import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ch.alpine.bridge.cal.DateTimeFocus;
 import ch.alpine.bridge.cal.DateTimeInterval;
+import ch.alpine.bridge.fig.tic.Ticks;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
@@ -123,7 +125,7 @@ public record AxisConfig( //
     return axisMap.format(ticks);
   }
 
-  public Map<Integer, String> getTicksMap(boolean vertical, Font font, DateTimeFocus dateTimeFocus) {
+  public Map<Integer, String> getTicksMap(boolean vertical, Font font, DateTimeFocus dateTimeFocus, boolean gridLines) {
     Map<Integer, String> map = new HashMap<>();
     Clip ticks_clip = ticks_clip();
     if (ticks_clip.isNonDegenerate()) {
@@ -147,9 +149,14 @@ public record AxisConfig( //
           LineMetrics lineMetrics = font.getLineMetrics("Ag", FONT_RENDER_CONTEXT);
           val = Math.max((int) Math.ceil(lineMetrics.getAscent() + lineMetrics.getDescent()), rem);
         }
-        // TODO for log10 only use decimal steps for ticks, but more for gridline...
-        axisMap.ticks().stream(ticks_clip, Rational.of(val, pixel_len())) //
-            .forEach(ticks -> map.put((int) ticks2pixel(ticks), format(ticks)));
+        Ticks ref = gridLines //
+            ? axisMap.ticks().subTicks()
+            : axisMap.ticks();
+        List<Scalar> list = ref.stream(ticks_clip, Rational.of(val, pixel_len())).toList();
+        if (gridLines)
+          list.forEach(ticks -> map.put((int) ticks2pixel(ticks), null));
+        else
+          list.forEach(ticks -> map.put((int) ticks2pixel(ticks), format(ticks)));
       }
     }
     return map;

@@ -1,7 +1,7 @@
 // code by jph
 package ch.alpine.bridge.fig.grd;
 
-import ch.alpine.bridge.math.Ticks;
+import ch.alpine.bridge.fig.tic.Ticks;
 import ch.alpine.tensor.Scalar;
 
 public interface AxisMap {

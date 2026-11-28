@@ -14,7 +14,7 @@ import ch.alpine.bridge.cal.DateTimeInterval;
 import ch.alpine.bridge.fig.BaseShowable;
 import ch.alpine.bridge.fig.Showable;
 import ch.alpine.bridge.fig.ShowableConfig;
-import ch.alpine.bridge.math.Ticks;
+import ch.alpine.bridge.fig.tic.TicksDec;
 import ch.alpine.tensor.Rational;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensors;
@@ -108,7 +108,7 @@ public class CandlestickChart extends BaseShowable {
         dateTime = dateTimeInterval.plus(dateTime);
       }
     } else
-      Ticks.DENSE.stream(clip, factor).forEach(navigableMap::add);
+      TicksDec.DENSE.stream(clip, factor).forEach(navigableMap::add);
     return navigableMap;
   }
 

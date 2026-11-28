@@ -5,9 +5,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.Serializable;
 
+import ch.alpine.bridge.fig.tic.Ticks;
+import ch.alpine.bridge.fig.tic.TicksDec;
 import ch.alpine.bridge.geo.TilePixel;
 import ch.alpine.bridge.math.SI;
-import ch.alpine.bridge.math.Ticks;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.Tensor;
@@ -47,7 +48,7 @@ public record AxisMercator(TilePixel origin) implements AxisMap, Serializable {
 
   @Override
   public Ticks ticks() {
-    return Ticks.DENSE;
+    return TicksDec.DENSE;
   }
 
   public CoordinateBoundingBox cbb(Rectangle rectangle) {

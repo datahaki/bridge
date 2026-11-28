@@ -1,7 +1,9 @@
 // code by jph
 package ch.alpine.bridge.fig.grd;
 
-import ch.alpine.bridge.math.Ticks;
+import ch.alpine.bridge.fig.tic.Ticks;
+import ch.alpine.bridge.fig.tic.TicksDec;
+import ch.alpine.bridge.fig.tic.TicksLog;
 import ch.alpine.tensor.RealScalar;
 import ch.alpine.tensor.Scalar;
 import ch.alpine.tensor.sca.exp.Exp;
@@ -33,7 +35,7 @@ public enum AxisMaps implements AxisMap {
 
     @Override
     public Ticks ticks() {
-      return Ticks.DENSE;
+      return TicksDec.DENSE;
     }
   },
   LOG {
@@ -59,7 +61,7 @@ public enum AxisMaps implements AxisMap {
 
     @Override
     public Ticks ticks() {
-      return Ticks.DENSE;
+      return TicksLog.INSTANCE;
     }
   },
   LOG10 {
@@ -85,7 +87,7 @@ public enum AxisMaps implements AxisMap {
 
     @Override
     public Ticks ticks() {
-      return Ticks.DENSE;
+      return TicksLog.INSTANCE;
     }
   },
   dB {
@@ -113,7 +115,7 @@ public enum AxisMaps implements AxisMap {
 
     @Override
     public Ticks ticks() {
-      return Ticks.DENSE;
+      return TicksDec.DENSE;
     }
   }
 }

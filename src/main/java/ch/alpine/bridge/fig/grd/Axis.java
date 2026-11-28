@@ -32,16 +32,19 @@ public abstract class Axis {
    * @param graphics */
   public final void render(ShowableConfig showableConfig, Point point, Graphics2D graphics) {
     AxisConfig axisConfig = axisConfig(showableConfig);
-    Map<Integer, String> map = axisConfig.getTicksMap(this instanceof AxisY, font, axisOptions.dateTimeFocus);
-    RenderQuality.smoothLine(graphics, false);
-    if (axisOptions.contains(AxisOption.GRID)) { // grid lines | or _
-      graphics.setStroke(STROKE_GRIDLINES);
-      graphics.setColor(COLOR_GRIDLINES);
-      Rectangle rectangle = showableConfig.rectangle();
-      for (int pixel : map.keySet())
-        drawGridLine(graphics, rectangle, pixel);
+    {
+      Map<Integer, String> map = axisConfig.getTicksMap(this instanceof AxisY, font, axisOptions.dateTimeFocus, true);
+      RenderQuality.smoothLine(graphics, false);
+      if (axisOptions.contains(AxisOption.GRID)) { // grid lines | or _
+        graphics.setStroke(STROKE_GRIDLINES);
+        graphics.setColor(COLOR_GRIDLINES);
+        Rectangle rectangle = showableConfig.rectangle();
+        for (int pixel : map.keySet())
+          drawGridLine(graphics, rectangle, pixel);
+      }
     }
     if (axisOptions.contains(AxisOption.TICK)) {
+      Map<Integer, String> map = axisConfig.getTicksMap(this instanceof AxisY, font, axisOptions.dateTimeFocus, false);
       graphics.setStroke(ShowOptions.STROKE_SOLID);
       graphics.setColor(COLOR_HELPER);
       drawAxisLine(graphics, point, axisConfig.pixel_len());
