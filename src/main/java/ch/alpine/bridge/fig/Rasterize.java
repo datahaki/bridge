@@ -20,7 +20,7 @@ import ch.alpine.tensor.ext.PathName;
 /** inspired by
  * <a href="https://reference.wolfram.com/language/ref/Rasterize.html">Rasterize</a> */
 public record Rasterize(Show show, Dimension dimension) {
-  /** @param type
+  /** @param type of BufferedImage
    * @return */
   public BufferedImage image(int type) {
     BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height, type);

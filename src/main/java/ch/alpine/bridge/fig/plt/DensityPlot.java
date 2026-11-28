@@ -74,6 +74,7 @@ public class DensityPlot extends BarLegendPlot implements BackgroundPlotMarker {
   private final ScalarTensorFunction colorDataGradient;
   // ---
   private Clip inner_clip = null;
+  /** the resolution is configurable via {@link #setPlotPoints(int)} */
   private int resolution = RESOLUTION_DEFAULT;
 
   private DensityPlot(ScalarBinaryOperator sbo, CoordinateBoundingBox cbb, ScalarTensorFunction colorDataGradient) {
